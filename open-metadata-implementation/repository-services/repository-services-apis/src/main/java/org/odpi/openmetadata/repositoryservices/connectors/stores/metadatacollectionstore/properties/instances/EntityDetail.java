@@ -60,7 +60,9 @@ public class EntityDetail extends EntitySummary
         {
             return null;
         }
-        else if (entityProperties.getInstanceProperties() == null)
+        else if ((entityProperties.getInstanceProperties() == null) &&
+                 (entityProperties.getEffectiveFromTime() == null) &&
+                 (entityProperties.getEffectiveToTime() == null))
         {
             return null;
         }

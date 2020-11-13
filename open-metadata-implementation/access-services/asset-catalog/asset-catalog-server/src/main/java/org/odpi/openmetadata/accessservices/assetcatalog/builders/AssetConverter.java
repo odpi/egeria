@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
@@ -11,10 +12,12 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -25,17 +28,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ADDITIONAL_PROPERTIES_PROPERTY_NAME;
+
 /**
  * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
  */
 public class AssetConverter {
 
+    private String sourceName;
     private OMRSRepositoryHelper repositoryHelper;
 
-    public AssetConverter(OMRSRepositoryHelper repositoryHelper) {
+    public AssetConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
+        this.sourceName = sourceName;
         this.repositoryHelper = repositoryHelper;
     }
 
+    /**
+     * Method used to convert the Entity Details to Asset Catalog OMAS Model - Asset Description object
+     *
+     * @param entityDetail entityDetails object
+     * @return Asset Description object
+     */
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(entityDetail.getGUID());
@@ -56,6 +69,7 @@ public class AssetConverter {
         }
 
         assetDescription.setProperties(extractProperties(entityDetail.getProperties()));
+        assetDescription.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
 
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
@@ -64,6 +78,12 @@ public class AssetConverter {
         return assetDescription;
     }
 
+    /**
+     * Method used to covert a list of relationships from OMRS model to AC OMAS model
+     *
+     * @param relationships list of relationships - OMRS model
+     * @return a list of AC OMAS relationships objects
+     */
     public List<Relationship> convertRelationships(List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships) {
         if (relationships == null) {
             return Collections.emptyList();
@@ -72,6 +92,12 @@ public class AssetConverter {
         return relationships.stream().map(this::convertRelationship).collect(Collectors.toList());
     }
 
+    /**
+     * Method used to convert the relationship from the OMRS model to AC OMAS model
+     *
+     * @param rel relationship in the OMRS model
+     * @return a relationship in AC OMAS model
+     */
     public Relationship convertRelationship(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship rel) {
         Relationship relationship = new Relationship();
 
@@ -101,8 +127,14 @@ public class AssetConverter {
         return relationship;
     }
 
+    /**
+     * Convert a list of Classifications from the OMRS model to Asset Catalog OMAS model
+     *
+     * @param classificationsFromEntity - list of classification in the repository services model
+     * @return list of classifications in the AC OMAS model
+     */
     public List<Classification> convertClassifications
-            (List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> classificationsFromEntity) {
+    (List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> classificationsFromEntity) {
 
         if (classificationsFromEntity == null || classificationsFromEntity.isEmpty()) {
             return new ArrayList<>();
@@ -139,7 +171,12 @@ public class AssetConverter {
         return classifications;
     }
 
-
+    /**
+     * Add an element in the context. If the context is null, the current element becomes the root of the context
+     *
+     * @param assetElement the context
+     * @param entityDetail entity details of the new element
+     */
     public void addElement(AssetElement assetElement, EntityDetail entityDetail) {
         List<Element> context = assetElement.getContext();
         AssetElements element = buildAssetElements(entityDetail);
@@ -154,18 +191,36 @@ public class AssetConverter {
         }
     }
 
+    /**
+     * Returns the last node added in the context
+     *
+     * @param assetElement given context
+     * @return the last element
+     */
     public Element getLastNode(AssetElement assetElement) {
         List<Element> context = assetElement.getContext();
 
         return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
     }
 
+    /**
+     * Method use to add the parent element to the current element in the built context tree
+     *
+     * @param parentElement parent element from the context
+     * @param element       a child element
+     */
     public void addChildElement(Element parentElement, Element element) {
         if (parentElement != null) {
             parentElement.setParentElement(element);
         }
     }
 
+    /**
+     * Method use to add to the context of the given entity
+     *
+     * @param assetElement asset element that contains the current context
+     * @param entityDetail entity details
+     */
     public void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
         List<Element> context = assetElement.getContext();
         if (context == null) {
@@ -175,6 +230,12 @@ public class AssetConverter {
         assetElement.setContext(context);
     }
 
+    /**
+     * Method used to convert TypeDef to Type object from the Asset Catalog OMAS
+     *
+     * @param openType type definition
+     * @return the Type object
+     */
     public Type convertType(TypeDef openType) {
         Type type = new Type();
         type.setName(openType.getName());
@@ -184,6 +245,12 @@ public class AssetConverter {
         return type;
     }
 
+    /**
+     * Create an Asset Element from the Entity Details
+     *
+     * @param entityDetail entityDetails
+     * @return an AssetElement object
+     */
     public AssetElements buildAssetElements(EntityDetail entityDetail) {
         if (entityDetail == null) {
             return null;
@@ -193,6 +260,7 @@ public class AssetConverter {
         element.setGuid(entityDetail.getGUID());
         element.setType(convertInstanceType(entityDetail.getType()));
         element.setProperties(extractProperties(entityDetail.getProperties()));
+        element.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             element.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
@@ -214,7 +282,7 @@ public class AssetConverter {
 
         asset.setGuid(entityProxy.getGUID());
         if (entityProxy.getUniqueProperties() != null) {
-            asset.setName(repositoryHelper.getStringProperty("userID", Constants.NAME, entityProxy.getUniqueProperties(), method));
+            asset.setName(repositoryHelper.getStringProperty(sourceName, Constants.NAME, entityProxy.getUniqueProperties(), method));
         }
         asset.setCreatedBy(entityProxy.getCreatedBy());
         asset.setCreateTime(entityProxy.getCreateTime());
@@ -239,11 +307,43 @@ public class AssetConverter {
     }
 
     private Map<String, String> extractProperties(InstanceProperties instanceProperties) {
+        Map<String, Object> instancePropertiesAsMap = repositoryHelper.getInstancePropertiesAsMap(instanceProperties);
         Map<String, String> properties = new HashMap<>();
+        String methodName = "extractProperties";
 
-        if (instanceProperties != null) {
-            instanceProperties.getInstanceProperties().forEach((key, value) -> properties.put(key, value.valueAsString()));
+        if (MapUtils.isNotEmpty(instancePropertiesAsMap)) {
+            instancePropertiesAsMap.forEach((key, value) -> {
+                if (!key.equals(ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
+                    if (value instanceof ArrayPropertyValue) {
+                        List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(sourceName, key, instanceProperties, methodName);
+                        properties.put(key, listToString(stringArrayProperty));
+                    } else if (value instanceof MapPropertyValue) {
+                        Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(sourceName, key, instanceProperties, methodName);
+                        properties.put(key, mapToString(mapProperty));
+                    } else {
+                        properties.put(key, String.valueOf(value));
+                    }
+                }
+            });
         }
+
         return properties;
+    }
+
+    private Map<String, String> extractAdditionalProperties(InstanceProperties instanceProperties) {
+        String methodName = "extractAdditionalProperties";
+
+        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(sourceName,
+                ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                instanceProperties, methodName));
+    }
+
+    private String listToString(List<String> list) {
+        return String.join(",", list);
+    }
+
+    private String mapToString(Map<String, Object> map) {
+        return map.keySet().stream().map(key -> key + ": " + map.get(key))
+                .collect(Collectors.joining(", "));
     }
 }

@@ -38,4 +38,12 @@ public class Edge {
         this.label = label;
     }
 
+    @Override
+    public String toString() {
+        return "Edge{" +
+                "from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", label='" + label + '\'' +
+                '}';
+    }
 }

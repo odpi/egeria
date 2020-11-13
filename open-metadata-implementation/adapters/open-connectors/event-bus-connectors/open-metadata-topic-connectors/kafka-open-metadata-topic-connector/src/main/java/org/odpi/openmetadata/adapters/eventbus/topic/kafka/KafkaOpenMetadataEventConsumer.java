@@ -19,7 +19,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,15 +31,14 @@ import org.slf4j.LoggerFactory;
  */
 public class KafkaOpenMetadataEventConsumer implements Runnable
 {
-    private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
+    private static final Logger log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
 
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
     private final long recoverySleepTimeSec; 
-    private final long pollTimeout; ;
+    private final long pollTimeout;
     private final long maxQueueSize;
 
-    private				 KafkaOpenMetadataEventConsumerConfiguration config;
     private              KafkaConsumer<String, String>   consumer;
     private              String                          topicToSubscribe;
     private              String                          localServerId;
@@ -59,7 +58,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     
     private final long messageProcessingStatusCheckIntervalMs;
     private final long messageProcessingTimeoutMs;
-    private Map<TopicPartition, Queue<KafkaIncomingEvent>> unprocessedEventQueues = new HashMap<>();
+    private final Map<TopicPartition, Queue<KafkaIncomingEvent>> unprocessedEventQueues = new HashMap<>();
     
 
     
@@ -82,26 +81,21 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                                    KafkaOpenMetadataEventConsumerConfiguration config,
                                    Properties                                  kafkaConsumerProperties,
                                    KafkaOpenMetadataTopicConnector             connector,
-                                   OMRSAuditLog                                auditLog)
+                                   AuditLog                                    auditLog)
     {
         this.auditLog = auditLog;
         this.consumer = new KafkaConsumer<>(kafkaConsumerProperties);
         this.topicToSubscribe = topicName;
-        this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance());
+        this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance(auditLog));
         this.connector = connector;
         this.localServerId = localServerId;
 
         final String           actionDescription = "initialize";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
-        auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(Integer.toString(kafkaConsumerProperties.size()), topicName),
-                           kafkaConsumerProperties.toString(),
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription,
+                            KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES.getMessageDefinition
+                                    (Integer.toString(kafkaConsumerProperties.size()), topicName),
+                            kafkaConsumerProperties.toString());
         
         maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
         this.recoverySleepTimeSec = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.RECOVERY_SLEEP_TIME);
@@ -114,25 +108,15 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         this.messageProcessingTimeoutMs = messageTimeoutMins < 0 ? messageTimeoutMins : TimeUnit.MILLISECONDS.convert(messageTimeoutMins, TimeUnit.MINUTES);
     }
 
+
     private static boolean getBooleanProperty(Properties p, String name, boolean defaultValue) {
         String value = p.getProperty(name);
         if (value == null) {
             return defaultValue;
         }
-       return Boolean.valueOf(value).booleanValue();
+       return Boolean.parseBoolean(value);
     }
 
-    /**
-     * The server is shutting down.
-     */
-    public void stop()
-    {
-        running = false;
-        if (consumer != null)
-        {
-            consumer.wakeup();
-        }
-    }
 
     private void updateNextMaxPollTimestamp() {
     	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutPreventionSafetyWindowMs;	
@@ -198,16 +182,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
                             if (auditLog != null)
                             {
-                                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT;
-                                auditLog.logRecord(actionDescription,
-                                                   auditCode.getLogMessageId(),
-                                                   auditCode.getSeverity(),
-                                                   auditCode.getFormattedLogMessage(topicToSubscribe,
-                                                                                    error.getClass().getName(), json,
-                                                                                    error.getMessage()),
-                                                   null,
-                                                   auditCode.getSystemAction(),
-                                                   auditCode.getUserAction());
+                                auditLog.logException(actionDescription,
+                                                      KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT.getMessageDefinition
+                                                            (topicToSubscribe,
+                                                             error.getClass().getName(), json,
+                                                             error.getMessage()),
+                                                      error);
                             }
                         }
                     }
@@ -240,15 +220,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
                 if (auditLog != null)
                 {
-                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(),
-                                                                        error.getMessage()),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logException(actionDescription,
+                                          KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT.getMessageDefinition(topicToSubscribe,
+                                                                                                                                  error.getClass().getName(),
+                                                                                                                                  error.getMessage()),
+                                          error);
                 }
                 recoverAfterError();
             }
@@ -282,9 +258,29 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     }
                     //commit with the current offsets
                     log.info("Committing current offsets before shutdown: " + currentOffsets);
-                    consumer.commitSync(currentOffsets);
+                    try {
+                        consumer.commitSync(currentOffsets);
+                    }
+                    catch( WakeupException error)
+                    {
+                        //ignore we are shutting down
+                    }
+                    catch( Exception error)
+                    {
+                        if (auditLog != null)
+                        {
+                            auditLog.logException("consumer.commitSync",
+                                    KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                               topicToSubscribe,
+                                                                                                                               error.getMessage()),
+                                    error);
+
+                        }
+
+                    }
                 }
             }
+
             finally
             {
                 consumer.close();
@@ -370,8 +366,27 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         if (! commitData.isEmpty()) {
             currentOffsets.putAll(commitData);
             log.info("Committing: " + commitData);
-            consumer.commitSync(commitData);
-            return true;
+            try {
+                consumer.commitSync(commitData);
+                return true;
+            }
+            catch( WakeupException error )
+            {
+                //ignore
+            }
+            catch( Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException("checkForFullyProcessedMessages.commitSync",
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                       topicToSubscribe,
+                                                                                                                       error.getMessage()),
+                            error);
+                }
+
+
+            }
         }
         return false;
         
@@ -381,7 +396,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      * Iteratively removes fully processed event from the beginning of the queue until
      * either the queue is empty or the first entry in the queue has not been fully processed
      * 
-     * @param queue
+     * @param queue incoming events
      * @return the most recent fully processed event that was removed from the queue
      */
     private KafkaIncomingEvent removeFullyProcessedEventsFromBeginningOfQueue(Queue<KafkaIncomingEvent> queue) {
@@ -517,6 +532,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
     private class HandleRebalance implements ConsumerRebalanceListener
     {
+        AuditLog auditLog = null;
+        public HandleRebalance(AuditLog auditLog) {
+            this.auditLog = auditLog;
+        }
+
         public void onPartitionsAssigned(Collection<TopicPartition> partitions)
         {
         }
@@ -524,7 +544,26 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         public void onPartitionsRevoked(Collection<TopicPartition> partitions)
         {
             log.info("Lost partitions in rebalance. Committing current offsets:" + currentOffsets);
-            consumer.commitSync(currentOffsets);
+            try {
+                consumer.commitSync(currentOffsets);
+            }
+            catch( WakeupException error)
+            {
+                //ignore
+            }
+            catch( Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException("onPartitionsRevoked.commitSync",
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                       topicToSubscribe,
+                                                                                                                       error.getMessage()),
+                            error);
+                }
+
+
+            }
         }
     }
 }

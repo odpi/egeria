@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class AssetLike extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Like likeBean = null;
 
 
@@ -96,7 +98,7 @@ public class AssetLike extends AssetElementHeader
      */
     public boolean isPublic()
     {
-        return likeBean.isPublic();
+        return likeBean.getIsPublic();
     }
 
 

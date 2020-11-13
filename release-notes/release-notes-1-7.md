@@ -3,21 +3,19 @@
 
 # Release 1.7 (Planned April 2020)
 
-Release 1.7 adds support for Governance Programs and Data Privacy initiatives.
-This includes licenses, certification, terms and conditions governance
+Release 1.7 contains many bug fixes & preparatory development work for future new features.
 
 Below are the highlights:
 
-* There are new access services:
-   * The [Governance Program OMAS](../open-metadata-implementation/access-services/governance-program) provides support for defining, reviewing and refining governance programs.
-   * The [Data Privacy OMAS](../open-metadata-implementation/access-services/data-privacy) supports the management of data privacy initiatives.
+* Many dependencies have been updated including:
+    * Kafka client upgraded to 2.5
+    * Spring security updated to 5.3.1, spring boot,data to 2.2.6, spring to 5.2.5
+  
+  For a full list refer to the git commit logs.
 
-* There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs),
-  [samples](../open-metadata-resources/open-metadata-samples) and
-  [open metadata archives](../open-metadata-resources/open-metadata-archives) demonstrating
-  these new capabilities of Egeria.
-   
+Known Issues
+
+* (https://github.com/odpi/egeria/issues/2935)[2935] - Governance Engine OMAS reports exception when entities added
+* (https://github.com/odpi/egeria/issues/3005)[3005] - Occasional failure in 'Building a Data Catalog' notebook
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
-Copyright Contributors to the ODPi Egeria project.

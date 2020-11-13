@@ -17,7 +17,7 @@ Once these notebooks are complete and the servers are running, you can choose to
 page to learn more
 about the platform and the other types of governance servers that is supports.
 
-Alternatively you can jump straight to [building a data catalog](../asset-management).
+Alternatively you can jump straight to [building a data catalog](../asset-management-labs).
 
 ## Understanding more about the platform and metadata servers
 
@@ -31,7 +31,7 @@ Alternatively you can jump straight to [building a data catalog](../asset-manage
 
 ## What next?
 
-If you have not tried it yet, we recommend the [building a data catalog](../asset-management).
+If you have not tried it yet, we recommend the [building a data catalog](../asset-management-labs).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

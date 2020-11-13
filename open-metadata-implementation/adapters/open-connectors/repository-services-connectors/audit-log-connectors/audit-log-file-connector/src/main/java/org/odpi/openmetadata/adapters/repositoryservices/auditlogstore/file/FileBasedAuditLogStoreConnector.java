@@ -2,13 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +26,53 @@ import java.util.List;
  */
 public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 {
+    private static final String defaultDirectoryTemplate = "omag.server.auditlog";
+
+    private static final Logger log = LoggerFactory.getLogger(FileBasedAuditLogStoreConnector.class);
+
+    private String configStoreTemplateName  = null;
+
+
     /**
      * Default constructor used by the connector provider.
      */
     public FileBasedAuditLogStoreConnector()
     {
+    }
+
+
+    /**
+     * Set up the name of the file store
+     *
+     * @throws ConnectorCheckedException something went wrong
+     */
+    @Override
+    public void start() throws ConnectorCheckedException
+    {
+        super.start();
+
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
+
+        if (endpoint != null)
+        {
+            configStoreTemplateName = endpoint.getAddress();
+        }
+
+        if (configStoreTemplateName == null)
+        {
+            configStoreTemplateName = defaultDirectoryTemplate;
+        }
+
+        try
+        {
+            File         configStoreDirectory = new File(configStoreTemplateName);
+
+            FileUtils.forceMkdir(configStoreDirectory);
+        }
+        catch (IOException ioException)
+        {
+            log.error("Unusable Server Audit Log Store :(", ioException);
+        }
     }
 
 
@@ -42,7 +91,19 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
 
         if (isSupportedSeverity(logRecord))
         {
-            // todo add write to disk
+            try
+            {
+                File configStoreFile =
+                        new File(configStoreTemplateName + "/log-record-" + logRecord.getGUID());
+                ObjectMapper objectMapper    = new ObjectMapper();
+
+                String configStoreFileContents = objectMapper.writeValueAsString(logRecord);
+                FileUtils.writeStringToFile(configStoreFile, configStoreFileContents, (String)null, false);
+            }
+            catch (IOException ioException)
+            {
+                log.error("Unusable Server Audit Log Store :(", ioException);
+            }
         }
 
         return logRecord.getGUID();
@@ -145,19 +206,6 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
         final String methodName = "getAuditLogRecordsByComponent";
 
         return null;
-    }
-
-
-
-
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
     }
 
 

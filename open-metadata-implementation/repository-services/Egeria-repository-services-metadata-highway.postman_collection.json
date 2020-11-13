@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "9eb59209-ed18-4785-8e3f-96d0d533d0f1",
+		"name": "Egeria-repository-services-metadata-highway",
+		"description": "This collection supports Open Metadata Repository Services (OMRS) requests for understanding the state of Open Metadata Repository Cohorts.\n\nThe configuration and management of cohorts is peer-to-peer.  This means that each server manages its own view of the state of the cohort in its own registry store.\n\nThe requests in this collection query the contents of the servers registry store.\n\nThese requests only work with an OMAG Server that is a cohort member.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get cohort details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohort-descriptions",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"metadata-highway",
+						"cohort-descriptions"
+					]
+				},
+				"description": "Get the details of cohorts that this server is connecting to."
+			},
+			"response": []
+		},
+		{
+			"name": "Get local registration",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/local-registration",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"metadata-highway",
+						"local-registration"
+					]
+				},
+				"description": "Get the details of the registration information that this server is sending to the cohorts it is registering with."
+			},
+			"response": []
+		},
+		{
+			"name": "Get local registration with a specific cohort",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohorts/{{cohort}}/local-registration",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"metadata-highway",
+						"cohorts",
+						"{{cohort}}",
+						"local-registration"
+					]
+				},
+				"description": "Get the details of the registration information that this server sent out to a specific cohort including the time stamp for this registration.  This determines how long this server has been exchanging metadata with this cohort."
+			},
+			"response": []
+		},
+		{
+			"name": "Get remote registrations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohorts/{{cohort}}/remote-members",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"metadata-highway",
+						"cohorts",
+						"{{cohort}}",
+						"remote-members"
+					]
+				},
+				"description": "Get the details of the registration information that this server has received from remote members of a cohort. This determines the size of the cohort."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

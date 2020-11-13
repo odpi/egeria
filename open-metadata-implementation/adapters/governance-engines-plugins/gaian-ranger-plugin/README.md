@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 # ranger-gaian-plugin
 
@@ -254,7 +254,7 @@ See RangerPolicyResultFilter:filterRowsBatch for the explanation. This will be a
 _No Audit log entries_
 
 Look in the ranger plugin output (log4J) ie:
-
+```
 018-02-23 09:43:29 ERROR SolrAuditProvider:192 - Error sending message to Solr
 java.lang.reflect.UndeclaredThrowableException
 	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1713)
@@ -264,7 +264,7 @@ java.lang.reflect.UndeclaredThrowableException
 	at org.apache.ranger.audit.provider.AsyncAuditProvider.run(AsyncAuditProvider.java:153)
 	at java.lang.Thread.run(Thread.java:748)
 Caused by: org.apache.solr.client.solrj.SolrServerException: Server refused connection at: http://9.20.65.115:6083/solr/ranger_audits
-
+```
 In this case check the hostname/port specified for solr logging
 
 _Policies are not cached_
@@ -281,3 +281,9 @@ _Cannot create gaian service on ranger server_
 
 If you get an error 'cannot find class XXX' copy the ranger gaian plugin to the ranger server as 
 documented above in the section on deploying the servicedef.
+
+Return to [governance-engine-plugins](..) module.
+ 
+ ----
+ License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+ Copyright Contributors to the ODPi Egeria project.

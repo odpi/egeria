@@ -26,11 +26,11 @@ For example, this is the declaration used for the OMRS REST APIs
 @RequestMapping("/open-metadata/repository-services")
 ```
 
-This URI follows the root URL of the server.  So if the server was using `http://localhost:8080`, the methods are called
+This URI follows the root URL of the server.  So if the server was using `https://localhost:9443`, the methods are called
 using
 
 ```
-http://localhost:8080/open-metadata/repository-services ...
+https://localhost:9443/open-metadata/repository-services ...
 ```
 
 Then for each method/operation, the rest of the URL is defined and mapped.

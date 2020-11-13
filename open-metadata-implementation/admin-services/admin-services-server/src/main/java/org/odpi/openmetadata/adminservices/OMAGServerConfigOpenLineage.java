@@ -43,8 +43,7 @@ public class OMAGServerConfigOpenLineage {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(openLineageServerConfig.getInTopicName(), "inTopicName", serverName, methodName);
-            errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageBufferGraphConnection(), "bufferGraphConnection", serverName, methodName);
-            errorHandler.validatePropertyNotNull(openLineageServerConfig.getOpenLineageMainGraphConnection(), "mainGraphConnection", serverName, methodName);
+            errorHandler.validatePropertyNotNull(openLineageServerConfig.getLineageGraphConnection(), "lineageGraphConnection", serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
@@ -53,7 +52,7 @@ public class OMAGServerConfigOpenLineage {
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
                 openLineageServerConfig.setInTopicConnection(
-                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot(),
                                 openLineageServerConfig.getInTopicName(),

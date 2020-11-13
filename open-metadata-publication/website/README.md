@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# The Objectives of Egeria?
+# The Objectives of Egeria
 
 ODPi Egeria implements a set of open APIs, [metadata types](open-metadata-types/README.md),
 frameworks, connectors and interchange protocols to allow all types of tools and

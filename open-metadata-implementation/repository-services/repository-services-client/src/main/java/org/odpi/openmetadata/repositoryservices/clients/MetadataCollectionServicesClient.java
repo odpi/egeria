@@ -5,9 +5,13 @@ package org.odpi.openmetadata.repositoryservices.clients;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -32,7 +36,7 @@ import java.util.Map;
  *     <li><i>operationSpecificURL</i> - operation specific part of the URL</li>
  * </ul>
  */
-abstract class MetadataCollectionServicesClient
+public abstract class MetadataCollectionServicesClient implements AuditLoggingComponent
 {
     static final private String rootServiceNameInURL  = "/open-metadata/repository-services";
     static final private String userIdInURL           = "/users/{0}";
@@ -46,6 +50,8 @@ abstract class MetadataCollectionServicesClient
     private String              repositoryName;             /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+    protected AuditLog          auditLog = null;
 
 
     /**
@@ -73,11 +79,14 @@ abstract class MetadataCollectionServicesClient
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
                                                 error.getReportingActionDescription(),
-                                                error.getErrorMessage(),
+                                                error.getReportedErrorMessage(),
+                                                error.getReportedErrorMessageId(),
+                                                error.getReportedErrorMessageParameters(),
                                                 error.getReportedSystemAction(),
                                                 error.getReportedUserAction(),
+                                                error.getClass().getName(),
                                                 error.getParameterName(),
-                                                error.getReportedCaughtException());
+                                                error.getRelatedProperties());
         }
 
         this.repositoryName = repositoryName;
@@ -118,17 +127,32 @@ abstract class MetadataCollectionServicesClient
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
                                                 error.getReportingActionDescription(),
-                                                error.getErrorMessage(),
+                                                error.getReportedErrorMessage(),
+                                                error.getReportedErrorMessageId(),
+                                                error.getReportedErrorMessageParameters(),
                                                 error.getReportedSystemAction(),
                                                 error.getReportedUserAction(),
+                                                error.getClass().getName(),
                                                 error.getParameterName(),
-                                                error.getReportedCaughtException());
+                                                error.getRelatedProperties());
         }
 
         this.repositoryName = repositoryName;
         this.restURLRoot = restURLRoot;
         this.serviceURLMarker = serviceURLMarker;
         this.restClient = this.getRESTClientConnector(repositoryName, restURLRoot, userId, password);
+    }
+
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 
@@ -160,18 +184,12 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.REMOTE_REPOSITORY_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getClass().getSimpleName(),
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+           throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          repositoryName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
 
@@ -206,18 +224,12 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.REMOTE_REPOSITORY_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getClass().getSimpleName(),
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          repositoryName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
 
@@ -239,7 +251,7 @@ abstract class MetadataCollectionServicesClient
      * and classifications.
      *
      * @param userId unique identifier for requesting user.
-     * @return TypeDefGalleryResponse List of different categories of type definitions.
+     * @return TypeDefGallery List of different categories of type definitions.
      * @throws InvalidParameterException the userId is null
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1318,6 +1330,116 @@ abstract class MetadataCollectionServicesClient
 
 
     /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param matchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support this optional method.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String       methodName = "findEntities";
+        EntityListResponse restResult;
+
+        if (asOfTime == null)
+        {
+            final String operationSpecificURL       = "instances/entities";
+            EntityFindRequest findRequestParameters = new EntityFindRequest();
+
+            findRequestParameters.setTypeGUID(entityTypeGUID);
+            findRequestParameters.setSubtypeGUIDs(entitySubtypeGUIDs);
+            findRequestParameters.setMatchProperties(matchProperties);
+            findRequestParameters.setOffset(fromEntityElement);
+            findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+            findRequestParameters.setMatchClassifications(matchClassifications);
+            findRequestParameters.setSequencingOrder(sequencingOrder);
+            findRequestParameters.setSequencingProperty(sequencingProperty);
+            findRequestParameters.setPageSize(pageSize);
+
+            restResult = this.callEntityListPostRESTCall(methodName,
+                    restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                    findRequestParameters,
+                    userId);
+        }
+        else
+        {
+            final String                 operationSpecificURL = "instances/entities/history";
+            EntityHistoricalFindRequest findRequestParameters = new EntityHistoricalFindRequest();
+
+            findRequestParameters.setTypeGUID(entityTypeGUID);
+            findRequestParameters.setSubtypeGUIDs(entitySubtypeGUIDs);
+            findRequestParameters.setMatchProperties(matchProperties);
+            findRequestParameters.setAsOfTime(asOfTime);
+            findRequestParameters.setOffset(fromEntityElement);
+            findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+            findRequestParameters.setMatchClassifications(matchClassifications);
+            findRequestParameters.setSequencingOrder(sequencingOrder);
+            findRequestParameters.setSequencingProperty(sequencingProperty);
+            findRequestParameters.setPageSize(pageSize);
+
+            restResult = this.callEntityListPostRESTCall(methodName,
+                    restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                    findRequestParameters,
+                    userId);
+
+        }
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getEntities();
+    }
+
+
+    /**
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
@@ -1760,6 +1882,115 @@ abstract class MetadataCollectionServicesClient
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getRelationship();
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName  = "findRelationships";
+        RelationshipListResponse restResult;
+
+        if (asOfTime == null)
+        {
+            final String operationSpecificURL = "instances/relationships";
+
+            InstanceFindRequest  findRequestParameters = new InstanceFindRequest();
+
+            findRequestParameters.setTypeGUID(relationshipTypeGUID);
+            findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
+            findRequestParameters.setMatchProperties(matchProperties);
+            findRequestParameters.setOffset(fromRelationshipElement);
+            findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+            findRequestParameters.setSequencingOrder(sequencingOrder);
+            findRequestParameters.setSequencingProperty(sequencingProperty);
+            findRequestParameters.setPageSize(pageSize);
+
+            restResult = this.callRelationshipListPostRESTCall(methodName,
+                    restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                    findRequestParameters,
+                    userId);
+        }
+        else
+        {
+            final String operationSpecificURL = "instances/relationships/history";
+
+            InstanceHistoricalFindRequest  findRequestParameters = new InstanceHistoricalFindRequest();
+
+            findRequestParameters.setTypeGUID(relationshipTypeGUID);
+            findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
+            findRequestParameters.setMatchProperties(matchProperties);
+            findRequestParameters.setAsOfTime(asOfTime);
+            findRequestParameters.setOffset(fromRelationshipElement);
+            findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+            findRequestParameters.setSequencingOrder(sequencingOrder);
+            findRequestParameters.setSequencingProperty(sequencingProperty);
+            findRequestParameters.setPageSize(pageSize);
+
+            restResult = this.callRelationshipListPostRESTCall(methodName,
+                    restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                    findRequestParameters,
+                    userId);
+        }
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getRelationships();
     }
 
 
@@ -2755,6 +2986,73 @@ abstract class MetadataCollectionServicesClient
 
 
     /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  EntityDetail classifyEntity(String               userId,
+                                        String               entityGUID,
+                                        String               classificationName,
+                                        String               externalSourceGUID,
+                                        String               externalSourceName,
+                                        ClassificationOrigin classificationOrigin,
+                                        String               classificationOriginGUID,
+                                        InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                              RepositoryErrorException,
+                                                                                              EntityNotKnownException,
+                                                                                              ClassificationErrorException,
+                                                                                              PropertyErrorException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              FunctionNotSupportedException
+    {
+        final String methodName = "classifyEntity (detailed)";
+        final String operationSpecificURL = "instances/entity/{1}/classification/{2}/detailed";
+
+        ClassificationRequest requestBody = new ClassificationRequest();
+        requestBody.setMetadataCollectionId(externalSourceGUID);
+        requestBody.setMetadataCollectionName(externalSourceName);
+        requestBody.setClassificationOrigin(classificationOrigin);
+        requestBody.setClassificationOriginGUID(classificationOriginGUID);
+        requestBody.setClassificationProperties(classificationProperties);
+
+        EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
+                                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID,
+                                                                            classificationName);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getEntity();
+    }
+
+
+    /**
      * Remove a specific classification from an entity.
      *
      * @param userId unique identifier for requesting user.
@@ -3701,6 +3999,89 @@ abstract class MetadataCollectionServicesClient
 
 
     /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID) throws InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 FunctionNotSupportedException
+    {
+        final String methodName = "getHomeClassifications";
+        final String operationSpecificURL = "instances/entity/{1}/home-classifications";
+
+        ClassificationListResponse restResult = this.callClassificationListGetRESTCall(methodName,
+                                                                                       restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                       entityGUID,
+                                                                                       userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassifications();
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param asOfTime the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID,
+                                                       Date   asOfTime) throws InvalidParameterException,
+                                                                               RepositoryErrorException,
+                                                                               EntityNotKnownException,
+                                                                               UserNotAuthorizedException,
+                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications (with history)";
+        final String operationSpecificURL = "instances/entity/{1}/home-classifications/history";
+
+        HistoryRequest requestBody = new HistoryRequest();
+        requestBody.setAsOfTime(asOfTime);
+        ClassificationListResponse restResult = this.callClassificationListPostRESTCall(methodName,
+                                                                                        restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                        requestBody,
+                                                                                        entityGUID,
+                                                                                        userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassifications();
+    }
+
+
+    /**
      * Remove a reference copy of the the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
@@ -3910,6 +4291,117 @@ abstract class MetadataCollectionServicesClient
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowHomeEntityException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      EntityConflictException,
+                                                                                      InvalidEntityException,
+                                                                                      PropertyErrorException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
+    {
+        final String methodName  = "saveClassificationReferenceCopy";
+        final String operationSpecificURL = "instances/entities/classifications/reference-copy";
+
+        ClassificationWithEntityRequest requestBody = new ClassificationWithEntityRequest();
+        requestBody.setEntity(entity);
+        requestBody.setClassification(classification);
+
+        VoidResponse restResult = this.callVoidPostRESTCall(methodName,
+                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                            requestBody,
+                                                            userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowEntityConflictException(methodName, restResult);
+        this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityDetail   entity,
+                                                  Classification classification) throws InvalidParameterException,
+                                                                                        TypeErrorException,
+                                                                                        PropertyErrorException,
+                                                                                        EntityConflictException,
+                                                                                        InvalidEntityException,
+                                                                                        RepositoryErrorException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        FunctionNotSupportedException
+    {
+        final String methodName  = "purgeClassificationReferenceCopy";
+        final String operationSpecificURL = "instances/entities/classifications/reference-copy/purge";
+
+        ClassificationWithEntityRequest requestBody = new ClassificationWithEntityRequest();
+        requestBody.setEntity(entity);
+        requestBody.setClassification(classification);
+
+        VoidResponse restResult = this.callVoidPostRESTCall(methodName,
+                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                            requestBody,
+                                                            userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowEntityConflictException(methodName, restResult);
+        this.detectAndThrowInvalidEntityException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4304,19 +4796,11 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_REST_CLIENT;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                "client",
-                                                error);
+           throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               error,
+                                               "client");
         }
     }
 
@@ -4453,6 +4937,49 @@ abstract class MetadataCollectionServicesClient
     {
         return this.callPostRESTCall(methodName,
                                      EntityDetailResponse.class,
+                                     operationSpecificURL,
+                                     requestBody,
+                                     params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ClassificationListResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param params a list of parameters that are slotted into the url template
+     * @return EntityDetailResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private ClassificationListResponse callClassificationListGetRESTCall(String    methodName,
+                                                                         String    operationSpecificURL,
+                                                                         Object... params) throws RepositoryErrorException
+    {
+        return this.callGetRESTCall(methodName,
+                                    ClassificationListResponse.class,
+                                    operationSpecificURL,
+                                    params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a ClassificationListResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body object
+     * @param params a list of parameters that are slotted into the url template
+     * @return EntityDetailResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private ClassificationListResponse callClassificationListPostRESTCall(String    methodName,
+                                                                          String    operationSpecificURL,
+                                                                          Object    requestBody,
+                                                                          Object... params) throws RepositoryErrorException
+    {
+        return this.callPostRESTCall(methodName,
+                                     ClassificationListResponse.class,
                                      operationSpecificURL,
                                      requestBody,
                                      params);
@@ -4734,7 +5261,7 @@ abstract class MetadataCollectionServicesClient
                                   Class<T>  returnClass,
                                   String    operationSpecificURL) throws RepositoryErrorException
     {
-        return this.callGetRESTCall(methodName, returnClass, operationSpecificURL, null);
+        return this.callGetRESTCall(methodName, returnClass, operationSpecificURL, (Object[])null);
     }
 
 
@@ -4763,17 +5290,11 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                             repositoryName,
+                                                                                                             error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
     }
@@ -4806,17 +5327,11 @@ abstract class MetadataCollectionServicesClient
         }
         catch (Throwable error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     repositoryName,
-                                                                                                     error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                             repositoryName,
+                                                                                                             error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
                                                error);
         }
     }
@@ -4888,8 +5403,12 @@ abstract class MetadataCollectionServicesClient
                                                    this.getClass().getName(),
                                                    methodName,
                                                    restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
                                                    restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction());
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
         }
     }
 
@@ -4912,8 +5431,12 @@ abstract class MetadataCollectionServicesClient
                                               this.getClass().getName(),
                                               methodName,
                                               restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionErrorMessageId(),
+                                              restResult.getExceptionErrorMessageParameters(),
                                               restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction());
+                                              restResult.getExceptionUserAction(),
+                                              restResult.getExceptionCausedBy(),
+                                              restResult.getExceptionProperties());
         }
     }
 
@@ -4936,8 +5459,12 @@ abstract class MetadataCollectionServicesClient
                                                 this.getClass().getName(),
                                                 methodName,
                                                 restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionErrorMessageId(),
+                                                restResult.getExceptionErrorMessageParameters(),
                                                 restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction());
+                                                restResult.getExceptionUserAction(),
+                                                restResult.getExceptionCausedBy(),
+                                                restResult.getExceptionProperties());
         }
     }
 
@@ -4960,8 +5487,12 @@ abstract class MetadataCollectionServicesClient
                                               this.getClass().getName(),
                                               methodName,
                                               restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionErrorMessageId(),
+                                              restResult.getExceptionErrorMessageParameters(),
                                               restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction());
+                                              restResult.getExceptionUserAction(),
+                                              restResult.getExceptionCausedBy(),
+                                              restResult.getExceptionProperties());
         }
     }
 
@@ -4984,8 +5515,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 
@@ -5008,8 +5543,12 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                    restResult.getExceptionUserAction(),
+                                                    restResult.getExceptionCausedBy(),
+                                                    restResult.getExceptionProperties());
         }
     }
 
@@ -5033,8 +5572,12 @@ abstract class MetadataCollectionServicesClient
                                           this.getClass().getName(),
                                           methodName,
                                           restResult.getExceptionErrorMessage(),
+                                          restResult.getExceptionErrorMessageId(),
+                                          restResult.getExceptionErrorMessageParameters(),
                                           restResult.getExceptionSystemAction(),
-                                          restResult.getExceptionUserAction());
+                                          restResult.getExceptionUserAction(),
+                                          restResult.getExceptionCausedBy(),
+                                          restResult.getExceptionProperties());
         }
     }
 
@@ -5057,8 +5600,12 @@ abstract class MetadataCollectionServicesClient
                                                 this.getClass().getName(),
                                                 methodName,
                                                 restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionErrorMessageId(),
+                                                restResult.getExceptionErrorMessageParameters(),
                                                 restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction());
+                                                restResult.getExceptionUserAction(),
+                                                restResult.getExceptionCausedBy(),
+                                                restResult.getExceptionProperties());
         }
     }
 
@@ -5081,8 +5628,12 @@ abstract class MetadataCollectionServicesClient
                                              this.getClass().getName(),
                                              methodName,
                                              restResult.getExceptionErrorMessage(),
+                                             restResult.getExceptionErrorMessageId(),
+                                             restResult.getExceptionErrorMessageParameters(),
                                              restResult.getExceptionSystemAction(),
-                                             restResult.getExceptionUserAction());
+                                             restResult.getExceptionUserAction(),
+                                             restResult.getExceptionCausedBy(),
+                                             restResult.getExceptionProperties());
         }
     }
 
@@ -5128,11 +5679,15 @@ abstract class MetadataCollectionServicesClient
                  * a RepositoryErrorException as if the whole platform is missing.
                  */
                 throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    restResult.getExceptionErrorMessage(),
-                                                    restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
+                                                   restResult.getExceptionSystemAction(),
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
             }
             else
             {
@@ -5140,9 +5695,13 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
                                                     restResult.getExceptionUserAction(),
-                                                    parameterName);
+                                                    restResult.getExceptionCausedBy(),
+                                                    parameterName,
+                                                    restResult.getExceptionProperties());
             }
         }
     }
@@ -5166,8 +5725,12 @@ abstract class MetadataCollectionServicesClient
                                                    this.getClass().getName(),
                                                    methodName,
                                                    restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
                                                    restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction());
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
         }
     }
 
@@ -5190,8 +5753,12 @@ abstract class MetadataCollectionServicesClient
                                               this.getClass().getName(),
                                               methodName,
                                               restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionErrorMessageId(),
+                                              restResult.getExceptionErrorMessageParameters(),
                                               restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction());
+                                              restResult.getExceptionUserAction(),
+                                              restResult.getExceptionCausedBy(),
+                                              restResult.getExceptionProperties());
         }
     }
 
@@ -5214,8 +5781,12 @@ abstract class MetadataCollectionServicesClient
                                            this.getClass().getName(),
                                            methodName,
                                            restResult.getExceptionErrorMessage(),
+                                           restResult.getExceptionErrorMessageId(),
+                                           restResult.getExceptionErrorMessageParameters(),
                                            restResult.getExceptionSystemAction(),
-                                           restResult.getExceptionUserAction());
+                                           restResult.getExceptionUserAction(),
+                                           restResult.getExceptionCausedBy(),
+                                           restResult.getExceptionProperties());
         }
     }
 
@@ -5238,8 +5809,12 @@ abstract class MetadataCollectionServicesClient
                                           this.getClass().getName(),
                                           methodName,
                                           restResult.getExceptionErrorMessage(),
+                                          restResult.getExceptionErrorMessageId(),
+                                          restResult.getExceptionErrorMessageParameters(),
                                           restResult.getExceptionSystemAction(),
-                                          restResult.getExceptionUserAction());
+                                          restResult.getExceptionUserAction(),
+                                          restResult.getExceptionCausedBy(),
+                                          restResult.getExceptionProperties());
         }
     }
 
@@ -5262,8 +5837,12 @@ abstract class MetadataCollectionServicesClient
                                              this.getClass().getName(),
                                              methodName,
                                              restResult.getExceptionErrorMessage(),
+                                             restResult.getExceptionErrorMessageId(),
+                                             restResult.getExceptionErrorMessageParameters(),
                                              restResult.getExceptionSystemAction(),
-                                             restResult.getExceptionUserAction());
+                                             restResult.getExceptionUserAction(),
+                                             restResult.getExceptionCausedBy(),
+                                             restResult.getExceptionProperties());
         }
     }
 
@@ -5286,8 +5865,12 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                    restResult.getExceptionUserAction(),
+                                                    restResult.getExceptionCausedBy(),
+                                                    restResult.getExceptionProperties());
         }
     }
 
@@ -5310,8 +5893,12 @@ abstract class MetadataCollectionServicesClient
                                                       this.getClass().getName(),
                                                       methodName,
                                                       restResult.getExceptionErrorMessage(),
+                                                      restResult.getExceptionErrorMessageId(),
+                                                      restResult.getExceptionErrorMessageParameters(),
                                                       restResult.getExceptionSystemAction(),
-                                                      restResult.getExceptionUserAction());
+                                                      restResult.getExceptionUserAction(),
+                                                      restResult.getExceptionCausedBy(),
+                                                      restResult.getExceptionProperties());
         }
     }
 
@@ -5334,8 +5921,12 @@ abstract class MetadataCollectionServicesClient
                                                     this.getClass().getName(),
                                                     methodName,
                                                     restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionErrorMessageId(),
+                                                    restResult.getExceptionErrorMessageParameters(),
                                                     restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction());
+                                                    restResult.getExceptionUserAction(),
+                                                    restResult.getExceptionCausedBy(),
+                                                    restResult.getExceptionProperties());
         }
     }
 
@@ -5358,8 +5949,12 @@ abstract class MetadataCollectionServicesClient
                                                   this.getClass().getName(),
                                                   methodName,
                                                   restResult.getExceptionErrorMessage(),
+                                                  restResult.getExceptionErrorMessageId(),
+                                                  restResult.getExceptionErrorMessageParameters(),
                                                   restResult.getExceptionSystemAction(),
-                                                  restResult.getExceptionUserAction());
+                                                  restResult.getExceptionUserAction(),
+                                                  restResult.getExceptionCausedBy(),
+                                                  restResult.getExceptionProperties());
         }
     }
 
@@ -5382,8 +5977,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 
@@ -5406,8 +6005,12 @@ abstract class MetadataCollectionServicesClient
                                             this.getClass().getName(),
                                             methodName,
                                             restResult.getExceptionErrorMessage(),
+                                            restResult.getExceptionErrorMessageId(),
+                                            restResult.getExceptionErrorMessageParameters(),
                                             restResult.getExceptionSystemAction(),
-                                            restResult.getExceptionUserAction());
+                                            restResult.getExceptionUserAction(),
+                                            restResult.getExceptionCausedBy(),
+                                            restResult.getExceptionProperties());
         }
     }
 
@@ -5430,8 +6033,12 @@ abstract class MetadataCollectionServicesClient
                                             this.getClass().getName(),
                                             methodName,
                                             restResult.getExceptionErrorMessage(),
+                                            restResult.getExceptionErrorMessageId(),
+                                            restResult.getExceptionErrorMessageParameters(),
                                             restResult.getExceptionSystemAction(),
-                                            restResult.getExceptionUserAction());
+                                            restResult.getExceptionUserAction(),
+                                            restResult.getExceptionCausedBy(),
+                                            restResult.getExceptionProperties());
         }
     }
 
@@ -5454,8 +6061,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 
@@ -5478,8 +6089,12 @@ abstract class MetadataCollectionServicesClient
                                                    this.getClass().getName(),
                                                    methodName,
                                                    restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionErrorMessageId(),
+                                                   restResult.getExceptionErrorMessageParameters(),
                                                    restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction());
+                                                   restResult.getExceptionUserAction(),
+                                                   restResult.getExceptionCausedBy(),
+                                                   restResult.getExceptionProperties());
         }
     }
 
@@ -5502,8 +6117,12 @@ abstract class MetadataCollectionServicesClient
                                          this.getClass().getName(),
                                          methodName,
                                          restResult.getExceptionErrorMessage(),
+                                         restResult.getExceptionErrorMessageId(),
+                                         restResult.getExceptionErrorMessageParameters(),
                                          restResult.getExceptionSystemAction(),
-                                         restResult.getExceptionUserAction());
+                                         restResult.getExceptionUserAction(),
+                                         restResult.getExceptionCausedBy(),
+                                         restResult.getExceptionProperties());
         }
     }
 
@@ -5522,12 +6141,23 @@ abstract class MetadataCollectionServicesClient
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
+            String userId = null;
+
+            if (restResult.getExceptionProperties() != null)
+            {
+                userId = (String)restResult.getExceptionProperties().get("userId");
+            }
             throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  restResult.getExceptionErrorMessage(),
+                                                 restResult.getExceptionErrorMessageId(),
+                                                 restResult.getExceptionErrorMessageParameters(),
                                                  restResult.getExceptionSystemAction(),
-                                                 restResult.getExceptionUserAction());
+                                                 restResult.getExceptionUserAction(),
+                                                 restResult.getExceptionCausedBy(),
+                                                 userId,
+                                                 restResult.getExceptionProperties());
         }
     }
 
@@ -5545,16 +6175,9 @@ abstract class MetadataCollectionServicesClient
     {
         if (restResult == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_RESPONSE_FROM_API;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(methodName, repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_RESPONSE_FROM_API.getMessageDefinition(methodName, repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
         else if (restResult.getExceptionClassName() != null)
         {
@@ -5565,8 +6188,12 @@ abstract class MetadataCollectionServicesClient
                                                this.getClass().getName(),
                                                methodName,
                                                restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionErrorMessageId(),
+                                               restResult.getExceptionErrorMessageParameters(),
                                                restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction());
+                                               restResult.getExceptionUserAction(),
+                                               restResult.getExceptionCausedBy(),
+                                               restResult.getExceptionProperties());
         }
     }
 }

@@ -2,13 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
-import org.odpi.openmetadata.repositoryservices.rest.properties.*;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.repositoryservices.rest.properties.CohortListResponse;
+import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipListResponse;
+import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipResponse;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSMetadataHighwayRESTServices;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 /**
@@ -17,6 +20,15 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}/metadata-highway")
+
+@Tag(name="Repository Services - Metadata Highway",
+        description="The Metadata Highway services are part of the Open Metadata Repository Services (OMRS). " +
+                "They provide information about the status and membership of Open Metadata Repository Cohorts" +
+                "that the local server is connected to.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
+
+
 public class MetadataHighwayServicesResource
 {
     private OMRSMetadataHighwayRESTServices restAPI = new OMRSMetadataHighwayRESTServices();

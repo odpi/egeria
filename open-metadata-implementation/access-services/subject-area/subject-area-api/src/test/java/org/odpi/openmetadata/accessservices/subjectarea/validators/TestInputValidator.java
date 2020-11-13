@@ -17,8 +17,8 @@ public class TestInputValidator {
         try {
             InputValidator.validateGUIDNotNull("c","m",null,"guidParm");
         } catch (InvalidParameterException e) {
-            System.out.println("Expected error message " + e.getErrorMessage());
-            if (e.getErrorMessage().contains("{") || e.getErrorMessage().contains("}") ){
+            System.out.println("Expected error message " + e.getReportedErrorMessageId());
+            if (e.getReportedErrorMessage().contains("{") || e.getReportedErrorMessage().contains("}") ){
                 fail("inserts not correct");
             }
         }
@@ -33,8 +33,8 @@ public class TestInputValidator {
         try {
             InputValidator.validateNameNotNull("c","m",null,"nameParm");
         } catch (InvalidParameterException e) {
-            System.out.println("Expected error message " + e.getErrorMessage());
-            if (e.getErrorMessage().contains("{") || e.getErrorMessage().contains("}") ){
+          System.out.println("Expected error message " + e.getReportedErrorMessageId());
+             if (e.getReportedErrorMessage().contains("{") || e.getReportedErrorMessage().contains("}") ){
                 fail("inserts not correct");
             }
         }
@@ -42,15 +42,15 @@ public class TestInputValidator {
     @Test
     public void testOMASServerURLNotNull()  {
         try {
-            InputValidator.validateMetadataServerURLNotNull("c","m","A1");
+            InputValidator.validateRemoteServerURLNotNull("c", "m", "A1");
         } catch (InvalidParameterException e) {
             fail("Non null should not fail");
         }
         try {
-            InputValidator.validateMetadataServerURLNotNull("c","m",null);
+            InputValidator.validateRemoteServerURLNotNull("c", "m", null);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected error message " + e.getErrorMessage());
-            if (e.getErrorMessage().contains("{") || e.getErrorMessage().contains("}") ){
+          System.out.println("Expected error message " + e.getReportedErrorMessageId());
+             if (e.getReportedErrorMessage().contains("{") || e.getReportedErrorMessage().contains("}") ){
                 fail("inserts not correct");
             }
         }
@@ -65,8 +65,8 @@ public class TestInputValidator {
         try {
             InputValidator.validateUserIdNotNull("c","m",null);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected error message " + e.getErrorMessage());
-            if (e.getErrorMessage().contains("{") || e.getErrorMessage().contains("}") ){
+          System.out.println("Expected error message " + e.getReportedErrorMessageId());
+             if (e.getReportedErrorMessage().contains("{") || e.getReportedErrorMessage().contains("}") ){
                 fail("inserts not correct");
             }
         }
@@ -81,16 +81,16 @@ public class TestInputValidator {
         try {
             InputValidator.validateStatusAndCheckNotDeleted("c","m","DELETED");
         } catch (InvalidParameterException e) {
-            System.out.println("Expected error message " + e.getErrorMessage());
-            if (e.getErrorMessage().contains("{") || e.getErrorMessage().contains("}") ){
+          System.out.println("Expected error message " + e.getReportedErrorMessageId());
+             if (e.getReportedErrorMessage().contains("{") || e.getReportedErrorMessage().contains("}") ){
                 fail("inserts not correct");
             }
         }
         try {
             InputValidator.validateStatusAndCheckNotDeleted("c","m","DANCER");
         } catch (InvalidParameterException e) {
-            System.out.println("Expected error message " + e.getErrorMessage());
-            if (e.getErrorMessage().contains("{") || e.getErrorMessage().contains("}") ){
+          System.out.println("Expected error message " + e.getReportedErrorMessageId());
+             if (e.getReportedErrorMessage().contains("{") || e.getReportedErrorMessage().contains("}") ){
                 fail("inserts not correct");
             }
         }

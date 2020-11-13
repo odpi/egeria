@@ -72,7 +72,9 @@ public class EntityProxy extends EntitySummary
         {
             return null;
         }
-        else if (uniqueProperties.getInstanceProperties() == null)
+        else if ((uniqueProperties.getInstanceProperties() == null) &&
+                 (uniqueProperties.getEffectiveFromTime() == null) &&
+                 (uniqueProperties.getEffectiveToTime() == null))
         {
             return null;
         }

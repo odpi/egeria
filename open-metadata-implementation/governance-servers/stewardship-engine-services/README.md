@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Stewardship Engine Services
 
 The stewardship engine services are responsible for the resolution of the

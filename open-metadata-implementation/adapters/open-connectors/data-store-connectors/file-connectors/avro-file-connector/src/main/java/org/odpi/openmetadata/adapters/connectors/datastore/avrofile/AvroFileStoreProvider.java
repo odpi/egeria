@@ -22,7 +22,7 @@ public class AvroFileStoreProvider extends ConnectorProviderBase
      */
     public AvroFileStoreProvider()
     {
-        Class    connectorClass = AvroFileStoreConnector.class;
+        Class<?>    connectorClass = AvroFileStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

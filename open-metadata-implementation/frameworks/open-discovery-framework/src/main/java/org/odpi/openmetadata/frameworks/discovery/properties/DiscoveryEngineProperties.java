@@ -5,8 +5,9 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,16 +20,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryEngineProperties extends Referenceable
+public class DiscoveryEngineProperties extends PropertyBase
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String displayName     = null;
-    protected String description     = null;
-    protected String typeDescription = null;
-    protected String version         = null;
-    protected String patchLevel      = null;
-    protected String source          = null;
+    private String              qualifiedName        = null;
+    private String              displayName          = null;
+    private String              description          = null;
+    private String              typeDescription      = null;
+    private String              version              = null;
+    private String              patchLevel           = null;
+    private String              source               = null;
+
+    private Map<String, String> additionalProperties = null;
 
 
     /**
@@ -51,13 +55,38 @@ public class DiscoveryEngineProperties extends Referenceable
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-            typeDescription = template.getTypeDescription();
-            version = template.getVersion();
-            patchLevel = template.getPatchLevel();
-            source = template.getSource();
+            qualifiedName        = template.getQualifiedName();
+            displayName          = template.getDisplayName();
+            description          = template.getDescription();
+            typeDescription      = template.getTypeDescription();
+            version              = template.getVersion();
+            patchLevel           = template.getPatchLevel();
+            source               = template.getSource();
+            additionalProperties = template.getAdditionalProperties();
         }
+    }
+
+
+    /**
+     * Set up the fully qualified name.
+     *
+     * @param qualifiedName String name
+     */
+    public void setQualifiedName(String qualifiedName)
+    {
+        this.qualifiedName = qualifiedName;
+    }
+
+
+    /**
+     * Returns the stored qualified name property for the metadata entity.
+     * If no qualified name is available then the empty string is returned.
+     *
+     * @return qualifiedName
+     */
+    public String getQualifiedName()
+    {
+        return qualifiedName;
     }
 
 
@@ -192,6 +221,38 @@ public class DiscoveryEngineProperties extends Referenceable
         this.source = source;
     }
 
+    /**
+     * Set up additional properties.
+     *
+     * @param additionalProperties Additional properties object
+     */
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return a copy of the additional properties.  Null means no additional properties are available.
+     *
+     * @return AdditionalProperties
+     */
+    public Map<String, String> getAdditionalProperties()
+    {
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
+        }
+    }
+
 
     /**
      * Standard toString method.
@@ -202,19 +263,18 @@ public class DiscoveryEngineProperties extends Referenceable
     public String toString()
     {
         return "DiscoveryEngineProperties{" +
-                "displayName='" + displayName + '\'' +
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", typeDescription='" + typeDescription + '\'' +
                 ", version='" + version + '\'' +
                 ", patchLevel='" + patchLevel + '\'' +
                 ", source='" + source + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

@@ -18,11 +18,10 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetSchemaAttribute
 {
-    private ElementType          type                 = new ElementType();
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
-    private PrimitiveSchemaType  schemaType           = new PrimitiveSchemaType();
-    private AssetSchemaType      attributeSchemaType  = new AssetPrimitiveSchemaType(schemaType);
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
+    private PrimitiveSchemaType         schemaType           = new PrimitiveSchemaType();
 
 
     /**
@@ -51,14 +50,15 @@ public class TestAssetSchemaAttribute
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAttributeName("TestAttributeName");
+        testBean.setDisplayName("TestAttributeName");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
-        testBean.setCardinality("TestCardinality");
+        testBean.setMinCardinality(0);
+        testBean.setMaxCardinality(-1);
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
 
-        return new AssetSchemaAttribute(testBean, attributeSchemaType);
+        return new AssetSchemaAttribute(testBean);
     }
 
 
@@ -79,14 +79,15 @@ public class TestAssetSchemaAttribute
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAttributeName("TestAttributeName");
+        testBean.setDisplayName("TestAttributeName");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
-        testBean.setCardinality("TestCardinality");
+        testBean.setMinCardinality(0);
+        testBean.setMaxCardinality(9);
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
 
-        return new AssetSchemaAttribute(testBean, attributeSchemaType);
+        return new AssetSchemaAttribute(testBean);
     }
 
 
@@ -107,42 +108,15 @@ public class TestAssetSchemaAttribute
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAttributeName("TestAttributeDifferentName");
+        testBean.setDisplayName("TestAttributeDifferentName");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
-        testBean.setCardinality("TestCardinality");
-        testBean.setDefaultValueOverride("TestDefaultValueOverride");
-        testBean.setElementPosition(7);
-        testBean.setAttributeType(schemaType);
-
-        return new AssetSchemaAttribute(testBean, attributeSchemaType);
-    }
-
-
-    /**
-     * Set up an example object to test.  A property from the subclass is different.
-     *
-     * @return filled in object
-     */
-    private AssetSchemaAttribute getYetAnotherDifferentObject()
-    {
-        SchemaAttribute testBean = new SchemaAttribute();
-
-        testBean.setType(type);
-        testBean.setGUID("TestGUID");
-        testBean.setURL("TestURL");
-        testBean.setClassifications(classifications);
-
-        testBean.setQualifiedName("TestQualifiedName");
-        testBean.setAdditionalProperties(additionalProperties);
-
-        testBean.setAttributeName("TestAttributeName");
-        testBean.setDefaultValueOverride("TestDefaultValueOverride");
-        testBean.setCardinality("TestCardinality");
+        testBean.setMinCardinality(1);
+        testBean.setMaxCardinality(-1);
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
 
-        return new AssetSchemaAttribute(testBean, new AssetSchemaType(null, new PrimitiveSchemaType()));
+        return new AssetSchemaAttribute(testBean);
     }
 
 
@@ -159,11 +133,11 @@ public class TestAssetSchemaAttribute
         assertTrue(resultObject.getAssetClassifications() == null);
 
         assertTrue(resultObject.getAttributeName().equals("TestAttributeName"));
-        assertTrue(resultObject.getCardinality().equals("TestCardinality"));
+        assertTrue(resultObject.getCardinality().equals("0..*"));
         assertTrue(resultObject.getDefaultValueOverride().equals("TestDefaultValueOverride"));
         assertTrue(resultObject.getElementPosition() == 7);
 
-        assertTrue(resultObject.getLocalSchemaType() != null);
+        assertTrue(resultObject.getAttributeType() != null);
     }
 
 
@@ -181,10 +155,11 @@ public class TestAssetSchemaAttribute
 
         assertTrue(nullObject.getElementPosition() == 0);
         assertTrue(nullObject.getDefaultValueOverride() == null);
-        assertTrue(nullObject.getCardinality() == null);
+        assertTrue(nullObject.getMinCardinality() == 0);
+        assertTrue(nullObject.getMaxCardinality() == 0);
         assertTrue(nullObject.getAttributeName() == null);
 
-        assertTrue(nullObject.getLocalSchemaType() == null);
+        assertTrue(nullObject.getAttributeType() == null);
 
     }
 
@@ -196,33 +171,32 @@ public class TestAssetSchemaAttribute
     {
         SchemaAttribute      nullBean;
         AssetSchemaAttribute nullObject;
-        AssetSchemaType      nullAttributeSchemaType = null;
         AssetSchemaAttribute nullTemplate;
         AssetDescriptor      parentAsset;
 
         nullBean = null;
-        nullObject = new AssetSchemaAttribute(nullBean, nullAttributeSchemaType);
+        nullObject = new AssetSchemaAttribute(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute();
-        nullObject = new AssetSchemaAttribute(nullBean, nullAttributeSchemaType);
+        nullObject = new AssetSchemaAttribute(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute(null);
-        nullObject = new AssetSchemaAttribute(nullBean, nullAttributeSchemaType);
+        nullObject = new AssetSchemaAttribute(nullBean);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, nullAttributeSchemaType);
+        nullObject = new AssetSchemaAttribute(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute();
-        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, nullAttributeSchemaType);
+        nullObject = new AssetSchemaAttribute(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute(null);
-        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, nullAttributeSchemaType);
+        nullObject = new AssetSchemaAttribute(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullTemplate = null;
@@ -239,37 +213,22 @@ public class TestAssetSchemaAttribute
         AssetDescriptor parentAsset = new AssetSummary(new Asset());
 
         PrimitiveSchemaType schemaType          = new PrimitiveSchemaType();
-        AssetSchemaType     attributeSchemaType = new AssetPrimitiveSchemaType(schemaType);
 
         SchemaAttribute testBean = new SchemaAttribute();
         testBean.setAttributeType(schemaType);
 
-        AssetSchemaAttribute testTemplate = new AssetSchemaAttribute(null, this.attributeSchemaType);
+        AssetSchemaAttribute testTemplate = new AssetSchemaAttribute(null);
         AssetSchemaAttribute testObject;
 
-        assertTrue(testTemplate.getLocalSchemaType() != null);
+        assertTrue(testTemplate.getAttributeType() == null);
 
-        testTemplate = new AssetSchemaAttribute(testBean, attributeSchemaType);
+        testTemplate = new AssetSchemaAttribute(testBean);
 
-        assertTrue(testTemplate.getLocalSchemaType() != null);
-
-        testTemplate = new AssetSchemaAttribute(parentAsset, testBean, attributeSchemaType);
-
-        assertTrue(testTemplate.getLocalSchemaType() != null);
-
+        assertTrue(testTemplate.getAttributeType() != null);
 
         testObject = new AssetSchemaAttribute(parentAsset, testTemplate);
 
-        assertTrue(testObject.getLocalSchemaType() != null);
-
-        testObject = new AssetSchemaAttribute(parentAsset, null, attributeSchemaType);
-
-        assertTrue(testObject.getLocalSchemaType() != null);
-
-        testTemplate = new AssetSchemaAttribute(parentAsset, testBean, attributeSchemaType);
-        testObject = new AssetSchemaAttribute(parentAsset, testTemplate);
-
-        assertTrue(testObject.getLocalSchemaType() != null);
+        assertTrue(testObject.getAttributeType() != null);
     }
 
 
@@ -288,7 +247,6 @@ public class TestAssetSchemaAttribute
 
         assertFalse(getTestObject().equals(getDifferentObject()));
         assertFalse(getTestObject().equals(getAnotherDifferentObject()));
-        assertFalse(getTestObject().equals(getYetAnotherDifferentObject()));
     }
 
 
@@ -304,7 +262,9 @@ public class TestAssetSchemaAttribute
     /**
      *  Validate that an object cloned from another object has the same content as the original
      */
-    @Test public void testClone()
+
+    @Test
+    public void testClone()
     {
         validateResultObject(new AssetSchemaAttribute(null, getTestObject()));
     }

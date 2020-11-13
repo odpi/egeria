@@ -29,7 +29,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
      */
     public KafkaOpenMetadataTopicProvider()
     {
-        Class    connectorClass = KafkaOpenMetadataTopicConnector.class;
+        Class<?>    connectorClass = KafkaOpenMetadataTopicConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

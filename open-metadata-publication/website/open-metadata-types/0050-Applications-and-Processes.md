@@ -9,7 +9,7 @@ They are deployed onto a server.
 Some applications are written to support specific processes.
 Model 0050 shows how applications relate to processes and the servers that host them.
 
-![UML](0050-Applications-and-Processes.png)
+![UML](0050-Applications-and-Processes.png#pagewidth)
 
 Return to [Area 0](Area-0-models.md).
 

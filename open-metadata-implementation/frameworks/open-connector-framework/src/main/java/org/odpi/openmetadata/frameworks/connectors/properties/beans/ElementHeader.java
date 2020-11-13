@@ -39,8 +39,8 @@ public class ElementHeader extends PropertyBase
     protected String      guid = null;
     protected String      url  = null;
 
-    protected List<Classification> classifications = null;
-    protected Map<String, Object>  extendedProperties = null;
+    protected List<ElementClassification> classifications    = null;
+    protected Map<String, Object>         extendedProperties = null;
 
     /**
      * Default constructor used by subclasses
@@ -152,7 +152,7 @@ public class ElementHeader extends PropertyBase
      *
      * @return Classifications  list of classifications
      */
-    public List<Classification> getClassifications()
+    public List<ElementClassification> getClassifications()
     {
         if (classifications == null)
         {
@@ -174,7 +174,7 @@ public class ElementHeader extends PropertyBase
      *
      * @param classifications list of classifications
      */
-    public void setClassifications(List<Classification> classifications)
+    public void setClassifications(List<ElementClassification> classifications)
     {
         this.classifications = classifications;
     }

@@ -2,25 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEngineAuditCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineAuditCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.slf4j.LoggerFactory;
 
 
@@ -59,6 +55,7 @@ public class DiscoveryEngineRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
+    @SuppressWarnings(value = "unused")
     public GUIDListResponse getAssets(String          serverName,
                                       String          userId,
                                       int             startFrom,
@@ -69,16 +66,21 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.assetGUIDsScan(userId, null, null, startFrom, pageSize, methodName));
+            response.setGUIDs(handler.getBeanGUIDsByType(userId,
+                                                         OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         startFrom,
+                                                         pageSize,
+                                                         methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -124,23 +126,27 @@ public class DiscoveryEngineRESTServices
                                                       int      pageSize)
     {
         final String   methodName = "getAssetsByQualifiedName";
+        final String   nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.getAssetGUIDsByQualifiedName(userId,
-                                                                   name,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   methodName));
+            response.setGUIDs(handler.getBeanGUIDsByQualifiedName(userId,
+                                                                  OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  name,
+                                                                  nameParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -186,20 +192,24 @@ public class DiscoveryEngineRESTServices
                                              int      pageSize)
     {
         final String   methodName = "getAssetsByName";
+        final String   nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getAssetGUIDsByName(userId,
+                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                           name,
+                                                          nameParameterName,
                                                           startFrom,
                                                           pageSize,
                                                           methodName));
@@ -249,23 +259,27 @@ public class DiscoveryEngineRESTServices
                                         int      pageSize)
     {
         final String   methodName = "findAssets";
+        final String   searchStringParameterName = "findAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.findAssetGUIDs(userId,
-                                                     searchString,
-                                                     startFrom,
-                                                     pageSize,
-                                                     methodName));
+            response.setGUIDs(handler.findBeanGUIDs(userId,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    searchString,
+                                                    searchStringParameterName,
+                                                    startFrom,
+                                                    pageSize,
+                                                    methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -310,20 +324,22 @@ public class DiscoveryEngineRESTServices
                                                  int      pageSize)
     {
         final String   methodName = "findAssetsByEndpoint";
+        final String   networkAddressParameterName = "findAssetsByEndpoint";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
         GUIDListResponse response = new GUIDListResponse();
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getAssetGUIDsByEndpoint(userId,
                                                               networkAddress,
+                                                              networkAddressParameterName,
                                                               startFrom,
                                                               pageSize,
                                                               methodName));
@@ -374,21 +390,14 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.ASSET_AUDIT_LOG;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(assetGUID, discoveryService, message),
-                               serverName,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName, DiscoveryEngineAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, discoveryService, message));
         }
         catch (InvalidParameterException error)
         {
@@ -420,23 +429,23 @@ public class DiscoveryEngineRESTServices
      * @param assetGUID unique identifier of the asset being analysed
      * @param requestBody  all of the other parameters
      *
-     * @return The new discovery report or
+     * @return The unique identifier of the new discovery report or
      *
      *  InvalidParameterException one of the parameters is invalid or
      *  UserNotAuthorizedException the user is not authorized to access the asset and/or report or
      *  PropertyServerException there was a problem in the store whether the asset/report properties are kept.
      */
-    public DiscoveryAnalysisReportResponse createDiscoveryAnalysisReport(String                             serverName,
-                                                                         String                             userId,
-                                                                         String                             assetGUID,
-                                                                         DiscoveryAnalysisReportRequestBody requestBody)
+    public GUIDResponse createDiscoveryAnalysisReport(String                             serverName,
+                                                      String                             userId,
+                                                      String                             assetGUID,
+                                                      DiscoveryAnalysisReportRequestBody requestBody)
     {
         final String   methodName = "createDiscoveryAnalysisReport";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog                    auditLog = null;
-        DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
+        AuditLog     auditLog = null;
+        GUIDResponse response = new GUIDResponse();
 
         try
         {
@@ -446,25 +455,30 @@ public class DiscoveryEngineRESTServices
             }
             else
             {
-                DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                           serverName,
-                                                                                                           methodName);
+                DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
+                                                                                                                                    serverName,
+                                                                                                                                    methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                response.setAnalysisReport(handler.createDiscoveryAnalysisReport(userId,
-                                                                                 requestBody.getQualifiedName(),
-                                                                                 requestBody.getDisplayName(),
-                                                                                 requestBody.getDescription(),
-                                                                                 requestBody.getCreationDate(),
-                                                                                 requestBody.getAnalysisParameters(),
-                                                                                 requestBody.getDiscoveryRequestStatus(),
-                                                                                 assetGUID,
-                                                                                 requestBody.getDiscoveryEngineGUID(),
-                                                                                 requestBody.getDiscoveryServiceGUID(),
-                                                                                 requestBody.getAdditionalProperties(),
-                                                                                 requestBody.getClassifications(),
-                                                                                 methodName));
+                int discoveryRequestStatus = DiscoveryRequestStatus.UNKNOWN_STATUS.getOpenTypeOrdinal();
+
+                if (requestBody.getDiscoveryRequestStatus() != null)
+                {
+                    discoveryRequestStatus = requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal();
+                }
+                response.setGUID(handler.createDiscoveryAnalysisReport(userId,
+                                                                       requestBody.getQualifiedName(),
+                                                                       requestBody.getDisplayName(),
+                                                                       requestBody.getDescription(),
+                                                                       requestBody.getCreationDate(),
+                                                                       requestBody.getAnalysisParameters(),
+                                                                       discoveryRequestStatus,
+                                                                       assetGUID,
+                                                                       requestBody.getDiscoveryEngineGUID(),
+                                                                       requestBody.getDiscoveryServiceGUID(),
+                                                                       requestBody.getAdditionalProperties(),
+                                                                       methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -497,23 +511,23 @@ public class DiscoveryEngineRESTServices
      * @param discoveryReportGUID unique identifier of the report to update
      * @param requestBody updated report - this will replace what was previous stored
      *
-     * @return the new values stored in the repository or
+     * @return  void or
      *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    public DiscoveryAnalysisReportResponse updateDiscoveryAnalysisReport(String                  serverName,
-                                                                         String                  userId,
-                                                                         String                  discoveryReportGUID,
-                                                                         DiscoveryAnalysisReport requestBody)
+    public VoidResponse updateDiscoveryAnalysisReport(String                  serverName,
+                                                      String                  userId,
+                                                      String                  discoveryReportGUID,
+                                                      DiscoveryAnalysisReport requestBody)
     {
         final String   methodName = "updateDiscoveryAnalysisReport";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog                    auditLog = null;
-        DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
 
         try
         {
@@ -521,16 +535,31 @@ public class DiscoveryEngineRESTServices
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
+            else
+            {
+                DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
+                                                                                                                                    serverName,
+                                                                                                                                    methodName);
 
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                int discoveryRequestStatus = DiscoveryRequestStatus.UNKNOWN_STATUS.getOpenTypeOrdinal();
 
-            response.setAnalysisReport(handler.updateDiscoveryAnalysisReport(userId,
-                                                                             discoveryReportGUID,
-                                                                             requestBody));
+                if (requestBody.getDiscoveryRequestStatus() != null)
+                {
+                    discoveryRequestStatus = requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal();
+                }
+                handler.updateDiscoveryAnalysisReport(userId,
+                                                      discoveryReportGUID,
+                                                      requestBody.getQualifiedName(),
+                                                      requestBody.getDisplayName(),
+                                                      requestBody.getDescription(),
+                                                      requestBody.getCreationDate(),
+                                                      requestBody.getAnalysisParameters(),
+                                                      discoveryRequestStatus,
+                                                      requestBody.getAdditionalProperties(),
+                                                      methodName);
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -575,14 +604,14 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog                    auditLog = null;
+        AuditLog                        auditLog = null;
         DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
 
         try
         {
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
+                                                                                                                                serverName,
+                                                                                                                                methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -601,6 +630,79 @@ public class DiscoveryEngineRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public NameListResponse getTypesOfAnnotation(String serverName,
+                                                 String userId)
+    {
+        final String   methodName = "getTypesOfAnnotation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NameListResponse response = new NameListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+
+            response.setNames(handler.getTypesOfAnnotation());
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public StringMapResponse getTypesOfAnnotationWithDescriptions(String serverName, String userId)
+    {
+        final String   methodName = "getTypesOfAnnotationWithDescriptions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringMapResponse response = new StringMapResponse();
+        AuditLog          auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+
+            response.setStringMap(handler.getTypesOfAnnotationDescriptions());
         }
         catch (Throwable error)
         {
@@ -641,7 +743,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
         AnnotationStatus       status   = null;
 
@@ -652,18 +754,27 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setAnnotations(handler.getAnnotationsForAssetByStatus(userId,
-                                                                           assetGUID,
-                                                                           status,
-                                                                           startingFrom,
-                                                                           maximumResults,
-                                                                           methodName));
+            if (status == null)
+            {
+                response.setAnnotations(handler.getAnnotationsForAsset(userId,
+                                                                       assetGUID,
+                                                                       startingFrom,
+                                                                       maximumResults,
+                                                                       methodName));
+            }
+            else
+            {
+                response.setAnnotations(handler.getAnnotationsForAssetByStatus(userId,
+                                                                               assetGUID,
+                                                                               status.getOpenTypeOrdinal(),
+                                                                               startingFrom,
+                                                                               maximumResults,
+                                                                               methodName));
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -712,20 +823,17 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
 
         try
         {
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setAnnotations(handler.getDiscoveryReportAnnotations(userId,
                                                                           discoveryReportGUID,
-                                                                          null,
                                                                           startingFrom,
                                                                           maximumResults,
                                                                           methodName));
@@ -777,20 +885,17 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
         AnnotationListResponse response = new AnnotationListResponse();
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setAnnotations(handler.getExtendedAnnotations(userId,
                                                                    annotationGUID,
-                                                                   null,
                                                                    startingFrom,
                                                                    maximumResults,
                                                                    methodName));
@@ -839,20 +944,16 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog       auditLog = null;
+        AuditLog           auditLog = null;
         AnnotationResponse response = new AnnotationResponse();
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setAnnotation(handler.getAnnotation(userId,
-                                                         annotationGUID,
-                                                         methodName));
+            response.setAnnotation(handler.getAnnotation(userId, annotationGUID, methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -899,7 +1000,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
         try
@@ -909,9 +1010,7 @@ public class DiscoveryEngineRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
 
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -950,156 +1049,34 @@ public class DiscoveryEngineRESTServices
      * @param anchorAnnotationGUID unique identifier of the annotation that this new one os to be attached to
      * @param requestBody annotation object
      *
-     * @return fully filled out annotation or
+     * @return unique identifier of new annotation or
      *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving annotations in the annotation store.
      */
-    public  AnnotationResponse  addAnnotationToAnnotation(String     serverName,
-                                                          String     userId,
-                                                          String     anchorAnnotationGUID,
-                                                          Annotation requestBody)
+    public  GUIDResponse  addAnnotationToAnnotation(String     serverName,
+                                                    String     userId,
+                                                    String     anchorAnnotationGUID,
+                                                    Annotation requestBody)
     {
         final String   methodName = "addAnnotationToAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog       auditLog = null;
-        AnnotationResponse response = new AnnotationResponse();
+        AuditLog     auditLog = null;
+        GUIDResponse response = new GUIDResponse();
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setAnnotation(handler.addAnnotationToAnnotation(userId,
-                                                                     anchorAnnotationGUID,
-                                                                     requestBody,
-                                                                     methodName));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Link an existing annotation to another object.  The anchor object must be a Referenceable.
-     *
-     * @param serverName name of server instance to route request to
-     * @param userId identifier of calling user
-     * @param anchorGUID unique identifier that the annotation is to be linked to
-     * @param annotationGUID unique identifier of the annotation
-     * @param requestBody null request body to satisfy POST semantics
-     *
-     * @return void or
-     *
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the user id not authorized to issue this request
-     *  PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    public VoidResponse  linkAnnotation(String          serverName, 
-                                        String          userId, 
-                                        String          anchorGUID, 
-                                        String          annotationGUID, 
-                                        NullRequestBody requestBody)
-    {
-        final String   methodName = "linkAnnotation";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        OMRSAuditLog auditLog = null;
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            handler.linkAnnotation(userId, anchorGUID, annotationGUID, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the relationship between an annotation and another object.
-     *
-     * @param serverName name of server instance to route request to
-     * @param userId identifier of calling user
-     * @param anchorGUID unique identifier that the annotation is to be unlinked from
-     * @param annotationGUID unique identifier of the annotation
-     * @param requestBody null request body to satisfy POST semantics
-     *
-     * @return void or
-     *
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the user id not authorized to issue this request
-     *  PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    public VoidResponse  unlinkAnnotation(String          serverName, 
-                                          String          userId, 
-                                          String          anchorGUID, 
-                                          String          annotationGUID, 
-                                          NullRequestBody requestBody)
-    {
-        final String   methodName = "unlinkAnnotation";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        OMRSAuditLog auditLog = null;
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            handler.unlinkAnnotation(userId, anchorGUID, annotationGUID, methodName);
+            response.setGUID(handler.addAnnotationToAnnotation(userId,
+                                                               anchorAnnotationGUID,
+                                                               requestBody,
+                                                               methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -1137,27 +1114,25 @@ public class DiscoveryEngineRESTServices
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem updating the annotation in the annotation store.
      */
-    public AnnotationResponse  updateAnnotation(String     serverName, 
-                                                String     userId, 
-                                                String     annotationGUID, 
-                                                Annotation requestBody)
+    public VoidResponse  updateAnnotation(String     serverName,
+                                          String     userId,
+                                          String     annotationGUID,
+                                          Annotation requestBody)
     {
         final String   methodName = "updateAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog       auditLog = null;
-        AnnotationResponse response = new AnnotationResponse();
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setAnnotation(handler.updateAnnotation(userId, annotationGUID, requestBody, methodName));
+            handler.updateAnnotation(userId, annotationGUID, requestBody, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -1195,6 +1170,7 @@ public class DiscoveryEngineRESTServices
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem deleting the annotation from the annotation store.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  deleteAnnotation(String          serverName, 
                                           String          userId, 
                                           String          annotationGUID, 
@@ -1204,7 +1180,7 @@ public class DiscoveryEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
         VoidResponse response = new VoidResponse();
 
         try

@@ -5,11 +5,10 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -23,17 +22,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_LINEAGE_OMAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GUID_PARAMETER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PORT_ALIAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PORT_IMPLEMENTATION;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.PROCESS_PORT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.immutableProcessRelationshipsTypes;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableProcessRelationshipsTypes;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -42,12 +38,11 @@ public class ProcessContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ProcessContextHandler.class);
 
-    private final String serviceName;
-    private final String serverName;
-    private final RepositoryHandler repositoryHandler;
+    private final AssetContextHandler assetContextHandler;
     private final InvalidParameterHandler invalidParameterHandler;
     private final List<String> supportedZones;
-    private final CommonHandler commonHandler;
+    private final HandlerHelper handlerHelper;
+    private SuperTypesRetriever superTypesRetriever;
 
     private AssetContext graph;
 
@@ -55,113 +50,93 @@ public class ProcessContextHandler {
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
      *
-     * @param serviceName             name of the consuming service
-     * @param serverName              name of this server instance
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      * @param supportedZones          configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
-    public ProcessContextHandler(String serviceName,
-                                 String serverName,
-                                 InvalidParameterHandler invalidParameterHandler,
+    public ProcessContextHandler(InvalidParameterHandler invalidParameterHandler,
                                  OMRSRepositoryHelper repositoryHelper,
                                  RepositoryHandler repositoryHandler,
-                                 List<String> supportedZones) {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
+                                 AssetContextHandler assetContextHandler,
+                                 List<String> supportedZones,
+                                 Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
+        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+        this.assetContextHandler = assetContextHandler;
         this.supportedZones = supportedZones;
+        this.superTypesRetriever = new SuperTypesRetriever(repositoryHelper);
     }
 
     /**
      * Retrieves the full context for a Process
      *
-     * @param userId      String - userId of user making request.
-     * @param processGuid guid of the asset that has been created
+     * @param userId  userId of user making request.
+     * @param process the process entity for which the context is built
      * @return Map of the relationships between the Entities that are relevant to a Process
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Map<String, Set<GraphContext>> getProcessContext(String userId, String processGuid) {
+    public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
 
         final String methodName = "getProcessContext";
 
         graph = new AssetContext();
 
-        try {
+        invalidParameterHandler.validateAssetInSupportedZone(process.getGUID(),
+                GUID_PARAMETER,
+                handlerHelper.getAssetZoneMembership(process.getClassifications()),
+                supportedZones,
+                ASSET_LINEAGE_OMAS,
+                methodName);
 
-            Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid, PROCESS);
-            if (!entityDetail.isPresent()) {
-                log.error("Entity with guid {} was not found in any metadata repository", processGuid);
-
-                throw new AssetLineageException(ENTITY_NOT_FOUND.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                "Retrieving Entity",
-                                                 ENTITY_NOT_FOUND.getErrorMessage(),
-                                                 ENTITY_NOT_FOUND.getSystemAction(),
-                                                 ENTITY_NOT_FOUND.getUserAction());
-            }
-
-
-            invalidParameterHandler.validateAssetInSupportedZone(processGuid,
-                                                                 GUID_PARAMETER,
-                                                                 commonHandler.getAssetZoneMembership(entityDetail.get().getClassifications()),
-                                                                 supportedZones,
-                                                                 ASSET_LINEAGE_OMAS,
-                                                                 methodName);
-
-            return checkIfAllRelationshipsExist(userId,entityDetail.get());
-
-        } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            throw new AssetLineageException(e.getReportedHTTPCode(),
-                                            e.getReportingClassName(),
-                                            e.getReportingActionDescription(),
-                                            e.getErrorMessage(),
-                                            e.getReportedSystemAction(),
-                                            e.getReportedUserAction());
-        }
+        return checkIfAllRelationshipsExist(userId, process);
     }
 
-    private Map<String,Set<GraphContext>> checkIfAllRelationshipsExist(String userId, EntityDetail entityDetail) throws InvalidParameterException,
-                                                                                                               PropertyServerException,
-                                                                                                               UserNotAuthorizedException {
+    /**
+     * Check if the Port to Process relationships are created
+     *
+     * @param userId       userId of user making request
+     * @param entityDetail the entity for which the relationships are retrieved
+     * @return the current graph context if the Process to Port relationships are available
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private Map<String, Set<GraphContext>> checkIfAllRelationshipsExist(String userId,
+                                                                        EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
         boolean entitiesTillLastRelationshipExist = hasEntitiesLinkedWithProcessPort(userId, entityDetail);
-        if(entitiesTillLastRelationshipExist){
+        if (entitiesTillLastRelationshipExist) {
             return graph.getNeighbors();
         }
 
-        log.error("Some relationships are missing for the entity with guid {}",entityDetail.getGUID());
+        log.error("Some relationships are missing for the entity with guid {}", entityDetail.getGUID());
 
-        throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getHTTPErrorCode(),
-                                        this.getClass().getName(),
-                                        "Retrieving Relationships",
-                                        RELATIONSHIP_NOT_FOUND.getErrorMessage(),
-                                        RELATIONSHIP_NOT_FOUND.getSystemAction(),
-                                        RELATIONSHIP_NOT_FOUND.getUserAction());
+        throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(),
+                this.getClass().getName(),
+                "Retrieving Relationships");
     }
 
-    private boolean hasEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
-                                                                                                                 PropertyServerException,
-                                                                                                                 InvalidParameterException {
+    /**
+     * Checks if the all the  Process relationships are created
+     *
+     * @param userId       userId of user making request
+     * @param entityDetail the entity for which the relationships are retrieved
+     * @return true if all the process relationships are created
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private boolean hasEntitiesLinkedWithProcessPort(String userId,
+                                                     EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
-        final String typeDefName = entityDetail.getType().getTypeDefName();
-        List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(), PROCESS_PORT, typeDefName);
+        List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail, PROCESS_PORT);
 
-        if (entityDetails.isEmpty()){
-            log.error("No relationships Process Port has been found for the entity with guid {}",entityDetail.getGUID());
+        if (entityDetails.isEmpty()) {
+            log.error("No relationships Process Port has been found for the entity with guid {}", entityDetail.getGUID());
 
-            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            "Retrieving Relationship",
-                                            RELATIONSHIP_NOT_FOUND.getErrorMessage(),
-                                            RELATIONSHIP_NOT_FOUND.getSystemAction(),
-                                            RELATIONSHIP_NOT_FOUND.getUserAction());
-    }
+            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(),
+                    this.getClass().getName(),
+                    "Retrieving Relationship");
+        }
 
-       return hasRelationshipBasedOnType(entityDetails, userId);
-
+        return hasRelationshipBasedOnType(entityDetails, userId);
     }
 
 
@@ -169,130 +144,152 @@ public class ProcessContextHandler {
      * Retrieves the relationships of an Entity
      *
      * @param userId           String - userId of user making request.
-     * @param guid             guid of parent entity
+     * @param startEntity      the entity for which the relationships are retrieved
      * @param relationshipType type of the relationship
-     * @param typeDefName      type of the entity that has the Relationship
      * @return List of entities that are on the other end of the relationship, empty list if none
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, String guid,
-                                                               String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-                                                                                                                   PropertyServerException,
-                                                                                                                   InvalidParameterException {
-        List<Relationship> relationships = commonHandler.getRelationshipsByType(userId, guid, relationshipType,typeDefName);
-        EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
-
+    private List<EntityDetail> getRelationshipsBetweenEntities(String userId,
+                                                               EntityDetail startEntity,
+                                                               String relationshipType) throws OCFCheckedExceptionBase {
         if (startEntity == null) return Collections.emptyList();
+
+        handlerHelper.addLineageClassificationToContext(startEntity, graph);
         String startEntityType = startEntity.getType().getTypeDefName();
 
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, startEntityType);
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
-
-            if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) &&
-                    startEntityType.equals(TABULAR_COLUMN)){
-                continue;
+            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph);
+            if (endEntity == null) {
+                return Collections.emptyList();
             }
-            EntityDetail endEntity = commonHandler.buildGraphEdgeByRelationship(userId,startEntity,relationship,graph,false);
-            if(endEntity == null) return Collections.emptyList();
 
+            addContextForTabularColumns(userId, endEntity);
             entityDetails.add(endEntity);
         }
 
         return entityDetails;
+    }
 
+    /**
+     * Enhance the process context with Tabular Column context
+     * Add the asset neighbors for Tabular Column
+     *
+     * @param userId String - userId of user making request.
+     * @param entity details of the entity
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private void addContextForTabularColumns(String userId,
+                                             EntityDetail entity) throws OCFCheckedExceptionBase {
+        Set<String> superTypes = superTypesRetriever.getSuperTypes(userId, entity.getType().getTypeDefName());
+
+        if (superTypes.contains(TABULAR_COLUMN)) {
+            AssetContext assetContext = assetContextHandler.getAssetContext(userId, entity);
+            graph.getGraphContexts().addAll(assetContext.getGraphContexts());
+            assetContext.getNeighbors().forEach(this::mergeGraphNeighbors);
+        }
+    }
+
+    private void mergeGraphNeighbors(String k, Set<GraphContext> v) {
+        if (graph.getNeighbors().containsKey(k)) {
+            graph.getNeighbors().get(k).addAll(v);
+        } else {
+            graph.getNeighbors().put(k, v);
+        }
     }
 
     /**
      * Creates the full context for a Process. There are two cases, a process can have a relationship to either
      * a Port Alias or to a Port Implementation. In case of Port Alias it should take the context until Port Implementation
      * entities otherwise it should take the context down to TabularColumn entities.
-     * @param entityDetails      list of entities
-     * @param userId             String - userId of user making request.
+     *
+     * @param entityDetails list of entities
+     * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                                  PropertyServerException,
-                                                                                                                  UserNotAuthorizedException {
+    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails,
+                                               String userId) throws OCFCheckedExceptionBase {
         boolean relationshipsExist = false;
-        if (checkIfEntityExistWithSpecificType(entityDetails,PORT_ALIAS)) {
-            relationshipsExist = hasEndRelationship(entityDetails,userId);
-        }
+        if (checkIfEntityExistWithSpecificType(entityDetails, PORT_ALIAS))
+            relationshipsExist = hasLineageRelationships(entityDetails, userId);
 
-        if (checkIfEntityExistWithSpecificType(entityDetails,PORT_IMPLEMENTATION)) {
-            relationshipsExist = hasTabularSchemaTypes(entityDetails,userId);
-        }
+        if (checkIfEntityExistWithSpecificType(entityDetails, PORT_IMPLEMENTATION))
+            relationshipsExist = hasTabularSchemaTypes(entityDetails, userId);
 
         return relationshipsExist;
     }
 
     /**
-     * Returns if the entities that are passed as an argument in the method have any relationships.
-     * @param entityDetails      list of entities
-     * @param userId             String - userId of user making request.
+     * Returns true if the entities that are passed as an argument in the method have any lineage related relationships.
+     *
+     * @param entityDetails list of entities
+     * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private boolean hasEndRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                       PropertyServerException,
-                                                                                                       UserNotAuthorizedException {
+    private boolean hasLineageRelationships(List<EntityDetail> entityDetails,
+                                            String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
-            result.addAll(getRelationshipsBetweenEntities(userId,
-                                                          entityDetail.getGUID(),
-                                                          immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                          entityDetail.getType().getTypeDefName()));
+            result.addAll(getRelationshipsBetweenEntities(userId, entityDetail,
+                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName())));
         }
-        return  !result.isEmpty();
+        return !result.isEmpty();
     }
 
     /**
      * Returns if there are any TabularSchemaTypes that are related to a Port Implementation Entity.
-     * @param entityDetails      list of entities
-     * @param userId             String - userId of user making request.
+     *
+     * @param entityDetails list of entities
+     * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                             PropertyServerException,
-                                                                                                             UserNotAuthorizedException {
-        List<EntityDetail>  result = new ArrayList<>();
+    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails,
+                                          String userId) throws OCFCheckedExceptionBase {
+        List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
             List<EntityDetail> tabularSchemaType = getRelationshipsBetweenEntities(userId,
-                                                                                   entityDetail.getGUID(),
-                                                                                   immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                                                   entityDetail.getType().getTypeDefName());
+                    entityDetail,
+                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()));
             Optional<EntityDetail> first = tabularSchemaType.stream().findFirst();
             result.add(first.orElse(null));
         }
-        return hasSchemaAttributes(result,userId);
+        return hasSchemaAttributes(result, userId);
     }
 
     /**
      * Returns if the TabularColumns are part of a TabularSchemaType.
-     * @param entityDetails      list of entities
-     * @param userId             String - userId of user making request.
+     *
+     * @param entityDetails list of entities
+     * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException {
-        List<EntityDetail>  result = new ArrayList<>();
+    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails,
+                                        String userId) throws OCFCheckedExceptionBase {
+        List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
-            List<EntityDetail>  newListOfEntityDetails = getRelationshipsBetweenEntities(userId,
-                                                                                         entityDetail.getGUID(),
-                                                                                         immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
-                                                                                         entityDetail.getType().getTypeDefName());
+            List<EntityDetail> newListOfEntityDetails = getRelationshipsBetweenEntities(userId,
+                    entityDetail,
+                    immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()));
             result.addAll(newListOfEntityDetails);
         }
-        return hasEndRelationship(result,userId);
+        return hasLineageRelationships(result, userId);
     }
 
     /**
      * Check if the Type of the entity exists on Open Metadata Types.
-     * @param entityDetails      list of entities
-     * @param typeDefName        String - the type to be checked
+     *
+     * @param entityDetails list of entities
+     * @param typeDefName   String - the type to be checked
      * @return Boolean if type exists or not
      */
-    private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
+    private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails, String typeDefName) {
         return entityDetails.stream().anyMatch(entity -> entity.getType().getTypeDefName().equals(typeDefName));
     }
 }

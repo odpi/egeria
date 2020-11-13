@@ -5,6 +5,7 @@ trigger:
   branches:
     include:
       - master
+      - egeria-release-*
 pr: none
 
 variables:
@@ -25,7 +26,24 @@ stages:
                 cd $M2_HOME/boot
                 ls -la
                 rm ./plexus-classworlds.license
+            # TODO: Not sure if this is really needed...
+          - script: mkdir -p ${HOME}/.docker
+          - task: DownloadSecureFile@1
+            displayName: 'Download docker config'
+            name: dockerConfig
+            inputs:
+              secureFile: odpi-docker.json
+          - script: mv $(dockerConfig.secureFilePath) ${HOME}/.docker/config.json
+          - task: Docker@2
+            displayName: Login to Docker Hub
+            inputs:
+              command: login
+              containerRegistry: odpi-dockerhub
+              # Normal build for master - note we have the '-Ddocker.taglatest' set
+              # and we use ArtifactoryMaven - so that the artifacts are published
           - task: ArtifactoryMaven@1
+            displayName: 'Build to artifactory (for master)'
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
@@ -49,10 +67,46 @@ stages:
                   -Dmerge
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
                   -P artifactory
+                  -Ddocker
+                  -Ddocker.taglatest
+                  -Ddocker.repo=odpi
+                  -Ddocker.registry=docker.io
+                  -Ddocker.images=core
+                  -Ddockerfile.googleContainerRegistryEnabled=false
+            # build for other releases - note we DO NOT have the '-Ddocker.taglatest' set
+            # and we just do a simple maven build as we don't want the artifacts published
+            # Just docker images & to act as build verification
+          - task: Maven@3
+            displayName: 'Build locally with docker (non-master)'
+            condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+            inputs:
+              mavenPomFile: 'pom.xml'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              goals: 'clean deploy'
+              options: >-
+                  --batch-mode
+                  -e
+                  -s .m2/settings.xml
+                  -DaltDeploymentRepository=staging::default::file:$(Agent.BuildDirectory)/local-repo
+                  -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+                  -Ddocker
+                  -Ddocker.repo=odpi
+                  -Ddocker.registry=docker.io
+                  -Ddocker.images=core
+                  -Ddockerfile.googleContainerRegistryEnabled=false
+            # Only publish to artifactory if we are running a master build
           - task: ArtifactoryPublishBuildInfo@1
+            displayName: 'Publish artifactory build (master)'
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
             inputs:
               artifactoryService: ODPiArtifactory
               buildName: 'Egeria'
           - publish: target
             artifact: target-$(Build.BuildNumber)
             condition: always()
+            # Take this extra step for non-master builds and publish artifact to pipelines
+          - publish: $(Agent.BuildDirectory)/local-repo
+            condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+            artifact: org.odpi.egeira-$(Build.BuildNumber)_Java-$(JAVA_VERSION)

@@ -3,15 +3,17 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -26,14 +28,16 @@ import java.util.Map;
  */
 public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase implements OMRSAuditLogStore
 {
-    protected String        destinationName = "<Unknown";
-    protected List<String>  supportedSeverities = null;
+    private static final Logger log = LoggerFactory.getLogger(OMRSAuditLogStoreConnectorBase.class);
+
+    private String        destinationName = "<Unknown";
+    private List<String>  supportedSeverities = null;
 
 
     /**
      * Default constructor
      */
-    public OMRSAuditLogStoreConnectorBase()
+    protected OMRSAuditLogStoreConnectorBase()
     {
     }
 
@@ -70,6 +74,21 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      */
     public abstract String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException,
                                                                                RepositoryErrorException;
+
+
+    /**
+     * Store the audit log record in the audit log store.
+     *
+     * @param logRecord log record to store
+     * @return unique identifier assigned to the log record
+     * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
+     * @throws RepositoryErrorException  indicates that the audit log store is not available or has an error.
+     */
+    public  String storeLogRecord(AuditLogRecord logRecord) throws InvalidParameterException,
+                                                                   RepositoryErrorException
+    {
+        return this.storeLogRecord(new OMRSAuditLogRecord(logRecord));
+    }
 
 
     /**
@@ -193,43 +212,30 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
     protected void validateLogRecord(OMRSAuditLogRecord logRecord,
                                      String             methodName) throws InvalidParameterException
     {
+        final String parameterName = "logRecord";
+
         if (logRecord == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_LOG_RECORD;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(destinationName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_LOG_RECORD.getMessageDefinition(destinationName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
         }
 
-        if (logRecord.getOriginator() == null)
+        if (logRecord.getOriginatorProperties() == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_LOG_RECORD_ORIGINATOR;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(destinationName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_LOG_RECORD_ORIGINATOR.getMessageDefinition(destinationName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
         }
 
-        if (logRecord.getReportingComponent() == null)
+        if (logRecord.getOriginatorComponent() == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_LOG_RECORD_REPORTING_COMPONENT;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(destinationName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_LOG_RECORD_REPORTING_COMPONENT.getMessageDefinition(destinationName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
         }
     }
 
@@ -246,18 +252,21 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
         {
             String severity = logRecord.getSeverity();
 
+            log.debug("Checking severity {} is in supportedSeverities {}", severity, supportedSeverities);
+
             if (severity != null)
             {
                 if (supportedSeverities == null)
                 {
                     return true;
                 }
+                else if (supportedSeverities.isEmpty())
+                {
+                    return true;
+                }
                 else
                 {
-                    if (supportedSeverities.contains(severity))
-                    {
-                        return true;
-                    }
+                    return supportedSeverities.contains(severity);
                 }
             }
         }
@@ -277,6 +286,8 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
     protected String getJSONLogRecord(OMRSAuditLogRecord   logRecord,
                                       String               methodName) throws InvalidParameterException
     {
+        final String parameterName = "logRecord";
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         try
@@ -285,16 +296,11 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
         }
         catch (Throwable  exc)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.AUDIT_LOG_RECORD_NOT_JSON_ENABLED;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(destinationName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.AUDIT_LOG_RECORD_NOT_JSON_ENABLED.getMessageDefinition(destinationName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                exc);
+                                                exc,
+                                                parameterName);
         }
     }
 
@@ -305,17 +311,11 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @param methodName calling method
      * @throws FunctionNotSupportedException indicates that the audit log store does not support queries.
      */
-    protected void throwQueryNotSupported(String methodName) throws FunctionNotSupportedException
+    private void throwQueryNotSupported(String methodName) throws FunctionNotSupportedException
     {
-        OMRSErrorCode errorCode    = OMRSErrorCode.CAN_NOT_QUERY_AUDIT_LOG_STORE;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(destinationName);
-
-        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
+        throw new FunctionNotSupportedException(OMRSErrorCode.CAN_NOT_QUERY_AUDIT_LOG_STORE.getMessageDefinition(destinationName),
+                                                this.getClass().getName(),
+                                                methodName);
     }
 
 
@@ -333,7 +333,19 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
 
         if (connectionProperties != null)
         {
-            destinationName = connectionProperties.getConnectionName();
+            if (connectionProperties.getDisplayName() != null)
+            {
+                destinationName = connectionProperties.getDisplayName();
+            }
+            else if (connectionProperties.getConnectorType() != null)
+            {
+                ConnectorTypeProperties connectorType = connectionProperties.getConnectorType();
+
+                if (connectorType.getDisplayName() != null)
+                {
+                    destinationName = connectorType.getDisplayName();
+                }
+            }
 
             Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
 
@@ -354,10 +366,10 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
                                 supportedSeverities = null;
                             }
                         }
-                        catch (Throwable error)
+                        catch (Exception error)
                         {
-                            // Ignore - if the property is incorrectly set up, it will be displayed in
-                            // a later message.
+                            // Ignore - if the property is incorrectly set up, it will be displayed in a later message.
+                            log.debug("Ignored exception: {} with message {}", error.getClass().getName(), error.getMessage());
                         }
                     }
                 }

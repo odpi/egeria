@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.outtopic;
 
-import org.odpi.openmetadata.accessservices.communityprofile.auditlog.CommunityProfileAuditCode;
+import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.events.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
 import org.odpi.openmetadata.accessservices.communityprofile.topics.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 
 
@@ -25,7 +25,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicPublisher
 {
     private InvalidParameterHandler     invalidParameterHandler;
-    private OMRSAuditLog                auditLog;
+    private AuditLog                    auditLog;
 
 
     /**
@@ -38,7 +38,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      */
     public CommunityProfileOutTopicProcessor(OpenMetadataTopicConnector connector,
                                              InvalidParameterHandler    invalidParameterHandler,
-                                             OMRSAuditLog               auditLog)
+                                             AuditLog                   auditLog)
     {
         super(connector, invalidParameterHandler);
 
@@ -60,15 +60,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
     {
         if (auditLog != null)
         {
-            CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.OUTBOUND_EVENT;
-
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(eventTypeName, subjectGUID),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, CommunityProfileAuditCode.OUTBOUND_EVENT.getMessageDefinition(eventTypeName, subjectGUID));
         }
     }
 

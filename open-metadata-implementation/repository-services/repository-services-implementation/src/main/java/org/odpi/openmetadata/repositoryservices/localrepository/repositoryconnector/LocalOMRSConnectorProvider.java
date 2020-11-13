@@ -133,16 +133,9 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
              * Throw checked exception to indicate that the local repository is not available.  This
              * is likely to be a configuration error.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.LOCAL_REPOSITORY_CONFIGURATION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OMRSErrorCode.LOCAL_REPOSITORY_CONFIGURATION_ERROR.getMessageDefinition(),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
         }
 
         /*
@@ -168,17 +161,10 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
             }
             catch (Throwable error)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.BAD_LOCAL_REPOSITORY_CONNECTION;
-                String errorMessage = errorCode.getErrorMessageId()
-                                     + errorCode.getFormattedErrorMessage();
-
-                throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
-                                                    error);
+                throw new ConnectionCheckedException(OMRSErrorCode.BAD_LOCAL_REPOSITORY_CONNECTION.getMessageDefinition(),
+                                                     this.getClass().getName(),
+                                                     methodName,
+                                                     error);
 
 
             }

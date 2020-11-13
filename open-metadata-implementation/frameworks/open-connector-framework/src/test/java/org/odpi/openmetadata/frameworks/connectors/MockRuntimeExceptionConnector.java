@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
@@ -73,12 +70,9 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
     public void initialize(String               connectorInstanceId,
                            ConnectionProperties connectionProperties)
     {
-        throw new OCFRuntimeException(400,
+        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                       this.getClass().getName(),
-                                      "initialize",
-                                      "Mock error message",
-                                      "System Action",
-                                      "User Action");
+                                      "getCachedList");
     }
 
 
@@ -246,6 +240,8 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      */
     private class ProtectedConnection extends ConnectionProperties
     {
+        private static final long     serialVersionUID = 1L;
+
         private ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);
@@ -258,9 +254,9 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
          *
          * @return secured properties   typically user credentials for the connection
          */
-        protected Map<String, Object> getSecuredProperties()
+        protected Map<String, String> getSecuredProperties()
         {
-            Map<String, Object>  securedProperties = super.getConnectionBean().getSecuredProperties();
+            Map<String, String>  securedProperties = super.getConnectionBean().getSecuredProperties();
             if (securedProperties == null)
             {
                 return null;

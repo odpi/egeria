@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -90,8 +91,12 @@ public class TypeDefResponse extends OMRSAPIResponse
         return "TypeDefResponse{" +
                 "typeDef=" + typeDef +
                 ", relatedHTTPCode=" + relatedHTTPCode +
+                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
+                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
                 ", exceptionProperties=" + exceptionProperties +

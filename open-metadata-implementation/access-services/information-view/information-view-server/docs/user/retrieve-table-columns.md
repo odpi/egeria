@@ -6,7 +6,7 @@
 Retrieve columns of a table using pagination
 
 ```
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/tables/{{guid}}/columns?pageSize=10&startFrom=0
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/tables/{tableGUID}/columns?pageSize=10&startFrom=0
 ```
 
 `TableColumnsResponse` response with list of columns of table from startFrom to startFrom + pageSize
@@ -21,7 +21,7 @@ Sample:
     "tableColumns": [
         {
             "guid": "b1c497ce.60641b50.0v9mgsb2t.faunv1i.4jppgp.vcpqhhv5aub9uk5thtugp",
-            "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STATE",
+            "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=STATE",
             "name": "STATE",
             "position": 20,
             "businessTerms": [{
@@ -40,7 +40,7 @@ Sample:
         },
         {
             "guid": "b1c497ce.60641b50.0v9mgsb2t.fadq4s6.5vn3hu.ehqs5908s76ig6cn8ho6g",
-            "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=EMPSTATUS",
+            "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=EMPSTATUS",
             "name": "EMPSTATUS",
             "position": 4,
             "businessTerms": [{
@@ -59,7 +59,7 @@ Sample:
         },
         {
             "guid": "b1c497ce.60641b50.0v9mgsb2t.fadoft6.jdu07h.62mt3l35mh6qmt0lcufbv",
-            "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=TAXP",
+            "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=TAXP",
             "name": "TAXP",
             "position": 22,
             "businessTerms": [{
@@ -78,7 +78,7 @@ Sample:
         },
         {
             "guid": "b1c497ce.60641b50.0v9mgsb2t.faul2ce.qfu265.bepvic8n0615h13llbi6h",
-            "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=HDR",
+            "qualifiedName": "(host_(engine))={host}::(database)=EMPLSANL::(database_schema)=DB2INST1::(database_table)=EMPSALARYANALYSIS::(database_column)=HDR",
             "name": "HDR",
             "position": 1,
             "isNullable": false,

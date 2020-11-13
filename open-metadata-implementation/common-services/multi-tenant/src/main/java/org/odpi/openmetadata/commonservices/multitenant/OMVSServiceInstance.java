@@ -2,61 +2,55 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
  * It is responsible for registering itself in the instance map.
  */
 public class OMVSServiceInstance extends AuditableServerServiceInstance
 {
-    protected String metadataServerName = null;
-    protected String metadataServerURL = null;
+    protected String remoteServerName;
+    protected String remoteServerURL;
+
     /**
      * Set up the OMVS service instance
-     *
+     * 
+     * @param serverName name of this server
      * @param serviceName name of this service
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
-     * @param metadataServerName  metadata server name
-     * @param metadataServerURL metadata server URL
+     * @param remoteServerName  remote server name
+     * @param remoteServerURL remote server URL
      */
-    public OMVSServiceInstance(String                  serviceName,
-                               OMRSAuditLog            auditLog,
+    public OMVSServiceInstance(String                  serverName,
+                               String                  serviceName,
+                               AuditLog                auditLog,
                                String                  localServerUserId,
                                int                     maxPageSize,
-                               String                  metadataServerName,
-                               String                  metadataServerURL ) {
-        super(null, serviceName, auditLog, localServerUserId, maxPageSize);
-        this.metadataServerName = metadataServerName;
-        this.metadataServerURL = metadataServerURL;
-    }
-
-    /**
-     * Return the server name. Used during OMVS initialization which is why the exception
-     * is different.
-     *
-     * @return serverName name of the server for this instance
-     */
-    public String getServerName()
+                               String                  remoteServerName,
+                               String                  remoteServerURL )
     {
-        return serverName;
+        super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
+        this.remoteServerName = remoteServerName;
+        this.remoteServerURL = remoteServerURL;
+        this.setServerName(serverName);
+    }
+    
 
+    /**
+     * the remote server name
+     * @return the remote server name
+     */
+    public String getRemoteServerName() {
+        return remoteServerName;
     }
 
     /**
-     * the metadata server name
-     * @return the metadata server name
+     * the remote server URL
+     * @return the remote server URL
      */
-    public String getMetadataServerName() {
-        return metadataServerName;
-    }
-
-    /**
-     * the metadata server URL
-     * @return the metadata server URL
-     */
-    public String getMetadataServerURL() {
-        return metadataServerURL;
+    public String getRemoteServerURL() {
+        return remoteServerURL;
     }
 }

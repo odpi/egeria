@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -109,9 +110,13 @@ public class ReferenceablesResponse extends PagedResponse
         return "ReferenceablesResponse{" +
                 "referenceables=" + referenceables +
                 ", startingFromElement=" + getStartingFromElement() +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +

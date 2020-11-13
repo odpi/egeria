@@ -8,7 +8,7 @@ People tend to stay in communities for the long term, whilst
 they are are associated with projects just for the lifetime of
 the project and then they move on to another. 
 
-![UML](0140-Communities.png)
+![UML](0140-Communities.png#pagewidth)
 
 
 Return to [Area 1](Area-1-models.md).

@@ -3,9 +3,10 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingCSVFileInterface;
+import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -15,13 +16,23 @@ import java.util.List;
 /**
  * CSVFileAssetOwner provides specialist methods for working with CSV files.
  */
-public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
+public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVFileInterface
 {
-    private String               serverName;               /* Initialized in constructor */
-    private String               serverPlatformRootURL;    /* Initialized in constructor */
-    private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    /**
+     * Create a new client with no authentication embedded in the HTTP request and an audit log.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CSVFileAssetOwner(String   serverName,
+                             String   serverPlatformRootURL,
+                             AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+    }
 
 
     /**
@@ -35,13 +46,31 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
     public CSVFileAssetOwner(String serverName,
                              String serverPlatformRootURL) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
+        super(serverName, serverPlatformRootURL);
+    }
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL);
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * There is also an audit log destination.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CSVFileAssetOwner(String   serverName,
+                             String   serverPlatformRootURL,
+                             String   userId,
+                             String   password,
+                             AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, userId, password, auditLog);
     }
 
 
@@ -56,18 +85,37 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public CSVFileAssetOwner(String     serverName,
-                             String     serverPlatformRootURL,
-                             String     userId,
-                             String     password) throws InvalidParameterException
+    public CSVFileAssetOwner(String serverName,
+                             String serverPlatformRootURL,
+                             String userId,
+                             String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
+        super(serverName, serverPlatformRootURL, userId, password);
+    }
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL, userId, password);
+    /**
+     * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CSVFileAssetOwner(String               serverName,
+                             String               serverPlatformRootURL,
+                             AssetOwnerRESTClient restClient,
+                             int                  maxPageSize,
+                             AuditLog             auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = restClient;
     }
 
 

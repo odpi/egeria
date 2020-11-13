@@ -17,7 +17,7 @@ public class CSVDiscoveryServiceProvider extends DiscoveryServiceProvider
     {
         super();
 
-        Class        connectorClass = CSVDiscoveryService.class;
+        Class<?>   connectorClass = CSVDiscoveryService.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }

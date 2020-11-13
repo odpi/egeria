@@ -5,6 +5,7 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineAttribute;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -26,7 +27,7 @@ public class SpineAttributeMapper extends ClassificationMapper{
         super(omrsapiHelper);
     }
     @Override
-    protected Set<String> mapKnownAttributesToOmrs(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification, InstanceProperties omrsClassificationProperties) {
+    protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         return  new HashSet<>();
     }
 
@@ -40,7 +41,7 @@ public class SpineAttributeMapper extends ClassificationMapper{
         return new SpineAttribute();
     }
     @Override
-    protected InstanceProperties updateOMRSAttributes(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
+    protected InstanceProperties updateOMRSAttributes(Classification omasClassification) {
         return new InstanceProperties();
     }
 }

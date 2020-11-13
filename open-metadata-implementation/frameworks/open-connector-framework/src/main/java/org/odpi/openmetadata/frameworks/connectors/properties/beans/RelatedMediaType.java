@@ -26,34 +26,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum RelatedMediaType implements Serializable
 {
-    IMAGE(0,    "Image",    "The media is an image."),
-    AUDIO(1,    "Audio",    "The media is an audio recording."),
-    DOCUMENT(2, "Document", "The media is a text document - probably rich text."),
-    VIDEO(3,    "Video",    "The media is a video recording."),
-    OTHER(99,   "Other",    "The media type is not supported.");
+    IMAGE(0,    0,  "Image",    "The media is an image."),
+    AUDIO(1,    1,  "Audio",    "The media is an audio recording."),
+    DOCUMENT(2, 2,  "Document", "The media is a text document - probably rich text."),
+    VIDEO(3,    3,  "Video",    "The media is a video recording."),
+    OTHER(99,   99, "Other",    "The media type is not supported.");
+
+    public static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6fdffb257b56";
+    public static final String ENUM_TYPE_NAME  = "MediaType";
+
+    private int    openTypeOrdinal;
+
+    private int    ordinal;
+    private String name;
+    private String description;
 
     private static final long     serialVersionUID = 1L;
 
-    private int            mediaTypeCode;
-    private String         mediaTypeName;
-    private String         mediaTypeDescription;
-
 
     /**
-     * Typical Constructor
+     * Constructor to set up the instance of this enum.
      *
-     * @param mediaTypeCode ordinal
-     * @param mediaTypeName short name
-     * @param mediaTypeDescription longer explanation
+     * @param ordinal code number
+     * @param openTypeOrdinal code number from the equivalent Enum Type
+     * @param name default name
+     * @param description default description
      */
-    RelatedMediaType(int     mediaTypeCode, String   mediaTypeName, String    mediaTypeDescription)
+    RelatedMediaType(int    ordinal,
+                     int    openTypeOrdinal,
+                     String name,
+                     String description)
     {
-        /*
-         * Save the values supplied
-         */
-        this.mediaTypeCode = mediaTypeCode;
-        this.mediaTypeName = mediaTypeName;
-        this.mediaTypeDescription = mediaTypeDescription;
+        this.ordinal         = ordinal;
+        this.openTypeOrdinal = openTypeOrdinal;
+        this.name            = name;
+        this.description     = description;
     }
 
 
@@ -64,7 +71,7 @@ public enum RelatedMediaType implements Serializable
      */
     public int getOrdinal()
     {
-        return mediaTypeCode;
+        return ordinal;
     }
 
 
@@ -75,7 +82,7 @@ public enum RelatedMediaType implements Serializable
      */
     public String getName()
     {
-        return mediaTypeName;
+        return name;
     }
 
 
@@ -86,8 +93,35 @@ public enum RelatedMediaType implements Serializable
      */
     public String getDescription()
     {
-        return mediaTypeDescription;
+        return description;
     }
+
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 
     /**
@@ -99,9 +133,9 @@ public enum RelatedMediaType implements Serializable
     public String toString()
     {
         return "RelatedMediaType{" +
-                "mediaTypeCode=" + mediaTypeCode +
-                ", mediaTypeName='" + mediaTypeName + '\'' +
-                ", mediaTypeDescription='" + mediaTypeDescription + '\'' +
+                "mediaTypeCode=" + ordinal +
+                ", mediaTypeName='" + name + '\'' +
+                ", mediaTypeDescription='" + description + '\'' +
                 '}';
     }
 }

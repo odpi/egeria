@@ -7,7 +7,7 @@ Retrieve data view submitted based on internal id of the view.
 
 ```
 
-GET {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/dataview?dataViewId=
+GET {serverURLRoot}/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/dataview?dataViewId=
 
 where dataViewId is the internal id of the view submitted by the external tool
 

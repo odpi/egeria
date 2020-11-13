@@ -1,16 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-/**
- * This is the interface for the generic operations on data virtualization solutions
- */
+
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby;
 
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.ViewGeneratorConnectorBase;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby.auditlog.DerbyConnectorAuditCode;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby.auditlog.DerbyViewConnectorAuditCode;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.model.LogicTable;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.model.MappedColumn;
 import org.slf4j.Logger;
@@ -27,23 +26,26 @@ import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenera
 import static org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorUtils.BUSINESS_PREFIX;
 import static org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorUtils.TECHNICAL_PREFIX;
 
-
+/**
+ * This is the interface for the generic operations on data virtualization solutions
+ */
 public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(ViewGeneratorDerbyConnector.class);
-    private static String databaseUrl;
-    private static java.sql.Connection derbyConnection;
-    private static java.sql.Statement derbyStatement;
-    private static DerbyConnectorAuditCode auditCode;
+
+    private String              databaseUrl;
+    private java.sql.Connection derbyConnection;
+    private java.sql.Statement  derbyStatement;
+
     /*
-     * Variables fpr building the connection to the Derby database
+     * Variables for building the connection to the Derby database
      */
     private String serverAddress;
     private String username;
     private String password;
     private String isCreate;
     private String databaseName;
-    private int timeoutInSecond;
+    private int    timeoutInSecond;
     private String gdbNode;
     private String logicTableName;
     private String logicTableDefinition;
@@ -66,29 +68,22 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
         this.connectorInstanceId = connectorInstanceId;
         this.connectionProperties = connectionProperties;
 
-        AdditionalProperties additionalProperties = connectionProperties.getAdditionalProperties();
+        AdditionalProperties connectionAdditionalProperties = connectionProperties.getAdditionalProperties();
         EndpointProperties endpoint = connectionProperties.getEndpoint();
 
-        if (omrsAuditLog != null) {
-            auditCode = DerbyConnectorAuditCode.CONNECTOR_INITIALIZING;
-            omrsAuditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+        if (auditLog != null) {
+            auditLog.logMessage(actionDescription, DerbyViewConnectorAuditCode.CONNECTOR_INITIALIZING.getMessageDefinition());
         }
 
         if (endpoint != null) {
             serverAddress = endpoint.getAddress();
-            AdditionalProperties serverProperty = endpoint.getAdditionalProperties();
-            if (serverAddress != null && serverProperty != null) {
+            AdditionalProperties endpointAdditionalProperties = endpoint.getAdditionalProperties();
+            if (serverAddress != null && endpointAdditionalProperties != null) {
                 username = connectionProperties.getUserId();
                 password = connectionProperties.getClearPassword();
-                isCreate = serverProperty.getProperty("create");
-                databaseName = additionalProperties.getProperty("databaseName");
-                timeoutInSecond = Integer.parseInt(serverProperty.getProperty("timeoutInSecond"));
+                isCreate = endpointAdditionalProperties.getProperty("create");
+                databaseName = connectionAdditionalProperties.getProperty("databaseName");
+                timeoutInSecond = Integer.parseInt(endpointAdditionalProperties.getProperty("timeoutInSecond"));
                 databaseUrl = serverAddress + "/" + databaseName +
                         ";create=" + isCreate +
                         ";user=" + username +
@@ -98,64 +93,54 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
                 log.debug("The generated databased url is {}.", databaseUrl);
             } else {
                 log.error("Errors in the server configuration. The address of the server cannot be extracted");
-                if (omrsAuditLog != null) {
-                    auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
-                    omrsAuditLog.logRecord(actionDescription,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(),
-                            null,
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
+                if (auditLog != null) {
+                    String additionalPropertiesContents = "<null>";
+                    if (endpointAdditionalProperties != null)
+                    {
+                        additionalPropertiesContents = endpointAdditionalProperties.toString();
+                    }
+                    auditLog.logMessage(actionDescription,
+                                        DerbyViewConnectorAuditCode.ENDPOINT_CONFIGURATION_ERROR.getMessageDefinition(serverAddress,
+                                                                                                                      additionalPropertiesContents),
+                                        connectionProperties.toString());
                 }
             }
         } else {
-            log.error("Errors in server address. The endpoint containing the server address is invalid!");
-            if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            log.error("Errors in server address. The endpoint containing the server address is missing!");
+            if (auditLog != null) {
+                auditLog.logMessage(actionDescription,
+                                    DerbyViewConnectorAuditCode.NO_ENDPOINT.getMessageDefinition(),
+                                    connectionProperties.toString());
             }
         }
 
-        if (additionalProperties != null) {
-            logicTableName = additionalProperties.getProperty("logicTableName");
-            logicTableDefinition = additionalProperties.getProperty("logicTableDefinition");
-            gdbNode = additionalProperties.getProperty("gdbNode");
-            getLogicTablesQuery = additionalProperties.getProperty("getLogicTables");
-            gaianFrontendName = additionalProperties.getProperty("frontendName");
+        if (connectionAdditionalProperties != null) {
+            logicTableName = connectionAdditionalProperties.getProperty("logicTableName");
+            logicTableDefinition = connectionAdditionalProperties.getProperty("logicTableDefinition");
+            gdbNode = connectionAdditionalProperties.getProperty("gdbNode");
+            getLogicTablesQuery = connectionAdditionalProperties.getProperty("getLogicTables");
+            gaianFrontendName = connectionAdditionalProperties.getProperty("frontendName");
         } else {
             log.error("Errors in settings of the GaianDB");
-            if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNECTOR_LOGICAL_TABLE_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            if (auditLog != null) {
+                auditLog.logMessage(actionDescription,
+                                    DerbyViewConnectorAuditCode.CONNECTION_CONFIGURATION_ERROR.getMessageDefinition(),
+                                    connectionProperties.toString());
             }
         }
 
         createDerbyConnection();
 
-        if (derbyConnection != null && omrsAuditLog != null) {
-            auditCode = DerbyConnectorAuditCode.CONNECTOR_INITIALIZED;
-            omrsAuditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+        if (derbyConnection != null && auditLog != null) {
+            if (auditLog != null)
+            {
+                auditLog.logMessage(actionDescription,
+                                    DerbyViewConnectorAuditCode.CONNECTOR_INITIALIZED.getMessageDefinition(databaseName, serverAddress),
+                                    connectionProperties.toString());
+            }
         }
     }
+
 
     /**
      * Delete a table
@@ -176,15 +161,11 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
 
         } catch (SQLException e) {
             log.error("Error deleting table", e);
-            if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            if (auditLog != null) {
+                auditLog.logException(actionDescription,
+                                      DerbyViewConnectorAuditCode.CONNECTOR_QUERY_ERROR.getMessageDefinition(),
+                                      derbyStatement.toString(),
+                                      e);
             }
             return false;
         }
@@ -205,15 +186,11 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
 
         } catch (SQLException e) {
             log.error("Error in getting all the logic tables: ", e);
-            if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            if (auditLog != null) {
+                auditLog.logException(actionDescription,
+                                      DerbyViewConnectorAuditCode.CONNECTOR_QUERY_ERROR.getMessageDefinition(),
+                                      derbyStatement.toString(),
+                                      e);
             }
         }
         return logicTableList;
@@ -233,15 +210,11 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
             return true;
         } catch (SQLException e) {
             log.error("Error in executing a customized update!", e);
-            if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            if (auditLog != null) {
+                auditLog.logException(actionDescription,
+                                      DerbyViewConnectorAuditCode.CONNECTOR_QUERY_ERROR.getMessageDefinition(),
+                                      derbyStatement.toString(),
+                                      e);
             }
             return false;
         }
@@ -259,15 +232,8 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
         final String actionDescription = "processInformationViewTopic";
         if (tableContextEvent == null) {
             log.debug("Object TableContextEvent is null");
-            if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNECTOR_INBOUND_EVENT_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            if (auditLog != null) {
+                auditLog.logMessage(actionDescription, DerbyViewConnectorAuditCode.CONNECTOR_INBOUND_EVENT_ERROR.getMessageDefinition());
                 return Collections.emptyMap();
             }
         }
@@ -304,23 +270,23 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
     private void createDerbyConnection() {
 
         final String actionDescription = "createDerbyConnection";
+        final String driverClass = "org.apache.derby.jdbc.ClientDriver";
 
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+
+            Class.forName(driverClass).newInstance();
             //Get a connection
             derbyConnection = DriverManager.getConnection(databaseUrl);
             log.info("The connection to database is successfully established!");
         } catch (Exception e) {
             log.error("Error in creating the connection to derby: ", e);
-            if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_CONNECTION_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            if (auditLog != null) {
+                auditLog.logException(actionDescription,
+                                      DerbyViewConnectorAuditCode.CONNECTOR_SERVER_CONNECTION_ERROR.getMessageDefinition(databaseName,
+                                                                                                                         serverAddress,
+                                                                                                                         driverClass),
+                                      databaseUrl,
+                                      e);
             }
         }
     }
@@ -329,9 +295,7 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
     private LogicTable getMatchingTables(String gaianNodeName, List<String> tables) {
         log.debug("gaianNodeName: {}", gaianNodeName);
         log.debug("tables to match in gaian: {}", tables);
-        List<LogicTable> logicTableList = new ArrayList<>();
-
-        logicTableList = getAllLogicTables();
+        List<LogicTable> logicTableList = getAllLogicTables();
 
         if (logicTableList != null && !logicTableList.isEmpty()) {
             return logicTableList.stream().filter(e -> (e.getNodeName().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
@@ -391,11 +355,11 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
     /**
      * Set Logical Table mirroring the definition for the given Logical Table Name on another GaianDB node, so its data can be queried remotely.
      *
-     * @param logicalTableName
-     * @param gaianNodeName
+     * @param logicalTableName string name
+     * @param gaianNodeName string name
      */
     private void createMirroringLogicalTable(String logicalTableName, String gaianNodeName) {
-        log.debug("Set up Logical Table for Gaian node");
+        log.debug("Set up Logical Table {} for Gaian node {}", logicalTableName, gaianNodeName);
         String setLogicalTableForNode = "call setltfornode('" +
                 logicalTableName + "','" +
                 gaianNodeName + "')";
@@ -416,7 +380,7 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
             log.debug("Successfully created table {}", tableName);
             return tableName;
         } else {
-            log.error("Failed to create table {}" ,tableName);
+            log.error("Failed to create table {}", tableName);
         }
         return null;
     }
@@ -459,4 +423,23 @@ public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
         return statementForCreatingDataSource;
     }
 
+
+    /**
+     * Free up any resources held since the connector is no longer needed.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    public  void disconnect() throws ConnectorCheckedException
+    {
+        super.disconnect();
+
+        if (auditLog != null)
+        {
+            final String actionDescription = "Connector Disconnect";
+
+            auditLog.logMessage(actionDescription,
+                                DerbyViewConnectorAuditCode.CONNECTOR_SHUTDOWN.getMessageDefinition(databaseName, serverAddress),
+                                connectionProperties.toString());
+        }
+    }
 }

@@ -4,12 +4,21 @@
 # Administration Services Client
 
 The administration services client module contains the client
-implementation of the administration services.
+implementations of the administration services.
 
-This is not implemented yet.  See [git issue 284](https://github.com/odpi/egeria/issues/284).
+The clients are organized by server type.
+There are clients for the following server types.  Others will
+follow as new server types mature.
+
+ * Metadata Server
+ * Metadata Access Point
+ * Repository Proxy
+ * Conformance Test Server
+ * Discovery Server
+ * Stewardship Server
 
 
-
+Return to [Admin Services](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

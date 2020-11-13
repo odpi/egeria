@@ -10,10 +10,16 @@
     <parent>
         <artifactId>open-metadata-implementation</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>2.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Platform Services</name>
     <description>
@@ -24,6 +30,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>platform-services-api</module>
+        <module>platform-services-client</module>
         <module>platform-services-server</module>
         <module>platform-services-spring</module>
     </modules>

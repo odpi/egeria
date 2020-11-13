@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.admin.DigitalArchitectureAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
@@ -25,7 +25,7 @@ public class DigitalArchitectureRegistration
         AccessServiceDescription myDescription = AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  DigitalArchitectureAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

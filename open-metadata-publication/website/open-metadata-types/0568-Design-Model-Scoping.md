@@ -8,7 +8,7 @@ The **DesignModelScope** defines the subset of the model that
 is to be used.  It can then be passed to implementation generators
 to create artifacts for the project.
 
-![UML](0568-Design-Model-Scoping.png)
+![UML](0568-Design-Model-Scoping.png#pagewidth)
 
 Return to [Area 5](Area-5-models.md).
 

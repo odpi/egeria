@@ -21,7 +21,7 @@ public class FileBasedOpenMetadataArchiveStoreProvider extends OpenMetadataArchi
      */
     public FileBasedOpenMetadataArchiveStoreProvider()
     {
-        Class    connectorClass = FileBasedOpenMetadataArchiveStoreConnector.class;
+        Class<FileBasedOpenMetadataArchiveStoreConnector> connectorClass = FileBasedOpenMetadataArchiveStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

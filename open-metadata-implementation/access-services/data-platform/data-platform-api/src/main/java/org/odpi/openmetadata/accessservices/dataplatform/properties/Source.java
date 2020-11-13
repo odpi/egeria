@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.Map;
@@ -21,13 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
 @JsonSubTypes({@JsonSubTypes.Type(value = TableSource.class, name = "TableSource")})
-@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "@id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "guid")
+
 @JsonIdentityReference
+@Deprecated
 public abstract class Source {
 
     protected Map<String, String> additionalProperties;

@@ -22,7 +22,7 @@ public class DataFolderProvider extends ConnectorProviderBase
      */
     public DataFolderProvider()
     {
-        Class    connectorClass = DataFolderConnector.class;
+        Class<?>    connectorClass = DataFolderConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

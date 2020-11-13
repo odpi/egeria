@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Security Synchronization Services
 
 The security synchronization services are responsible for keeping a security

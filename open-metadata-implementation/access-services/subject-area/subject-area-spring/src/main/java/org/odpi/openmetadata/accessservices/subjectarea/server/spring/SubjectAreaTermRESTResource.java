@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaTermRESTServices;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -20,14 +22,15 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
-public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
-{
-    private SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
+@Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
+public class SubjectAreaTermRESTResource {
+    private final SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
+
     /**
      * Default constructor
      */
     public SubjectAreaTermRESTResource() {
-        //SubjectAreaRESTServicesInstance registers this omas.
+
     }
 
     /**
@@ -40,7 +43,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <p>
      * Failure to create the Terms classifications, link to its glossary or its icon, results in the create failing and the term being deleted
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId
      * @param suppliedTerm term to create
      * @return response, when successful contains the created term.
@@ -54,17 +57,19 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    @PostMapping( path = "/users/{userId}/terms")
-    public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody Term suppliedTerm) {
-        return restAPI.createTerm(serverName, userId,suppliedTerm);
+    @PostMapping(path = "/users/{userId}/terms")
+    public SubjectAreaOMASAPIResponse<Term> createTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @RequestBody Term suppliedTerm) {
+        return restAPI.createTerm(serverName, userId, suppliedTerm);
     }
 
     /**
      * Get a Term
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the term to get
      * @return response which when successful contains the term with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -74,22 +79,24 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/terms/{guid}")
-    public  SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
+    @GetMapping(path = "/users/{userId}/terms/{guid}")
+    public SubjectAreaOMASAPIResponse<Term> getTermByGuid(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String guid) {
         return restAPI.getTermByGuid(serverName, userId, guid);
     }
+
     /**
      * Find Term
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is no limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria     String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
+     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of Terms meeting the search Criteria
      *
@@ -100,30 +107,29 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/terms")
-    public  SubjectAreaOMASAPIResponse findTerm(@PathVariable String serverName, @PathVariable String userId,
-                                                @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
-                                                @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "offset", required=false) Integer offset,
-                                                @RequestParam(value = "pageSize", required=false) Integer pageSize,
-                                                @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
-    )  {
-        return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    @GetMapping(path = "/users/{userId}/terms")
+    public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
+                                                     @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
+        return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
-    /*
+    /**
      * Get Term relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param guid               guid of the term to get
+     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the term relationships
      * when not successful the following Exception responses can occur
@@ -136,16 +142,17 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      */
 
 
-    @GetMapping( path = "/users/{userId}/terms/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                            @PathVariable String guid,
-                                                            @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                            @RequestParam(value = "offset", required=false) Integer offset,
-                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
-                                                            @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                            @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
-                                                            ) {
-        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    @GetMapping(path = "/users/{userId}/terms/{guid}/relationships")
+    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                 @PathVariable String guid,
+                                                                 @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                 @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                 @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                 @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+
+    ) {
+        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -153,7 +160,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <p>
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
      * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
@@ -167,10 +174,16 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @PutMapping( path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestBody Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    @PutMapping(path = "/users/{userId}/terms/{guid}")
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String guid,
+                                                       @RequestBody Term suppliedTerm,
+                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    ) {
         return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
     }
+
     /**
      * Delete a Term instance
      * <p>
@@ -182,10 +195,10 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * A hard delete means that the term will not exist after the operation.
      * when not successful the following Exception responses can occur
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId  userId under which the request is performed
-     * @param guid    guid of the term to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     userId under which the request is performed
+     * @param guid       guid of the term to be deleted.
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -195,21 +208,23 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    @DeleteMapping( path = "/users/{userId}/terms/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
-        if (isPurge == null) {
-            // default to soft delete if isPurge is not specified.
-            isPurge = false;
-        }
+    @DeleteMapping(path = "/users/{userId}/terms/{guid}")
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String guid,
+                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    ) {
         return restAPI.deleteTerm(serverName, userId, guid, isPurge);
     }
+
     /**
      * Restore a Term
-     *
+     * <p>
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the term to delete
@@ -223,9 +238,36 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @PostMapping( path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse restoreTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
-    {
+    @PostMapping(path = "/users/{userId}/terms/{guid}")
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(@PathVariable String serverName,
+                                                        @PathVariable String userId,
+                                                        @PathVariable String guid) {
         return restAPI.restoreTerm(serverName, userId, guid);
+    }
+
+    /**
+     * Get the Categories categorizing this Term. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of categories categorizing this Term
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @GetMapping(path = "/users/{userId}/terms/{guid}/categories")
+    public SubjectAreaOMASAPIResponse<Category> getTermCategories(@PathVariable String serverName,
+                                                                  @PathVariable String userId,
+                                                                  @PathVariable String guid,
+                                                                  @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+
+        return restAPI.getTermCategories(serverName, userId, guid, startingFrom, pageSize);
     }
 }

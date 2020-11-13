@@ -2,12 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The OpenMetadataSecurityAuditCode is used to define the message content for the OMRS Audit Log.
@@ -22,7 +20,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum OpenMetadataSecurityAuditCode
+public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
 {
     PLATFORM_INITIALIZING("OPEN-METADATA-SECURITY-0001",
                          OMRSAuditLogRecordSeverity.STARTUP,
@@ -99,48 +97,55 @@ public enum OpenMetadataSecurityAuditCode
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_ASSET_CHANGE("OPEN-METADATA-SECURITY-0012",
+    UNAUTHORIZED_ASSET_CREATE("OPEN-METADATA-SECURITY-0012",
+                               OMRSAuditLogRecordSeverity.SECURITY,
+                              "User {0} is not authorized to create an asset of type {1}",
+                              "The security service detected an unauthorized create of an asset.",
+                              "Review the security policies and settings to determine if this create should be allowed or not." +
+                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+
+    UNAUTHORIZED_ASSET_CHANGE("OPEN-METADATA-SECURITY-0013",
                               OMRSAuditLogRecordSeverity.SECURITY,
                               "User {0} is not authorized to change asset {1}",
                               "The security service detected an unauthorized access to an asset.",
                               "Review the security policies and settings to determine if this access should be allowed or not." +
                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    INCOMPLETE_ASSET(         "OPEN-METADATA-SECURITY-0013 ",
+    INCOMPLETE_ASSET(         "OPEN-METADATA-SECURITY-0014",
                               OMRSAuditLogRecordSeverity.SECURITY,
                               "User {0} is not authorized to change asset {1} because it has missing properties",
                               "The system is unable to process a request from the user because the asset is not correctly or completely filled out.",
                               "The request fails with a UserNotAuthorizedException exception."),
 
-    UNAUTHORIZED_TYPE_ACCESS("OPEN-METADATA-SECURITY-0014",
+    UNAUTHORIZED_TYPE_ACCESS("OPEN-METADATA-SECURITY-0015",
                               OMRSAuditLogRecordSeverity.SECURITY,
                               "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
                               "The security service detected an unauthorized access of an open metadata type.",
                               "Review the security policies and settings to determine if this access should be allowed or not." +
                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_TYPE_CHANGE("OPEN-METADATA-SECURITY-0015",
+    UNAUTHORIZED_TYPE_CHANGE("OPEN-METADATA-SECURITY-0016",
                              OMRSAuditLogRecordSeverity.SECURITY,
                              "User {0} is not authorized to change open metadata type {1} ({2}) on server {3}",
                              "The security service detected an unauthorized change of an open metadata type.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_CREATE("OPEN-METADATA-SECURITY-0016",
+    UNAUTHORIZED_INSTANCE_CREATE("OPEN-METADATA-SECURITY-0017",
                                  OMRSAuditLogRecordSeverity.SECURITY,
                                  "User {0} is not authorized to create an open metadata instance of type {1} on server {2}",
                                  "The security service detected an unauthorized access of an open metadata type.",
                                  "Review the security policies and settings to determine if this access should be allowed or not." +
                                          "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0017",
+    UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0018",
                              OMRSAuditLogRecordSeverity.SECURITY,
                              "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                              "The security service detected an unauthorized access of an open metadata type.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_CHANGE("OPEN-METADATA-SECURITY-0018",
+    UNAUTHORIZED_INSTANCE_CHANGE("OPEN-METADATA-SECURITY-0019",
                              OMRSAuditLogRecordSeverity.SECURITY,
                              "User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}",
                              "The security service detected an unauthorized change of an open metadata instance.",
@@ -153,8 +158,6 @@ public enum OpenMetadataSecurityAuditCode
     private String                     logMessage;
     private String                     systemAction;
     private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(OpenMetadataSecurityAuditCode.class);
 
 
     /**
@@ -185,72 +188,55 @@ public enum OpenMetadataSecurityAuditCode
     }
 
 
+
+
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
      *
-     * @return logMessageId
+     * @return message definition object.
      */
-    public String getLogMessageId()
+    public AuditLogMessageDefinition getMessageDefinition()
     {
-        return logMessageId;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
     /**
-     * Return the severity of the audit log record.
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
-     * @return OMRSAuditLogRecordSeverity enum
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
-        return severity;
-    }
-
-    /**
-     * Returns the log message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the logMessage
-     * @return logMessage (formatted with supplied parameters)
-     */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== OpenMetadataSecurityAuditCode.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> OpenMetadataSecurityAuditCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 
 
     /**
-     * Returns instructions of how to resolve the issue reported in this exception.
+     * JSON-style toString
      *
-     * @return userAction String
+     * @return string of property names and values for this enum
      */
-    public String getUserAction()
+    @Override
+    public String toString()
     {
-        return userAction;
+        return "OpenMetadataSecurityAuditCode{" +
+                "logMessageId='" + logMessageId + '\'' +
+                ", severity=" + severity +
+                ", logMessage='" + logMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                '}';
     }
 }

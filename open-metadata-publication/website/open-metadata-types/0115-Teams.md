@@ -14,7 +14,7 @@ A team can have multiple leaders and members.  These roles extend from
 Figure 1 captures the team profile, the team hierarchy and the
 roles within the team.
 
-![UML](0115-Teams.png)
+![UML](0115-Teams.png#pagewidth)
 > Figure 1: Describing a team
 
 

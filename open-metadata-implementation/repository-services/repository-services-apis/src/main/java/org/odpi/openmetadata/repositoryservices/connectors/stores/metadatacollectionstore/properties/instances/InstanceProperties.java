@@ -236,21 +236,16 @@ public class InstanceProperties extends InstanceElementHeader
      */
     public void setProperty(String newPropertyName, InstancePropertyValue newPropertyValue)
     {
+        final String methodName = "setProperty";
+
         if (newPropertyName == null)
         {
-        /*
-         * Build and throw exception.
-         */
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_PROPERTY_NAME;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
+            /*
+             * Build and throw exception.
+             */
+            throw new OMRSRuntimeException(OMRSErrorCode.NULL_PROPERTY_NAME.getMessageDefinition(),
                                            this.getClass().getName(),
-                                           "setProperty",
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
         else if (newPropertyValue == null)
         {

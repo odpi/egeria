@@ -8,6 +8,8 @@ package org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions;
  */
 public class RESTConfigurationException extends RESTClientCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *

@@ -76,10 +76,10 @@ public class Comment implements Serializable {
          // Terminate the list
          null
     };
-    public static final Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
-    public static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
-    public static final Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
-    public static final Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+    public static final Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
+    public static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
+    public static final Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
+    public static final Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
 
 
     InstanceProperties obtainInstanceProperties() {
@@ -200,10 +200,10 @@ public class Comment implements Serializable {
             sb.append("systemAttributes='").append(systemAttributes.toString()).append('\'');
         }
         sb.append("Comment Attributes{");
-    	sb.append("Comment=" +this.comment);
-    	sb.append("CommentType=" +this.commentType);
-    	sb.append("QualifiedName=" +this.qualifiedName);
-    	sb.append("AdditionalProperties=" +this.additionalProperties);
+    	sb.append("Comment=").append(this.comment);
+    	sb.append("CommentType=").append(this.commentType);
+    	sb.append("QualifiedName=").append(this.qualifiedName);
+    	sb.append("AdditionalProperties=").append(this.additionalProperties);
 
         sb.append('}');
         if (classifications != null) {

@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "d2b3c000-e146-4c56-9776-bd16e7292e85",
+		"name": "Egeria-asset-owner-omas",
+		"description": "Requests for configuring an OMAG Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get names of the subtypes of Asset",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/sub-types",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"sub-types"
+					]
+				},
+				"description": "Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the names of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to."
+			},
+			"response": []
+		},
+		{
+			"name": "Get details of the subtypes of Asset",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/sub-types/descriptions",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"sub-types",
+						"descriptions"
+					]
+				},
+				"description": "Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the details of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a CSV Asset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\"       : \"NewCSVFileAssetRequestBody\",\n\t\"displayName\" : \"My CSV File\",\n\t\"description\" : \"This is a test CSV file description added with Postman.\",\n\t\"fullPath\"    : \"home/my-table.csv\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/data-files/csv",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"data-files",
+						"csv"
+					]
+				},
+				"description": "Add an asset definition for a CSV file"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Assets by name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "home/my-table.csv",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/by-name?startFrom=0&pageSize=10",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Return a list of assets with the requested name."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Assets by search string",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ".*home.*",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/by-search-string?startFrom=0&pageSize=10",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Return a list of assets with the requested search string in their name, qualified name or description."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

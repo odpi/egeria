@@ -14,9 +14,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.securityofficerservices.auditlog.SecurityOfficerAuditCode;
+import org.odpi.openmetadata.securityofficerservices.ffdc.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.securityofficerservices.listener.SecurityOfficerEventListener;
 import org.odpi.openmetadata.securityofficerservices.processor.SecurityOfficerEventProcessor;
 import org.slf4j.Logger;
@@ -95,19 +95,12 @@ public class SecurityOfficerOperationalServices {
 
             return topicConnector;
         } catch (Exception error) {
-            String methodName = "getTopicConnector";
+            final String methodName = "getTopicConnector";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+            throw new OMRSConfigErrorException(SecurityOfficerErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(methodName),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               error);
 
         }
     }

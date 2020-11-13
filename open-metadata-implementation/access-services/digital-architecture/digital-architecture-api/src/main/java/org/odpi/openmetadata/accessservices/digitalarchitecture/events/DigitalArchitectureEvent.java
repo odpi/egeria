@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.DigitalService;
 
 import java.util.Objects;
 
@@ -20,9 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     private DigitalArchitectureEventType eventType              = null;
-    private DigitalService               originalDigitalService = null;
-    private DigitalService               digitalService         = null;
 
 
     /**
@@ -46,8 +45,6 @@ public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
         if (template != null)
         {
             this.eventType = template.getEventType();
-            this.digitalService = template.getDigitalService();
-            this.originalDigitalService = template.getOriginalDigitalService();
         }
     }
 
@@ -73,63 +70,6 @@ public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
     }
 
 
-    /**
-     * Return the original digital service description.
-     *
-     * @return properties about the digitalService
-     */
-    public DigitalService getOriginalDigitalService()
-    {
-        if (originalDigitalService == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new DigitalService(originalDigitalService);
-        }
-    }
-
-
-    /**
-     * Set up the original digital service description.
-     *
-     * @param originalDigitalService - properties about the digitalService.
-     */
-    public void setOriginalDigitalService(DigitalService originalDigitalService)
-    {
-        this.originalDigitalService = originalDigitalService;
-    }
-
-
-    /**
-     * Return the digital service description.
-     *
-     * @return properties about the digitalService
-     */
-    public DigitalService getDigitalService()
-    {
-        if (digitalService == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new DigitalService(digitalService);
-        }
-    }
-
-
-    /**
-     * Set up the digital service description.
-     *
-     * @param digitalService - properties about the digitalService.
-     */
-    public void setDigitalService(DigitalService digitalService)
-    {
-        this.digitalService = digitalService;
-    }
-
 
     /**
      * JSON-style toString
@@ -141,8 +81,6 @@ public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
     {
         return "DigitalArchitectureEvent{" +
                 "eventType=" + eventType +
-                ", originalDigitalService=" + originalDigitalService +
-                ", digitalService=" + digitalService +
                 ", eventVersionId=" + getEventVersionId() +
                 '}';
     }
@@ -170,9 +108,7 @@ public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
             return false;
         }
         DigitalArchitectureEvent that = (DigitalArchitectureEvent) objectToCompare;
-        return getEventType() == that.getEventType() &&
-                Objects.equals(getOriginalDigitalService(), that.getOriginalDigitalService()) &&
-                Objects.equals(getDigitalService(), that.getDigitalService());
+        return getEventType() == that.getEventType();
     }
 
 
@@ -184,6 +120,6 @@ public class DigitalArchitectureEvent extends DigitalArchitectureEventHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getEventType(), getOriginalDigitalService(), getDigitalService());
+        return Objects.hash(super.hashCode(), getEventType());
     }
 }

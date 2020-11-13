@@ -15,9 +15,15 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 9443
+      targetPort: 9443
       nodePort: {{ .Values.service.nodeport.datalake }}
+    {{ if .Values.debug.egeriaJVM }}
+    - name: debug
+      port: 5005
+      targetPort: 5005
+      nodePort: {{ .Values.service.nodeport.debug.datalake }}
+    {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -57,13 +63,24 @@ spec:
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.egeria.name }}\
-                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+                  :{{ .Values.image.egeria.tag | default .Values.egeria.version }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
+          env:
+            {{ if .Values.debug.egeriaJVM }}
+            - name: JAVA_DEBUG
+              value:  "true"
+            {{ end }}
           ports:
-            - containerPort: 8080
+            - containerPort: 9443
+          {{ if .Values.debug.egeriaJVM }}
+            - containerPort: 5005
+          {{ end }}
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: 9443
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6

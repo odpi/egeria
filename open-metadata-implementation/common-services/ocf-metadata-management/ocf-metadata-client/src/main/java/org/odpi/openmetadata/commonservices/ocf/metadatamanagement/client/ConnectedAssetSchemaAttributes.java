@@ -7,8 +7,6 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.SchemaAt
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaLink;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +18,8 @@ import java.util.List;
  */
 public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
@@ -145,9 +145,9 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                                                                                              cacheStartPointer,
                                                                                              maximumSize);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             List<SchemaAttribute> schemaAttributes = restResult.getList();
             if ((schemaAttributes == null) || (schemaAttributes.isEmpty()))
@@ -162,28 +162,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                 {
                     if (schemaAttribute != null)
                     {
-                        SchemaType schemaTypeBean = schemaAttribute.getAttributeType();
-                        SchemaLink schemaLinkBean = schemaAttribute.getExternalAttributeType();
-
-                        if (schemaTypeBean != null)
-                        {
-                            AssetSchemaType assetSchemaType = connectedAsset.getAssetSchemaType(serviceName,
-                                                                                                serverName,
-                                                                                                omasServerURL,
-                                                                                                userId,
-                                                                                                schemaTypeBean,
-                                                                                                restClient);
-
-                            resultList.add(new AssetSchemaAttribute(connectedAsset,
-                                                                    schemaAttribute,
-                                                                    assetSchemaType));
-                        }
-                        else if (schemaLinkBean != null)
-                        {
-                            resultList.add(new AssetSchemaAttribute(connectedAsset,
-                                                                    schemaAttribute,
-                                                                    new AssetSchemaLink(schemaLinkBean)));
-                        }
+                        resultList.add(new AssetSchemaAttribute(connectedAsset, schemaAttribute));
                     }
                 }
 

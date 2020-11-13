@@ -1,0 +1,34 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
+
+dependencies {
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation 'ch.qos.logback:logback-classic'
+    testImplementation 'org.testng:testng'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'Open Metadata Types'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveWriter'
+    archiveClassifier = 'jar-with-dependencies'
+}

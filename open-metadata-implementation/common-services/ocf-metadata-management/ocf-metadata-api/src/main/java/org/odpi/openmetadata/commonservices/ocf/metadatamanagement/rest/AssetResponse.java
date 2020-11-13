@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.La
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -39,6 +40,7 @@ public class AssetResponse extends OCFOMASAPIResponse
     private int            informalTagCount           = 0;
     private int            licenseCount               = 0;
     private int            likeCount                  = 0;
+    private int            keywordCount               = 0;
     private int            knownLocationsCount        = 0;
     private int            noteLogsCount              = 0;
     private int            ratingsCount               = 0;
@@ -77,6 +79,7 @@ public class AssetResponse extends OCFOMASAPIResponse
             this.informalTagCount           = template.getInformalTagCount();
             this.licenseCount               = template.getLicenseCount();
             this.likeCount                  = template.getLikeCount();
+            this.keywordCount               = template.getKeywordCount();
             this.knownLocationsCount        = template.getKnownLocationsCount();
             this.noteLogsCount              = template.getNoteLogsCount();
             this.ratingsCount               = template.getRatingsCount();
@@ -287,6 +290,27 @@ public class AssetResponse extends OCFOMASAPIResponse
 
 
     /**
+     * Return the count of keywords for the asset.
+     *
+     * @return count
+     */
+    public int getKeywordCount()
+    {
+        return keywordCount;
+    }
+
+
+    /**
+     * Set up the count of keywords for the asset.
+     *
+     * @param keywordCount count
+     */
+    public void setKeywordCount(int keywordCount)
+    {
+        this.keywordCount = keywordCount;
+    }
+
+    /**
      * Return the count of known locations.
      *
      * @return count
@@ -465,15 +489,18 @@ public class AssetResponse extends OCFOMASAPIResponse
                 ", relatedMediaReferenceCount=" + relatedMediaReferenceCount +
                 ", schemaType=" + schemaType +
                 ", lastAttachment=" + lastAttachment +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +
                 '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.

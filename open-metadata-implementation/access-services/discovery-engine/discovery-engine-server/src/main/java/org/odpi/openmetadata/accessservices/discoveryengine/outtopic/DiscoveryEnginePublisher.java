@@ -3,12 +3,12 @@
 
 package org.odpi.openmetadata.accessservices.discoveryengine.outtopic;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEngineAuditCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineAuditCode;
 import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngineConfigurationEvent;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngineEventType;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryServiceConfigurationEvent;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class DiscoveryEnginePublisher
 {
-    DiscoveryEngineOutTopicServerConnector outTopicServerConnector;
-    OMRSAuditLog                           outTopicAuditLog;
-    String                                 outTopicName;
+    private DiscoveryEngineOutTopicServerConnector outTopicServerConnector;
+    private AuditLog                               outTopicAuditLog;
+    private String                                 outTopicName;
 
-    final String actionDescription = "Out topic configuration refresh event publishing";
+    private final String actionDescription = "Out topic configuration refresh event publishing";
 
     /**
      * Constructor for the publisher.
@@ -32,7 +32,7 @@ public class DiscoveryEnginePublisher
      */
     public DiscoveryEnginePublisher(DiscoveryEngineOutTopicServerConnector outTopicServerConnector,
                                     String                                 outTopicName,
-                                    OMRSAuditLog                           outTopicAuditLog)
+                                    AuditLog                               outTopicAuditLog)
     {
         this.outTopicServerConnector = outTopicServerConnector;
         this.outTopicAuditLog        = outTopicAuditLog;
@@ -40,15 +40,7 @@ public class DiscoveryEnginePublisher
 
         if (outTopicAuditLog != null)
         {
-            DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.SERVICE_PUBLISHING;
-
-            outTopicAuditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(outTopicName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+            outTopicAuditLog.logMessage(actionDescription, DiscoveryEngineAuditCode.SERVICE_PUBLISHING.getMessageDefinition(outTopicName));
         }
     }
 
@@ -59,8 +51,8 @@ public class DiscoveryEnginePublisher
      * @param discoveryEngineGUID unique identifier for the discovery engine
      * @param discoveryEngineName unique name for the discovery engine
      */
-    public void publishRefreshDiscoveryEngineEvent(String discoveryEngineGUID,
-                                                   String discoveryEngineName)
+    void publishRefreshDiscoveryEngineEvent(String discoveryEngineGUID,
+                                            String discoveryEngineName)
     {
         final String methodName = "publishRefreshDiscoveryEngineEvent";
 
@@ -78,15 +70,9 @@ public class DiscoveryEnginePublisher
 
                 if (outTopicAuditLog != null)
                 {
-                    DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.REFRESH_DISCOVERY_ENGINE;
-
-                    outTopicAuditLog.logRecord(actionDescription,
-                                               auditCode.getLogMessageId(),
-                                               auditCode.getSeverity(),
-                                               auditCode.getFormattedLogMessage(discoveryEngineName, discoveryEngineGUID),
-                                               null,
-                                               auditCode.getSystemAction(),
-                                               auditCode.getUserAction());
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                DiscoveryEngineAuditCode.REFRESH_DISCOVERY_ENGINE.getMessageDefinition(discoveryEngineName,
+                                                                                                                       discoveryEngineGUID));
                 }
             }
             catch (Exception error)
@@ -106,10 +92,10 @@ public class DiscoveryEnginePublisher
      * @param discoveryRequestTypes list of discovery request types that trigger the instantiation of the
      *                              discovery service
      */
-    public void publishRefreshDiscoveryServiceEvent(String       discoveryEngineGUID,
-                                                    String       discoveryEngineName,
-                                                    String       registeredDiscoveryServiceGUID,
-                                                    List<String> discoveryRequestTypes)
+    void publishRefreshDiscoveryServiceEvent(String       discoveryEngineGUID,
+                                             String       discoveryEngineName,
+                                             String       registeredDiscoveryServiceGUID,
+                                             List<String> discoveryRequestTypes)
     {
         final String methodName = "publishRefreshDiscoveryServiceEvent";
 
@@ -129,18 +115,11 @@ public class DiscoveryEnginePublisher
 
                 if (outTopicAuditLog != null)
                 {
-                    DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.REFRESH_DISCOVERY_SERVICE;
-
-                    outTopicAuditLog.logRecord(actionDescription,
-                                               auditCode.getLogMessageId(),
-                                               auditCode.getSeverity(),
-                                               auditCode.getFormattedLogMessage(discoveryEngineName,
-                                                                                discoveryEngineGUID,
-                                                                                discoveryRequestTypes.toString(),
-                                                                                registeredDiscoveryServiceGUID),
-                                               null,
-                                               auditCode.getSystemAction(),
-                                               auditCode.getUserAction());
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                DiscoveryEngineAuditCode.REFRESH_DISCOVERY_SERVICE.getMessageDefinition(discoveryEngineName,
+                                                                                                                        discoveryEngineGUID,
+                                                                                                                        discoveryRequestTypes.toString(),
+                                                                                                                        registeredDiscoveryServiceGUID));
                 }
             }
             catch (Exception error)
@@ -167,17 +146,10 @@ public class DiscoveryEnginePublisher
 
         if (outTopicAuditLog != null)
         {
-            DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.OUT_TOPIC_FAILURE;
-
             outTopicAuditLog.logException(actionDescription,
-                                          auditCode.getLogMessageId(),
-                                          auditCode.getSeverity(),
-                                          auditCode.getFormattedLogMessage(outTopicName,
-                                                                           error.getClass().getName(),
-                                                                           error.getMessage()),
-                                          null,
-                                          auditCode.getSystemAction(),
-                                          auditCode.getUserAction(),
+                                          DiscoveryEngineAuditCode.OUT_TOPIC_FAILURE.getMessageDefinition(outTopicName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          error.getMessage()),
                                           error);
         }
     }
@@ -194,32 +166,17 @@ public class DiscoveryEnginePublisher
 
             if (outTopicAuditLog != null)
             {
-                DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.PUBLISHING_SHUTDOWN;
-
-                outTopicAuditLog.logRecord(actionDescription,
-                                           auditCode.getLogMessageId(),
-                                           auditCode.getSeverity(),
-                                           auditCode.getFormattedLogMessage(outTopicName),
-                                           null,
-                                           auditCode.getSystemAction(),
-                                           auditCode.getUserAction());
+                outTopicAuditLog.logMessage(actionDescription, DiscoveryEngineAuditCode.PUBLISHING_SHUTDOWN.getMessageDefinition(outTopicName));
             }
         }
         catch (Throwable error)
         {
             if (outTopicAuditLog != null)
             {
-                DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.PUBLISHING_SHUTDOWN_ERROR;
-
                 outTopicAuditLog.logException(actionDescription,
-                                              auditCode.getLogMessageId(),
-                                              auditCode.getSeverity(),
-                                              auditCode.getFormattedLogMessage(error.getClass().getName(),
-                                                                               outTopicName,
-                                                                               error.getMessage()),
-                                              null,
-                                              auditCode.getSystemAction(),
-                                              auditCode.getUserAction(),
+                                              DiscoveryEngineAuditCode.PUBLISHING_SHUTDOWN_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                      outTopicName,
+                                                                                                                      error.getMessage()),
                                               error);
             }
         }

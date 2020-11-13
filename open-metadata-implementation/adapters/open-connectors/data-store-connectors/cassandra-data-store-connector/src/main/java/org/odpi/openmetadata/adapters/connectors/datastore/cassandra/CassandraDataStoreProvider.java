@@ -25,7 +25,7 @@ public class CassandraDataStoreProvider extends ConnectorProviderBase
      */
     public CassandraDataStoreProvider()
     {
-        Class    connectorClass = CassandraDataStoreConnector.class;
+        Class<?> connectorClass = CassandraDataStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

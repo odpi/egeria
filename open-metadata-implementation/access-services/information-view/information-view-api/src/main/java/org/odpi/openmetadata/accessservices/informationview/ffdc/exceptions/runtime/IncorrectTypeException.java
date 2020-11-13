@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class IncorrectTypeException extends InformationViewExceptionBase {
 
+    private static final long    serialVersionUID = 1L;
 
     public IncorrectTypeException(String className, String errorMessage, String systemAction, String userAction,
                                   Throwable caughtError) {

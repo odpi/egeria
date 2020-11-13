@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
+
+![Released](../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Open Metadata Conformance Suite
 
 The open metadata conformance suite provides a testing framework to help the developers
@@ -44,7 +46,8 @@ The internal design is described in the [design section](design).
 ![Egeria Conformant Mark](docs/egeria-conformance-mark.png)
 
 
-
+----
+Return to [home page](../index.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

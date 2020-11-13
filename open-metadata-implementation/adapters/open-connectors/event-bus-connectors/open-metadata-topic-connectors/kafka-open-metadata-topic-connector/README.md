@@ -1,4 +1,7 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
   
 # Kafka Open Metadata Topic Connector
 
@@ -23,6 +26,8 @@ Java Objects as JSON payloads.
 | max.request.size | 10485760 |
 | key.serializer | org.apache.kafka.common.serialization.StringSerializer |
 | value.serializer | org.apache.kafka.common.serialization.StringSerializer |
+| bring.up.retries | 10 |
+| bring.up.minSleepTime | 5000 |
 
 ## Consumer
 
@@ -37,6 +42,8 @@ Java Objects as JSON payloads.
 | max.partition.fetch.bytes | 10485760 |
 | key.deserializer | org.apache.kafka.common.serialization.StringDeserializer |
 | value.deserializer| org.apache.kafka.common.serialization.StringDeserializer |
+| bring.up.retries | 10 |
+| bring.up.minSleepTime | 5000 |
 
 #  Security
 
@@ -60,31 +67,59 @@ There are 2 key pieces of information that are provided in the documentation for
 "sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='token' password='MYAPIKEY';",
 "sasl.mechanism":"PLAIN"
 ```
-An example of a use of this configuration can be found in the virtual data connector helm charts. See [odpi-egeria-vdc helm chart](../../../../../../open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-vdc/README.md) 
+An example of a use of this configuration can be found in the virtual data connector helm charts. See [odpi-egeria-vdc helm chart](https://github.com/odpi/egeria-samples/tree/master/helm-charts/odpi-egeria-vdc/README.md)
+
+## Handling Kafka Cluster Bring Up Issues
+
+In some environments users have encountered issues when the Kafka Cluster hasn't become fully available, when attempting a connection to the Kafka Cluster.
+The Egeria KafkaTopicConnector provides a mechanism that verifies that the Kafka Cluster is actually running brokers before attempting to connect.
+This mechanism is controlled by two properties.
+
+* bring.up.retries
+* bring.up.minSleepTime
+
+bring.up.retries 
+defaults to 10 and specifies the number of times the Egeria KafkaTopicConnector will retry verification before reporting a failure.
+ 
+bring.up.minSleepTime is set to 5000ms by default and is the minimum amount of time to wait before attempting a verification retry. 
+If a Kafka verification attempt takes longer than this value the KafkaTopicConnector does not pause before retring the verification.
 
 ## Topic Creation
 
-In addition many enterprise kafka services do not allow automatic topic creation
+In addition many enterprise kafka services do not allow automatic topic creation.
 
 You will need to manually create topics of the following form
 
-BASE_TOPIC_NAME is the value used for topicURLRoot when configuring the egeria event bus. For example 'egeria'
+BASE_TOPIC_NAME is the value used for topicURLRoot when configuring the egeria event bus. For example, the default
+value is `egeria`.
 
 ### Cohort topics
 
-For each cohort being used (such as cocoCohort):
+For each cohort being used (such as `cocoCohort`):
  * BASE_TOPIC_NAME.omag.openmetadata.repositoryservices.cohort.COHORT_NAME.OMRSTopic
  
 ### OMAS Topics
-These need to be done FOR EACH SERVER configured in the environment. (For example for coco pharmaceuticals this might include cocoMDS1, cocoMDS2, cocoMDS3 etc).
+These need to be done FOR EACH SERVER configured to run one or more OMASs.
+(For example for Coco Pharmaceuticals this might include `cocoMDS1`, `cocoMDS2`, `cocoMDS3` etc).
 
-It also needs to be done FOR EACH OMAS configured (assetconsumer, dataplatform, governanceengine etc)
+FOR EACH OMAS configured (eg Asset Consumer OMAS, Data Platform OMAS, Governance Engine OMAS etc)
 
- * BASE_TOPIC_NAME.omag.server.SERVER_NAME.omas.OMAS_NAME.inTopic
+ * BASE_TOPIC_NAME.omag.server.SERVER_NAME.omas.OMAS_NAME.InTopic
  * BASE_TOPIC_NAME.omag.server.SERVER_NAME.omas.OMAS_NAME.OutTopic
 
 
 One way to configure is to initially run against a kafka service which allows auto topic creation, then make note of the kafka
 topics that have been created - so that they can be replicated on the restricted setup.
 
-In addition review the Egeria Audit Log for any events beginning OCF-KAFKA_TOPIC_CONNECTOR so that action may be taken if for example topics are found to be missing.
+In addition review the Egeria Audit Log for any events beginning OCF-KAFKA-TOPIC-CONNECTOR so that
+action may be taken if for example topics are found to be missing.
+
+
+----
+Return to the [open-metadata-topic-connectors](..) module.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

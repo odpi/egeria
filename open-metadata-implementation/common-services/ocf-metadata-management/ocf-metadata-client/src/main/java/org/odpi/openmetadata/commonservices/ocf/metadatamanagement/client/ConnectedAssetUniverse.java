@@ -25,6 +25,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
  */
 public class ConnectedAssetUniverse extends AssetUniverse
 {
+    private static final long    serialVersionUID = 1L;
+
     private final int MAX_CACHE_SIZE = 100;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -460,9 +462,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                          assetGUID,
                                                          connectionGUID);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException error)
         {
@@ -518,9 +520,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                          userId,
                                                          assetGUID);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException error)
         {
@@ -547,12 +549,12 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
      * @return subtype of AssetSchemaType
      */
-    AssetSchemaType    getAssetSchemaType(String     serviceName,
-                                          String     remoteServerName,
-                                          String     omasServerURL,
-                                          String     userId,
-                                          SchemaType bean,
-                                          OCFRESTClient restClient)
+    private AssetSchemaType    getAssetSchemaType(String     serviceName,
+                                                  String     remoteServerName,
+                                                  String     omasServerURL,
+                                                  String     userId,
+                                                  SchemaType bean,
+                                                  OCFRESTClient restClient)
     {
         if (bean == null)
         {
@@ -569,34 +571,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                        (ComplexSchemaType)bean,
                                                        restClient);
         }
-        else if (bean instanceof MapSchemaType)
-        {
-            return new ConnectedAssetMapSchemaType(serviceName,
-                                                   remoteServerName,
-                                                   omasServerURL,
-                                                   userId,
-                                                   this,
-                                                   (MapSchemaType)bean,
-                                                   restClient);
-        }
-        else if (bean instanceof PrimitiveSchemaType)
-        {
-            return new AssetPrimitiveSchemaType(this, (PrimitiveSchemaType) bean);
-        }
-        else if (bean instanceof BoundedSchemaType)
-        {
-            return new ConnectedAssetBoundedSchemaType(serviceName,
-                                                       remoteServerName,
-                                                       omasServerURL,
-                                                       userId,
-                                                       this,
-                                                       (BoundedSchemaType)bean,
-                                                       restClient);
-        }
         else
         {
-            return new AssetSchemaType(this, bean);
+            return AssetSchemaType.createAssetSchemaType(this, bean);
         }
     }
-    
 }

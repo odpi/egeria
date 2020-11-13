@@ -6,7 +6,7 @@
 Schema link elements allow a schema to reference an external schema.
 This could be a schema from an external standard or tool.
 
-![UML](0510-Schema-Link-Element.png)
+![UML](0510-Schema-Link-Element.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

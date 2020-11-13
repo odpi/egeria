@@ -18,7 +18,7 @@ In addition, some connectors are virtual connectors - by that we mean they imple
 and internally use one of more technical connectors as part of their implementation.
 The metadata repository can reflect these connection relationships using a **VirtualConnection**.
 
-![UML](0205-Connection-Linkage.png)
+![UML](0205-Connection-Linkage.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

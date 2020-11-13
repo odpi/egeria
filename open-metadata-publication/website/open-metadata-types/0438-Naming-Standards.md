@@ -5,7 +5,7 @@
 
 Naming standards provide means for classifying glossary terms to allow naming rules to use them.
 
-![UML](0438-Naming-Standards.png)
+![UML](0438-Naming-Standards.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

@@ -32,11 +32,13 @@ public class GlossaryViewClient extends OmasClient {
     private static final String GET_CATEGORY_HOME_GLOSSARY = PATH_ROOT + "/categories/{2}/home-glossary";
     private static final String GET_GLOSSARY_EXTERNAL_GLOSSARY_LINKS = PATH_ROOT + "/glossaries/{2}/external-glossary-links" + PARAM_DELIMITER + PAGINATION;
 
+    private static final String GET_CATEGORIES = PATH_ROOT + "/categories";
     private static final String GET_CATEGORY = PATH_ROOT + "/categories/{2}";
     private static final String GET_CATEGORIES_OF_GLOSSARY = PATH_ROOT + "/glossaries/{2}/categories";
     private static final String GET_SUBCATEGORIES = PATH_ROOT + "/categories/{2}/subcategories";
     private static final String GET_CATEGORY_EXTERNAL_GLOSSARY_LINKS = PATH_ROOT + "/categories/{2}/external-glossary-links" + PARAM_DELIMITER + PAGINATION;
 
+    private static final String GET_TERMS = PATH_ROOT + "/terms" + PARAM_DELIMITER + "from={2}&size={3}";
     private static final String GET_TERM = PATH_ROOT + "/terms/{2}";
     private static final String GET_TERMS_OF_GLOSSARY = PATH_ROOT + "/glossaries/{2}/terms";
     private static final String GET_TERMS_OF_CATEGORY = PATH_ROOT + "/categories/{2}/terms";
@@ -102,6 +104,50 @@ public class GlossaryViewClient extends OmasClient {
 
         GlossaryViewEntityDetailResponse response = getMultipleEntitiesPagedResponse("getAllGlossaries",
                 GET_GLOSSARIES, serverName, userId, from, size);
+
+        return castOmasResult(response.getResult());
+    }
+
+    /**
+     * Extract all glossaryTerms definitions
+     *
+     * @param userId calling user
+     * @param from starting index
+     * @param size max number of returned entities
+     *
+     * @return EntityDetailResponse glossaries
+     *
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     */
+    public List<GlossaryTerm> getAllGlossaryTerms(String userId, Integer from, Integer size)
+            throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
+
+        GlossaryViewEntityDetailResponse response = getMultipleEntitiesPagedResponse("getAllGlossaryTerms",
+                GET_TERMS, serverName, userId, from, size);
+
+        return castOmasResult(response.getResult());
+    }
+
+    /**
+     * Extract all categories definitions
+     *
+     * @param userId calling user
+     * @param from starting index
+     * @param size max number of returned entities
+     *
+     * @return EntityDetailResponse glossaries
+     *
+     * @throws PropertyServerException if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     * @throws GlossaryViewOmasException if a problem occurs on the omas backend
+     */
+    public List<GlossaryCategory> getAllCategories(String userId, Integer from, Integer size)
+            throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
+
+        GlossaryViewEntityDetailResponse response = getMultipleEntitiesPagedResponse("getAllCategories",
+                GET_CATEGORIES, serverName, userId, from, size);
 
         return castOmasResult(response.getResult());
     }

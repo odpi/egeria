@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataEngineProxyConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long    serialVersionUID = 2L;
 
     /* Properties needed to call the access service REST APIs */
     private String     accessServiceRootURL    = null;
@@ -31,9 +31,11 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
 
     private Connection dataEngineConnection    = null;
     private int        pollIntervalInSeconds   = 60;
+    private int        batchWindowInSeconds    = 86400;
+    private boolean    eventsClientEnabled     = false;
 
     /**
-     * Default constuctor
+     * Default constructor
      */
     public DataEngineProxyConfig() {
         super();
@@ -50,6 +52,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
             this.accessServiceServerName = template.accessServiceServerName;
             this.dataEngineConnection    = template.dataEngineConnection;
             this.pollIntervalInSeconds   = template.pollIntervalInSeconds;
+            this.batchWindowInSeconds    = template.batchWindowInSeconds;
         }
     }
 
@@ -106,6 +109,23 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
     public void setPollIntervalInSeconds(int pollIntervalInSeconds) { this.pollIntervalInSeconds = pollIntervalInSeconds; }
 
     /**
+     * Provide the maximum number of seconds to include for a window of polling. When polling, the proxy will only look
+     * for changes from the last sync time through to the max sync time + this number of seconds, to ensure that the
+     * batches of results being polled do not become too large. Note that this is only used by Data Engine Connectors
+     * that require polling in order to find changes.
+     * @return int
+     */
+    public int getBatchWindowInSeconds() { return batchWindowInSeconds; }
+
+    /**
+     * Set the number of seconds across which to include results for a window of polling. Note that this is only used
+     * by Data Engine Connectors that require polling in order to find changes.
+     * @param batchWindowInSeconds the number of seconds to include in each polling window
+     * @see #getBatchWindowInSeconds()
+     */
+    public void setBatchWindowInSeconds(int batchWindowInSeconds) { this.batchWindowInSeconds = batchWindowInSeconds; }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -127,5 +147,22 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
         return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(),
                 getDataEngineConnection(), getPollIntervalInSeconds());
     }
+
+    /**
+     * Configuration parameter controlling events client usage in the Data Engine Proxy server
+     * @return true if enabled
+     */
+    public boolean isEventsClientEnabled() {
+        return eventsClientEnabled;
+    }
+
+    /**
+     * Sets configuration parameter controlling events client usage in the Data Engine Proxy server
+     * @param eventsClientEnabled
+     */
+    public void setEventsClientEnabled(boolean eventsClientEnabled) {
+        this.eventsClientEnabled = eventsClientEnabled;
+    }
+
 
 }

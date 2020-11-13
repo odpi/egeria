@@ -13,8 +13,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CanonicalTaxonomy extends Taxonomy{
-    String scope = null;
+public class CanonicalTaxonomy extends Taxonomy {
+    private String scope = null;
 
     public CanonicalTaxonomy() {
         nodeType = NodeType.TaxonomyAndCanonicalGlossary;

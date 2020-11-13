@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
-import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -19,7 +19,7 @@ import java.util.Map;
 public interface AssetOnboardingFileSystem
 {
     /**
-     * Files live on a file system.  This method creates a top level anchor for a file system.
+     * Files live on a file system.  This method creates a top level parent for a file system.
      *
      * @param userId calling user
      * @param uniqueName qualified name for the file system
@@ -55,12 +55,12 @@ public interface AssetOnboardingFileSystem
 
 
     /**
-     * Creates a new folder asset for each element in the pathName that is linked from the anchor entity.
+     * Creates a new folder asset for each element in the pathName that is linked from the parent entity.
      * For example, a pathName of "one/two/three" creates 3 new folder assets, one called "one", the next called
      * "one/two" and the last one called "one/two/three".
      *
      * @param userId calling user
-     * @param anchorGUID root object to connect the folder to
+     * @param parentGUID root object to connect the folder to
      * @param pathName pathname of the folder (or folders)
      *
      * @return list of GUIDs from the top level to the leaf of the supplied pathname
@@ -70,7 +70,7 @@ public interface AssetOnboardingFileSystem
      * @throws UserNotAuthorizedException security access problem
      */
     List<String> createFolderStructureInCatalog(String   userId,
-                                                String   anchorGUID,
+                                                String   parentGUID,
                                                 String   pathName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException;
@@ -264,25 +264,25 @@ public interface AssetOnboardingFileSystem
 
 
     /**
-     * Retrieve a FileSystem asset by its unique identifier (GUID).
+     * Retrieve a FileSystemProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param fileSystemGUID unique identifier used to locate the file system
      *
-     * @return FileSystem properties
+     * @return FileSystemElement properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    FileSystem getFileSystemByGUID(String   userId,
-                                   String   fileSystemGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    FileSystemElement getFileSystemByGUID(String   userId,
+                                          String   fileSystemGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
-     * Retrieve a FileSystem asset by its unique name.
+     * Retrieve a FileSystemProperties asset by its unique name.
      *
      * @param userId calling user
      * @param uniqueName unique name ofr the file system
@@ -293,10 +293,10 @@ public interface AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    FileSystem getFileSystemByUniqueName(String   userId,
-                                         String   uniqueName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+    FileSystemElement getFileSystemByUniqueName(String   userId,
+                                                String   uniqueName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**
@@ -320,21 +320,21 @@ public interface AssetOnboardingFileSystem
 
 
     /**
-     * Retrieve a Folder asset by its unique identifier (GUID).
+     * Retrieve a FolderProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return Folder properties
+     * @return FolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    Folder getFolderByGUID(String   userId,
-                           String   folderGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException;
+    FolderElement getFolderByGUID(String   userId,
+                                  String   folderGUID) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException;
 
 
     /**
@@ -343,23 +343,23 @@ public interface AssetOnboardingFileSystem
      * @param userId calling user
      * @param pathName path name
      *
-     * @return Folder properties
+     * @return FolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    Folder getFolderByPathName(String   userId,
-                               String   pathName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException;
+    FolderElement getFolderByPathName(String   userId,
+                                      String   pathName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
 
 
     /**
      * Return the list of folders nested inside a folder.
      *
      * @param userId calling user
-     * @param anchorGUID unique identifier of the anchor folder or file system
+     * @param parentGUID unique identifier of the parent folder or file system
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
@@ -370,7 +370,7 @@ public interface AssetOnboardingFileSystem
      * @throws UserNotAuthorizedException security access problem
      */
     List<String>  getNestedFolders(String  userId,
-                                   String  anchorGUID,
+                                   String  parentGUID,
                                    int     startingFrom,
                                    int     maxPageSize) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
@@ -381,7 +381,7 @@ public interface AssetOnboardingFileSystem
      * Get the data files inside a folder - both those that are nested and those that are linked.
      *
      * @param userId calling user
-     * @param folderGUID unique identifier of the anchor folder
+     * @param folderGUID unique identifier of the parent folder
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *

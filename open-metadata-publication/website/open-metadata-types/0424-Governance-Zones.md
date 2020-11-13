@@ -6,7 +6,7 @@
 A **GovernanceZone** describes a collection of Assets that are used, or processed in a specific way.
 An Asset may belong to many Governance Zones.
 
-![UML](0424-Governance-Zones.png)
+![UML](0424-Governance-Zones.png#pagewidth)
 
 Return to [Area 4](Area-4-models.md).
 

@@ -6,11 +6,15 @@
 Model 0503 shows the relationship between an [Asset](0010-Base-Model.md)
 and a [SchemaType](0501-Schema-Elements.md).
 
-A physical data store may be made up of one or more Assets.
-Each of these Assets may point to the appropriate SchemaType that describes
-the structure of the Asset.
+When an asset is linked to a schema type it means that the schema type describes
+the structure of the Asset. 
 
-![UML](0503-Asset-Schema.png)
+The schema type can not be shared between different assets.
+If you are cataloging multiple assets with the same data structure, you can use
+a template which will copy the schema structure from the template asset to the new asset.
+(See [Templated Cataloging](../cataloging-assets/templated-cataloging.md) for more details.
+
+![UML](0503-Asset-Schema.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

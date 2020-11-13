@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 
 /**
@@ -16,8 +17,10 @@ public class OMRSTopicProvider extends ConnectorProviderBase
      */
     public OMRSTopicProvider()
     {
-        Class    connectorClass = OMRSTopicConnector.class;
+        Class<OMRSTopicConnector>    connectorClass = OMRSTopicConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorComponentDescription(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR);
+
     }
 }

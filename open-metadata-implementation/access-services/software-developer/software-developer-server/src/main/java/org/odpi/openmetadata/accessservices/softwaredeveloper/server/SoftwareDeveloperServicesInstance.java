@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.softwaredeveloper.server;
 
 import org.odpi.openmetadata.accessservices.softwaredeveloper.ffdc.SoftwareDeveloperErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * SoftwareDeveloperServicesInstance caches references to objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class SoftwareDeveloperServicesInstance extends OCFOMASServiceInstance
+public class SoftwareDeveloperServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.SOFTWARE_DEVELOPER_OMAS;
 
@@ -33,13 +33,14 @@ public class SoftwareDeveloperServicesInstance extends OCFOMASServiceInstance
      */
     public SoftwareDeveloperServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                              List<String>            supportedZones,
-                                             OMRSAuditLog            auditLog,
+                                             AuditLog                auditLog,
                                              String                  localServerUserId,
                                              int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               supportedZones,
+              null,
               null,
               auditLog,
               localServerUserId,
@@ -53,15 +54,9 @@ public class SoftwareDeveloperServicesInstance extends OCFOMASServiceInstance
         }
         else
         {
-            SoftwareDeveloperErrorCode errorCode    = SoftwareDeveloperErrorCode.OMRS_NOT_INITIALIZED;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(SoftwareDeveloperErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }

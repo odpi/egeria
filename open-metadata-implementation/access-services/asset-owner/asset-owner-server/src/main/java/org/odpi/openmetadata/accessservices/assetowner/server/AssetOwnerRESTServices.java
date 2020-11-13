@@ -3,47 +3,131 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.OwnerType;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * AssetOwner provides the generic client-side interface for the Asset Owner Open Metadata Access Service (OMAS).
- * There are other clients that provide specialized methods for specific types of Asset.
- *
- * This client is initialized with the URL and name of the server that is running the Asset Owner OMAS.
- * This server is responsible for locating and managing the asset owner's definitions exchanged with this client.
+ * AssetOwnerRESTServices provides part of the server-side support for the Asset Owner Open Metadata Access Service (OMAS).
+ * There are other REST services that provide specialized methods for specific types of Asset.
  */
 public class AssetOwnerRESTServices
 {
-    private static AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
+    private static AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
     private static RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger              restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AssetOwnerRESTServices.class),
-                                                                                   instanceHandler.getServiceName());
+    private static RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetOwnerRESTServices.class),
+                                                                                         instanceHandler.getServiceName());
+
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Default constructor
      */
     public AssetOwnerRESTServices()
     {
+    }
+
+
+    /*
+     * ==============================================
+     * AssetKnowledgeInterface
+     * ==============================================
+     */
+
+    /**
+     * Return the asset subtype names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public NameListResponse  getTypesOfAsset(String serverName,
+                                             String userId)
+    {
+        final String   methodName = "getTypesOfAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NameListResponse response = new NameListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            response.setNames(handler.getTypesOfAssetList());
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the asset subtype names with their descriptions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public StringMapResponse getTypesOfAssetDescriptions(String serverName,
+                                                         String userId)
+    {
+        final String   methodName = "getTypesOfAssetDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringMapResponse response = new StringMapResponse();
+        AuditLog          auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            response.setStringMap(handler.getTypesOfAssetDescriptions());
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -70,30 +154,58 @@ public class AssetOwnerRESTServices
     public GUIDResponse  addAssetToCatalog(String           serverName,
                                            String           userId,
                                            String           typeName,
-                                           AssetRequestBody requestBody)
+                                           AssetProperties  requestBody)
     {
-        final String   methodName = "addAssetToCatalog";
+        final String methodName                 = "addAssetToCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                handler.addAsset(userId,
-                                 typeName,
-                                 requestBody.getQualifiedName(),
-                                 requestBody.getDisplayName(),
-                                 requestBody.getDescription(),
-                                 requestBody.getAdditionalProperties(),
-                                 requestBody.getExtendedProperties(),
-                                 methodName);
+                String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+
+                if (typeName != null)
+                {
+                    assetTypeName = typeName;
+                }
+
+                String assetTypeGUID = invalidParameterHandler.validateTypeName(assetTypeName,
+                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                instanceHandler.getServiceName(),
+                                                                                methodName,
+                                                                                instanceHandler.getRepositoryHelper(userId, serverName, methodName));
+
+                int ownerTypeOrdinal = 0;
+
+                if (requestBody.getOwnerType() != null)
+                {
+                    ownerTypeOrdinal = requestBody.getOwnerType().getOpenTypeOrdinal();
+                }
+                response.setGUID(handler.createAssetInRepository(userId,
+                                                                 null,
+                                                                 null,
+                                                                 requestBody.getQualifiedName(),
+                                                                 requestBody.getDisplayName(),
+                                                                 requestBody.getDescription(),
+                                                                 requestBody.getZoneMembership(),
+                                                                 requestBody.getOwner(),
+                                                                 ownerTypeOrdinal,
+                                                                 requestBody.getOriginOrganizationGUID(),
+                                                                 requestBody.getOriginBusinessCapabilityGUID(),
+                                                                 requestBody.getOtherOriginValues(),
+                                                                 requestBody.getAdditionalProperties(),
+                                                                 assetTypeGUID,
+                                                                 assetTypeName,
+                                                                 requestBody.getExtendedProperties(),
+                                                                 methodName));
             }
             else
             {
@@ -110,45 +222,68 @@ public class AssetOwnerRESTServices
     }
 
 
+
     /**
-     * Links the supplied schema to the asset.  If the schema is not defined in the metadata repository, it
-     * is created.
+     * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.  If more attributes need to be added in addition to the
+     * ones supplied then this can be done with addSchemaAttributesToSchemaType().
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param requestBody schema to attach - a new schema is always created because schema can not be shared
-     *                   between assets.
+     * @param requestBody schema type to create and attach directly to the asset.
      *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
+     * @return guid of the schema type or
+     * InvalidParameterException full path or userId is null, or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public GUIDResponse   addSchemaToAsset(String             serverName,
-                                           String             userId,
-                                           String             assetGUID,
-                                           SchemaRequestBody  requestBody)
+    public GUIDResponse   addCombinedSchemaToAsset(String                    serverName,
+                                                   String                    userId,
+                                                   String                    assetGUID,
+                                                   CombinedSchemaRequestBody requestBody)
     {
-        final String   methodName = "addSchemaToAsset";
+        final String   methodName = "addCombinedSchemaToAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                if (requestBody.getSchemaType() != null)
+                {
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                handler.saveAssociatedSchemaType(userId,
-                                                 assetGUID,
-                                                 requestBody.getSchemaType(),
-                                                 requestBody.getSchemaAttributes(),
-                                                 methodName);
+                    response.setGUID(this.addAssociatedSchemaType(userId,
+                                                                  serverName,
+                                                                  assetGUID,
+                                                                  requestBody.getSchemaType(),
+                                                                  methodName));
+
+
+                    if (requestBody.getSchemaAttributes() != null)
+                    {
+                        for (SchemaAttributeProperties schemaAttributeProperties : requestBody.getSchemaAttributes())
+                        {
+                            this.addAssociatedSchemaAttribute(userId,
+                                                              serverName,
+                                                              assetGUID,
+                                                              response.getGUID(),
+                                                              schemaAttributeProperties,
+                                                              methodName);
+                        }
+                    }
+                }
+                else
+                {
+                    final String parameterName = "requestBody.getSchemaType()";
+
+                    restExceptionHandler.handleMissingValue(parameterName, methodName);
+                }
             }
             else
             {
@@ -166,42 +301,42 @@ public class AssetOwnerRESTServices
 
 
     /**
-     * Adds attributes to a complex schema type like a relational table or a structured document.
-     * This method can be called repeatedly to add many attributes to a schema.
+     * Stores the supplied schema type in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param schemaTypeGUID unique identifier if the schema to anchor these attributes to.
-     * @param requestBody list of schema attribute objects.
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody schema type to create and attach directly to the asset.
      *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
+     * @return guid of the new schema type or
+     * InvalidParameterException full path or userId is null, or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse   addSchemaAttributesToSchema(String                 serverName,
-                                                      String                 userId,
-                                                      String                 schemaTypeGUID,
-                                                      List<SchemaAttribute>  requestBody)
+    public GUIDResponse   addSchemaTypeToAsset(String               serverName,
+                                               String               userId,
+                                               String               assetGUID,
+                                               SchemaTypeProperties requestBody)
     {
-        final String   methodName = "addSchemaAttributesToSchema";
+        final String   methodName = "addSchemaTypeToAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                SchemaTypeHandler      handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
-
-                handler.saveSchemaAttributes(userId,
-                                             schemaTypeGUID,
-                                             requestBody,
-                                             methodName);
+                response.setGUID(this.addAssociatedSchemaType(userId,
+                                                              serverName,
+                                                              assetGUID,
+                                                              requestBody,
+                                                              methodName));
             }
             else
             {
@@ -216,6 +351,607 @@ public class AssetOwnerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+    /**
+     * Stores the supplied schema type in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody schema type to create and attach directly to the asset.
+     *
+     * @return guid of the new schema type or
+     * InvalidParameterException full path or userId is null, or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public GUIDResponse   addSchemaTypeToAsset(String                serverName,
+                                               String                userId,
+                                               String                assetGUID,
+                                               SchemaTypeRequestBody requestBody)
+    {
+        final String   methodName = "addSchemaTypeToAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getSchemaTypeProperties() != null)
+                {
+                    response.setGUID(this.addAssociatedSchemaType(userId,
+                                                                  serverName,
+                                                                  assetGUID,
+                                                                  requestBody.getSchemaTypeProperties(),
+                                                                  methodName));
+                }
+                else
+                {
+                    final String parameterName = "requestBody.getSchemaTypeProperties()";
+
+                    restExceptionHandler.handleMissingValue(parameterName, methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Request that the asset handler creates a schema type and links it to the asset.
+     *
+     * @param userId calling user
+     * @param serverName name of the server instance to connect to
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaType properties for a schema type
+     * @param methodName calling method
+     * @return unique identifier of the newly created schema type
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException calling user is not permitted to perform this operation
+     * @throws PropertyServerException there was a problem in one of the repositories
+     */
+    private String addAssociatedSchemaType(String               userId,
+                                           String               serverName,
+                                           String               assetGUID,
+                                           SchemaTypeProperties schemaType,
+                                           String               methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String assetGUIDParameterName = "assetGUID";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+        SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+
+        String typeId = invalidParameterHandler.validateTypeName(schemaType.getTypeName(),
+                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                 instanceHandler.getServiceName(),
+                                                                 methodName,
+                                                                 instanceHandler.getRepositoryHelper(userId, serverName, methodName));
+
+        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(schemaType.getQualifiedName(),
+                                                                    schemaType.getDisplayName(),
+                                                                    schemaType.getDescription(),
+                                                                    schemaType.getVersionNumber(),
+                                                                    schemaType.getIsDeprecated(),
+                                                                    schemaType.getAuthor(),
+                                                                    schemaType.getUsage(),
+                                                                    schemaType.getEncodingStandard(),
+                                                                    schemaType.getNamespace(),
+                                                                    schemaType.getAdditionalProperties(),
+                                                                    typeId,
+                                                                    schemaType.getTypeName(),
+                                                                    schemaType.getExtendedProperties(),
+                                                                    handler.getRepositoryHelper(),
+                                                                    handler.getServiceName(),
+                                                                    serverName);
+        if (assetGUID != null)
+        {
+            schemaTypeBuilder.setAnchors(userId, assetGUID, methodName);
+        }
+
+        String schemaTypeGUID = handler.addSchemaType(userId,
+                                                      null,
+                                                      null,
+                                                      schemaTypeBuilder,
+                                                      methodName);
+
+        if (schemaTypeGUID != null)
+        {
+            handler.linkElementToElement(userId,
+                                         null,
+                                         null,
+                                         assetGUID,
+                                         assetGUIDParameterName,
+                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                         schemaTypeGUID,
+                                         schemaTypeGUIDParameterName,
+                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                         OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                         OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                         null,
+                                         methodName);
+        }
+
+        return schemaTypeGUID;
+    }
+
+
+    /**
+     * Create a schema attribute and attach it to the supplied parent schema type.  This method has 3 parts to it.
+     * First to create the schema attribute.  Then to link the schema attribute to its parent schema so that the attribute
+     * count value is visible as soon as possible.  Finally to determine the style of type for the attribute - is it directly linked or
+     * is it indirectly linked through a schema link entity - and create these elements.
+     *
+     * @param userId calling user
+     * @param serverName this server
+     * @param assetGUID anchor GUID for the new schema type
+     * @param schemaAttribute properties for the new attribute
+     * @param methodName calling method
+     * @return unique identifier for the schema type
+     * @throws InvalidParameterException one of the properties is invalid
+     * @throws UserNotAuthorizedException the calling user is not authorized to perform this request
+     * @throws PropertyServerException there was a problem in the repositories
+     */
+    private String addAssociatedSchemaAttribute(String                    userId,
+                                                String                    serverName,
+                                                String                    assetGUID,
+                                                String                    schemaTypeGUID,
+                                                SchemaAttributeProperties schemaAttribute,
+                                                String                    methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler =
+                instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
+
+        String schemaAttributeGUID = null;
+
+        if (schemaAttribute != null)
+        {
+            int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+
+            if (schemaAttribute.getSortOrder() != null)
+            {
+                sortOrder = schemaAttribute.getSortOrder().getOpenTypeOrdinal();
+            }
+
+            SchemaAttributeBuilder schemaAttributeBuilder =
+                    new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(),
+                                               schemaAttribute.getDisplayName(),
+                                               schemaAttribute.getDescription(),
+                                               schemaAttribute.getElementPosition(),
+                                               schemaAttribute.getMinCardinality(),
+                                               schemaAttribute.getMaxCardinality(),
+                                               schemaAttribute.getIsDeprecated(),
+                                               schemaAttribute.getDefaultValueOverride(),
+                                               schemaAttribute.getAllowsDuplicateValues(),
+                                               schemaAttribute.getOrderedValues(),
+                                               sortOrder,
+                                               schemaAttribute.getMinimumLength(),
+                                               schemaAttribute.getLength(),
+                                               schemaAttribute.getPrecision(),
+                                               schemaAttribute.getIsNullable(),
+                                               schemaAttribute.getNativeJavaClass(),
+                                               schemaAttribute.getAliases(),
+                                               schemaAttribute.getAdditionalProperties(),
+                                               null,
+                                               schemaAttribute.getTypeName(),
+                                               schemaAttribute.getExtendedProperties(),
+                                               handler.getRepositoryHelper(),
+                                               handler.getServiceName(),
+                                               serverName);
+
+            if (assetGUID != null)
+            {
+                schemaAttributeBuilder.setAnchors(userId, assetGUID, methodName);
+            }
+
+            if (schemaAttribute.getAttributeType() != null)
+            {
+                SchemaTypeProperties schemaTypeProperties = schemaAttribute.getAttributeType();
+                SchemaTypeBuilder attributeSchemaTypeBuilder = new SchemaTypeBuilder(schemaTypeProperties.getQualifiedName(),
+                                                                                     schemaTypeProperties.getDisplayName(),
+                                                                                     schemaTypeProperties.getDescription(),
+                                                                                     schemaTypeProperties.getVersionNumber(),
+                                                                                     schemaTypeProperties.getIsDeprecated(),
+                                                                                     schemaTypeProperties.getAuthor(),
+                                                                                     schemaTypeProperties.getUsage(),
+                                                                                     schemaTypeProperties.getEncodingStandard(),
+                                                                                     schemaTypeProperties.getNamespace(),
+                                                                                     schemaTypeProperties.getAdditionalProperties(),
+                                                                                     null,
+                                                                                     schemaTypeProperties.getTypeName(),
+                                                                                     schemaTypeProperties.getExtendedProperties(),
+                                                                                     handler.getRepositoryHelper(),
+                                                                                     handler.getServiceName(),
+                                                                                     serverName);
+
+                attributeSchemaTypeBuilder.setAnchors(userId, assetGUID, methodName);
+                schemaAttributeBuilder.setSchemaType(userId, attributeSchemaTypeBuilder, methodName);
+
+                final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+                final String qualifiedNameParameterName = "schemaAttribute.getQualifiedName()";
+
+                schemaAttributeGUID = handler.createNestedSchemaAttribute(userId,
+                                                                          null,
+                                                                          null,
+                                                                          schemaTypeGUID,
+                                                                          schemaTypeGUIDParameterName,
+                                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                          schemaAttribute.getQualifiedName(),
+                                                                          qualifiedNameParameterName,
+                                                                          schemaAttributeBuilder,
+                                                                          methodName);
+            }
+            else
+            {
+                final String parameterName = "attribute schema type";
+
+                restExceptionHandler.handleMissingValue(parameterName, methodName);
+            }
+        }
+
+        return schemaAttributeGUID;
+    }
+
+
+    /**
+     * Links the supplied schema type directly to the asset.  If this schema is either not found, or
+     * already attached to an asset, then an error occurs.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaTypeGUID unique identifier of the schema type to attach
+     * @param requestBody null
+     *
+     * @return void or
+     * InvalidParameterException full path or userId or one of the GUIDs is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse   attachSchemaTypeToAsset(String            serverName,
+                                                  String            userId,
+                                                  String            assetGUID,
+                                                  String            schemaTypeGUID,
+                                                  NullRequestBody   requestBody)
+    {
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   schemaTypeGUIDParameterName = "schemaTypeGUID";
+        final String   methodName = "attachSchemaTypeToAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.attachSchemaTypeToAsset(userId,
+                                            null,
+                                            null,
+                                            assetGUID,
+                                            assetGUIDParameterName,
+                                            schemaTypeGUID,
+                                            schemaTypeGUIDParameterName,
+                                            methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody null
+     *
+     * @return guid of the schema type or
+     * InvalidParameterException full path or userId or one of the GUIDs is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @SuppressWarnings(value = "unused")
+    public GUIDResponse   detachSchemaTypeFromAsset(String          serverName,
+                                                    String          userId,
+                                                    String          assetGUID,
+                                                    NullRequestBody requestBody)
+    {
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   methodName = "detachSchemaTypeFromAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            response.setGUID(handler.detachSchemaTypeFromAsset(userId,
+                                                               null,
+                                                               null,
+                                                               assetGUID,
+                                                               assetGUIDParameterName,
+                                                               methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detaches and deletes an asset's schema.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param requestBody null
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null, or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse  deleteAssetSchemaType(String          serverName,
+                                               String          userId,
+                                               String          assetGUID,
+                                               NullRequestBody requestBody)
+    {
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   methodName             = "deleteAssetSchemaType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.removeAssociatedSchemaType(userId,
+                                               null,
+                                               null,
+                                               assetGUID,
+                                               assetGUIDParameterName,
+                                               methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.
+     * The schema type may be attached both directly or indirectly via nested schema elements to the asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param requestBody list of schema attribute objects.
+     *
+     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addSchemaAttributes(String                      serverName,
+                                            String                      userId,
+                                            String                      assetGUID,
+                                            String                      parentGUID,
+                                            SchemaAttributesRequestBody requestBody)
+    {
+        final String   methodName = "addSchemaAttributes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if ((requestBody != null)
+                    && (requestBody.getSchemaAttributeProperties() != null)
+                    && (! requestBody.getSchemaAttributeProperties().isEmpty()))
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                for (SchemaAttributeProperties schemaAttributeProperties : requestBody.getSchemaAttributeProperties())
+                {
+                    this.addAssociatedSchemaAttribute(userId,
+                                                      serverName,
+                                                      assetGUID,
+                                                      parentGUID,
+                                                      schemaAttributeProperties,
+                                                      methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.
+     * The schema type may be attached both directly or indirectly via nested schema elements to the asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param requestBody list of schema attribute objects.
+     *
+     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addSchemaAttributes(String                          serverName,
+                                            String                          userId,
+                                            String                          assetGUID,
+                                            String                          parentGUID,
+                                            List<SchemaAttributeProperties> requestBody)
+    {
+        final String   methodName = "addSchemaAttributes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if ((requestBody != null) && (! requestBody.isEmpty()))
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                for (SchemaAttributeProperties schemaAttributeProperties : requestBody)
+                {
+                    this.addAssociatedSchemaAttribute(userId,
+                                                      serverName,
+                                                      assetGUID,
+                                                      parentGUID,
+                                                      schemaAttributeProperties,
+                                                      methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.
+     * The schema type may be attached both directly or indirectly via nested schema elements to the asset.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param requestBody schema attribute object.
+     *
+     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDResponse addSchemaAttribute(String                     serverName,
+                                           String                     userId,
+                                           String                     assetGUID,
+                                           String                     parentGUID,
+                                           SchemaAttributeProperties  requestBody)
+    {
+        final String   methodName = "addSchemaAttribute";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                response.setGUID(this.addAssociatedSchemaAttribute(userId,
+                                                                   serverName,
+                                                                   assetGUID,
+                                                                   parentGUID,
+                                                                   requestBody,
+                                                                   methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
 
 
@@ -240,27 +976,42 @@ public class AssetOwnerRESTServices
                                              ConnectionRequestBody requestBody)
     {
         final String   methodName = "addConnectionToAsset";
+        final String   assetGUIDParameterName = "assetGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
                 String     assetSummary = requestBody.getShortDescription();
-                Connection connection = requestBody.getConnection();
+                Connection connection   = requestBody.getConnection();
 
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                if (connection != null)
+                {
+                    ConnectionHandler<OpenMetadataAPIDummyBean> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
-                handler.saveAssociatedConnection(userId,
-                                                 assetGUID,
-                                                 assetSummary,
-                                                 connection,
-                                                 methodName);
+                    connectionHandler.saveConnection(userId,
+                                                     null,
+                                                     null,
+                                                     assetGUID,
+                                                     assetGUID,
+                                                     assetGUIDParameterName,
+                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     connection,
+                                                     assetSummary,
+                                                     methodName);
+                }
+                else
+                {
+                    final String connectionParameterName = "requestBody.getConnection()";
+                    restExceptionHandler.handleMissingValue(connectionParameterName, methodName);
+                }
             }
             else
             {
@@ -299,18 +1050,21 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  addSemanticAssignment(String          serverName,
                                                String          userId,
                                                String          assetGUID,
                                                String          glossaryTermGUID,
                                                NullRequestBody requestBody)
     {
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   glossaryTermGUIDParameterName = "glossaryTermGUID";
         final String   methodName = "addSemanticAssignment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         try
         {
@@ -318,8 +1072,12 @@ public class AssetOwnerRESTServices
             AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.saveSemanticAssignment(userId,
+                                           null,
+                                           null,
                                            assetGUID,
+                                           assetGUIDParameterName,
                                            glossaryTermGUID,
+                                           glossaryTermGUIDParameterName,
                                            methodName);
         }
         catch (Throwable error)
@@ -348,6 +1106,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  addSemanticAssignment(String          serverName,
                                                String          userId,
                                                String          assetGUID,
@@ -355,12 +1114,14 @@ public class AssetOwnerRESTServices
                                                String          assetElementGUID,
                                                NullRequestBody requestBody)
     {
+        final String   assetElementGUIDParameterName = "assetElementGUID";
+        final String   glossaryTermGUIDParameterName = "glossaryTermGUID";
         final String   methodName = "addSemanticAssignment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         try
         {
@@ -368,9 +1129,12 @@ public class AssetOwnerRESTServices
             AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.saveSemanticAssignment(userId,
-                                           assetGUID,
-                                           glossaryTermGUID,
+                                           null,
+                                           null,
                                            assetElementGUID,
+                                           assetElementGUIDParameterName,
+                                           glossaryTermGUID,
+                                           glossaryTermGUIDParameterName,
                                            methodName);
 
         }
@@ -399,6 +1163,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSemanticAssignment(String          serverName,
                                                   String          userId,
                                                   String          assetGUID,
@@ -410,7 +1175,7 @@ public class AssetOwnerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         try
         {
@@ -418,6 +1183,8 @@ public class AssetOwnerRESTServices
             AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSemanticAssignment(userId,
+                                             null,
+                                             null,
                                              assetGUID,
                                              glossaryTermGUID,
                                              methodName);
@@ -449,6 +1216,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSemanticAssignment(String          serverName,
                                                   String          userId,
                                                   String          assetGUID,
@@ -461,7 +1229,7 @@ public class AssetOwnerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         try
         {
@@ -469,9 +1237,10 @@ public class AssetOwnerRESTServices
             AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSemanticAssignment(userId,
-                                             assetGUID,
-                                             glossaryTermGUID,
+                                             null,
+                                             null,
                                              assetElementGUID,
+                                             glossaryTermGUID,
                                              methodName);
 
         }
@@ -486,7 +1255,7 @@ public class AssetOwnerRESTServices
 
 
     /**
-     * Set up the labels that classify an asset's origin.
+     * Set up the labels that classify an asset's origin.  This will override any existing value.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
@@ -503,12 +1272,15 @@ public class AssetOwnerRESTServices
                                         String            assetGUID,
                                         OriginRequestBody requestBody)
     {
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   organizationGUIDParameterName = "organizationGUID";
+        final String   businessCapabilityGUIDParameterName = "businessCapabilityGUID";
         final String   methodName = "addAssetOrigin";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         try
         {
@@ -519,8 +1291,11 @@ public class AssetOwnerRESTServices
 
                 handler.addAssetOrigin(userId,
                                        assetGUID,
+                                       assetGUIDParameterName,
                                        requestBody.getOrganizationGUID(),
+                                       organizationGUIDParameterName,
                                        requestBody.getBusinessCapabilityGUID(),
+                                       businessCapabilityGUIDParameterName,
                                        requestBody.getOtherOriginValues(),
                                        methodName);
             }
@@ -557,12 +1332,13 @@ public class AssetOwnerRESTServices
                                            String                assetGUID,
                                            NullRequestBody       requestBody)
     {
-        final String   methodName = "addAssetOrigin";
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   methodName = "removeAssetOrigin";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         try
         {
@@ -571,12 +1347,100 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                handler.removeAssetOrigin(userId, assetGUID, methodName);
+                handler.removeAssetOrigin(userId, assetGUID, assetGUIDParameterName, methodName);
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the zones for a specific asset to the zone list specified in the publishZones
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse publishAsset(String          serverName,
+                                     String          userId,
+                                     String          assetGUID,
+                                     NullRequestBody requestBody)
+    {
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   methodName = "publishAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.publishAsset(userId, assetGUID, assetGUIDParameterName, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the zones for a specific asset to the zone list specified in the defaultZones
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse withdrawAsset(String          serverName,
+                                      String          userId,
+                                      String          assetGUID,
+                                      NullRequestBody requestBody)
+    {
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   methodName = "withdrawAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.withdrawAsset(userId, assetGUID, assetGUIDParameterName, methodName);
         }
         catch (Throwable error)
         {
@@ -607,12 +1471,13 @@ public class AssetOwnerRESTServices
                                          String        assetGUID,
                                          List<String>  assetZones)
     {
+        final String   assetGUIDParameterName = "assetGUID";
         final String   methodName = "updateAssetZones";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -621,6 +1486,7 @@ public class AssetOwnerRESTServices
 
             handler.updateAssetZones(userId,
                                      assetGUID,
+                                     assetGUIDParameterName,
                                      assetZones,
                                      methodName);
         }
@@ -652,12 +1518,13 @@ public class AssetOwnerRESTServices
                                           String           assetGUID,
                                           OwnerRequestBody requestBody)
     {
+        final String   assetGUIDParameterName = "assetGUID";
         final String   methodName = "updateAssetOwner";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -666,10 +1533,18 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
+                int ownerType = OwnerType.USER_ID.getOpenTypeOrdinal();
+
+                if (requestBody.getOwnerType() != null)
+                {
+                    ownerType = requestBody.getOwnerType().getOpenTypeOrdinal();
+                }
+
                 handler.updateAssetOwner(userId,
                                          assetGUID,
+                                         assetGUIDParameterName,
                                          requestBody.getOwnerId(),
-                                         requestBody.getOwnerType(),
+                                         ownerType,
                                          methodName);
             }
             else
@@ -705,22 +1580,24 @@ public class AssetOwnerRESTServices
                                          String                  assetGUID,
                                          SecurityTagsRequestBody requestBody)
     {
+        final String   assetGUIDParameterName = "assetGUID";
         final String   methodName = "addSecurityTags";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog auditLog = null;
 
         try
         {
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 handler.addSecurityTags(userId,
                                         assetGUID,
+                                        assetGUIDParameterName,
                                         requestBody.getSecurityLabels(),
                                         requestBody.getSecurityProperties(),
                                         methodName);
@@ -754,29 +1631,31 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  addSecurityTags(String                  serverName,
                                          String                  userId,
                                          String                  assetGUID,
                                          String                  assetElementGUID,
                                          SecurityTagsRequestBody requestBody)
     {
+        final String   assetElementGUIDParameterName = "assetElementGUID";
         final String   methodName = "addSecurityTags";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 handler.addSecurityTags(userId,
-                                        assetGUID,
                                         assetElementGUID,
+                                        assetElementGUIDParameterName,
                                         requestBody.getSecurityLabels(),
                                         requestBody.getSecurityProperties(),
                                         methodName);
@@ -809,25 +1688,28 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSecurityTags(String                serverName,
                                             String                userId,
                                             String                assetGUID,
                                             NullRequestBody       requestBody)
     {
+        final String   assetGUIDParameterName = "assetGUID";
         final String   methodName = "removeSecurityTags";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSecurityTags(userId,
                                        assetGUID,
+                                       assetGUIDParameterName,
                                        methodName);
         }
         catch (Throwable error)
@@ -854,27 +1736,29 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSecurityTags(String                serverName,
                                             String                userId,
                                             String                assetGUID,
                                             String                assetElementGUID,
                                             NullRequestBody       requestBody)
     {
-        final String   methodName = "removeSecurityTags";
+        final String   assetElementGUIDParameterName = "assetElementGUID";
+        final String   methodName                    = "removeSecurityTags";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSecurityTags(userId,
-                                       assetGUID,
                                        assetElementGUID,
+                                       assetElementGUIDParameterName,
                                        methodName);
         }
         catch (Throwable error)
@@ -908,25 +1792,33 @@ public class AssetOwnerRESTServices
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetsResponse getAssetsByName(String   serverName,
-                                          String   userId,
-                                          String   name,
-                                          int      startFrom,
-                                          int      pageSize)
+    public AssetElementsResponse getAssetsByName(String   serverName,
+                                                 String   userId,
+                                                 String   name,
+                                                 int      startFrom,
+                                                 int      pageSize)
     {
-        final String methodName    = "getAssetsByName";
+        final String nameParameterName = "name";
+        final String methodName        = "getAssetsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetsResponse response = new AssetsResponse();
-        OMRSAuditLog   auditLog = null;
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAssets(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName));
+            response.setAssets(handler.getAssetsByName(userId,
+                                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                       name,
+                                                       nameParameterName,
+                                                       startFrom,
+                                                       pageSize,
+                                                       methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
@@ -954,26 +1846,70 @@ public class AssetOwnerRESTServices
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetsResponse  findAssets(String   serverName,
-                                      String   userId,
-                                      String   searchString,
-                                      int      startFrom,
-                                      int      pageSize)
+    public AssetElementsResponse findAssets(String   serverName,
+                                            String   userId,
+                                            String   searchString,
+                                            int      startFrom,
+                                            int      pageSize)
     {
-        final String methodName    = "findAssets";
+        final String searchStringParameter = "searchString";
+        final String methodName            = "findAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetsResponse response = new AssetsResponse();
-        OMRSAuditLog   auditLog = null;
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAssets(handler.findAssets(userId, searchString, startFrom, pageSize, methodName));
+            response.setAssets(handler.findAssets(userId, searchString, searchStringParameter, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the basic attributes of an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @return basic asset properties
+     * InvalidParameterException one of the parameters is null or invalid.
+     * UserNotAuthorizedException user not authorized to issue this request.
+     * PropertyServerException there was a problem that occurred within the property server.
+     */
+    public AssetElementResponse getAssetSummary(String  serverName,
+                                                String  userId,
+                                                String  assetGUID)
+    {
+        final String methodName = "getAssetSummary";
+        final String assetGUIDParameter = "assetGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetElementResponse response = new AssetElementResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAsset(handler.getBeanFromRepository(userId,
+                                                            assetGUID,
+                                                            assetGUIDParameter,
+                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                            methodName));
         }
         catch (Throwable error)
         {
@@ -1010,12 +1946,12 @@ public class AssetOwnerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryAnalysisReportListResponse response = new DiscoveryAnalysisReportListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog                            auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId, serverName, methodName);
+            DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId, serverName, methodName);
 
             response.setDiscoveryAnalysisReports(handler.getDiscoveryAnalysisReports(userId,
                                                                                      assetGUID,
@@ -1060,18 +1996,24 @@ public class AssetOwnerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AnnotationListResponse response = new AnnotationListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog               auditLog = null;
 
         try
         {
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId, serverName, methodName);
+                AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
+                int annotationStatus = AnnotationStatus.UNKNOWN_STATUS.getOpenTypeOrdinal();
+
+                if (requestBody.getAnnotationStatus() != null)
+                {
+                    annotationStatus = requestBody.getAnnotationStatus().getOpenTypeOrdinal();
+                }
                 response.setAnnotations(handler.getDiscoveryReportAnnotations(userId,
                                                                               discoveryReportGUID,
-                                                                              requestBody.getAnnotationStatus(),
+                                                                              annotationStatus,
                                                                               startingFrom,
                                                                               maximumResults,
                                                                               methodName));
@@ -1119,9 +2061,9 @@ public class AssetOwnerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AnnotationListResponse response = new AnnotationListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog               auditLog = null;
 
-        AnnotationStatus  annotationStatus = null;
+        AnnotationStatus annotationStatus = AnnotationStatus.UNKNOWN_STATUS;
         if (requestBody != null)
         {
             annotationStatus = requestBody.getAnnotationStatus();
@@ -1130,11 +2072,11 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             response.setAnnotations(handler.getExtendedAnnotations(userId,
                                                                    annotationGUID,
-                                                                   annotationStatus,
+                                                                   annotationStatus.getOpenTypeOrdinal(),
                                                                    startingFrom,
                                                                    maximumResults,
                                                                    methodName));
@@ -1172,24 +2114,35 @@ public class AssetOwnerRESTServices
      *  PropertyServerException problem accessing property server or
      *  UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse deleteAsset(String          serverName,
                                     String          userId,
                                     String          assetGUID,
                                     NullRequestBody requestBody)
     {
         final String methodName = "deleteAsset";
+        final String assetGUIDParameterName = "assetGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.removeAsset(userId, assetGUID, methodName);
+            handler.deleteBeanInRepository(userId,
+                                           null,
+                                           null,
+                                           assetGUID,
+                                           assetGUIDParameterName,
+                                           OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                           null,
+                                           null,
+                                           methodName);
         }
         catch (Throwable error)
         {

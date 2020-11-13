@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingAvroFileInterface;
+import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileAssetRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -21,13 +21,23 @@ import java.util.List;
  * need access to the file contents.
  *
  */
-public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
+public class AvroFileAssetOwner extends AssetOwner implements AssetOnboardingAvroFileInterface
 {
-    private String               serverName;               /* Initialized in constructor */
-    private String               serverPlatformRootURL;    /* Initialized in constructor */
-    private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    /**
+     * Create a new client with no authentication embedded in the HTTP request and an audit log.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public AvroFileAssetOwner(String   serverName,
+                              String   serverPlatformRootURL,
+                              AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+    }
 
 
     /**
@@ -41,13 +51,31 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
     public AvroFileAssetOwner(String serverName,
                               String serverPlatformRootURL) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
+        super(serverName, serverPlatformRootURL);
+    }
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL);
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * There is also an audit log destination.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public AvroFileAssetOwner(String   serverName,
+                              String   serverPlatformRootURL,
+                              String   userId,
+                              String   password,
+                              AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, userId, password, auditLog);
     }
 
 
@@ -62,19 +90,39 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public AvroFileAssetOwner(String     serverName,
-                              String     serverPlatformRootURL,
-                              String     userId,
-                              String     password) throws InvalidParameterException
+    public AvroFileAssetOwner(String serverName,
+                              String serverPlatformRootURL,
+                              String userId,
+                              String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL, userId, password);
+        super(serverName, serverPlatformRootURL, userId, password);
     }
+
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public AvroFileAssetOwner(String               serverName,
+                              String               serverPlatformRootURL,
+                              AssetOwnerRESTClient restClient,
+                              int                  maxPageSize,
+                              AuditLog             auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = restClient;
+    }
+
 
 
     /*

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
@@ -36,6 +36,7 @@ import java.util.Map;
  */
 public class AssetSummary extends AssetDescriptor
 {
+    private static final long     serialVersionUID = 1L;
 
     /**
      * Default constructor only for subclasses
@@ -199,7 +200,7 @@ public class AssetSummary extends AssetDescriptor
      */
     public List<AssetClassification> getAssetClassifications()
     {
-        List<Classification> classifications = assetBean.getClassifications();
+        List<ElementClassification> classifications = assetBean.getClassifications();
 
         if (classifications == null)
         {
@@ -209,7 +210,7 @@ public class AssetSummary extends AssetDescriptor
         {
             List<AssetClassification> assetClassifications = new ArrayList<>();
 
-            for (Classification classification : classifications)
+            for (ElementClassification classification : classifications)
             {
                 if (classification != null)
                 {
@@ -226,6 +227,17 @@ public class AssetSummary extends AssetDescriptor
                 return assetClassifications;
             }
         }
+    }
+
+
+    /**
+     * Return the properties that characterize where this asset is from.
+     *
+     * @return map of name value pairs, all strings
+     */
+    public Map<String, String> getOrigins()
+    {
+        return assetBean.getOrigin();
     }
 
 

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
 /**
@@ -13,61 +14,45 @@ public class DiscoveryEngineException extends OCFCheckedExceptionBase
     private static final long serialVersionUID = 1L;
 
     /**
-     * This is the typical constructor for creating the exception.  It captures the essential details
-     * about the error, where it occurred and how to fix it.
+     * This is the typical constructor used for creating a DiscoveryEngineException.
      *
-     * @param httpCode code to use across a REST interface
+     * @param messageDefinition content of message
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
      */
-    public DiscoveryEngineException(int    httpCode,
-                                    String className,
-                                    String actionDescription,
-                                    String errorMessage,
-                                    String systemAction,
-                                    String userAction)
+    public DiscoveryEngineException(ExceptionMessageDefinition messageDefinition,
+                                    String                     className,
+                                    String                     actionDescription)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+        super(messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This constructor is used when an unexpected exception has been caught that needs to be wrapped in a
-     * DiscoveryEngineException in order to add the essential details about the error, where it occurred and
-     * how to fix it.
+     * This is the constructor used for creating a DiscoveryEngineException in response to a previous exception.
      *
-     * @param httpCode code to use across a REST interface
+     * @param messageDefinition content of message
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the exception/error that caused this exception to be raised
+     * @param caughtError   the error that resulted in this exception.
      */
-    public DiscoveryEngineException(int       httpCode,
-                                    String    className,
-                                    String    actionDescription,
-                                    String    errorMessage,
-                                    String    systemAction,
-                                    String    userAction,
-                                    Throwable caughtError)
+    public DiscoveryEngineException(ExceptionMessageDefinition messageDefinition,
+                                    String                     className,
+                                    String                     actionDescription,
+                                    Throwable                  caughtError)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError);
     }
 
 
     /**
-     * This constructor is used when an unexpected exception has been caught that needs to be translated in a
-     * DiscoveryEngineException.
+     * This is the copy/clone constructor used for creating an exception.
      *
      * @param errorMessage associated message
-     * @param template exception to copy
+     * @param template   object to copy
      */
-    public DiscoveryEngineException(String                   errorMessage,
-                                    OCFCheckedExceptionBase  template)
+    public DiscoveryEngineException(String                  errorMessage,
+                                    OCFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

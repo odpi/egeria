@@ -26,7 +26,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -206,11 +205,11 @@ public class InformationViewAdmin extends AccessServiceAdmin
                 log.debug("Unable to create topic connector: " + error.toString());
             }
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
+            InformationViewErrorCode errorCode = InformationViewErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
 
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,

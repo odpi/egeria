@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Asset Catalog Open Metadata Access Service (OMAS)
 
 The Asset Catalog OMAS provides services to search for data assets including:
@@ -31,12 +33,12 @@ The module structure for the Asset Catalog OMAS is as follows:
 * [asset-catalog-api](asset-catalog-api) supports the common Java classes that are used both by the client and the server.
 * [asset-catalog-server](asset-catalog-server) supports the server side implementation of the access service.
  This includes the
-  * interaction with the [administration services](../../../../admin-services) for
+  * interaction with the [administration services](../../admin-services) for
     registration, configuration, initialization and termination of the access service.
-  * interaction with the [repository services](../../../../repository-services) to work with open metadata from the
-    [cohort](../../../../repository-services/docs/open-metadata-repository-cohort.md).
+  * interaction with the [repository services](../../repository-services) to work with open metadata from the
+    [cohort](../../repository-services/docs/open-metadata-repository-cohort.md).
   * support for the access service's API and its related event management.
-* [asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring](../../../../../developer-resources/Spring.md) libraries.
+* [asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 
 
 ###Search solution
@@ -61,6 +63,10 @@ Asset Catalog OMAS provides services to fetch the asset
 * specific entities that connects two assets
 * relationships between two known entities 
 * related assets 
+
+
+----
+Return to the [access-services](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

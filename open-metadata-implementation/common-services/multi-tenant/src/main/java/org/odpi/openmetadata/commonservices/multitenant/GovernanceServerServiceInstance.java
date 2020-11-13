@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
  * GovernanceServerServiceInstance caches references to OMRS objects for a specific server.
@@ -10,10 +10,29 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
  */
 public abstract class GovernanceServerServiceInstance extends AuditableServerServiceInstance
 {
-    private String        accessServiceRootURL;
-    private String        accessServiceServerName;
+    private String        accessServiceRootURL      = null;
+    private String        accessServiceServerName   = null;
     private String        accessServiceInTopicName  = null;
     private String        accessServiceOutTopicName = null;
+
+    /**
+     * Constructor where many OMASs are used and so the partner OMAS information is managed by the subclass
+     *
+     * @param serverName name of this server
+     * @param serviceName name of this service
+     * @param auditLog link to the repository responsible for servicing the REST calls.
+     * @param maxPageSize maximum number of results that can be returned in a single request
+     * @param localServerUserId userId to use for server initiated requests
+     */
+    public GovernanceServerServiceInstance(String        serverName,
+                                           String        serviceName,
+                                           AuditLog      auditLog,
+                                           String        localServerUserId,
+                                           int           maxPageSize)
+    {
+        super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
+    }
+
 
     /**
      * Constructor where REST Services used.
@@ -28,7 +47,7 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
      */
     public GovernanceServerServiceInstance(String        serverName,
                                            String        serviceName,
-                                           OMRSAuditLog  auditLog,
+                                           AuditLog      auditLog,
                                            String        localServerUserId,
                                            int           maxPageSize,
                                            String        accessServiceRootURL,
@@ -56,7 +75,7 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
      */
     public GovernanceServerServiceInstance(String        serverName,
                                            String        serviceName,
-                                           OMRSAuditLog  auditLog,
+                                           AuditLog      auditLog,
                                            String        localServerUserId,
                                            int           maxPageSize,
                                            String        accessServiceRootURL,

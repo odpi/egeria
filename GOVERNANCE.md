@@ -3,9 +3,24 @@
 
 # Egeria Governance
 
-The Egeria project is governed by the [ODPi's Data governance PMC](https://odpi.github.io/data-governance/).
-For information about how the community operates see the [Egeria Operations](./Egeria-Operations.md) page.
-If you are interested in contributing, see the [community guide](./Community-Guide.md) to find out more.
+The Egeria project's governance processes are described in
+the [Egeria Operations Guide](./Egeria-Operations.md).
+This includes the requirements to earn either of Egeria's two
+[Acclaim badges](developer-resources/badges).
+
+![Egeria Contributors Badge](developer-resources/badges/ODPi_Egeria_Badges-Contributor.png) 
+![Egeria Maintainers Badge](developer-resources/badges/ODPi_Egeria_Badges-Maintainer.png)
+
+The Egeria Conformance program is supported by the
+[Open Metadata Conformance Suite](open-metadata-conformance-suite).
+
+![Egeria Conformant Mark](open-metadata-conformance-suite/docs/egeria-conformance-mark.png)
+
+The operation of the Egeria project is overseen by the
+[ODPi's technical steering committee (TSC)](https://github.com/odpi/tsc).
+
+If you are interested in joining the Egeria community,
+see the [community guide](./Community-Guide.md) to find out more.
 
 
 ----

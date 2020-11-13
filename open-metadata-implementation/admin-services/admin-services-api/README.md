@@ -3,8 +3,15 @@
 
 # Admin Services API
 
-The admin services API provides the property structures and
-REST structures used to configure the open metadata implementation services.
+The admin services API module provides the property structures and
+REST structures used to configure the open metadata
+and governance services.
+
+It also contains the interface definition of the
+[configuration document store connector](../docs/concepts/configuration-document-store-connector.md).
+
+
+Return to [Admin Services](..).
 
 
 

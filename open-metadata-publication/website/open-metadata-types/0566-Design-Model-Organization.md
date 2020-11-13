@@ -11,7 +11,7 @@ Design models can get quite large so it helps the software architects and
 developers to be able to organize the content of the models into
 related groups.  These groups can themselves be organized into a hierarchy.
 
-![UML](0566-Design-Model-Organization.png)
+![UML](0566-Design-Model-Organization.png#pagewidth)
 
 Return to [Area 5](Area-5-models.md).
 

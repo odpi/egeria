@@ -6,8 +6,9 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FolderResponse extends AssetOwnerOMASAPIResponse
 {
-    private Folder folder = null;
+    private static final long    serialVersionUID = 1L;
+
+    private FolderElement folder = null;
 
 
     /**
@@ -56,7 +59,7 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
      *
      * @return bean
      */
-    public Folder getFolder()
+    public FolderElement getFolder()
     {
         return folder;
     }
@@ -67,7 +70,7 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
      *
      * @param folder - bean
      */
-    public void setFolder(Folder folder)
+    public void setFolder(FolderElement folder)
     {
         this.folder = folder;
     }
@@ -82,10 +85,14 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
     public String toString()
     {
         return "FolderResponse{" +
-                "folder='" + getFolder() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                "folder=" + folder +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +

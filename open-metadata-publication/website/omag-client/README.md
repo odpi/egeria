@@ -8,7 +8,7 @@ Java classes needed to call the ODPi Egeria interfaces and work with the events 
 the
 [Open Metadata Access Services (OMASs)](../../../open-metadata-implementation/access-services/docs/user)
 and the
-[Administration Services](../../../open-metadata-implementation/governance-servers/admin-services).
+[Administration Services](../../../open-metadata-implementation/admin-services).
 
 
 

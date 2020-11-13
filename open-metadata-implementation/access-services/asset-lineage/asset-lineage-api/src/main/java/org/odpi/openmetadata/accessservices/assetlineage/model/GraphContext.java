@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.model;
 import java.util.Objects;
 
 /**
- * The graph context provides the minimum lineage between two vertexes and the edge between them.
+ * A graph context contains two LineageEntity and the relationship between them.
  */
 public class GraphContext {
 
@@ -17,7 +17,8 @@ public class GraphContext {
     /**
      * Instantiates a new Graph context.
      */
-    public GraphContext(){}
+    public GraphContext() {
+    }
 
     /**
      * Instantiates a new Graph context.
@@ -28,10 +29,10 @@ public class GraphContext {
      * @param toVertex         the to vertex
      */
     public GraphContext(String relationshipType, String relationshipGuid, LineageEntity fromVertex, LineageEntity toVertex) {
-       this.relationshipType = relationshipType;
-       this.relationshipGuid = relationshipGuid;
-       this.fromVertex = fromVertex;
-       this.toVertex = toVertex;
+        this.relationshipType = relationshipType;
+        this.relationshipGuid = relationshipGuid;
+        this.fromVertex = fromVertex;
+        this.toVertex = toVertex;
     }
 
     /**

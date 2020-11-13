@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,9 +72,9 @@ public class EntityListResponse extends OMRSAPIPagedResponse
         {
             List<EntityDetail>  clonedEntities = new ArrayList<>();
 
-            for (EntityDetail  attributeTypeDef : entities)
+            for (EntityDetail  entity : entities)
             {
-                clonedEntities.add(new EntityDetail(attributeTypeDef));
+                clonedEntities.add(new EntityDetail(entity));
             }
 
             return clonedEntities;
@@ -106,8 +107,12 @@ public class EntityListResponse extends OMRSAPIPagedResponse
                 ", offset=" + offset +
                 ", pageSize=" + pageSize +
                 ", relatedHTTPCode=" + relatedHTTPCode +
+                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
+                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
                 ", exceptionProperties=" + exceptionProperties +

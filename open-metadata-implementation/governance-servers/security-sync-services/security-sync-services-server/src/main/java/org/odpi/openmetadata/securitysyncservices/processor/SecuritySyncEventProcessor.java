@@ -4,9 +4,9 @@ package org.odpi.openmetadata.securitysyncservices.processor;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernanceClassification;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAssetListResponse;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnector;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerSecurityServicePolicies;
@@ -61,7 +61,7 @@ public class SecuritySyncEventProcessor {
     public void processExistingGovernedAssetsFromRepository() {
         logProcessing("processExistingGovernedAssetsFromRepository", SecuritySyncAuditCode.CLASSIFIED_GOVERNED_ASSET_INITIAL_LOAD);
 
-        GovernedAssetListAPIResponse governedAssetResponse = getGovernedAssets();
+        GovernedAssetListResponse governedAssetResponse = getGovernedAssets();
         if (governedAssetResponse == null || governedAssetResponse.getRelatedHTTPCode() != 200) {
             return;
         }
@@ -157,7 +157,7 @@ public class SecuritySyncEventProcessor {
                 auditCode.getUserAction());
     }
 
-    private GovernedAssetListAPIResponse getGovernedAssets() {
+    private GovernedAssetListResponse getGovernedAssets() {
         String governanceEngineURL = getGovernanceEngineURL();
 
         RestTemplate restTemplate = new RestTemplate();
@@ -168,9 +168,9 @@ public class SecuritySyncEventProcessor {
         try {
 
             ResponseEntity<String> result = restTemplate.exchange(governanceEngineURL, HttpMethod.GET, entity, String.class);
-            return (GovernedAssetListAPIResponse) mapToObject(result, GovernedAssetListAPIResponse.class);
+            return (GovernedAssetListResponse) mapToObject(result, GovernedAssetListResponse.class);
         } catch (HttpStatusCodeException exception) {
-            log.debug("Unable to get the governed assets!");
+            log.error("Unable to get the governed assets: ", exception);
         }
         return null;
     }
@@ -192,7 +192,7 @@ public class SecuritySyncEventProcessor {
             String resultString = sanitize(result.getBody());
             return mapper.readValue(resultString, className);
         } catch (IOException e) {
-            log.error("403", e.getMessage(), e);
+            log.error("403 {} - {}", e.getMessage(), e);
         }
 
         return null;

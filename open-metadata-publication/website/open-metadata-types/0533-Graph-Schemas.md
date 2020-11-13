@@ -5,7 +5,7 @@
 
 Model 0533 describes the schema for a property graph.
 
-![UML](0533-Graph-Schemas.png)
+![UML](0533-Graph-Schemas.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # Asset Consumer Open Metadata Access Service (OMAS)
 
 The Asset Consumer OMAS provides services to an individual who wants to work
@@ -44,6 +46,8 @@ asset it is accessing.   This service is provided by the
 
 
 ----
+Return to the [access-services](..) module.
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
-

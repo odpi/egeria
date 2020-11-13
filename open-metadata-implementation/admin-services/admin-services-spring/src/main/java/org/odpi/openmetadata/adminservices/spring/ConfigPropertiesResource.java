@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
+import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +16,34 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+
+@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
+        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
+        "Governance (OMAG) services are active.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
+
+
 public class ConfigPropertiesResource
 {
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+
+
+    /**
+     * Return the derived server type that is created from the classification of the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     */
+    @GetMapping(path = "/server-type-classification")
+    public ServerTypeClassificationResponse getServerTypeClassification(@PathVariable String userId,
+                                                                        @PathVariable String serverName)
+    {
+        return adminAPI.getServerTypeClassification(userId, serverName);
+    }
 
 
     /**

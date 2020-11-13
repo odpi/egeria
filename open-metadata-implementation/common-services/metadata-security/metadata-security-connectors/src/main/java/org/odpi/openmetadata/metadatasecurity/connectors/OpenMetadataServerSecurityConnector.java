@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataAssetSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataConnectionSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
@@ -16,8 +16,8 @@ import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -37,17 +37,17 @@ import java.util.List;
  * in this base class can be called if access is to be denied as a way of making use of the message
  * logging and exceptions.
  */
-public class OpenMetadataServerSecurityConnector extends ConnectorBase implements AuditableConnector,
+public class OpenMetadataServerSecurityConnector extends ConnectorBase implements AuditLoggingComponent,
                                                                                   OpenMetadataRepositorySecurity,
                                                                                   OpenMetadataServerSecurity,
                                                                                   OpenMetadataServiceSecurity,
                                                                                   OpenMetadataConnectionSecurity,
                                                                                   OpenMetadataAssetSecurity
 {
-    protected  OMRSAuditLog  auditLog = null;
-    protected  String        serverName = null;
-    protected  String        localServerUserId = null;
-    protected  String        connectorName = null;
+    protected AuditLog auditLog          = null;
+    protected String   serverName        = null;
+    protected String   localServerUserId = null;
+    protected String   connectorName     = null;
 
     protected final String unknownTypeName = "<Unknown>";
 
@@ -59,17 +59,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            final String                  actionDescription = "start";
-            OpenMetadataSecurityAuditCode auditCode;
+            final String actionDescription = "start";
 
-            auditCode = OpenMetadataSecurityAuditCode.SERVICE_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(connectorName, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OpenMetadataSecurityAuditCode.SERVICE_INITIALIZING.getMessageDefinition(connectorName, serverName));
         }
     }
 
@@ -81,17 +74,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            final String                  actionDescription = "disconnect";
-            OpenMetadataSecurityAuditCode auditCode;
+            final String actionDescription = "disconnect";
 
-            auditCode = OpenMetadataSecurityAuditCode.SERVICE_SHUTDOWN;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(connectorName, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OpenMetadataSecurityAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(connectorName, serverName));
         }
     }
 
@@ -205,28 +191,12 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVER_ACCESS;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName, OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVER_ACCESS.getMessageDefinition(userId, serverName));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVER_ACCESS;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, serverName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVER_ACCESS.getMessageDefinition(userId, serverName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -248,28 +218,16 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, serviceOperationName, serviceName, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                               OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
+                                                                                                              serviceOperationName,
+                                                                                                              serviceName,
+                                                                                                              serverName));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, serviceOperationName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId, serviceOperationName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -291,28 +249,16 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_TYPE_ACCESS;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, typeName, typeGUID, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_TYPE_ACCESS.getMessageDefinition(userId, typeName, typeGUID, serverName));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_ACCESS;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, typeName, typeGUID, serverName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_ACCESS.getMessageDefinition(userId,
+                                                                                                                         typeName,
+                                                                                                                         typeGUID,
+                                                                                                                         serverName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -334,35 +280,22 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_TYPE_CHANGE;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, typeName, typeGUID, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_TYPE_CHANGE.getMessageDefinition(userId, typeName, typeGUID, serverName));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_CHANGE;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, typeName, typeGUID, serverName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_CHANGE.getMessageDefinition(userId,
+                                                                                                                         typeName,
+                                                                                                                         typeGUID,
+                                                                                                                         serverName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
 
     /**
-     * Write an audit log message and throw exception to record an
-     * unauthorized access.
+     * Write an audit log message and throw exception to record an unauthorized access.
      *
      * @param userId calling user
      * @param typeGUID uniqueId of type
@@ -375,28 +308,13 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_CREATE;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, typeGUID, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_CREATE.getMessageDefinition(userId, typeGUID, serverName));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_CHANGE;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, typeGUID, serverName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_CHANGE.getMessageDefinition(userId, typeGUID, serverName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -418,31 +336,19 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_ACCESS;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, instanceGUID, typeName, serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+             auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_ACCESS.getMessageDefinition(userId,
+                                                                                                                instanceGUID,
+                                                                                                                typeName,
+                                                                                                                serverName));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_ACCESS;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId,
-                                                                                        instanceGUID,
-                                                                                        typeName,
-                                                                                        serverName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_ACCESS.getMessageDefinition(userId,
+                                                                                                                             instanceGUID,
+                                                                                                                             typeName,
+                                                                                                                             serverName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -464,31 +370,20 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_CHANGE;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, instanceGUID, typeName, serverName, methodName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_CHANGE.getMessageDefinition(userId,
+                                                                                                                instanceGUID,
+                                                                                                                typeName,
+                                                                                                                serverName,
+                                                                                                                methodName));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_CHANGE;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId,
-                                                                                        instanceGUID,
-                                                                                        typeName,
-                                                                                        serverName);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_CHANGE.getMessageDefinition(userId,
+                                                                                                                             instanceGUID,
+                                                                                                                             typeName,
+                                                                                                                             serverName),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -508,28 +403,14 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_ACCESS;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, this.getAssetGUID(asset)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_ACCESS.getMessageDefinition(userId, this.getAssetGUID(asset)));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_ACCESS;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, this.getAssetGUID(asset));
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_ACCESS.getMessageDefinition(userId,
+                                                                                                                          this.getAssetGUID(asset)),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -549,29 +430,41 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CHANGE;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, this.getAssetGUID(asset)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CHANGE.getMessageDefinition(userId, this.getAssetGUID(asset)));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CHANGE;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId,
-                                                                                        this.getAssetGUID(asset));
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+       throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CHANGE.getMessageDefinition(userId,
+                                                                                                                          this.getAssetGUID(asset)),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an
+     * unauthorized access.
+     *
+     * @param userId calling user
+     * @param asset asset being accessed
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
+    protected void throwUnauthorizedAssetCreate(String   userId,
+                                                Asset    asset,
+                                                String   methodName) throws UserNotAuthorizedException
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId, asset.getTypeName()));
+        }
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId,
+                                                                                                                          asset.getTypeName()),
+                                             this.getClass().getName(),
+                                             methodName,
                                              userId);
     }
 
@@ -591,29 +484,13 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, this.getAssetGUID(asset)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset)));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId,
-                                                                                        this.getAssetGUID(asset));
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset)),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -637,34 +514,19 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_ZONE_CHANGE;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId,
-                                                                this.getAssetGUID(asset),
-                                                                this.printZoneList(originalZones),
-                                                                this.printZoneList(newZones)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_ZONE_CHANGE.getMessageDefinition(userId,
+                                                                                                            this.getAssetGUID(asset),
+                                                                                                            this.printZoneList(originalZones),
+                                                                                                            this.printZoneList(newZones)));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_ZONE_CHANGE;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId,
-                                                                                        this.getAssetGUID(asset),
-                                                                                        this.printZoneList(originalZones),
-                                                                                        this.printZoneList(newZones));
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ZONE_CHANGE.getMessageDefinition(userId,
+                                                                                                                         this.getAssetGUID(asset),
+                                                                                                                         this.printZoneList(originalZones),
+                                                                                                                         this.printZoneList(newZones)),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -684,30 +546,15 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_FEEDBACK;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId,
-                                                                this.getAssetGUID(asset)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_FEEDBACK.getMessageDefinition(userId,
+                                                                                                               this.getAssetGUID(asset)));
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_FEEDBACK;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId,
-                                                                                        this.getAssetGUID(asset));
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_FEEDBACK.getMessageDefinition(userId,
+                                                                                                                            this.getAssetGUID(asset)),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -728,28 +575,16 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-            OpenMetadataSecurityAuditCode auditCode;
-
-            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(userId, this.getConnectionQualifiedName(connection)),
-                               connection.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
+                                                                                                               this.getConnectionQualifiedName(connection)),
+                                connection.toString());
         }
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, this.getConnectionQualifiedName(connection));
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
+                                                                                                                            this.getConnectionQualifiedName(connection)),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 
@@ -760,7 +595,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @param auditLog audit log object
      */
-    public void setAuditLog(OMRSAuditLog auditLog)
+    public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
     }
@@ -838,9 +673,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
-    public List<String> initializeAssetZones(List<String>  defaultZones,
-                                             Asset         asset) throws InvalidParameterException,
-                                                                         PropertyServerException
+    public List<String> setAssetZonesToDefault(List<String>  defaultZones,
+                                               Asset         asset) throws InvalidParameterException,
+                                                                           PropertyServerException
     {
         List<String>  resultingZones = null;
 
@@ -876,8 +711,44 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Deprecated
     public List<String> verifyAssetZones(List<String>  defaultZones,
                                          List<String>  supportedZones,
+                                         Asset         originalAsset,
+                                         Asset         updatedAsset) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        List<String>  resultingZones = null;
+
+        if (updatedAsset != null)
+        {
+            resultingZones = updatedAsset.getZoneMembership();
+        }
+
+        return resultingZones;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param publishZones  setting of the publishZones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> verifyAssetZones(List<String>  defaultZones,
+                                         List<String>  supportedZones,
+                                         List<String>  publishZones,
                                          Asset         originalAsset,
                                          Asset         updatedAsset) throws InvalidParameterException,
                                                                             PropertyServerException
@@ -1012,6 +883,49 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
+     * Select a connection from the list of connections attached to an asset.
+     *
+     * @param userId calling user
+     * @param asset asset requested by caller
+     * @param connections list of attached connections
+     * @return selected connection or null (pretend there are no connections attached to the asset) or
+     * @throws UserNotAuthorizedException the user is not authorized to access this service
+     */
+    public Connection validateUserForAssetConnectionList(String           userId,
+                                                         Asset            asset,
+                                                         List<Connection> connections) throws UserNotAuthorizedException
+    {
+        UserNotAuthorizedException caughtException = null;
+
+        if ((connections != null) && (! connections.isEmpty()))
+        {
+            for (Connection connection : connections)
+            {
+                if (connection != null)
+                {
+                    try
+                    {
+                        validateUserForConnection(userId, connection);
+                        return connection;
+                    }
+                    catch (UserNotAuthorizedException error)
+                    {
+                        caughtException = error;
+                    }
+                }
+            }
+        }
+
+        if (caughtException != null)
+        {
+            throw caughtException;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Tests for whether a specific user should have the right to create an asset within a zone.
      *
      * @param userId identifier of user
@@ -1023,7 +937,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         final String  methodName = "validateUserForAssetCreate";
 
-        throwUnauthorizedAssetChange(userId, asset, methodName);
+        throwUnauthorizedAssetCreate(userId, asset, methodName);
     }
 
 

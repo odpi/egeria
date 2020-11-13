@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.OCFMetadataRESTServices;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/common-services/{serviceURLName}/connected-asset/users/{userId}")
+
+@Tag(name="OCF Metadata Management Services", description="OCF metadata management provides common services for Open Metadata Access Services (OMASs) that are supporting the Open Connector Framework (OCF).", externalDocs=@ExternalDocumentation(description="OCF Metadata Management",url="https://egeria.odpi.org/open-metadata-implementation/common-services/ocf-metadata-management/"))
+
 public class ConnectedAssetResource
 {
     private OCFMetadataRESTServices restAPI = new OCFMetadataRESTServices();
@@ -49,6 +54,32 @@ public class ConnectedAssetResource
     {
         return restAPI.getConnectionByGUID(serverName, serviceURLName, userId, guid);
     }
+
+
+    /**
+     * Returns the connection object corresponding to the supplied connection GUID.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param serviceURLName name of the service that created the connector that issued this request.
+     * @param userId userId of user making request.
+     * @param name  the unique name for the connection within the property server.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/connections/by-name/{name}")
+
+    public ConnectionResponse getConnectionByName(@PathVariable String     serverName,
+                                                  @PathVariable String     serviceURLName,
+                                                  @PathVariable String     userId,
+                                                  @PathVariable String     name)
+    {
+        return restAPI.getConnectionByName(serverName, serviceURLName, userId, name);
+    }
+
 
 
     /**

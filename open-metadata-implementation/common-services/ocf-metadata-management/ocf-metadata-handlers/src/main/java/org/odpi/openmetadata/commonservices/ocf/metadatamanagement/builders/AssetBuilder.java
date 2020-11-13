@@ -3,72 +3,54 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * AssetBuilder creates the root repository entity for an asset.
+ * AssetBuilder creates the parts of a root repository entity for an asset.
  */
 public class AssetBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       description;
-    private String       owner          = null;
-    private OwnerType    ownerType      = null;
-    private List<String> zoneMembership = null;
-    private String       latestChange   = null;
+    private String              displayName;
+    private String              description;
+    private String              owner          = null;
+    private OwnerType           ownerType      = null;
+    private List<String>        zoneMembership = null;
 
 
     /**
-     * Minimal constructor
+     * Classification constructor
      *
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
+     * @param assetProperties asset bean
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
+     * @throws InvalidParameterException bad properties
      */
-    public AssetBuilder(String               qualifiedName,
-                        String               displayName,
+    public AssetBuilder(Asset                assetProperties,
                         OMRSRepositoryHelper repositoryHelper,
                         String               serviceName,
-                        String               serverName)
+                        String               serverName) throws InvalidParameterException
     {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
+        super(assetProperties, repositoryHelper, serviceName, serverName);
 
-        this.displayName = displayName;
-        this.description = null;
+        this.displayName = assetProperties.getDisplayName();
+        this.description = assetProperties.getDescription();
+        this.owner = assetProperties.getOwner();
+        this.ownerType = assetProperties.getOwnerType();
+        this.zoneMembership = assetProperties.getZoneMembership();
     }
 
-
-    /**
-     * Creation constructor
-     *
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param description new description for the asset.
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    public AssetBuilder(String               qualifiedName,
-                        String               displayName,
-                        String               description,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               serviceName,
-                        String               serverName)
-    {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-
-        this.displayName = displayName;
-        this.description = description;
-    }
 
 
     /**
@@ -77,9 +59,10 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param qualifiedName unique name
      * @param displayName new value for the display name.
      * @param description new description for the asset.
-     * @param owner name of the owner
-     * @param ownerType type of owner
+     * @param owner name of the owner.
+     * @param ownerType type of owner.
      * @param zoneMembership list of zones that this asset belongs to.
+     * @param origin properties that describe the origin of the asset.
      * @param latestChange description of the last change to the asset.
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
@@ -93,6 +76,7 @@ public class AssetBuilder extends ReferenceableBuilder
                         String               owner,
                         OwnerType            ownerType,
                         List<String>         zoneMembership,
+                        Map<String, String>  origin,
                         String               latestChange,
                         Map<String, String>  additionalProperties,
                         Map<String, Object>  extendedProperties,
@@ -102,7 +86,10 @@ public class AssetBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
+              AssetMapper.ASSET_TYPE_NAME,
+              AssetMapper.ASSET_TYPE_GUID,
               extendedProperties,
+              latestChange,
               repositoryHelper,
               serviceName,
               serverName);
@@ -112,8 +99,9 @@ public class AssetBuilder extends ReferenceableBuilder
         this.owner = owner;
         this.ownerType = ownerType;
         this.zoneMembership = zoneMembership;
-        this.latestChange = latestChange;
     }
+
+
 
 
     /**
@@ -145,83 +133,10 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                       methodName);
         }
 
-        if (latestChange != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      AssetMapper.LATEST_CHANGE_PROPERTY_NAME,
-                                                                      latestChange,
-                                                                      methodName);
-        }
-
         return properties;
     }
 
 
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      AssetMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getSearchInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = null;
-
-        if (qualifiedName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                      qualifiedName,
-                                                                      methodName);
-        }
-
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      AssetMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      AssetMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
 
 
     /**
@@ -229,9 +144,8 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getZoneMembershipProperties(String  methodName) throws InvalidParameterException
+    public InstanceProperties getZoneMembershipProperties(String  methodName)
     {
         InstanceProperties properties = null;
 
@@ -254,16 +168,15 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getOwnerProperties(String  methodName) throws InvalidParameterException
+    public InstanceProperties getOwnerProperties(String  methodName)
     {
         InstanceProperties properties = null;
 
         if (owner != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
+                                                                      null,
                                                                       AssetMapper.OWNER_PROPERTY_NAME,
                                                                       owner,
                                                                       methodName);
@@ -276,7 +189,6 @@ public class AssetBuilder extends ReferenceableBuilder
 
         return properties;
     }
-
 
     /**
      * Add the OwnerType enum to the properties.

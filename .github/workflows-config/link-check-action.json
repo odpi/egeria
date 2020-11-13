@@ -1,0 +1,10 @@
+{
+  "ignorePatterns": [
+    { "pattern": "^http://localhost" },
+    { "pattern": "^https://localhost" },
+    { "pattern": "^https://atlas.apache.org$" },
+    { "pattern": "^https://avro.apache.org/$" },
+    { "pattern": "^https://maven.apache.org/download.cgi$" },
+    { "pattern": "^https://zookeeper.apache.org/doc/current/zookeeperStarted.html$" }
+  ]
+}

@@ -16,6 +16,8 @@ import java.util.Objects;
  */
 public class AssetRelatedMediaReference extends AssetExternalReference
 {
+    private static final long     serialVersionUID = 1L;
+
     protected RelatedMediaReference  relatedMediaReferenceBean;
 
 

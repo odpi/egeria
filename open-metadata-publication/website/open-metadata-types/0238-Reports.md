@@ -3,7 +3,7 @@
 
 # 0238 Reports
 
-![UML](0238-Reports.png)
+![UML](0238-Reports.png#pagewidth)
 
 Return to [Area 2](Area-2-models.md).
 

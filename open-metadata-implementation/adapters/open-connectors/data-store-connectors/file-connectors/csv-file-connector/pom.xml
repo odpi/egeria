@@ -10,10 +10,16 @@
     <parent>
         <artifactId>file-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>2.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>CSV File Connector</name>
     <description>
@@ -25,6 +31,11 @@
     <artifactId>csv-file-connector</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -50,9 +61,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <scope>test</scope>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-ut</artifactId>
         </dependency>
 
     </dependencies>

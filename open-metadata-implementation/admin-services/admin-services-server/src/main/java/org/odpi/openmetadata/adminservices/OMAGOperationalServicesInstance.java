@@ -4,12 +4,14 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
@@ -25,14 +27,16 @@ import java.util.List;
  * OMAGOperationalServicesInstance provides the references to the active services for an instance of an OMAG Server.
  */
 
-public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
+class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
     private OMAGServerConfig                     operationalConfiguration            = null;
     private OMRSOperationalServices              operationalRepositoryServices       = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
     private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
+    private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
     private DiscoveryServerOperationalServices   operationalDiscoveryServer          = null;
+    private IntegrationDaemonOperationalServices operationalIntegrationDaemon        = null;
     private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
     private StewardshipOperationalServices       operationalStewardshipServices      = null;
     private SecuritySyncOperationalServices      operationalSecuritySyncServices     = null;
@@ -50,9 +54,9 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      * @param serviceName name of the new service instance
      * @param maxPageSize maximum number of results that can be returned
      */
-    public OMAGOperationalServicesInstance(String   serverName,
-                                           String   serviceName,
-                                           int      maxPageSize)
+    OMAGOperationalServicesInstance(String   serverName,
+                                    String   serviceName,
+                                    int      maxPageSize)
     {
         super(serverName, serviceName, maxPageSize);
     }
@@ -106,7 +110,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return OCFMetadataOperationalServices object
      */
-    public OCFMetadataOperationalServices getOperationalOCFMetadataServices()
+    OCFMetadataOperationalServices getOperationalOCFMetadataServices()
     {
         return operationalOCFMetadataServices;
     }
@@ -117,7 +121,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @param operationalOCFMetadataServices OCFMetadataOperationalServices object
      */
-    public void setOperationalOCFMetadataServices(OCFMetadataOperationalServices operationalOCFMetadataServices)
+    void setOperationalOCFMetadataServices(OCFMetadataOperationalServices operationalOCFMetadataServices)
     {
         this.operationalOCFMetadataServices = operationalOCFMetadataServices;
     }
@@ -142,6 +146,27 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalAccessServiceAdminList(List<AccessServiceAdmin> operationalAccessServiceAdminList)
     {
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
+    }
+
+    /**
+     * Return the list of references to the admin object for each active Open Metadata View Service (OMVS).
+     *
+     * @return list of ViewServiceAdmin objects
+     */
+    List<ViewServiceAdmin> getOperationalViewServiceAdminList()
+    {
+        return operationalViewServiceAdminList;
+    }
+
+
+    /**
+     * Set up the list of references to the admin object for each active Open Metadata View Service (OMVS).
+     *
+     * @param operationalViewServiceAdminList list of ViewServiceAdmin objects
+     */
+    void setOperationalViewServiceAdminList(List<ViewServiceAdmin> operationalViewServiceAdminList)
+    {
+        this.operationalViewServiceAdminList = operationalViewServiceAdminList;
     }
 
 
@@ -178,6 +203,38 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
+     * Set up the running instance of the discovery engine.
+     *
+     * @param operationalDiscoveryServer DiscoveryServerOperationalServices object
+     */
+    void setOperationalDiscoveryServer(DiscoveryServerOperationalServices operationalDiscoveryServer)
+    {
+        this.operationalDiscoveryServer = operationalDiscoveryServer;
+    }
+
+
+    /**
+     * Return the running instance of the integration daemon.
+     *
+     * @return IntegrationDaemonOperationalServices object
+     */
+    IntegrationDaemonOperationalServices getOperationalIntegrationDaemon() {
+        return operationalIntegrationDaemon;
+    }
+
+
+    /**
+     * Set up the running instance of the integration daemon.
+     *
+     * @param operationalIntegrationDaemon IntegrationDaemonOperationalServices object
+     */
+    void setOperationalIntegrationDaemon(IntegrationDaemonOperationalServices operationalIntegrationDaemon)
+    {
+        this.operationalIntegrationDaemon = operationalIntegrationDaemon;
+    }
+
+
+    /**
      * Set up the running instance of the Open Lineage Services server.
      *
      * @param openLineageOperationalServices OpenLineageOperationalServices object
@@ -195,17 +252,6 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      */
     OpenLineageServerOperationalServices getOpenLineageOperationalServices() {
         return openLineageOperationalServices;
-    }
-
-
-    /**
-     * Set up the running instance of the discovery engine.
-     *
-     * @param operationalDiscoveryServer DiscoveryServerOperationalServices object
-     */
-    void setOperationalDiscoveryServer(DiscoveryServerOperationalServices operationalDiscoveryServer)
-    {
-        this.operationalDiscoveryServer = operationalDiscoveryServer;
     }
 
 
@@ -340,7 +386,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return logging destination
      */
-    public OMRSAuditLog getAuditLog()
+    OMRSAuditLog getAuditLog()
     {
         return auditLog;
     }
@@ -351,7 +397,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @param auditLog logging destination
      */
-    public void setAuditLog(OMRSAuditLog auditLog)
+    void setAuditLog(OMRSAuditLog auditLog)
     {
         this.auditLog = auditLog;
     }

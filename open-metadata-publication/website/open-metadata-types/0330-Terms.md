@@ -9,7 +9,7 @@ Just like a category, a term is owned by a glossary but can be
 linked into a category from any glossary.
 Model 0330 shows the glossary term.
 
-![UML](0330-Terms.png)
+![UML](0330-Terms.png#pagewidth)
 
 * **GlossaryTerm** represents a term in a glossary. 
 * **TermAnchor** links each term to exactly one Glossary object.

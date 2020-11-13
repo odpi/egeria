@@ -11,5 +11,11 @@ This should ideally be done automatically as part of the build process, however 
 
 Any consumers of these charts can do
 
+```
 helm repo add https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts
 helm install lab
+```
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

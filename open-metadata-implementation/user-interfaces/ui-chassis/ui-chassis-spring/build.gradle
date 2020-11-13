@@ -1,0 +1,66 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.security:spring-security-ldap'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
+    implementation 'io.jsonwebtoken:jjwt'
+    implementation 'com.h2database:h2'
+    implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
+    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
+    implementation 'ch.qos.logback:logback-classic'
+    implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-client')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework:spring-webmvc'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.security:spring-security-config'
+    implementation 'org.springframework.security:spring-security-core'
+    implementation 'org.springframework:spring-web'
+    implementation 'org.springframework.data:spring-data-jpa'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core'
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'jakarta.persistence:jakarta.persistence-api'
+    implementation 'org.springframework:spring-beans'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'javax.xml.bind:jaxb-api'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'org.springframework:spring-core'
+    implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
+    implementation 'org.springframework.security:spring-security-web'
+    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
+    implementation 'com.fasterxml.jackson.core:jackson-core'
+    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
+    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation 'org.apache.commons:commons-collections4'
+    implementation 'commons-io:commons-io'
+    implementation 'jakarta.annotation:jakarta.annotation-api'
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-client')
+    implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-api')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.platform:junit-platform-runner'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.mockito:mockito-inline'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'junit:junit'
+}
+
+description = 'UI Server Platform Chassis for Spring'
+
+java {
+    withJavadocJar()
+}

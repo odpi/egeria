@@ -3,48 +3,108 @@
 package org.odpi.openmetadata.commonservices.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
+import java.util.Arrays;
+import java.util.Map;
+
 /**
  * MockCheckedExceptionBase provides a concrete class to test the checked exception base.
  */
 public class MockCheckedExceptionBase extends OMAGCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
-     * This is the typical constructor used for creating an exception.
+     * This is the typical constructor used for creating an OMAGCheckedExceptionBase.
      *
-     * @param httpCode   http response code to use if this exception flows over a rest call
+     * @param messageDefinition  content of the message
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
-     * @param errorMessage   description of error
-     * @param systemAction   actions of the system as a result of the error
-     * @param userAction   instructions for correcting the error
      */
-    public MockCheckedExceptionBase(int httpCode,
-                                    String className,
-                                    String actionDescription,
-                                    String errorMessage,
-                                    String systemAction, String userAction)
+    public MockCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                    String                     className,
+                                    String                     actionDescription)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+        super(messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This is the constructor used for creating an exception that resulted from a previous error.
+     * This is the typical constructor used for creating an OMAGCheckedExceptionBase.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode  http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
-    public MockCheckedExceptionBase(int httpCode,
-                                    String className,
-                                    String actionDescription,
-                                    String errorMessage,
-                                    String systemAction, String userAction, Throwable caughtError)
+    public MockCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                    String                     className,
+                                    String                     actionDescription,
+                                    Map<String, Object> relatedProperties)
     {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+        super(messageDefinition, className, actionDescription, relatedProperties);
+    }
+
+
+    /**
+     * This is the constructor used for creating an OMAGCheckedExceptionBase when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     */
+    public MockCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                    String                     className,
+                                    String                     actionDescription,
+                                    Throwable                  caughtError)
+    {
+        super(messageDefinition, className, actionDescription, caughtError);
+    }
+
+
+    /**
+     * This is the constructor used for creating an OMAGCheckedExceptionBase when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public MockCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
+                                    String                     className,
+                                    String                     actionDescription,
+                                    Throwable                  caughtError,
+                                    Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+    }
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "MockCheckedExceptionBase{" +
+                "reportedHTTPCode=" + getReportedHTTPCode() +
+                ", reportingClassName='" + getReportingClassName() + '\'' +
+                ", reportingActionDescription='" + getReportingActionDescription() + '\'' +
+                ", reportedErrorMessage='" + getReportedErrorMessage() + '\'' +
+                ", reportedErrorMessageId='" + getReportedErrorMessageId() + '\'' +
+                ", reportedErrorMessageParameters=" + Arrays.toString(getReportedErrorMessageParameters()) +
+                ", reportedSystemAction='" + getReportedSystemAction() + '\'' +
+                ", reportedUserAction='" + getReportedUserAction() + '\'' +
+                ", reportedCaughtException=" + getReportedCaughtException() +
+                ", reportedCaughtExceptionClassName='" + getReportedCaughtExceptionClassName() + '\'' +
+                ", relatedProperties=" + getRelatedProperties() +
+                '}';
     }
 }

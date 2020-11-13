@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceZone;
 
 import java.util.List;
 
@@ -24,11 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = GovernanceZoneInAction.class, name = "GovernanceZoneInAction")
 })
-public class GovernanceZoneDefinition extends GovernanceZone
+public class GovernanceZoneDefinition extends GovernanceZoneProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<GovernanceDefinition>  associatedGovernanceDefinitions = null;
+    private List<GovernanceDefinitionProperties> associatedGovernanceDefinitions = null;
 
 
     /**
@@ -56,12 +55,12 @@ public class GovernanceZoneDefinition extends GovernanceZone
      *
      * @return list of definitions
      */
-    public List<GovernanceDefinition> getAssociatedGovernanceDefinitions()
+    public List<GovernanceDefinitionProperties> getAssociatedGovernanceDefinitions()
     {
         return associatedGovernanceDefinitions;
     }
 
-    public void setAssociatedGovernanceDefinitions(List<GovernanceDefinition> associatedGovernanceDefinitions)
+    public void setAssociatedGovernanceDefinitions(List<GovernanceDefinitionProperties> associatedGovernanceDefinitions)
     {
         this.associatedGovernanceDefinitions = associatedGovernanceDefinitions;
     }
@@ -76,15 +75,17 @@ public class GovernanceZoneDefinition extends GovernanceZone
     @Override
     public String toString()
     {
-        return "GovernanceZone{" +
+        return "GovernanceZoneDefinition{" +
                 "associatedGovernanceDefinitions=" + associatedGovernanceDefinitions +
-                ", GUID='" + getGUID() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", criteria='" + getCriteria() + '\'' +
+                ", scope='" + getScope() + '\'' +
+                ", domainIdentifier=" + getDomainIdentifier() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

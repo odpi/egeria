@@ -47,8 +47,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendEvent(CommunityProfileOutboundEvent event) throws InvalidParameterException,
-                                                                      ConnectorCheckedException
+    private void sendEvent(CommunityProfileOutboundEvent event) throws InvalidParameterException,
+                                                                       ConnectorCheckedException
     {
         final String  parameterName = "event";
         final String  methodName = "sendEvent";
@@ -77,19 +77,13 @@ public abstract class CommunityProfileOutTopicPublisher
                 eventType = event.getEventType().getEventTypeName();
             }
 
-            CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.PARSE_EVENT_ERROR;
-            String                    errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(eventType,
-                                                                                        error.getClass().getName(),
-                                                                                        error.getMessage(),
-                                                                                        event.toString());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(CommunityProfileErrorCode.PARSE_EVENT_ERROR.getMessageDefinition(eventType,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 error.getMessage(),
+                                                                                                                 event.toString()),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
+                                                error,
                                                 parameterName);
         }
     }

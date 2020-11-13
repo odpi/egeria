@@ -19,10 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DigitalArchitectureEventType implements Serializable
 {
-    UNKNOWN_DIGITAL_ARCHITECTURE_EVENT  (0,  "UnknownEvent",           "An event that is not recognized by the local server."),
-    NEW_DIGITAL_SERVICE_EVENT           (1,  "NewDigitalService",      "A new digital service has been defined."),
-    UPDATED_DIGITAL_SERVICE_EVENT       (2,  "UpdatedDigitalService",  "An existing digital service has been updated."),
-    DELETED_DIGITAL_SERVICE_EVENT       (3,  "DeletedDigitalService",  "An existing digital service has been deleted.");
+    UNKNOWN_DIGITAL_ARCHITECTURE_EVENT  (0,  "UnknownEvent",           "An event that is not recognized by the local server.");
 
 
     private static final long     serialVersionUID = 1L;

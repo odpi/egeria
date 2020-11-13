@@ -135,7 +135,7 @@ public class TestAssetPagingIterator
 
 
     /**
-     * Test that the iterator works when hte number of elements is less than the cache size.
+     * Test that the iterator works when the number of elements is less than the cache size.
      */
     @Test public void testSmallIterator()
     {

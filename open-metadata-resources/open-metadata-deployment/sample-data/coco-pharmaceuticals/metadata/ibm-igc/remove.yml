@@ -12,6 +12,34 @@
     name: IBM.infosvr
     tasks_from: get_certificate.yml
 
+- name: list OpenIGC bundles
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
+          /ibm/iis/igc-rest/v1/bundles"
+    method: GET
+    user: "{{ ibm_infosvr_user_isadmin }}"
+    password: "{{ ibm_infosvr_upwd_isadmin }}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+    timeout: 10
+  register: __egeria_samples_openigc_bundles
+  when: ('ibm_information_server_domain' in group_names)
+
+- name: remove OMRS bundle
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
+          /ibm/iis/igc-rest/v1/bundles/OMRS"
+    method: DELETE
+    status_code: 200
+    validate_certs: no
+    timeout: 10
+    headers:
+      Cookie: "{{ __egeria_samples_openigc_bundles.set_cookie }}"
+  when: >
+    ('ibm_information_server_domain' in group_names)
+    and ('OMRS' in __egeria_samples_openigc_bundles.json)
+
 - include_tasks: query-and-remove-type.yml
   vars:
     type: data_file_record
@@ -25,6 +53,13 @@
     conditions:
       - { property: "host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
       - { property: "path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: data_file_folder
+    conditions:
+      - { property: "name", operator: "=", value: "/" }
+      - { property: "host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
 
 - include_tasks: query-and-remove-type.yml
   vars:
@@ -84,20 +119,71 @@
   vars:
     type: category
     conditions:
+      - { property: "parent_category.name", operator: "=", value: "Classifications" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: category
+    conditions:
       - { property: "name", operator: "=", value: "Coco Pharmaceuticals" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: category
+    conditions:
+      - { property: "name", operator: "=", value: "Classifications" }
+
+- include_tasks: query-and-remove-type.yml
+  vars:
+    type: category
+    conditions:
+      - { property: "name", operator: "=", value: "Default Glossary" }
+
+- name: list DataStage projects
+  shell: >
+    source ~/.bashrc &&
+    source dsenv &&
+    ./bin/dsadmin
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -user {{ ibm_infosvr_users.isadmin }} -password {{ ibm_infosvr_upwds.isadmin }}
+    -server {{ groups['ibm_information_server_engine'][0] | upper }}
+    -listprojects
+  args:
+    executable: /bin/bash
+    chdir: "{{ ibm_infosvr_locations.linux }}/Server/DSEngine"
+  become: yes
+  register: __cocopharma_projects_list
+  changed_when: False
+  when: ('ibm_information_server_engine' in group_names)
+
+- name: remove DataStage project
+  shell: >
+    source ~/.bashrc &&
+    source dsenv &&
+    ./bin/dsadmin
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -user {{ ibm_infosvr_users.isadmin }} -password {{ ibm_infosvr_upwds.isadmin }}
+    -server {{ groups['ibm_information_server_engine'][0] | upper }}
+    -deleteproject cocopharma
+  args:
+    executable: /bin/bash
+    chdir: "{{ ibm_infosvr_locations.linux }}/Server/DSEngine"
+  become: yes
+  when: >
+    ('ibm_information_server_engine' in group_names)
+    and __cocopharma_projects_list.stdout.find('cocopharma') != -1
 
 - name: list Information Analyzer projects
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
             /ibm/iis/ia/api/projects"
     method: GET
-    user: "{{ ibm_infosvr_user_isadmin }}"
-    password: "{{ ibm_infosvr_upwd_isadmin }}"
-    force_basic_auth: yes
     status_code: 200
     validate_certs: no
     timeout: 10
     return_content: yes
+    headers:
+      Cookie: "{{ __egeria_samples_openigc_bundles.set_cookie }}"
   register: __egeria_samples_ia_projects
   when: ('ibm_information_server_domain' in group_names)
 
@@ -115,15 +201,23 @@
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
             /ibm/iis/ia/api/project?projectName=CocoPharma"
     method: DELETE
-    user: "{{ ibm_infosvr_user_isadmin }}"
-    password: "{{ ibm_infosvr_upwd_isadmin }}"
-    force_basic_auth: yes
     status_code: 200
     validate_certs: no
     timeout: 10
+    headers:
+      Cookie: "{{ __egeria_samples_openigc_bundles.set_cookie }}"
   when: >
     ('ibm_information_server_domain' in group_names)
     and __egeria_samples_ia_project_matches.count > 0
+
+- name: close session
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/logout/"
+    method: GET
+    validate_certs: no
+    headers:
+      Cookie: "{{ __egeria_samples_openigc_bundles.set_cookie }}"
+  when: ('ibm_information_server_domain' in group_names)
 
 - import_role: name=IBM.infosvr-import-export
   vars:

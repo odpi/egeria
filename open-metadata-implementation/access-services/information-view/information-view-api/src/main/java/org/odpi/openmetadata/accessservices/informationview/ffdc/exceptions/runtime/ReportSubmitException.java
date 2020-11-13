@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class ReportSubmitException extends InformationViewExceptionBase {
 
+    private static final long    serialVersionUID = 1L;
+
     private String reportName;
 
     public ReportSubmitException(int httpCode,

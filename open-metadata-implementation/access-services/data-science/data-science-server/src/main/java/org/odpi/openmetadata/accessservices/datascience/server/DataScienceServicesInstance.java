@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.datascience.server;
 
 import org.odpi.openmetadata.accessservices.datascience.ffdc.DataScienceErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * DataScienceServicesInstance caches references to objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class DataScienceServicesInstance extends OCFOMASServiceInstance
+public class DataScienceServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_SCIENCE_OMAS;
 
@@ -33,13 +33,14 @@ public class DataScienceServicesInstance extends OCFOMASServiceInstance
      */
     public DataScienceServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                        List<String>            supportedZones,
-                                       OMRSAuditLog            auditLog,
+                                       AuditLog                auditLog,
                                        String                  localServerUserId,
                                        int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               supportedZones,
+              null,
               null,
               auditLog,
               localServerUserId,
@@ -53,15 +54,9 @@ public class DataScienceServicesInstance extends OCFOMASServiceInstance
         }
         else
         {
-            DataScienceErrorCode errorCode    = DataScienceErrorCode.OMRS_NOT_INITIALIZED;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(DataScienceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }

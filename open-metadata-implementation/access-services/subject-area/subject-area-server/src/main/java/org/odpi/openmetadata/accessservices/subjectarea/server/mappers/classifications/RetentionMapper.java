@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Retention;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceClassificationStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.RetentionBasis;
@@ -32,7 +33,7 @@ public class RetentionMapper extends ClassificationMapper{
         super(omrsapiHelper);
     }
     @Override
-    protected Set<String> mapKnownAttributesToOmrs(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification, InstanceProperties omrsClassificationProperties) {
+    protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         Retention retention = (Retention) omasClassification;
 
         String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(), "steward", omrsClassificationProperties, "");
@@ -81,11 +82,11 @@ public class RetentionMapper extends ClassificationMapper{
     }
 
     @Override
-    protected org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification createOmasClassification() {
+    protected Classification createOmasClassification() {
         return new Retention();
     }
     @Override
-    protected InstanceProperties updateOMRSAttributes(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
+    protected InstanceProperties updateOMRSAttributes(Classification omasClassification) {
         InstanceProperties instanceProperties = new InstanceProperties();
         Retention retention = (Retention)omasClassification;
         if (retention.getSteward()!=null) {

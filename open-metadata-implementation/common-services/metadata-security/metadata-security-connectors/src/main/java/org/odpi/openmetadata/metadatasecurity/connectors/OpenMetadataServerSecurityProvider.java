@@ -19,7 +19,7 @@ public abstract class OpenMetadataServerSecurityProvider extends ConnectorProvid
     {
         super();
 
-        Class        connectorClass = OpenMetadataServerSecurityConnector.class;
+        Class<?>        connectorClass = OpenMetadataServerSecurityConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }

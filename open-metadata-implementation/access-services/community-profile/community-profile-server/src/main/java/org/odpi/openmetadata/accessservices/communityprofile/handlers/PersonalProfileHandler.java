@@ -200,15 +200,16 @@ public class PersonalProfileHandler
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PersonalProfileBuilder builder = new PersonalProfileBuilder(employeeNumber,
+                                                                    additionalProperties,
+                                                                    null,
                                                                     repositoryHelper,
                                                                     serviceName,
                                                                     serverName);
+
         InstanceProperties properties = builder.getPersonEntityProperties(knownName,
-                                                                        fullName,
-                                                                        jobTitle,
-                                                                        jobRoleDescription,
-                                                                        null,
-                                                                        additionalProperties);
+                                                                          fullName,
+                                                                          jobTitle,
+                                                                          jobRoleDescription);
 
         String profileGUID =  repositoryHandler.createEntity(userId,
                                                              PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
@@ -258,6 +259,8 @@ public class PersonalProfileHandler
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PersonalProfileBuilder builder = new PersonalProfileBuilder(qualifiedName,
+                                                                    additionalProperties,
+                                                                    extendedProperties,
                                                                     repositoryHelper,
                                                                     serviceName,
                                                                     serverName);
@@ -265,16 +268,16 @@ public class PersonalProfileHandler
         InstanceProperties      properties = builder.getPersonEntityProperties(knownName,
                                                                                fullName,
                                                                                jobTitle,
-                                                                               jobRoleDescription,
-                                                                               extendedProperties,
-                                                                               additionalProperties);
+                                                                               jobRoleDescription);
 
-        repositoryHandler.updateEntity(userId,
-                                       profileGUID,
-                                       PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
-                                       PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
-                                       properties,
-                                       methodName);
+        repositoryHandler.updateEntityProperties(userId,
+                                                 null,
+                                                 null,
+                                                 profileGUID,
+                                                 PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
+                                                 PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
+                                                 properties,
+                                                 methodName);
 
         log.debug("Update of personal details successful: " + profileGUID);
     }

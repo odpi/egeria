@@ -8,24 +8,24 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
         property = "class",
-        defaultImpl = Category.class
+        defaultImpl = Category.class,
+        visible = true
 )
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = SubjectAreaDefinition.class, name = "SubjectAreaDefinition")
-        })
-public class Category extends Node{
-    private GlossarySummary glossary =null;
-    private CategorySummary parentCategory;
+@JsonSubTypes({ @JsonSubTypes.Type(value = SubjectAreaDefinition.class) })
+public class Category extends Node {
+    private GlossarySummary glossary = null;
+    private CategorySummary parentCategory = null;
 
     public Category() {
         nodeType = NodeType.Category;
@@ -77,6 +77,7 @@ public class Category extends Node{
         sb.append('}');
         return sb;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,8 +86,7 @@ public class Category extends Node{
         Category category = (Category) o;
         Node node = (Node) o;
         if (!node.equals(this)) return false;
-        if (glossary != null ? !glossary.equals(category.glossary) : category.glossary != null) return false;
-        return  true;
+        return Objects.equals(glossary, category.glossary);
     }
 
     @Override

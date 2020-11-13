@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryview.exception;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 
 /**
- * Stores checked OMRS exceptions info until it is sent to the client. Made to be used only by {@code OMRSClient}
+ * Generic exception used when unknown exceptions are coming from the omrs layer. Made to be used only by {@code OMRSClient}
  */
-public class GlossaryViewOmasException extends OCFCheckedExceptionBase {
+public class GlossaryViewOmasException extends OMRSCheckedExceptionBase {
 
-    public GlossaryViewOmasException(int httpCode, String className, String  actionDescription, String errorMessage,
+    public GlossaryViewOmasException(int  httpCode, String className, String  actionDescription, String errorMessage,
                                      String systemAction, String userAction) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }

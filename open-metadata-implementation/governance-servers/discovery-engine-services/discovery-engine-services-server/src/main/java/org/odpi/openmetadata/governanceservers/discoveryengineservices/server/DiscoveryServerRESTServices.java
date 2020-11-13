@@ -2,20 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.server;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationListResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalysisReportResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.rest.DiscoveryEngineStatusResponse;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.LoggerFactory;
 
 
@@ -59,7 +62,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -112,7 +115,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryEngineStatusResponse response = new DiscoveryEngineStatusResponse();
-        OMRSAuditLog                  auditLog = null;
+        AuditLog                      auditLog = null;
 
         try
         {
@@ -172,7 +175,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -247,7 +250,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -317,7 +320,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
-        OMRSAuditLog                    auditLog = null;
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -378,7 +381,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AnnotationListResponse response = new AnnotationListResponse();
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
 
         try
         {
@@ -441,7 +444,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AnnotationListResponse response = new AnnotationListResponse();
-        OMRSAuditLog           auditLog = null;
+        AuditLog               auditLog = null;
 
         try
         {
@@ -501,7 +504,7 @@ public class DiscoveryServerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AnnotationResponse response = new AnnotationResponse();
-        OMRSAuditLog       auditLog = null;
+        AuditLog           auditLog = null;
 
         try
         {
@@ -547,7 +550,7 @@ public class DiscoveryServerRESTServices
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(PropertyServerException.class.getName());
-        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
     }

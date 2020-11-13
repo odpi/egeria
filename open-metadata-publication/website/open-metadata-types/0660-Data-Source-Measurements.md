@@ -6,7 +6,7 @@
 The Data Source Measurements capture a snapshot of the physical
 dimensions and activity levels at a particular moment in time.
 
-![UML](0660-Data-Source-Measurements.png)
+![UML](0660-Data-Source-Measurements.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

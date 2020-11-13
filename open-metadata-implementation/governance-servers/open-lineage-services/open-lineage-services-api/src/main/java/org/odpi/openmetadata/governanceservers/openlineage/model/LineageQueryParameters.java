@@ -22,12 +22,12 @@ public class LineageQueryParameters {
 
     private Scope scope;
     private String displayNameMustContain;
-    private  boolean includeProcesses;
+    private boolean includeProcesses;
 
     public LineageQueryParameters() {
     }
 
-    public LineageQueryParameters(Scope scope, String displayNameMustContain, boolean includeProcesses) {
+    public LineageQueryParameters(Scope scope, String displayNameMustContain, boolean includeProcesses ) {
         this.scope = scope;
         this.displayNameMustContain = displayNameMustContain;
         this.includeProcesses = includeProcesses;
@@ -49,7 +49,7 @@ public class LineageQueryParameters {
         this.displayNameMustContain = displayNameMustContain;
     }
 
-    public boolean getIncludeProcesses() {
+    public boolean isIncludeProcesses() {
         return includeProcesses;
     }
 

@@ -23,6 +23,8 @@ import java.util.List;
  */
 class ConnectedAssetCertifications extends AssetCertifications
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
@@ -146,9 +148,9 @@ class ConnectedAssetCertifications extends AssetCertifications
                                                                                          cacheStartPointer,
                                                                                          maximumSize);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             List<Certification>  beans = restResult.getList();
             if ((beans == null) || (beans.isEmpty()))

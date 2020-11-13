@@ -10,10 +10,16 @@
     <parent>
         <artifactId>open-metadata-collection-store-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>2.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>Graph Repository Connector</name>
     <description>
@@ -31,6 +37,14 @@
                 <exclusion>
                     <artifactId>hibernate-validator</artifactId>
                     <groupId>org.hibernate</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-core</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -54,11 +68,36 @@
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-es</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-cql</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-driver</artifactId>
         </dependency>
 
         <dependency>
@@ -66,7 +105,7 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-         <dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
@@ -78,13 +117,18 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>gremlin-core</artifactId>
-         </dependency>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -94,16 +138,6 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
         </dependency>
 
         <dependency>
@@ -132,16 +166,21 @@
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <!-- Runtime dependencies for janusgraph-->
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cassandra:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cassandra:*
+                                </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>joda-time:joda-time:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.codehaus.jackson:jackson-mapper-asl:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.codehaus.jackson:jackson-core-asl:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.antlr:antlr-runtime:jar:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.xerial.snappy:snappy-java:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.antlr:antlr-runtime:jar:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.xerial.snappy:snappy-java:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>

@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities;
 
-
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
@@ -51,6 +50,36 @@ public interface OMRSRepositoryPropertiesHelper
                                 String             propertyName,
                                 InstanceProperties properties,
                                 String             methodName);
+
+
+    /**
+     * Retrieve the ordinal value from an enum property.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return int ordinal or -1 if not found
+     */
+    int getEnumPropertyOrdinal(String             sourceName,
+                               String             propertyName,
+                               InstanceProperties properties,
+                               String             methodName);
+
+
+    /**
+     * Retrieve the ordinal value from an enum property and then delete it from the properties
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return int ordinal or -1 if not found
+     */
+    int removeEnumPropertyOrdinal(String             sourceName,
+                                  String             propertyName,
+                                  InstanceProperties properties,
+                                  String             methodName);
 
 
     /**
@@ -101,6 +130,105 @@ public interface OMRSRepositoryPropertiesHelper
                                                     String             propertyName,
                                                     InstanceProperties properties,
                                                     String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, Boolean> getBooleanMapFromProperty(String             sourceName,
+                                                   String             propertyName,
+                                                   InstanceProperties properties,
+                                                   String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, Boolean> removeBooleanMapFromProperty(String             sourceName,
+                                                      String             propertyName,
+                                                      InstanceProperties properties,
+                                                      String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, Long> getLongMapFromProperty(String             sourceName,
+                                             String             propertyName,
+                                             InstanceProperties properties,
+                                             String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, Long> removeLongMapFromProperty(String             sourceName,
+                                                String             propertyName,
+                                                InstanceProperties properties,
+                                                String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, Integer> getIntegerMapFromProperty(String             sourceName,
+                                                   String             propertyName,
+                                                   InstanceProperties properties,
+                                                   String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, Integer> removeIntegerMapFromProperty(String             sourceName,
+                                                      String             propertyName,
+                                                      InstanceProperties properties,
+                                                      String             methodName);
 
 
     /**
@@ -501,4 +629,18 @@ public interface OMRSRepositoryPropertiesHelper
                                                       String              propertyName,
                                                       Map<String, String> mapValues,
                                                       String              methodName) throws InvalidParameterException;
+
+
+    /**
+     * Convert the provided instance properties and match criteria into an equivalent SearchProperties object.
+     *
+     * @param sourceName name of the caller
+     * @param properties properties object to convert
+     * @param matchCriteria match criteria to apply
+     * @return SearchProperties object.
+     */
+    SearchProperties getSearchPropertiesFromInstanceProperties(String             sourceName,
+                                                               InstanceProperties properties,
+                                                               MatchCriteria      matchCriteria);
+
 }

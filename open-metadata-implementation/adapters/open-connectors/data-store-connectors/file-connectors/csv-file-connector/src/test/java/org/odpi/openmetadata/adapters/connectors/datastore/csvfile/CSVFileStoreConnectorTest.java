@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class CSVFileStoreConnectorTest
 {
-    private static  String  resourcesDirectory = "target/test-classes/";
+    private static  String  resourcesDirectory = "src/test/resources/";
     private static  String  complexColumnsWithColumnNamesFile  = "ComplexColumnsWithColumnNames.csv";
     private static  String  emptyFile                          = "EmptyFile.csv";
     private static  String  justColumnNamesFile                = "JustColumnNames.csv";
@@ -330,7 +330,7 @@ public class CSVFileStoreConnectorTest
         }
         catch (FileException  error)
         {
-            assertTrue("BASIC-FILE-CONNECTOR-400-002 The file target/test-classes/ given in Connection object CSVFileStore.Connection.Test is a directory".equals(error.getMessage()));
+            assertTrue("BASIC-FILE-CONNECTOR-400-002 The file src/test/resources/ given in Connection object CSVFileStore.Connection.Test is a directory".equals(error.getMessage()));
         }
         catch (Throwable exception)
         {

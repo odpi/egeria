@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -10,18 +12,24 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * ConfigStoreResource provides the API to configure the destination that should be used to manage
+ * ConfigStoreResource provides the API to configure the connector that should be used to manage
  * configuration documents.  The default is to use a file for each configured OMAG server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/stores")
+
+@Tag(name="Administration Services - Platform Configuration", description="The platform configuration administration services support the " +
+        "configuration of the security and configuration store connectors for an OMAG Server Platform.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+        url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-the-omag-server-platform.html"))
+
 public class ConfigStoreResource
 {
     private static OMAGServerAdminStoreServices  adminStoreAPI = new OMAGServerAdminStoreServices();
 
 
     /**
-     * Override the default location of the configuration documents.
+     * Override the default implementation or configuration of the configuration document store.
      *
      * @param userId calling user.
      * @param connection connection used to create and configure the connector that interacts with

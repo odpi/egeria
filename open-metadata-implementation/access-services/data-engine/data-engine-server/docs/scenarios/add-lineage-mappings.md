@@ -6,7 +6,7 @@
 Add LineageMappings between schema types, based on the qualified names of the existing schemas.
 
 ```
-POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/lineage-mappings
 
 {
     "lineageMappings": [

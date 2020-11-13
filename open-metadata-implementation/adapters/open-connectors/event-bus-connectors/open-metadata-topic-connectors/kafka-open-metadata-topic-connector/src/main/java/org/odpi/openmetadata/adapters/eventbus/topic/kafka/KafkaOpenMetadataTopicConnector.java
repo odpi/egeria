@@ -2,12 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.DescribeClusterResult;
+import org.apache.kafka.clients.admin.KafkaAdminClient;
+import org.apache.kafka.common.Node;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
@@ -15,6 +13,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
@@ -22,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
-    public static final String ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit";
+    static final String ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit";
 
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
@@ -32,12 +36,40 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private Properties consumerEgeriaProperties = new Properties();
     private Properties consumerProperties = new Properties();
 
+
     private KafkaOpenMetadataEventConsumer consumer = null;
     private KafkaOpenMetadataEventProducer producer = null;
 
     private String       topicName          = null;
     private String       serverId           = null;
+
+    /* this buffer is for consumed events */
     private List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
+
+    private KafkaProducerExecutor executor = null;
+
+    final String                   threadHeader = "Kafka-";
+    Thread                         consumerThread;
+    Thread                         producerThread;
+
+
+    /* mock up a a SingleThreadProducer with an overided afterExecute */
+    private class KafkaProducerExecutor extends ThreadPoolExecutor {
+        KafkaProducerExecutor() {
+            super(1, 1, Long.MAX_VALUE, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(1));
+        }
+
+        @Override
+        public void afterExecute(Runnable r, Throwable t) {
+            super.afterExecute(r, t);
+
+            /* we don't care why the thread ended , we just restart it */
+            /* The thread will log on exit and on restart already, so no need to let anyone know */
+            producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, KafkaOpenMetadataTopicConnector.this, auditLog);
+            producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
+            executor.execute(producerThread);
+        }
+    }
     /**
      * Constructor sets up the default properties for the producer and consumer.  Any properties passed through
      * the connection's additional properties will override these values.  For most environments,
@@ -56,6 +88,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         producerProperties.put("buffer.memory", 33554432);
         producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        producerProperties.put("bring.up.retries", "10");
+        producerProperties.put("bring.up.minSleepTime", "5000");
+
 
         consumerProperties.put("bootstrap.servers", "localhost:9092");
         consumerProperties.put(ENABLE_AUTO_COMMIT_PROPERTY, "true");
@@ -64,6 +99,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         consumerProperties.put("max.partition.fetch.bytes",	10485760);
         consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        consumerProperties.put("bring.up.retries", "10");
+        consumerProperties.put("bring.up.minSleepTime", "5000");
     }
 
 
@@ -73,7 +110,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private void initializeTopic()
     {
         final String           actionDescription = "initialize";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
         super.initialize(connectorInstanceId, connectionProperties);
 
@@ -97,28 +133,16 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
                 if (auditLog != null)
                 {
-                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(topicName, serverId),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId));
                 }
             }
             else
             {
                 if (auditLog != null)
                 {
-                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES;
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(topicName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(actionDescription,
+                                        KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES.getMessageDefinition(topicName));
                 }
             }
         }
@@ -126,14 +150,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         {
             if (auditLog != null)
             {
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription,
+                                    KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME.getMessageDefinition());
             }
         }
     }
@@ -150,8 +168,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private void  initializeKafkaProperties(Map<String, Object> configurationProperties)
     {
         final String                             actionDescription = "initializeKafkaProperties";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
-        Map<String, Object>   propertiesMap;
 
         try
         {
@@ -168,14 +184,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
         catch (Throwable   error)
         {
-            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(topicName, error.getClass().getName(), error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES.getMessageDefinition(topicName,
+                                                                                                                                error.getClass().getName(),
+                                                                                                                                error.getMessage()));
         }
     }
 
@@ -210,12 +222,36 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      */
     public void start() throws ConnectorCheckedException
     {
-        final String                   threadHeader = "Kafka-";
-        Thread                         consumerThread;
-        Thread                         producerThread;
 
         this.initializeTopic();
-        
+
+        KafkaStatusChecker kafkaStatus = new KafkaStatusChecker();
+
+        /*
+        *  compare the two lists of bootstrap server to ceck we only want one cluster's status checked
+        *  reliant on list being specified in the same order
+         * This will need changing for single direction connector
+         */
+        boolean up = false;
+        if ( consumerProperties.getProperty("bootstrap.servers").equals(producerProperties.getProperty("bootstrap.servers")) ) {
+            up = kafkaStatus.waitForBrokers( producerProperties);
+        }
+        else {
+            up = kafkaStatus.waitForBrokers( producerProperties) &&
+                    kafkaStatus.waitForBrokers(consumerProperties);
+        }
+
+        if (!up) {
+            final String actionDescription = "waitForThisBroker";
+            auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
+            throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_ATTEMPTING_KAFKA_INITIALIZATION.getMessageDefinition(kafkaStatus.getLastException().getClass().getName(),
+                    topicName,
+                    kafkaStatus.getLastException().getMessage()),
+                    this.getClass().getName(),
+                    "KafkaMonitor.waitForThisBroker",
+                    kafkaStatus.getLastException());
+        }
+
         KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
         consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
@@ -223,7 +259,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
-        producerThread.start();
+        executor = new KafkaProducerExecutor();
+        executor.execute(producerThread);
 
         super.start();
     }
@@ -259,7 +296,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         if ((incomingEventsList != null) && (!incomingEventsList.isEmpty()))
         {
-            log.debug("Checking for events.  Number of found events: {0}", incomingEventsList.size());
+            log.debug("Checking for events.  Number of found events: {}", incomingEventsList.size());
             newEvents = new ArrayList<>(incomingEventsList);
 
             // empty incomingEventsList otherwise same events will be sent again
@@ -289,21 +326,58 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     public void disconnect() throws ConnectorCheckedException
     {
         final String           actionDescription = "disconnect";
-        KafkaOpenMetadataTopicConnectorAuditCode auditCode;
+
 
         consumer.safeCloseConsumer();
         producer.safeCloseProducer();
 
+        /*
+        * Ensure Kafka client threads have stopped
+        * before returning.
+         */
+        try {
+            consumerThread.join();
+        }
+        catch ( InterruptedException e )
+        {
+            //expected exception and don't care
+        }
+        catch ( Exception error ) {
+            if (auditLog != null)
+            {
+                final String command = "consumerThread.join";
+                auditLog.logException(actionDescription,
+                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                    topicName,
+                                                                                                                    command,
+                                                                                                                    error.getMessage()),
+                                      error);
+            }
+        }
+
+        try {
+            producerThread.join();
+        } catch (InterruptedException e) {
+            //expected and don't care
+        }
+        catch ( Exception error ){
+            if (auditLog != null)
+            {
+                final String command = "producerThread.join";
+
+                auditLog.logException(actionDescription,
+                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                    topicName,
+                                                                                                                    command,
+                                                                                                                    error.getMessage()),
+                                      error);
+            }
+
+        }
+
         super.disconnect();
 
-        auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(topicName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(topicName));
     }
     
     /**
@@ -313,5 +387,89 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      */
     int getNumberOfUnprocessedEvents() {
     	return incomingEventsList.size();
+    }
+
+    private class KafkaStatusChecker {
+
+        //instantiate empty objects to avoid if null checks
+        // the brokers list if for debug/testing purposes only,
+        private Exception lastException = new Exception();
+
+        /*
+         * connects and requests a list of running kafka brokers
+         * swallows all exceptions to allow caller to control error reporting,
+         *
+         * If this function populates brokers then:
+         * Zookeeper is running
+         * Kafka has a least one server which is running at least one broker
+         *
+         * @param connectionProps The properties to enable connection to kafka
+         */
+        boolean getRunningBrokers(Properties connectionProperties ) {
+
+            boolean found = false;
+            try {
+                AdminClient adminClient = KafkaAdminClient.create(connectionProperties);
+                DescribeClusterResult describeClusterResult = adminClient.describeCluster();
+                Collection<Node> brokers = describeClusterResult.nodes().get();
+                if (!brokers.isEmpty()) {
+                    found = true;
+                }
+            } catch (Exception e) {
+                //gulp down any exceptions, the waiting method will control any audit logging
+                //but keep a copy for reference
+                lastException = e;
+            }
+
+            return found;
+        }
+
+
+        /*
+         * waits for a list of running kafaka brokers
+         * @param connectionProperties The kafka connection properties
+         * Performs a sanity check that the services Egeria requires are available
+         *         */
+        public boolean waitForBrokers(Properties connectionProperties ) {
+            int count = 0;
+            boolean found = false;
+            try {
+                int napCount = Integer.parseInt( connectionProperties.getProperty("bring.up.retries") );
+                int minSleepTime = Integer.parseInt( connectionProperties.getProperty("bring.up.minSleepTime")) ;
+
+                while (count < napCount) {
+
+                    auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count+1)));
+                    Instant start = Instant.now();
+                    if (getRunningBrokers(connectionProperties)) {
+                        //we were returned a list of running brokers
+                        //so end retry loop
+                        found = true;
+                        break;
+                    } else {
+                        count++;
+                        /* This provides a minimum sleeptime functionality
+                        *  to allow the ride through of short term availablity issues
+                         */
+                        Instant end = Instant.now();
+                        Duration timeTaken = Duration.between(start, end);
+                        long millis = timeTaken.toMillis();
+
+                        if (millis < minSleepTime)
+                        {
+                            Thread.sleep(minSleepTime - millis);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                lastException = e;
+            }
+            return found;
+        }
+
+        public Exception getLastException() {
+
+            return lastException;
+        }
     }
 }

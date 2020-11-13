@@ -15,6 +15,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public class AssetLineage extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

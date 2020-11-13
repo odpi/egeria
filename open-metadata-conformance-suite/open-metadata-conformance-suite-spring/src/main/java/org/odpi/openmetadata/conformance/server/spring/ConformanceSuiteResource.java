@@ -2,23 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.server.spring;
 
-import org.odpi.openmetadata.conformance.rest.TestCaseListReportResponse;
-import org.odpi.openmetadata.conformance.rest.TestCaseReportResponse;
-import org.odpi.openmetadata.conformance.rest.TestLabReportResponse;
-import org.odpi.openmetadata.conformance.rest.WorkbenchReportResponse;
-import org.odpi.openmetadata.conformance.rest.WorkbenchStatusResponse;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.conformance.rest.*;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteTestLabServices;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+
 
 /**
  * ConformanceSuiteResource provides the REST API for running the Open Metadata Conformance Suite.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/conformance-suite/users/{userId}")
+
+@Tag(name="Conformance Suite", description="The open metadata conformance suite provides a testing framework to help the developers integrate a specific technology into the open metadata ecosystem.", externalDocs=@ExternalDocumentation(description="Open Metadata Conformance Suite",url="https://egeria.odpi.org/open-metadata-conformance-suite/"))
+
 
 public class ConformanceSuiteResource
 {

@@ -1,0 +1,30 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
+
+dependencies {
+    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
+    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'Subject Area OMAS Samples'
+
+java {
+    withJavadocJar()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.accessservices.subjectarea.samples.definition.SubjectAreaDefinitionSample'
+    archiveClassifier = 'jar-with-dependencies'
+}

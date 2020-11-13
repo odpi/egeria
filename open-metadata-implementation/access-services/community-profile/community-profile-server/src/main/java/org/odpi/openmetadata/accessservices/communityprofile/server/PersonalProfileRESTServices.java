@@ -9,10 +9,10 @@ import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfil
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfileValidatorRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +61,7 @@ public class PersonalProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse response = new GUIDResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -143,7 +143,7 @@ public class PersonalProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog      = null;
+        AuditLog     auditLog      = null;
 
         try
         {
@@ -226,7 +226,7 @@ public class PersonalProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -289,7 +289,7 @@ public class PersonalProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
-        OMRSAuditLog            auditLog = null;
+        AuditLog                auditLog = null;
 
         try
         {
@@ -341,7 +341,7 @@ public class PersonalProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
-        OMRSAuditLog            auditLog = null;
+        AuditLog                auditLog = null;
 
         try
         {
@@ -394,7 +394,7 @@ public class PersonalProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
-        OMRSAuditLog            auditLog = null;
+        AuditLog                auditLog = null;
 
         try
         {
@@ -452,7 +452,7 @@ public class PersonalProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         PersonalProfileListResponse response = new PersonalProfileListResponse();
-        OMRSAuditLog                auditLog = null;
+        AuditLog                    auditLog = null;
 
         try
         {

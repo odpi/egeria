@@ -3,7 +3,7 @@
 
 # 0224 Databases
 
-![UML](0224-Databases.png)
+![UML](0224-Databases.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

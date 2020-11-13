@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Community Profile Open Metadata Access Service (OMAS)
 
 The Community Profile OMAS provides APIs and events for tools and applications
@@ -39,6 +41,9 @@ use and feedback, without an excessive amount of additional administration.
 
 * [User Documentation](docs/user)
 * [Design Documentation](docs/design)
+
+----
+Return to the [access-services](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

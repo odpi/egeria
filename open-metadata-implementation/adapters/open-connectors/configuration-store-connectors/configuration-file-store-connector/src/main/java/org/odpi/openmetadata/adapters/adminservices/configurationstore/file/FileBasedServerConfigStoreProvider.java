@@ -20,7 +20,7 @@ public class FileBasedServerConfigStoreProvider extends OMAGServerConfigStorePro
      */
     public FileBasedServerConfigStoreProvider()
     {
-        Class    connectorClass = FileBasedServerConfigStoreConnector.class;
+        Class<?>    connectorClass = FileBasedServerConfigStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

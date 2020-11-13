@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+
 # CSV File Connector
 
 The CSV file connector is able to retrieve data from a
@@ -80,3 +82,11 @@ The delimiter between columns is a dash (**-**) and a single quote (**'**) has b
 delimiter character.  There are also no column names in the file so they need to be supplied in the additional
 properties.  If the column names are not supplied, then the structured file connector assumes the first
 line of the file contains the column names.
+
+
+----
+Return to the [file-connectors](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

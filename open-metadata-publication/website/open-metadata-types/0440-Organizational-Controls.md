@@ -6,7 +6,7 @@
 Organizational controls describe governance controls that are implemented through people,
 organizational structures and responsibilities plus manual procedures and rules.
 
-![UML](0440-Organizational-Controls.png)
+![UML](0440-Organizational-Controls.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

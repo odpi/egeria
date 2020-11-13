@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Open Metadata Repository Services (OMRS) components
@@ -9,7 +9,7 @@
 * **[Connectors](connectors/README.md)** - Provides the plug points for connector implementations.
 * **[Events](../event-descriptions/README.md)** - Event formats that flow over the cohort.
 * **[Exceptions](../exception-descriptions/README.md)** - Specific OMRS Exceptions used on the Java APIs.
-* **[REST Properties]()** - Property beans used on OMRS's REST API.
+* **[REST Properties](../../repository-services-spring)** - Property beans used on OMRS's REST API.
 
 ## Repository Services Implementation
 
@@ -66,7 +66,8 @@ it to act as a member of an open metadata repository cohort.
 * **[OMRS Cohort Registry](cohort-registry.md)** - Manages registration exchanges with other members of a
 cohort on behalf of the local server.
 
-
+----
+Return to [repository services design](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

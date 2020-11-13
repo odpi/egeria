@@ -4,11 +4,13 @@ package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -39,7 +41,8 @@ public class SearchParameters implements Serializable {
 
     private List<String> entityTypes;
     private List<String> relationshipTypeGUIDs;
-
+    @JsonProperty("isCaseInsensitive")
+    private boolean isCaseInsensitive = Boolean.TRUE;
 
     /**
      * Return the maximum page pageSize supported by this server.
@@ -183,5 +186,43 @@ public class SearchParameters implements Serializable {
      */
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    /**
+     * @return false if it is performed a case-insensitive search and true otherwise
+     */
+    public boolean isCaseInsensitive() {
+        return isCaseInsensitive;
+    }
+
+    /**
+     * Indicates whether the search should be performed as a case-insensitive regular expression (true)
+     * or as a case-sensitive regular expression (false)
+     *
+     * @param caseInsensitive boolean to set the case sensitivity for the search criteria
+     */
+    public void setCaseInsensitive(boolean caseInsensitive) {
+        isCaseInsensitive = caseInsensitive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SearchParameters that = (SearchParameters) o;
+        return isCaseInsensitive == that.isCaseInsensitive &&
+                Objects.equals(pageSize, that.pageSize) &&
+                Objects.equals(from, that.from) &&
+                Objects.equals(level, that.level) &&
+                Objects.equals(sequencingProperty, that.sequencingProperty) &&
+                sequencingOrder == that.sequencingOrder &&
+                Objects.equals(limitResultsByClassification, that.limitResultsByClassification) &&
+                Objects.equals(entityTypes, that.entityTypes) &&
+                Objects.equals(relationshipTypeGUIDs, that.relationshipTypeGUIDs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pageSize, from, level, sequencingProperty, sequencingOrder, limitResultsByClassification, entityTypes, relationshipTypeGUIDs, isCaseInsensitive);
     }
 }

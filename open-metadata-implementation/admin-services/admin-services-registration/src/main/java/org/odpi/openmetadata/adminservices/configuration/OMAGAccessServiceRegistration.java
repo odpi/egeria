@@ -54,7 +54,7 @@ public class OMAGAccessServiceRegistration
     {
         List<AccessServiceRegistration>  registrationList = new ArrayList<>();
 
-        for (AccessServiceRegistration   accessServiceRegistration : accessServiceRegistrationMap.values())
+        for (AccessServiceRegistration accessServiceRegistration : accessServiceRegistrationMap.values())
         {
             if (accessServiceRegistration != null)
             {

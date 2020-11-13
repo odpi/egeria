@@ -14,9 +14,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetSchemaElement
 {
-    private ElementType          type                 = new ElementType();
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
 
 
     /**
@@ -35,7 +35,7 @@ public class TestAssetSchemaElement
      */
     private AssetSchemaElement getTestObject()
     {
-        SchemaType  testBean = new SchemaType();
+        ComplexSchemaType  testBean = new ComplexSchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -45,7 +45,7 @@ public class TestAssetSchemaElement
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        return new AssetComplexSchemaType(testBean, null);
+        return new AssetComplexSchemaType(testBean);
     }
 
     /**
@@ -55,7 +55,7 @@ public class TestAssetSchemaElement
      */
     private AssetSchemaElement getDifferentObject()
     {
-        SchemaType  testBean = new SchemaType();
+        ComplexSchemaType  testBean = new ComplexSchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestDifferentGUID");
@@ -65,7 +65,7 @@ public class TestAssetSchemaElement
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        return new AssetComplexSchemaType(testBean, null);
+        return new AssetComplexSchemaType(testBean);
     }
 
 
@@ -76,7 +76,7 @@ public class TestAssetSchemaElement
      */
     private AssetSchemaElement getAnotherDifferentObject()
     {
-        SchemaType  testBean = new SchemaType();
+        ComplexSchemaType  testBean = new ComplexSchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -86,30 +86,8 @@ public class TestAssetSchemaElement
         testBean.setQualifiedName("TestDifferentName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        return new AssetComplexSchemaType(testBean, null);
+        return new AssetComplexSchemaType(testBean);
     }
-
-
-    /**
-     * Set up an example object to test.  This has a different field in the subclass.
-     *
-     * @return filled in object
-     */
-    private AssetSchemaElement getYetAnotherDifferentObject()
-    {
-        SchemaType  testBean = new SchemaType();
-
-        testBean.setType(type);
-        testBean.setGUID("TestGUID");
-        testBean.setURL("TestURL");
-        testBean.setClassifications(classifications);
-
-        testBean.setQualifiedName("TestQualifiedName");
-        testBean.setAdditionalProperties(additionalProperties);
-
-        return new AssetComplexSchemaType(testBean, null);
-    }
-
 
 
     /**
@@ -155,7 +133,6 @@ public class TestAssetSchemaElement
     {
         assertFalse(getTestObject().equals(null));
         assertFalse(getTestObject().equals("DummyString"));
-        assertTrue(getTestObject().equals(getTestObject()));
 
         AssetSchemaElement sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));

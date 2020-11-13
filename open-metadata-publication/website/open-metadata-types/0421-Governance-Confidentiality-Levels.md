@@ -9,7 +9,7 @@ An organization creates one of these entities for each of their confidentiality 
 The level value is used by security processing to,
 for example, compare the confidentiality of an asset against a person's access.
 
-![UML](0421-Governance-Confidentiality-Levels.png)
+![UML](0421-Governance-Confidentiality-Levels.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

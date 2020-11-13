@@ -16,14 +16,14 @@ Issue the following command from the `egeria` directory.
 $ mvn clean install
 ``` 
 
-The build can take 5-15 minutes depending on the speed and load on your machine.  However eventually you will see the message:
+The build can take 15-30 minutes depending on the speed and load on your machine.  However eventually you will see the message:
 
 ```text
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 04:54 min
-[INFO] Finished at: 2019-01-29T09:33:17Z
+[INFO] Total time: 14:54 min
+[INFO] Finished at: 2020-01-29T09:33:17Z
 [INFO] Final Memory: 171M/3510M
 [INFO] ------------------------------------------------------------------------
 
@@ -32,6 +32,9 @@ Process finished with exit code 0
 
 This means you have completed this tutorial and are ready to [choose the next step](..).
 
+----
+* Return to [Tutorial List](..)
+* Return to [Egeria Dojo](../egeria-dojo/egeria-dojo-day-2-3-contribution-to-egeria.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

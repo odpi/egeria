@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -21,8 +24,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public class OpenMetadataPlatformSecurityConnector extends ConnectorBase implements OpenMetadataPlatformSecurity
 {
-    protected  String        connectorName = null;
-    protected  String        serverRootURL = null;
+    protected MessageFormatter messageFormatter = new MessageFormatter();
+    protected String           connectorName    = null;
+    protected String           serverRootURL    = null;
 
 
     /**
@@ -32,9 +36,9 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      * @param severity is this an event, decision, error or exception?
      * @param logMessage description of the audit log record including specific resources involved
      */
-    protected void logRecord(String                      logMessageId,
-                             OMRSAuditLogRecordSeverity  severity,
-                             String                      logMessage)
+    protected void logRecord(String                 logMessageId,
+                             AuditLogRecordSeverity severity,
+                             String                 logMessage)
     {
         System.out.println(severity.getName() + " " + logMessageId + " " + logMessage);
     }
@@ -46,10 +50,10 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      */
     protected void logConnectorStarting()
     {
-         OpenMetadataSecurityAuditCode auditCode = OpenMetadataSecurityAuditCode.PLATFORM_INITIALIZING;
-         this.logRecord(auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(connectorName));
+        AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.PLATFORM_INITIALIZING.getMessageDefinition(connectorName, serverRootURL);
+        this.logRecord(messageDefinition.getMessageId(),
+                       messageDefinition.getSeverity(),
+                       messageFormatter.getFormattedMessage(messageDefinition));
     }
 
 
@@ -58,10 +62,10 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      */
     protected void logConnectorDisconnecting()
     {
-        OpenMetadataSecurityAuditCode auditCode = OpenMetadataSecurityAuditCode.PLATFORM_SHUTDOWN;
-        this.logRecord(auditCode.getLogMessageId(),
-                       auditCode.getSeverity(),
-                       auditCode.getFormattedLogMessage(connectorName));
+        AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.PLATFORM_SHUTDOWN.getMessageDefinition(connectorName, serverRootURL);
+        this.logRecord(messageDefinition.getMessageId(),
+                       messageDefinition.getSeverity(),
+                       messageFormatter.getFormattedMessage(messageDefinition));
 
     }
 
@@ -83,21 +87,14 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
     protected void throwUnauthorizedPlatformAccess(String   userId,
                                                    String   methodName) throws UserNotAuthorizedException
     {
-        OpenMetadataSecurityAuditCode auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_PLATFORM_ACCESS;
-        this.logRecord(auditCode.getLogMessageId(),
-                       auditCode.getSeverity(),
-                       auditCode.getFormattedLogMessage(userId, serverRootURL));
+        AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.UNAUTHORIZED_PLATFORM_ACCESS.getMessageDefinition(userId, serverRootURL);
+        this.logRecord(messageDefinition.getMessageId(),
+                       messageDefinition.getSeverity(),
+                       messageFormatter.getFormattedMessage(messageDefinition));
 
-        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_PLATFORM_ACCESS;
-        String                        errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(userId, serverRootURL);
-
-        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_PLATFORM_ACCESS.getMessageDefinition(userId, serverRootURL),
                                              this.getClass().getName(),
                                              methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction(),
                                              userId);
     }
 

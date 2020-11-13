@@ -48,7 +48,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         localServerURL - network address of the OMAG server platform where this server runs
  *         (typically host and port number but may also include the initial part of the URL before "open-metadata").
  *
- *         The default value is "http://localhost:8080".
+ *         The default value is "https://localhost:9443".
  *     </li>
  *     <li>
  *         localServerUserId - UserId to use for server initiated REST calls.
@@ -76,9 +76,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /*
      * Default values used when the server configuration does not provide a value.
      */
-    private static final String  defaultLocalServerType                   = "Open Metadata and Governance Server";
+    public  static final String  defaultLocalServerType                   = "Open Metadata and Governance Server";
     private static final String  defaultLocalOrganizationName             = null;
-    private static final String  defaultLocalServerURL                    = "http://localhost:8080";
+    private static final String  defaultLocalServerURL                    = "https://localhost:9443";
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
     private static final int     defaultMaxPageSize                       = 1000;
 
@@ -92,7 +92,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      */
     private String                          localServerId                   = UUID.randomUUID().toString();
     private String                          localServerName                 = null;
-    private String                          localServerType                 = defaultLocalServerType;
+    private String                          localServerType                 = null;
     private String                          organizationName                = defaultLocalOrganizationName;
     private String                          localServerURL                  = defaultLocalServerURL;
     private String                          localServerUserId               = defaultLocalServerUserId;
@@ -101,6 +101,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private Connection                      serverSecurityConnection        = null;
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
+    private List<IntegrationServiceConfig>  integrationServicesConfig       = null;
+    private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
     private DiscoveryEngineServicesConfig   discoveryEngineServicesConfig   = null;
@@ -134,18 +136,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
         if (template != null)
         {
-            versionId = template.getVersionId();
-            localServerId = template.getLocalServerId();
-            localServerName = template.getLocalServerName();
-            localServerType = template.getLocalServerType();
-            organizationName = template.getOrganizationName();
-            localServerURL = template.getLocalServerURL();
-            localServerUserId             = template.getLocalServerUserId();
-            localServerPassword           = template.getLocalServerPassword();
-            maxPageSize                   = template.getMaxPageSize();
-            serverSecurityConnection      = template.getServerSecurityConnection();
+            versionId                       = template.getVersionId();
+            localServerId                   = template.getLocalServerId();
+            localServerName                 = template.getLocalServerName();
+            localServerType                 = template.getLocalServerType();
+            organizationName                = template.getOrganizationName();
+            localServerURL                  = template.getLocalServerURL();
+            localServerUserId               = template.getLocalServerUserId();
+            localServerPassword             = template.getLocalServerPassword();
+            maxPageSize                     = template.getMaxPageSize();
+            serverSecurityConnection        = template.getServerSecurityConnection();
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
+            integrationServicesConfig       = template.getIntegrationServicesConfig();
+            viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();
             discoveryEngineServicesConfig   = template.getDiscoveryEngineServicesConfig();
@@ -411,9 +415,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     }
 
     /**
-     * Return the configuration for the registered Open Metadata Access Services (OMAS).
+     * Return the configuration for the registered Open Metadata Access Services (OMASs).
      *
-     * @return array of configuration properties one for each OMAS
+     * @return array of configuration properties, one for each OMAS
      */
     public List<AccessServiceConfig> getAccessServicesConfig()
     {
@@ -422,13 +426,57 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the registered Open Metadata Access Services (OMAS).
+     * Set up the configuration for the registered Open Metadata Access Services (OMASs).
      *
-     * @param accessServicesConfig array of configuration properties one for each OMAS
+     * @param accessServicesConfig array of configuration properties, one for each OMAS
      */
     public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig)
     {
         this.accessServicesConfig = accessServicesConfig;
+    }
+
+
+    /**
+     * Return the configuration for the registered Open Metadata Integration Services (OMISs).
+     *
+     * @return array of configuration properties, one for each OMIS
+     */
+    public List<IntegrationServiceConfig> getIntegrationServicesConfig()
+    {
+        return integrationServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).
+     *
+     * @param integrationServicesConfig array of configuration properties, one for each OMIS
+     */
+    public void setIntegrationServicesConfig(List<IntegrationServiceConfig> integrationServicesConfig)
+    {
+        this.integrationServicesConfig = integrationServicesConfig;
+    }
+
+
+    /**
+     * Return the configuration for the registered Open Metadata View Services (OMVSs).
+     *
+     * @return array of configuration properties, one for each OMVS
+     */
+    public List<ViewServiceConfig> getViewServicesConfig()
+    {
+        return viewServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the registered Open Metadata View Services (OMVSs).
+     *
+     * @param viewServicesConfig array of configuration properties, one for each OMVS
+     */
+    public void setViewServicesConfig(List<ViewServiceConfig> viewServicesConfig)
+    {
+        this.viewServicesConfig = viewServicesConfig;
     }
 
 

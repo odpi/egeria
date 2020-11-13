@@ -124,7 +124,15 @@ public enum InformationViewErrorCode {
     UPDATE_ENTITY_EXCEPTION(403,"OMAS-INFORMATION-VIEW-028",
                             "Entity {0} could not be updated. Error: {1}",
                             "The system is unable to process the request.",
-                            "Verify the exception message.");
+                            "Verify the exception message."),
+
+    NULL_TOPIC_CONNECTOR(400, "OMAS-INFORMATION-VIEW-400-001",
+                         "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
+                         "The local server will not connect to the cohort.",
+                         "The connection to the connector is configured in the server configuration.  " +
+                                 "Review previous error messages to determine the precise error in the " +
+                                 "start up configuration. " +
+                                 "Correct the configuration and reconnect the server to the cohort. ");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;

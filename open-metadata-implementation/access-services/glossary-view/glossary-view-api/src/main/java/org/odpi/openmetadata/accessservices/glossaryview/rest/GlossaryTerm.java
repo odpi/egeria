@@ -48,4 +48,27 @@ public class GlossaryTerm extends GlossaryViewEntityDetail {
         return getProperties().get(USAGE);
     }
 
+    public void setDisplayName(String displayName) {
+        getProperties().put(DISPLAY_NAME, displayName);
+    }
+
+    public void setDescription(String description) {
+        getProperties().put(DESCRIPTION, description);
+    }
+
+    public void setSummary(String summary) {
+        getProperties().put(SUMMARY, summary);
+    }
+
+    public void setExamples(String examples) {
+        getProperties().put(EXAMPLES, examples);
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        getProperties().put(ABBREVIATION, abbreviation);
+    }
+
+    public void setUsage(String usage) {
+        getProperties().put(USAGE, usage);
+    }
 }

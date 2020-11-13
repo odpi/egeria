@@ -2,13 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -23,7 +20,8 @@ import java.util.List;
 /**
  * Static mapping methods to map between the Term and the generated OMRSBean for GlossaryTerm.
  */
-public class TermMapper extends EntityDetailMapper implements INodeMapper{
+@SubjectAreaMapper
+public class TermMapper extends EntityDetailMapper<Term> {
     private static final Logger log = LoggerFactory.getLogger( TermMapper.class);
     private static final String className = TermMapper.class.getName();
     public static final String GLOSSARY_TERM = "GlossaryTerm";
@@ -36,35 +34,28 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
      * Map (convert) EntityDetail to Term or a sub type of Term
      * @param entityDetail the supplied EntityDetail
      * @return Term the equivalent Term to the supplied entityDetail.
-     * @throws InvalidParameterException the entity with this guid is not of the right type
      */
-    public Node mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException {
-        String methodName = "mapEntityDetailToNode";
-
-        String entityTypeName = entityDetail.getType().getTypeDefName();
-        if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),entityTypeName, GLOSSARY_TERM)) {
+    public Term map(EntityDetail entityDetail) {
             Term term = new Term();
             mapEntityDetailToNode(term,entityDetail);
             return term;
-        } else {
-            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityDetail.getGUID(), entityTypeName, "GlossaryTerm");
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-        }
+    }
+
+    @Override
+    public EntityDetail map(Term node) {
+        return toEntityDetail(node);
     }
 
     /**
      * Map a primitive omrs property to the term object.
-     * @param node the term to be updated
+     * @param term the term to be updated
      * @param propertyName the omrs property name
      * @param value the omrs primitive property value
      * @return true if the propertyName was recognised and mapped to the Node, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToNode(Node node, String propertyName, Object value) {
+    protected boolean mapPrimitiveToNode(Term term, String propertyName, Object value) {
         String stringValue = (String) value;
-        Term term = (Term) node;
         boolean foundProperty = true;
         if (propertyName.equals("summary")) {
             term.setSummary(stringValue);
@@ -74,6 +65,8 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
             term.setExamples(stringValue);
         } else if (propertyName.equals("usage")) {
             term.setUsage(stringValue);
+        } else if (propertyName.equals("summary")) {
+            term.setSummary(stringValue);
         } else {
             foundProperty =false;
         }
@@ -81,12 +74,11 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
     }
     /**
      * Map the supplied Node to omrs InstanceProperties.
-     * @param node supplied node
+     * @param term supplied node
      * @param instanceProperties equivalent instance properties to the Node
      */
     @Override
-    protected void mapNodeToInstanceProperties(Node node, InstanceProperties instanceProperties) {
-        Term term = (Term)node;
+    protected void mapNodeToInstanceProperties(Term term, InstanceProperties instanceProperties) {
         if (term.getSummary()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), "summary");
         }
@@ -99,14 +91,16 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
         if (term.getUsage()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getUsage(), "usage");
         }
-        if (node.getName()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
+        if (term.getSummary()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), "summary");
+        }
+        if (term.getName()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getName(), "displayName");
         }
     }
 
     @Override
-    protected boolean updateNodeWithClassification(Node node, org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
-        Term term = (Term) node;
+    protected boolean updateNodeWithClassification(Term term, Classification omasClassification) {
         boolean handled = false;
         GovernanceActions governanceActions = term.getGovernanceActions();
         if (governanceActions ==null) {
@@ -117,19 +111,19 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
         String sourceName = omrsapiHelper.getServiceName();
         //TODO do additional properties for classification subtypes.
         if (repositoryHelper.isTypeOf(sourceName,classificationName,"Confidentiality")) {
-            governanceActions.setConfidentiality((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidentiality) omasClassification);
+            governanceActions.setConfidentiality((Confidentiality) omasClassification);
             term.setGovernanceActions(governanceActions);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"Confidence")) {
-            governanceActions.setConfidence((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidence) omasClassification);
+            governanceActions.setConfidence((Confidence) omasClassification);
             term.setGovernanceActions(governanceActions);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"Criticality")) {
-            governanceActions.setCriticality((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Criticality) omasClassification);
+            governanceActions.setCriticality((Criticality) omasClassification);
             term.setGovernanceActions(governanceActions);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"Retention")) {
-            governanceActions.setRetention((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Retention) omasClassification);
+            governanceActions.setRetention((Retention) omasClassification);
             term.setGovernanceActions(governanceActions);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"SpineObject")) {
@@ -148,13 +142,12 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
     }
     /**
      * A Classification either exists in the classifications associated with a node or as an inlined attribute (these are properties / attributes of a node that correspond to OMRS Classifications)
-     * @param node supplied term
+     * @param term supplied term
      * @return inlined classifications.
      */
     @Override
-    protected List<Classification> getInlinedClassifications(Node node) {
-        List inlinedClassifications = new ArrayList<>();
-        Term term = (Term) node;
+    protected List<Classification> getInlinedClassifications(Term term) {
+        List<Classification> inlinedClassifications = new ArrayList<>();
         GovernanceActions governanceActions = term.getGovernanceActions();
         if (governanceActions !=null) {
             Criticality criticality = governanceActions.getCriticality();
@@ -182,12 +175,12 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
             inlinedClassifications.add(new SpineAttribute());
         }
         if (term.isObjectIdentifier()) {
-            inlinedClassifications.add(new SpineObject());
+            inlinedClassifications.add(new ObjectIdentifier());
         }
         return inlinedClassifications;
     }
     @Override
-    protected String getTypeName(){
+    public String getTypeName(){
         return GLOSSARY_TERM;
     }
 }

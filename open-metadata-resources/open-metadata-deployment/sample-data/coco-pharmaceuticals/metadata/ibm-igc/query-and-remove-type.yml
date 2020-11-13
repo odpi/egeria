@@ -7,8 +7,6 @@
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
           /ibm/iis/igc-rest/v1/search"
     method: POST
-    user: "{{ ibm_infosvr_user_isadmin }}"
-    password: "{{ ibm_infosvr_upwd_isadmin }}"
     body: >
       {
         "types": ["{{ type }}"],
@@ -20,10 +18,11 @@
         "pageSize": 1000
       }
     body_format: json
-    force_basic_auth: yes
     status_code: 200
     validate_certs: no
     timeout: 10
+    headers:
+      Cookie: "{{ __egeria_samples_openigc_bundles.set_cookie }}"
   register: __egeria_samples_igc_typelist
   when: ('ibm_information_server_domain' in group_names)
 
@@ -32,12 +31,11 @@
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
           /ibm/iis/igc-rest/v1/assets/{{ item._id }}"
     method: DELETE
-    user: "{{ ibm_infosvr_user_isadmin }}"
-    password: "{{ ibm_infosvr_upwd_isadmin }}"
-    force_basic_auth: yes
     status_code: 200
     validate_certs: no
     timeout: 10
+    headers:
+      Cookie: "{{ __egeria_samples_openigc_bundles.set_cookie }}"
   with_items: "{{ __egeria_samples_igc_typelist.json['items'] }}"
   loop_control:
     label: "{{ item._id }}"

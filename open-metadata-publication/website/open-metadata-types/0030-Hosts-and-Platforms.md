@@ -6,7 +6,7 @@
 The host and platform metadata entities provide a simple model for the
 IT infrastructure (nodes, computers, etc) that data resources are hosted on.
 
-![UML](0030-Hosts-and-Platforms.png)
+![UML](0030-Hosts-and-Platforms.png#pagewidth)
 
 A Host is an IT Infrastructure concept associated with the hardware running the systems.
 It provides a mechanism for describing a unit of hardware that provides the ability to host software servers.

@@ -21,3 +21,7 @@ If the Discovery Engine OMAS supported an in topic,
 there would be two additional connectors: a listening type
 interface for the server and a sending type
 interface for the client.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

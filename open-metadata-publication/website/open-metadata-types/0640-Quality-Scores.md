@@ -5,7 +5,7 @@
 
 Quality scores describe how well the data values, typically in a data field, conform to a specification.
 
-![UML](0640-Quality-Scores.png)
+![UML](0640-Quality-Scores.png#pagewidth)
 
 A data field can have multiple quality scores associated to it,
 for different types of problems. Examples of quality problem types include:

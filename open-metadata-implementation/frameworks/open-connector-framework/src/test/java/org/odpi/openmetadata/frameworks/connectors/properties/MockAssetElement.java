@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
  */
 public class MockAssetElement extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
 
     /**
      * Bean constructor

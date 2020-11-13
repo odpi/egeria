@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
@@ -145,9 +147,9 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
                                                                                                    cacheStartPointer,
                                                                                                    maximumSize);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             List<ExternalIdentifier>  beans = restResult.getList();
             if ((beans == null) || (beans.isEmpty()))

@@ -3,18 +3,22 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.handlers.FileSystemHandler;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
@@ -26,7 +30,8 @@ public class FileSystemRESTServices
 {
     private static AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(FileSystemRESTServices.class);
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(FileSystemRESTServices.class),
+                                                                      instanceHandler.getServiceName());
 
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -64,10 +69,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "createFileSystemInCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -75,20 +80,25 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                                       FolderElement,
+                                       FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createFileSystemInCatalog(userId,
-                                                                   requestBody.getUniqueName(),
-                                                                   requestBody.getDisplayName(),
-                                                                   requestBody.getDescription(),
-                                                                   requestBody.getFileSystemType(),
-                                                                   requestBody.getVersion(),
-                                                                   requestBody.getPatchLevel(),
-                                                                   requestBody.getSource(),
-                                                                   requestBody.getFormat(),
-                                                                   requestBody.getEncryption(),
-                                                                   requestBody.getAdditionalProperties(),
-                                                                   methodName));
+                response.setGUID(handler.createFileSystem(userId,
+                                                          null,
+                                                          null,
+                                                          requestBody.getUniqueName(),
+                                                          requestBody.getDisplayName(),
+                                                          requestBody.getDescription(),
+                                                          requestBody.getFileSystemType(),
+                                                          requestBody.getVersion(),
+                                                          requestBody.getPatchLevel(),
+                                                          requestBody.getSource(),
+                                                          requestBody.getFormat(),
+                                                          requestBody.getEncryption(),
+                                                          requestBody.getAdditionalProperties(),
+                                                          null,
+                                                          methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -108,7 +118,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -136,10 +146,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "createFolderStructureInCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -147,9 +157,13 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                        FolderElement,
+                        FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.createFolderStructureInCatalog(userId,
+                                                                         null,
+                                                                         null,
                                                                          anchorGUID,
                                                                          requestBody.getFullPath(),
                                                                          methodName));
@@ -172,7 +186,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -198,10 +212,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "createFolderStructureInCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -209,9 +223,15 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                        FolderElement,
+                        FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.createFolderStructureInCatalog(userId,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
                                                                          requestBody.getFullPath(),
                                                                          methodName));
             }
@@ -233,7 +253,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -253,28 +273,37 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse attachFolderToFileSystem(String          serverName,
                                                  String          userId,
                                                  String          fileSystemGUID,
                                                  String          folderGUID,
                                                  NullRequestBody requestBody)
     {
+        final String folderGUIDParameterName = "folderGUID";
+        final String fileSystemGUIDParameterName = "fileSystemGUID";
         final String methodName = "attachFolderToFileSystem";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.attachFolderToFileSystem(userId,
+                                             null,
+                                             null,
                                              fileSystemGUID,
+                                             fileSystemGUIDParameterName,
                                              folderGUID,
+                                             folderGUIDParameterName,
                                              methodName);
         }
         catch (InvalidParameterException error)
@@ -294,7 +323,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -314,28 +343,37 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse detachFolderFromFileSystem(String          serverName,
                                                    String          userId,
                                                    String          fileSystemGUID,
                                                    String          folderGUID,
                                                    NullRequestBody requestBody)
     {
+        final String folderGUIDParameterName = "folderGUID";
+        final String fileSystemGUIDParameterName = "fileSystemGUID";
         final String methodName = "detachFolderFromFileSystem";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.detachFolderFromFileSystem(userId,
+                                               null,
+                                               null,
                                                fileSystemGUID,
+                                               fileSystemGUIDParameterName,
                                                folderGUID,
+                                               folderGUIDParameterName,
                                                methodName);
         }
         catch (InvalidParameterException error)
@@ -355,7 +393,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -383,10 +421,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "addDataFileAssetToCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -394,9 +432,16 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                        FolderElement,
+                        FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
 
                 response.setGUIDs(handler.addDataFileAssetToCatalog(userId,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
                                                                     requestBody.getFullPath(),
@@ -420,7 +465,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -451,10 +496,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "addDataFileAssetToCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -462,9 +507,16 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                        FolderElement,
+                        FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
 
                 response.setGUIDs(handler.addDataFolderAssetToCatalog(userId,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      null,
                                                                       requestBody.getDisplayName(),
                                                                       requestBody.getDescription(),
                                                                       requestBody.getFullPath(),
@@ -488,7 +540,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -510,28 +562,38 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  attachDataFileAssetToFolder(String          serverName,
                                                      String          userId,
                                                      String          folderGUID,
                                                      String          fileGUID,
                                                      NullRequestBody requestBody)
     {
+        final String folderGUIDParameterName = "folderGUID";
+        final String fileGUIDParameterName = "fileGUID";
         final String methodName = "attachDataFileAssetToFolder";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
 
             handler.attachDataFileAssetToFolder(userId,
+                                                null,
+                                                null,
                                                 folderGUID,
+                                                folderGUIDParameterName,
                                                 fileGUID,
+                                                fileGUIDParameterName,
                                                 methodName);
         }
         catch (InvalidParameterException error)
@@ -551,7 +613,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -573,28 +635,37 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  detachDataFileAssetFromFolder(String          serverName,
                                                        String          userId,
                                                        String          folderGUID,
                                                        String          fileGUID,
                                                        NullRequestBody requestBody)
     {
+        final String folderGUIDParameterName = "folderGUID";
+        final String fileGUIDParameterName = "fileGUID";
         final String methodName = "detachDataFileAssetFromFolder";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.detachDataFileAssetFromFolder(userId,
+                                                  null,
+                                                  null,
                                                   folderGUID,
+                                                  folderGUIDParameterName,
                                                   fileGUID,
+                                                  fileGUIDParameterName,
                                                   methodName);
         }
         catch (InvalidParameterException error)
@@ -614,7 +685,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -635,28 +706,37 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  moveDataFileInCatalog(String          serverName,
                                                String          userId,
                                                String          folderGUID,
                                                String          fileGUID,
                                                NullRequestBody requestBody)
     {
+        final String folderGUIDParameterName = "folderGUID";
+        final String fileGUIDParameterName = "fileGUID";
         final String methodName = "moveDataFileInCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.moveDataFileInCatalog(userId,
+                                          null,
+                                          null,
                                           folderGUID,
+                                          folderGUIDParameterName,
                                           fileGUID,
+                                          fileGUIDParameterName,
                                           methodName);
         }
         catch (InvalidParameterException error)
@@ -676,7 +756,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -697,28 +777,37 @@ public class FileSystemRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  moveDataFolderInCatalog(String          serverName,
                                                  String          userId,
                                                  String          folderGUID,
                                                  String          fileGUID,
                                                  NullRequestBody requestBody)
     {
+        final String folderGUIDParameterName = "folderGUID";
+        final String fileGUIDParameterName = "fileGUID";
         final String methodName = "moveDataFileInCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             handler.moveDataFolderInCatalog(userId,
+                                            null,
+                                            null,
                                             folderGUID,
+                                            folderGUIDParameterName,
                                             fileGUID,
+                                            fileGUIDParameterName,
                                             methodName);
         }
         catch (InvalidParameterException error)
@@ -738,20 +827,20 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
 
 
     /**
-     * Retrieve a FileSystem asset by its unique identifier (GUID).
+     * Retrieve a FileSystemElement asset by its unique identifier (GUID).
      *
      * @param serverName name of calling server
      * @param userId calling user
      * @param fileSystemGUID unique identifier used to locate the file system
      *
-     * @return FileSystem properties or
+     * @return FileSystemElement properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -760,22 +849,28 @@ public class FileSystemRESTServices
                                                   String   userId,
                                                   String   fileSystemGUID)
     {
+        final String guidParameterName = "fileSystemGUID";
         final String methodName = "getFileSystemByGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         FileSystemResponse response = new FileSystemResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog           auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setFileSystem(handler.getFileSystemByGUID(userId,
-                                                               fileSystemGUID,
-                                                               methodName));
+            FileSystemElement fileSystemElement = handler.getFileSystemByGUID(userId,
+                                                                                    fileSystemGUID,
+                                                                                    guidParameterName,
+                                                                                    methodName);
+
+            response.setFileSystem(fileSystemElement);
         }
         catch (InvalidParameterException error)
         {
@@ -794,14 +889,14 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
 
 
     /**
-     * Retrieve a FileSystem asset by its unique name.
+     * Retrieve a FileSystemElement asset by its unique name.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -816,22 +911,26 @@ public class FileSystemRESTServices
                                                         String   userId,
                                                         String   uniqueName)
     {
+        final String uniqueNameParameterName = "uniqueName";
         final String methodName = "getFileSystemByUniqueName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         FileSystemResponse response = new FileSystemResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog           auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setFileSystem(handler.getFileSystemByUniqueName(userId,
-                                                                     uniqueName,
-                                                                     methodName));
+            response.setFileSystem(new FileSystemElement(handler.getFileSystemByUniqueName(userId,
+                                                                                              uniqueName,
+                                                                                              uniqueNameParameterName,
+                                                                                              methodName)));
         }
         catch (InvalidParameterException error)
         {
@@ -850,7 +949,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -876,16 +975,18 @@ public class FileSystemRESTServices
     {
         final String methodName = "getFileSystems";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setGUIDs(handler.getFileSystems(userId,
                                                      startingFrom,
@@ -909,7 +1010,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -917,13 +1018,13 @@ public class FileSystemRESTServices
 
 
     /**
-     * Retrieve a Folder asset by its unique identifier (GUID).
+     * Retrieve a FolderElement asset by its unique identifier (GUID).
      *
      * @param serverName name of calling server
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return Folder properties or
+     * @return FolderElement properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -934,20 +1035,22 @@ public class FileSystemRESTServices
     {
         final String methodName = "getFolderByGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         FolderResponse response = new FolderResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog       auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setFolder(handler.getFolderByGUID(userId,
-                                                       folderGUID,
-                                                       methodName));
+            response.setFolder(new FolderElement(handler.getFolderByGUID(userId,
+                                                                            folderGUID,
+                                                                            methodName)));
         }
         catch (InvalidParameterException error)
         {
@@ -966,7 +1069,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -979,7 +1082,7 @@ public class FileSystemRESTServices
      * @param userId calling user
      * @param requestBody path name
      *
-     * @return Folder properties or
+     * @return FolderElement properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -990,10 +1093,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "getFolderByPathName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         FolderResponse response = new FolderResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog       auditLog = null;
 
         try
         {
@@ -1001,11 +1104,13 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                        FolderElement,
+                        FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-                response.setFolder(handler.getFolderByPathName(userId,
-                                                               requestBody.getFullPath(),
-                                                               methodName));
+                response.setFolder(new FolderElement(handler.getFolderByPathName(userId,
+                                                                                 requestBody.getFullPath(),
+                                                                                 methodName)));
             }
         }
         catch (InvalidParameterException error)
@@ -1025,7 +1130,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1036,7 +1141,7 @@ public class FileSystemRESTServices
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param anchorGUID unique identifier of the anchor folder or Filesystem
+     * @param parentGUID unique identifier of the anchor folder or Filesystem
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
@@ -1047,25 +1152,29 @@ public class FileSystemRESTServices
      */
     public GUIDListResponse  getNestedFolders(String  serverName,
                                               String  userId,
-                                              String  anchorGUID,
+                                              String  parentGUID,
                                               int     startingFrom,
                                               int     maxPageSize)
     {
+        final String parentGUIDParameterName = "parentGUID";
         final String methodName = "getNestedFolders";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setGUIDs(handler.getNestedFolders(userId,
-                                                       anchorGUID,
+                                                       parentGUID,
+                                                       parentGUIDParameterName,
                                                        startingFrom,
                                                        maxPageSize,
                                                        methodName));
@@ -1087,7 +1196,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1113,21 +1222,25 @@ public class FileSystemRESTServices
                                             int     startingFrom,
                                             int     maxPageSize)
     {
-        final String methodName = "getFolderFiles";
+        final String folderGUIDParameterName = "folderGUID";
+        final String methodName              = "getFolderFiles";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+            FilesAndFoldersHandler<FileSystemElement,
+                    FolderElement,
+                    FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setGUIDs(handler.getFolderFiles(userId,
                                                      folderGUID,
+                                                     folderGUIDParameterName,
                                                      startingFrom,
                                                      maxPageSize,
                                                      methodName));
@@ -1149,7 +1262,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1179,10 +1292,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "addAvroFileToCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1190,9 +1303,15 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                        FolderElement,
+                        FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addAvroFileToCatalog(userId,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
                                                                requestBody.getDisplayName(),
                                                                requestBody.getDescription(),
                                                                requestBody.getFullPath(),
@@ -1216,7 +1335,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1246,10 +1365,10 @@ public class FileSystemRESTServices
     {
         final String methodName = "addCSVFileToCatalog";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1257,9 +1376,15 @@ public class FileSystemRESTServices
 
             if (requestBody != null)
             {
-                FileSystemHandler handler = instanceHandler.getFilesystemHandler(userId, serverName, methodName);
+                FilesAndFoldersHandler<FileSystemElement,
+                        FolderElement,
+                        FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addCSVFileToCatalog(userId,
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              null,
                                                               requestBody.getDisplayName(),
                                                               requestBody.getDescription(),
                                                               requestBody.getFullPath(),
@@ -1286,7 +1411,7 @@ public class FileSystemRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }

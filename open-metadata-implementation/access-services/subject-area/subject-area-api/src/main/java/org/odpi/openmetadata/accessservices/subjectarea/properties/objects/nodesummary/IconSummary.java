@@ -8,26 +8,29 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * A SummaryIcon is a summary of an icon. It is used to identify a related icon.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class IconSummary  {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class IconSummary {
     private static final Logger log = LoggerFactory.getLogger(IconSummary.class);
     private static final String className = IconSummary.class.getName();
-    private String url =null;
-    private String qualifiedName =null;
+    private String url = null;
+    private String qualifiedName = null;
     private String guid = null;
     private String relationshipguid = null;
     private String label = null;
 
     /**
      * The url of the icon
+     *
      * @return url
      */
     public String getUrl() {
@@ -37,8 +40,10 @@ public class IconSummary  {
     public void setUrl(String url) {
         this.url = url;
     }
+
     /**
      * The qualified name of the node.
+     *
      * @return qualified name
      */
     public String getQualifiedName() {
@@ -51,6 +56,7 @@ public class IconSummary  {
 
     /**
      * A unique identifier for a node
+     *
      * @return guid
      */
     public String getGuid() {
@@ -63,6 +69,7 @@ public class IconSummary  {
 
     /**
      * The unique identifier of the associated Line (relationship)
+     *
      * @return relationship guid
      */
     public String getRelationshipguid() {
@@ -75,27 +82,26 @@ public class IconSummary  {
 
     /**
      * Display name of the icon to be used as a label in user interfaces
+     *
      * @return label
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return label;
     }
 
-    public void setLabel(String label)
-    {
+    public void setLabel(String label) {
         this.label = label;
     }
 
-    public StringBuilder toString(StringBuilder sb) {
+    public String toString(StringBuilder sb) {
         if (sb == null) {
             sb = new StringBuilder();
         }
         sb.append("IconSummary{");
-        if (url !=null) {
+        if (url != null) {
             sb.append("name='").append(url).append('\'');
         }
-        if (qualifiedName!=null) {
+        if (qualifiedName != null) {
             sb.append(", qualifiedName='").append(qualifiedName).append('\'');
         }
         if (guid != null) {
@@ -105,12 +111,12 @@ public class IconSummary  {
             sb.append(", label='").append(label);
         }
         sb.append('}');
-        return sb;
+        return sb.toString();
     }
 
     @Override
     public String toString() {
-        return toString(new StringBuilder()).toString();
+        return toString(new StringBuilder());
     }
 
 
@@ -121,10 +127,10 @@ public class IconSummary  {
 
         IconSummary node = (IconSummary) o;
 
-        if (url != null ? !url.equals(node.url) : node.url != null) return false;
-        if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
+        if (!Objects.equals(url, node.url)) {
             return false;
-       return true;
+        }
+        return Objects.equals(qualifiedName, node.qualifiedName);
     }
 
     @Override
@@ -138,5 +144,4 @@ public class IconSummary  {
     // allow child classes to process classifications
     protected void processClassification(Classification classification) {
     }
-
 }

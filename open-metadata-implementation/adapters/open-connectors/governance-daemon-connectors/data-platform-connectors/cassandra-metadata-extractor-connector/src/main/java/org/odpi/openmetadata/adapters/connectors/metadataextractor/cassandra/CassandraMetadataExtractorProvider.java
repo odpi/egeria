@@ -24,7 +24,7 @@ public class CassandraMetadataExtractorProvider extends DataPlatformMetadataExtr
     public CassandraMetadataExtractorProvider() {
 
         super();
-        Class    connectorClass = CassandraDataStoreConnector.class;
+        Class<?> connectorClass = CassandraDataStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

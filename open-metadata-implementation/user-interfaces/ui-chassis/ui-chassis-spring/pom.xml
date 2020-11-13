@@ -10,10 +10,16 @@
     <parent>
         <artifactId>ui-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>2.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <name>UI Server Platform Chassis for Spring</name>
     <description>
@@ -24,10 +30,11 @@
     <packaging>jar</packaging>
 
     <properties>
-        <node.version>v12.14.1</node.version>
+        <node.version>v12.18.2</node.version>
         <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
-        <npm.version>6.13.4</npm.version>
+        <npm.version>6.14.5</npm.version>
         <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
+        <polymer.build>es6-unbundled</polymer.build>
     </properties>
 
     <dependencies>
@@ -73,11 +80,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-client</artifactId>
         </dependency>
 
         <dependency>
@@ -136,13 +138,18 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
-            <scope>compile</scope>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
+            <artifactId>repository-services-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -183,6 +190,12 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -193,6 +206,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
 
         <dependency>
@@ -241,11 +264,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
@@ -262,32 +280,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ui-admin-services-spring</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ui-admin-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>multi-tenant</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ui-admin-services-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
         </dependency>
 
         <dependency>
@@ -295,41 +288,45 @@
             <artifactId>commons-collections4</artifactId>
         </dependency>
 
-        <!-- Spring Fox Swagger UI dependency for presentation of generated swagger.json -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spring-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spi</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-view-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>glossary-view-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-zuul</artifactId>
         </dependency>
     </dependencies>
 
     <profiles>
         <profile>
-            <id>prod</id>
+            <id>dev</id>
             <properties>
-                <polymer.build>es6-bundled</polymer.build>
+                <polymer.build>uncompiled-unbundled</polymer.build>
             </properties>
         </profile>
     </profiles>
@@ -337,127 +334,24 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>${node.version}</nodeVersion>
-                            <npmVersion>${npm.version}</npmVersion>
-                            <workingDirectory>tools</workingDirectory>
-                            <nodeDownloadRoot>${node.downloadRoot}</nodeDownloadRoot>
-                            <npmDownloadRoot>${npm.downloadRoot}</npmDownloadRoot>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install polymer-cli</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install polymer-cli --prefix .</arguments>
-                            <workingDirectory>tools</workingDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install ../src/main/static --prefix .</arguments>
-                            <workingDirectory>tools</workingDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <executions>
-                    <execution>
-                        <id>Polymer build</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/tools/node/node</executable>
-                            <arguments>
-                                <argument>${basedir}/tools/node_modules/polymer-cli/bin/polymer.js</argument>
-                                <argument>build</argument>
-                            </arguments>
-                            <workingDirectory>${basedir}/src/main/static</workingDirectory>
-                            <environmentVariables>
-                                <NODE_OPTIONS>--max_old_space_size=4096</NODE_OPTIONS>
-                            </environmentVariables>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <!-- Copies 'dev' output from polymer build into target/classes, from where the maven jar plugin
-                will build the jar to be deployed. Runs just before packaging -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources-from-dev</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <overwrite>true</overwrite>
-                            <outputDirectory>${project.build.outputDirectory}/public</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/src/main/static/build/dev</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <layout>ZIP</layout>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>build-info</id>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <!-- Ideally to cleanup for repeatability, but can take
-                        a while especially on slow networks. See isssue #2350, #2398  -->
-                        <!--fileset>
-                            <directory>${basedir}/tools</directory>
-                        </fileset-->
-                        <fileset>
-                            <directory>${basedir}/src/main/resources/public</directory>
-                        </fileset>
-                        <fileset>
-                            <directory>${basedir}/src/main/static/build</directory>
-                        </fileset>
-                        <fileset>
-                            <directory>${basedir}/src/main/static/node_modules</directory>
-                        </fileset>
-                    </filesets>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.rat</groupId>
@@ -472,7 +366,6 @@
                         <exclude>**/build/**</exclude>
 
                         <exclude>**/banner.txt</exclude>
-                        <exclude>tools/polymer*</exclude>
                         <exclude>**/.vscode*/**</exclude>
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>
@@ -503,9 +396,6 @@
                                 <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>javax.xml.bind:*jaxb*</ignoredUnusedDeclaredDependency>
-                                <!-- springfox added for swagger UI -->
-                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui
-                                </ignoredUnusedDeclaredDependency>
                                 <!-- Spring enablement - false positives from dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
                                 </ignoredUnusedDeclaredDependency>
@@ -514,6 +404,9 @@
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
                                     org.springframework.boot:spring-boot-starter-data-jpa:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.springframework.cloud:spring-cloud-starter-netflix-zuul:*
                                 </ignoredUnusedDeclaredDependency>
                                 <!-- runtime database -->
                                 <ignoredUnusedDeclaredDependency>com.h2database:h2:*</ignoredUnusedDeclaredDependency>

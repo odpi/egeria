@@ -7,7 +7,7 @@ An important principle of good metadata it to be continually
 capturing the experience of subject matter experts.
 The feedback model captures comments and ratings from subject matter experts.
 
-![UML](0150-Feedback.png)
+![UML](0150-Feedback.png#pagewidth)
 
 Comments and ratings are a key mechanism for providing
 feedback on the metadata definitions by any user.  

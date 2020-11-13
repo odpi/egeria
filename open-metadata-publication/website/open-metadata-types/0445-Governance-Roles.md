@@ -11,7 +11,7 @@ particular aspect of governing a resource ([Referenceable](0010-Base-Model.md))
 is represented by a GovernanceRole entity.  The person assigned to
 do the work is then linked to the Governance Role.
 
-![UML](0445-Governance-Roles.png)
+![UML](0445-Governance-Roles.png#pagewidth)
 > Figure 1: Assignment of Governance Roles
 
 

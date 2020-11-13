@@ -390,16 +390,9 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
         }
         catch (Throwable   error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(repositoryName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(repositoryName),
                                               this.getClass().getName(),
                                               methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
                                               error);
         }
     }
@@ -434,16 +427,9 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
         if (metadataCollection == null)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(repositoryName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
 
         return metadataCollection;

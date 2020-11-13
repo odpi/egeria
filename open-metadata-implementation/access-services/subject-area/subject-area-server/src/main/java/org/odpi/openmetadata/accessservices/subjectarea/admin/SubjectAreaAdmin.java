@@ -3,165 +3,109 @@
 package org.odpi.openmetadata.accessservices.subjectarea.admin;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.auditlog.SubjectAreaAuditCode;
-
-
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaAuditCode;
 import org.odpi.openmetadata.accessservices.subjectarea.listener.SubjectAreaOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * SubjectAreaAdmin is the Subject Area access service implementation class that controls its lifecycle.
- * It is initalised here receiving the access service configuration. It is shutdown here.
+ * SubjectAreaAdmin is the Subject Area Open Metadata Access Service (OMAS) implementation class that controls its lifecycle.
+ * It is initialised here receiving the OMAS configuration. It is shutdown here.
  */
-public class SubjectAreaAdmin extends AccessServiceAdmin
-{
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaAdmin.class);
-
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSTopicConnector omrsTopicConnector  = null;
-    private AccessServiceConfig     accessServiceConfig = null;
-    private OMRSAuditLog auditLog            = null;
-    private String                  serverUserName      = null;
-
-    private SubjectAreaOMRSTopicListener omrsTopicListener = null;
-    private SubjectAreaServicesInstance instance =null;
-    private String serverName =null;
+public class SubjectAreaAdmin extends AccessServiceAdmin {
+    private AuditLog auditLog = null;
+    private SubjectAreaServicesInstance instance = null;
+    private String serverName = null;
 
     /**
      * Default constructor
      */
-    public SubjectAreaAdmin()
-    {
+    public SubjectAreaAdmin() {
     }
 
 
     /**
-     * Initialize the subject area access service.
+     * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties - specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector - connector for receiving OMRS Events from the cohorts
-     * @param enterpriseOMRSRepositoryConnector - connector for querying the cohort repositories
-     * @param auditLog - audit log component for logging messages.
-     * @param serverUserName - user id to use on OMRS calls where there is no end user.
-     * @throws OMAGConfigurationErrorException - invalid parameters in the configuration properties.
+     * @param accessServiceConfig specific configuration properties for this access service.
+     * @param omrsTopicConnector  connector for receiving OMRS Events from the cohorts
+     * @param repositoryConnector connector for querying the cohort repositories
+     * @param auditLog            audit log component for logging messages.
+     * @param serverUserName      user id to use on OMRS calls where there is no end user.
+     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
-    public void initialize(AccessServiceConfig     accessServiceConfigurationProperties,
-                           OMRSTopicConnector      enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
-                           OMRSAuditLog            auditLog,
-                           String                  serverUserName) throws OMAGConfigurationErrorException
-    {
-        final String            actionDescription = "initialize";
-        final String methodName = actionDescription;
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userid="+ serverUserName);
-        }
-        //TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
+    public void initialize(AccessServiceConfig accessServiceConfig,
+                           OMRSTopicConnector omrsTopicConnector,
+                           OMRSRepositoryConnector repositoryConnector,
+                           AuditLog auditLog,
+                           String serverUserName) throws OMAGConfigurationErrorException {
+        final String actionDescription = "initialize";
 
-        SubjectAreaAuditCode  auditCode;
+        auditLog.logMessage(actionDescription, SubjectAreaAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
-        auditCode = SubjectAreaAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        this.auditLog = auditLog;
 
-        this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-
-        try
-        {
-            this.instance = new SubjectAreaServicesInstance(repositoryConnector);
+        try {
+            this.instance = new SubjectAreaServicesInstance(repositoryConnector,
+                                                            auditLog,
+                                                            serverUserName,
+                                                            repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
-            this.accessServiceConfig = accessServiceConfigurationProperties;
-            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
 
-            if (this.omrsTopicConnector != null)
-            {
-                auditCode = SubjectAreaAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            /*
+             * Only set up the listening and event publishing if requested in the config.
+             */
+            if (accessServiceConfig.getAccessServiceOutTopic() != null) {
+                SubjectAreaOMRSTopicListener omrsTopicListener;
 
-                this.omrsTopicListener = new SubjectAreaOMRSTopicListener(this.accessServiceConfig.getAccessServiceOutTopic(),
-                        this.repositoryConnector.getRepositoryHelper(),
-                        this.repositoryConnector.getRepositoryValidator(),
-                        this.accessServiceConfig.getAccessServiceName());
-                this.omrsTopicConnector.registerListener(this.omrsTopicListener);
+                omrsTopicListener = new SubjectAreaOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                     repositoryConnector.getRepositoryHelper(),
+                                                                     repositoryConnector.getRepositoryValidator(),
+                                                                     accessServiceConfig.getAccessServiceName(),
+                                                                     auditLog);
+                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
+                                                  serverName,
+                                                  omrsTopicConnector,
+                                                  omrsTopicListener,
+                                                  auditLog);
             }
 
-            this.auditLog = auditLog;
-            this.serverUserName = serverUserName;
+            auditLog.logMessage(actionDescription,
+                                SubjectAreaAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                accessServiceConfig.toString());
+        } catch (OMAGConfigurationErrorException error) {
+            throw error;
+        } catch (Throwable error) {
+            auditLog.logException(actionDescription,
+                                  SubjectAreaAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getClass().getName(), error.getMessage()),
+                                  accessServiceConfig.toString(),
+                                  error);
 
-            auditCode = SubjectAreaAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-
-            if (log.isDebugEnabled()) {
-                log.debug("<== Method: " + methodName + ",userid="+ serverUserName);
-            }
-        } catch (Throwable error)
-        {
-            auditCode =SubjectAreaAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         AccessServiceDescription.SUBJECT_AREA_OMAS.getAccessServiceFullName(),
+                                                         error);
         }
     }
 
+
     /**
-     * Shutdown the subject area access service.
+     * Shutdown the access service.
      */
-    public void shutdown()
-    {
+    public void shutdown() {
         final String actionDescription = "shutdown";
 
-        log.debug(">>" + actionDescription);
-
-        SubjectAreaAuditCode auditCode;
-
-        auditCode = SubjectAreaAuditCode.SERVICE_TERMINATING;
-        auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(), auditCode.getUserAction());
-
-
-        // TODO Look into what we need to do for termination
-        this.repositoryConnector = null;
-        this.accessServiceConfig = null;
-        this.omrsTopicConnector = null;
-
-        if (instance != null)
-        {
+        if (instance != null) {
             this.instance.shutdown();
         }
 
-        auditCode = SubjectAreaAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(), auditCode.getUserAction());
-
-        log.debug("<<" + actionDescription);
+        auditLog.logMessage(actionDescription, SubjectAreaAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }
 

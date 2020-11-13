@@ -37,7 +37,7 @@ For example:
 
 Figure 1 captures the profile for a person along with their roles and peer network.
 
-![UML](0112-People.png)
+![UML](0112-People.png#pagewidth)
 > Figure 1: Describing the profile for a person
 
 

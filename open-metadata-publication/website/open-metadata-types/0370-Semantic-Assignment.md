@@ -8,7 +8,7 @@ to a [referenceable](0010-Base-Model.md) object.
 This means that the term describes the meaning of the 
 referenceable object.  The semantic assignment needs to be a controlled relationship when glossary definitions are used to provide classifications for the data assets and hence define how the data is to be governed. 
 
-![UML](0370-Semantic-Assignment.png)
+![UML](0370-Semantic-Assignment.png#pagewidth)
 
 Thus **TermAssignmentStatus** defines how much the semantic assignment should be trusted.  The relationship is created by the user (person or engine) identified by the createdBy attribute.  The confidence attribute in the relationship stores the level of confidence (0-100%) in the correctness of the relationship - it is typically used by discovery engines.   The steward is the person responsible for assessing the relationship and deciding if it should be approved or not.
 

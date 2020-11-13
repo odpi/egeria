@@ -24,7 +24,7 @@ public class InMemoryOpenMetadataTopicProvider extends OpenMetadataTopicProvider
      */
     public InMemoryOpenMetadataTopicProvider()
     {
-        Class    connectorClass = InMemoryOpenMetadataTopicConnector.class;
+        Class<?>    connectorClass = InMemoryOpenMetadataTopicConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

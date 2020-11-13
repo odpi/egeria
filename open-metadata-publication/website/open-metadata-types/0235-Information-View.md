@@ -3,7 +3,7 @@
 
 # 0235 Information View
 
-![UML](0235-Information-View.png)
+![UML](0235-Information-View.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

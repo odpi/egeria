@@ -11,10 +11,10 @@ import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse response = new GUIDResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         GovernanceDomain           governanceDomain = null;
         String                     appointmentId = null;
@@ -145,7 +145,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         GovernanceDomain           governanceDomain = null;
         String                     appointmentId = null;
@@ -224,7 +224,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -288,7 +288,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerResponse response = new GovernanceOfficerResponse();
-        OMRSAuditLog              auditLog = null;
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -341,7 +341,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerResponse response = new GovernanceOfficerResponse();
-        OMRSAuditLog              auditLog = null;
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -394,7 +394,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerListResponse response = new GovernanceOfficerListResponse();
-        OMRSAuditLog                  auditLog = null;
+        AuditLog                      auditLog = null;
 
         try
         {
@@ -443,7 +443,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerListResponse response = new GovernanceOfficerListResponse();
-        OMRSAuditLog                  auditLog = null;
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -497,7 +497,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerListResponse response = new GovernanceOfficerListResponse();
-        OMRSAuditLog                  auditLog = null;
+        AuditLog                      auditLog = null;
 
         try
         {
@@ -558,7 +558,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -625,7 +625,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -688,7 +688,7 @@ public class GovernanceProgramRESTServices
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
     }

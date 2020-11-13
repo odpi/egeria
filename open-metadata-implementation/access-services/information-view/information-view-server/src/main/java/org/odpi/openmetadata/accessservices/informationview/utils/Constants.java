@@ -13,8 +13,8 @@ public class Constants {
     public static final String BUSINESS_TERM = "GlossaryTerm";
     public static final String RELATIONAL_DB_SCHEMA_TYPE = "RelationalDBSchemaType";
     public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
-    public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";
-    public static final String DATA_STORE = "DataStore";
+    public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttributeProperties";
+    public static final String DATA_STORE = "DataStoreProperties";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String OWNER = "owner";
     public static final String DESCRIPTION = "description";

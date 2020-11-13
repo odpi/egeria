@@ -19,7 +19,7 @@ An external tool can [lookup](lookup-registration-tool.md) for the registered ex
 
 #### [Create Port Implementation with schema type](create-port-implementations.md)
 
-#### [Create Port Alias with delegation to a Port Implementation](create-port-alias.md)
+#### [Create Port Alias with delegation to a Port Implementation](create-port-aliases.md)
 
 #### [Create Process, with corresponding Port Aliases, Port Implementations and Schema Types](create-processes.md)
 

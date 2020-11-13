@@ -15,20 +15,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * ReferenceableHandler manages methods on generic referenceables.
  */
-public class ReferenceableHandler
+public class ReferenceableHandler extends RootHandler
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -44,73 +38,6 @@ public class ReferenceableHandler
                                 RepositoryHandler       repositoryHandler,
                                 OMRSRepositoryHelper    repositoryHelper)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
-    }
-
-
-    /**
-     * Returns the list of related assets for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param elementGUID    String   unique id for asset.
-     * @param startFrom int      starting position for fist returned element.
-     * @param pageSize  int      maximum number of elements to return on the call.
-     * @param methodName String calling method
-     *
-     * @return a list of assets or
-     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public List<Referenceable> getMoreInformation(String  userId,
-                                                  String  elementGUID,
-                                                  int     startFrom,
-                                                  int     pageSize,
-                                                  String  methodName)  throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
-    {
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        List<EntityDetail>  entitiesForRelationshipType = repositoryHandler.getEntitiesForRelationshipType(userId,
-                                                                                                           elementGUID,
-                                                                                                           ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                                           ReferenceableMapper.REFERENCEABLE_TO_MORE_INTO_TYPE_GUID,
-                                                                                                           ReferenceableMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
-                                                                                                           startFrom,
-                                                                                                           queryPageSize,
-                                                                                                           methodName);
-
-        if (entitiesForRelationshipType != null)
-        {
-            List<Referenceable>  moreInfoElements = new ArrayList<>();
-
-            for (EntityDetail  entity : entitiesForRelationshipType)
-            {
-                if (entity != null)
-                {
-                    ReferenceableConverter converter = new ReferenceableConverter(entity,
-                                                                                  repositoryHelper,
-                                                                                  serviceName);
-
-                    moreInfoElements.add(converter.getBean());
-                }
-            }
-
-            if (moreInfoElements.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return moreInfoElements;
-            }
-        }
-
-        return null;
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
     }
 }

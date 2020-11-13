@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.server.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationListResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalysisReportResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryRequestRequestBody;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.rest.DiscoveryEngineStatusResponse;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/discovery-server/users/{userId}/discovery-engines/{discoveryEngineName}")
+
+@Tag(name="Discovery Engine Services", description="The discovery engine services provide the core subsystem for a discovery server. A discovery server is an OMAG Server that hosts automated metadata discovery.", externalDocs=@ExternalDocumentation(description="Discovery Engine Services",url="https://egeria.odpi.org/open-metadata-implementation/governance-servers/discovery-engine-services/"))
+
 public class DiscoveryEngineResource
 {
     private DiscoveryServerRESTServices restAPI = new DiscoveryServerRESTServices();
@@ -43,12 +47,12 @@ public class DiscoveryEngineResource
      */
     @PostMapping(path = "/discovery-request-types/{discoveryRequestType}/assets/{assetGUID}")
 
-    public  GUIDResponse discoverAsset(@PathVariable String                       serverName,
-                                       @PathVariable String                       discoveryEngineName,
-                                       @PathVariable String                       userId,
-                                       @PathVariable String                       assetGUID,
-                                       @PathVariable String                       discoveryRequestType,
-                                       @RequestBody  DiscoveryRequestRequestBody  requestBody)
+    public  GUIDResponse discoverAsset(@PathVariable String                      serverName,
+                                       @PathVariable String                      discoveryEngineName,
+                                       @PathVariable String                      userId,
+                                       @PathVariable String                      assetGUID,
+                                       @PathVariable String                      discoveryRequestType,
+                                       @RequestBody  DiscoveryRequestRequestBody requestBody)
     {
         return restAPI.discoverAsset(serverName,
                                      discoveryEngineName,
@@ -76,11 +80,11 @@ public class DiscoveryEngineResource
      */
     @PostMapping(path = "/discovery-request-types/{discoveryRequestType}/assets")
 
-    public VoidResponse scanAllAssets(@PathVariable String                       serverName,
-                                      @PathVariable String                       discoveryEngineName,
-                                      @PathVariable String                       userId,
-                                      @PathVariable String                       discoveryRequestType,
-                                      @RequestBody  DiscoveryRequestRequestBody  requestBody)
+    public VoidResponse scanAllAssets(@PathVariable                  String                       serverName,
+                                      @PathVariable                  String                       discoveryEngineName,
+                                      @PathVariable                  String                       userId,
+                                      @PathVariable                  String                       discoveryRequestType,
+                                      @RequestBody(required = false) DiscoveryRequestRequestBody  requestBody)
     {
         return restAPI.scanAllAssets(serverName,
                                      discoveryEngineName,

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGConformanceSuiteConfigServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
@@ -14,6 +16,13 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+
+@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
+        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
+        "Governance (OMAG) services are active.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
+
 public class ConfigConformanceSuiteServicesResource
 {
     private OMAGConformanceSuiteConfigServices adminAPI = new OMAGConformanceSuiteConfigServices();
@@ -27,7 +36,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @PostMapping(path = "/conformance-suite-workbenches/repository-workbench/repositories")
@@ -49,7 +58,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param requestBody url of the OMAG platform to test.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @PostMapping(path = "/conformance-suite-workbenches/platform-workbench/platforms")
@@ -69,7 +78,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches/repository-workbench")
@@ -87,7 +96,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches/platform-workbench")
@@ -105,7 +114,7 @@ public class ConfigConformanceSuiteServicesResource
      * @param serverName  local server name.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches")

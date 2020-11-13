@@ -44,9 +44,13 @@ The development steps to implement the Adapter integration pattern are:
 * Create the [metadata collection connectors](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/README.md) that map between the proprietary metadata formats.
 * Package the connectors and appropriate admin services into a repository proxy server.  
   
-The [Virtual Connector Demo](../../../open-metadata-resources/open-metadata-demos/virtual-data-connector/igc-repository-proxy/README.md) demo includes an example of a repository proxy for IBM's Information Governance Catalog.
+There are two examples of this integration pattern implemented in Egeria.
 
+* An integration for the [IBM Information Governance Catalog](https://github.com/odpi/egeria-connector-ibm-information-server).
+* An integration for [Apache Atlas](https://github.com/odpi/egeria-connector-apache-atlas)
 
+More information on running a repository proxy can be found in the
+[Administration Services Documentation](../../../open-metadata-implementation/admin-services/docs/concepts/repository-proxy.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -26,7 +26,8 @@ RUN apk --no-cache add python bash shadow && \
 
 COPY --from=build --chown=atlas:atlas /opt/atlas-bin/ /opt/apache/atlas/
 
-USER atlas:atlas
+# Must use numeric userid here to meet k8s security checks
+USER 21000:21000
 
 WORKDIR /opt/apache/atlas
 RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=200|g" conf/atlas-application.properties && \

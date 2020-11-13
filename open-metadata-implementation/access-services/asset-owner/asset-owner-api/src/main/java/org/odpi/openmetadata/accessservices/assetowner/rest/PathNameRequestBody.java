@@ -10,13 +10,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PathNameRequestBody carries the parameters for creating a new Folder asset.
+ * PathNameRequestBody carries the parameters for creating a new FolderProperties asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PathNameRequestBody extends AssetOwnerOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String       fullPath           = null;
 
 

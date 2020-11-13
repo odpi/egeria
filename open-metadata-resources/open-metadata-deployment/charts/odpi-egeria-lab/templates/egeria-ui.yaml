@@ -18,6 +18,12 @@ spec:
     - port: 8443
       targetPort: 8443
       nodePort: {{ .Values.service.nodeport.ui }}
+  {{ if .Values.debug.egeriaJVM }}
+    - name: debug
+      port: 5005
+      targetPort: 5005
+      nodePort: {{ .Values.service.nodeport.debug.ui }}
+  {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -57,14 +63,16 @@ spec:
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.egeria.name }}\
-                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+                  :{{ .Values.image.egeria.tag | default .Values.egeria.version }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-          command:
-            - "/bin/bash"
-            - "-c"
-            - "java -jar /opt/egeria/ui-chassis-spring.jar"
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
           ports:
             - containerPort: 8443
+            {{ if .Values.debug.egeriaJVM }}
+            - containerPort: 5005
+            {{ end }}
           readinessProbe:
             tcpSocket:
               port: 8443
@@ -73,10 +81,24 @@ spec:
             failureThreshold: 6
           resources: {}
           env:
+            - name: "ZUUL_ROUTES_UI_URL"
+              value: "http://{{ .Release.Name }}-uistatic:80"
             - name: "OMAS_SERVER_NAME"
               value: "cocoMDS4"
             - name: "OMAS_SERVER_URL"
-              value: "http://{{ .Release.Name }}-datalake:8080"
+              value: "https://{{ .Release.Name }}-datalake:9443"
+            - name: "OPEN_LINEAGE_SERVER_URL"
+              value: "https://{{ .Release.Name }}-datalake:9443"
+            - name: "OPEN_LINEAGE_SERVER_NAME"
+              value: "open-lineage"
+            - name: "OPEN_LINEAGE_GRAPH_SOURCE"
+              value: "MAIN"
+            {{ if .Values.debug.egeriaJVM }}
+            - name: JAVA_DEBUG
+              value:  "true"
+            {{ end }}
+            - name: "JAVA_APP_JAR"
+              value: "user-interface/ui-chassis-spring-{{ .Values.egeria.version}}.jar"
       restartPolicy: Always
 
 status: {}
