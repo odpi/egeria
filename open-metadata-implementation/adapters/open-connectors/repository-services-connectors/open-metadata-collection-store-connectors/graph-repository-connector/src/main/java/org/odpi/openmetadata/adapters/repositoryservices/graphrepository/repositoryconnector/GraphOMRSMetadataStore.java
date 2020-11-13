@@ -15,6 +15,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.attribute.Text;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -149,49 +150,42 @@ class GraphOMRSMetadataStore {
                     if (!isProxy) {
                         EntityDetail entity = new EntityDetail();
                         entityMapper.mapVertexToEntityDetail(vertex, entity);
-                    } else {
-                        // We know this is a proxy - throw the appropraite exception
+                    }
+                    else {
+                        // We know this is a proxy - throw the appropriate exception
                         log.error("{} found entity but it is only a proxy", methodName);
                         g.tx().rollback();
-                        GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROXY_ONLY;
 
-                        String errorMsgInfo = errorCode.getFormattedErrorMessage(
+                        ExceptionMessageDefinition messageDefinition = GraphOMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(
                                 methodName,
                                 this.getClass().getName(),
-                                repositoryName
-                        );
-                        String errorMessage = errorCode.getErrorMessageId() + errorMsgInfo;
+                                repositoryName);
 
-                        throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
+                        throw new EntityProxyOnlyException(
+                                messageDefinition,
                                 this.getClass().getName(),
-                                methodName,
-                                errorMessage,
-                                errorCode.getSystemAction(),
-                                errorCode.getUserAction());
+                                methodName);
                     }
 
                 }
 
-            } catch (RepositoryErrorException | EntityProxyOnlyException e) {
+            }
+            catch (RepositoryErrorException | EntityProxyOnlyException e) {
 
                 log.error("{} Caught exception {}", methodName, e.getMessage());
                 g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
 
-                String errorMsgInfo = errorCode.getFormattedErrorMessage(
+                ExceptionMessageDefinition messageDefinition = GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
                         methodName,
                         this.getClass().getName(),
-                        repositoryName
-                );
-                String errorMessage = errorCode.getErrorMessageId() + errorMsgInfo;
+                        repositoryName);
 
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                throw new RepositoryErrorException(
+                        messageDefinition,
                         this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, e);
             }
+
         }
 
 
