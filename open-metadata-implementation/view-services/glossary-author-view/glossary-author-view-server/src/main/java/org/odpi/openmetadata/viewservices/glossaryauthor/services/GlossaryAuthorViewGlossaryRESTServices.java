@@ -120,7 +120,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Glossary property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
@@ -137,7 +137,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             String userId,
             Date asOfTime,
             String searchCriteria,
-            Integer offset,
+            Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
@@ -148,16 +148,19 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
             if (pageSize == null) {
                 pageSize = invalidParameterHandler.getMaxPagingSize();
             }
-            invalidParameterHandler.validatePaging(offset, pageSize, methodName);
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -178,7 +181,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @param userId             user identifier
      * @param guid               guid of the glossary to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
@@ -196,7 +199,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             String userId,
             String guid,
             Date asOfTime,
-            int offset,
+            Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
@@ -212,12 +215,12 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             if (pageSize == null) {
                 pageSize = invalidParameterHandler.getMaxPagingSize();
             }
-            invalidParameterHandler.validatePaging(offset, pageSize, methodName);
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -486,8 +489,8 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
     public SubjectAreaOMASAPIResponse<Category> getCategories(String serverName,
                                                               String userId,
                                                               String guid,
-                                                              int startingFrom,
-                                                              Integer pagesize,
+                                                              Integer startingFrom,
+                                                              Integer pageSize,
                                                               Boolean onlyTop) {
 
         final String methodName = "getCategories";
@@ -496,12 +499,15 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         FindRequest findRequest = new FindRequest();
-        if (pagesize == null) {
-            pagesize = invalidParameterHandler.getMaxPagingSize();
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
         }
         try {
-            invalidParameterHandler.validatePaging(startingFrom, pagesize, methodName);
-            findRequest.setPageSize(pagesize);
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
@@ -516,8 +522,8 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
     public SubjectAreaOMASAPIResponse<Term> getTerms(String serverName,
                                                      String userId,
                                                      String guid,
-                                                     int startingFrom,
-                                                     Integer pagesize
+                                                     Integer startingFrom,
+                                                     Integer pageSize
                                                     ) {
 
         final String methodName = "getTerms";
@@ -526,12 +532,15 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         FindRequest findRequest = new FindRequest();
-        if (pagesize == null) {
-            pagesize = invalidParameterHandler.getMaxPagingSize();
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
         }
         try {
-            invalidParameterHandler.validatePaging(startingFrom, pagesize, methodName);
-            findRequest.setPageSize(pagesize);
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);

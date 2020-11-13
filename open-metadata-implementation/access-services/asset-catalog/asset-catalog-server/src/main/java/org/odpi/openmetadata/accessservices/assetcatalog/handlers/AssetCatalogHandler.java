@@ -38,12 +38,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*;
@@ -94,6 +89,7 @@ public class AssetCatalogHandler {
         this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, errorHandler);
         if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
             this.supportedTypesForSearch = supportedTypesForSearch;
+            Collections.sort(supportedTypesForSearch);
         }
         this.assetConverter = new AssetConverter(sourceName, repositoryHelper);
     }
@@ -484,10 +480,10 @@ public class AssetCatalogHandler {
      */
     public List<Type> getSupportedTypes(String userId, String typeName) {
         if (typeName != null && !typeName.isEmpty()) {
-            return getSupportedTypesCollector(userId, typeName);
+            return getSupportedTypesWithDescendants(userId, typeName);
         }
 
-        return getSupportedTypesCollector(userId, supportedTypesForSearch.toArray(new String[0]));
+        return getSupportedTypes(userId, supportedTypesForSearch.toArray(new String[0]));
     }
 
     private List<AssetDescription> getAssetDescriptionsAfterValidation(String methodName,
@@ -1430,11 +1426,34 @@ public class AssetCatalogHandler {
         return entityNeighborhood;
     }
 
-    private List<Type> getSupportedTypesCollector(String userId, String... supportedTypesForSearch) {
+    /**
+     *
+     * @param userId      user identifier that issues the call
+     * @param supportedTypesForSearch the list of types
+     * @return a list of types and all of sub-types recursive
+     */
+    private List<Type> getSupportedTypesWithDescendants(String userId, String... supportedTypesForSearch) {
         List<Type> response = new ArrayList<>();
         for (String type : supportedTypesForSearch) {
             List<Type> typeContext = commonHandler.getTypeContext(userId, type);
             response.addAll(typeContext);
+        }
+        return response;
+    }
+
+    /**
+     *
+     * @param userId      user identifier that issues the call
+     * @param supportedTypesForSearch the list of types
+     * @return the list of types by names
+     */
+    private List<Type> getSupportedTypes(String userId, String... supportedTypesForSearch) {
+        List<Type> response = new ArrayList<>();
+        for (String typeName : supportedTypesForSearch) {
+            Type type = commonHandler.getTypeByTypeDefName(userId, typeName);
+            if(type != null) {
+                response.add(type);
+            }
         }
         return response;
     }

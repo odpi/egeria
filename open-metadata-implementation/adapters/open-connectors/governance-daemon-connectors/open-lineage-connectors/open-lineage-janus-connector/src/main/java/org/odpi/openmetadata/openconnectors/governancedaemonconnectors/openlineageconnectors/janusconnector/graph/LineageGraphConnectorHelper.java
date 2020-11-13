@@ -16,6 +16,8 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,16 +41,25 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DEPLOYED_DB_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FOLDER_HIERARCHY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_DB_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE_KEY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SCHEMA_TYPE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
@@ -67,19 +78,14 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TRANSLATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_CONNECTION_NAME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DATABASE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PATH;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_SCHEMA_DISPLAY_NAME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_TABLE_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.SOURCE_CONDENSATION;
@@ -87,15 +93,19 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class LineageGraphConnectorHelper {
 
-    private GraphTraversalSource g;
-    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM,
+    private static final Logger log = LoggerFactory.getLogger(LineageGraphConnectorHelper.class);
+
+    private final GraphTraversalSource g;
+    private final boolean supportingTransactions;
+    private final String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM,
             EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP,
             EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_TERM_CATEGORIZATION};
-    private String[] relationalColumnAndClassificationEdges = {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
-    private String[] tabularColumnAndClassificationEdges = {ATTRIBUTE_FOR_SCHEMA, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
+    private final String[] relationalColumnAndClassificationEdges = {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
+    private final String[] tabularColumnAndClassificationEdges = {ATTRIBUTE_FOR_SCHEMA, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
 
-    public LineageGraphConnectorHelper(GraphTraversalSource graphTraversalSource) {
+    public LineageGraphConnectorHelper(GraphTraversalSource graphTraversalSource, boolean supportingTransactions) {
         this.g = graphTraversalSource;
+        this.supportingTransactions = supportingTransactions;
     }
 
     /**
@@ -113,17 +123,30 @@ public class LineageGraphConnectorHelper {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
+        Graph sourceGraph = null;
+        List<Vertex> sourcesList = null;
 
-        Graph sourceGraph = (Graph)
-                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                        until(inE(edgeLabel).count().is(0)).
-                        repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()).
-                        cap("subGraph").next();
+        try {
+            sourceGraph = (Graph)
+                    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                            until(inE(edgeLabel).count().is(0)).
+                            repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()).
+                            cap("subGraph").next();
 
-        List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV().simplePath()).
-                dedup().toList();
+            sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                    until(inE(edgeLabel).count().is(0)).
+                    repeat(inE(edgeLabel).outV().simplePath()).
+                    dedup().toList();
+
+            commitTransaction();
+
+        }catch (Exception e){
+            if(supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying ultimate source horizontal lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
 
         return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList), SOURCE_CONDENSATION, includeProcesses));
     }
@@ -142,17 +165,30 @@ public class LineageGraphConnectorHelper {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
+        Graph destinationGraph = null;
+        List<Vertex> destinationsList = null;
 
-        Graph destinationGraph = (Graph)
-                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
-                        .until(outE(edgeLabel).count().is(0))
-                        .repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
-                        .cap("subGraph").next();
+        try{
+            destinationGraph = (Graph)
+                    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
+                            .until(outE(edgeLabel).count().is(0))
+                            .repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
+                            .cap("subGraph").next();
 
-        List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV().simplePath()).
-                dedup().toList();
+            destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                    until(outE(edgeLabel).count().is(0)).
+                    repeat(outE(edgeLabel).inV().simplePath()).
+                    dedup().toList();
+
+            commitTransaction();
+
+        }catch (Exception e){
+            if(supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying ultimate destination horizontal lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
 
         return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList), DESTINATION_CONDENSATION,
                 includeProcesses));
@@ -172,16 +208,27 @@ public class LineageGraphConnectorHelper {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
+        Graph endToEndGraph = null;
 
+        try{
+            endToEndGraph = (Graph)
+                    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                            union(
+                                    until(inE(edgeLabel).count().is(0)).
+                                            repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()),
+                                    until(outE(edgeLabel).count().is(0)).
+                                            repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
+                            ).cap("subGraph").next();
 
-        Graph endToEndGraph = (Graph)
-                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                        union(
-                                until(inE(edgeLabel).count().is(0)).
-                                        repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()),
-                                until(outE(edgeLabel).count().is(0)).
-                                        repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
-                        ).cap("subGraph").next();
+            commitTransaction();
+
+        }catch (Exception e){
+            if(supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying end to end horizontal lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
 
         return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
     }
@@ -227,8 +274,20 @@ public class LineageGraphConnectorHelper {
      */
     private Optional<LineageVerticesAndEdges> glossaryVerticalLineage(String guid) {
 
-        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
-                .subgraph("s").cap("s").next();
+        Graph subGraph = null;
+
+        try{
+            subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
+                    .subgraph("s").cap("s").next();
+            commitTransaction();
+
+        }catch (Exception e){
+            if(supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying glossary term vertical lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
@@ -243,8 +302,20 @@ public class LineageGraphConnectorHelper {
      */
     private Optional<LineageVerticesAndEdges> relationalColumnVerticalLineage(String guid) {
 
-        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(relationalColumnAndClassificationEdges)
-                .subgraph("s").cap("s").next();
+        Graph subGraph = null;
+
+        try{
+            subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(relationalColumnAndClassificationEdges)
+                    .subgraph("s").cap("s").next();
+            commitTransaction();
+
+        }catch (Exception e){
+            if(supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying relational column vertical lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
@@ -259,8 +330,20 @@ public class LineageGraphConnectorHelper {
      */
     private Optional<LineageVerticesAndEdges> tabularColumnVerticalLineage(String guid ) {
 
-        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(tabularColumnAndClassificationEdges)
-                .subgraph("s").bothV().inE(ASSET_SCHEMA_TYPE).subgraph("s").cap("s").next();
+        Graph subGraph = null;
+
+        try{
+            subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(tabularColumnAndClassificationEdges)
+                    .subgraph("s").bothV().inE(ASSET_SCHEMA_TYPE).subgraph("s").cap("s").next();
+            commitTransaction();
+
+        }catch (Exception e){
+            if(supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying tabular column vertical lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
@@ -336,8 +419,8 @@ public class LineageGraphConnectorHelper {
         Set<LineageEdge> lineageEdges = getLineageEdges(subGraph, SOURCE_CONDENSATION.equalsIgnoreCase(condensationType));
 
         Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+        commitTransaction();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
-
         if (CollectionUtils.isEmpty(lineageVertices)) {
             lineageVertices = ultimateVertices;
         }
@@ -574,85 +657,104 @@ public class LineageGraphConnectorHelper {
             return;
         }
 
-        lineageVertices.stream().filter(this::isColumn).forEach(lineageVertex -> {
+        lineageVertices.stream().filter(this::needsAdditionalNodeContext).forEach(lineageVertex -> {
             Vertex graphVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).next();
+            commitTransaction();
             Object vertexId = graphVertex.id();
             Map<String, String> properties = new HashMap<>();
 
             switch (lineageVertex.getNodeType()) {
                 case TABULAR_COLUMN:
-                    properties = getDataFileProperties(g, vertexId);
+                    properties = getTabularColumnProperties(g, vertexId);
                     break;
                 case RELATIONAL_COLUMN:
+                    properties = getRelationalColumnProperties(g, vertexId);
+                    break;
+                case RELATIONAL_TABLE:
                     properties = getRelationalTableProperties(g, vertexId);
+                    break;
+                case DATA_FILE:
+                    properties = getDataFileProperties(g, vertexId);
+                    break;
+                case PROCESS:
+                case NODE_LABEL_SUB_PROCESS:
+                    properties = getProcessProperties(g, vertexId);
+                    break;
+                case GLOSSARY_TERM:
+                case GLOSSARY_CATEGORY:
+                    properties = getGlossaryTermProperties(g, vertexId);
                     break;
             }
             lineageVertex.setProperties(properties);
         });
     }
 
-    private Map<String, String> getRelationalTableProperties(GraphTraversalSource g, Object vertexId) {
+
+    private boolean needsAdditionalNodeContext(LineageVertex lineageVertex) {
+        return Arrays.asList(DATA_FILE, Constants.RELATIONAL_TABLE, Constants.GLOSSARY_TERM, Constants.GLOSSARY_CATEGORY, Constants.PROCESS,
+                Constants.TABULAR_COLUMN, Constants.RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS).contains(lineageVertex.getNodeType());
+    }
+
+    private Map<String, String> getRelationalColumnProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
 
         Iterator<Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(RELATIONAL_TABLE));
+        commitTransaction();
         if (tableAsset.hasNext()) {
-            properties.put(PROPERTY_KEY_TABLE_DISPLAY_NAME, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(RELATIONAL_TABLE_KEY, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> relationalDBSchemaType =
                 g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(2).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
+        commitTransaction();
         if (relationalDBSchemaType.hasNext()) {
-            properties.put(PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME,
-                    relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> deployedDatabaseSchema =
-                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(3).or(hasLabel(DEPLOYED_DB_SCHEMA_TYPE));
-        if (deployedDatabaseSchema.hasNext()) {
-            properties.put(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,
-                    deployedDatabaseSchema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(SCHEMA_TYPE_KEY, relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).or(hasLabel(DATABASE));
+        commitTransaction();
         if (database.hasNext()) {
-            properties.put(PROPERTY_KEY_DATABASE_DISPLAY_NAME,
+            properties.put(DATABASE_KEY,
                     database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(5).hasLabel(CONNECTION);
+        commitTransaction();
         if (connection.hasNext()) {
-            properties.put(PROPERTY_KEY_CONNECTION_NAME, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         return properties;
     }
 
-    private Map<String, String> getDataFileProperties(GraphTraversalSource g, Object vertexId) {
+    private Map<String, String> getTabularColumnProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
 
         Iterator<Vertex> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
+        commitTransaction();
         if (tabularSchemaType.hasNext()) {
-            properties.put(PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME,
+            properties.put(SCHEMA_TYPE_KEY,
                     tabularSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> dataFileAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(DATA_FILE));
+        commitTransaction();
         if (dataFileAsset.hasNext()) {
             Vertex dataFileVertex = dataFileAsset.next();
-            properties.put(PROPERTY_KEY_TABLE_DISPLAY_NAME, dataFileVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-
-            List<Vertex> folderVertices = getFolderVertices(g, dataFileVertex);
+            properties.put(DATA_FILE_KEY, dataFileVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            List<Vertex> folderVertices = getFolderVertices(g, dataFileVertex.id());
             if (CollectionUtils.isEmpty(folderVertices)) {
                 return properties;
             }
             Object lastFolderVertexId = folderVertices.get(folderVertices.size() - 1).id();
+            properties.put(FILE_FOLDER_KEY, String.join("/", getFoldersPath(folderVertices)));
 
             Iterator<Vertex> connection = g.V(lastFolderVertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
+            commitTransaction();
             if (connection.hasNext()) {
-                properties.put(PROPERTY_KEY_CONNECTION_NAME, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+                properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
             }
 
-            properties.put(PROPERTY_KEY_PATH, String.join("/", getFoldersPath(folderVertices)));
         }
 
         return properties;
@@ -664,9 +766,10 @@ public class LineageGraphConnectorHelper {
                 .collect(Collectors.joining("/"));
     }
 
-    private List<Vertex> getFolderVertices(GraphTraversalSource g, Vertex dataFileAsset) {
+    private List<Vertex> getFolderVertices(GraphTraversalSource g, Object dataFileAssetId) {
         GraphTraversal<Vertex, Vertex> fileFolders =
-                g.V(dataFileAsset.id()).emit().repeat(bothE().otherV().simplePath()).until(inE(FOLDER_HIERARCHY).count().is(0)).or(hasLabel(FILE_FOLDER));
+                g.V(dataFileAssetId).emit().repeat(bothE().otherV().simplePath()).until(inE(FOLDER_HIERARCHY).count().is(0)).or(hasLabel(FILE_FOLDER));
+        commitTransaction();
         List<Vertex> folderVertices = new ArrayList<>();
         while (fileFolders.hasNext()) {
             folderVertices.add(fileFolders.next());
@@ -674,8 +777,86 @@ public class LineageGraphConnectorHelper {
         return folderVertices;
     }
 
-    private boolean isColumn(LineageVertex lineageVertex) {
-        return Arrays.asList(Constants.TABULAR_COLUMN, Constants.RELATIONAL_COLUMN).contains(lineageVertex.getNodeType());
+    private Map<String, String> getRelationalTableProperties(GraphTraversalSource g, Object vertexId) {
+        Map<String, String> properties = new HashMap<>();
+
+        Iterator<Vertex> relationalDBSchemaType =
+                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
+        commitTransaction();
+        if (relationalDBSchemaType.hasNext()) {
+            properties.put(SCHEMA_TYPE_KEY,
+                    relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+        }
+
+        Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(3).or(hasLabel(DATABASE));
+        commitTransaction();
+        if (database.hasNext()) {
+            properties.put(DATABASE_KEY,
+                    database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+        }
+
+        Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).hasLabel(CONNECTION);
+        commitTransaction();
+        if (connection.hasNext()) {
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+        }
+
+        return properties;
+
+    }
+
+    private Map<String, String> getDataFileProperties(GraphTraversalSource g, Object vertexId) {
+        Map<String, String> properties = new HashMap<>();
+
+        List<Vertex> folderVertices = getFolderVertices(g, vertexId);
+        if (CollectionUtils.isEmpty(folderVertices)) {
+            return properties;
+        }
+        Object lastFolderVertexId = folderVertices.get(folderVertices.size() - 1).id();
+        properties.put(FILE_FOLDER_KEY, String.join("/", getFoldersPath(folderVertices)));
+
+        Iterator<Vertex> connection = g.V(lastFolderVertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
+        commitTransaction();
+        if (connection.hasNext()) {
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+        }
+
+        return properties;
+
+    }
+
+    private Map<String, String> getProcessProperties(GraphTraversalSource g, Object vertexId) {
+        Map<String, String> properties = new HashMap<>();
+
+        GraphTraversal<Vertex, ? extends Property<Object>> qualifiedNameTraversal = g.V(vertexId).properties(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME);
+        commitTransaction();
+        if (qualifiedNameTraversal.hasNext()) {
+            String value = (String) qualifiedNameTraversal.next().value();
+            properties.put(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME, value);
+        }
+
+        Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(8).or(hasLabel(CONNECTION));
+        commitTransaction();
+        if (connection.hasNext()) {
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+        }
+        return properties;
+    }
+
+    private Map<String, String> getGlossaryTermProperties(GraphTraversalSource g, Object vertexId) {
+        Map<String, String> properties = new HashMap<>();
+        Iterator<Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(GLOSSARY));
+        commitTransaction();
+        if (tableAsset.hasNext()) {
+            properties.put(GLOSSARY_KEY, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+        }
+        return properties;
+    }
+
+    private void commitTransaction() {
+        if (supportingTransactions) {
+            g.tx().commit();
+        }
     }
 
     private String getCondensedNodeId(String condensationType) {

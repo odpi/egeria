@@ -81,7 +81,7 @@ export default function GraphControls(props) {
      * Save the traversal parameters into the traversal spec....
      */
     let traversalSpec = {};    
-    traversalSpec.serverName = repositoryServerContext.repositoryServerName;
+    traversalSpec.serverName = repositoryServerContext.repositoryServer.serverName;
     traversalSpec.entityGUID = entityGUID;
     traversalSpec.entityLabel = entityLabel;
     traversalSpec.depth = 1;

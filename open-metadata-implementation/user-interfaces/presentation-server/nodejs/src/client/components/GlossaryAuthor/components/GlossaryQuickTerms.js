@@ -7,18 +7,19 @@ import { Button, Form, FormGroup, TextInput, Loading } from "carbon-components-r
 
 import { issueRestCreate } from "./RestCaller";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-export default function QuickTerms(props) {
+export default function GlossaryQuickTerms(props) {
   const glossaryNodeType = getNodeType("glossary");
   const [terms, setTerms] = useState([]);
   const [termsWithStatus, setTermsWithStatus] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
   const [restCallInProgress, setRestCallInProgress] = useState(false);
-
+  let history = useHistory();
   const url = getUrl();
   function getUrl() {
-    const { guid } = useParams();
-    return glossaryNodeType.url + "/" + guid + "/terms";
+    const { glossaryguid } = useParams();
+    return glossaryNodeType.url + "/" + glossaryguid + "/terms";
   }
   const validateForm = () => {
     if (terms.length == 0) {
@@ -77,7 +78,7 @@ export default function QuickTerms(props) {
       setTermsWithStatus([]);
     } else {
       // go back using the router history
-      props.history.goBack();
+      history.goBack();
     }
   };
 
@@ -103,7 +104,7 @@ export default function QuickTerms(props) {
       {!restCallInProgress && termsWithStatus.length == 0 && (
         <div>
           <div className="row-container">
-            <h3>Quickly add terms.</h3>
+            <h3>Quickly add terms to the Glossary.</h3>
           </div>
           <div className="row-container">
             <Add32 kind="primary" onClick={() => onAdd()} />

@@ -50,7 +50,7 @@ export default function ServerSelector() {
     if (json !== null) {
       if (json.relatedHTTPCode === 200 ) {
         let serverList = json.serverList;
-        if (serverList !== null) {
+        if (serverList) {
           let newServers = {};
           serverList.forEach(svr => {
             const newServer = { "serverInstanceName"  : svr.serverInstanceName, 
@@ -63,8 +63,57 @@ export default function ServerSelector() {
           return;
         }
       }
+      else {
+        console.log("ServerSelector: could not load servers. Error: "+json.relatedHTTPCode+" Message: "+json.exceptionErrorMessage);
+        // This is not the correct way to determine the type of error, but
+        // the better solution requires an overhaul of index.js
+        // TODO - improve error reporting from index.js
+        let message = json.exceptionErrorMessage;
+        console.log("_getServers error handler, message: "+message);
+        if (message.includes("invalid supplied URL")) {
+          let tokens = message.split("/");
+          let tenantName = tokens[2];
+          json.exceptionErrorMessage = "Check the Presentation Server for tenant "+tenantName+" is configured. [Detail "+ json.exceptionErrorMessage + "]";
+        }
+      }
+    }
+
+    /*
+     * On failure ... json could be null or contain a bad relatedHTTPCode
+     */
+    reportFailedOperation("getServers",json);
+  }
+
+
+  /*
+   * Always accept the operation name because operation name is needed even in the case where json is null
+   */
+  const reportFailedOperation = (operation, json) => {
+    if (json !== null) {
+      if (json.relatedHTTPCode === 200 ) {
+        /*
+         * Operation succeeded but did not return anything useful...
+         */
+        alert("No servers were found - please check the configuration of the Repository Explorer View Service");
+      }
+      else {
+        /*
+         * Operation reported failure
+         */
+        const relatedHTTPCode = json.relatedHTTPCode;
+        const exceptionMessage = json.exceptionErrorMessage;
+        /*
+         * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
+         */
+        alert("Operation "+operation+" failed with status "+relatedHTTPCode+". "+exceptionMessage);
+      }
+    }
+    else {
+      alert("Operation "+operation+" did not get a response from the view server");
     }
   }
+
+
 
   if (!serversLoaded) {
     getServers();
@@ -111,7 +160,7 @@ export default function ServerSelector() {
   return (
     <div className="resource-controls">
 
-      <p className="descriptive-text">Select Server</p>
+      <p className="descriptive-text">Servers</p>
 
       <select className="server-selector"
               id="serverSelector"
@@ -121,7 +170,7 @@ export default function ServerSelector() {
               size = "5" >
         {
           serverNameListSorted.length === 0 && 
-          ( <option value="dummy" disabled defaultValue>No servers yet - please add one!</option> )
+          ( <option value="dummy" disabled defaultValue>No servers...</option> )
         }
         {
           serverNameListSorted.length > 0 && 

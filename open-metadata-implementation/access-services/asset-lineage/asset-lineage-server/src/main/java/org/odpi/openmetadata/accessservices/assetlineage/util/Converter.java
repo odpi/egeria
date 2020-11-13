@@ -44,6 +44,15 @@ public class Converter {
         return lineageEntity;
     }
 
+    /**
+     * Create entity lineage entity starting from an entity proxy
+     *
+     * @param entityProxy the entity proxy
+     * @return the lineage entity
+     */
+    public LineageEntity createLineageEntityFromProxy(EntityProxy entityProxy) {
+        return getLineageEntityFromLineageProxy(entityProxy);
+    }
 
     /**
      * Creates the lineage relationship.

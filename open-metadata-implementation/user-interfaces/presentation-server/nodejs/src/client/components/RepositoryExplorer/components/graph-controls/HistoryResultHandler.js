@@ -64,7 +64,7 @@ export default function HistoryResultHandler(props) {
 
       let resultsDisplay = (         
 
-        <div className="table" >
+        <div className="history-table" >
           {history.map( item => (
             <div key={item.gen} className="row">
               <div className="gencolumn">
@@ -78,7 +78,12 @@ export default function HistoryResultHandler(props) {
               <div className="inscolumn">
                 <ul>
                   {item.instances.map(inst => (
-                    <li key={inst.label}>{inst.category} {inst.label} ({inst.guid})</li>
+                    <li key={inst.label}>{inst.category} {inst.label} ({inst.guid})
+                           { (inst.provenance === "refCopy" ||
+                             inst.provenance === "home"     ||
+                             inst.provenance === "proxy")
+                             ? " ("+inst.provenance+")" : "" }
+                    </li>
                   ))}                                     
                 </ul>
               </div>

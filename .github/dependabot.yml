@@ -5,160 +5,46 @@ updates:
 - package-ecosystem: npm
   directory: "/open-metadata-implementation/user-interfaces/presentation-server/nodejs"
   schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
-  reviewers:
-  - grahamwallis
-  - davidradl
-- package-ecosystem: npm
-  directory: "/open-metadata-implementation/user-interfaces/presentation-server/nodejs/src/cra-client"
-  schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
+    interval: monthly
+  open-pull-requests-limit: 5
   reviewers:
   - grahamwallis
   - davidradl
 - package-ecosystem: docker
   directory: "/open-metadata-resources/open-metadata-deployment/docker/presentation-server"
   schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
+    interval: monthly
+  open-pull-requests-limit: 5
   reviewers:
   - planetf1
+  - grahamwallis
+  - davidradl
 - package-ecosystem: gradle
   directory: "/"
   schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 5
+    interval: monthly
+  open-pull-requests-limit: 75
   reviewers:
   - planetf1
 - package-ecosystem: maven
   directory: "/"
   schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 5
+    interval: monthly
+  open-pull-requests-limit: 75
   reviewers:
-  - planetf1
-  ignore:
-  - dependency-name: org.apache.derby:derby
-    versions:
-    - "> 10.8.3.1"
-  - dependency-name: org.apache.hadoop:hadoop-common
-    versions:
-    - "> 2.9.2"
-  - dependency-name: org.apache.lucene:lucene-analyzers-common
-    versions:
-    - ">= 8.3.a"
-    - "< 8.4"
-  - dependency-name: org.apache.lucene:lucene-analyzers-common
-    versions:
-    - ">= 8.5.a"
-    - "< 8.6"
-  - dependency-name: org.apache.ranger:ranger-plugins-common
-    versions:
-    - "> 1.2.0"
-- package-ecosystem: npm
-  directory: "/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/static"
-  schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
-  reviewers:
-  - bogdan-sava
-  - sarbull
-- package-ecosystem: docker
-  directory: "/open-metadata-resources/open-metadata-deployment/docker/build-images/apache/atlas"
-  schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
-  reviewers:
-  - cmgrote
-  - planetf1
-  ignore:
-  - dependency-name: maven
-    versions:
-    - "> 3.6.3.pre.openjdk.pre.8"
-    - "< 3.7"
-- package-ecosystem: docker
-  directory: "/open-metadata-resources/open-metadata-deployment/docker/apache-atlas"
-  schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
-  reviewers:
-  - cmgrote
-  - planetf1
-  ignore:
-  - dependency-name: openjdk
-    versions:
-    - ">= 13.pre.jdk.pre.alpine.0.a"
-    - "< 13.pre.jdk.pre.alpine.1"
-  - dependency-name: openjdk
-    versions:
-    - ">= 14.pre.jdk.pre.alpine.a"
-    - "< 15"
-- package-ecosystem: docker
-  directory: "/open-metadata-resources/open-metadata-deployment/docker/apache-ranger-admin"
-  schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
-  reviewers:
-  - cmgrote
-  - planetf1
-  ignore:
-  - dependency-name: openjdk
-    versions:
-    - ">= 13.pre.jdk.pre.alpine.0.a"
-    - "< 13.pre.jdk.pre.alpine.1"
-  - dependency-name: openjdk
-    versions:
-    - ">= 14.pre.jdk.pre.alpine.a"
-    - "< 15"
-- package-ecosystem: docker
-  directory: "/open-metadata-resources/open-metadata-deployment/docker/gaian"
-  schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
-  reviewers:
-  - cmgrote
   - planetf1
 - package-ecosystem: docker
   directory: "/open-metadata-resources/open-metadata-deployment/docker/egeria"
   schedule:
-    interval: daily
-    time: "06:00"
+    interval: monthly
   open-pull-requests-limit: 5
   reviewers:
-  - cmgrote
   - planetf1
 - package-ecosystem: docker
   directory: "/open-metadata-resources/open-metadata-deployment/docker/configure"
   schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
+    interval: monthly
+  open-pull-requests-limit: 5
   reviewers:
   - cmgrote
   - planetf1
-- package-ecosystem: docker
-  directory: "/open-metadata-resources/open-metadata-deployment/docker/build-images/apache/ranger"
-  schedule:
-    interval: daily
-    time: "06:00"
-  open-pull-requests-limit: 1
-  reviewers:
-  - cmgrote
-  - planetf1
-  ignore:
-  - dependency-name: maven
-    versions:
-    - "> 3.6.3.pre.openjdk.pre.8"
-    - "< 3.7"

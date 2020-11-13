@@ -83,8 +83,6 @@ public class AssetLineageRestServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
-        } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
         }
 
         return response;
@@ -96,16 +94,19 @@ public class AssetLineageRestServices {
      * @param entitiesByType list of found entities for the requested type
      * @param publisher      Asset Lineage publisher
      * @return the list of entity GUIDs published on the Asset Lineage Out Topic
-     * @throws JsonProcessingException checked exception for reporting errors found when using OCF connectors
-     * @throws OCFCheckedExceptionBase exception parsing the event json
      */
     private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType,
-                                                AssetLineagePublisher publisher) throws JsonProcessingException, OCFCheckedExceptionBase {
+                                                AssetLineagePublisher publisher) {
         List<String> publishedGUIDs = new ArrayList<>();
         log.debug("Asset Lineage OMAS is publishing entities context");
 
         for (EntityDetail entityDetail : entitiesByType) {
-            publishedGUIDs.add(publishEntityContext(entityDetail, publisher));
+            try {
+                publishedGUIDs.add(publishEntityContext(entityDetail, publisher));
+            }catch (JsonProcessingException | OCFCheckedExceptionBase e){
+                log.error("Failed to publish context for entity of type " + entityDetail.getType() + " and guid "
+                + entityDetail.getGUID());
+            }
         }
 
         log.debug("Asset Lineage OMAS published entities context");
