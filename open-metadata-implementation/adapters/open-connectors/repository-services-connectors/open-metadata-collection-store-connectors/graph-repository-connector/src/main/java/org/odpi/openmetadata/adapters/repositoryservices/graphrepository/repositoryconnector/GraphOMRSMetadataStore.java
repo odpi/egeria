@@ -182,6 +182,7 @@ class GraphOMRSMetadataStore {
                     if (!isProxy) {
                         EntityDetail entity = new EntityDetail();
                         entityMapper.mapVertexToEntityDetail(vertex, entity);
+                        entities.add(entity);
                     } else {
                         // We know this is a proxy - throw the appropraite exception
                         log.error("{} found entity but it is only a proxy", methodName);
