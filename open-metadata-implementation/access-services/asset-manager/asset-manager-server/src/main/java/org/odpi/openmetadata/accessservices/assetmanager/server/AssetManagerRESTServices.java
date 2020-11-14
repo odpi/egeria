@@ -2,10 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareServerCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -21,8 +25,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 
 /**
@@ -105,17 +107,14 @@ public class AssetManagerRESTServices
      * @param userId calling user
      * @param assetManagerProperties description of the integration daemon (specify qualified name at a minimum)
      *
-     * @return unique identifier of the asset management's software server capability
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
+     * @return unique identifier of the asset management's software server capability or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
      */
     public GUIDResponse createExternalAssetManager(String                 serverName,
                                                    String                 userId,
-                                                   AssetManagerProperties assetManagerProperties) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+                                                   AssetManagerProperties assetManagerProperties)
     {
         final String methodName = "createExternalAssetManager";
 
@@ -137,9 +136,9 @@ public class AssetManagerRESTServices
                 response.setGUID(handler.createSoftwareServerCapability(userId,
                                                                         null,
                                                                         null,
-                                                                        OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_GUID,
+                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
-                                                                        null,
                                                                         assetManagerProperties.getQualifiedName(),
                                                                         assetManagerProperties.getDisplayName(),
                                                                         assetManagerProperties.getDescription(),
@@ -213,8 +212,8 @@ public class AssetManagerRESTServices
                                                                                                                               methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 nameParameterName,
                                                                 methodName));
@@ -244,36 +243,29 @@ public class AssetManagerRESTServices
 
 
     /**
-     * Update the description of a specific external identifier.
+     * Add the description of a specific external identifier.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param openMetadataGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     * @param keyPattern style of the external identifier
-     * @param description description of the identifier
-     * @param mappingProperties additional mapping properties
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse updateExternalIdentifier(String              serverName,
-                                                 String              userId,
-                                                 String              assetManagerGUID,
-                                                 String              assetManagerName,
-                                                 String              openMetadataGUID,
-                                                 String              externalIdentifier,
-                                                 KeyPattern          keyPattern,
-                                                 String              description,
-                                                 Map<String, String> mappingProperties)
+    public VoidResponse addExternalIdentifier(String                        serverName,
+                                              String                        userId,
+                                              String                        openMetadataElementGUID,
+                                              String                        openMetadataElementTypeName,
+                                              MetadataCorrelationProperties requestBody)
     {
-        final String methodName                      = "updateExternalIdentifier";
-        final String openMetadataGUIDParameterName   = "openMetadataGUID";
-        final String externalIdentifierParameterName = "externalIdentifier";
+        final String methodName                      = "addExternalIdentifier";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String assetManagerGUIDParameterName   = "assetManagerGUID";
+        final String identifierParameterName         = "correlationProperties.externalIdentifier";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -284,20 +276,243 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ExternalIdentifierHandler<MetadataCorrelationProperties> handler = instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
+                int permittedSynchronizationOrdinal = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+                if (requestBody.getSynchronizationDirection() != null)
+                {
+                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
+                }
 
-            handler.updateExternalIdentifier(userId,
-                                             assetManagerGUID,
-                                             assetManagerName,
-                                             openMetadataGUID,
-                                             openMetadataGUIDParameterName,
-                                             externalIdentifier,
-                                             externalIdentifierParameterName,
-                                             keyPattern.getOpenTypeOrdinal(),
-                                             description,
-                                             mappingProperties,
-                                             methodName);
+                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+                if (requestBody.getKeyPattern() != null)
+                {
+                    keyPatternOrdinal = requestBody.getKeyPattern().getOpenTypeOrdinal();
+                }
 
+                handler.setUpExternalIdentifier(userId,
+                                                openMetadataElementGUID,
+                                                openMetadataGUIDParameterName,
+                                                openMetadataElementTypeName,
+                                                requestBody.getExternalIdentifier(),
+                                                identifierParameterName,
+                                                keyPatternOrdinal,
+                                                requestBody.getExternalIdentifierName(),
+                                                requestBody.getExternalIdentifierUsage(),
+                                                requestBody.getExternalIdentifierSource(),
+                                                requestBody.getMappingProperties(),
+                                                requestBody.getAssetManagerGUID(),
+                                                assetManagerGUIDParameterName,
+                                                requestBody.getAssetManagerName(),
+                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                permittedSynchronizationOrdinal,
+                                                requestBody.getSynchronizationDescription(),
+                                                methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the description of a specific external identifier.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse updateExternalIdentifier(String                        serverName,
+                                                 String                        userId,
+                                                 String                        openMetadataElementGUID,
+                                                 String                        openMetadataElementTypeName,
+                                                 MetadataCorrelationProperties requestBody)
+    {
+        final String methodName                      = "updateExternalIdentifier";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String assetManagerGUIDParameterName   = "assetManagerGUID";
+        final String identifierParameterName         = "correlationProperties.externalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
+                int permittedSynchronizationOrdinal = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+                if (requestBody.getSynchronizationDirection() != null)
+                {
+                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
+                }
+
+                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+                if (requestBody.getKeyPattern() != null)
+                {
+                    keyPatternOrdinal = requestBody.getKeyPattern().getOpenTypeOrdinal();
+                }
+
+                handler.setUpExternalIdentifier(userId,
+                                                openMetadataElementGUID,
+                                                openMetadataGUIDParameterName,
+                                                openMetadataElementTypeName,
+                                                requestBody.getExternalIdentifier(),
+                                                identifierParameterName,
+                                                keyPatternOrdinal,
+                                                requestBody.getExternalIdentifierName(),
+                                                requestBody.getExternalIdentifierUsage(),
+                                                requestBody.getExternalIdentifierSource(),
+                                                requestBody.getMappingProperties(),
+                                                requestBody.getAssetManagerGUID(),
+                                                assetManagerGUIDParameterName,
+                                                requestBody.getAssetManagerName(),
+                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                permittedSynchronizationOrdinal,
+                                                requestBody.getSynchronizationDescription(),
+                                                methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove an external identifier from an existing open metadata element.  The open metadata element is not
+     * affected.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse removeExternalIdentifier(String                        serverName,
+                                                 String                        userId,
+                                                 String                        openMetadataElementGUID,
+                                                 String                        openMetadataElementTypeName,
+                                                 MetadataCorrelationProperties requestBody)
+    {
+        final String methodName                      = "removeExternalIdentifier";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String assetManagerGUIDParameterName   = "assetManagerGUID";
+        final String identifierParameterName         = "correlationProperties.externalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
+                int permittedSynchronizationOrdinal = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+                if (requestBody.getSynchronizationDirection() != null)
+                {
+                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
+                }
+
+                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+                if (requestBody.getKeyPattern() != null)
+                {
+                    keyPatternOrdinal = requestBody.getKeyPattern().getOpenTypeOrdinal();
+                }
+
+                handler.removeExternalIdentifier(userId,
+                                                 openMetadataElementGUID,
+                                                 openMetadataGUIDParameterName,
+                                                 openMetadataElementTypeName,
+                                                 requestBody.getExternalIdentifier(),
+                                                 identifierParameterName,
+                                                 keyPatternOrdinal,
+                                                 requestBody.getExternalIdentifierName(),
+                                                 requestBody.getExternalIdentifierUsage(),
+                                                 requestBody.getExternalIdentifierSource(),
+                                                 requestBody.getMappingProperties(),
+                                                 requestBody.getAssetManagerGUID(),
+                                                 assetManagerGUIDParameterName,
+                                                 requestBody.getAssetManagerName(),
+                                                 OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                 permittedSynchronizationOrdinal,
+                                                 requestBody.getSynchronizationDescription(),
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -324,30 +539,29 @@ public class AssetManagerRESTServices
 
     /**
      * Confirm that the values of a particular metadata element have been synchronized.  This is important
-     * from an audit points of view, and to allow bidirectional updates of metadata using optimistic locking.
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param openMetadataGUID unique identifier (GUID) of this element in open metadata
-     * @param externalIdentifier unique identifier of this element in the external asset manager
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param requestBody details of the external identifier and its scope
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse confirmSynchronization(String serverName,
-                                               String userId,
-                                               String assetManagerGUID,
-                                               String assetManagerName,
-                                               String openMetadataGUID,
-                                               String externalIdentifier)
+    public VoidResponse confirmSynchronization(String                        serverName,
+                                               String                        userId,
+                                               String                        openMetadataElementGUID,
+                                               String                        openMetadataElementTypeName,
+                                               MetadataCorrelationProperties requestBody)
     {
-        final String methodName                      = "confirmSynchronization";
-        final String openMetadataGUIDParameterName   = "openMetadataGUID";
-        final String externalIdentifierParameterName = "externalIdentifier";
+        final String methodName                           = "confirmSynchronization";
+        final String openMetadataElementGUIDParameterName = "openMetadataElementGUID";
+        final String externalIdentifierParameterName      = "externalIdentifier";
+        final String assetManagerGUIDParameterName        = "assetManagerGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -358,16 +572,105 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ExternalIdentifierHandler<MetadataCorrelationProperties> handler = instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
 
-            handler.confirmSynchronization(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
-                                           openMetadataGUID,
-                                           openMetadataGUIDParameterName,
-                                           externalIdentifier,
-                                           externalIdentifierParameterName,
-                                           methodName);
+                handler.confirmSynchronization(userId,
+                                               openMetadataElementGUID,
+                                               openMetadataElementGUIDParameterName,
+                                               openMetadataElementTypeName,
+                                               requestBody.getExternalIdentifier(),
+                                               externalIdentifierParameterName,
+                                               requestBody.getAssetManagerGUID(),
+                                               assetManagerGUIDParameterName,
+                                               requestBody.getAssetManagerName(),
+                                               OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the unique identifier of the external asset manager from its qualified name.
+     * Typically the qualified name comes from the integration connector configuration.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody details of the external identifier
+     *
+     * @return list of linked elements, null if null or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public ElementHeadersResponse getElementsForExternalIdentifier(String                        serverName,
+                                                                   String                        userId,
+                                                                   int                           startFrom,
+                                                                   int                           pageSize,
+                                                                   MetadataCorrelationProperties requestBody)
+    {
+        final String methodName = "getElementsForExternalIdentifier";
+        final String assetManagerGUIDParameterName = "assetManagerGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementHeadersResponse response = new ElementHeadersResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
+
+                response.setElementList(handler.getElementsForExternalIdentifier(userId,
+                                                                                 requestBody.getAssetManagerGUID(),
+                                                                                 assetManagerGUIDParameterName,
+                                                                                 OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                                                 requestBody.getAssetManagerName(),
+                                                                                 requestBody.getExternalIdentifier(),
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
 
         }
         catch (InvalidParameterException error)
@@ -391,4 +694,5 @@ public class AssetManagerRESTServices
 
         return response;
     }
+
 }

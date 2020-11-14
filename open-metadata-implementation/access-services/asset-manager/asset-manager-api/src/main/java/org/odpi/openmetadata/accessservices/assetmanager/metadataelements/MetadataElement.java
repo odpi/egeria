@@ -3,7 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+
+import java.util.List;
 
 /**
  * MetadataElement is the common interface for all metadata elements.  It adds the header information that is stored with the properties.
@@ -12,7 +13,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorr
 public interface MetadataElement
 {
     /**
-     * Return the element header associated with the properties.
+     * Return the element header associated with the open metadata element.
      *
      * @return element header object
      */
@@ -20,7 +21,7 @@ public interface MetadataElement
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the element header associated with the open metadata element.
      *
      * @param elementHeader element header object
      */
@@ -29,16 +30,20 @@ public interface MetadataElement
 
     /**
      * Return the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @return properties object
+     * @return list of correlation properties objects
      */
-    MetadataCorrelationProperties getCorrelationProperties();
+    List<MetadataCorrelationHeader> getCorrelationHeaders();
 
 
     /**
      * Set up the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @param correlationProperties properties object
+     * @param correlationHeaders list of correlation properties objects
      */
-    void setCorrelationProperties(MetadataCorrelationProperties correlationProperties);
+    void setCorrelationHeaders(List<MetadataCorrelationHeader> correlationHeaders);
 }

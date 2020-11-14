@@ -30,7 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum GlossaryTermStatus implements Serializable
 {
     UNKNOWN   (0,0,  "<Unknown>","Unknown term status."),
-    DRAFT     (1, 1,  "Draft",   "The content is incomplete."),
+    DRAFT     (1,1,  "Draft",    "The content is incomplete."),
     PROPOSED  (2,3,  "Proposed", "The content is in review."),
     APPROVED  (3,4,  "Approved", "The content is approved."),
     ACTIVE    (4,15, "Active",   "The term is approved and in use.");

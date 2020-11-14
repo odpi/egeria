@@ -30,11 +30,11 @@ public enum DataItemSortOrder implements Serializable
 
 
     public static final String ENUM_TYPE_GUID  = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
-    public static final String ENUM_TYPE_NAME  = "AssetItemSortOrder";
+    public static final String ENUM_TYPE_NAME  = "DataItemSortOrder";
 
-    private int    openTypeOrdinal;
 
     private int    ordinal;
+    private int    openTypeOrdinal;
     private String name;
     private String description;
 

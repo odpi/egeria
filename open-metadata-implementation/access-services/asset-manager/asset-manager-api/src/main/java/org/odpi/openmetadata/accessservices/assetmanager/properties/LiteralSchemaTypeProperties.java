@@ -17,7 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-
 public class LiteralSchemaTypeProperties extends SchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
@@ -47,7 +46,7 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
 
         if (template != null)
         {
-            dataType   = template.getAssetType();
+            dataType   = template.getDataType();
             fixedValue = template.getFixedValue();
         }
     }
@@ -58,7 +57,7 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
      *
      * @return String data type name
      */
-    public String getAssetType() { return dataType; }
+    public String getDataType() { return dataType; }
 
 
     /**
@@ -66,7 +65,7 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
      *
      * @param dataType data type name
      */
-    public void setAssetType(String dataType)
+    public void setDataType(String dataType)
     {
         this.dataType = dataType;
     }
@@ -92,6 +91,41 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
 
 
     /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "LiteralSchemaTypeProperties{" +
+                       "dataType='" + dataType + '\'' +
+                       ", fixedValue='" + fixedValue + '\'' +
+                       ", assetType='" + getDataType() + '\'' +
+                       ", versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       ", formula='" + getFormula() + '\'' +
+                       ", queries=" + getQueries() +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", technicalName='" + getTechnicalName() + '\'' +
+                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", summary='" + getSummary() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", abbreviation='" + getAbbreviation() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
+    }
+
+    /**
      * Compare the values of the supplied object with those stored in the current object.
      *
      * @param objectToCompare supplied object
@@ -114,42 +148,18 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
         }
         LiteralSchemaTypeProperties that = (LiteralSchemaTypeProperties) objectToCompare;
         return Objects.equals(dataType, that.dataType) &&
-                Objects.equals(fixedValue, that.fixedValue);
+                       Objects.equals(fixedValue, that.fixedValue);
     }
 
 
     /**
-     * Standard toString method.
+     * Return hash code for this object
      *
-     * @return print out of variables in a JSON-style
+     * @return int hash code
      */
     @Override
-    public String toString()
+    public int hashCode()
     {
-        return "LiteralSchemaTypeProperties{" +
-                       "dataType='" + dataType + '\'' +
-                       ", fixedValue='" + fixedValue + '\'' +
-                       ", assetType='" + getAssetType() + '\'' +
-                       ", versionNumber='" + getVersionNumber() + '\'' +
-                       ", author='" + getAuthor() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", encodingStandard='" + getEncodingStandard() + '\'' +
-                       ", namespace='" + getNamespace() + '\'' +
-                       ", formula='" + getFormula() + '\'' +
-                       ", queries=" + getQueries() +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", technicalName='" + getTechnicalName() + '\'' +
-                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return Objects.hash(super.hashCode(), dataType, getFixedValue());
     }
 }

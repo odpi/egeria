@@ -278,16 +278,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.removeGlossary(userId, requestBody, glossaryGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.removeGlossary(userId, requestBody, glossaryGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -413,16 +406,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearGlossaryAsTaxonomy(userId, requestBody, glossaryGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearGlossaryAsTaxonomy(userId, requestBody, glossaryGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -547,16 +533,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearGlossaryAsCanonical(userId, requestBody, glossaryGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearGlossaryAsCanonical(userId, requestBody, glossaryGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -617,13 +596,14 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.findGlossaries(userId,
-                                       requestBody.getAssetManagerGUID(),
-                                       requestBody.getAssetManagerName(),
-                                       requestBody.getSearchString(),
-                                       startFrom,
-                                       pageSize,
-                                       methodName);
+                response.setElementList(handler.findGlossaries(userId,
+                                                               requestBody.getAssetManagerGUID(),
+                                                               requestBody.getAssetManagerName(),
+                                                               requestBody.getSearchString(),
+                                                               requestBody.getSearchStringParameterName(),
+                                                               startFrom,
+                                                               pageSize,
+                                                               methodName));
             }
             else
             {
@@ -689,14 +669,14 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.getGlossariesByName(userId,
-                                       requestBody.getAssetManagerGUID(),
-                                       requestBody.getAssetManagerName(),
-                                       requestBody.getName(),
-                                       requestBody.getNameParameterName(),
-                                       startFrom,
-                                       pageSize,
-                                       methodName);
+                response.setElementList(handler.getGlossariesByName(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    requestBody.getName(),
+                                                                    requestBody.getNameParameterName(),
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName));
             }
             else
             {
@@ -757,20 +737,25 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossariesForAssetManager(userId,
-                                                     requestBody.getAssetManagerGUID(),
-                                                     requestBody.getAssetManagerName(),
-                                                     startFrom,
-                                                     pageSize,
-                                                     methodName);
+                response.setElementList(handler.getGlossariesForAssetManager(userId,
+                                                                             requestBody.getAssetManagerGUID(),
+                                                                             requestBody.getAssetManagerName(),
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getGlossariesForAssetManager(userId,
+                                                                             null,
+                                                                             null,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -825,19 +810,23 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossaryByGUID(userId,
-                                          requestBody.getAssetManagerGUID(),
-                                          requestBody.getAssetManagerName(),
-                                          openMetadataGUID,
-                                          methodName);
+                response.setElement(handler.getGlossaryByGUID(userId,
+                                                              requestBody.getAssetManagerGUID(),
+                                                              requestBody.getAssetManagerName(),
+                                                              openMetadataGUID,
+                                                              methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElement(handler.getGlossaryByGUID(userId,
+                                                              null,
+                                                              null,
+                                                              openMetadataGUID,
+                                                              methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -862,66 +851,6 @@ public class GlossaryExchangeRESTServices
         return response;
     }
 
-
-    /**
-     * Retrieve the glossary metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the server to route the request to
-     * @param userId calling user
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return matching metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GlossaryElementResponse getGlossaryByExternalIdentifier(String                        serverName,
-                                                                   String                        userId,
-                                                                   MetadataCorrelationProperties requestBody)
-    {
-        final String methodName = "getGlossaryByExternalIdentifier";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GlossaryElementResponse response = new GlossaryElementResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossaryByExternalIdentifier(userId, requestBody, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
 
 
     /* =====================================================================================================================
@@ -961,11 +890,11 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.createGlossaryCategory(userId,
-                                               glossaryGUID,
-                                               requestBody.getMetadataCorrelationProperties(),
-                                               requestBody.getElementProperties(),
-                                               methodName);
+                response.setGUID(handler.createGlossaryCategory(userId,
+                                                                glossaryGUID,
+                                                                requestBody.getMetadataCorrelationProperties(),
+                                                                requestBody.getElementProperties(),
+                                                                methodName));
             }
             else
             {
@@ -1001,7 +930,6 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new glossary category or
@@ -1011,7 +939,6 @@ public class GlossaryExchangeRESTServices
      */
     public GUIDResponse createGlossaryCategoryFromTemplate(String               serverName,
                                                            String               userId,
-                                                           String               glossaryGUID,
                                                            String               templateGUID,
                                                            TemplateRequestBody  requestBody)
     {
@@ -1031,7 +958,6 @@ public class GlossaryExchangeRESTServices
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryCategoryFromTemplate(userId,
-                                                                            glossaryGUID,
                                                                             requestBody.getMetadataCorrelationProperties(),
                                                                             templateGUID,
                                                                             requestBody.getElementProperties(),
@@ -1163,10 +1089,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.setupCategoryParent(userId,
                                             requestBody.getAssetManagerGUID(),
                                             requestBody.getAssetManagerName(),
@@ -1176,7 +1102,12 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.setupCategoryParent(userId,
+                                            null,
+                                            null,
+                                            glossaryParentCategoryGUID,
+                                            glossaryChildCategoryGUID,
+                                            methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -1233,10 +1164,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.clearCategoryParent(userId,
                                             requestBody.getAssetManagerGUID(),
                                             requestBody.getAssetManagerName(),
@@ -1246,7 +1177,12 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.clearCategoryParent(userId,
+                                            null,
+                                            null,
+                                            glossaryParentCategoryGUID,
+                                            glossaryChildCategoryGUID,
+                                            methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -1300,16 +1236,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.removeGlossaryCategory(userId, requestBody, glossaryCategoryGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.removeGlossaryCategory(userId, requestBody, glossaryCategoryGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -1370,13 +1299,14 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.findGlossaryCategories(userId,
-                                               requestBody.getAssetManagerGUID(),
-                                               requestBody.getAssetManagerName(),
-                                               requestBody.getSearchString(),
-                                               startFrom,
-                                               pageSize,
-                                               methodName);
+                response.setElementList(handler.findGlossaryCategories(userId,
+                                                                       requestBody.getAssetManagerGUID(),
+                                                                       requestBody.getAssetManagerName(),
+                                                                       requestBody.getSearchString(),
+                                                                       requestBody.getSearchStringParameterName(),
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName));
             }
             else
             {
@@ -1439,21 +1369,27 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getCategoriesForGlossary(userId,
-                                                 requestBody.getAssetManagerGUID(),
-                                                 requestBody.getAssetManagerName(),
-                                                 glossaryGUID,
-                                                 startFrom,
-                                                 pageSize,
-                                                 methodName);
+                response.setElementList(handler.getCategoriesForGlossary(userId,
+                                                                         requestBody.getAssetManagerGUID(),
+                                                                         requestBody.getAssetManagerName(),
+                                                                         glossaryGUID,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getCategoriesForGlossary(userId,
+                                                                         null,
+                                                                         null,
+                                                                         glossaryGUID,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -1505,7 +1441,7 @@ public class GlossaryExchangeRESTServices
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
-        AuditLog                 auditLog = null;
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1515,14 +1451,14 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.getGlossaryCategoriesByName(userId,
-                                                    requestBody.getAssetManagerGUID(),
-                                                    requestBody.getAssetManagerName(),
-                                                    requestBody.getName(),
-                                                    requestBody.getNameParameterName(),
-                                                    startFrom,
-                                                    pageSize,
-                                                    methodName);
+                response.setElementList(handler.getGlossaryCategoriesByName(userId,
+                                                                            requestBody.getAssetManagerGUID(),
+                                                                            requestBody.getAssetManagerName(),
+                                                                            requestBody.getName(),
+                                                                            requestBody.getNameParameterName(),
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            methodName));
             }
             else
             {
@@ -1581,19 +1517,23 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossaryCategoryByGUID(userId,
-                                                  requestBody.getAssetManagerGUID(),
-                                                  requestBody.getAssetManagerName(),
-                                                  glossaryCategoryGUID,
-                                                  methodName);
+                response.setElement(handler.getGlossaryCategoryByGUID(userId,
+                                                                      requestBody.getAssetManagerGUID(),
+                                                                      requestBody.getAssetManagerName(),
+                                                                      glossaryCategoryGUID,
+                                                                      methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElement(handler.getGlossaryCategoryByGUID(userId,
+                                                                      null,
+                                                                      null,
+                                                                      glossaryCategoryGUID,
+                                                                      methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -1649,19 +1589,23 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossaryCategoryParent(userId,
-                                                  requestBody.getAssetManagerGUID(),
-                                                  requestBody.getAssetManagerName(),
-                                                  glossaryCategoryGUID,
-                                                  methodName);
+                response.setElement(handler.getGlossaryCategoryParent(userId,
+                                                                      requestBody.getAssetManagerGUID(),
+                                                                      requestBody.getAssetManagerName(),
+                                                                      glossaryCategoryGUID,
+                                                                      methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElement(handler.getGlossaryCategoryParent(userId,
+                                                                      null,
+                                                                      null,
+                                                                      glossaryCategoryGUID,
+                                                                      methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -1720,21 +1664,27 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossarySubCategories(userId,
-                                                 requestBody.getAssetManagerGUID(),
-                                                 requestBody.getAssetManagerName(),
-                                                 glossaryCategoryGUID,
-                                                 startFrom,
-                                                 pageSize,
-                                                 methodName);
+                response.setElementList(handler.getGlossarySubCategories(userId,
+                                                                         requestBody.getAssetManagerGUID(),
+                                                                         requestBody.getAssetManagerName(),
+                                                                         glossaryCategoryGUID,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getGlossarySubCategories(userId,
+                                                                         null,
+                                                                         null,
+                                                                         glossaryCategoryGUID,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -1797,11 +1747,11 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.createGlossaryTerm(userId,
-                                           glossaryGUID,
-                                           requestBody.getMetadataCorrelationProperties(),
-                                           requestBody.getElementProperties(),
-                                           methodName);
+                response.setGUID(handler.createGlossaryTerm(userId,
+                                                            glossaryGUID,
+                                                            requestBody.getMetadataCorrelationProperties(),
+                                                            requestBody.getElementProperties(),
+                                                            methodName));
             }
             else
             {
@@ -1864,12 +1814,12 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.createControlledGlossaryTerm(userId,
-                                                     glossaryGUID,
-                                                     requestBody.getMetadataCorrelationProperties(),
-                                                     requestBody.getElementProperties(),
-                                                     requestBody.getInitialStatus(),
-                                                     methodName);
+                response.setGUID(handler.createControlledGlossaryTerm(userId,
+                                                                      glossaryGUID,
+                                                                      requestBody.getMetadataCorrelationProperties(),
+                                                                      requestBody.getElementProperties(),
+                                                                      requestBody.getInitialStatus(),
+                                                                      methodName));
             }
             else
             {
@@ -1905,7 +1855,6 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the glossary term is located.
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term or
@@ -1915,7 +1864,6 @@ public class GlossaryExchangeRESTServices
      */
     public GUIDResponse createGlossaryTermFromTemplate(String               serverName,
                                                        String               userId,
-                                                       String               glossaryGUID,
                                                        String               templateGUID,
                                                        TemplateRequestBody  requestBody)
     {
@@ -1934,12 +1882,11 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.createGlossaryTermFromTemplate(userId,
-                                                       glossaryGUID,
-                                                       requestBody.getMetadataCorrelationProperties(),
-                                                       templateGUID,
-                                                       requestBody.getElementProperties(),
-                                                       methodName);
+                response.setGUID(handler.createGlossaryTermFromTemplate(userId,
+                                                                        requestBody.getMetadataCorrelationProperties(),
+                                                                        templateGUID,
+                                                                        requestBody.getElementProperties(),
+                                                                        methodName));
             }
             else
             {
@@ -2206,10 +2153,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.clearTermCategory(userId,
                                           requestBody.getAssetManagerGUID(),
                                           requestBody.getAssetManagerName(),
@@ -2219,7 +2166,12 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.clearTermCategory(userId,
+                                          null,
+                                          null,
+                                          glossaryCategoryGUID,
+                                          glossaryTermGUID,
+                                          methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -2357,8 +2309,6 @@ public class GlossaryExchangeRESTServices
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
                 handler.updateTermRelationship(userId,
-                                               requestBody.getAssetManagerGUID(),
-                                               requestBody.getAssetManagerName(),
                                                glossaryTermOneGUID,
                                                relationshipTypeName,
                                                glossaryTermTwoGUID,
@@ -2426,10 +2376,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.clearTermRelationship(userId,
                                               requestBody.getAssetManagerGUID(),
                                               requestBody.getAssetManagerName(),
@@ -2440,7 +2390,13 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.clearTermRelationship(userId,
+                                              null,
+                                              null,
+                                              glossaryTermOneGUID,
+                                              relationshipTypeName,
+                                              glossaryTermTwoGUID,
+                                              methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -2496,19 +2452,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.setTermAsAbstractConcept(userId,
-                                                 requestBody,
-                                                 glossaryTermGUID,
-                                                 methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.setTermAsAbstractConcept(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -2562,19 +2508,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearTermAsAbstractConcept(userId,
-                                                   requestBody,
-                                                   glossaryTermGUID,
-                                                   methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearTermAsAbstractConcept(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -2628,19 +2564,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.setTermAsDataValue(userId,
-                                           requestBody,
-                                           glossaryTermGUID,
-                                           methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.setTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -2694,16 +2620,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -2824,16 +2743,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearTermAsActivity(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearTermAsActivity(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -2954,16 +2866,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearTermAsContext(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearTermAsContext(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3017,16 +2922,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.setTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.setTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3080,16 +2978,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3144,16 +3035,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.setTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.setTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3207,16 +3091,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3270,16 +3147,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.setTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.setTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3333,16 +3203,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.clearTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.clearTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3396,16 +3259,9 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.removeGlossaryTerm(userId, requestBody, glossaryTermGUID, methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.removeGlossaryTerm(userId, requestBody, glossaryTermGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3466,13 +3322,14 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.findGlossaryTerms(userId,
-                                          requestBody.getAssetManagerGUID(),
-                                          requestBody.getAssetManagerName(),
-                                          requestBody.getSearchString(),
-                                          startFrom,
-                                          pageSize,
-                                          methodName);
+                response.setElementList(handler.findGlossaryTerms(userId,
+                                                                  requestBody.getAssetManagerGUID(),
+                                                                  requestBody.getAssetManagerName(),
+                                                                  requestBody.getSearchString(),
+                                                                  requestBody.getSearchStringParameterName(),
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  methodName));
             }
             else
             {
@@ -3535,21 +3392,27 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getTermsForGlossary(userId,
-                                            requestBody.getAssetManagerGUID(),
-                                            requestBody.getAssetManagerName(),
-                                            glossaryGUID,
-                                            startFrom,
-                                            pageSize,
-                                            methodName);
+                response.setElementList(handler.getTermsForGlossary(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    glossaryGUID,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getTermsForGlossary(userId,
+                                                                    null,
+                                                                    null,
+                                                                    glossaryGUID,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -3609,21 +3472,27 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getTermsForGlossaryCategory(userId,
-                                                    requestBody.getAssetManagerGUID(),
-                                                    requestBody.getAssetManagerName(),
-                                                    glossaryCategoryGUID,
-                                                    startFrom,
-                                                    pageSize,
-                                                    methodName);
+                response.setElementList(handler.getTermsForGlossaryCategory(userId,
+                                                                            requestBody.getAssetManagerGUID(),
+                                                                            requestBody.getAssetManagerName(),
+                                                                            glossaryCategoryGUID,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getTermsForGlossaryCategory(userId,
+                                                                            null,
+                                                                            null,
+                                                                            glossaryCategoryGUID,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -3647,7 +3516,6 @@ public class GlossaryExchangeRESTServices
 
         return response;
     }
-
 
 
     /**
@@ -3686,14 +3554,14 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.getGlossaryTermsByName(userId,
-                                               requestBody.getAssetManagerGUID(),
-                                               requestBody.getAssetManagerName(),
-                                               requestBody.getName(),
-                                               requestBody.getNameParameterName(),
-                                               startFrom,
-                                               pageSize,
-                                               methodName);
+                response.setElementList(handler.getGlossaryTermsByName(userId,
+                                                                       requestBody.getAssetManagerGUID(),
+                                                                       requestBody.getAssetManagerName(),
+                                                                       requestBody.getName(),
+                                                                       requestBody.getNameParameterName(),
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName));
             }
             else
             {
@@ -3751,19 +3619,23 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossaryTermByGUID(userId,
-                                              requestBody.getAssetManagerGUID(),
-                                              requestBody.getAssetManagerName(),
-                                              guid,
-                                              methodName);
+                response.setElement(handler.getGlossaryTermByGUID(userId,
+                                                                  requestBody.getAssetManagerGUID(),
+                                                                  requestBody.getAssetManagerName(),
+                                                                  guid,
+                                                                  methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElement(handler.getGlossaryTermByGUID(userId,
+                                                                  null,
+                                                                  null,
+                                                                  guid,
+                                                                  methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -3829,11 +3701,11 @@ public class GlossaryExchangeRESTServices
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-                handler.createExternalGlossaryLink(userId,
-                                                   requestBody.getAssetManagerGUID(),
-                                                   requestBody.getAssetManagerName(),
-                                                   requestBody.getElementProperties(),
-                                                   methodName);
+                response.setGUID(handler.createExternalGlossaryLink(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    requestBody.getElementProperties(),
+                                                                    methodName));
             }
             else
             {
@@ -3961,10 +3833,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.removeExternalGlossaryLink(userId,
                                                    requestBody.getAssetManagerGUID(),
                                                    requestBody.getAssetManagerName(),
@@ -3973,7 +3845,11 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.removeExternalGlossaryLink(userId,
+                                                   null,
+                                                   null,
+                                                   externalLinkGUID,
+                                                   methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -4030,10 +3906,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.attachExternalLinkToGlossary(userId,
                                                    requestBody.getAssetManagerGUID(),
                                                    requestBody.getAssetManagerName(),
@@ -4043,7 +3919,12 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.attachExternalLinkToGlossary(userId,
+                                                     null,
+                                                     null,
+                                                     glossaryGUID,
+                                                     externalLinkGUID,
+                                                     methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -4100,10 +3981,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.detachExternalLinkFromGlossary(userId,
                                                        requestBody.getAssetManagerGUID(),
                                                        requestBody.getAssetManagerName(),
@@ -4113,7 +3994,12 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.detachExternalLinkFromGlossary(userId,
+                                                       null,
+                                                       null,
+                                                       glossaryGUID,
+                                                       externalLinkGUID,
+                                                       methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -4169,9 +4055,10 @@ public class GlossaryExchangeRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
 
-            handler.getExternalLinksForGlossary(userId, glossaryGUID, startFrom, pageSize, methodName);
+            response.setElementList(handler.getExternalLinksForGlossary(userId, glossaryGUID, startFrom, pageSize, methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -4211,11 +4098,11 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryElementsResponse getGlossariesForExternalLink(String serverName,
-                                                                 String userId,
-                                                                 String externalLinkGUID,
-                                                                 int    startFrom,
-                                                                 int    pageSize,
+    public GlossaryElementsResponse getGlossariesForExternalLink(String                             serverName,
+                                                                 String                             userId,
+                                                                 String                             externalLinkGUID,
+                                                                 int                                startFrom,
+                                                                 int                                pageSize,
                                                                  AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "getGlossariesForExternalLink";
@@ -4229,21 +4116,27 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
-                handler.getGlossariesForExternalLink(userId,
-                                                     requestBody.getAssetManagerGUID(),
-                                                     requestBody.getAssetManagerName(),
-                                                     externalLinkGUID,
-                                                     startFrom,
-                                                     pageSize,
-                                                     methodName);
+                response.setElementList(handler.getGlossariesForExternalLink(userId,
+                                                                             requestBody.getAssetManagerGUID(),
+                                                                             requestBody.getAssetManagerName(),
+                                                                             externalLinkGUID,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             methodName));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getGlossariesForExternalLink(userId,
+                                                                             null,
+                                                                             null,
+                                                                             externalLinkGUID,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -4372,10 +4265,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.detachExternalCategoryLink(userId,
                                                    requestBody.getAssetManagerGUID(),
                                                    requestBody.getAssetManagerName(),
@@ -4385,7 +4278,12 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.detachExternalCategoryLink(userId,
+                                                   null,
+                                                   null,
+                                                   glossaryCategoryGUID,
+                                                   externalLinkGUID,
+                                                   methodName);
             }
         }
         catch (InvalidParameterException error)
@@ -4514,10 +4412,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
-
                 handler.detachExternalTermLink(userId,
                                                requestBody.getAssetManagerGUID(),
                                                requestBody.getAssetManagerName(),
@@ -4527,7 +4425,12 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.detachExternalTermLink(userId,
+                                               null,
+                                               null,
+                                               glossaryTermGUID,
+                                               externalLinkGUID,
+                                               methodName);
             }
         }
         catch (InvalidParameterException error)

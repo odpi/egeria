@@ -5,7 +5,9 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementClassification;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerCategory;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -328,7 +330,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
      * @param properties  entity properties
      * @return OwnerType  enum value
      */
-    OwnerCategory removeOwnerCategoryFromProperties(InstanceProperties   properties)
+    OwnerCategory removeKeyPatternFromProperties(InstanceProperties   properties)
     {
         OwnerCategory ownerCategory = this.getOwnerCategoryFromProperties(properties);
 
@@ -396,7 +398,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
      * Extract and delete the sortOrder property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
-     * @return AssetItemSortOrder enum
+     * @return DataItemSortOrder enum
      */
     DataItemSortOrder removeSortOrder(InstanceProperties  instanceProperties)
     {
@@ -419,5 +421,65 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         }
 
         return DataItemSortOrder.UNKNOWN;
+    }
+
+
+    /**
+     * Extract and delete the keyPattern property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return KeyPattern enum
+     */
+    KeyPattern removeKeyPattern(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeKeyPattern";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (KeyPattern keyPattern : KeyPattern.values())
+            {
+                if (keyPattern.getOpenTypeOrdinal() == ordinal)
+                {
+                    return keyPattern;
+                }
+            }
+        }
+
+        return KeyPattern.LOCAL_KEY;
+    }
+
+
+    /**
+     * Extract and delete the permittedSynchronization property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return SynchronizationDirection enum
+     */
+    SynchronizationDirection removePermittedSynchronization(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removePermittedSynchronization";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (SynchronizationDirection synchronizationDirection : SynchronizationDirection.values())
+            {
+                if (synchronizationDirection.getOpenTypeOrdinal() == ordinal)
+                {
+                    return synchronizationDirection;
+                }
+            }
+        }
+
+        return SynchronizationDirection.BOTH_DIRECTIONS;
     }
 }

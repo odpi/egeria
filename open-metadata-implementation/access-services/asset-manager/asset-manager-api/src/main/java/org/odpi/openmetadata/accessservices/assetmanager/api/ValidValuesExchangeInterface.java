@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetmanager.api;
 
 
+/**
+ * The ValidValuesExchangeInterface supports the exchanges of valid values and reference data.
+ */
 public interface ValidValuesExchangeInterface
 {
 }

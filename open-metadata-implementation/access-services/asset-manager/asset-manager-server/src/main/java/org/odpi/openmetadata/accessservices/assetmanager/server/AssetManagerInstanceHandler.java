@@ -19,7 +19,7 @@ class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
      */
     AssetManagerInstanceHandler()
     {
-        super(AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName());
+        super(AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName());
 
         AssetManagerOMASRegistration.registerAccessService();
     }
@@ -66,11 +66,11 @@ class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ExternalIdentifierHandler<MetadataCorrelationProperties> getExternalIdentifierHandler(String userId,
-                                                                                          String serverName,
-                                                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                                                              UserNotAuthorizedException,
-                                                                                                                              PropertyServerException
+    ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> getExternalIdentifierHandler(String userId,
+                                                                                                     String serverName,
+                                                                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                         UserNotAuthorizedException,
+                                                                                                                                         PropertyServerException
     {
         AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                              serverName,

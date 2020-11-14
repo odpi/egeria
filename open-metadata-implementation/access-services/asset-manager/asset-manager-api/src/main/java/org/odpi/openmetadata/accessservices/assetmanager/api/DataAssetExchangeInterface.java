@@ -22,7 +22,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.api;
  *     <li>ConnectorTypes - the types of open connectors that can be used to access the asset.</li>
  *     <li>Connections - the connections used to create connector instances that can access the asset.</li>
  *     <li>Endpoints - the network information needed to access the asset.</li>
- *     <li>Schema - description of data with </li>
+ *     <li>Schema - description of structure of data </li>
  *     <li>
  *       <ul>
  *           <li>Schema Types</li>
@@ -31,6 +31,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.api;
  *     </li>
  * </ul>
  */
-public interface DataAssetExchangeInterface
+public interface DataAssetExchangeInterface extends SchemaExchangeInterface
 {
 }

@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,9 +26,9 @@ public class GlossaryCategoryElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                 elementHeader              = null;
-    private MetadataCorrelationProperties correlationProperties      = null;
-    private GlossaryCategoryProperties    glossaryCategoryProperties = null;
+    private ElementHeader                   elementHeader              = null;
+    private List<MetadataCorrelationHeader> correlationHeaders         = null;
+    private GlossaryCategoryProperties      glossaryCategoryProperties = null;
 
     /**
      * Default constructor
@@ -49,7 +49,7 @@ public class GlossaryCategoryElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            correlationProperties = template.getCorrelationProperties();
+            correlationHeaders = template.getCorrelationHeaders();
             glossaryCategoryProperties = template.getGlossaryCategoryProperties();
         }
     }
@@ -81,25 +81,38 @@ public class GlossaryCategoryElement implements MetadataElement, Serializable
 
     /**
      * Return the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @return properties object
+     * @return list of correlation properties objects
      */
     @Override
-    public MetadataCorrelationProperties getCorrelationProperties()
+    public List<MetadataCorrelationHeader> getCorrelationHeaders()
     {
-        return correlationProperties;
+        if (correlationHeaders == null)
+        {
+            return null;
+        }
+        else if (correlationHeaders.isEmpty())
+        {
+            return null;
+        }
+
+        return correlationHeaders;
     }
 
 
     /**
      * Set up the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @param correlationProperties properties object
+     * @param correlationHeaders list of correlation properties objects
      */
     @Override
-    public void setCorrelationProperties(MetadataCorrelationProperties correlationProperties)
+    public void setCorrelationHeaders(List<MetadataCorrelationHeader> correlationHeaders)
     {
-        this.correlationProperties = correlationProperties;
+        this.correlationHeaders = correlationHeaders;
     }
 
 

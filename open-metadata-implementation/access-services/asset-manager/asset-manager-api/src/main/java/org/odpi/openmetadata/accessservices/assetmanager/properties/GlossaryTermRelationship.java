@@ -124,7 +124,7 @@ public class GlossaryTermRelationship implements Serializable
 
 
     /**
-     * Set up the id of the steward who assigned the foreign key (or approved the discovered value).
+     * Set up the id of the steward who assigned the relationship (or approved the discovered value).
      *
      * @param steward user id or name of steward
      */
@@ -135,7 +135,7 @@ public class GlossaryTermRelationship implements Serializable
 
 
     /**
-     * Returns the name of the steward who assigned the foreign key (or approved the discovered value).
+     * Returns the name of the steward who assigned the relationship (or approved the discovered value).
      *
      * @return user id or name of steward
      */
@@ -146,7 +146,7 @@ public class GlossaryTermRelationship implements Serializable
 
 
     /**
-     * Set up the id of the source of the knowledge of the foreign key.
+     * Set up the id of the source of the knowledge of the relationship.
      *
      * @param source String id
      */
@@ -157,7 +157,7 @@ public class GlossaryTermRelationship implements Serializable
 
 
     /**
-     * Returns the id of the source of the knowledge of the foreign key.
+     * Returns the id of the source of the knowledge of the relationship.
      *
      * @return String id
      */

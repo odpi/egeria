@@ -26,28 +26,12 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum AssetManagerErrorCode implements ExceptionMessageSet
 {
-    ADD_ENTITY_EXCEPTION(400, "OMAS-ASSET-MANAGER-400-001",
-            "Entity {0} could not be added. Error: {1}",
-            "The system is unable to process the add entity request.",
-            "Verify the topic event for the add entity."),
-    ADD_RELATIONSHIP_EXCEPTION(400, "OMAS-ASSET-MANAGER-400-002",
-            "Relationship {0} could not be added. Error: {1}",
-            "The system is unable to process the add relationship request.",
-            "Verify the topic event for the add relationship."),
-    GET_ENTITY_EXCEPTION(400, "OMAS-ASSET-MANAGER-400-003",
-            "Entity matching criteria [{0}] could not be fetched. Error: {1}",
-            "The system is unable to process the get entity request.",
-            "Verify the topic event for correct unique identifier of the entity."),
-    GET_RELATIONSHIP_EXCEPTION(400, "OMAS-ASSET-MANAGER-400-004",
-            "Relationship {0} could not be fetched. Error: {1}",
-            "The system is unable to process the request.",
-            "Verify the topic event related to the relationship."),
+    NO_SCOPE_FOR_EXTERNAL_ID(400, "OMAS-ASSET-MANAGER-400-001",
+            "An external identifier {0} has been passed on method {1} without a corresponding assetManagerGUID",
+            "The system is unable to process the request because the unique identifier for the third party asset manager is needed to " +
+                    "provide a scope for the external identifier.",
+            "Ensure that the asset manager's unique identifier is passed on the request and then retry it."),
 
-    ADD_CLASSIFICATION_EXCEPTION(400, "OMAS-ASSET-MANAGER-400-005",
-            "Unable to create classification {0} for entity of type {1}. Error: {2}",
-            "The system is unable to process the create classification request.",
-            "Verify the topic event for the create classification request."),
-    
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-MANAGER-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to an open metadata repository.",

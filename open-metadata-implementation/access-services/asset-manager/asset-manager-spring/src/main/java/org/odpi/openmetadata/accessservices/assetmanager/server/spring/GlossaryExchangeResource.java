@@ -140,7 +140,8 @@ public class GlossaryExchangeResource
     public VoidResponse removeGlossary(@PathVariable String                        serverName,
                                        @PathVariable String                        userId,
                                        @PathVariable String                        glossaryGUID,
-                                       @RequestBody  MetadataCorrelationProperties requestBody)
+                                       @RequestBody(required = false)
+                                                     MetadataCorrelationProperties requestBody)
     {
         return restAPI.removeGlossary(serverName, userId, glossaryGUID, requestBody);
     }
@@ -193,7 +194,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearGlossaryAsTaxonomy(@PathVariable String                        serverName,
                                                 @PathVariable String                        userId,
                                                 @PathVariable String                        glossaryGUID,
-                                                @RequestBody  MetadataCorrelationProperties requestBody)
+                                                @RequestBody(required = false)
+                                                              MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearGlossaryAsTaxonomy(serverName, userId, glossaryGUID, requestBody);
     }
@@ -245,7 +247,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearGlossaryAsCanonical(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        glossaryGUID,
-                                                 @RequestBody  MetadataCorrelationProperties requestBody)
+                                                 @RequestBody(required = false)
+                                                               MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearGlossaryAsCanonical(serverName, userId, glossaryGUID, requestBody);
     }
@@ -325,7 +328,8 @@ public class GlossaryExchangeResource
                                                                    @PathVariable String                             userId,
                                                                    @RequestParam int                                startFrom,
                                                                    @RequestParam int                                pageSize,
-                                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                   @RequestBody(required = false)
+                                                                                 AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossariesForAssetManager(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -349,33 +353,11 @@ public class GlossaryExchangeResource
     public GlossaryElementResponse getGlossaryByGUID(@PathVariable String                             serverName,
                                                      @PathVariable String                             userId,
                                                      @PathVariable String                             glossaryGUID,
-                                                     @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                     @RequestBody(required = false)
+                                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossaryByGUID(serverName, userId, glossaryGUID, requestBody);
     }
-
-
-    /**
-     * Retrieve the glossary metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the server to route the request to
-     * @param userId calling user
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return matching metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/retrieve-by-external-identifier")
-
-    public GlossaryElementResponse getGlossaryByExternalIdentifier(@PathVariable String                        serverName,
-                                                                   @PathVariable String                        userId,
-                                                                   @RequestBody  MetadataCorrelationProperties requestBody)
-    {
-        return restAPI.getGlossaryByExternalIdentifier(serverName, userId, requestBody);
-    }
-
 
 
 
@@ -413,7 +395,6 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new glossary category or
@@ -421,15 +402,14 @@ public class GlossaryExchangeResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/categories/from-template/{templateGUID}")
+    @PostMapping(path = "/glossaries/categories/from-template/{templateGUID}")
 
     public GUIDResponse createGlossaryCategoryFromTemplate(@PathVariable String               serverName,
                                                            @PathVariable String               userId,
-                                                           @PathVariable String               glossaryGUID,
                                                            @PathVariable String               templateGUID,
                                                            @RequestBody  TemplateRequestBody  requestBody)
     {
-        return restAPI.createGlossaryCategoryFromTemplate(serverName, userId, glossaryGUID, templateGUID, requestBody);
+        return restAPI.createGlossaryCategoryFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -477,7 +457,8 @@ public class GlossaryExchangeResource
                                             @PathVariable String                             userId,
                                             @PathVariable String                             glossaryParentCategoryGUID,
                                             @PathVariable String                             glossaryChildCategoryGUID,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                            @RequestBody(required = false)
+                                                          AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.setupCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, requestBody);
     }
@@ -499,11 +480,12 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/categories/{glossaryParentCategoryGUID}/subcategories/{glossaryChildCategoryGUID}/remove")
 
-    public VoidResponse clearCategoryParent(@PathVariable String                             serverName,
-                                            @PathVariable String                             userId,
-                                            @PathVariable String                             glossaryParentCategoryGUID,
-                                            @PathVariable String                             glossaryChildCategoryGUID,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearCategoryParent(@PathVariable String                            serverName,
+                                            @PathVariable String                            userId,
+                                            @PathVariable String                            glossaryParentCategoryGUID,
+                                            @PathVariable String                            glossaryChildCategoryGUID,
+                                            @RequestBody(required = false)
+                                                         AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.clearCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, requestBody);
     }
@@ -527,7 +509,8 @@ public class GlossaryExchangeResource
     public VoidResponse removeGlossaryCategory(@PathVariable String                        serverName,
                                                @PathVariable String                        userId,
                                                @PathVariable String                        glossaryCategoryGUID,
-                                               @RequestBody  MetadataCorrelationProperties requestBody)
+                                               @RequestBody(required = false)
+                                                             MetadataCorrelationProperties requestBody)
     {
         return restAPI.removeGlossaryCategory(serverName, userId, glossaryCategoryGUID, requestBody);
     }
@@ -582,7 +565,8 @@ public class GlossaryExchangeResource
                                                                      @PathVariable String                             glossaryGUID,
                                                                      @RequestParam int                                startFrom,
                                                                      @RequestParam int                                pageSize,
-                                                                     @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                     @RequestBody(required = false)
+                                                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getCategoriesForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, requestBody);
     }
@@ -633,7 +617,8 @@ public class GlossaryExchangeResource
     public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
                                                                      @PathVariable String                             glossaryCategoryGUID,
-                                                                     @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                     @RequestBody(required = false)
+                                                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossaryCategoryByGUID(serverName, userId, glossaryCategoryGUID, requestBody);
     }
@@ -657,7 +642,8 @@ public class GlossaryExchangeResource
     public GlossaryCategoryElementResponse getGlossaryCategoryParent(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
                                                                      @PathVariable String                             glossaryCategoryGUID,
-                                                                     @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                     @RequestBody(required = false)
+                                                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossaryCategoryParent(serverName, userId, glossaryCategoryGUID, requestBody);
     }
@@ -685,7 +671,8 @@ public class GlossaryExchangeResource
                                                                      @PathVariable String                             glossaryCategoryGUID,
                                                                      @RequestParam int                                startFrom,
                                                                      @RequestParam int                                pageSize,
-                                                                     @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                     @RequestBody(required = false)
+                                                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossarySubCategories(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, requestBody);
     }
@@ -751,7 +738,6 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the glossary term is located.
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term or
@@ -759,15 +745,14 @@ public class GlossaryExchangeResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/terms/from-template/{templateGUID}")
+    @PostMapping(path = "/glossaries/terms/from-template/{templateGUID}")
 
     public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String               serverName,
                                                        @PathVariable String               userId,
-                                                       @PathVariable String               glossaryGUID,
                                                        @PathVariable String               templateGUID,
                                                        @RequestBody  TemplateRequestBody  requestBody)
     {
-        return restAPI.createGlossaryTermFromTemplate(serverName, userId, glossaryGUID, templateGUID, requestBody);
+        return restAPI.createGlossaryTermFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -866,7 +851,8 @@ public class GlossaryExchangeResource
                                           @PathVariable String                             userId,
                                           @PathVariable String                             glossaryCategoryGUID,
                                           @PathVariable String                             glossaryTermGUID,
-                                          @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                          @RequestBody(required = false)
+                                                        AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.clearTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, requestBody);
     }
@@ -950,7 +936,8 @@ public class GlossaryExchangeResource
                                               @PathVariable String                             glossaryTermOneGUID,
                                               @PathVariable String                             relationshipTypeName,
                                               @PathVariable String                             glossaryTermTwoGUID,
-                                              @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                              @RequestBody(required = false)
+                                                            AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.clearTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, requestBody);
     }
@@ -974,7 +961,8 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsAbstractConcept(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        glossaryTermGUID,
-                                                 @RequestBody  MetadataCorrelationProperties requestBody)
+                                                 @RequestBody(required = false)
+                                                               MetadataCorrelationProperties requestBody)
     {
         return restAPI.setTermAsAbstractConcept(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -998,7 +986,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsAbstractConcept(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
                                                    @PathVariable String                        glossaryTermGUID,
-                                                   @RequestBody  MetadataCorrelationProperties requestBody)
+                                                   @RequestBody(required = false)
+                                                                 MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearTermAsAbstractConcept(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1021,7 +1010,8 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsDataValue(@PathVariable String                        serverName,
                                            @PathVariable String                        userId,
                                            @PathVariable String                        glossaryTermGUID,
-                                           @RequestBody  MetadataCorrelationProperties requestBody)
+                                           @RequestBody(required = false)
+                                                         MetadataCorrelationProperties requestBody)
     {
         return restAPI.setTermAsDataValue(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1045,7 +1035,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsDataValue(@PathVariable String                        serverName,
                                              @PathVariable String                        userId,
                                              @PathVariable String                        glossaryTermGUID,
-                                             @RequestBody  MetadataCorrelationProperties requestBody)
+                                             @RequestBody(required = false)
+                                                           MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearTermAsDataValue(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1093,7 +1084,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsActivity(@PathVariable String                        serverName,
                                             @PathVariable String                        userId,
                                             @PathVariable String                        glossaryTermGUID,
-                                            @RequestBody  MetadataCorrelationProperties requestBody)
+                                            @RequestBody(required = false)
+                                                          MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearTermAsActivity(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1141,7 +1133,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsContext(@PathVariable String                        serverName,
                                            @PathVariable String                        userId,
                                            @PathVariable String                        glossaryTermGUID,
-                                           @RequestBody  MetadataCorrelationProperties requestBody)
+                                           @RequestBody(required = false)
+                                                         MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearTermAsContext(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1165,7 +1158,8 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsSpineObject(@PathVariable String                        serverName,
                                              @PathVariable String                        userId,
                                              @PathVariable String                        glossaryTermGUID,
-                                             @RequestBody  MetadataCorrelationProperties requestBody)
+                                             @RequestBody(required = false)
+                                                           MetadataCorrelationProperties requestBody)
     {
         return restAPI.setTermAsSpineObject(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1189,7 +1183,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsSpineObject(@PathVariable String                        serverName,
                                                @PathVariable String                        userId,
                                                @PathVariable String                        glossaryTermGUID,
-                                               @RequestBody  MetadataCorrelationProperties requestBody)
+                                               @RequestBody(required = false)
+                                                             MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearTermAsSpineObject(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1213,7 +1208,8 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsSpineAttribute(@PathVariable String                        serverName,
                                                 @PathVariable String                        userId,
                                                 @PathVariable String                        glossaryTermGUID,
-                                                @RequestBody  MetadataCorrelationProperties requestBody)
+                                                @RequestBody(required = false)
+                                                              MetadataCorrelationProperties requestBody)
     {
         return restAPI.setTermAsSpineAttribute(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1237,7 +1233,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsSpineAttribute(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
                                                   @PathVariable String                        glossaryTermGUID,
-                                                  @RequestBody  MetadataCorrelationProperties requestBody)
+                                                  @RequestBody(required = false)
+                                                                MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearTermAsSpineAttribute(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1261,7 +1258,8 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsObjectIdentifier(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
                                                   @PathVariable String                        glossaryTermGUID,
-                                                  @RequestBody  MetadataCorrelationProperties requestBody)
+                                                  @RequestBody(required = false)
+                                                                MetadataCorrelationProperties requestBody)
     {
         return restAPI.setTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1285,7 +1283,8 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsObjectIdentifier(@PathVariable String                        serverName,
                                                     @PathVariable String                        userId,
                                                     @PathVariable String                        glossaryTermGUID,
-                                                    @RequestBody  MetadataCorrelationProperties requestBody)
+                                                    @RequestBody(required = false)
+                                                                  MetadataCorrelationProperties requestBody)
     {
         return restAPI.clearTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1309,7 +1308,8 @@ public class GlossaryExchangeResource
     public VoidResponse removeGlossaryTerm(@PathVariable String                        serverName,
                                            @PathVariable String                        userId,
                                            @PathVariable String                        glossaryTermGUID,
-                                           @RequestBody  MetadataCorrelationProperties requestBody)
+                                           @RequestBody(required = false)
+                                                         MetadataCorrelationProperties requestBody)
     {
         return restAPI.removeGlossaryTerm(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1364,7 +1364,8 @@ public class GlossaryExchangeResource
                                                             @PathVariable String                             glossaryGUID,
                                                             @RequestParam int                                startFrom,
                                                             @RequestParam int                                pageSize,
-                                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                            @RequestBody(required = false)
+                                                                          AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getTermsForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, requestBody);
     }
@@ -1392,7 +1393,8 @@ public class GlossaryExchangeResource
                                                                     @PathVariable String                             glossaryCategoryGUID,
                                                                     @RequestParam int                                startFrom,
                                                                     @RequestParam int                                pageSize,
-                                                                    @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                    @RequestBody(required = false)
+                                                                                  AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getTermsForGlossaryCategory(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, requestBody);
     }
@@ -1443,7 +1445,8 @@ public class GlossaryExchangeResource
     public GlossaryTermElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
                                                              @PathVariable String                             userId,
                                                              @PathVariable String                             glossaryTermGUID,
-                                                             @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                             @RequestBody(required = false)
+                                                                           AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossaryTermByGUID(serverName, userId, glossaryTermGUID, requestBody);
     }
@@ -1523,7 +1526,8 @@ public class GlossaryExchangeResource
     public VoidResponse removeExternalGlossaryLink(@PathVariable String                             serverName,
                                                    @PathVariable String                             userId,
                                                    @PathVariable String                             externalLinkGUID,
-                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                   @RequestBody(required = false)
+                                                                 AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.removeExternalGlossaryLink(serverName, userId, externalLinkGUID, requestBody);
     }
@@ -1549,7 +1553,8 @@ public class GlossaryExchangeResource
                                                      @PathVariable String                             userId,
                                                      @PathVariable String                             glossaryGUID,
                                                      @PathVariable String                             externalLinkGUID,
-                                                     @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                     @RequestBody(required = false)
+                                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.attachExternalLinkToGlossary(serverName, userId, glossaryGUID, externalLinkGUID, requestBody);
     }
@@ -1575,7 +1580,8 @@ public class GlossaryExchangeResource
                                                        @PathVariable String                             userId,
                                                        @PathVariable String                             externalLinkGUID,
                                                        @PathVariable String                             glossaryGUID,
-                                                       @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                       @RequestBody(required = false)
+                                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.detachExternalLinkFromGlossary(serverName, userId, externalLinkGUID, glossaryGUID, requestBody);
     }
@@ -1629,7 +1635,8 @@ public class GlossaryExchangeResource
                                                                  @PathVariable String externalLinkGUID,
                                                                  @RequestParam int    startFrom,
                                                                  @RequestParam int    pageSize,
-                                                                 @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                 @RequestBody(required = false)
+                                                                               AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossariesForExternalLink(serverName, userId, externalLinkGUID, startFrom, pageSize, requestBody);
     }
@@ -1682,7 +1689,8 @@ public class GlossaryExchangeResource
                                                    @PathVariable String                             userId,
                                                    @PathVariable String                             externalLinkGUID,
                                                    @PathVariable String                             glossaryCategoryGUID,
-                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                   @RequestBody(required = false)
+                                                                 AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.detachExternalCategoryLink(serverName, userId, externalLinkGUID, glossaryCategoryGUID, requestBody);
     }
@@ -1735,7 +1743,8 @@ public class GlossaryExchangeResource
                                                @PathVariable String                             userId,
                                                @PathVariable String                             externalLinkGUID,
                                                @PathVariable String                             glossaryTermGUID,
-                                               @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                               @RequestBody(required = false)
+                                                             AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.detachExternalTermLink(serverName, userId, externalLinkGUID, glossaryTermGUID, requestBody);
     }

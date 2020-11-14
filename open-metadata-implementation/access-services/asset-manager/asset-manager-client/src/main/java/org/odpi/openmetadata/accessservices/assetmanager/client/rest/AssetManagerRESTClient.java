@@ -276,10 +276,42 @@ public class AssetManagerRESTClient extends FFDCRESTClient
                                                                                                               UserNotAuthorizedException,
                                                                                                               PropertyServerException
     {
-        ExternalGlossaryLinkElementsResponse restResult = this.callPostRESTCall(methodName,
-                                                                                ExternalGlossaryLinkElementsResponse.class,
-                                                                                urlTemplate,
-                                                                                params);
+        ExternalGlossaryLinkElementsResponse restResult = this.callGetRESTCall(methodName,
+                                                                               ExternalGlossaryLinkElementsResponse.class,
+                                                                               urlTemplate,
+                                                                               params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a ElementHeadersResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ElementHeadersResponse callElementHeadersPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        ElementHeadersResponse restResult = this.callPostRESTCall(methodName,
+                                                                  ElementHeadersResponse.class,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

@@ -27,9 +27,9 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_MANAGER_OMAS;
 
-    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> assetManagerHandler;
-    private ExternalIdentifierHandler<MetadataCorrelationProperties>         externalIdentifierHandler;
-    private GlossaryExchangeHandler                                          glossaryExchangeHandler;
+    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement>    assetManagerHandler;
+    private ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
+    private GlossaryExchangeHandler                                             glossaryExchangeHandler;
 
 
     /**
@@ -93,7 +93,9 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                          auditLog);
 
         this.externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
-                                                                         MetadataCorrelationProperties.class,
+                                                                         MetadataCorrelationHeader.class,
+                                                                         new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
+                                                                         ElementHeader.class,
                                                                          serviceName,
                                                                          serverName,
                                                                          invalidParameterHandler,
@@ -142,7 +144,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ExternalIdentifierHandler<MetadataCorrelationProperties> getExternalIdentifierHandler() throws PropertyServerException
+    ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> getExternalIdentifierHandler() throws PropertyServerException
     {
         final String methodName = "getExternalIdentifierHandler";
 

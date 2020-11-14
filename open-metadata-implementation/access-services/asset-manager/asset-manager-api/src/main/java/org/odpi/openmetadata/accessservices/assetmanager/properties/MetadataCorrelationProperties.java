@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -22,24 +21,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-              include = JsonTypeInfo.As.PROPERTY,
-              property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = ExternalIdentifierProperties.class, name = "ExternalIdentifierProperties"),
-        })
 public class MetadataCorrelationProperties implements Serializable
 {
     private static final long   serialVersionUID = 1L;
 
     private String                   assetManagerGUID           = null;
     private String                   assetManagerName           = null;
-    private PermittedSynchronization permittedSynchronization   = null;
+    private SynchronizationDirection synchronizationDirection   = null;
     private String                   synchronizationDescription = null;
     private String                   externalIdentifier         = null;
     private String                   externalIdentifierName     = null;
     private String                   externalIdentifierUsage    = null;
+    private String                   externalIdentifierSource   = null;
     private KeyPattern               keyPattern                 = null;
     private Map<String, String>      mappingProperties          = null;
 
@@ -63,11 +56,12 @@ public class MetadataCorrelationProperties implements Serializable
         {
             assetManagerGUID = template.getAssetManagerGUID();
             assetManagerName = template.getAssetManagerName();
-            permittedSynchronization = template.getPermittedSynchronization();
+            synchronizationDirection = template.getSynchronizationDirection();
             synchronizationDescription = template.getSynchronizationDescription();
             externalIdentifier = template.getExternalIdentifier();
             externalIdentifierName = template.getExternalIdentifierName();
             externalIdentifierUsage = template.getExternalIdentifierUsage();
+            externalIdentifierSource = template.getExternalIdentifierSource();
             keyPattern = template.getKeyPattern();
             mappingProperties = template.getMappingProperties();
         }
@@ -123,20 +117,20 @@ public class MetadataCorrelationProperties implements Serializable
      *
      * @return enum
      */
-    public PermittedSynchronization getPermittedSynchronization()
+    public SynchronizationDirection getSynchronizationDirection()
     {
-        return permittedSynchronization;
+        return synchronizationDirection;
     }
 
 
     /**
      * Set up details of the synchronization direction.
      *
-     * @param permittedSynchronization enum
+     * @param synchronizationDirection enum
      */
-    public void setPermittedSynchronization(PermittedSynchronization permittedSynchronization)
+    public void setSynchronizationDirection(SynchronizationDirection synchronizationDirection)
     {
-        this.permittedSynchronization = permittedSynchronization;
+        this.synchronizationDirection = synchronizationDirection;
     }
 
 
@@ -229,7 +223,31 @@ public class MetadataCorrelationProperties implements Serializable
 
 
     /**
-     * Set up the key pattern for the external identifier.
+     * Return the component (connector/client) that created/maintained this external identifier and its relationship
+     * to the open metadata element(s).
+     *
+     * @return component name
+     */
+    public String getExternalIdentifierSource()
+    {
+        return externalIdentifierSource;
+    }
+
+
+    /**
+     * Set up the component (connector/client) that created/maintained this external identifier and its relationship
+     * to the open metadata element(s).
+     *
+     * @param externalIdentifierSource component name
+     */
+    public void setExternalIdentifierSource(String externalIdentifierSource)
+    {
+        this.externalIdentifierSource = externalIdentifierSource;
+    }
+
+
+    /**
+     * Set up the key pattern used in the asset manager for the external identifier.
      *
      * @param keyPattern String name
      */
@@ -240,7 +258,7 @@ public class MetadataCorrelationProperties implements Serializable
 
 
     /**
-     * Returns the key pattern for the external identifier.
+     * Returns the key pattern used in the asset manager  for the external identifier.
      *
      * @return String name
      */
@@ -251,13 +269,14 @@ public class MetadataCorrelationProperties implements Serializable
 
 
     /**
-     * Return any additional properties to help with the mapping of the external identifier.
+     * Return any additional properties to help with the mapping of the external identifier to open
+     * metadata elements.
      *
      * @return name-value pairs
      */
     public Map<String, String> getMappingProperties()
     {
-        if (mappingProperties != null)
+        if (mappingProperties == null)
         {
             return null;
         }
@@ -271,7 +290,8 @@ public class MetadataCorrelationProperties implements Serializable
 
 
     /**
-     * Set up any additional properties to help with the mapping of the external identifier.
+     * Set up any additional properties to help with the mapping of the external identifier to open
+     * metadata elements.
      *
      * @param mappingProperties name-value pairs
      */
@@ -292,10 +312,12 @@ public class MetadataCorrelationProperties implements Serializable
         return "MetadataCorrelationProperties{" +
                        "assetManagerGUID='" + assetManagerGUID + '\'' +
                        ", assetManagerName='" + assetManagerName + '\'' +
+                       ", synchronizationDirection=" + synchronizationDirection +
                        ", synchronizationDescription='" + synchronizationDescription + '\'' +
                        ", externalIdentifier='" + externalIdentifier + '\'' +
                        ", externalIdentifierName='" + externalIdentifierName + '\'' +
                        ", externalIdentifierUsage='" + externalIdentifierUsage + '\'' +
+                       ", externalIdentifierSource='" + externalIdentifierSource + '\'' +
                        ", keyPattern=" + keyPattern +
                        ", mappingProperties=" + mappingProperties +
                        '}';
@@ -322,10 +344,12 @@ public class MetadataCorrelationProperties implements Serializable
         MetadataCorrelationProperties that = (MetadataCorrelationProperties) objectToCompare;
         return Objects.equals(getAssetManagerGUID(), that.getAssetManagerGUID()) &&
                        Objects.equals(getAssetManagerName(), that.getAssetManagerName()) &&
+                       getSynchronizationDirection() == that.getSynchronizationDirection() &&
                        Objects.equals(getSynchronizationDescription(), that.getSynchronizationDescription()) &&
                        Objects.equals(getExternalIdentifier(), that.getExternalIdentifier()) &&
                        Objects.equals(getExternalIdentifierName(), that.getExternalIdentifierName()) &&
                        Objects.equals(getExternalIdentifierUsage(), that.getExternalIdentifierUsage()) &&
+                       Objects.equals(getExternalIdentifierSource(), that.getExternalIdentifierSource()) &&
                        getKeyPattern() == that.getKeyPattern() &&
                        Objects.equals(getMappingProperties(), that.getMappingProperties());
     }
@@ -340,6 +364,6 @@ public class MetadataCorrelationProperties implements Serializable
     public int hashCode()
     {
         return Objects.hash(getAssetManagerGUID(), getAssetManagerName(), getSynchronizationDescription(), getExternalIdentifier(),
-                            getExternalIdentifierName(), getExternalIdentifierUsage(), getKeyPattern(), getMappingProperties());
+                            getExternalIdentifierName(), getExternalIdentifierUsage(), getExternalIdentifierSource(), getKeyPattern(), getMappingProperties());
     }
 }

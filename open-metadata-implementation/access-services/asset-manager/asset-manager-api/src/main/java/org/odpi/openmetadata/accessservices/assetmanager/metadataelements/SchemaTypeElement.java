@@ -6,10 +6,10 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,9 +25,9 @@ public class SchemaTypeElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private SchemaTypeProperties          schemaTypeProperties  = null;
-    private MetadataCorrelationProperties correlationProperties = null;
-    private ElementHeader                 elementHeader         = null;
+    private SchemaTypeProperties            schemaTypeProperties = null;
+    private List<MetadataCorrelationHeader> correlationHeaders   = null;
+    private ElementHeader                   elementHeader        = null;
 
 
     /**
@@ -49,7 +49,7 @@ public class SchemaTypeElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            correlationProperties = template.getCorrelationProperties();
+            correlationHeaders = template.getCorrelationHeaders();
             schemaTypeProperties = template.getSchemaTypeProperties();
         }
     }
@@ -81,25 +81,38 @@ public class SchemaTypeElement implements MetadataElement, Serializable
 
     /**
      * Return the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @return properties object
+     * @return list of correlation properties objects
      */
     @Override
-    public MetadataCorrelationProperties getCorrelationProperties()
+    public List<MetadataCorrelationHeader> getCorrelationHeaders()
     {
-        return correlationProperties;
+        if (correlationHeaders == null)
+        {
+            return null;
+        }
+        else if (correlationHeaders.isEmpty())
+        {
+            return null;
+        }
+
+        return correlationHeaders;
     }
 
 
     /**
      * Set up the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @param correlationProperties properties object
+     * @param correlationHeaders list of correlation properties objects
      */
     @Override
-    public void setCorrelationProperties(MetadataCorrelationProperties correlationProperties)
+    public void setCorrelationHeaders(List<MetadataCorrelationHeader> correlationHeaders)
     {
-        this.correlationProperties = correlationProperties;
+        this.correlationHeaders = correlationHeaders;
     }
 
 
@@ -134,9 +147,10 @@ public class SchemaTypeElement implements MetadataElement, Serializable
     public String toString()
     {
         return "SchemaTypeElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties='" + getSchemaTypeProperties() + '\'' +
-                '}';
+                       "schemaTypeProperties=" + schemaTypeProperties +
+                       ", correlationHeaders=" + correlationHeaders +
+                       ", elementHeader=" + elementHeader +
+                       '}';
     }
 
 
@@ -158,8 +172,9 @@ public class SchemaTypeElement implements MetadataElement, Serializable
             return false;
         }
         SchemaTypeElement that = (SchemaTypeElement) objectToCompare;
-        return Objects.equals(schemaTypeProperties, that.schemaTypeProperties) &&
-                Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(getSchemaTypeProperties(), that.getSchemaTypeProperties()) &&
+                       Objects.equals(getCorrelationHeaders(), that.getCorrelationHeaders()) &&
+                       Objects.equals(getElementHeader(), that.getElementHeader());
     }
 
 
@@ -171,6 +186,6 @@ public class SchemaTypeElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, schemaTypeProperties);
+        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, schemaTypeProperties);
     }
 }

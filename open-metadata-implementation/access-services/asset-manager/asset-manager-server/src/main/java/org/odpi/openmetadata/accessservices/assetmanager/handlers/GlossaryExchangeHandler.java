@@ -2,33 +2,38 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
+import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalIdentifierConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryTermConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ExternalIdentifierHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GlossaryHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GlossaryExchangeHandler
 {
-    private InvalidParameterHandler invalidParameterHandler;
-    private GlossaryHandler<GlossaryElement> glossaryHandler;
-    private ExternalIdentifierHandler<MetadataCorrelationProperties> externalIdentifierHandler;
+    private InvalidParameterHandler                                             invalidParameterHandler;
+    private GlossaryHandler<GlossaryElement>                                    glossaryHandler;
+    private GlossaryCategoryHandler<GlossaryCategoryElement>                    glossaryCategoryHandler;
+    private GlossaryTermHandler<GlossaryTermElement>                            glossaryTermHandler;
+    private ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
 
-    private final static String glossaryGUIDParameterName  = "glossaryGUID";
+    private final static String glossaryGUIDParameterName          = "glossaryGUID";
+    private final static String glossaryCategoryGUIDParameterName  = "glossaryCategoryGUID";
+    private final static String glossaryTermGUIDParameterName      = "glossaryTermGUID";
 
 
     /**
@@ -42,9 +47,9 @@ public class GlossaryExchangeHandler
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve B instances from.
-     * @param defaultZones list of zones that the access service should set in all new B instances.
-     * @param publishZones list of zones that the access service sets up in published B instances.
+     * @param supportedZones list of zones that the access service is allowed to serve instances from.
+     * @param defaultZones list of zones that the access service should set in all new instances.
+     * @param publishZones list of zones that the access service sets up in published instances.
      * @param auditLog destination for audit log events.
      */
     public GlossaryExchangeHandler(String                             serviceName,
@@ -73,8 +78,38 @@ public class GlossaryExchangeHandler
                                                 publishZones,
                                                 auditLog);
 
+        glossaryCategoryHandler = new GlossaryCategoryHandler<>(new GlossaryConverter<>(repositoryHelper, serviceName, serverName),
+                                                                GlossaryCategoryElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
+
+        glossaryTermHandler = new GlossaryTermHandler<>(new GlossaryTermConverter<>(repositoryHelper, serviceName, serverName),
+                                                        GlossaryTermElement.class,
+                                                        serviceName,
+                                                        serverName,
+                                                        invalidParameterHandler,
+                                                        repositoryHandler,
+                                                        repositoryHelper,
+                                                        localServerUserId,
+                                                        securityVerifier,
+                                                        supportedZones,
+                                                        defaultZones,
+                                                        publishZones,
+                                                        auditLog);
+
         externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
-                                                                    MetadataCorrelationProperties.class,
+                                                                    MetadataCorrelationHeader.class,
+                                                                    new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
+                                                                    ElementHeader.class,
                                                                     serviceName,
                                                                     serverName,
                                                                     invalidParameterHandler,
@@ -122,37 +157,79 @@ public class GlossaryExchangeHandler
     {
         final String guidParameterName             = "elementGUID";
         final String typeNameParameterName         = "elementTypeName";
-        final String correlationParameterName      = "correlationProperties";
         final String assetManagerGUIDParameterName = "correlationProperties.assetManagerGUID";
         final String assetManagerNameParameterName = "correlationProperties.assetManagerName";
         final String identifierParameterName       = "correlationProperties.externalIdentifier";
 
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(elementTypeName, typeNameParameterName, methodName);
-        invalidParameterHandler.validateObject(correlationProperties, correlationParameterName, methodName);
-        invalidParameterHandler.validateGUID(correlationProperties.getAssetManagerGUID(), assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(correlationProperties.getAssetManagerName(), assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateName(correlationProperties.getExternalIdentifier(), identifierParameterName, methodName);
 
-        externalIdentifierHandler.createExternalIdentifier(userId,
-                                                           elementGUID,
-                                                           elementGUIDParameterName,
-                                                           elementTypeName,
-                                                           correlationProperties.getExternalIdentifier(),
-                                                           correlationProperties.getKeyPattern().getOpenTypeOrdinal(),
-                                                           correlationProperties.getExternalIdentifierName(),
-                                                           correlationProperties.getExternalIdentifierUsage(),
-                                                           correlationProperties.getAssetManagerName(),
-                                                           correlationProperties.getMappingProperties(),
-                                                           new Date(),
-                                                           correlationProperties.getAssetManagerGUID(),
-                                                           assetManagerGUIDParameterName,
-                                                           OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
-                                                           correlationProperties.getPermittedSynchronization().getOpenTypeOrdinal(),
-                                                           correlationProperties.getSynchronizationDescription(),
-                                                           methodName);
+        if (correlationProperties != null)
+        {
+            if ((correlationProperties.getAssetManagerGUID() != null) && (correlationProperties.getExternalIdentifier() != null))
+            {
+                invalidParameterHandler.validateName(correlationProperties.getAssetManagerName(), assetManagerNameParameterName, methodName);
+
+
+                externalIdentifierHandler.setUpExternalIdentifier(userId,
+                                                                  elementGUID,
+                                                                  elementGUIDParameterName,
+                                                                  elementTypeName,
+                                                                  correlationProperties.getExternalIdentifier(),
+                                                                  identifierParameterName,
+                                                                  getKeyPattern(correlationProperties.getKeyPattern()),
+                                                                  correlationProperties.getExternalIdentifierName(),
+                                                                  correlationProperties.getExternalIdentifierUsage(),
+                                                                  correlationProperties.getExternalIdentifierSource(),
+                                                                  correlationProperties.getMappingProperties(),
+                                                                  correlationProperties.getAssetManagerGUID(),
+                                                                  assetManagerGUIDParameterName,
+                                                                  correlationProperties.getAssetManagerName(),
+                                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                  getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
+                                                                  correlationProperties.getSynchronizationDescription(),
+                                                                  methodName);
+            }
+        }
     }
 
+
+    /**
+     * Retrieve the synchronization direction
+     *
+     * @param synchronizationDirection supplied direction
+     * @return open metadata type ordinal - defaulting to "BOTH_DIRECTIONS"
+     */
+    private int getPermittedSynchronization(SynchronizationDirection synchronizationDirection)
+    {
+        int permittedSynchronization = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+
+        if (synchronizationDirection != null)
+        {
+            permittedSynchronization = synchronizationDirection.getOpenTypeOrdinal();
+        }
+
+        return permittedSynchronization;
+    }
+
+
+    /**
+     * Retrieve the key pattern ordinal
+     *
+     * @param keyPattern supplied value
+     * @return open metadata type ordinal - defaulting to "LOCAL_KEY"
+     */
+    private int getKeyPattern(KeyPattern keyPattern)
+    {
+        int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+
+        if (keyPattern != null)
+        {
+            keyPatternOrdinal = keyPattern.getOpenTypeOrdinal();
+        }
+
+        return keyPatternOrdinal;
+    }
 
 
     /**
@@ -164,23 +241,168 @@ public class GlossaryExchangeHandler
      * @param elementTypeName type name of the open metadata element
      * @param correlationProperties properties to store in the external identifier
      * @param methodName calling method
+     * @return external identity (or null if none associated)
      *
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem detected in the repository services
      */
-    private void validateExternalIdentifier(String                        userId,
-                                            String                        elementGUID,
-                                            String                        elementGUIDParameterName,
-                                            String                        elementTypeName,
-                                            MetadataCorrelationProperties correlationProperties,
-                                            String                        methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    private EntityDetail validateExternalIdentifier(String                        userId,
+                                                    String                        elementGUID,
+                                                    String                        elementGUIDParameterName,
+                                                    String                        elementTypeName,
+                                                    MetadataCorrelationProperties correlationProperties,
+                                                    String                        methodName) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
+        final String externalIdentifierParameterName = "correlationProperties.getExternalIdentifier()";
+        final String scopeGUIDParameterName          = "correlationProperties.getAssetManagerGUID()";
 
+        if ((correlationProperties != null) &&
+                    (correlationProperties.getExternalIdentifier() != null) &&
+                    (correlationProperties.getAssetManagerGUID() != null) &&
+                    (correlationProperties.getAssetManagerName() != null))
+        {
+            return externalIdentifierHandler.confirmSynchronization(userId,
+                                                                    elementGUID,
+                                                                    elementGUIDParameterName,
+                                                                    elementTypeName,
+                                                                    correlationProperties.getExternalIdentifier(),
+                                                                    externalIdentifierParameterName,
+                                                                    correlationProperties.getAssetManagerGUID(),
+                                                                    scopeGUIDParameterName,
+                                                                    correlationProperties.getAssetManagerName(),
+                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                    methodName);
+        }
+
+        return null;
     }
 
+
+
+    /**
+     * Update each returned element with details of the correlation properties for the supplied asset manager.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param results list of elements
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private void addCorrelationPropertiesToGlossaries(String                userId,
+                                                      String                assetManagerGUID,
+                                                      String                assetManagerName,
+                                                      List<GlossaryElement> results,
+                                                      String                methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        if ((results != null) && (assetManagerGUID != null))
+        {
+            for (MetadataElement glossary : results)
+            {
+                if ((glossary != null) && (glossary.getElementHeader() != null) && (glossary.getElementHeader().getGUID() != null))
+                {
+                    glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                 glossary.getElementHeader().getGUID(),
+                                                                                 glossaryGUIDParameterName,
+                                                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                                 assetManagerGUID,
+                                                                                 assetManagerName,
+                                                                                 methodName));
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * Update each returned element with details of the correlation properties for the supplied asset manager.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param results list of elements
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private void addCorrelationPropertiesToGlossaryCategories(String                        userId,
+                                                              String                        assetManagerGUID,
+                                                              String                        assetManagerName,
+                                                              List<GlossaryCategoryElement> results,
+                                                              String                        methodName) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
+    {
+        if ((results != null) && (assetManagerGUID != null))
+        {
+            for (MetadataElement glossaryCategory : results)
+            {
+                if ((glossaryCategory != null) && (glossaryCategory.getElementHeader() != null) && (glossaryCategory.getElementHeader().getGUID() != null))
+                {
+                    glossaryCategory.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                         glossaryCategory.getElementHeader().getGUID(),
+                                                                                         glossaryCategoryGUIDParameterName,
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                         assetManagerGUID,
+                                                                                         assetManagerName,
+                                                                                         methodName));
+                }
+            }
+        }
+    }
+
+
+
+
+    /**
+     * Update each returned element with details of the correlation properties for the supplied asset manager.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param results list of elements
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private void addCorrelationPropertiesToGlossaryTerms(String                    userId,
+                                                         String                    assetManagerGUID,
+                                                         String                    assetManagerName,
+                                                         List<GlossaryTermElement> results,
+                                                         String                    methodName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        if ((results != null) && (assetManagerGUID != null))
+        {
+            for (MetadataElement glossaryTerm : results)
+            {
+                if ((glossaryTerm != null) && (glossaryTerm.getElementHeader() != null) && (glossaryTerm.getElementHeader().getGUID() != null))
+                {
+                    glossaryTerm.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                         glossaryTerm.getElementHeader().getGUID(),
+                                                                                         glossaryTermGUIDParameterName,
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                         assetManagerGUID,
+                                                                                         assetManagerName,
+                                                                                         methodName));
+                }
+            }
+        }
+    }
 
 
     /**
@@ -194,22 +416,32 @@ public class GlossaryExchangeHandler
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param methodName calling method
+     * @return list of correlation properties
      *
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem detected in the repository services
      */
-    private MetadataCorrelationProperties getCorrelationProperties(String userId,
-                                                                   String elementGUID,
-                                                                   String elementGUIDParameterName,
-                                                                   String elementTypeName,
-                                                                   String assetManagerGUID,
-                                                                   String assetManagerName,
-                                                                   String methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    private List<MetadataCorrelationHeader> getCorrelationProperties(String userId,
+                                                                     String elementGUID,
+                                                                     String elementGUIDParameterName,
+                                                                     String elementTypeName,
+                                                                     String assetManagerGUID,
+                                                                     String assetManagerName,
+                                                                     String methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
-        return null;
+        return externalIdentifierHandler.getExternalIdentifiersForScope(userId,
+                                                                        elementGUID,
+                                                                        elementGUIDParameterName,
+                                                                        elementTypeName,
+                                                                        assetManagerGUID,
+                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                        assetManagerName,
+                                                                        0,
+                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                        methodName);
     }
 
 
@@ -324,6 +556,7 @@ public class GlossaryExchangeHandler
                                           correlationProperties,
                                           methodName);
         }
+
         return glossaryGUID;
     }
 
@@ -366,16 +599,16 @@ public class GlossaryExchangeHandler
 
         glossaryHandler.updateGlossary(userId,
                                        glossaryGUID,
+                                       glossaryGUIDParameterName,
                                        glossaryProperties.getQualifiedName(),
                                        glossaryProperties.getDisplayName(),
                                        glossaryProperties.getDescription(),
                                        glossaryProperties.getLanguage(),
                                        glossaryProperties.getUsage(),
                                        glossaryProperties.getAdditionalProperties(),
+                                       glossaryProperties.getTypeName(),
                                        glossaryProperties.getExtendedProperties(),
                                        methodName);
-
-
     }
 
 
@@ -409,16 +642,7 @@ public class GlossaryExchangeHandler
                                         correlationProperties,
                                         methodName);
 
-        glossaryHandler.deleteBeanInRepository(userId,
-                                               null,
-                                               null,
-                                               glossaryGUID,
-                                               glossaryGUIDParameterName,
-                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                               null,
-                                               null,
-                                               methodName);
+        glossaryHandler.removeGlossary(userId, glossaryGUID, glossaryGUIDParameterName, methodName);
     }
 
 
@@ -575,46 +799,6 @@ public class GlossaryExchangeHandler
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param results list of elements
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    private void addCorrelationPropertiesToGlossaries(String                userId,
-                                                      String                assetManagerGUID,
-                                                      String                assetManagerName,
-                                                      List<GlossaryElement> results,
-                                                      String                methodName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
-    {
-        if (results != null)
-        {
-            for (MetadataElement glossary : results)
-            {
-                if ((glossary != null) && (glossary.getElementHeader() != null) && (glossary.getElementHeader().getGUID() != null))
-                {
-                    glossary.setCorrelationProperties(this.getCorrelationProperties(userId,
-                                                                                    glossary.getElementHeader().getGUID(),
-                                                                                    glossaryGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                                                                    assetManagerGUID,
-                                                                                    assetManagerName,
-                                                                                    methodName));
-                }
-            }
-        }
-    }
-
-    /**
-     * Retrieve the list of glossary metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -630,14 +814,13 @@ public class GlossaryExchangeHandler
                                                 String assetManagerGUID,
                                                 String assetManagerName,
                                                 String searchString,
+                                                String searchStringParameterName,
                                                 int    startFrom,
                                                 int    pageSize,
                                                 String methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        final String searchStringParameterName  = "searchString";
-
         List<GlossaryElement> results = glossaryHandler.findGlossaries(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName);
 
         addCorrelationPropertiesToGlossaries(userId, assetManagerGUID, assetManagerName, results , methodName);
@@ -678,7 +861,7 @@ public class GlossaryExchangeHandler
     {
         List<GlossaryElement> results = glossaryHandler.getGlossariesByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
 
-        addCorrelationPropertiesToGlossaries(userId, assetManagerGUID, assetManagerName, results , methodName);
+        addCorrelationPropertiesToGlossaries(userId, assetManagerGUID, assetManagerName, results, methodName);
 
         return results;
     }
@@ -709,8 +892,59 @@ public class GlossaryExchangeHandler
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        // todo
-        return null;
+        final String assetManagerGUIDParameterName = "assetManagerGUID";
+        final String glossaryEntityParameterName = "glossaryEntity";
+        final String glossaryGUIDParameterName = "glossaryEntity.getGUID()";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+
+        List<GlossaryElement> results = new ArrayList<>();
+
+        List<EntityDetail> glossaryEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
+                                                                                                   assetManagerGUID,
+                                                                                                   assetManagerGUIDParameterName,
+                                                                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                                                   startFrom,
+                                                                                                   pageSize,
+                                                                                                   methodName);
+
+        if (glossaryEntities != null)
+        {
+            for (EntityDetail glossaryEntity : glossaryEntities)
+            {
+                if (glossaryEntity != null)
+                {
+                    GlossaryElement glossaryElement = glossaryHandler.getBeanFromEntity(userId,
+                                                                                        glossaryEntity,
+                                                                                        glossaryEntityParameterName,
+                                                                                        methodName);
+
+                    if (glossaryElement != null)
+                    {
+                        glossaryElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                            glossaryEntity.getGUID(),
+                                                                                            glossaryGUIDParameterName,
+                                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                                            assetManagerGUID,
+                                                                                            assetManagerName,
+                                                                                            methodName));
+
+                        results.add(glossaryElement);
+                    }
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
     }
 
 
@@ -743,41 +977,18 @@ public class GlossaryExchangeHandler
 
         if (glossary != null)
         {
-            glossary.setCorrelationProperties(this.getCorrelationProperties(userId,
-                                                                            openMetadataGUID,
-                                                                            guidParameterName,
-                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                                                            assetManagerGUID,
-                                                                            assetManagerName,
-                                                                            methodName));
+            glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                         openMetadataGUID,
+                                                                         guidParameterName,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                         assetManagerGUID,
+                                                                         assetManagerName,
+                                                                         methodName));
         }
 
         return glossary;
     }
 
-
-    /**
-     * Retrieve the glossary metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GlossaryElement getGlossaryByExternalIdentifier(String                        userId,
-                                                           MetadataCorrelationProperties correlationProperties,
-                                                           String                        methodName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
-    {
-        // todo
-        return null;
-    }
 
 
     /* =====================================================================================================================
@@ -807,8 +1018,34 @@ public class GlossaryExchangeHandler
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        // todo
-        return null;
+        final String propertiesParameterName           = "glossaryCategoryProperties";
+        final String qualifiedNameParameterName        = "glossaryCategoryProperties.qualifiedName";
+
+        invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String glossaryCategoryGUID = glossaryCategoryHandler.createGlossaryCategory(userId,
+                                                                                     glossaryGUID,
+                                                                                     glossaryGUIDParameterName,
+                                                                                     glossaryCategoryProperties.getQualifiedName(),
+                                                                                     glossaryCategoryProperties.getDisplayName(),
+                                                                                     glossaryCategoryProperties.getDescription(),
+                                                                                     glossaryCategoryProperties.getAdditionalProperties(),
+                                                                                     glossaryCategoryProperties.getTypeName(),
+                                                                                     glossaryCategoryProperties.getExtendedProperties(),
+                                                                                     methodName);
+
+        if (glossaryCategoryGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryCategoryGUID,
+                                          glossaryCategoryGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryCategoryGUID;
     }
 
 
@@ -816,7 +1053,6 @@ public class GlossaryExchangeHandler
      * Create a new metadata element to represent a glossary category using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
@@ -829,7 +1065,6 @@ public class GlossaryExchangeHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createGlossaryCategoryFromTemplate(String                        userId,
-                                                     String                        glossaryGUID,
                                                      MetadataCorrelationProperties correlationProperties,
                                                      String                        templateGUID,
                                                      TemplateProperties            templateProperties,
@@ -837,8 +1072,30 @@ public class GlossaryExchangeHandler
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String templateGUIDParameterName         = "templateGUID";
+        final String propertiesParameterName           = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        String glossaryCategoryGUID = glossaryCategoryHandler.createGlossaryCategoryFromTemplate(userId,
+                                                                                                 templateGUID,
+                                                                                                 templateProperties.getQualifiedName(),
+                                                                                                 templateProperties.getDisplayName(),
+                                                                                                 templateProperties.getDescription(),
+                                                                                                 methodName);
+        if (glossaryCategoryGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryCategoryGUID,
+                                          glossaryCategoryGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryCategoryGUID;
     }
 
 
@@ -863,7 +1120,31 @@ public class GlossaryExchangeHandler
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        // todo
+        final String propertiesParameterName    = "glossaryCategoryProperties";
+        final String qualifiedNameParameterName = "glossaryCategoryProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryCategoryGUID,
+                                        glossaryCategoryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryCategoryHandler.updateGlossaryCategory(userId,
+                                                       glossaryCategoryGUID,
+                                                       glossaryCategoryGUIDParameterName,
+                                                       glossaryCategoryProperties.getQualifiedName(),
+                                                       glossaryCategoryProperties.getDisplayName(),
+                                                       glossaryCategoryProperties.getDescription(),
+                                                       glossaryCategoryProperties.getAdditionalProperties(),
+                                                       glossaryCategoryProperties.getTypeName(),
+                                                       glossaryCategoryProperties.getExtendedProperties(),
+                                                       methodName);
     }
 
 
@@ -890,7 +1171,24 @@ public class GlossaryExchangeHandler
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        // todo
+        final String glossaryParentCategoryGUIDParameterName = "glossaryParentCategoryGUID";
+        final String glossaryChildCategoryGUIDParameterName = "glossaryChildCategoryGUID";
+
+        glossaryCategoryHandler.setupCategoryParent(userId,
+                                                    glossaryParentCategoryGUID,
+                                                    glossaryParentCategoryGUIDParameterName,
+                                                    glossaryChildCategoryGUID,
+                                                    glossaryChildCategoryGUIDParameterName,
+                                                    methodName);
+
+        externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
+                                                          assetManagerName,
+                                                          OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                          glossaryParentCategoryGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                          glossaryChildCategoryGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                          methodName);
     }
 
 
@@ -917,7 +1215,24 @@ public class GlossaryExchangeHandler
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        // todo
+        final String glossaryParentCategoryGUIDParameterName = "glossaryParentCategoryGUID";
+        final String glossaryChildCategoryGUIDParameterName = "glossaryChildCategoryGUID";
+
+        glossaryCategoryHandler.clearCategoryParent(userId,
+                                                    glossaryParentCategoryGUID,
+                                                    glossaryParentCategoryGUIDParameterName,
+                                                    glossaryChildCategoryGUID,
+                                                    glossaryChildCategoryGUIDParameterName,
+                                                    methodName);
+
+        externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
+                                                         assetManagerName,
+                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                         glossaryParentCategoryGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                         glossaryChildCategoryGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                         methodName);
     }
 
 
@@ -940,7 +1255,14 @@ public class GlossaryExchangeHandler
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        // todo
+        this.validateExternalIdentifier(userId,
+                                        glossaryCategoryGUID,
+                                        glossaryCategoryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryCategoryHandler.removeGlossaryCategory(userId, glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
     }
 
 
@@ -966,14 +1288,27 @@ public class GlossaryExchangeHandler
                                                                   String assetManagerGUID,
                                                                   String assetManagerName,
                                                                   String searchString,
+                                                                  String searchStringParameterName,
                                                                   int    startFrom,
                                                                   int    pageSize,
                                                                   String methodName) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.findGlossaryCategories(userId,
+                                                                                               searchString,
+                                                                                               searchStringParameterName,
+                                                                                               startFrom,
+                                                                                               pageSize,
+                                                                                               methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
     }
 
 
@@ -1004,8 +1339,20 @@ public class GlossaryExchangeHandler
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.getCategoriesForGlossary(userId,
+                                                                                                 glossaryGUID,
+                                                                                                 glossaryGUIDParameterName,
+                                                                                                 startFrom,
+                                                                                                 pageSize,
+                                                                                                 methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
     }
 
 
@@ -1039,8 +1386,20 @@ public class GlossaryExchangeHandler
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.getGlossaryCategoriesByName(userId,
+                                                                                                    name,
+                                                                                                    nameParameterName,
+                                                                                                    startFrom,
+                                                                                                    pageSize,
+                                                                                                    methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
     }
 
 
@@ -1067,8 +1426,23 @@ public class GlossaryExchangeHandler
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        // todo
-        return null;
+        GlossaryCategoryElement glossaryCategory = glossaryCategoryHandler.getGlossaryCategoryParent(userId,
+                                                                                                     glossaryCategoryGUID,
+                                                                                                     glossaryCategoryGUIDParameterName,
+                                                                                                     methodName);
+
+        if (glossaryCategory != null)
+        {
+            glossaryCategory.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                 glossaryCategoryGUID,
+                                                                                 glossaryCategoryGUIDParameterName,
+                                                                                 OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                 assetManagerGUID,
+                                                                                 assetManagerName,
+                                                                                 methodName));
+        }
+
+        return glossaryCategory;
     }
 
 
@@ -1098,8 +1472,20 @@ public class GlossaryExchangeHandler
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.getGlossarySubCategories(userId,
+                                                                                                 glossaryCategoryGUID,
+                                                                                                 glossaryCategoryGUIDParameterName,
+                                                                                                 startFrom,
+                                                                                                 pageSize,
+                                                                                                 methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
     }
 
 
@@ -1126,8 +1512,25 @@ public class GlossaryExchangeHandler
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        // todo
-        return null;
+        final String guidParameterName  = "openMetadataGUID";
+
+        GlossaryCategoryElement glossaryCategory = glossaryCategoryHandler.getGlossaryCategoryByGUID(userId,
+                                                                                                     openMetadataGUID,
+                                                                                                     guidParameterName,
+                                                                                                     methodName);
+
+        if (glossaryCategory != null)
+        {
+            glossaryCategory.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                             openMetadataGUID,
+                                                                             guidParameterName,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                             assetManagerGUID,
+                                                                             assetManagerName,
+                                                                             methodName));
+        }
+
+        return glossaryCategory;
     }
 
 
@@ -1158,8 +1561,69 @@ public class GlossaryExchangeHandler
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String propertiesParameterName     = "glossaryTermProperties";
+        final String qualifiedNameParameterName  = "glossaryTermProperties.qualifiedName";
+
+        invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String glossaryTermGUID = glossaryTermHandler.createGlossaryTerm(userId,
+                                                                         glossaryGUID,
+                                                                         glossaryGUIDParameterName,
+                                                                         glossaryTermProperties.getQualifiedName(),
+                                                                         glossaryTermProperties.getDisplayName(),
+                                                                         glossaryTermProperties.getSummary(),
+                                                                         glossaryTermProperties.getDescription(),
+                                                                         glossaryTermProperties.getExamples(),
+                                                                         glossaryTermProperties.getAbbreviation(),
+                                                                         glossaryTermProperties.getUsage(),
+                                                                         glossaryTermProperties.getAdditionalProperties(),
+                                                                         glossaryTermProperties.getTypeName(),
+                                                                         glossaryTermProperties.getExtendedProperties(),
+                                                                         InstanceStatus.ACTIVE,
+                                                                         methodName);
+
+        if (glossaryTermGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryTermGUID,
+                                          glossaryTermGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryTermGUID;
+    }
+
+
+    /**
+     * Convert the GlossaryTermStatus to an InstanceStatus understood by the repository services.
+     *
+     * @param status status from caller
+     * @return instance status
+     */
+    private InstanceStatus getInstanceStatus(GlossaryTermStatus status)
+    {
+        if (status != null)
+        {
+            switch (status)
+            {
+                case DRAFT:
+                    return InstanceStatus.DRAFT;
+
+                case APPROVED:
+                    return InstanceStatus.APPROVED;
+
+                case PROPOSED:
+                    return InstanceStatus.PROPOSED;
+
+                case ACTIVE:
+                    return InstanceStatus.ACTIVE;
+            }
+        }
+
+        return InstanceStatus.UNKNOWN;
     }
 
 
@@ -1188,8 +1652,48 @@ public class GlossaryExchangeHandler
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        // todo
-        return null;
+        final String propertiesParameterName     = "glossaryTermProperties";
+        final String qualifiedNameParameterName  = "glossaryTermProperties.qualifiedName";
+        final String initialStatusParameterName  = "initialStatus";
+
+        invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(initialStatus, initialStatusParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.CONTROLLED_GLOSSARY_TERM_TYPE_NAME;
+
+        if (glossaryTermProperties.getTypeName() != null)
+        {
+            typeName = glossaryTermProperties.getTypeName();
+        }
+
+        String glossaryTermGUID = glossaryTermHandler.createGlossaryTerm(userId,
+                                                                         glossaryGUID,
+                                                                         glossaryGUIDParameterName,
+                                                                         glossaryTermProperties.getQualifiedName(),
+                                                                         glossaryTermProperties.getDisplayName(),
+                                                                         glossaryTermProperties.getSummary(),
+                                                                         glossaryTermProperties.getDescription(),
+                                                                         glossaryTermProperties.getExamples(),
+                                                                         glossaryTermProperties.getAbbreviation(),
+                                                                         glossaryTermProperties.getUsage(),
+                                                                         glossaryTermProperties.getAdditionalProperties(),
+                                                                         typeName,
+                                                                         glossaryTermProperties.getExtendedProperties(),
+                                                                         getInstanceStatus(initialStatus),
+                                                                         methodName);
+
+        if (glossaryTermGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryTermGUID,
+                                          glossaryTermGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryTermGUID;
     }
 
 
@@ -1197,7 +1701,6 @@ public class GlossaryExchangeHandler
      * Create a new metadata element to represent a glossary term using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
@@ -1210,7 +1713,6 @@ public class GlossaryExchangeHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createGlossaryTermFromTemplate(String                        userId,
-                                                 String                        glossaryGUID,
                                                  MetadataCorrelationProperties correlationProperties,
                                                  String                        templateGUID,
                                                  TemplateProperties            templateProperties,
@@ -1218,8 +1720,30 @@ public class GlossaryExchangeHandler
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        // todo
-        return null;
+        final String templateGUIDParameterName         = "templateGUID";
+        final String propertiesParameterName           = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        String glossaryTermGUID = glossaryTermHandler.createGlossaryTermFromTemplate(userId,
+                                                                                     templateGUID,
+                                                                                     templateProperties.getQualifiedName(),
+                                                                                     templateProperties.getDisplayName(),
+                                                                                     templateProperties.getDescription(),
+                                                                                     methodName);
+        if (glossaryTermGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryTermGUID,
+                                          glossaryTermGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryTermGUID;
     }
 
 
@@ -1244,7 +1768,35 @@ public class GlossaryExchangeHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        // todo
+        final String propertiesParameterName    = "glossaryTermProperties";
+        final String qualifiedNameParameterName = "glossaryTermProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.updateGlossaryTerm(userId,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               glossaryTermProperties.getQualifiedName(),
+                                               glossaryTermProperties.getDisplayName(),
+                                               glossaryTermProperties.getSummary(),
+                                               glossaryTermProperties.getDescription(),
+                                               glossaryTermProperties.getExamples(),
+                                               glossaryTermProperties.getAbbreviation(),
+                                               glossaryTermProperties.getUsage(),
+                                               glossaryTermProperties.getAdditionalProperties(),
+                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                               glossaryTermProperties.getExtendedProperties(),
+                                               methodName);
     }
 
 
@@ -1270,7 +1822,42 @@ public class GlossaryExchangeHandler
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        // todo
+        final String glossaryTermStatusParameterName  = "glossaryTermStatus";
+
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryTermStatus, glossaryTermStatusParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.updateGlossaryTermStatus(userId,
+                                                     glossaryTermGUID,
+                                                     glossaryTermGUIDParameterName,
+                                                     getInstanceStatus(glossaryTermStatus),
+                                                     glossaryTermStatusParameterName,
+                                                     methodName);
+
+    }
+
+
+    /**
+     * Return the ordinal for the relationship status - handling null values
+     *
+     * @param status supplied status
+     * @return resulting ordinal
+     */
+    private int getTermRelationshipStatus(GlossaryTermRelationshipStatus status)
+    {
+        if (status != null)
+        {
+            return status.getOpenTypeOrdinal();
+        }
+
+        return GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal();
     }
 
 
@@ -1299,7 +1886,40 @@ public class GlossaryExchangeHandler
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        // todo
+        final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
+
+        if (categorizationProperties != null)
+        {
+            glossaryTermHandler.setupTermCategory(userId,
+                                                  glossaryCategoryGUID,
+                                                  glossaryCategoryGUIDParameterName,
+                                                  glossaryTermGUID,
+                                                  glossaryTermGUIDParameterName,
+                                                  categorizationProperties.getDescription(),
+                                                  this.getTermRelationshipStatus(categorizationProperties.getStatus()),
+                                                  methodName);
+        }
+        else
+        {
+            glossaryTermHandler.setupTermCategory(userId,
+                                                  glossaryCategoryGUID,
+                                                  glossaryCategoryGUIDParameterName,
+                                                  glossaryTermGUID,
+                                                  glossaryTermGUIDParameterName,
+                                                  null,
+                                                  GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                  methodName);
+        }
+
+        externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
+                                                          assetManagerName,
+                                                          OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                          glossaryCategoryGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                          glossaryTermGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                          methodName);
     }
 
 
@@ -1326,12 +1946,30 @@ public class GlossaryExchangeHandler
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        // todo
+        final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
+
+        glossaryTermHandler.clearTermCategory(userId,
+                                              glossaryCategoryGUID,
+                                              glossaryCategoryGUIDParameterName,
+                                              glossaryTermGUID,
+                                              glossaryTermGUIDParameterName,
+                                              methodName);
+
+        externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
+                                                             assetManagerName,
+                                                             OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                             glossaryCategoryGUID,
+                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                             glossaryTermGUID,
+                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                             methodName);
     }
 
 
     /**
-     * Link two terms together using a specialist relationship.
+     * Link two terms together using a specialist relationship.  If there are no relationship properties
+     * then the status is set to ACTIVE and other properties are null.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
@@ -1357,7 +1995,51 @@ public class GlossaryExchangeHandler
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        // todo
+        final String glossaryTermOneGUIDParameterName = "glossaryTermOneGUID";
+        final String glossaryTermTwoGUIDParameterName = "glossaryTermTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        if (relationshipsProperties != null)
+        {
+            glossaryTermHandler.setupTermRelationship(userId,
+                                                      glossaryTermOneGUID,
+                                                      glossaryTermOneGUIDParameterName,
+                                                      relationshipTypeName,
+                                                      relationshipTypeNameParameterName,
+                                                      glossaryTermTwoGUID,
+                                                      glossaryTermTwoGUIDParameterName,
+                                                      relationshipsProperties.getExpression(),
+                                                      relationshipsProperties.getDescription(),
+                                                      this.getTermRelationshipStatus(relationshipsProperties.getStatus()),
+                                                      relationshipsProperties.getSteward(),
+                                                      relationshipsProperties.getSource(),
+                                                      methodName);
+        }
+        else
+        {
+            glossaryTermHandler.setupTermRelationship(userId,
+                                                      glossaryTermOneGUID,
+                                                      glossaryTermOneGUIDParameterName,
+                                                      relationshipTypeName,
+                                                      relationshipTypeNameParameterName,
+                                                      glossaryTermTwoGUID,
+                                                      glossaryTermTwoGUIDParameterName,
+                                                      null,
+                                                      null,
+                                                      GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                      null,
+                                                      null,
+                                                      methodName);
+        }
+
+        externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
+                                                          assetManagerName,
+                                                          relationshipTypeName,
+                                                          glossaryTermOneGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                          glossaryTermTwoGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                          methodName);
     }
 
 
@@ -1365,8 +2047,6 @@ public class GlossaryExchangeHandler
      * Update the relationship properties for the two terms.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -1378,8 +2058,6 @@ public class GlossaryExchangeHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateTermRelationship(String                   userId,
-                                       String                   assetManagerGUID,
-                                       String                   assetManagerName,
                                        String                   glossaryTermOneGUID,
                                        String                   relationshipTypeName,
                                        String                   glossaryTermTwoGUID,
@@ -1388,7 +2066,42 @@ public class GlossaryExchangeHandler
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        // todo
+        final String glossaryTermOneGUIDParameterName = "glossaryTermOneGUID";
+        final String glossaryTermTwoGUIDParameterName = "glossaryTermTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        if (relationshipsProperties != null)
+        {
+            glossaryTermHandler.updateTermRelationship(userId,
+                                                       glossaryTermOneGUID,
+                                                       glossaryTermOneGUIDParameterName,
+                                                       relationshipTypeName,
+                                                       relationshipTypeNameParameterName,
+                                                       glossaryTermTwoGUID,
+                                                       glossaryTermTwoGUIDParameterName,
+                                                       relationshipsProperties.getExpression(),
+                                                       relationshipsProperties.getDescription(),
+                                                       this.getTermRelationshipStatus(relationshipsProperties.getStatus()),
+                                                       relationshipsProperties.getSteward(),
+                                                       relationshipsProperties.getSource(),
+                                                       methodName);
+        }
+        else
+        {
+            glossaryTermHandler.updateTermRelationship(userId,
+                                                       glossaryTermOneGUID,
+                                                       glossaryTermOneGUIDParameterName,
+                                                       relationshipTypeName,
+                                                       relationshipTypeNameParameterName,
+                                                       glossaryTermTwoGUID,
+                                                       glossaryTermTwoGUIDParameterName,
+                                                       null,
+                                                       null,
+                                                       GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                       null,
+                                                       null,
+                                                       methodName);
+        }
     }
 
 
@@ -1417,9 +2130,28 @@ public class GlossaryExchangeHandler
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        // todo
-    }
+        final String glossaryTermOneGUIDParameterName = "glossaryTermOneGUID";
+        final String glossaryTermTwoGUIDParameterName = "glossaryTermTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
+        glossaryTermHandler.clearTermRelationship(userId,
+                                                  glossaryTermOneGUID,
+                                                  glossaryTermOneGUIDParameterName,
+                                                  relationshipTypeName,
+                                                  relationshipTypeNameParameterName,
+                                                  glossaryTermTwoGUID,
+                                                  glossaryTermTwoGUIDParameterName,
+                                                  methodName);
+
+        externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
+                                                         assetManagerName,
+                                                         relationshipTypeName,
+                                                         glossaryTermOneGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                         glossaryTermTwoGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                         methodName);
+    }
 
 
     /**
@@ -1441,7 +2173,17 @@ public class GlossaryExchangeHandler
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsAbstractConcept(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1464,7 +2206,17 @@ public class GlossaryExchangeHandler
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsAbstractConcept(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1487,7 +2239,17 @@ public class GlossaryExchangeHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsDataValue(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1510,7 +2272,34 @@ public class GlossaryExchangeHandler
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsDataValue(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Return the open metadata type ordinal (handling the null condition).
+     *
+     * @param activityType activity type enum
+     * @return open type ordinal
+     */
+    private int getActivityType(GlossaryTermActivityType activityType)
+    {
+        if (activityType != null)
+        {
+            return activityType.getOpenTypeOrdinal();
+        }
+
+        return GlossaryTermActivityType.ACTION.getOpenTypeOrdinal();
     }
 
 
@@ -1535,7 +2324,21 @@ public class GlossaryExchangeHandler
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsActivity(userId,
+                                              glossaryTermGUID,
+                                              glossaryTermGUIDParameterName,
+                                              this.getActivityType(activityType),
+                                              methodName);
     }
 
 
@@ -1558,7 +2361,17 @@ public class GlossaryExchangeHandler
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsActivity(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1583,7 +2396,34 @@ public class GlossaryExchangeHandler
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        if (contextDefinition != null)
+        {
+            glossaryTermHandler.setTermAsContext(userId,
+                                                 glossaryTermGUID,
+                                                 glossaryTermGUIDParameterName,
+                                                 contextDefinition.getDescription(),
+                                                 contextDefinition.getScope(),
+                                                 methodName);
+        }
+        else
+        {
+            glossaryTermHandler.setTermAsContext(userId,
+                                                 glossaryTermGUID,
+                                                 glossaryTermGUIDParameterName,
+                                                 null,
+                                                 null,
+                                                 methodName);
+        }
     }
 
 
@@ -1606,7 +2446,17 @@ public class GlossaryExchangeHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsContext(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1629,7 +2479,17 @@ public class GlossaryExchangeHandler
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsSpineObject(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1652,7 +2512,17 @@ public class GlossaryExchangeHandler
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsSpineObject(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1676,7 +2546,17 @@ public class GlossaryExchangeHandler
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsSpineAttribute(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1699,7 +2579,17 @@ public class GlossaryExchangeHandler
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsSpineAttribute(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1722,7 +2612,17 @@ public class GlossaryExchangeHandler
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsObjectIdentifier(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1745,7 +2645,17 @@ public class GlossaryExchangeHandler
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsObjectIdentifier(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
     }
 
 
@@ -1768,7 +2678,20 @@ public class GlossaryExchangeHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        // todo
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.removeGlossaryTerm(userId,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               methodName);
     }
 
 
@@ -1780,6 +2703,7 @@ public class GlossaryExchangeHandler
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString string to find in the properties
+     * @param searchStringParameterName parameter supplying search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -1794,14 +2718,27 @@ public class GlossaryExchangeHandler
                                                          String assetManagerGUID,
                                                          String assetManagerName,
                                                          String searchString,
+                                                         String searchStringParameterName,
                                                          int    startFrom,
                                                          int    pageSize,
                                                          String methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryTermElement> results = glossaryTermHandler.findTerms(userId,
+                                                                          searchString,
+                                                                          searchStringParameterName,
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
     }
 
 
@@ -1832,8 +2769,20 @@ public class GlossaryExchangeHandler
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryTermElement> results = glossaryTermHandler.getTermsForGlossary(userId,
+                                                                                    glossaryGUID,
+                                                                                    glossaryGUIDParameterName,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
     }
 
 
@@ -1866,8 +2815,20 @@ public class GlossaryExchangeHandler
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryTermElement> results = glossaryTermHandler.getTermsForGlossaryCategory(userId,
+                                                                                            glossaryCategoryGUID,
+                                                                                            glossaryCategoryGUIDParameterName,
+                                                                                            startFrom,
+                                                                                            pageSize,
+                                                                                            methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
     }
 
 
@@ -1901,8 +2862,20 @@ public class GlossaryExchangeHandler
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        // todo
-        return null;
+        List<GlossaryTermElement> results = glossaryTermHandler.getTermsByName(userId,
+                                                                               name,
+                                                                               nameParameterName,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
     }
 
 
@@ -1922,15 +2895,29 @@ public class GlossaryExchangeHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElement getGlossaryTermByGUID(String userId,
-                                                     String guid,
                                                      String assetManagerGUID,
                                                      String assetManagerName,
+                                                     String guid,
                                                      String methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        // todo
-        return null;
+        final String guidParameterName  = "guid";
+
+        GlossaryTermElement glossaryTerm = glossaryTermHandler.getTerm(userId, guid, guidParameterName, methodName);
+
+        if (glossaryTerm != null)
+        {
+            glossaryTerm.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                         guid,
+                                                                         guidParameterName,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         assetManagerGUID,
+                                                                         assetManagerName,
+                                                                         methodName));
+        }
+
+        return glossaryTerm;
     }
 
 

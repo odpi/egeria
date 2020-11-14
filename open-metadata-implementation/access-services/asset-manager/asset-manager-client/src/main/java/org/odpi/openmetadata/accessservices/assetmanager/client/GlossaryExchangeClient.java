@@ -5,12 +5,12 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.GlossaryExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
+import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -22,21 +22,8 @@ import java.util.Map;
 /**
  * GlossaryExchangeClient is the client for managing resources from a glossary.
  */
-public class GlossaryExchangeClient implements GlossaryExchangeInterface
+public class GlossaryExchangeClient extends ExchangeClientBase implements GlossaryExchangeInterface
 {
-    private final String assetManagerGUIDParameterName = "assetManagerGUID";
-    private final String assetManagerNameParameterName = "assetManagerName";
-    private final String urlTemplatePrefix             = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/glossaries";
-
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private AssetManagerRESTClient  restClient;               /* Initialized in constructor */
-
-    private static NullRequestBody nullRequestBody   = new NullRequestBody();
-
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -50,14 +37,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                   String   serverPlatformURLRoot,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -72,14 +52,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
     public GlossaryExchangeClient(String serverName,
                                   String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -102,14 +75,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                   String   password,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -120,23 +86,17 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GlossaryExchangeClient(String                 serverName,
                                   String                 serverPlatformURLRoot,
                                   AssetManagerRESTClient restClient,
-                                  int                    maxPageSize) throws InvalidParameterException
+                                  int                    maxPageSize,
+                                  AuditLog               auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
 
 
@@ -156,76 +116,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                   String userId,
                                   String password) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
-    }
-
-
-    /* ========================================================
-     * Metadata correlation setup.
-     */
-
-
-    /**
-     * Set up the correlation properties for request.
-     *
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalIdentifier unique identifier of the glossary in the external asset manager
-      * @return filled out correlation properties
-     */
-    private MetadataCorrelationProperties getCorrelationProperties(String              assetManagerGUID,
-                                                                   String              assetManagerName,
-                                                                   String              externalIdentifier)
-    {
-        MetadataCorrelationProperties correlationProperties = new MetadataCorrelationProperties();
-
-        correlationProperties.setAssetManagerGUID(assetManagerGUID);
-        correlationProperties.setAssetManagerName(assetManagerName);
-        correlationProperties.setExternalIdentifier(externalIdentifier);
-
-        return correlationProperties;
-    }
-
-
-    /**
-     * Set up the correlation properties for request.
-     *
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalIdentifier unique identifier of the glossary in the external asset manager
-     * @param externalIdentifierName name of property for the external identifier in the external asset manager
-     * @param externalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param externalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
-     * @return filled out correlation properties
-     */
-    private MetadataCorrelationProperties getCorrelationProperties(String              assetManagerGUID,
-                                                                   String              assetManagerName,
-                                                                   String              externalIdentifier,
-                                                                   String              externalIdentifierName,
-                                                                   String              externalIdentifierUsage,
-                                                                   KeyPattern          externalIdentifierKeyPattern,
-                                                                   Map<String, String> mappingProperties)
-    {
-        MetadataCorrelationProperties correlationProperties = new MetadataCorrelationProperties();
-
-        correlationProperties.setAssetManagerGUID(assetManagerGUID);
-        correlationProperties.setAssetManagerName(assetManagerName);
-        correlationProperties.setKeyPattern(KeyPattern.LOCAL_KEY);
-        correlationProperties.setExternalIdentifier(externalIdentifier);
-        correlationProperties.setExternalIdentifierName(externalIdentifierName);
-        correlationProperties.setExternalIdentifierUsage(externalIdentifierUsage);
-        correlationProperties.setKeyPattern(externalIdentifierKeyPattern);
-        correlationProperties.setMappingProperties(mappingProperties);
-
-        return correlationProperties;
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -245,6 +136,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param glossaryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryExternalIdentifierSource component that issuing this request.
      * @param glossaryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryProperties properties to store
@@ -261,6 +153,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                  String              glossaryExternalIdentifier,
                                  String              glossaryExternalIdentifierName,
                                  String              glossaryExternalIdentifierUsage,
+                                 String              glossaryExternalIdentifierSource,
                                  KeyPattern          glossaryExternalIdentifierKeyPattern,
                                  Map<String, String> mappingProperties,
                                  GlossaryProperties  glossaryProperties) throws InvalidParameterException,
@@ -272,8 +165,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "glossaryProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
@@ -284,10 +175,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                    glossaryExternalIdentifier,
                                                                                    glossaryExternalIdentifierName,
                                                                                    glossaryExternalIdentifierUsage,
+                                                                                   glossaryExternalIdentifierSource,
                                                                                    glossaryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties));
+                                                                                   mappingProperties,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix;
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -312,6 +205,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param glossaryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryExternalIdentifierSource component that issuing this request.
      * @param glossaryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param templateGUID unique identifier of the metadata element to copy
@@ -330,6 +224,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                              String              glossaryExternalIdentifier,
                                              String              glossaryExternalIdentifierName,
                                              String              glossaryExternalIdentifierUsage,
+                                             String              glossaryExternalIdentifierSource,
                                              KeyPattern          glossaryExternalIdentifierKeyPattern,
                                              Map<String, String> mappingProperties,
                                              TemplateProperties  templateProperties) throws InvalidParameterException,
@@ -342,8 +237,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -355,10 +248,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                    glossaryExternalIdentifier,
                                                                                    glossaryExternalIdentifierName,
                                                                                    glossaryExternalIdentifierUsage,
+                                                                                   glossaryExternalIdentifierSource,
                                                                                    glossaryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties));
+                                                                                   mappingProperties,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/from-template/{2}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -400,8 +295,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "glossaryProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -410,9 +303,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setElementProperties(glossaryProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryExternalIdentifier));
+                                                                                   glossaryExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -450,17 +344,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName   = "glossaryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryExternalIdentifier),
+                                                                      glossaryExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryGUID);
@@ -499,17 +392,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName   = "glossaryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
         TaxonomyClassificationRequestBody requestBody = new TaxonomyClassificationRequestBody();
         requestBody.setOrganizingPrinciple(organizingPrinciple);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryExternalIdentifier));
+                                                                                   glossaryExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/is-taxonomy";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-taxonomy";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -545,17 +437,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName   = "glossaryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/is-taxonomy/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-taxonomy/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryExternalIdentifier),
+                                                                      glossaryExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryGUID);
@@ -593,17 +484,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName   = "glossaryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
         CanonicalVocabularyClassificationRequestBody requestBody = new CanonicalVocabularyClassificationRequestBody();
         requestBody.setScope(scope);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryExternalIdentifier));
+                                                                                   glossaryExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/is-canonical";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-canonical";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -639,17 +529,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName   = "glossaryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/is-canonical/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-canonical/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryExternalIdentifier),
+                                                                      glossaryExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryGUID);
@@ -687,8 +576,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -697,7 +584,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        final String urlTemplate = urlTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-search-string?startFrom={2}&pageSize={3}";
 
         GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
                                                                                     urlTemplate,
@@ -742,8 +629,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
@@ -753,7 +638,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
 
-        final String urlTemplate = urlTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-name?startFrom={2}&pageSize={3}";
 
         GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
                                                                                     urlTemplate,
@@ -793,19 +678,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String methodName = "getGlossariesForAssetManager";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/by-asset-manager?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-asset-manager?startFrom={2}&pageSize={3}";
 
         GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
                                                                                     urlTemplate,
-                                                                                    requestBody,
+                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                          assetManagerName),
                                                                                     serverName,
                                                                                     userId,
                                                                                     startFrom,
@@ -840,19 +720,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String guidParameterName = "guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/retrieve";
 
         GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
                                                                                  urlTemplate,
-                                                                                 requestBody,
+                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                       assetManagerName),
                                                                                  serverName,
                                                                                  userId,
                                                                                  guid);
@@ -860,51 +735,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         return restResult.getElement();
     }
 
-
-    /**
-     * Retrieve the glossary metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryExternalIdentifier unique identifier of the requested metadata element from the asset manager
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GlossaryElement getGlossaryByExternalIdentifier(String userId,
-                                                           String assetManagerGUID,
-                                                           String assetManagerName,
-                                                           String glossaryExternalIdentifier) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
-    {
-        final String methodName = "getGlossaryByExternalIdentifier";
-        final String externalIdParameterName = "glossaryExternalIdentifier";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(glossaryExternalIdentifier, externalIdParameterName, methodName);
-
-        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-        requestBody.setExternalIdentifier(glossaryExternalIdentifier);
-
-        final String urlTemplate = urlTemplatePrefix + "/retrieve-by-external-identifier";
-
-        GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 requestBody,
-                                                                                 serverName,
-                                                                                 userId);
-
-        return restResult.getElement();
-    }
 
 
     /* =====================================================================================================================
@@ -921,6 +751,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
      * @param glossaryCategoryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryCategoryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryCategoryExternalIdentifierSource component that issuing this request.
      * @param glossaryCategoryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
      *                          external asset manager and open metadata
@@ -939,6 +770,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                          String                     glossaryCategoryExternalIdentifier,
                                          String                     glossaryCategoryExternalIdentifierName,
                                          String                     glossaryCategoryExternalIdentifierUsage,
+                                         String                     glossaryCategoryExternalIdentifierSource,
                                          KeyPattern                 glossaryCategoryExternalIdentifierKeyPattern,
                                          Map<String, String>        mappingProperties,
                                          GlossaryCategoryProperties glossaryCategoryProperties) throws InvalidParameterException,
@@ -951,8 +783,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "glossaryCategoryProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -964,10 +794,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                    glossaryCategoryExternalIdentifier,
                                                                                    glossaryCategoryExternalIdentifierName,
                                                                                    glossaryCategoryExternalIdentifierUsage,
+                                                                                   glossaryCategoryExternalIdentifierSource,
                                                                                    glossaryCategoryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties));
+                                                                                   mappingProperties,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/categories";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/categories";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -987,10 +819,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
      * @param glossaryCategoryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryCategoryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryCategoryExternalIdentifierSource component that issuing this request.
      * @param glossaryCategoryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
      *                          external asset manager and open metadata
@@ -1006,10 +838,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                      String              assetManagerGUID,
                                                      String              assetManagerName,
                                                      String              templateGUID,
-                                                     String              glossaryGUID,
                                                      String              glossaryCategoryExternalIdentifier,
                                                      String              glossaryCategoryExternalIdentifierName,
                                                      String              glossaryCategoryExternalIdentifierUsage,
+                                                     String              glossaryCategoryExternalIdentifierSource,
                                                      KeyPattern          glossaryCategoryExternalIdentifierKeyPattern,
                                                      Map<String, String> mappingProperties,
                                                      TemplateProperties  templateProperties) throws InvalidParameterException,
@@ -1017,15 +849,11 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                                     PropertyServerException
     {
         final String methodName                  = "createGlossaryCategoryFromTemplate";
-        final String guidParameterName           = "glossaryGUID";
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
         final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -1037,17 +865,18 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                    glossaryCategoryExternalIdentifier,
                                                                                    glossaryCategoryExternalIdentifierName,
                                                                                    glossaryCategoryExternalIdentifierUsage,
+                                                                                   glossaryCategoryExternalIdentifierSource,
                                                                                    glossaryCategoryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties));
+                                                                                   mappingProperties,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/categories/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/from-template/{1}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  glossaryGUID,
                                                                   templateGUID);
 
         return restResult.getGUID();
@@ -1083,8 +912,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "glossaryCategoryProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -1093,9 +920,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setElementProperties(glossaryCategoryProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryCategoryExternalIdentifier));
+                                                                                   glossaryCategoryExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1132,20 +960,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryChildGUIDParameterName  = "glossaryChildCategoryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryParentCategoryGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryChildCategoryGUID, glossaryChildGUIDParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/subcategories/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                              assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryParentCategoryGUID,
@@ -1179,20 +1003,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryChildGUIDParameterName  = "glossaryChildCategoryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryParentCategoryGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryChildCategoryGUID, glossaryChildGUIDParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/subcategory/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategory/{3}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryParentCategoryGUID,
@@ -1225,17 +1043,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName   = "glossaryCategoryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryCategoryExternalIdentifier),
+                                                                      glossaryCategoryExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryCategoryGUID);
@@ -1273,8 +1090,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -1282,7 +1097,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        final String urlTemplate = urlTemplatePrefix + "/categories/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-search-string?startFrom={2}&pageSize={3}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
@@ -1326,19 +1141,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/{2}/categories/retrieve?startFrom={3}&pageSize={4}";
-
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/categories/retrieve?startFrom={3}&pageSize={4}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
-                                                                                                    requestBody,
+                                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                          assetManagerName),
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     glossaryGUID,
@@ -1380,8 +1190,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         NameRequestBody requestBody = new NameRequestBody();
@@ -1390,7 +1198,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
 
-        final String urlTemplate = urlTemplatePrefix + "/categories/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-name?startFrom={2}&pageSize={3}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
@@ -1429,19 +1237,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String guidParameterName = "glossaryCategoryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/retrieve";
 
         GlossaryCategoryElementResponse restResult = restClient.callGlossaryCategoryPostRESTCall(methodName,
                                                                                                  urlTemplate,
-                                                                                                 requestBody,
+                                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                       assetManagerName),
                                                                                                  serverName,
                                                                                                  userId,
                                                                                                  glossaryCategoryGUID);
@@ -1475,19 +1278,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String guidParameterName = "glossaryCategoryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/parent/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/parent/retrieve";
 
         GlossaryCategoryElementResponse restResult = restClient.callGlossaryCategoryPostRESTCall(methodName,
                                                                                                  urlTemplate,
-                                                                                                 requestBody,
+                                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                       assetManagerName),
                                                                                                  serverName,
                                                                                                  userId,
                                                                                                  glossaryCategoryGUID);
@@ -1528,15 +1326,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/subcategories/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/retrieve?startFrom={3}&pageSize={4}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
-                                                                                                    requestBody,
+                                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                          assetManagerName),
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     glossaryCategoryGUID,
@@ -1561,6 +1356,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryTermExternalIdentifierSource component that issuing this request.
      * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermProperties properties for the glossary term
@@ -1578,6 +1374,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                      String                 glossaryTermExternalIdentifier,
                                      String                 glossaryTermExternalIdentifierName,
                                      String                 glossaryTermExternalIdentifierUsage,
+                                     String                 glossaryTermExternalIdentifierSource,
                                      KeyPattern             glossaryTermExternalIdentifierKeyPattern,
                                      Map<String, String>    mappingProperties,
                                      GlossaryTermProperties glossaryTermProperties) throws InvalidParameterException,
@@ -1590,8 +1387,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "glossaryTermProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -1603,10 +1398,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                    glossaryTermExternalIdentifier,
                                                                                    glossaryTermExternalIdentifierName,
                                                                                    glossaryTermExternalIdentifierUsage,
+                                                                                   glossaryTermExternalIdentifierSource,
                                                                                    glossaryTermExternalIdentifierKeyPattern,
-                                                                                   mappingProperties));
+                                                                                   mappingProperties,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/terms";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1629,6 +1426,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryTermExternalIdentifierSource component that issuing this request.
      * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermProperties properties for the glossary term
@@ -1647,6 +1445,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                String                 glossaryTermExternalIdentifier,
                                                String                 glossaryTermExternalIdentifierName,
                                                String                 glossaryTermExternalIdentifierUsage,
+                                               String                 glossaryTermExternalIdentifierSource,
                                                KeyPattern             glossaryTermExternalIdentifierKeyPattern,
                                                Map<String, String>    mappingProperties,
                                                GlossaryTermProperties glossaryTermProperties,
@@ -1660,8 +1459,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "glossaryTermProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -1674,10 +1471,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                    glossaryTermExternalIdentifier,
                                                                                    glossaryTermExternalIdentifierName,
                                                                                    glossaryTermExternalIdentifierUsage,
+                                                                                   glossaryTermExternalIdentifierSource,
                                                                                    glossaryTermExternalIdentifierKeyPattern,
-                                                                                   mappingProperties));
+                                                                                   mappingProperties,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/terms/new-controlled";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms/new-controlled";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1697,10 +1496,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the glossary term is located.
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryTermExternalIdentifierSource component that issuing this request.
      * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
      *                          external asset manager and open metadata
@@ -1716,10 +1515,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                  String              assetManagerGUID,
                                                  String              assetManagerName,
                                                  String              templateGUID,
-                                                 String              glossaryGUID,
                                                  String              glossaryTermExternalIdentifier,
                                                  String              glossaryTermExternalIdentifierName,
                                                  String              glossaryTermExternalIdentifierUsage,
+                                                 String              glossaryTermExternalIdentifierSource,
                                                  KeyPattern          glossaryTermExternalIdentifierKeyPattern,
                                                  Map<String, String> mappingProperties,
                                                  TemplateProperties  templateProperties) throws InvalidParameterException,
@@ -1727,15 +1526,11 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                                 PropertyServerException
     {
         final String methodName                  = "createGlossaryTermFromTemplate";
-        final String guidParameterName           = "glossaryGUID";
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
         final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -1747,17 +1542,18 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                    glossaryTermExternalIdentifier,
                                                                                    glossaryTermExternalIdentifierName,
                                                                                    glossaryTermExternalIdentifierUsage,
+                                                                                   glossaryTermExternalIdentifierSource,
                                                                                    glossaryTermExternalIdentifierKeyPattern,
-                                                                                   mappingProperties));
+                                                                                   mappingProperties,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/terms/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/from-template/{1}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  glossaryGUID,
                                                                   templateGUID);
 
         return restResult.getGUID();
@@ -1793,8 +1589,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String qualifiedNameParameterName  = "glossaryTermProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -1803,9 +1597,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setElementProperties(glossaryTermProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryTermExternalIdentifier));
+                                                                                   glossaryTermExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1845,8 +1640,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String propertiesParameterName     = "glossaryTermStatus";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryTermStatus, propertiesParameterName, methodName);
 
@@ -1854,9 +1647,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setGlossaryTermStatus(glossaryTermStatus);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryTermExternalIdentifier));
+                                                                                   glossaryTermExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/status";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/status";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1895,8 +1689,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryChildGUIDParameterName  = "glossaryTermGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryChildGUIDParameterName, methodName);
 
@@ -1905,7 +1697,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setCategorizationProperties(categorizationProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/terms/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1946,15 +1738,11 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryChildGUIDParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/terms/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        nullRequestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryCategoryGUID,
@@ -2002,7 +1790,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipsProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/relationships/{3}/terms/{4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2053,7 +1841,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipsProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/relationships/{3}/terms/{4}/update";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/update";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2097,15 +1885,11 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateGUID(glossaryTermOneGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermTwoGUID, glossaryChildGUIDParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/relationships/{3}/terms/{4}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryTermOneGUID,
@@ -2142,13 +1926,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-abstract-concept";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-abstract-concept";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2182,13 +1967,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-abstract-concept/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-abstract-concept/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2222,13 +2008,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-data-value";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-value";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2262,13 +2049,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-data-value/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-value/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2308,9 +2096,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setActivityType(activityType);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryTermExternalIdentifier));
+                                                                                   glossaryTermExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-activity";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-activity";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2348,13 +2137,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-activity/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-activity/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2394,9 +2184,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setContextDefinition(contextDefinition);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryTermExternalIdentifier));
+                                                                                   glossaryTermExternalIdentifier,
+                                                                                   methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-context-definition";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-context-definition";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2434,13 +2225,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-context-definition/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-context-definition/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2474,13 +2266,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-spine-object";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-object";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2514,13 +2307,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-spine-object/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-object/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2555,13 +2349,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-spine-attribute";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-attribute";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2595,13 +2390,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-spine-attribute/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-attribute/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2635,13 +2431,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-object-identifier";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-object-identifier";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2675,13 +2472,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/is-object-identifier/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-object-identifier/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2713,17 +2511,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName   = "glossaryTermGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         this.getCorrelationProperties(assetManagerGUID,
                                                                       assetManagerName,
-                                                                      glossaryTermExternalIdentifier),
+                                                                      glossaryTermExternalIdentifier,
+                                                                      methodName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID);
@@ -2761,8 +2558,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -2771,7 +2566,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        final String urlTemplate = urlTemplatePrefix + "/terms/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-search-string?startFrom={2}&pageSize={3}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
@@ -2817,15 +2612,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           requestBody,
+                                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                 assetManagerName),
                                                                                            serverName,
                                                                                            userId,
                                                                                            glossaryGUID,
@@ -2869,15 +2661,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           requestBody,
+                                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                 assetManagerName),
                                                                                            serverName,
                                                                                            userId,
                                                                                            glossaryCategoryGUID,
@@ -2919,8 +2708,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         NameRequestBody requestBody = new NameRequestBody();
@@ -2929,7 +2716,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
 
-        final String urlTemplate = urlTemplatePrefix + "/terms/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-name?startFrom={2}&pageSize={3}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
@@ -2968,19 +2755,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String guidParameterName = "glossaryTermGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/terms/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/retrieve";
 
         GlossaryTermElementResponse restResult = restClient.callGlossaryTermPostRESTCall(methodName,
                                                                                          urlTemplate,
-                                                                                         requestBody,
+                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                               assetManagerName),
                                                                                          serverName,
                                                                                          userId,
                                                                                          glossaryTermGUID);
@@ -3023,8 +2805,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String propertiesParameterName     = "linkProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateObject(linkProperties, propertiesParameterName, methodName);
 
         ExternalGlossaryLinkRequestBody requestBody = new ExternalGlossaryLinkRequestBody();
@@ -3032,7 +2812,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setElementProperties(linkProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-links";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/external-links";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -3070,8 +2850,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String propertiesParameterName     = "linkProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(linkProperties, propertiesParameterName, methodName);
 
@@ -3080,7 +2858,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setElementProperties(linkProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-links/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/external-links/{2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -3114,19 +2892,13 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String guidParameterName = "externalLinkGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-links/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/external-links/{2}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         externalLinkGUID);
@@ -3159,20 +2931,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName = "glossaryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/external-links/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryGUID,
@@ -3206,20 +2972,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName = "glossaryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/external-links/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/{3}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryGUID,
@@ -3255,7 +3015,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/{2}/external-links/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/retrieve?startFrom={3}&pageSize={4}";
 
         ExternalGlossaryLinkElementsResponse restResult = restClient.callExternalGlossaryLinksGetRESTCall(methodName,
                                                                                                           urlTemplate,
@@ -3301,15 +3061,12 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = urlTemplatePrefix + "/by-external-links/{2}/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-external-links/{2}/retrieve?startFrom={3}&pageSize={4}";
 
         GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
                                                                                     urlTemplate,
-                                                                                    requestBody,
+                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                          assetManagerName),
                                                                                     serverName,
                                                                                     userId,
                                                                                     externalLinkGUID,
@@ -3349,8 +3106,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName = "glossaryCategoryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
@@ -3359,7 +3114,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setElementProperties(linkProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/external-links/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/external-links/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -3397,20 +3152,14 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName = "glossaryCategoryGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/external-links/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/external-links/{3}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryCategoryGUID,
@@ -3447,8 +3196,6 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName = "glossaryTermGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
@@ -3457,7 +3204,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setElementProperties(linkProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/external-links/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/external-links/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -3495,20 +3242,16 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String glossaryGUIDParameterName = "glossaryTermGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/external-links/{3}/remove";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/external-links/{3}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryTermGUID,

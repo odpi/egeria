@@ -67,7 +67,7 @@ public class GlossaryConverter<B> extends AssetManagerOMASConverter<B>
 
                     glossaryProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     glossaryProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    glossaryProperties.setDisplayName(this.removeName(instanceProperties));
+                    glossaryProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     glossaryProperties.setDescription(this.removeDescription(instanceProperties));
                     glossaryProperties.setLanguage(this.removeLanguage(instanceProperties));
                     glossaryProperties.setUsage(this.removeUsage(instanceProperties));

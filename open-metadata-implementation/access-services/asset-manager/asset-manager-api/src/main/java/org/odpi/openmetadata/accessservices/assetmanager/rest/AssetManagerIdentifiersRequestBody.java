@@ -4,11 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

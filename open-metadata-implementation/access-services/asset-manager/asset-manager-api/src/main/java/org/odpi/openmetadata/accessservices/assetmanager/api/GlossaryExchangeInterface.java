@@ -41,6 +41,7 @@ public interface GlossaryExchangeInterface
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param glossaryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryExternalIdentifierSource component that issuing this request.
      * @param glossaryExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryProperties properties to store
@@ -57,6 +58,7 @@ public interface GlossaryExchangeInterface
                           String              glossaryExternalIdentifier,
                           String              glossaryExternalIdentifierName,
                           String              glossaryExternalIdentifierUsage,
+                          String              glossaryExternalIdentifierSource,
                           KeyPattern          glossaryExternalIdentifierKeyPattern,
                           Map<String, String> mappingProperties,
                           GlossaryProperties  glossaryProperties) throws InvalidParameterException,
@@ -77,6 +79,7 @@ public interface GlossaryExchangeInterface
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param glossaryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryExternalIdentifierSource component that issuing this request.
      * @param glossaryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param templateGUID unique identifier of the metadata element to copy
@@ -95,6 +98,7 @@ public interface GlossaryExchangeInterface
                                       String              glossaryExternalIdentifier,
                                       String              glossaryExternalIdentifierName,
                                       String              glossaryExternalIdentifierUsage,
+                                      String              glossaryExternalIdentifierSource,
                                       KeyPattern          glossaryExternalIdentifierKeyPattern,
                                       Map<String, String> mappingProperties,
                                       TemplateProperties  templateProperties) throws InvalidParameterException,
@@ -350,27 +354,6 @@ public interface GlossaryExchangeInterface
                                                                       PropertyServerException;
 
 
-    /**
-     * Retrieve the glossary metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryExternalIdentifier unique identifier of the requested metadata element from the asset manager
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    GlossaryElement getGlossaryByExternalIdentifier(String userId,
-                                                    String assetManagerGUID,
-                                                    String assetManagerName,
-                                                    String glossaryExternalIdentifier) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
-
     /* =====================================================================================================================
      * A glossary may host one or more glossary categories depending on its capability
      */
@@ -385,6 +368,7 @@ public interface GlossaryExchangeInterface
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
      * @param glossaryCategoryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryCategoryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryCategoryExternalIdentifierSource component that issuing this request.
      * @param glossaryCategoryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryCategoryProperties properties about the glossary category to store
@@ -402,6 +386,7 @@ public interface GlossaryExchangeInterface
                                   String                     glossaryCategoryExternalIdentifier,
                                   String                     glossaryCategoryExternalIdentifierName,
                                   String                     glossaryCategoryExternalIdentifierUsage,
+                                  String                     glossaryCategoryExternalIdentifierSource,
                                   KeyPattern                 glossaryCategoryExternalIdentifierKeyPattern,
                                   Map<String, String>        mappingProperties,
                                   GlossaryCategoryProperties glossaryCategoryProperties) throws InvalidParameterException,
@@ -416,10 +401,10 @@ public interface GlossaryExchangeInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
      * @param glossaryCategoryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryCategoryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryCategoryExternalIdentifierSource component that issuing this request.
      * @param glossaryCategoryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
      *                          external asset manager and open metadata
@@ -435,10 +420,10 @@ public interface GlossaryExchangeInterface
                                               String              assetManagerGUID,
                                               String              assetManagerName,
                                               String              templateGUID,
-                                              String              glossaryGUID,
                                               String              glossaryCategoryExternalIdentifier,
                                               String              glossaryCategoryExternalIdentifierName,
                                               String              glossaryCategoryExternalIdentifierUsage,
+                                              String              glossaryCategoryExternalIdentifierSource,
                                               KeyPattern          glossaryCategoryExternalIdentifierKeyPattern,
                                               Map<String, String> mappingProperties,
                                               TemplateProperties  templateProperties) throws InvalidParameterException,
@@ -700,6 +685,7 @@ public interface GlossaryExchangeInterface
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryTermExternalIdentifierSource component that issuing this request.
      * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
      *                          external asset manager and open metadata
@@ -718,6 +704,7 @@ public interface GlossaryExchangeInterface
                               String                 glossaryTermExternalIdentifier,
                               String                 glossaryTermExternalIdentifierName,
                               String                 glossaryTermExternalIdentifierUsage,
+                              String                 glossaryTermExternalIdentifierSource,
                               KeyPattern             glossaryTermExternalIdentifierKeyPattern,
                               Map<String, String>    mappingProperties,
                               GlossaryTermProperties glossaryTermProperties) throws InvalidParameterException,
@@ -734,6 +721,7 @@ public interface GlossaryExchangeInterface
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryTermExternalIdentifierSource component that issuing this request.
      * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
      *                          external asset manager and open metadata
@@ -753,6 +741,7 @@ public interface GlossaryExchangeInterface
                                         String                 glossaryTermExternalIdentifier,
                                         String                 glossaryTermExternalIdentifierName,
                                         String                 glossaryTermExternalIdentifierUsage,
+                                        String                 glossaryTermExternalIdentifierSource,
                                         KeyPattern             glossaryTermExternalIdentifierKeyPattern,
                                         Map<String, String>    mappingProperties,
                                         GlossaryTermProperties glossaryTermProperties,
@@ -768,10 +757,10 @@ public interface GlossaryExchangeInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the glossary term is located.
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param glossaryTermExternalIdentifierSource component that issuing this request.
      * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
      *                          external asset manager and open metadata
@@ -787,10 +776,10 @@ public interface GlossaryExchangeInterface
                                           String              assetManagerGUID,
                                           String              assetManagerName,
                                           String              templateGUID,
-                                          String              glossaryGUID,
                                           String              glossaryTermExternalIdentifier,
                                           String              glossaryTermExternalIdentifierName,
                                           String              glossaryTermExternalIdentifierUsage,
+                                          String              glossaryTermExternalIdentifierSource,
                                           KeyPattern          glossaryTermExternalIdentifierKeyPattern,
                                           Map<String, String> mappingProperties,
                                           TemplateProperties  templateProperties) throws InvalidParameterException,
@@ -805,8 +794,8 @@ public interface GlossaryExchangeInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermProperties new properties for the glossary term
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
