@@ -44,7 +44,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
     PERMITTED_SYNC_CHANGING("OMAG-GENERIC-HANDLERS-0003",
                            OMRSAuditLogRecordSeverity.INFO,
                            "The permitted synchronization for {0} {1} ({2}) has changed for identifier {3} from {4} to {5}",
-                           "The described linkage is stored in one of the connected open metadata repositories.",
+                           "The described synchronization configuration is stored in one of the connected open metadata repositories.",
                            "Verify that the configuration for the integration connector supporting this third party technology " +
                                    "has legitimately changed to the new permitted synchronization."),
 
@@ -57,8 +57,8 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
 
     EXTERNAL_RELATIONSHIP_REMOVED("OMAG-GENERIC-HANDLERS-0005",
                               OMRSAuditLogRecordSeverity.INFO,
-                              "{0} has remove the {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})",
-                              "The removed relationship was stored in one of the connected open metadata repositories.",
+                              "{0} has removed the {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})",
+                              "The removed relationship was stored in one of the connected open metadata repositories but has now been removed.",
                               "No action is required now but this message can be useful to understand why a particular relationship " +
                                       "has been removed."),
 
