@@ -614,25 +614,28 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         properties.add(property);
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
 
         ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+
         validInstanceStatusList.add(InstanceStatus.DRAFT);
         validInstanceStatusList.add(InstanceStatus.PROPOSED);
         validInstanceStatusList.add(InstanceStatus.APPROVED);
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
         validInstanceStatusList.add(InstanceStatus.DELETED);
+
         entityDef.setValidInstanceStatusList(validInstanceStatusList);
         entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
         return entityDef;
     }
 
@@ -1415,7 +1418,7 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 1.
          */
         final String                     end1EntityType               = "Referenceable";
-        final String                     end1AttributeName            = "resource";
+        final String                     end1AttributeName            = "resources";
         final String                     end1AttributeDescription     = "Resource being identified.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -10339,7 +10342,7 @@ public class OpenMetadataTypesArchive1_2
     /**
      * The PortType enum describes the type of a port
      *
-     * @return PortType EnumyDef
+     * @return PortType EnumDef
      */
     private EnumDef getPortTypeEnum()
     {
@@ -10355,7 +10358,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element1Ordinal         = 0;
         final String element1Value           = "INPUT_PORT";
-        final String element1Description     = "Input Port.";
+        final String element1Description     = "Data is passed into the process.";
         final String element1DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
@@ -10366,7 +10369,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element2Ordinal         = 1;
         final String element2Value           = "OUTPUT_PORT";
-        final String element2Description     = "Output Port.";
+        final String element2Description     = "Data is produced by the process.";
         final String element2DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
@@ -10377,7 +10380,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element3Ordinal         = 2;
         final String element3Value           = "INOUT_PORT";
-        final String element3Description     = "Input Output Port.";
+        final String element3Description     = "A request-response interface is provided by the process.";
         final String element3DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
@@ -10388,7 +10391,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element4Ordinal         = 3;
         final String element4Value           = "OUTIN_PORT";
-        final String element4Description     = "Output Input Port.";
+        final String element4Description     = "A request-response call is made by the process.";
         final String element4DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
@@ -11159,7 +11162,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "480e6993-35c5-433a-b50b-0f5c4063fb5d";
         final String name            = "SubjectArea";
-        final String description     = "Identifies a glossary category as a subject area.";
+        final String description     = "Identifies an element as part of a subject area definition.";
         final String descriptionGUID = null;
 
         final String linkedToEntity = "Referenceable";
@@ -11629,7 +11632,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element2Ordinal         = 1;
         final String element2Value           = "Action";
-        final String element2Description     = "A requested of required change.";
+        final String element2Description     = "A requested or required change.";
         final String element2DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
@@ -16426,7 +16429,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "c6fe40af-cdd6-4ca7-98c4-353d2612921f";
         final String name            = "SubjectAreaOwner";
-        final String description     = "A role defining a responsibility to manage an asset.";
+        final String description     = "A role defining a responsibility to manage the development and maintainance of a subject area.";
         final String descriptionGUID = null;
 
         final String superTypeName = "GovernanceRole";

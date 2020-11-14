@@ -99,32 +99,46 @@ public class IntegrationDaemonOperationalServices
 
             for (IntegrationServiceConfig integrationServiceConfig : configuration)
             {
-                String                           partnerOMASRootURL          = this.getPartnerOMASRootURL(integrationServiceConfig);
-                String                           partnerOMASServerName       = this.getPartnerOMASServerName(integrationServiceConfig);
-                String                           integrationServiceURLMarker = this.getServiceURLMarker(integrationServiceConfig);
-                IntegrationContextManager        contextManager              = this.getContextManager(integrationServiceConfig);
-
-                contextManager.initializeContextManager(partnerOMASServerName,
-                                                        partnerOMASRootURL,
-                                                        localServerUserId,
-                                                        localServerPassword,
-                                                        maxPageSize,
-                                                        auditLog);
-
-                contextManager.createClients();
-
-                IntegrationServiceHandler  integrationServiceHandler = new IntegrationServiceHandler(localServerName,
-                                                                                                     integrationServiceConfig,
-                                                                                                     contextManager,
-                                                                                                     auditLog);
-
-                List<IntegrationConnectorHandler>  serviceConnectorHandlers = integrationServiceHandler.initialize();
-                if (serviceConnectorHandlers != null)
+                if (integrationServiceConfig != null)
                 {
-                    daemonConnectorHandlers.addAll(serviceConnectorHandlers);
-                }
+                    String                    partnerOMASRootURL          = this.getPartnerOMASRootURL(integrationServiceConfig);
+                    String                    partnerOMASServerName       = this.getPartnerOMASServerName(integrationServiceConfig);
+                    String                    integrationServiceURLMarker = this.getServiceURLMarker(integrationServiceConfig);
+                    IntegrationContextManager contextManager              = this.getContextManager(integrationServiceConfig);
 
-                integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
+                    if (integrationServiceConfig.getDefaultPermittedSynchronization() == null)
+                    {
+                        auditLog.logMessage(actionDescription,
+                                            IntegrationDaemonServicesAuditCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(localServerName),
+                                            integrationServiceConfig.toString());
+
+                        throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(localServerName),
+                                                                  this.getClass().getName(),
+                                                                  methodName);
+                    }
+
+                    contextManager.initializeContextManager(partnerOMASServerName,
+                                                            partnerOMASRootURL,
+                                                            localServerUserId,
+                                                            localServerPassword,
+                                                            maxPageSize,
+                                                            auditLog);
+
+                    contextManager.createClients();
+
+                    IntegrationServiceHandler integrationServiceHandler = new IntegrationServiceHandler(localServerName,
+                                                                                                        integrationServiceConfig,
+                                                                                                        contextManager,
+                                                                                                        auditLog);
+
+                    List<IntegrationConnectorHandler> serviceConnectorHandlers = integrationServiceHandler.initialize();
+                    if (serviceConnectorHandlers != null)
+                    {
+                        daemonConnectorHandlers.addAll(serviceConnectorHandlers);
+                    }
+
+                    integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
+                }
             }
 
             /*
@@ -149,6 +163,10 @@ public class IntegrationDaemonOperationalServices
         catch (InvalidParameterException error)
         {
             throw new OMAGConfigurationErrorException(error.getReportedErrorMessage(), error);
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            throw error;
         }
         catch (Throwable error)
         {

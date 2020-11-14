@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.organizationintegrator.contextmanager;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -13,6 +13,8 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registr
 import org.odpi.openmetadata.integrationservices.organizationintegrator.connector.OrganizationIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.organizationintegrator.connector.OrganizationIntegratorContext;
 import org.odpi.openmetadata.integrationservices.organizationintegrator.ffdc.OrganizationIntegratorErrorCode;
+
+import java.util.Map;
 
 
 /**
@@ -36,25 +38,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
      *
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
-    public void createClients() throws InvalidParameterException
-    {
-
-    }
-
-
-    /**
-     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
-     * for this metadata source.
-     *
-     * @param integratorQualifiedName unique name of the software server capability that represents this integration
-     *                                service
-     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
-     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
-     */
-    private void setUpMetadataSource(String   integratorQualifiedName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public  void createClients() throws InvalidParameterException
     {
 
     }
@@ -63,18 +47,50 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
     /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
      *
-     * @param connectorName name of the connector
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
+     * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     * @param serviceOptions options from the integration service's configuration
+     *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void setContext(String                 connectorName,
-                           String                 metadataSourceQualifiedName,
-                           IntegrationConnector   integrationConnector) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException,
-                                                                               ConnectorCheckedException
+    public void setContext(String                   connectorId,
+                           String                   connectorName,
+                           String                   metadataSourceQualifiedName,
+                           IntegrationConnector     integrationConnector,
+                           PermittedSynchronization permittedSynchronization,
+                           Map<String, Object>      serviceOptions) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
+     *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
+     * @param integrationConnector connector created from connection integration service configuration
+     * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     *
+     * @throws InvalidParameterException the connector is not of the correct type
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void setContext(String                   connectorId,
+                           String                   connectorName,
+                           String                   metadataSourceQualifiedName,
+                           IntegrationConnector     integrationConnector,
+                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         if (integrationConnector instanceof OrganizationIntegratorConnector)
         {
