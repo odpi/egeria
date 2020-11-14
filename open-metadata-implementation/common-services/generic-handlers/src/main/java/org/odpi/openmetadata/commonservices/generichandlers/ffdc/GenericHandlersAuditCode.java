@@ -52,15 +52,15 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                             OMRSAuditLogRecordSeverity.INFO,
                             "{0} has created a new {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})",
                             "The described new relationship is stored in one of the connected open metadata repositories.",
-                            "No action is required now but this message can be useful to understand where particular relationships" +
+                            "No action is required now but this message can be useful to understand where particular relationships " +
                                     "came from."),
 
     EXTERNAL_RELATIONSHIP_REMOVED("OMAG-GENERIC-HANDLERS-0005",
                               OMRSAuditLogRecordSeverity.INFO,
                               "{0} has remove the {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})",
                               "The described new relationship is stored in one of the connected open metadata repositories.",
-                              "No action is required now but this message can be useful to understand where particular relationships" +
-                                      "came from."),
+                              "No action is required now but this message can be useful to understand why a particular relationship " +
+                                      "has been removed."),
 
     ;
 
