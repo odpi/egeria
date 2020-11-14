@@ -75,14 +75,14 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * Create the anchor object that all elements in a glossary (terms and categories) are linked to.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
-     * @param description description of the governance zone
+     * @param qualifiedName unique name for the glossary - used in other configuration
+     * @param displayName short display name for the glossary
+     * @param description description of the governance glossary
      * @param language the language used in the glossary definitions
      * @param usage intended usage of the glossary
      * @param additionalProperties additional properties for a glossary
-     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
-     * @param extendedProperties  properties for a governance zone subtype
+     * @param typeName type name from the caller (enables creation of subtypes)
+     * @param extendedProperties  properties for a governance glossary subtype
      * @param methodName calling method
      *
      * @return unique identifier of the new glossary object
@@ -97,18 +97,16 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                  String              language,
                                  String              usage,
                                  Map<String, String> additionalProperties,
-                                 String              suppliedTypeName,
+                                 String              typeName,
                                  Map<String, Object> extendedProperties,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        String typeName = OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME;
+        final String qualifiedNameParameterName = "qualifiedName";
 
-        if (suppliedTypeName != null)
-        {
-            typeName = suppliedTypeName;
-        }
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
@@ -148,9 +146,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
-     * @param description description of the governance zone
+     * @param qualifiedName unique name for the glossary - used in other configuration
+     * @param displayName short display name for the glossary
+     * @param description description of the governance glossary
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -199,13 +197,16 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * Create the anchor object that all elements in a glossary (terms and categories) are linked to.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
-     * @param description description of the governance zone
+     * @param glossaryGUID unique identifier of the glossary to update
+     * @param glossaryGUIDParameterName parameter passing the glossaryGUID
+     * @param qualifiedName unique name for the glossary - used in other configuration
+     * @param displayName short display name for the glossary
+     * @param description description of the governance glossary
      * @param language the language used in the glossary definitions
      * @param usage intended usage of the glossary
-     * @param additionalProperties additional properties for a governance zone
-     * @param extendedProperties  properties for a governance zone subtype
+     * @param additionalProperties additional properties for a governance glossary
+     * @param typeName type of glossary
+     * @param extendedProperties  properties for a governance glossary subtype
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -214,23 +215,30 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      */
     public void   updateGlossary(String              userId,
                                  String              glossaryGUID,
+                                 String              glossaryGUIDParameterName,
                                  String              qualifiedName,
                                  String              displayName,
                                  String              description,
                                  String              language,
                                  String              usage,
                                  Map<String, String> additionalProperties,
+                                 String              typeName,
                                  Map<String, Object> extendedProperties,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        final String glossaryGUIDParameterName = "glossaryGUID";
         final String qualifiedNameParameterName = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
 
         GlossaryBuilder glossaryBuilder = new GlossaryBuilder(qualifiedName,
                                                               displayName,
@@ -248,8 +256,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     glossaryGUID,
                                     glossaryGUIDParameterName,
-                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                    typeGUID,
+                                    typeName,
                                     glossaryBuilder.getInstanceProperties(methodName),
                                     false,
                                     methodName);
@@ -379,9 +387,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
-
         this.removeClassificationFromRepository(userId,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
@@ -393,11 +398,45 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories and terms because
+     * the Anchors classifications are set up in these elements.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryGUIDParameterName parameter supplying the glossaryGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGlossary(String userId,
+                               String glossaryGUID,
+                               String glossaryGUIDParameterName,
+                               String methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        this.deleteBeanInRepository(userId,
+                                    null,
+                                    null,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                    null,
+                                    null,
+                                    methodName);
+    }
+
+
+    /**
      * Retrieve the list of glossary metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
      * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying hte search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -454,12 +493,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
-
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -474,7 +510,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     pageSize,
                                     methodName);
     }
-
 
 
     /**

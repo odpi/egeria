@@ -234,6 +234,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(beanGUID, beanGUIDParameterName, methodName);
+
         EntityDetail  beanEntity = getEntityFromRepository(userId,
                                                            beanGUID,
                                                            beanGUIDParameterName,
@@ -401,6 +404,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(beanGUID, beanGUIDParameterName, methodName);
+
         EntityDetail  entity = validateAnchorEntity(userId,
                                                     beanGUID,
                                                     beanGUIDParameterName,
@@ -2849,6 +2855,58 @@ public class OpenMetadataAPIGenericHandler<B>
                                    methodName);
     }
 
+
+    /**
+     * Return the entities for the required relationships attached to a specific entity.
+     *
+     * @param userId     calling user
+     * @param startingElementGUID identifier for the entity that the identifier is attached to
+     * @param startingElementGUIDParameterName name of the parameter used to pass the guid
+     * @param startingElementTypeName type name for anchor
+     * @param relationshipTypeGUID unique identifier of the attachment's relationship type
+     * @param relationshipTypeName unique name of the attachment's relationship type
+     * @param resultingElementTypeName unique name of the attached entity's type
+     * @param serviceSupportedZones supported zones for calling service
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<EntityDetail> getAttachedEntities(String       userId,
+                                                  String       startingElementGUID,
+                                                  String       startingElementGUIDParameterName,
+                                                  String       startingElementTypeName,
+                                                  String       relationshipTypeGUID,
+                                                  String       relationshipTypeName,
+                                                  String       resultingElementTypeName,
+                                                  List<String> serviceSupportedZones,
+                                                  int          startingFrom,
+                                                  int          pageSize,
+                                                  String       methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        return getAttachedEntities(userId,
+                                   startingElementGUID,
+                                   startingElementGUIDParameterName,
+                                   startingElementTypeName,
+                                   relationshipTypeGUID,
+                                   relationshipTypeName,
+                                   resultingElementTypeName,
+                                   null,
+                                   null,
+                                   serviceSupportedZones,
+                                   startingFrom,
+                                   pageSize,
+                                   methodName);
+    }
+
+
     /**
      * Return the entities for the required relationships attached to a specific entity.
      *
@@ -2986,6 +3044,51 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
+        return this.getUniqueAttachmentLink(userId,
+                                            startingGUID,
+                                            startingGUIDParameterName,
+                                            startingTypeName,
+                                            attachmentRelationshipTypeGUID,
+                                            attachmentRelationshipTypeName,
+                                            attachmentEntityGUID,
+                                            attachmentEntityTypeName,
+                                            0,
+                                            methodName);
+    }
+
+
+    /**
+     * Return the relationship between the requested elements - there should be only one.  Note that the entities are not checked.
+     *
+     * @param userId     calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of the parameter used to pass the guid
+     * @param startingTypeName type name for anchor
+     * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
+     * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
+     * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
+     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param methodName calling method
+     *
+     * @return list of retrieved relationships or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public Relationship  getUniqueAttachmentLink(String   userId,
+                                                 String   startingGUID,
+                                                 String   startingGUIDParameterName,
+                                                 String   startingTypeName,
+                                                 String   attachmentRelationshipTypeGUID,
+                                                 String   attachmentRelationshipTypeName,
+                                                 String   attachmentEntityGUID,
+                                                 String   attachmentEntityTypeName,
+                                                 int      attachmentEntityEnd,
+                                                 String   methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
         List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                                    startingGUID,
                                                                    startingGUIDParameterName,
@@ -2994,6 +3097,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                    attachmentRelationshipTypeName,
                                                                    attachmentEntityGUID,
                                                                    attachmentEntityTypeName,
+                                                                   attachmentEntityEnd,
                                                                    0,
                                                                    invalidParameterHandler.getMaxPagingSize(),
                                                                    methodName);
@@ -3051,6 +3155,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        null,
                                        null,
                                        0,
+                                       0,
                                        invalidParameterHandler.getMaxPagingSize(),
                                        methodName);
     }
@@ -3097,6 +3202,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        attachmentRelationshipTypeName,
                                        null,
                                        attachmentEntityTypeName,
+                                       0,
                                        startingFrom,
                                        pageSize,
                                        methodName);
@@ -3132,6 +3238,58 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   String   attachmentRelationshipTypeName,
                                                   String   attachmentEntityGUID,
                                                   String   attachmentEntityTypeName,
+                                                  int      startingFrom,
+                                                  int      pageSize,
+                                                  String   methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        return this.getAttachmentLinks(userId,
+                                       startingGUID,
+                                       startingGUIDParameterName,
+                                       startingTypeName,
+                                       attachmentRelationshipTypeGUID,
+                                       attachmentRelationshipTypeName,
+                                       attachmentEntityGUID,
+                                       attachmentEntityTypeName,
+                                       0,
+                                       startingFrom,
+                                       pageSize,
+                                       methodName);
+    }
+
+
+    /**
+     * Return the relationships to required elements attached to a specific entity.  Note that the entities are not checked.
+     *
+     * @param userId     calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of the parameter used to pass the guid
+     * @param startingTypeName type name for anchor
+     * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
+     * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
+     * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
+     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd indicates which end to retrieve from (0 is "other end"; 1 is end1; 2 is end 2)
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param methodName calling method
+     *
+     * @return list of retrieved relationships or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<Relationship>  getAttachmentLinks(String   userId,
+                                                  String   startingGUID,
+                                                  String   startingGUIDParameterName,
+                                                  String   startingTypeName,
+                                                  String   attachmentRelationshipTypeGUID,
+                                                  String   attachmentRelationshipTypeName,
+                                                  String   attachmentEntityGUID,
+                                                  String   attachmentEntityTypeName,
+                                                  int      attachmentEntityEnd,
                                                   int      startingFrom,
                                                   int      pageSize,
                                                   String   methodName) throws InvalidParameterException,
@@ -5473,6 +5631,38 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Return the bean for the supplied unique identifier (guid).  An exception occurs if the bean GUID is not known.
+     *
+     * @param userId userId of the user making the request
+     * @param entity entity retrieved from the repository
+     * @param entityParameterName name of the parameter supplying the entity
+     * @param methodName calling method
+     *
+     * @return new bean
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public B getBeanFromEntity(String       userId,
+                               EntityDetail entity,
+                               String       entityParameterName,
+                               String       methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(entity, entityParameterName, methodName);
+
+        if (entity != null)
+        {
+            return converter.getNewBean(beanClass, entity, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the requested string property for the supplied entity guid.
      *
      * @param userId calling user
@@ -5601,15 +5791,15 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @return configured iterator
      */
-    private RepositoryIteratorForEntities getEntitySearchIterator(String       userId,
-                                                                  String       searchString,
-                                                                  String       resultTypeGUID,
-                                                                  String       resultTypeName,
-                                                                  List<String> specificMatchPropertyNames,
-                                                                  boolean      exactValueMatch,
-                                                                  int          startFrom,
-                                                                  int          queryPageSize,
-                                                                  String       methodName)
+    RepositoryIteratorForEntities getEntitySearchIterator(String       userId,
+                                                          String       searchString,
+                                                          String       resultTypeGUID,
+                                                          String       resultTypeName,
+                                                          List<String> specificMatchPropertyNames,
+                                                          boolean      exactValueMatch,
+                                                          int          startFrom,
+                                                          int          queryPageSize,
+                                                          String       methodName)
     {
         RepositoryIteratorForEntities iterator;
 
@@ -7659,6 +7849,225 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+    /**
+     * Updates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
+     * Both elements must be visible to the user to allow the update.
+     *
+     * @param userId                    userId of user making request
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachingGUID             unique id of the entity for the element that is being attached
+     * @param attachingGUIDParameterName name of the parameter supplying the attachingGUID
+     * @param attachingElementTypeName  type name of the attaching element's entity
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
+     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateElementToElementLink(String             userId,
+                                           String             externalSourceGUID,
+                                           String             externalSourceName,
+                                           String             startingGUID,
+                                           String             startingGUIDParameterName,
+                                           String             startingElementTypeName,
+                                           String             attachingGUID,
+                                           String             attachingGUIDParameterName,
+                                           String             attachingElementTypeName,
+                                           String             attachmentTypeGUID,
+                                           String             attachmentTypeName,
+                                           InstanceProperties relationshipProperties,
+                                           String             methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        updateElementToElementLink(userId,
+                                   externalSourceGUID,
+                                   externalSourceName,
+                                   startingGUID,
+                                   startingGUIDParameterName,
+                                   startingElementTypeName,
+                                   attachingGUID,
+                                   attachingGUIDParameterName,
+                                   attachingElementTypeName,
+                                   supportedZones,
+                                   attachmentTypeGUID,
+                                   attachmentTypeName,
+                                   relationshipProperties,
+                                   methodName);
+    }
+
+
+    /**
+     * Updates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
+     * Both elements must be visible to the user to allow the update.
+     *
+     * @param userId                    userId of user making request
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachingGUID             unique id of the entity for the element that is being attached
+     * @param attachingGUIDParameterName name of the parameter supplying the attachingGUID
+     * @param attachingElementTypeName  type name of the attaching element's entity
+     * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
+     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateElementToElementLink(String             userId,
+                                           String             externalSourceGUID,
+                                           String             externalSourceName,
+                                           String             startingGUID,
+                                           String             startingGUIDParameterName,
+                                           String             startingElementTypeName,
+                                           String             attachingGUID,
+                                           String             attachingGUIDParameterName,
+                                           String             attachingElementTypeName,
+                                           List<String>       suppliedSupportedZones,
+                                           String             attachmentTypeGUID,
+                                           String             attachmentTypeName,
+                                           InstanceProperties relationshipProperties,
+                                           String             methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(attachingGUID, attachingGUIDParameterName, methodName);
+
+        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
+                                                                             startingGUID,
+                                                                             startingGUIDParameterName,
+                                                                             startingElementTypeName,
+                                                                             false,
+                                                                             suppliedSupportedZones,
+                                                                             methodName);
+
+        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
+                                                                              attachingGUID,
+                                                                              attachingGUIDParameterName,
+                                                                              attachingElementTypeName,
+                                                                              false,
+                                                                              suppliedSupportedZones,
+                                                                              methodName);
+
+        /*
+         * The calls above validate the existence of the two entities and that they are visible to the user.
+         * An exception is thrown if there are any problems.
+         * The anchor entities are returned if there are anchor entities associated with a specific end.
+         * Next step is to find the relationship to update
+         */
+        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
+                                                                                     startingGUID,
+                                                                                     startingElementTypeName,
+                                                                                     attachingGUID,
+                                                                                     attachmentTypeGUID,
+                                                                                     attachmentTypeName,
+                                                                                     methodName);
+
+        if (relationship != null)
+        {
+            repositoryHandler.updateRelationshipProperties(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           relationship,
+                                                           relationshipProperties,
+                                                           methodName);
+
+
+            /*
+             * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
+             */
+            if ((startingElementAnchorEntity != null) || (attachingElementAnchorEntity != null))
+            {
+                final String actionDescriptionTemplate = "Updating link from %s %s to %s %s";
+
+                String actionDescription = String.format(actionDescriptionTemplate,
+                                                         startingElementTypeName,
+                                                         startingGUID,
+                                                         attachingElementTypeName,
+                                                         attachingGUID);
+
+                if (startingElementAnchorEntity != null)
+                {
+                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+
+                    if (startingGUID.equals(startingElementAnchorEntity.getGUID()))
+                    {
+                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+                    }
+                    this.addLatestChangeToAnchor(startingElementAnchorEntity,
+                                                 latestChangeTarget,
+                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 attachingGUID,
+                                                 attachingElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+                else
+                {
+                    /*
+                     * Now that this relationship is in place, the anchorGUID might be set up
+                     */
+                    this.reEvaluateAnchorGUID(startingGUID,
+                                              startingGUIDParameterName,
+                                              startingElementTypeName,
+                                              null,
+                                              methodName);
+                }
+
+                if ((attachingElementAnchorEntity != null) && (!attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
+                {
+                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+
+                    if (attachingGUID.equals(attachingElementAnchorEntity.getGUID()))
+                    {
+                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+                    }
+                    this.addLatestChangeToAnchor(attachingElementAnchorEntity,
+                                                 latestChangeTarget,
+                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+                else
+                {
+                    /*
+                     * Now that this relationship is in place, the anchorGUID may now be set up
+                     */
+                    this.reEvaluateAnchorGUID(attachingGUID,
+                                              attachingGUIDParameterName,
+                                              attachingElementTypeName,
+                                              null,
+                                              methodName);
+                }
+            }
+        }
+    }
+
+
     /**
      * Delete the existing relationship between the starting element and another element then create a new relationship
      * between the starting element element and the new attaching element.
@@ -8370,8 +8779,6 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
-
-
     /**
      * Verify that the integrator identities are either null or refer to a valid software server capability.
      * These values will be used to set up the
@@ -8392,6 +8799,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                        PropertyServerException
     {
         final String guidParameterName = "externalSourceGUID";
+
         if ((externalSourceGUID == null) && (externalSourceName == null))
         {
             return;

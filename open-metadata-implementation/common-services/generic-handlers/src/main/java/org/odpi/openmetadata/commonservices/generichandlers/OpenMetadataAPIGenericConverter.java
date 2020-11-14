@@ -599,6 +599,76 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+    /**
+     * Extract and delete the identifier property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeIdentifier(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeIdentifier";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the mappingProperties property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return map or null
+     */
+    protected Map<String, String> removeMappingProperties(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeMappingProperties";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                OpenMetadataAPIMapper.MAPPING_PROPERTIES_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the lastSynchronized property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return map or null
+     */
+    protected Date removeLastSynchronized(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeLastSynchronized";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.LAST_SYNCHRONIZED_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
     /**
      * Extract and delete the networkAddress property from the supplied instance properties.
      *

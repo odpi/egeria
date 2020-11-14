@@ -16,10 +16,28 @@ import java.util.Map;
  */
 class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private String              identifier;
-    private int                 keyPattern;
-    private Map<String, String> mappingProperties;
-    private Date                lastVerified;
+    private String              identifier        = null;
+    private int                 keyPattern        = 0;
+    private Map<String, String> mappingProperties = null;
+
+
+    /**
+     * Constructor used for working with relationship properties.
+     *
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    ExternalIdentifierBuilder(OMRSRepositoryHelper repositoryHelper,
+                              String               serviceName,
+                              String               serverName)
+    {
+        super(OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
+              OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+              repositoryHelper,
+              serviceName,
+              serverName);
+    }
 
 
     /**
@@ -27,19 +45,17 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
      *
      * @param identifier the identifier from the external technology
      * @param keyPattern identifier from the external party
-     * @param lastVerified timestamp when the metadata was known to be in sync - this is to ensure updates are added to the latest values.
      * @param mappingProperties additional properties to help with the mapping to the external metadata
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public ExternalIdentifierBuilder(String               identifier,
-                                     int                  keyPattern,
-                                     Map<String, String>  mappingProperties,
-                                     Date                 lastVerified,
-                                     OMRSRepositoryHelper repositoryHelper,
-                                     String               serviceName,
-                                     String               serverName)
+    ExternalIdentifierBuilder(String               identifier,
+                              int                  keyPattern,
+                              Map<String, String>  mappingProperties,
+                              OMRSRepositoryHelper repositoryHelper,
+                              String               serviceName,
+                              String               serverName)
     {
         super(OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
               OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
@@ -50,7 +66,7 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
         this.identifier = identifier;
         this.keyPattern = keyPattern;
         this.mappingProperties = mappingProperties;
-        this.lastVerified = lastVerified;
+
     }
 
 
@@ -98,21 +114,12 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
                                                                          methodName);
         }
 
-        if (lastVerified != null)
-        {
-            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.LAST_VERIFIED_PROPERTY_NAME,
-                                                                      lastVerified,
-                                                                      methodName);
-        }
-
         return properties;
     }
 
 
     /**
-     * Return the properties that are stored in the ExternalIdLink relationship.
+     * Return the properties that are to be stored in the ExternalIdLink relationship.
      *
      * @param description description of the linkage between the open metadata referenceable (resource) and the external id)
      * @param usage the way that the external identifier should be used.
@@ -120,10 +127,10 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName calling method
      * @return these properties packed into an OMRS instance properties object (or null if all of the properties are null)
      */
-    public InstanceProperties getExternalIdResourceLinkProperties(String description,
-                                                                  String usage,
-                                                                  String source,
-                                                                  String methodName)
+    InstanceProperties getExternalIdResourceLinkProperties(String description,
+                                                           String usage,
+                                                           String source,
+                                                           String methodName)
     {
         InstanceProperties properties = null;
 
@@ -154,6 +161,13 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
                                                                       methodName);
         }
 
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataAPIMapper.LAST_SYNCHRONIZED_PROPERTY_NAME,
+                                                                new Date(),
+                                                                methodName);
+
+
         return properties;
     }
 
@@ -163,11 +177,13 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
      * the software server capability that represents the external metadata source.
      *
      * @param description description of the linkage between the external identifier and its owner
+     * @param permittedSynchronization direction of synchronization
      * @param methodName calling method
      * @return description packed into an OMRS instance properties object (or null if description is null)
      */
-    public InstanceProperties getExternalIdScopeProperties(String description,
-                                                           String methodName)
+    InstanceProperties getExternalIdScopeProperties(String description,
+                                                    int    permittedSynchronization,
+                                                    String methodName) throws InvalidParameterException
     {
         InstanceProperties properties = null;
 
@@ -178,6 +194,21 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
+        }
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.PERMITTED_SYNC_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.PERMITTED_SYNC_ENUM_TYPE_NAME,
+                                                                    permittedSynchronization,
+                                                                    methodName);
+        }
+        catch (TypeErrorException error)
+        {
+            throw new InvalidParameterException(error, OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME);
         }
 
         return properties;
