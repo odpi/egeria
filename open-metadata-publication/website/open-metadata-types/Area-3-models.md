@@ -5,14 +5,20 @@
 
 Area 3 describes the glossary.
 
-This enables the definition of assets and the relationships
+This enables the definition of the terminology used in a business.
+This terminology reflects the processing and the data needed in its operations.
+
+The glossary is made up of terms, each one describing a word or short phrase.
+The terms can be linked together to show the relationships
 between different types of terminology.
-Most definitions are created through a manual process,
-however, this definition may occur in a different
-tool and be replicated automatically into other metadata
+
+Most glossary terms are created through a manual process by subject matter experts.
+They may be part of a trade or industry organization, or experts within the business.
+This investment is typically made using a specialist tool and then replicated automatically into other metadata
 repositories.
 
-There can be multiple glossaries in the metadata repositories.  Each glossary owns a set of glossary terms and (optionally) a category hierarchy.  Glossary terms can be linked into none, one or many categories, from any glossary.  Similarly, terms from different glossaries may have relationships linking them together.
+There can be multiple glossaries in the metadata repositories.  
+Each glossary owns a set of glossary terms and (optionally) a category hierarchy.  Glossary terms can be linked into none, one or many categories, from any glossary.  Similarly, terms from different glossaries may have relationships linking them together.
 This is the definitions of terms and concepts and how
 they relate to one another.
 
@@ -22,7 +28,7 @@ data that is managed by the data assets.
 This is a key relationship that helps people locate and
 understand the data assets they are working with.
 
-* **[0310 Glossary](0310-Glossary-Model.md)**
+* **[0310 Glossary](0310-Glossary.md)**
 * **[0320 Category Hierarchy](0320-Category-Hierarchy.md)**
 * **[0330 Glossary Terms](0330-Terms.md)**
 * **[0340 Dictionary](0340-Dictionary.md)**

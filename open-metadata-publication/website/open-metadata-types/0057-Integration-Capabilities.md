@@ -3,7 +3,7 @@
 
 # 0057 Integration Capabilities
 
-A **Software Service** provides a well defined software component that can be
+A **SoftwareService** provides a well defined software component that can be
 called by remote clients across the network.  They may offer
 a request response or an event driven interface or both.
 

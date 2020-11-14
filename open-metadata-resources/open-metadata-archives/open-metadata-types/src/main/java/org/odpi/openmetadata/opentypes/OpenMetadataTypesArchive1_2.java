@@ -614,25 +614,28 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         properties.add(property);
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
 
         ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+
         validInstanceStatusList.add(InstanceStatus.DRAFT);
         validInstanceStatusList.add(InstanceStatus.PROPOSED);
         validInstanceStatusList.add(InstanceStatus.APPROVED);
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
         validInstanceStatusList.add(InstanceStatus.DELETED);
+
         entityDef.setValidInstanceStatusList(validInstanceStatusList);
         entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
         return entityDef;
     }
 
@@ -10339,7 +10342,7 @@ public class OpenMetadataTypesArchive1_2
     /**
      * The PortType enum describes the type of a port
      *
-     * @return PortType EnumyDef
+     * @return PortType EnumDef
      */
     private EnumDef getPortTypeEnum()
     {
@@ -10355,7 +10358,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element1Ordinal         = 0;
         final String element1Value           = "INPUT_PORT";
-        final String element1Description     = "Input Port.";
+        final String element1Description     = "Data is passed into the process.";
         final String element1DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
@@ -10366,7 +10369,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element2Ordinal         = 1;
         final String element2Value           = "OUTPUT_PORT";
-        final String element2Description     = "Output Port.";
+        final String element2Description     = "Data is produced by the process.";
         final String element2DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
@@ -10377,7 +10380,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element3Ordinal         = 2;
         final String element3Value           = "INOUT_PORT";
-        final String element3Description     = "Input Output Port.";
+        final String element3Description     = "A request-response interface is provided by the process.";
         final String element3DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
@@ -10388,7 +10391,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element4Ordinal         = 3;
         final String element4Value           = "OUTIN_PORT";
-        final String element4Description     = "Output Input Port.";
+        final String element4Description     = "A request-response call is made by the process.";
         final String element4DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element4Ordinal,

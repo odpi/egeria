@@ -167,6 +167,7 @@ public class OpenMetadataTypesArchive2_4
         update05xxSchemaAttributes();
         update0545ReferenceData();
         update06xxDiscovery();
+        updateClashingControlProperties();
     }
 
 
@@ -541,7 +542,7 @@ public class OpenMetadataTypesArchive2_4
                                                                                  description,
                                                                                  descriptionGUID,
                                                                                  linkedToEntities,
-                                                                                 false);
+                                                                                 true);
 
         /*
          * Build the attributes
@@ -783,168 +784,6 @@ public class OpenMetadataTypesArchive2_4
         return relationshipDef;
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0017 External Identifier - add new properties for integration
-     */
-    private void update0017ExternalIdentifiers()
-    {
-        this.archiveBuilder.addEnumDef(getPermittedSynchronizationEnum());
-        this.archiveBuilder.addTypeDefPatch(updateExternalIdEntity());
-        this.archiveBuilder.addTypeDefPatch(updateExternalIdScopeRelationship());
-    }
-
-    private EnumDef getPermittedSynchronizationEnum()
-    {
-        final String guid            = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
-        final String name            = "PermittedSynchronization";
-        final String description     = "Defines the synchronization rules between a third party technology and open metadata.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
-
-        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef            elementDef;
-
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "BothDirections";
-        final String element1Description     = "Metadata exchange is permitted in both directions.";
-        final String element1DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "ToThirdParty";
-        final String element2Description     = "The third party technology is logically downstream of open metadata and is just receiving metadata.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "FromThirdParty";
-        final String element3Description     = "The third party technology is logically upstream and is publishing metadata to open metadata.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-
-        final int    element8Ordinal         = 99;
-        final String element8Value           = "Other";
-        final String element8Description     = "Another synchronization rule.";
-        final String element8DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
-                                                     element8Value,
-                                                     element8Description,
-                                                     element8DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        enumDef.setElementDefs(elementDefs);
-
-        return enumDef;
-    }
-
-
-    private TypeDefPatch updateExternalIdEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ExternalId";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "mappingProperties";
-        final String attribute1Description     = "Additional properties to aid the mapping to the the element in an external metadata source.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "lastSynchronized";
-        final String attribute2Description     = "Timestamp documenting the last time the metadata element in the external metadata source was synchronized with open metadata.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
-                                                                    attribute1Description,
-                                                                    attribute1DescriptionGUID);
-
-        properties.add(property);
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-
-    private TypeDefPatch updateExternalIdScopeRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ExternalIdScope";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "permittedSynchronization";
-        final String attribute1Description     = "Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Additional description of the type of synchronization occurring.";
-        final String attribute2DescriptionGUID = null;
-
-
-        property = archiveHelper.getEnumTypeDefAttribute("PermittedSynchronization",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -1003,40 +842,6 @@ public class OpenMetadataTypesArchive2_4
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * 0056 - Asset Managers are metadata stores that are not functional enough to register as a cohort member.
-     */
-    private void add0056AssetManager()
-    {
-        this.archiveBuilder.addEntityDef(addAssetManagerEntity());
-    }
-
-
-    private EntityDef addAssetManagerEntity()
-    {
-        final String guid            = "03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c";
-        final String name            = "AssetManager";
-        final String description     = "Defines a capability that manages metadata about assets.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareServerCapability";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
-    }
-
 
 
     /*
@@ -2790,8 +2595,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -2801,8 +2606,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -2812,8 +2617,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3ReplacedBy      = "platformVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
@@ -2823,8 +2628,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                attribute4Description,
-                attribute4DescriptionGUID);
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
 
         properties.add(property);
 
@@ -2862,8 +2667,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -2873,8 +2678,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -2884,8 +2689,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3ReplacedBy      = "serverVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
@@ -2895,8 +2700,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                attribute4Description,
-                attribute4DescriptionGUID);
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
 
         properties.add(property);
 
@@ -2934,8 +2739,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -2945,8 +2750,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -2956,8 +2761,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3ReplacedBy      = "capabilityVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
@@ -2967,8 +2772,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                attribute4Description,
-                attribute4DescriptionGUID);
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
 
         properties.add(property);
 
@@ -3006,8 +2811,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3017,8 +2822,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3056,8 +2861,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "tenantType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3067,8 +2872,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3106,8 +2911,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "serviceType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3117,8 +2922,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3156,8 +2961,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3167,8 +2972,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3206,8 +3011,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3217,8 +3022,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3256,8 +3061,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3267,8 +3072,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3278,8 +3083,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3ReplacedBy      = "databaseVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
@@ -3289,8 +3094,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                attribute4Description,
-                attribute4DescriptionGUID);
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
 
         properties.add(property);
 
@@ -3328,8 +3133,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3339,8 +3144,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3350,8 +3155,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3ReplacedBy      = "softwareVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
@@ -3361,8 +3166,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                attribute4Description,
-                attribute4DescriptionGUID);
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
 
         properties.add(property);
 
@@ -3400,8 +3205,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3411,8 +3216,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3450,8 +3255,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3461,8 +3266,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3500,8 +3305,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3511,8 +3316,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3550,9 +3355,9 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "deployedImplementationType";
 
         property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
-                attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                         attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3562,9 +3367,9 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
-                attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3602,8 +3407,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "storeCreateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3613,8 +3418,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3624,8 +3429,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3ReplacedBy      = "storeUpdateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
+                                                         attribute3Description,
+                                                         attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
@@ -3635,8 +3440,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
-                attribute4Description,
-                attribute4DescriptionGUID);
+                                                         attribute4Description,
+                                                         attribute4DescriptionGUID);
 
         properties.add(property);
 
@@ -3674,8 +3479,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "sourceCreateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3685,8 +3490,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3696,8 +3501,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3ReplacedBy      = "sourceUpdateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
+                                                         attribute3Description,
+                                                         attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
@@ -3707,8 +3512,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
-                attribute4Description,
-                attribute4DescriptionGUID);
+                                                         attribute4Description,
+                                                         attribute4DescriptionGUID);
 
         properties.add(property);
 
@@ -3746,8 +3551,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "accessedMetadataCollectionId";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3757,8 +3562,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3796,8 +3601,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "managedMetadataCollectionId";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3807,8 +3612,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3846,8 +3651,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "referenceVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3857,8 +3662,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3896,8 +3701,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "schemaVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3907,8 +3712,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3946,8 +3751,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "protocolVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -3957,8 +3762,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -3996,8 +3801,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "snippetVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -4007,8 +3812,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -4046,8 +3851,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -4057,8 +3862,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -4096,8 +3901,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -4107,8 +3912,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -4146,8 +3951,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -4157,8 +3962,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -4196,8 +4001,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -4207,8 +4012,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -4246,8 +4051,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                attribute1Description,
-                attribute1DescriptionGUID);
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
@@ -4257,8 +4062,8 @@ public class OpenMetadataTypesArchive2_4
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -4266,138 +4071,6 @@ public class OpenMetadataTypesArchive2_4
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
-
-
-    /*
-     * ========================================================================
-     * Below are place holders for types to be introduced in future releases.
-     * ========================================================================
-     */
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0217 Automated Processes defines a Process is automated (as opposed to manual procedure).
-     */
-    private void add0217AutomatedProcesses()
-    {
-        /* placeholder */
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0260Transformations()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0265AnalyticsAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0270IoTAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0280ModelAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0435 Governance Rules define details of a governance rule implementation.
-     */
-    private void add0435GovernanceRules()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0447GovernanceProcesses()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0452GovernanceDaemons()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0480RightsManagement()
-    {
-        /* placeholder */
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0550LogicSpecificationModel()
-    {
-        /* placeholder */
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0560MappingModel()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
 
 }
 
