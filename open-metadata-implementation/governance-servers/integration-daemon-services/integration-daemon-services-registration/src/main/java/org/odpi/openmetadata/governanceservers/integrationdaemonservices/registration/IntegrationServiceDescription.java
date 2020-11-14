@@ -38,6 +38,15 @@ public enum IntegrationServiceDescription implements Serializable
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
+    LINEAGE_INTEGRATOR_OMIS(4006,
+                          "Lineage Integrator",
+                          "Lineage Integrator OMIS",
+                          "lineage-integrator",
+                          "Manage capture of lineage from a third party tool.",
+                          "https://egeria.odpi.org/open-metadata-implementation/integration-services/lineage-integrator/",
+                          "Data Engine OMAS",
+                          PermittedSynchronization.FROM_THIRD_PARTY),
+
     ORGANIZATION_INTEGRATOR_OMIS     (4007,
                                       "Organization Integrator",
                                       "Organization Integrator OMIS",
