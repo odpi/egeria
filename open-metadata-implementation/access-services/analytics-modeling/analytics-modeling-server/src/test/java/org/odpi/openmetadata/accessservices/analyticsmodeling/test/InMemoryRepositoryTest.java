@@ -3,9 +3,6 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.test;
 
 import static org.testng.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
@@ -28,6 +25,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveManager;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
@@ -54,14 +52,17 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 
 public class InMemoryRepositoryTest {
 
+	protected static final String USER_ID = "userId";
+
     @Mock
     protected OMRSRepositoryConnector enterpriseConnector;
-    @Mock
     protected OMRSRepositoryContentHelper omrsRepositoryHelper;
     @Mock
     protected OMRSAuditLog auditLog;
     private OMRSRepositoryContentManager localRepositoryContentManager = null;
     protected OMEntityDaoForTests omEntityDao;
+    
+    protected OMRSMetadataCollection metadataCollection;
     
     final private String context = "Analytics Modeling OMAS test";
     
@@ -69,40 +70,14 @@ public class InMemoryRepositoryTest {
         MockitoAnnotations.initMocks(this);
         omEntityDao = new OMEntityDaoForTests(enterpriseConnector, Collections.emptyList(), auditLog);
         omEntityDao.setContext("JUnitTest");
-
+        
         OMRSRepositoryConnector repositoryConnector = initializeInMemoryRepositoryConnector();
+        
+        metadataCollection = repositoryConnector.getMetadataCollection();
+
+      
         when(enterpriseConnector.getMetadataCollection()).thenReturn(repositoryConnector.getMetadataCollection());
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(repositoryConnector.getRepositoryHelper());
-
-        when(omrsRepositoryHelper.getStringProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
-                any(String.class),
-                any(InstanceProperties.class),
-                any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.getBooleanProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
-                any(String.class),
-                any(InstanceProperties.class),
-                any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.getIntProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
-                any(String.class),
-                any(InstanceProperties.class),
-                any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.getStringArrayProperty(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
-                any(String.class),
-                any(InstanceProperties.class),
-                any(String.class))).thenCallRealMethod();
-
-
-        when(omrsRepositoryHelper.addStringArrayPropertyToInstance(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
-                any(InstanceProperties.class),
-                any(String.class),
-                anyList(),
-                any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.addStringPropertyToInstance(eq(Constants.ANALYTICS_MODELING_OMAS_NAME),
-                any(InstanceProperties.class),
-                any(String.class),
-                any(String.class),
-                any(String.class))).thenCallRealMethod();
-        when(omrsRepositoryHelper.getExactMatchRegex(any(String.class))).thenCallRealMethod();
 
     }
 
@@ -118,7 +93,8 @@ public class InMemoryRepositoryTest {
         Connector connector = connectorBroker.getConnector(connection);
         OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
 
-        localRepositoryContentManager = new OMRSRepositoryContentManager("userID", auditLog);
+        localRepositoryContentManager = new OMRSRepositoryContentManager(USER_ID, auditLog);
+        omrsRepositoryHelper = new OMRSRepositoryContentHelper(localRepositoryContentManager);
 
 
         OMRSRepositoryEventManager localRepositoryEventManager = new OMRSRepositoryEventManager("local repository outbound",

@@ -485,6 +485,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         currentTerm.setDescription(newTerm.getDescription());
         currentTerm.setAbbreviation(newTerm.getAbbreviation());
         currentTerm.setExamples(newTerm.getExamples());
+        currentTerm.setSummary(newTerm.getSummary());
         currentTerm.setUsage(newTerm.getUsage());
         currentTerm.setObjectIdentifier(newTerm.isObjectIdentifier());
         currentTerm.setSpineAttribute(newTerm.isSpineAttribute());
@@ -505,6 +506,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         }
         if (newTerm.getUsage() != null) {
             currentTerm.setUsage(newTerm.getUsage());
+        }
+        if (newTerm.getSummary() != null) {
+            currentTerm.setSummary(newTerm.getSummary());
         }
         if (newTerm.getAbbreviation() != null) {
             currentTerm.setAbbreviation(newTerm.getAbbreviation());

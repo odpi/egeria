@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
-import { withRouter } from "react-router-dom";
 
 export default function TaskDropDown({ onChange }) {
   return (

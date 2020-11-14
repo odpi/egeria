@@ -83,6 +83,8 @@ public class GraphConstants {
 
     // SUB-PROCESS REAL PROCESS GUID
     public static final String PROPERTY_KEY_PROCESS_GUID = "processGuid";
+    public static final String PROPERTY_KEY_COLUMN_IN_GUID = "columnInGuid";
+    public static final String PROPERTY_KEY_COLUMN_OUT_GUID = "columnOutGuid";
 
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;
@@ -115,7 +117,8 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_UPDATE_TIME;
     public static final String PROPERTY_KEY_RELATIONSHIP_LABEL = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_LABEL;
     public static final String PROPERTY_KEY_RELATIONSHIP_DISPLAY_NAME = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_KEY_DISPLAY_NAME;
-
+    public static final String PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME = PROPERTY_KEY_PREFIX_ELEMENT +
+            PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY + PROPERTY_NAME_QUALIFIED_NAME;
     private static final HashSet<String> returnedPropertiesWhiteList = new HashSet<>();
 
     static {

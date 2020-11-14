@@ -19,3 +19,8 @@ java {
     withJavadocJar()
 }
 
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator'
+    archiveClassifier = 'jar-with-dependencies'
+}

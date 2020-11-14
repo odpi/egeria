@@ -7,7 +7,13 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.DatabaseConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.SchemaConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -20,6 +26,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class AnalyticsModelingServicesInstance extends OMASServiceInstance
 {
     private DatabaseContextHandler databaseContextHandler;
+    
+    private RelationalDataHandler<Database,
+								    Schema,
+								    Object,
+								    Object,
+								    Object,
+								    Object>	relationalDataHandler;
+
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -40,7 +54,32 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
         
         OMEntityDao omEntityDao = new OMEntityDao(repositoryConnector, supportedZones, auditLog);
 
-        databaseContextHandler = new DatabaseContextHandler(omEntityDao, invalidParameterHandler);
+        this.relationalDataHandler = new RelationalDataHandler<>(
+        		new DatabaseConverter(repositoryHelper, serviceName,serverName),
+                Database.class,
+                new SchemaConverter(repositoryHelper, serviceName,serverName),
+                Schema.class,
+                new EmptyConverter(repositoryHelper, serviceName,serverName),
+                Object.class,
+                new EmptyConverter(repositoryHelper, serviceName,serverName),
+                Object.class,
+                new EmptyConverter(repositoryHelper, serviceName, serverName),
+                Object.class,
+                new EmptyConverter(repositoryHelper, serviceName, serverName),
+                Object.class,
+                serviceName,
+                serverName,
+                invalidParameterHandler,
+                repositoryHandler,
+                repositoryHelper,
+                localServerUserId,
+                securityVerifier,
+                supportedZones,
+                defaultZones,
+                publishZones,
+                auditLog);
+        
+        databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDao, invalidParameterHandler);
     }
 
 
