@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Glossa
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -20,7 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * GlossaryExchangeService is the client for managing resources from a glossary.
+ * GlossaryExchangeService is the client for managing resources from a glossary.  This includes
+ * the glossary container, glossary categories and terms as well as relationships between them.
  */
 public class GlossaryExchangeService
 {
@@ -29,23 +29,23 @@ public class GlossaryExchangeService
     private String                   assetManagerGUID;
     private String                   assetManagerName;
     private String                   connectorName;
-    private PermittedSynchronization permittedSynchronization;
+    private SynchronizationDirection synchronizationDirection;
     private AuditLog                 auditLog;
 
 
     /**
      * Create a new client to exchange glossary content with open metadata.
      *
-     * @param glossaryManagerClient client for glossary requests
-     * @param permittedSynchronization direction(s) that metadata can flow
+     * @param glossaryManagerClient client for exchange requests
+     * @param synchronizationDirection direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
      * @param connectorName name of the connector using this context
      * @param auditLog logging destination
      */
-    GlossaryExchangeService(GlossaryExchangeClient glossaryManagerClient,
-                            PermittedSynchronization permittedSynchronization,
+    GlossaryExchangeService(GlossaryExchangeClient   glossaryManagerClient,
+                            SynchronizationDirection synchronizationDirection,
                             String                   userId,
                             String                   assetManagerGUID,
                             String                   assetManagerName,
@@ -53,7 +53,7 @@ public class GlossaryExchangeService
                             AuditLog                 auditLog)
     {
         this.glossaryManagerClient    = glossaryManagerClient;
-        this.permittedSynchronization = permittedSynchronization;
+        this.synchronizationDirection = synchronizationDirection;
         this.userId                   = userId;
         this.assetManagerGUID         = assetManagerGUID;
         this.assetManagerName         = assetManagerName;
@@ -97,7 +97,7 @@ public class GlossaryExchangeService
     {
         final String methodName = "createGlossary";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createGlossary(userId,
                                                         assetManagerGUID,
@@ -105,15 +105,17 @@ public class GlossaryExchangeService
                                                         glossaryExternalIdentifier,
                                                         glossaryExternalIdentifierName,
                                                         glossaryExternalIdentifierUsage,
+                                                        connectorName,
                                                         glossaryExternalIdentifierKeyPattern,
                                                         mappingProperties,
                                                         glossaryProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                                                                        synchronizationDirection.getName(),
+                                                                        connectorName,
+                                                                        methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -155,7 +157,7 @@ public class GlossaryExchangeService
     {
         final String methodName = "createGlossaryFromTemplate";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createGlossaryFromTemplate(userId,
                                                                     assetManagerGUID,
@@ -164,15 +166,17 @@ public class GlossaryExchangeService
                                                                     glossaryExternalIdentifier,
                                                                     glossaryExternalIdentifierName,
                                                                     glossaryExternalIdentifierUsage,
+                                                                    connectorName,
                                                                     glossaryExternalIdentifierKeyPattern,
                                                                     mappingProperties,
                                                                     templateProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                                                                    synchronizationDirection.getName(),
+                                                                    connectorName,
+                                                                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -199,15 +203,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "updateGlossary";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.updateGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier, glossaryProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -233,15 +238,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "removeGlossary";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.removeGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -273,15 +279,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "setGlossaryAsTaxonomy";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setGlossaryAsTaxonomy(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier, organizingPrinciple);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -306,15 +313,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearGlossaryAsTaxonomy";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearGlossaryAsTaxonomy(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -345,15 +353,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "setGlossaryAsCanonical";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setGlossaryAsCanonical(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier, scope);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -378,15 +387,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearGlossaryAsCanonical";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearGlossaryAsCanonical(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -482,25 +492,6 @@ public class GlossaryExchangeService
     }
 
 
-    /**
-     * Retrieve the glossary metadata element with the supplied unique identifier.
-     *
-     * @param glossaryExternalIdentifier unique identifier of the requested metadata element from the asset manager
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GlossaryElement getGlossaryByExternalIdentifier(String glossaryExternalIdentifier) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
-    {
-        return glossaryManagerClient.getGlossaryByExternalIdentifier(userId, assetManagerGUID, assetManagerName, glossaryExternalIdentifier);
-    }
-
-
     /* =====================================================================================================================
      * A glossary may host one or more glossary categories depending on its capability
      */
@@ -534,7 +525,7 @@ public class GlossaryExchangeService
     {
         final String methodName = "createGlossaryCategory";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createGlossaryCategory(userId,
                                                                 assetManagerGUID,
@@ -543,15 +534,17 @@ public class GlossaryExchangeService
                                                                 glossaryCategoryExternalIdentifier,
                                                                 glossaryCategoryExternalIdentifierName,
                                                                 glossaryCategoryExternalIdentifierUsage,
+                                                                connectorName,
                                                                 glossaryCategoryExternalIdentifierKeyPattern,
                                                                 mappingProperties,
                                                                 glossaryCategoryProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -590,25 +583,26 @@ public class GlossaryExchangeService
     {
         final String methodName = "createGlossaryCategoryFromTemplate";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createGlossaryCategoryFromTemplate(userId,
                                                                             assetManagerGUID,
                                                                             assetManagerName,
                                                                             templateGUID,
-                                                                            glossaryGUID,
                                                                             glossaryCategoryExternalIdentifier,
                                                                             glossaryCategoryExternalIdentifierName,
                                                                             glossaryCategoryExternalIdentifierUsage,
+                                                                            connectorName,
                                                                             glossaryCategoryExternalIdentifierKeyPattern,
                                                                             mappingProperties,
                                                                             templateProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -635,15 +629,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "updateGlossaryCategory";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.updateGlossaryCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryCategoryExternalIdentifier, glossaryCategoryProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -668,15 +663,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "setupCategoryParent";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setupCategoryParent(userId, assetManagerGUID, assetManagerName, glossaryParentCategoryGUID, glossaryChildCategoryGUID);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -701,15 +697,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearCategoryParent";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearCategoryParent(userId, assetManagerGUID, assetManagerName, glossaryParentCategoryGUID, glossaryChildCategoryGUID);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -734,15 +731,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "removeGlossaryCategory";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.removeGlossaryCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryCategoryExternalIdentifier);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -928,7 +926,7 @@ public class GlossaryExchangeService
     {
         final String methodName = "createGlossaryTerm";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createGlossaryTerm(userId,
                                                             assetManagerGUID,
@@ -937,15 +935,17 @@ public class GlossaryExchangeService
                                                             glossaryTermExternalIdentifier,
                                                             glossaryTermExternalIdentifierName,
                                                             glossaryTermExternalIdentifierUsage,
+                                                            connectorName,
                                                             glossaryTermExternalIdentifierKeyPattern,
                                                             mappingProperties,
                                                             glossaryTermProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -991,7 +991,7 @@ public class GlossaryExchangeService
     {
         final String methodName = "createControlledGlossaryTerm";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createControlledGlossaryTerm(userId,
                                                                       assetManagerGUID,
@@ -1000,6 +1000,7 @@ public class GlossaryExchangeService
                                                                       glossaryTermExternalIdentifier,
                                                                       glossaryTermExternalIdentifierName,
                                                                       glossaryTermExternalIdentifierUsage,
+                                                                      connectorName,
                                                                       glossaryTermExternalIdentifierKeyPattern,
                                                                       mappingProperties,
                                                                       glossaryTermProperties,
@@ -1007,9 +1008,10 @@ public class GlossaryExchangeService
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1049,25 +1051,26 @@ public class GlossaryExchangeService
     {
         final String methodName = "createGlossaryTermFromTemplate";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createGlossaryTermFromTemplate(userId,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         templateGUID,
-                                                                        glossaryGUID,
                                                                         glossaryTermExternalIdentifier,
                                                                         glossaryTermExternalIdentifierName,
                                                                         glossaryTermExternalIdentifierUsage,
+                                                                        connectorName,
                                                                         glossaryTermExternalIdentifierKeyPattern,
                                                                         mappingProperties,
                                                                         templateProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1094,15 +1097,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "updateGlossaryTerm";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.updateGlossaryTerm(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, glossaryTermProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1136,15 +1140,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "updateGlossaryTermStatus";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.updateGlossaryTermStatus(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, glossaryTermStatus);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1171,15 +1176,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "setupTermCategory";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setupTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID, categorizationProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1204,15 +1210,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermCategory";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1241,15 +1248,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "setupTermRelationship";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setupTermRelationship(userId, assetManagerGUID, assetManagerName, relationshipTypeName, glossaryTermOneGUID, glossaryTermTwoGUID, relationshipsProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1278,15 +1286,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "updateTermRelationship";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.updateTermRelationship(userId, assetManagerGUID, assetManagerName, relationshipTypeName, glossaryTermOneGUID, glossaryTermTwoGUID, relationshipsProperties);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1313,15 +1322,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermRelationship";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermRelationship(userId, assetManagerGUID, assetManagerName, relationshipTypeName, glossaryTermOneGUID, glossaryTermTwoGUID);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1347,15 +1357,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "setTermAsAbstractConcept";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setTermAsAbstractConcept(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1380,15 +1391,16 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermAsAbstractConcept";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermAsAbstractConcept(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
-                                                                                                                               connectorName,
-                                                                                                                               methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -1413,14 +1425,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "setTermAsDataValue";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setTermAsDataValue(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1447,14 +1459,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermAsDataValue";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermAsDataValue(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1483,14 +1495,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "setTermAsActivity";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setTermAsActivity(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, activityType);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1517,14 +1529,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermAsActivity";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermAsActivity(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1553,14 +1565,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "setTermAsContext";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setTermAsContext(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, contextDefinition);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1587,14 +1599,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermAsContext";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermAsContext(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1621,14 +1633,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "setTermAsSpineObject";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setTermAsSpineObject(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1655,14 +1667,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermAsSpineObject";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermAsSpineObject(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1690,14 +1702,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "setTermAsSpineAttribute";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setTermAsSpineAttribute(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1724,14 +1736,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermAsSpineAttribute";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermAsSpineAttribute(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1758,14 +1770,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "setTermAsObjectIdentifier";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.setTermAsObjectIdentifier(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1792,14 +1804,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "clearTermAsObjectIdentifier";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.clearTermAsObjectIdentifier(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1826,14 +1838,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "removeGlossaryTerm";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.removeGlossaryTerm(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -1982,14 +1994,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "createExternalGlossaryLink";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return glossaryManagerClient.createExternalGlossaryLink(userId, assetManagerGUID, assetManagerName, linkProperties);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2016,14 +2028,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "updateExternalGlossaryLink";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.updateExternalGlossaryLink(userId, assetManagerGUID, assetManagerName, externalLinkGUID, linkProperties);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2048,14 +2060,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "removeExternalGlossaryLink";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.removeExternalGlossaryLink(userId, assetManagerGUID, assetManagerName, externalLinkGUID);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2082,14 +2094,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "attachExternalLinkToGlossary";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.attachExternalLinkToGlossary(userId, assetManagerGUID, assetManagerName, externalLinkGUID, glossaryGUID);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2116,14 +2128,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "detachExternalLinkFromGlossary";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.detachExternalLinkFromGlossary(userId, assetManagerGUID, assetManagerName, externalLinkGUID, glossaryGUID);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2199,14 +2211,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "attachExternalCategoryLink";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.attachExternalCategoryLink(userId, assetManagerGUID, assetManagerName, externalLinkGUID, glossaryCategoryGUID, linkProperties);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2233,14 +2245,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "detachExternalCategoryLink";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.detachExternalCategoryLink(userId, assetManagerGUID, assetManagerName, externalLinkGUID, glossaryCategoryGUID);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2270,14 +2282,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "attachExternalTermLink";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.attachExternalTermLink(userId, assetManagerGUID, assetManagerName, externalLinkGUID, glossaryTermGUID, linkProperties);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),
@@ -2304,14 +2316,14 @@ public class GlossaryExchangeService
     {
         final String methodName = "detachExternalTermLink";
 
-        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             glossaryManagerClient.detachExternalTermLink(userId, assetManagerGUID, assetManagerName, externalLinkGUID, glossaryTermGUID);
         }
         else
         {
             throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
+                    CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
                                                                                                   connectorName,
                                                                                                   methodName),
                     this.getClass().getName(),

@@ -38,6 +38,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>integration-daemon-services-api</artifactId>
         </dependency>
 
@@ -48,9 +53,13 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
+            <artifactId>asset-manager-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-manager-client</artifactId>
+        </dependency>
 
     </dependencies>
 

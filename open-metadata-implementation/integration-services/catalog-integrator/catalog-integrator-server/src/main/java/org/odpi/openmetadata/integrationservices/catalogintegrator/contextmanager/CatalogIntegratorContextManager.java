@@ -3,11 +3,10 @@
 
 package org.odpi.openmetadata.integrationservices.catalogintegrator.contextmanager;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.*;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -34,8 +33,15 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 {
     private static String disabledExchangeServicesOption     = "disabledExchangeServices";
 
-    private AssetManagerClient     assetManagerClient;
-    private GlossaryExchangeClient glossaryManagerClient;
+    private AssetManagerClient           assetManagerClient;
+    private CollaborationExchangeClient  collaborationExchangeClient;
+    private DataAssetExchangeClient      dataAssetExchangeClient;
+    private GlossaryExchangeClient       glossaryExchangeClient;
+    private GovernanceExchangeClient     governanceExchangeClient;
+    private InfrastructureExchangeClient infrastructureExchangeClient;
+    private LineageExchangeClient        lineageExchangeClient;
+    private StewardshipExchangeClient    stewardshipExchangeClient;
+    private ValidValuesExchangeClient    validValuesExchangeClient;
 
 
     /**
@@ -100,12 +106,56 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
         assetManagerClient = new AssetManagerClient(partnerOMASServerName,
                                                     partnerOMASPlatformRootURL,
                                                     restClient,
-                                                    maxPageSize);
+                                                    maxPageSize,
+                                                    auditLog);
 
-        glossaryManagerClient = new GlossaryExchangeClient(partnerOMASServerName,
-                                                           partnerOMASPlatformRootURL,
-                                                           restClient,
-                                                           maxPageSize);
+        collaborationExchangeClient = new CollaborationExchangeClient(partnerOMASServerName,
+                                                                      partnerOMASPlatformRootURL,
+                                                                      restClient,
+                                                                      maxPageSize,
+                                                                      auditLog);
+
+        dataAssetExchangeClient = new DataAssetExchangeClient(partnerOMASServerName,
+                                                              partnerOMASPlatformRootURL,
+                                                              restClient,
+                                                              maxPageSize,
+                                                              auditLog);
+
+        glossaryExchangeClient = new GlossaryExchangeClient(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            restClient,
+                                                            maxPageSize,
+                                                            auditLog);
+
+        governanceExchangeClient = new GovernanceExchangeClient(partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                restClient,
+                                                                maxPageSize,
+                                                                auditLog);
+
+        infrastructureExchangeClient = new InfrastructureExchangeClient(partnerOMASServerName,
+                                                                        partnerOMASPlatformRootURL,
+                                                                        restClient,
+                                                                        maxPageSize,
+                                                                        auditLog);
+
+        lineageExchangeClient = new LineageExchangeClient(partnerOMASServerName,
+                                                          partnerOMASPlatformRootURL,
+                                                          restClient,
+                                                          maxPageSize,
+                                                          auditLog);
+
+        stewardshipExchangeClient = new StewardshipExchangeClient(partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  restClient,
+                                                                  maxPageSize,
+                                                                  auditLog);
+
+        validValuesExchangeClient = new ValidValuesExchangeClient(partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  restClient,
+                                                                  maxPageSize,
+                                                                  auditLog);
     }
 
 
@@ -188,14 +238,21 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
             String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
 
             serviceSpecificConnector.setContext(new CatalogIntegratorContext(assetManagerClient,
-                                                                             glossaryManagerClient,
                                                                              eventClient,
+                                                                             collaborationExchangeClient,
+                                                                             dataAssetExchangeClient,
+                                                                             glossaryExchangeClient,
+                                                                             governanceExchangeClient,
+                                                                             infrastructureExchangeClient,
+                                                                             lineageExchangeClient,
+                                                                             stewardshipExchangeClient,
+                                                                             validValuesExchangeClient,
                                                                              localServerUserId,
                                                                              metadataSourceGUID,
                                                                              metadataSourceQualifiedName,
                                                                              connectorName,
                                                                              IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
-                                                                             permittedSynchronization,
+                                                                             getSynchronizationDirection(permittedSynchronization),
                                                                              this.extractDisabledExchangeServices(serviceOptions, connectorName),
                                                                              auditLog));
         }
@@ -214,6 +271,36 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
         }
     }
 
+
+    /**
+     * Convert permitted synchronization from the configuration into the SynchronizationDirection enum.
+     * The default is BOTH_DIRECTIONS which effectively enforces no restriction.
+     *
+     * @param permittedSynchronization value from the configuration
+     * @return synchronization direction enum
+     */
+    private SynchronizationDirection getSynchronizationDirection(PermittedSynchronization permittedSynchronization)
+    {
+        if (permittedSynchronization != null)
+        {
+            switch (permittedSynchronization)
+            {
+                case TO_THIRD_PARTY:
+                    return SynchronizationDirection.TO_THIRD_PARTY;
+
+                case FROM_THIRD_PARTY:
+                    return SynchronizationDirection.FROM_THIRD_PARTY;
+
+                case BOTH_DIRECTIONS:
+                    return SynchronizationDirection.BOTH_DIRECTIONS;
+
+                case OTHER:
+                    return SynchronizationDirection.OTHER;
+            }
+        }
+
+        return SynchronizationDirection.BOTH_DIRECTIONS;
+    }
 
 
 
