@@ -10428,7 +10428,7 @@ public class OpenMetadataTypesArchive1_2
          */
         final String guid            = "e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C";
         final String name            = "Port";
-        final String description     = "Entity that describes the interaction point between a process and a schema type.";
+        final String description     = "An interface where data flows in and/or out of the process.";
         final String descriptionGUID = null;
         final String superTypeName   = "Referenceable";
 
@@ -10482,7 +10482,7 @@ public class OpenMetadataTypesArchive1_2
          */
         final String guid            = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";
         final String name            = "PortAlias";
-        final String description     = "Entity that describes the interaction point between a process and a schema type.";
+        final String description     = "Entity that describes the port for a composition process.";
         final String descriptionGUID = null;
         final String superTypeName   = "Port";
 
@@ -10507,7 +10507,7 @@ public class OpenMetadataTypesArchive1_2
          */
         final String guid            = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";
         final String name            = "PortImplementation";
-        final String description     = "Entity that describes the interaction point between a process and a schema type.";
+        final String description     = "Entity that describes a port with a concrete implementation.";
         final String descriptionGUID = null;
         final String superTypeName   = "Port";
 
@@ -10523,7 +10523,8 @@ public class OpenMetadataTypesArchive1_2
      * The PortDelegation relationship describes the relationship between a more granular and a more abstract port
      * @return PortDelegation RelationshipDef
      */
-    private RelationshipDef getPortDelegationRelationship() {
+    private RelationshipDef getPortDelegationRelationship()
+    {
         /*
          * Build the relationship
          */
@@ -10590,7 +10591,7 @@ public class OpenMetadataTypesArchive1_2
          */
         final String guid            = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";
         final String name            = "ProcessPort";
-        final String description     = "A link between a port and the process used by the port";
+        final String description     = "A link between a process and one of its ports.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;

@@ -455,7 +455,6 @@ public class OpenMetadataAPIMapper
 
     public static final String ASSET_SUMMARY_PROPERTY_NAME               = "assetSummary";          /* from ConnectionToAsset relationship */
 
-
     public static final String DATA_STORE_TYPE_GUID                      = "10752b4a-4b5d-4519-9eae-fdd6d162122f";  /* from Area 2 */
     public static final String DATA_STORE_TYPE_NAME                      = "DataStore";
     /* Asset */
@@ -523,6 +522,7 @@ public class OpenMetadataAPIMapper
     public static final String LINKED_MEDIA_TYPE_GUID                    = "cee3a190-fc8d-4e53-908a-f1b9689581e0";  /* from Area 2 */
     public static final String LINKED_MEDIA_TYPE_NAME                    = "LinkedMedia";
     /* End1 = MediaFile; End 2 = MediaFile */
+
     public static final String GROUPED_MEDIA_TYPE_GUID                   = "7d881574-461d-475c-ab44-077451528cb8";  /* from Area 2 */
     public static final String GROUPED_MEDIA_TYPE_NAME                   = "GroupedMedia";
     /* End1 = MediaCollection; End 2 = MediaFile */
@@ -596,7 +596,7 @@ public class OpenMetadataAPIMapper
     public static final String LOG_FILE_TYPE_GUID                        = "ff4c8484-9127-464a-97fc-99579d5bc429";  /* from Area 2 */
     public static final String LOG_FILE_TYPE_NAME                        = "LogFile";
     /* DataFile */
-    public static final String LOG_FILE_TYPE_PROPERTY_NAME               = "deployedImplementationType";                                  /* from LogFile entity */
+    public static final String LOG_FILE_TYPE_PROPERTY_NAME               = "deployedImplementationType";            /* from LogFile entity */
 
     public static final String TOPIC_TYPE_GUID                           = "29100f49-338e-4361-b05d-7e4e8e818325";  /* from Area 2 */
     public static final String TOPIC_TYPE_NAME                           = "Topic";
@@ -613,7 +613,41 @@ public class OpenMetadataAPIMapper
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID     = "486af62c-dcfd-4859-ab24-eab2e380ecfd";  /* from Area 2 */
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME     = "DeployedSoftwareComponent";
     /* Process */
-    public static final String IMPLEMENTATION_LANGUAGE_PROPERTY_NAME     = "implementationLanguage";                             /* from Topic entity */
+    public static final String IMPLEMENTATION_LANGUAGE_PROPERTY_NAME     = "implementationLanguage";                /* from Topic entity */
+
+    public static final String PROCESS_HIERARCHY_TYPE_GUID               = "70dbbda3-903f-49f7-9782-32b503c43e0e";  /* from Area 2 */
+    public static final String PROCESS_HIERARCHY_TYPE_NAME               = "ProcessHierarchy";
+    /* End1 = Process - parent; End 2 = Process - child */
+
+    public static final String PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID   = "1bb4b908-7983-4802-a2b5-91b095552ee9";
+    public static final String PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME   = "ProcessContainmentType";                /* from Area 2 */
+
+    public static final String CONTAINMENT_TYPE_PROPERTY_NAME            = "containmentType";               /* from ProcessHierarchy relationship */
+
+    public static final String PORT_TYPE_GUID                            = "e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C";  /* from Area 2 */
+    public static final String PORT_TYPE_NAME                            = "Port";
+    /* Referenceable */
+
+    public static final String PORT_TYPE_ENUM_TYPE_GUID                  = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
+    public static final String PORT_TYPE_ENUM_TYPE_NAME                  = "PortType";                              /* from Area 2 */
+
+    public static final String PORT_TYPE_PROPERTY_NAME                   = "portType";                              /* from Port entity */
+
+    public static final String PORT_ALIAS_TYPE_GUID                      = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";  /* from Area 2 */
+    public static final String PORT_ALIAS_TYPE_NAME                      = "PortAlias";
+    /* Port */
+
+    public static final String PORT_IMPLEMENTATION_TYPE_GUID             = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";  /* from Area 2 */
+    public static final String PORT_IMPLEMENTATION_TYPE_NAME             = "PortImplementation";
+    /* Port */
+
+    public static final String PROCESS_PORT_TYPE_GUID                    = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";  /* from Area 2 */
+    public static final String PROCESS_PORT_TYPE_NAME                    = "ProcessPort";
+    /* End1 = Process; End 2 = Port */
+
+    public static final String PORT_DELEGATION_TYPE_GUID                 = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";  /* from Area 2 */
+    public static final String PORT_DELEGATION_TYPE_NAME                 = "PortDelegation";
+    /* End1 = Port delegating from; End 2 = Port delegating to */
 
 
     /* ============================================================================================================================*/
@@ -1532,10 +1566,29 @@ public class OpenMetadataAPIMapper
     public static final String DISCOVERY_ACTIVITY_TYPE_NAME    = "DiscoveryActivity";
     /* End1 = RequestForActionAnnotation; End 2 = RequestForAction */
 
-    public static final String DISCOVERY_ACTIVITY_DESCRIPTION_PROPERTY_NAME     = "description";        /* from DiscoveryActivity relationship */
-
     /* ============================================================================================================================*/
     /* Area 7 - Lineage                                                                                                            */
     /* ============================================================================================================================*/
 
+    public static final String DATA_FLOW_TYPE_GUID                  = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
+    public static final String DATA_FLOW_TYPE_NAME                  = "DataFlow";
+    /* End1 = Referenceable - supplier; End 2 = Referenceable - consumer */
+
+    public static final String CONTROL_FLOW_TYPE_GUID               = "35450726-1c32-4d41-b928-22db6d1ae2f4";
+    public static final String CONTROL_FLOW_TYPE_NAME               = "ControlFlow";
+    /* End1 = Referenceable - currentStep; End 2 = Referenceable - nextStep */
+
+    public static final String GUARD_PROPERTY_NAME                  = "guard";
+
+    public static final String PROCESS_CALL_TYPE_GUID               = "af904501-6347-4f52-8378-da50e8d74828";
+    public static final String PROCESS_CALL_TYPE_NAME               = "ProcessCall";
+    /* End1 = Referenceable - calls; End 2 = Referenceable - calledBy */
+
+    public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID = "085febdd-f129-4f4b-99aa-01f3e6294e9f";
+    public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME = "BusinessSignificance";
+    /* Linked to Referenceable */
+
+    public static final String LINEAGE_MAPPING_TYPE_GUID            = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
+    public static final String LINEAGE_MAPPING_TYPE_NAME            = "LineageMapping";
+    /* End1 = Referenceable - sourceElement; End 2 = Referenceable - targetElement */
 }

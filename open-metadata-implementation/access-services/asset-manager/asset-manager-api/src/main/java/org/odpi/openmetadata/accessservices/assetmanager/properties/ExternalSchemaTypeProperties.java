@@ -76,7 +76,7 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
     {
         return "ExternalSchemaTypeProperties{" +
                        "externalSchemaType=" + externalSchemaType +
-                       ", assetType='" + getAssetType() + '\'' +
+                       ", dataType='" + getDataType() + '\'' +
                        ", defaultValue='" + getDefaultValue() + '\'' +
                        ", versionNumber='" + getVersionNumber() + '\'' +
                        ", author='" + getAuthor() + '\'' +

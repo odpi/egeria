@@ -47,7 +47,7 @@ public class PrimitiveSchemaTypeProperties extends SimpleSchemaTypeProperties
     public String toString()
     {
         return "PrimitiveSchemaTypeProperties{" +
-                       "assetType='" + getAssetType() + '\'' +
+                       "dataType='" + getDataType() + '\'' +
                        ", defaultValue='" + getDefaultValue() + '\'' +
                        ", versionNumber='" + getVersionNumber() + '\'' +
                        ", author='" + getAuthor() + '\'' +

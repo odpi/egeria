@@ -12,22 +12,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * Process properties defines the properties of a process.  A process is a series of steps and decisions in operation
  * in the organization.  It is typically an automated process but may be performed by a person.
+ * Only set the implementationLanguage if the process is automated.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-              include = JsonTypeInfo.As.PROPERTY,
-              property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = DeployedSoftwareComponentProperties.class, name = "DeployedSoftwareComponentProperties"),
-        })
 public class ProcessProperties extends AssetProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String formula    = null;
+    private String formula                = null;
+    private String implementationLanguage = null;
 
     /**
      * Default constructor
@@ -50,6 +45,7 @@ public class ProcessProperties extends AssetProperties
         if (template != null)
         {
             formula = template.getFormula();
+            implementationLanguage = template.getImplementationLanguage();
         }
     }
 
@@ -57,7 +53,7 @@ public class ProcessProperties extends AssetProperties
     /**
      * Return the description of the processing performed by this process.
      *
-     * @return String description
+     * @return string description
      */
     public String getFormula() { return formula; }
 
@@ -65,11 +61,33 @@ public class ProcessProperties extends AssetProperties
     /**
      * Set up the the description of the processing performed by this process.
      *
-     * @param formula String description
+     * @param formula string description
      */
     public void setFormula(String formula)
     {
         this.formula = formula;
+    }
+
+
+    /**
+     * Return the name of the programming language that this process is implemented in.
+     *
+     * @return string name
+     */
+    public String getImplementationLanguage()
+    {
+        return implementationLanguage;
+    }
+
+
+    /**
+     * Set up the name of the programming language that this process is implemented in.
+     *
+     * @param implementationLanguage string name
+     */
+    public void setImplementationLanguage(String implementationLanguage)
+    {
+        this.implementationLanguage = implementationLanguage;
     }
 
 
@@ -83,6 +101,7 @@ public class ProcessProperties extends AssetProperties
     {
         return "ProcessProperties{" +
                        "formula='" + formula + '\'' +
+                       ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", technicalName='" + getTechnicalName() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", owner='" + getOwner() + '\'' +
@@ -128,7 +147,8 @@ public class ProcessProperties extends AssetProperties
             return false;
         }
         ProcessProperties that = (ProcessProperties) objectToCompare;
-        return Objects.equals(getFormula(), that.getFormula());
+        return Objects.equals(getFormula(), that.getFormula()) &&
+                       Objects.equals(getImplementationLanguage(), that.getImplementationLanguage());
     }
 
 
@@ -140,6 +160,6 @@ public class ProcessProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getFormula());
+        return Objects.hash(super.hashCode(), getFormula(), getImplementationLanguage());
     }
 }

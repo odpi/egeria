@@ -67,7 +67,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-engine-client</artifactId>
+            <artifactId>asset-manager-api</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-manager-client</artifactId>
         </dependency>
 
     </dependencies>

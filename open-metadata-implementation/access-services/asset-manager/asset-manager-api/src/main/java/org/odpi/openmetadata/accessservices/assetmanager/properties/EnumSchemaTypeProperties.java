@@ -76,7 +76,7 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
     {
         return "EnumSchemaTypeProperties{" +
                        "validValueSetGUID='" + validValueSetGUID + '\'' +
-                       ", assetType='" + getAssetType() + '\'' +
+                       ", dataType='" + getDataType() + '\'' +
                        ", defaultValue='" + getDefaultValue() + '\'' +
                        ", versionNumber='" + getVersionNumber() + '\'' +
                        ", author='" + getAuthor() + '\'' +

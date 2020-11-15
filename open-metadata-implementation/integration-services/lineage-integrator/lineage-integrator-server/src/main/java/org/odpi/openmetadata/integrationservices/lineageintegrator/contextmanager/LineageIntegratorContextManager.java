@@ -3,11 +3,15 @@
 
 package org.odpi.openmetadata.integrationservices.lineageintegrator.contextmanager;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.*;
+import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
@@ -25,7 +29,9 @@ import java.util.Map;
  */
 public class LineageIntegratorContextManager extends IntegrationContextManager
 {
-    private DataEngineRESTClient dataEngineClient = null;
+    private AssetManagerClient      assetManagerClient;
+    private DataAssetExchangeClient dataAssetExchangeClient;
+    private LineageExchangeClient   lineageExchangeClient;
 
     /**
      * Default constructor
@@ -64,10 +70,43 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      *
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
-    public  void createClients() throws InvalidParameterException
+    public void createClients() throws InvalidParameterException
     {
-        this.dataEngineClient = new DataEngineRESTClient(partnerOMASServerName,
-                                                         partnerOMASPlatformRootURL);
+        AssetManagerRESTClient restClient;
+
+        if (localServerPassword == null)
+        {
+            restClient = new AssetManagerRESTClient(partnerOMASServerName,
+                                                    partnerOMASPlatformRootURL,
+                                                    auditLog);
+        }
+        else
+        {
+            restClient = new AssetManagerRESTClient(partnerOMASServerName,
+                                                    partnerOMASPlatformRootURL,
+                                                    localServerUserId,
+                                                    localServerPassword,
+                                                    auditLog);
+        }
+
+        assetManagerClient = new AssetManagerClient(partnerOMASServerName,
+                                                    partnerOMASPlatformRootURL,
+                                                    restClient,
+                                                    maxPageSize,
+                                                    auditLog);
+
+        dataAssetExchangeClient = new DataAssetExchangeClient(partnerOMASServerName,
+                                                              partnerOMASPlatformRootURL,
+                                                              restClient,
+                                                              maxPageSize,
+                                                              auditLog);
+
+        lineageExchangeClient = new LineageExchangeClient(partnerOMASServerName,
+                                                          partnerOMASPlatformRootURL,
+                                                          restClient,
+                                                          maxPageSize,
+                                                          auditLog);
+
     }
 
 
@@ -77,9 +116,15 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      *
      * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
      *
+     * @return unique identifier of the metadata source
+     *
      * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
+     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
+     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
      */
-    private void setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException
+    private String setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
         final String methodName = "setUpMetadataSource";
@@ -90,8 +135,21 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
                                              metadataSourceQualifiedNameParameterName,
                                              methodName);
 
-        this.dataEngineClient.setExternalSourceName(metadataSourceQualifiedName);
+
+        String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
+
+        if (metadataSourceGUID == null)
+        {
+            AssetManagerProperties properties = new AssetManagerProperties();
+
+            properties.setQualifiedName(metadataSourceQualifiedName);
+
+            metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
+        }
+
+        return metadataSourceGUID;
     }
+
 
     /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
@@ -104,22 +162,32 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      * @param serviceOptions options from the integration service's configuration
      *
      * @throws InvalidParameterException the connector is not of the correct type
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
      */
     public void setContext(String                   connectorId,
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
                            IntegrationConnector     integrationConnector,
                            PermittedSynchronization permittedSynchronization,
-                           Map<String, Object>      serviceOptions) throws InvalidParameterException
+                           Map<String, Object>      serviceOptions) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         if (integrationConnector instanceof LineageIntegratorConnector)
         {
-
             LineageIntegratorConnector serviceSpecificConnector = (LineageIntegratorConnector)integrationConnector;
 
-            this.setUpMetadataSource(metadataSourceQualifiedName);
+            String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
 
-            serviceSpecificConnector.setContext(new LineageIntegratorContext(dataEngineClient, localServerUserId));
+            serviceSpecificConnector.setContext(new LineageIntegratorContext(dataAssetExchangeClient,
+                                                                             lineageExchangeClient,
+                                                                             localServerUserId,
+                                                                             metadataSourceGUID,
+                                                                             metadataSourceQualifiedName,
+                                                                             connectorName,
+                                                                             IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
+                                                                             auditLog));
         }
         else
         {
@@ -128,7 +196,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
 
             throw new InvalidParameterException(
                     LineageIntegratorErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorName,
-                                                                                      IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
+                                                                                      IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
                                                                                       LineageIntegratorConnector.class.getCanonicalName()),
                     this.getClass().getName(),
                     methodName,

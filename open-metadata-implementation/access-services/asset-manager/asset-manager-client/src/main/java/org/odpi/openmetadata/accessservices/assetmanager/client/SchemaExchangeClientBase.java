@@ -1,11 +1,15 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetmanager.api;
 
+package org.odpi.openmetadata.accessservices.assetmanager.client;
+
+import org.odpi.openmetadata.accessservices.assetmanager.api.SchemaExchangeInterface;
+import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -14,11 +18,106 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * SchemaExchangeInterface defines the common methods for managing schemas. It is incorporated in the
- * DataAssetExchangeInterface and the LineageExchangeInterface.
+ * ExchangeClientBase provides the base class for the clients that implement SchemaExchangeInterface
  */
-public interface SchemaExchangeInterface
+public class SchemaExchangeClientBase extends ExchangeClientBase implements SchemaExchangeInterface
 {
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public SchemaExchangeClientBase(String   serverName,
+                                    String   serverPlatformURLRoot,
+                                    AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public SchemaExchangeClientBase(String serverName,
+                                    String serverPlatformURLRoot) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public SchemaExchangeClientBase(String   serverName,
+                                    String   serverPlatformURLRoot,
+                                    String   userId,
+                                    String   password,
+                                    AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public SchemaExchangeClientBase(String                 serverName,
+                                    String                 serverPlatformURLRoot,
+                                    AssetManagerRESTClient restClient,
+                                    int                    maxPageSize,
+                                    AuditLog               auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public SchemaExchangeClientBase(String serverName,
+                                    String serverPlatformURLRoot,
+                                    String userId,
+                                    String password) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
 
     /* =====================================================================================================================
      * A schemaType describes the structure of a data asset, process or port
@@ -45,19 +144,23 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createSchemaType(String               userId,
-                            String               assetManagerGUID,
-                            String               assetManagerName,
-                            boolean              assetManagerIsHome,
-                            String               schemaTypeExternalIdentifier,
-                            String               schemaTypeExternalIdentifierName,
-                            String               schemaTypeExternalIdentifierUsage,
-                            String               schemaTypeExternalIdentifierSource,
-                            KeyPattern           schemaTypeExternalIdentifierKeyPattern,
-                            Map<String, String>  mappingProperties,
-                            SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
+    public String createSchemaType(String               userId,
+                                   String               assetManagerGUID,
+                                   String               assetManagerName,
+                                   boolean              assetManagerIsHome,
+                                   String               schemaTypeExternalIdentifier,
+                                   String               schemaTypeExternalIdentifierName,
+                                   String               schemaTypeExternalIdentifierUsage,
+                                   String               schemaTypeExternalIdentifierSource,
+                                   KeyPattern           schemaTypeExternalIdentifierKeyPattern,
+                                   Map<String, String>  mappingProperties,
+                                   SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -82,19 +185,23 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createSchemaTypeFromTemplate(String              userId,
-                                        String              assetManagerGUID,
-                                        String              assetManagerName,
-                                        String              templateGUID,
-                                        String              schemaTypeExternalIdentifier,
-                                        String              schemaTypeExternalIdentifierName,
-                                        String              schemaTypeExternalIdentifierUsage,
-                                        String              schemaTypeExternalIdentifierSource,
-                                        KeyPattern          schemaTypeExternalIdentifierKeyPattern,
-                                        Map<String, String> mappingProperties,
-                                        TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+    public String createSchemaTypeFromTemplate(String              userId,
+                                               String              assetManagerGUID,
+                                               String              assetManagerName,
+                                               String              templateGUID,
+                                               String              schemaTypeExternalIdentifier,
+                                               String              schemaTypeExternalIdentifierName,
+                                               String              schemaTypeExternalIdentifierUsage,
+                                               String              schemaTypeExternalIdentifierSource,
+                                               KeyPattern          schemaTypeExternalIdentifierKeyPattern,
+                                               Map<String, String> mappingProperties,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -112,15 +219,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateSchemaType(String               userId,
-                          String               assetManagerGUID,
-                          String               assetManagerName,
-                          String               schemaTypeGUID,
-                          String               schemaTypeExternalIdentifier,
-                          boolean              isMergeUpdate,
-                          SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+    public void updateSchemaType(String               userId,
+                                 String               assetManagerGUID,
+                                 String               assetManagerName,
+                                 String               schemaTypeGUID,
+                                 String               schemaTypeExternalIdentifier,
+                                 boolean              isMergeUpdate,
+                                 SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -136,13 +246,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupSchemaTypeParent(String userId,
-                               String assetManagerGUID,
-                               String assetManagerName,
-                               String parentElementGUID,
-                               String parentElementTypeName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    public void setupSchemaTypeParent(String userId,
+                                      String assetManagerGUID,
+                                      String assetManagerName,
+                                      String parentElementGUID,
+                                      String parentElementTypeName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -158,13 +271,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void clearSchemaTypeParent(String userId,
-                               String assetManagerGUID,
-                               String assetManagerName,
-                               String parentElementGUID,
-                               String parentElementTypeName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
+    public void clearSchemaTypeParent(String userId,
+                                      String assetManagerGUID,
+                                      String assetManagerName,
+                                      String parentElementGUID,
+                                      String parentElementTypeName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -180,13 +296,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void removeSchemaType(String userId,
-                          String assetManagerGUID,
-                          String assetManagerName,
-                          String schemaTypeGUID,
-                          String schemaTypeExternalIdentifier) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+    public void removeSchemaType(String userId,
+                                 String assetManagerGUID,
+                                 String assetManagerName,
+                                 String schemaTypeGUID,
+                                 String schemaTypeExternalIdentifier) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -206,14 +325,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<SchemaTypeElement> findSchemaType(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String searchString,
-                                           int    startFrom,
-                                           int    pageSize) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    public List<SchemaTypeElement> findSchemaType(String userId,
+                                                  String assetManagerGUID,
+                                                  String assetManagerName,
+                                                  String searchString,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -231,13 +354,17 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    SchemaTypeElement getSchemaTypeForElement(String userId,
-                                              String assetManagerGUID,
-                                              String assetManagerName,
-                                              String parentElementGUID,
-                                              String parentElementTypeName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException;
+    public SchemaTypeElement getSchemaTypeForElement(String userId,
+                                                     String assetManagerGUID,
+                                                     String assetManagerName,
+                                                     String parentElementGUID,
+                                                     String parentElementTypeName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -257,14 +384,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<SchemaTypeElement>   getSchemaTypeByName(String userId,
-                                                  String assetManagerGUID,
-                                                  String assetManagerName,
-                                                  String name,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
+    public List<SchemaTypeElement>   getSchemaTypeByName(String userId,
+                                                         String assetManagerGUID,
+                                                         String assetManagerName,
+                                                         String name,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -281,12 +412,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    SchemaTypeElement getSchemaTypeByGUID(String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String schemaTypeGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+    public SchemaTypeElement getSchemaTypeByGUID(String userId,
+                                                 String assetManagerGUID,
+                                                 String assetManagerName,
+                                                 String schemaTypeGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -303,12 +438,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    ElementHeader getSchemaTypeParent(String userId,
-                                      String assetManagerGUID,
-                                      String assetManagerName,
-                                      String schemaTypeGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    public ElementHeader getSchemaTypeParent(String userId,
+                                             String assetManagerGUID,
+                                             String assetManagerName,
+                                             String schemaTypeGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /* ===============================================================================
@@ -338,20 +477,24 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createSchemaAttribute(String                    userId,
-                                 String                    assetManagerGUID,
-                                 String                    assetManagerName,
-                                 boolean                   assetManagerIsHome,
-                                 String                    schemaElementGUID,
-                                 String                    schemaAttributeExternalIdentifier,
-                                 String                    schemaAttributeExternalIdentifierName,
-                                 String                    schemaAttributeExternalIdentifierUsage,
-                                 String                    schemaAttributeExternalIdentifierSource,
-                                 KeyPattern                schemaAttributeExternalIdentifierKeyPattern,
-                                 Map<String, String>       mappingProperties,
-                                 SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+    public String createSchemaAttribute(String                    userId,
+                                        String                    assetManagerGUID,
+                                        String                    assetManagerName,
+                                        boolean                   assetManagerIsHome,
+                                        String                    schemaElementGUID,
+                                        String                    schemaAttributeExternalIdentifier,
+                                        String                    schemaAttributeExternalIdentifierName,
+                                        String                    schemaAttributeExternalIdentifierUsage,
+                                        String                    schemaAttributeExternalIdentifierSource,
+                                        KeyPattern                schemaAttributeExternalIdentifierKeyPattern,
+                                        Map<String, String>       mappingProperties,
+                                        SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -376,19 +519,23 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createSchemaAttributeFromTemplate(String              userId,
-                                             String              assetManagerGUID,
-                                             String              assetManagerName,
-                                             String              templateGUID,
-                                             String              schemaAttributeExternalIdentifier,
-                                             String              schemaAttributeExternalIdentifierName,
-                                             String              schemaAttributeExternalIdentifierUsage,
-                                             String              schemaAttributeExternalIdentifierSource,
-                                             KeyPattern          schemaAttributeExternalIdentifierKeyPattern,
-                                             Map<String, String> mappingProperties,
-                                             TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
+    public String createSchemaAttributeFromTemplate(String              userId,
+                                                    String              assetManagerGUID,
+                                                    String              assetManagerName,
+                                                    String              templateGUID,
+                                                    String              schemaAttributeExternalIdentifier,
+                                                    String              schemaAttributeExternalIdentifierName,
+                                                    String              schemaAttributeExternalIdentifierUsage,
+                                                    String              schemaAttributeExternalIdentifierSource,
+                                                    KeyPattern          schemaAttributeExternalIdentifierKeyPattern,
+                                                    Map<String, String> mappingProperties,
+                                                    TemplateProperties  templateProperties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -406,15 +553,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateSchemaAttribute(String                    userId,
-                               String                    assetManagerGUID,
-                               String                    assetManagerName,
-                               String                    schemaAttributeGUID,
-                               String                    schemaAttributeExternalIdentifier,
-                               boolean                   isMergeUpdate,
-                               SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException;
+    public void updateSchemaAttribute(String                    userId,
+                                      String                    assetManagerGUID,
+                                      String                    assetManagerName,
+                                      String                    schemaAttributeGUID,
+                                      String                    schemaAttributeExternalIdentifier,
+                                      boolean                   isMergeUpdate,
+                                      SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -430,14 +580,17 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setSchemaElementAsCalculatedValue(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String schemaElementGUID,
-                                           String schemaElementExternalIdentifier,
-                                           String formula) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
+    public void setSchemaElementAsCalculatedValue(String userId,
+                                                  String assetManagerGUID,
+                                                  String assetManagerName,
+                                                  String schemaElementGUID,
+                                                  String schemaElementExternalIdentifier,
+                                                  String formula) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -453,13 +606,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void clearSchemaElementAsCalculatedValue(String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String schemaElementGUID,
-                                             String schemaElementExternalIdentifier) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
+    public void clearSchemaElementAsCalculatedValue(String userId,
+                                                    String assetManagerGUID,
+                                                    String assetManagerName,
+                                                    String schemaElementGUID,
+                                                    String schemaElementExternalIdentifier) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -477,15 +633,19 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupSchemaQueryTarget(String userId,
-                                String assetManagerGUID,
-                                String assetManagerName,
-                                String schemaElementOneGUID,
-                                String schemaElementTwoGUID,
-                                String queryId,
-                                String query) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException;
+    public void setupSchemaQueryTarget(String userId,
+                                       String assetManagerGUID,
+                                       String assetManagerName,
+                                       String schemaElementOneGUID,
+                                       String schemaElementTwoGUID,
+                                       String queryId,
+                                       String query) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        // todo
+    }
+
 
     /**
      * Update the relationship properties for the query target.
@@ -502,15 +662,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateSchemaQueryTarget(String userId,
-                                 String assetManagerGUID,
-                                 String assetManagerName,
-                                 String schemaElementOneGUID,
-                                 String schemaElementTwoGUID,
-                                 String queryId,
-                                 String query) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+    public void updateSchemaQueryTarget(String userId,
+                                        String assetManagerGUID,
+                                        String assetManagerName,
+                                        String schemaElementOneGUID,
+                                        String schemaElementTwoGUID,
+                                        String queryId,
+                                        String query) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -526,13 +689,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void clearSchemaQueryTarget(String userId,
-                                String assetManagerGUID,
-                                String assetManagerName,
-                                String schemaElementOneGUID,
-                                String schemaElementTwoGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    public void clearSchemaQueryTarget(String userId,
+                                       String assetManagerGUID,
+                                       String assetManagerName,
+                                       String schemaElementOneGUID,
+                                       String schemaElementTwoGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -551,16 +717,19 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupColumnAsPrimaryKey(String     userId,
-                                 String     assetManagerGUID,
-                                 String     assetManagerName,
-                                 boolean    assetManagerIsHome,
-                                 String     schemaAttributeGUID,
-                                 String     schemaAttributeExternalIdentifier,
-                                 String     primaryKeyName,
-                                 KeyPattern primaryKeyPattern) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+    public void setupColumnAsPrimaryKey(String     userId,
+                                        String     assetManagerGUID,
+                                        String     assetManagerName,
+                                        boolean    assetManagerIsHome,
+                                        String     schemaAttributeGUID,
+                                        String     schemaAttributeExternalIdentifier,
+                                        String     primaryKeyName,
+                                        KeyPattern primaryKeyPattern) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -576,15 +745,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void clearColumnAsPrimaryKey(String userId,
-                                 String assetManagerGUID,
-                                 String assetManagerName,
-                                 String schemaAttributeGUID,
-                                 String schemaAttributeExternalIdentifier) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException;
-
-
+    public void clearColumnAsPrimaryKey(String userId,
+                                        String assetManagerGUID,
+                                        String assetManagerName,
+                                        String schemaAttributeGUID,
+                                        String schemaAttributeExternalIdentifier) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -602,15 +772,19 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupForeignKeyRelationship(String               userId,
-                         String               assetManagerGUID,
-                         String               assetManagerName,
-                         boolean              assetManagerIsHome,
-                         String               primaryKeyGUID,
-                         String               foreignKeyGUID,
-                         ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
+    public void setupForeignKeyRelationship(String               userId,
+                                            String               assetManagerGUID,
+                                            String               assetManagerName,
+                                            boolean              assetManagerIsHome,
+                                            String               primaryKeyGUID,
+                                            String               foreignKeyGUID,
+                                            ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        // todo
+    }
+
 
     /**
      * Update the relationship properties for the query target.
@@ -626,14 +800,17 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateForeignKeyRelationship(String               userId,
-                                      String               assetManagerGUID,
-                                      String               assetManagerName,
-                                      String               primaryKeyGUID,
-                                      String               foreignKeyGUID,
-                                      ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException;
+    public void updateForeignKeyRelationship(String               userId,
+                                             String               assetManagerGUID,
+                                             String               assetManagerName,
+                                             String               primaryKeyGUID,
+                                             String               foreignKeyGUID,
+                                             ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -649,13 +826,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void clearForeignKeyRelationship(String userId,
-                                     String assetManagerGUID,
-                                     String assetManagerName,
-                                     String primaryKeyGUID,
-                                     String foreignKeyGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    public void clearForeignKeyRelationship(String userId,
+                                            String assetManagerGUID,
+                                            String assetManagerName,
+                                            String primaryKeyGUID,
+                                            String foreignKeyGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -671,13 +851,16 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void removeSchemaAttribute(String userId,
-                               String assetManagerGUID,
-                               String assetManagerName,
-                               String schemaAttributeGUID,
-                               String schemaAttributeExternalIdentifier) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+    public void removeSchemaAttribute(String userId,
+                                      String assetManagerGUID,
+                                      String assetManagerName,
+                                      String schemaAttributeGUID,
+                                      String schemaAttributeExternalIdentifier) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -697,14 +880,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<SchemaAttributeElement>   findSchemaAttributes(String userId,
-                                                        String assetManagerGUID,
-                                                        String assetManagerName,
-                                                        String searchString,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+    public List<SchemaAttributeElement>   findSchemaAttributes(String userId,
+                                                               String assetManagerGUID,
+                                                               String assetManagerName,
+                                                               String searchString,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -723,14 +910,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<SchemaAttributeElement>    getAttributesForSchemaType(String userId,
-                                                               String assetManagerGUID,
-                                                               String assetManagerName,
-                                                               String schemaTypeGUID,
-                                                               int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
+    public List<SchemaAttributeElement>    getAttributesForSchemaType(String userId,
+                                                                      String assetManagerGUID,
+                                                                      String assetManagerName,
+                                                                      String schemaTypeGUID,
+                                                                      int    startFrom,
+                                                                      int    pageSize) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -750,14 +941,18 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<SchemaAttributeElement>   getSchemaAttributesByName(String userId,
-                                                             String assetManagerGUID,
-                                                             String assetManagerName,
-                                                             String name,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    public List<SchemaAttributeElement>   getSchemaAttributesByName(String userId,
+                                                                    String assetManagerGUID,
+                                                                    String assetManagerName,
+                                                                    String name,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        // todo
+        return null;
+    }
 
 
     /**
@@ -774,10 +969,14 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    SchemaAttributeElement getSchemaAttributeByGUID(String userId,
-                                                    String assetManagerGUID,
-                                                    String assetManagerName,
-                                                    String schemaAttributeGUID) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
+    public SchemaAttributeElement getSchemaAttributeByGUID(String userId,
+                                                           String assetManagerGUID,
+                                                           String assetManagerName,
+                                                           String schemaAttributeGUID) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        // todo
+        return null;
+    }
 }

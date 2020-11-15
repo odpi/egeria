@@ -157,8 +157,10 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0017ExternalIdentifiers();
-        update0770LineageMapping();
         add0056AssetManager();
+        update0750DataPassing();
+        update0770LineageMapping();
+
     }
 
 
@@ -418,6 +420,304 @@ public class OpenMetadataTypesArchive
      */
 
 
+    private void update0750DataPassing()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateProcessInputRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateProcessOutputRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateProcessCallRelationship());
+        this.archiveBuilder.addRelationshipDef(addDataFlowRelationship());
+        this.archiveBuilder.addRelationshipDef(addControlFlowRelationship());
+    }
+
+
+    private TypeDefPatch deprecateProcessInputRelationship()
+    {
+        final String typeName = "ProcessInput";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateProcessOutputRelationship()
+    {
+        final String typeName = "ProcessInput";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateProcessCallRelationship()
+    {
+        final String typeName    = "ProcessCall";
+        final String description = "Shows a request-response call between two elements.";
+
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setDescription(description);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "caller";
+        final String                     end1AttributeDescription     = "Call originator.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "called";
+        final String                     end2AttributeDescription     = "Called element that performs the processing.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "qualifiedName";
+        final String attribute1Description     = "Unique name of the call relationship.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description and purpose of the call.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "formula";
+        final String attribute3Description     = "Function that determines the subset of the data that flows.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private RelationshipDef addDataFlowRelationship()
+    {
+        final String guid            = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
+        final String name            = "DataFlow";
+        final String description     = "Shows that data flows in one direction from one element to another.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "dataSupplier";
+        final String                     end1AttributeDescription     = "Caller element.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "dataConsumer";
+        final String                     end2AttributeDescription     = "Called element.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "qualifiedName";
+        final String attribute1Description     = "Unique name of the flow relationship.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description and purpose of the flow.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "formula";
+        final String attribute3Description     = "Function that determines the subset of the data that flows.";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef addControlFlowRelationship()
+    {
+        final String guid            = "35450726-1c32-4d41-b928-22db6d1ae2f4";
+        final String name            = "ControlFlow";
+        final String description     = "Shows that when one element completes processing, control passes to the next element.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "currentStep";
+        final String                     end1AttributeDescription     = "Element that executes first.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "nextStep";
+        final String                     end2AttributeDescription     = "Element that executes next.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "qualifiedName";
+        final String attribute1Description     = "Unique name of the control flow relationship.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description and purpose of the control flow.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "guard";
+        final String attribute3Description     = "Function that must be true to travel down this control flow.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
     private void update0770LineageMapping()
     {
         this.archiveBuilder.addTypeDefPatch(updateLineageMappingRelationship());
@@ -470,6 +770,7 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
 
 
     /*

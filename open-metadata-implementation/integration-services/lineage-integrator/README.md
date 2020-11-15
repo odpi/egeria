@@ -12,22 +12,16 @@ The modules are as follows:
 
 * [lineage-integrator-api](lineage-integrator-api) - defines the interface for an integration
 connector that is supported by the Lineage Integrator integration service. This includes the implementation
-of the context that wraps the Community Profile OMAS's clients.
+of the context that wraps the Asset Manager OMAS's clients.
 
 * [lineage-integrator-server](lineage-integrator-server) - implements the context manager for
 the Lineage Integrator integration service.
 
-This integration service is paired with the [Data Engine](../../access-services/data-engine)
+This integration service is paired with the [Asset Manager](../../access-services/asset-manager)
 Open Metadata Access Service (OMAS).
 
 ----
 Return to the [Integration Services](..)
-
-----
-License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
-Copyright Contributors to the ODPi Egeria project.
-
-
 
 
 ----
