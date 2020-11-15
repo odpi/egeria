@@ -101,7 +101,7 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
         return "LiteralSchemaTypeProperties{" +
                        "dataType='" + dataType + '\'' +
                        ", fixedValue='" + fixedValue + '\'' +
-                       ", assetType='" + getDataType() + '\'' +
+                       ", dataType='" + getDataType() + '\'' +
                        ", versionNumber='" + getVersionNumber() + '\'' +
                        ", author='" + getAuthor() + '\'' +
                        ", usage='" + getUsage() + '\'' +

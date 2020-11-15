@@ -52,7 +52,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
 
         if (template != null)
         {
-            dataType = template.getAssetType();
+            dataType = template.getDataType();
             defaultValue = template.getDefaultValue();
         }
     }
@@ -63,7 +63,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
      *
      * @return String data type name
      */
-    public String getAssetType() { return dataType; }
+    public String getDataType() { return dataType; }
 
 
     /**
@@ -71,7 +71,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
      *
      * @param dataType data type name
      */
-    public void setAssetType(String dataType)
+    public void setDataType(String dataType)
     {
         this.dataType = dataType;
     }
@@ -107,7 +107,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
         return "SimpleSchemaTypeProperties{" +
                        "dataType='" + dataType + '\'' +
                        ", defaultValue='" + defaultValue + '\'' +
-                       ", assetType='" + getAssetType() + '\'' +
+                       ", dataType='" + getDataType() + '\'' +
                        ", versionNumber='" + getVersionNumber() + '\'' +
                        ", author='" + getAuthor() + '\'' +
                        ", usage='" + getUsage() + '\'' +
@@ -154,7 +154,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
             return false;
         }
         SimpleSchemaTypeProperties that = (SimpleSchemaTypeProperties) objectToCompare;
-        return Objects.equals(getAssetType(), that.getAssetType()) &&
+        return Objects.equals(getDataType(), that.getDataType()) &&
                 Objects.equals(getDefaultValue(), that.getDefaultValue());
     }
 
