@@ -3,9 +3,11 @@
 
 package org.odpi.openmetadata.integrationservices.lineageintegrator.connector;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTClient;
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
-import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -13,136 +15,2045 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * LineageIntegratorContext provides a wrapper around the Data Engine OMAS client.
+ * LineageIntegratorContext provides a wrapper around the Asset Manager OMAS client.
  * It provides the simplified interface to open metadata needed by the LineageIntegratorConnector.
  */
 public class LineageIntegratorContext
 {
-    private DataEngineRESTClient dataEngineClient;
-    private String               userId;
+    private DataAssetExchangeClient       dataAssetExchangeClient;
+    private LineageExchangeClient         lineageExchangeClient;
+
+    private String                        userId;
+    private String                        assetManagerGUID;
+    private String                        assetManagerName;
+    private String                        connectorName;
+    private String                        integrationServiceName;
+    private AuditLog                      auditLog;
+
 
     /**
      * Create a new context for a connector.
      *
-     * @param dataEngineClient common client to map requests to
+     * @param dataAssetExchangeClient client for data asset requests
+     * @param lineageExchangeClient client for lineage requests
      * @param userId integration daemon's userId
+     * @param assetManagerGUID unique identifier of the software server capability for the asset manager
+     * @param assetManagerName unique name of the software server capability for the asset manager
+     * @param connectorName name of the connector using this context
+     * @param integrationServiceName name of this service
+     * @param auditLog logging destination
      */
-    public LineageIntegratorContext(DataEngineRESTClient dataEngineClient,
-                                    String               userId)
+    public LineageIntegratorContext(DataAssetExchangeClient dataAssetExchangeClient,
+                                    LineageExchangeClient   lineageExchangeClient,
+                                    String                  userId,
+                                    String                  assetManagerGUID,
+                                    String                  assetManagerName,
+                                    String                  connectorName,
+                                    String                  integrationServiceName,
+                                    AuditLog                auditLog)
     {
-        this.dataEngineClient = dataEngineClient;
-        this.userId           = userId;
+        this.dataAssetExchangeClient = dataAssetExchangeClient;
+        this.lineageExchangeClient   = lineageExchangeClient;
+        this.userId                  = userId;
+        this.assetManagerGUID        = assetManagerGUID;
+        this.assetManagerName        = assetManagerName;
+        this.connectorName           = connectorName;
+        this.integrationServiceName  = integrationServiceName;
+        this.auditLog                = auditLog;
     }
 
 
-    /**
-     * Create or update the processes, with all the ports, schema types and corresponding relationships including
-     * process hierarchy relationships.
-     *
-     * @param processes list of processes
-     *
-     * @return unique identifier of the process in the repository
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+    /* ======================================================================================
+     * The Asset entity is the top level element to describe an implemented data asset such as a data store or data set.
      */
-    public List<String> createOrUpdateProcesses(List<Process> processes) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
-    {
-        return dataEngineClient.createOrUpdateProcesses(userId, processes);
-    }
-
 
     /**
-     * Create or update the schema type entity, with the corresponding schema attributes and relationships
+     * Create a new metadata element to represent the root of an asset.
      *
-     * @param schemaType the schema type bean
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetProperties properties to store
      *
-     * @return unique identifier of the schema type in the repository
+     * @return unique identifier of the new metadata element
      *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createOrUpdateSchemaType(SchemaType schemaType) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
-    {
-        return dataEngineClient.createOrUpdateSchemaType(userId, schemaType);
-    }
-
-
-    /**
-     * Create or update the port implementation entity, with the corresponding schema type and port schema relationship.
-     *
-     * @param portImplementation the port implementation bean
-     *
-     * @return unique identifier of the port implementation in the repository
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public String createOrUpdatePortImplementation(PortImplementation portImplementation) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        return dataEngineClient.createOrUpdatePortImplementation(userId, portImplementation);
-    }
-
-
-    /**
-     * Create or update the port alias entity with a PortDelegation relationship
-     *
-     * @param portAlias the port alias bean
-     *
-     * @return unique identifier of the port alias in the repository
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public String createOrUpdatePortAlias(PortAlias portAlias) throws InvalidParameterException,
+    public String createAsset(boolean         assetManagerIsHome,
+                              AssetProperties assetProperties) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return dataEngineClient.createOrUpdatePortAlias(userId, portAlias);
+        return dataAssetExchangeClient.createAsset(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   assetManagerIsHome,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   assetProperties);
     }
 
 
     /**
-     * Add lineage mapping relationships between schema types
+     * Create a new metadata element to represent an asset using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new asset.
      *
-     * @param lineageMappings list of lineage mappings
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
      *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addLineageMappings(List<LineageMapping> lineageMappings) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public String createAssetFromTemplate(String             templateGUID,
+                                          TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        dataEngineClient.addLineageMappings(userId, lineageMappings);
+        return dataAssetExchangeClient.createAssetFromTemplate(userId,
+                                                               assetManagerGUID,
+                                                               assetManagerName,
+                                                               templateGUID,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               templateProperties);
     }
 
 
     /**
-     * Add ports and process ports relationship to an existing port
+     * Update the metadata element representing an asset.
      *
-     * @param portGUIDs   the list of port GUIDs
-     * @param processGUID the process GUID
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param assetProperties new properties for this element
      *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addPortsToProcess(List<String> portGUIDs, String processGUID) throws InvalidParameterException,
+    public void updateAsset(String          assetGUID,
+                            boolean         isMergeUpdate,
+                            AssetProperties assetProperties) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        dataAssetExchangeClient.updateAsset(userId,
+                                            assetManagerGUID,
+                                            assetManagerName,
+                                            assetGUID,
+                                            null,
+                                            isMergeUpdate,
+                                            assetProperties);
+    }
+
+
+    /**
+     * Remove the metadata element representing an asset.  This will delete the asset and all anchored
+     * elements such as schema and comments.
+     *
+     * @param assetGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeAsset(String assetGUID) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException
+    {
+        dataAssetExchangeClient.removeAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+    }
+
+
+    /**
+     * Classify the asset to indicate that it can be used as reference data.
+     *
+     * @param assetGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        dataAssetExchangeClient.setAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+    }
+
+
+    /**
+     * Remove the reference data designation from the asset.
+     *
+     * @param assetGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        dataAssetExchangeClient.clearAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+    }
+
+
+    /**
+     * Retrieve the list of asset metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<AssetElement> findAssets(String searchString,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        return dataAssetExchangeClient.findAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of asset metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<AssetElement>   getAssetsByName(String name,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of assets created on behalf of this asset manager.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<AssetElement>   getAssetsForAssetManager(int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the asset metadata element with the supplied unique identifier.
+     *
+     * @param openMetadataGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public AssetElement getAssetByGUID(String openMetadataGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A schemaType describes the structure of a data asset, process or port
+     */
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param schemaTypeGUID unique identifier of the schemaType where the schema type is located
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaType(boolean              assetManagerIsHome,
+                                   String               schemaTypeGUID,
+                                   SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        dataEngineClient.addPortsToProcess(userId, portGUIDs, processGUID);
+        return dataAssetExchangeClient.createSchemaType(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        assetManagerIsHome,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        schemaTypeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaTypeFromTemplate(String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return dataAssetExchangeClient.createSchemaTypeFromTemplate(userId,
+                                                                    assetManagerGUID,
+                                                                    assetManagerName,
+                                                                    templateGUID,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a schema type.
+     *
+     * @param schemaTypeGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param schemaTypeProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSchemaType(String               schemaTypeGUID,
+                                 boolean              isMergeUpdate,
+                                 SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        dataAssetExchangeClient.updateSchemaType(userId,
+                                                 assetManagerGUID,
+                                                 assetManagerName,
+                                                 schemaTypeGUID,
+                                                 null,
+                                                 isMergeUpdate,
+                                                 schemaTypeProperties);
+    }
+
+
+    /**
+     * Connect a schema type to a data asset, process or port.
+     *
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaTypeParent(String parentElementGUID,
+                                      String parentElementTypeName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        dataAssetExchangeClient.setupSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+    }
+
+
+    /**
+     * Remove the relationship between a schema type and its parent data asset, process or port.
+     *
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaTypeParent(String parentElementGUID,
+                                      String parentElementTypeName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        dataAssetExchangeClient.clearSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema type.
+     *
+     * @param schemaTypeGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSchemaType(String schemaTypeGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        dataAssetExchangeClient.removeSchemaType(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, null);
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaTypeElement> findSchemaType(String searchString,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        return dataAssetExchangeClient.findSchemaType(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the schema type associated with a specific open metadata element (data asset, process or port).
+     *
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     *
+     * @return metadata element describing the schema type associated with the requested parent element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SchemaTypeElement getSchemaTypeForElement(String parentElementGUID,
+                                                     String parentElementTypeName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return dataAssetExchangeClient.getSchemaTypeForElement(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaTypeElement>   getSchemaTypeByName(String name,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return dataAssetExchangeClient.getSchemaTypeByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the schema type metadata element with the supplied unique identifier.
+     *
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SchemaTypeElement getSchemaTypeByGUID(String schemaTypeGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return dataAssetExchangeClient.getSchemaTypeByGUID(userId, assetManagerGUID, assetManagerName, schemaTypeGUID);
+    }
+
+
+    /**
+     * Retrieve the header of the metadata element connected to a schema type.
+     *
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     *
+     * @return header for parent element (data asset, process, port)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ElementHeader getSchemaTypeParent(String schemaTypeGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return dataAssetExchangeClient.getSchemaTypeParent(userId, assetManagerGUID, assetManagerName, schemaTypeGUID);
+    }
+
+
+    /* ===============================================================================
+     * A schemaType typically contains many schema attributes, linked with relationships.
+     */
+
+    /**
+     * Create a new metadata element to represent a schema attribute.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
+     * @param schemaAttributeProperties properties for the schema attribute
+     *
+     * @return unique identifier of the new metadata element for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaAttribute(boolean                   assetManagerIsHome,
+                                        String                    schemaElementGUID,
+                                        SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        return dataAssetExchangeClient.createSchemaAttribute(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             assetManagerIsHome,
+                                                             schemaElementGUID,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             schemaAttributeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaAttributeFromTemplate(String              templateGUID,
+                                                    TemplateProperties  templateProperties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return dataAssetExchangeClient.createSchemaAttributeFromTemplate(userId,
+                                                                         assetManagerGUID,
+                                                                         assetManagerName,
+                                                                         templateGUID,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         templateProperties);
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a schema attribute.
+     *
+     * @param schemaAttributeGUID unique identifier of the schema attribute to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param schemaAttributeProperties new properties for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSchemaAttribute(String                    schemaAttributeGUID,
+                                      boolean                   isMergeUpdate,
+                                      SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        dataAssetExchangeClient.updateSchemaAttribute(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      schemaAttributeGUID,
+                                                      null,
+                                                      isMergeUpdate,
+                                                      schemaAttributeProperties);
+    }
+
+
+    /**
+     * Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.
+     *
+     * @param schemaElementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setSchemaElementAsCalculatedValue(String schemaElementGUID,
+                                                  String formula) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        dataAssetExchangeClient.setSchemaElementAsCalculatedValue(userId,
+                                                                  assetManagerGUID,
+                                                                  assetManagerName,
+                                                                  schemaElementGUID,
+                                                                  null,
+                                                                  formula);
+    }
+
+
+    /**
+     * Remove the calculated value designation from the schema element.
+     *
+     * @param schemaElementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaElementAsCalculatedValue(String userId,
+                                                    String assetManagerGUID,
+                                                    String assetManagerName,
+                                                    String schemaElementGUID) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        dataAssetExchangeClient.clearSchemaElementAsCalculatedValue(userId,
+                                                                    assetManagerGUID,
+                                                                    assetManagerName,
+                                                                    schemaElementGUID,
+                                                                    null);
+    }
+
+
+    /**
+     * Link two schema elements together to show how a calculated value is derived.
+     *
+     * @param schemaElementOneGUID unique identifier of the derived schema element
+     * @param schemaElementTwoGUID unique identifier of the query target schema element
+     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
+     * @param query query issued to the target
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaQueryTarget(String schemaElementOneGUID,
+                                       String schemaElementTwoGUID,
+                                       String queryId,
+                                       String query) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        dataAssetExchangeClient.setupSchemaQueryTarget(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       schemaElementOneGUID,
+                                                       schemaElementTwoGUID,
+                                                       queryId,
+                                                       query);
+    }
+
+
+    /**
+     * Update the relationship properties for the query target.
+     *
+     * @param schemaElementOneGUID unique identifier of the derived schema element
+     * @param schemaElementTwoGUID unique identifier of the query target schema element
+     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
+     * @param query query issued to the target
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSchemaQueryTarget(String schemaElementOneGUID,
+                                        String schemaElementTwoGUID,
+                                        String queryId,
+                                        String query) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        dataAssetExchangeClient.updateSchemaQueryTarget(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        schemaElementOneGUID,
+                                                        schemaElementTwoGUID,
+                                                        queryId,
+                                                        query);
+    }
+
+
+    /**
+     * Remove the relationship between two schema elements.
+     *
+     * @param schemaElementOneGUID unique identifier of the derived schema element
+     * @param schemaElementTwoGUID unique identifier of the query target schema element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaQueryTarget(String schemaElementOneGUID,
+                                       String schemaElementTwoGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        dataAssetExchangeClient.clearSchemaQueryTarget(userId, assetManagerGUID, assetManagerName, schemaElementOneGUID, schemaElementTwoGUID);
+    }
+
+
+    /**
+     * Classify the column schema attribute to indicate that it describes a primary key.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this classification
+     * @param schemaAttributeGUID unique identifier of the metadata element to update
+     * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
+     * @param primaryKeyName name of the primary key (if different from the column name)
+     * @param primaryKeyPattern key pattern used to maintain the primary key
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupColumnAsPrimaryKey(boolean    assetManagerIsHome,
+                                        String     schemaAttributeGUID,
+                                        String     schemaAttributeExternalIdentifier,
+                                        String     primaryKeyName,
+                                        KeyPattern primaryKeyPattern) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        dataAssetExchangeClient.setupColumnAsPrimaryKey(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        assetManagerIsHome,
+                                                        schemaAttributeGUID,
+                                                        schemaAttributeExternalIdentifier,
+                                                        primaryKeyName,
+                                                        primaryKeyPattern);
+    }
+
+
+    /**
+     * Remove the primary key designation from the schema attribute.
+     *
+     * @param schemaAttributeGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearColumnAsPrimaryKey(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        dataAssetExchangeClient.clearColumnAsPrimaryKey(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, null);
+    }
+
+
+    /**
+     * Link two schema attributes together to show a foreign key relationship.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param primaryKeyGUID unique identifier of the derived schema element
+     * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param foreignKeyProperties properties for the foreign key relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupForeignKeyRelationship(boolean              assetManagerIsHome,
+                                            String               primaryKeyGUID,
+                                            String               foreignKeyGUID,
+                                            ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        dataAssetExchangeClient.setupForeignKeyRelationship(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            assetManagerIsHome,
+                                                            primaryKeyGUID,
+                                                            foreignKeyGUID,
+                                                            foreignKeyProperties);
+    }
+
+
+    /**
+     * Update the relationship properties for the query target.
+     *
+     * @param primaryKeyGUID unique identifier of the derived schema element
+     * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param foreignKeyProperties properties for the foreign key relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateForeignKeyRelationship(String               primaryKeyGUID,
+                                             String               foreignKeyGUID,
+                                             ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        dataAssetExchangeClient.updateForeignKeyRelationship(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             primaryKeyGUID,
+                                                             foreignKeyGUID,
+                                                             foreignKeyProperties);
+    }
+
+
+    /**
+     * Remove the foreign key relationship between two schema elements.
+     *
+     * @param primaryKeyGUID unique identifier of the derived schema element
+     * @param foreignKeyGUID unique identifier of the query target schema element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearForeignKeyRelationship(String primaryKeyGUID,
+                                            String foreignKeyGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        dataAssetExchangeClient.clearForeignKeyRelationship(userId, assetManagerGUID, assetManagerName, primaryKeyGUID, foreignKeyGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema attribute.
+     *
+     * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSchemaAttribute(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        dataAssetExchangeClient.removeSchemaAttribute(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, null);
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaAttributeElement>   findSchemaAttributes(String searchString,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return dataAssetExchangeClient.findSchemaAttributes(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of schema attributes associated with a schemaType.
+     *
+     * @param schemaTypeGUID unique identifier of the schemaType of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaAttributeElement>    getAttributesForSchemaType(String schemaTypeGUID,
+                                                                      int    startFrom,
+                                                                      int    pageSize) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        return dataAssetExchangeClient.getAttributesForSchemaType(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaAttributeElement>   getSchemaAttributesByName(String name,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        return dataAssetExchangeClient.getSchemaAttributesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the schema attribute metadata element with the supplied unique identifier.
+     *
+     * @param schemaAttributeGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SchemaAttributeElement getSchemaAttributeByGUID(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        return dataAssetExchangeClient.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID);
+    }
+
+
+    /* =====================================================================================================================
+     * A process describes a well defined series of steps that gets something done.
+     */
+
+    /**
+     * Create a new metadata element to represent a process.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this process
+     * @param processProperties properties about the process to store
+     * @param initialStatus status value for the new process (default = ACTIVE)
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createProcess(boolean           assetManagerIsHome,
+                                ProcessProperties processProperties,
+                                ProcessStatus     initialStatus) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return lineageExchangeClient.createProcess(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   assetManagerIsHome,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   processProperties,
+                                                   initialStatus);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a process using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createProcessFromTemplate(String             templateGUID,
+                                            TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return lineageExchangeClient.createProcessFromTemplate(userId,
+                                                               assetManagerGUID,
+                                                               assetManagerName,
+                                                               templateGUID,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a process.
+     *
+     * @param processGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param processProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateProcess(String            processGUID,
+                              boolean           isMergeUpdate,
+                              ProcessProperties processProperties) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        lineageExchangeClient.updateProcess(userId,
+                                            assetManagerGUID,
+                                            assetManagerName,
+                                            processGUID,
+                                            null,
+                                            isMergeUpdate,
+                                            processProperties);
+    }
+
+
+    /**
+     * Update the status of the metadata element representing a process.
+     *
+     * @param processGUID unique identifier of the process to update
+     * @param processStatus new status for the process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateProcessStatus(String        processGUID,
+                                    ProcessStatus processStatus) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        lineageExchangeClient.updateProcessStatus(userId, assetManagerGUID, assetManagerName, processGUID, null, processStatus);
+    }
+
+
+    /**
+     * Create a parent-child relationship between two processes.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
+     * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
+     * @param containmentType describes the ownership of the sub-process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupProcessParent(String                 userId,
+                                   String                 assetManagerGUID,
+                                   String                 assetManagerName,
+                                   boolean                assetManagerIsHome,
+                                   String                 parentProcessGUID,
+                                   String                 childProcessGUID,
+                                   ProcessContainmentType containmentType) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        lineageExchangeClient.setupProcessParent(userId,
+                                                 assetManagerGUID,
+                                                 assetManagerName,
+                                                 assetManagerIsHome,
+                                                 parentProcessGUID,
+                                                 childProcessGUID,
+                                                 containmentType);
+    }
+
+
+    /**
+     * Remove a parent-child relationship between two processes.
+     *
+     * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
+     * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearProcessParent(String parentProcessGUID,
+                                   String childProcessGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        lineageExchangeClient.clearProcessParent(userId, assetManagerGUID, assetManagerName, parentProcessGUID, childProcessGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a process.
+     *
+     * @param processGUID unique identifier of the metadata element to remove
+     * @param processExternalIdentifier unique identifier of the process in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeProcess(String processGUID,
+                              String processExternalIdentifier) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        lineageExchangeClient.removeProcess(userId, assetManagerGUID, assetManagerName, processGUID, processExternalIdentifier);
+    }
+
+
+    /**
+     * Retrieve the list of process metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement> findProcesses(String searchString,
+                                              int    startFrom,
+                                              int    pageSize) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        return lineageExchangeClient.findProcesses(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of processes associated with the asset manager.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of metadata elements describing the processes associated with the requested asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement>   getProcessesForAssetManager(int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return lineageExchangeClient.getProcessesForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of process metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement>   getProcessesByName(String name,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return lineageExchangeClient.getProcessesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the process metadata element with the supplied unique identifier.
+     *
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ProcessElement getProcessByGUID(String processGUID) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        return lineageExchangeClient.getProcessByGUID(userId, assetManagerGUID, assetManagerName, processGUID);
+    }
+
+
+    /**
+     * Retrieve the process metadata element with the supplied unique identifier.
+     *
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return parent process element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ProcessElement getProcessParent(String processGUID) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        return lineageExchangeClient.getProcessParent(userId, assetManagerGUID, assetManagerName, processGUID);
+    }
+
+
+    /**
+     * Retrieve the process metadata element with the supplied unique identifier.
+     *
+     * @param processGUID unique identifier of the requested metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of process element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement> getSubProcesses(String processGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return lineageExchangeClient.getSubProcesses(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize);
+    }
+
+
+    /* ===============================================================================
+     * A process typically contains ports that show the flow of data and control to and from it.
+     */
+
+    /**
+     * Create a new metadata element to represent a port.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this port
+     * @param processGUID unique identifier of the process where the port is located
+     * @param portProperties properties for the port
+     *
+     * @return unique identifier of the new metadata element for the port
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createPort(boolean             assetManagerIsHome,
+                             String              processGUID,
+                             PortProperties      portProperties) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return lineageExchangeClient.createPort(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                assetManagerIsHome,
+                                                processGUID,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                portProperties);
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a port.  This call replaces
+     * all existing properties with the supplied properties.
+     *
+     * @param portGUID unique identifier of the port to update
+     * @param portProperties new properties for the port
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updatePort(String         portGUID,
+                           PortProperties portProperties) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        lineageExchangeClient.updatePort(userId, assetManagerGUID, assetManagerName, portGUID, null, portProperties);
+    }
+
+
+    /**
+     * Link a port to a process.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param processGUID unique identifier of the process
+     * @param portGUID unique identifier of the port
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupProcessPort(boolean assetManagerIsHome,
+                                 String  processGUID,
+                                 String  portGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        lineageExchangeClient.setupProcessPort(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, processGUID, portGUID);
+    }
+
+
+    /**
+     * Unlink a port from a process.
+     *
+     * @param processGUID unique identifier of the process
+     * @param portGUID unique identifier of the port
+
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearProcessPort(String processGUID,
+                                 String portGUID) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        lineageExchangeClient.clearProcessPort(userId, assetManagerGUID, assetManagerName, processGUID, portGUID);
+    }
+
+
+    /**
+     * Link two ports together to show that portTwo is an implementation of portOne. (That is, portOne delegates to
+     * portTwo.)
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param portOneGUID unique identifier of the port at end 1
+     * @param portTwoGUID unique identifier of the port at end 2
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupPortDelegation(boolean assetManagerIsHome,
+                                    String  portOneGUID,
+                                    String  portTwoGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        lineageExchangeClient.setupPortDelegation(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, portOneGUID, portTwoGUID);
+    }
+
+
+    /**
+     * Remove the port delegation relationship between two ports.
+     *
+     * @param portOneGUID unique identifier of the port at end 1
+     * @param portTwoGUID unique identifier of the port at end 2
+
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearPortDelegation(String portOneGUID,
+                                    String portTwoGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        lineageExchangeClient.clearPortDelegation(userId, assetManagerGUID, assetManagerName, portOneGUID, portTwoGUID);
+    }
+
+
+    /**
+     * Link a schema type to a port to show the structure of data it accepts.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param portGUID unique identifier of the port
+     * @param schemaTypeGUID unique identifier of the schemaType
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupPortSchemaType(boolean assetManagerIsHome,
+                                    String  portGUID,
+                                    String  schemaTypeGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        lineageExchangeClient.setupPortSchemaType(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, portGUID, schemaTypeGUID);
+    }
+
+
+    /**
+     * Remove the schema type from a port.
+     *
+     * @param portGUID unique identifier of the port
+     * @param schemaTypeGUID unique identifier of the schemaType
+
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearPortSchemaType(String portGUID,
+                                    String schemaTypeGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        lineageExchangeClient.clearPortSchemaType(userId, assetManagerGUID, assetManagerName, portGUID, schemaTypeGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a port.
+     *
+     * @param portGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removePort(String portGUID) throws InvalidParameterException,
+                                                   UserNotAuthorizedException,
+                                                   PropertyServerException
+    {
+        lineageExchangeClient.removePort(userId, assetManagerGUID, assetManagerName, portGUID, null);
+    }
+
+
+    /**
+     * Retrieve the list of port metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<PortElement>   findPorts(String searchString,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        return lineageExchangeClient.findPorts(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of ports associated with a process.
+     *
+     * @param processGUID unique identifier of the process of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<PortElement>    getPortsForProcess(String processGUID,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return lineageExchangeClient.getPortsForProcess(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of ports that delegate to this port.
+     *
+     * @param portGUID unique identifier of the starting port
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<PortElement>  getPortUse(String portGUID,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        return lineageExchangeClient.getPortUse(userId, assetManagerGUID, assetManagerName, portGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the port that this port delegates to.
+     *
+     * @param portGUID unique identifier of the starting port alias
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public PortElement getPortDelegation(String portGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        return lineageExchangeClient.getPortDelegation(userId, assetManagerGUID, assetManagerName, portGUID);
+    }
+
+
+    /**
+     * Retrieve the list of port metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<PortElement>   getPortsByName(String name,
+                                              int    startFrom,
+                                              int    pageSize) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        return lineageExchangeClient.getPortsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the port metadata element with the supplied unique identifier.
+     *
+     * @param portGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public PortElement getPortByGUID(String portGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        return lineageExchangeClient.getPortByGUID(userId, assetManagerGUID, assetManagerName, portGUID);
+    }
+
+
+    /* ===============================================================================
+     * General linkage and classifications
+     */
+
+
+    /**
+     * Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setBusinessSignificant(String elementGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        lineageExchangeClient.setBusinessSignificant(userId, assetManagerGUID, assetManagerName, elementGUID, null);
+    }
+
+
+    /**
+     * Remove the "BusinessSignificant" designation from the element.
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearBusinessSignificant(String elementGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        lineageExchangeClient.clearBusinessSignificant(userId, assetManagerGUID, assetManagerName, elementGUID, null);
+    }
+
+
+    /**
+     * Link two elements together to show that data flows from one to the other.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     *
+     * @return unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupDataFlow(boolean assetManagerIsHome,
+                                String  dataSupplierGUID,
+                                String  dataConsumerGUID,
+                                String  qualifiedName,
+                                String  description,
+                                String  formula) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
+        return lineageExchangeClient.setupDataFlow(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   assetManagerIsHome,
+                                                   dataSupplierGUID,
+                                                   dataConsumerGUID,
+                                                   qualifiedName,
+                                                   description,
+                                                   formula);
+    }
+
+
+    /**
+     * Retrieve the data flow relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one data flow relationships between these two elements since it is used to disambiguate
+     * the request.
+     *
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param qualifiedName unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DataFlowElement getDataFlow(String  dataSupplierGUID,
+                                       String  dataConsumerGUID,
+                                       String  qualifiedName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        return lineageExchangeClient.getDataFlow(userId, dataSupplierGUID, dataConsumerGUID, qualifiedName);
+    }
+
+
+    /**
+     * Update relationship between two elements that shows that data flows from one to the other.
+     *
+     * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     *
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void  updateDataFlow(String dataFlowGUID,
+                                 String qualifiedName,
+                                 String description,
+                                 String formula) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
+        lineageExchangeClient.updateDataFlow(userId, assetManagerGUID, assetManagerName, dataFlowGUID, qualifiedName, description, formula);
+    }
+
+
+    /**
+     * Remove the data flow relationship between two elements.
+     *
+     * @param dataFlowGUID unique identifier of the data flow relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearDataFlow(String dataFlowGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        lineageExchangeClient.clearDataFlow(userId, assetManagerGUID, assetManagerName, dataFlowGUID);
+    }
+
+
+    /**
+     * Link two elements to show that when one completes the next is started.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param currentStepGUID unique identifier of the previous step
+     * @param nextStepGUID unique identifier of the next step
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param guard function that must be true to travel down this control flow
+     *
+     * @return unique identifier for the control flow relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupControlFlow(boolean assetManagerIsHome,
+                                   String  currentStepGUID,
+                                   String  nextStepGUID,
+                                   String  qualifiedName,
+                                   String  description,
+                                   String  guard) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        return lineageExchangeClient.setupControlFlow(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      assetManagerIsHome,
+                                                      currentStepGUID,
+                                                      nextStepGUID,
+                                                      qualifiedName,
+                                                      description,
+                                                      guard);
+    }
+
+
+    /**
+     * Retrieve the control flow relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one control flow relationships between these two elements since it is used to disambiguate
+     * the request.
+     *
+     * @param currentStepGUID unique identifier of the previous step
+     * @param nextStepGUID unique identifier of the next step
+     * @param qualifiedName unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ControlFlowElement getControlFlow(String currentStepGUID,
+                                             String nextStepGUID,
+                                             String qualifiedName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        return lineageExchangeClient.getControlFlow(userId, currentStepGUID, nextStepGUID, qualifiedName);
+    }
+
+
+    /**
+     * Update the relationship between two elements that shows that when one completes the next is started.
+     *
+     * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param guard function that must be true to travel down this control flow
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateControlFlow(String  controlFlowGUID,
+                                  String  qualifiedName,
+                                  String  description,
+                                  String  guard) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
+        lineageExchangeClient.updateControlFlow(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                controlFlowGUID,
+                                                qualifiedName,
+                                                description,
+                                                guard);
+    }
+
+
+    /**
+     * Remove the control flow relationship between two elements.
+     *
+     * @param controlFlowGUID unique identifier of the  control flow relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearControlFlow(String controlFlowGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        lineageExchangeClient.clearControlFlow(userId, assetManagerGUID, assetManagerName, controlFlowGUID);
+    }
+
+
+    /**
+     * Link two elements together to show a request-response call between them.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     *
+     * @return unique identifier of the new relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupProcessCall(boolean assetManagerIsHome,
+                                   String  callerGUID,
+                                   String  calledGUID,
+                                   String  qualifiedName,
+                                   String  description,
+                                   String  formula) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        return lineageExchangeClient.setupProcessCall(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      assetManagerIsHome,
+                                                      callerGUID,
+                                                      calledGUID,
+                                                      qualifiedName,
+                                                      description,
+                                                      formula);
+    }
+
+
+    /**
+     * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one process call relationships between these two elements since it is used to disambiguate
+     * the request.
+     *
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param qualifiedName unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ProcessCallElement getProcessCall(String callerGUID,
+                                             String calledGUID,
+                                             String qualifiedName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        return lineageExchangeClient.getProcessCall(userId, callerGUID, calledGUID, qualifiedName);
+    }
+
+
+    /**
+     * Update the relationship between two elements that shows a request-response call between them.
+     *
+     * @param processCallGUID unique identifier of the process call relationship
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateProcessCall(String processCallGUID,
+                                    String qualifiedName,
+                                    String description,
+                                    String formula) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        lineageExchangeClient.updateProcessCall(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                processCallGUID,
+                                                qualifiedName,
+                                                description,
+                                                formula);
+    }
+
+
+    /**
+     * Remove the process call relationship.
+     *
+     * @param processCallGUID unique identifier of the process call relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearProcessCall(String processCallGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        lineageExchangeClient.clearProcessCall(userId, assetManagerGUID, assetManagerName, processCallGUID);
+    }
+
+
+    /**
+     * Link to elements together to show that they are part of the lineage of the data that is moving
+     * between the processes.  Typically the lineage relationships match the DataFlow relationships.
+     * However, they may occur at less granular process definitions that the detailed data and control flows
+     * that have been captured.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupLineageMapping(boolean assetManagerIsHome,
+                                    String  sourceElementGUID,
+                                    String  destinationElementGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        lineageExchangeClient.setupLineageMapping(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  assetManagerIsHome,
+                                                  sourceElementGUID,
+                                                  destinationElementGUID);
+    }
+
+
+    /**
+     * Remove the lineage mapping between two elements.
+     *
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearLineageMapping(String sourceElementGUID,
+                                    String destinationElementGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        lineageExchangeClient.clearLineageMapping(userId, assetManagerGUID, assetManagerName, sourceElementGUID, destinationElementGUID);
     }
 }
