@@ -556,7 +556,6 @@ public class GlossaryExchangeService
      * Create a new metadata element to represent a glossary category using an existing metadata element as a template.
      *
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
      * @param glossaryCategoryExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param glossaryCategoryExternalIdentifierUsage usage for the open metadata element when mapping to external element in the external asset manager
@@ -571,7 +570,6 @@ public class GlossaryExchangeService
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createGlossaryCategoryFromTemplate(String              templateGUID,
-                                                     String              glossaryGUID,
                                                      String              glossaryCategoryExternalIdentifier,
                                                      String              glossaryCategoryExternalIdentifierName,
                                                      String              glossaryCategoryExternalIdentifierUsage,

@@ -5,23 +5,25 @@ package org.odpi.openmetadata.integrationservices.catalogintegrator.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
 
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.integrationservices.catalogintegrator.ffdc.CatalogIntegratorErrorCode;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * DataAssetExchangeService is the context for managing data assets and associated elements such as schemas and
  * connections.
  */
-public class DataAssetExchangeService
+public class DataAssetExchangeService extends SchemaExchangeService
 {
     private DataAssetExchangeClient  dataAssetExchangeClient;
-    private String                   userId;
-    private String                   assetManagerGUID;
-    private String                   assetManagerName;
-    private String                   connectorName;
-    private SynchronizationDirection synchronizationDirection;
-    private AuditLog                 auditLog;
 
 
     /**
@@ -35,7 +37,7 @@ public class DataAssetExchangeService
      * @param connectorName name of the connector using this context
      * @param auditLog logging destination
      */
-    DataAssetExchangeService(DataAssetExchangeClient dataAssetExchangeClient,
+    DataAssetExchangeService(DataAssetExchangeClient  dataAssetExchangeClient,
                              SynchronizationDirection synchronizationDirection,
                              String                   userId,
                              String                   assetManagerGUID,
@@ -43,13 +45,392 @@ public class DataAssetExchangeService
                              String                   connectorName,
                              AuditLog                 auditLog)
     {
+        super (dataAssetExchangeClient, synchronizationDirection,userId, assetManagerGUID, assetManagerName, connectorName, auditLog);
+
         this.dataAssetExchangeClient = dataAssetExchangeClient;
-        this.synchronizationDirection = synchronizationDirection;
-        this.userId                   = userId;
-        this.assetManagerGUID         = assetManagerGUID;
-        this.assetManagerName         = assetManagerName;
-        this.connectorName            = connectorName;
-        this.auditLog                 = auditLog;
     }
 
+
+
+
+    /* ======================================================================================
+     * The Asset entity is the top level element to describe an implemented data asset such as a data store or data set.
+     */
+
+    /**
+     * Create a new metadata element to represent the root of an asset.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     * @param assetExternalIdentifierName name of property for the external identifier in the external asset manager
+     * @param assetExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param assetExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
+     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param assetProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createAsset(boolean             assetManagerIsHome,
+                              String              assetExternalIdentifier,
+                              String              assetExternalIdentifierName,
+                              String              assetExternalIdentifierUsage,
+                              KeyPattern          assetExternalIdentifierKeyPattern,
+                              Map<String, String> mappingProperties,
+                              AssetProperties     assetProperties) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        final String methodName = "createAsset";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            return dataAssetExchangeClient.createAsset(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       assetManagerIsHome,
+                                                       assetExternalIdentifier,
+                                                       assetExternalIdentifierName,
+                                                       assetExternalIdentifierUsage,
+                                                       connectorName,
+                                                       assetExternalIdentifierKeyPattern,
+                                                       mappingProperties,
+                                                       assetProperties);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Create a new metadata element to represent an asset using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new asset.
+     *
+     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     * @param assetExternalIdentifierName name of property for the external identifier in the external asset manager
+     * @param assetExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param assetExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
+     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createAssetFromTemplate(String              templateGUID,
+                                          String              assetExternalIdentifier,
+                                          String              assetExternalIdentifierName,
+                                          String              assetExternalIdentifierUsage,
+                                          KeyPattern          assetExternalIdentifierKeyPattern,
+                                          Map<String, String> mappingProperties,
+                                          TemplateProperties  templateProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName = "createAssetFromTemplate";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            return dataAssetExchangeClient.createAssetFromTemplate(userId,
+                                                                   assetManagerGUID,
+                                                                   assetManagerName,
+                                                                   templateGUID,
+                                                                   assetExternalIdentifier,
+                                                                   assetExternalIdentifierName,
+                                                                   assetExternalIdentifierUsage,
+                                                                   connectorName,
+                                                                   assetExternalIdentifierKeyPattern,
+                                                                   mappingProperties,
+                                                                   templateProperties);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Update the metadata element representing an asset.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param assetProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateAsset(String          userId,
+                            String          assetManagerGUID,
+                            String          assetManagerName,
+                            String          assetGUID,
+                            String          assetExternalIdentifier,
+                            boolean         isMergeUpdate,
+                            AssetProperties assetProperties) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String methodName = "updateAsset";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            dataAssetExchangeClient.updateAsset(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                assetGUID,
+                                                assetExternalIdentifier,
+                                                isMergeUpdate,
+                                                assetProperties);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Remove the metadata element representing an asset.  This will delete the asset and all anchored
+     * elements such as schema and comments.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeAsset(String userId,
+                            String assetManagerGUID,
+                            String assetManagerName,
+                            String assetGUID,
+                            String assetExternalIdentifier) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String methodName = "removeAsset";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            dataAssetExchangeClient.removeAsset(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Classify the asset to indicate that it can be used as reference data.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setAssetAsReferenceData(String userId,
+                                        String assetManagerGUID,
+                                        String assetManagerName,
+                                        String assetGUID,
+                                        String assetExternalIdentifier) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "setAssetAsReferenceData";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            dataAssetExchangeClient.setAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Remove the reference data designation from the asset.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetAsReferenceData(String userId,
+                                          String assetManagerGUID,
+                                          String assetManagerName,
+                                          String assetGUID,
+                                          String assetExternalIdentifier) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "clearAssetAsReferenceData";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            dataAssetExchangeClient.clearAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Retrieve the list of asset metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<AssetElement> findAssets(String searchString,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        return dataAssetExchangeClient.findAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of asset metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<AssetElement>   getAssetsByName(String name,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of assets created on behalf of the named asset manager.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<AssetElement>   getAssetsForAssetManager(int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the asset metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public AssetElement getAssetByGUID(String userId,
+                                       String assetManagerGUID,
+                                       String assetManagerName,
+                                       String openMetadataGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
+    }
 }
