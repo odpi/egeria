@@ -43,6 +43,8 @@ allprojects {
     group = 'org.odpi.egeria'
     version = '2.5-SNAPSHOT'
 
+    apply plugin: 'java'
+
 
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
@@ -50,13 +52,7 @@ allprojects {
     //    rules = ['all-dependency'] // TODO: Change to criticalRules when ready to enforce
     //
     //}
-}
 
-/*
- * Configuration for sub projects only
- */
-
-subprojects {
 
     //apply plugin: "io.spring.dependency-management"
 
@@ -178,17 +174,17 @@ subprojects {
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.3.0")
             implementation("org.yaml:snakeyaml:1.27")
-            runtime("joda-time:joda-time:2.10.8")
-            runtime("org.antlr:antlr-runtime:3.5.2")
-            runtime("org.apache.jena:jena-arq:3.16.0")
-            runtime("org.codehaus.jackson:jackson-core-asl:1.9.13")
-            runtime("org.codehaus.jackson:jackson-mapper-asl:1.9.13-atlassian-2")
-            runtime("org.janusgraph:janusgraph-berkeleyje:0.5.2")
-            runtime("org.janusgraph:janusgraph-cassandra:0.5.2")
-            runtime("org.janusgraph:janusgraph-cql:0.5.2")
-            runtime("org.janusgraph:janusgraph-es:0.5.2")
-            runtime("org.janusgraph:janusgraph-lucene:0.5.2")
-            runtime("org.xerial.snappy:snappy-java:1.1.8")
+            runtimeOnly("joda-time:joda-time:2.10.8")
+            runtimeOnly("org.antlr:antlr-runtime:3.5.2")
+            runtimeOnly("org.apache.jena:jena-arq:3.16.0")
+            runtimeOnly("org.codehaus.jackson:jackson-core-asl:1.9.13")
+            runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:1.9.13-atlassian-2")
+            runtimeOnly("org.janusgraph:janusgraph-berkeleyje:0.5.2")
+            runtimeOnly("org.janusgraph:janusgraph-cassandra:0.5.2")
+            runtimeOnly("org.janusgraph:janusgraph-cql:0.5.2")
+            runtimeOnly("org.janusgraph:janusgraph-es:0.5.2")
+            runtimeOnly("org.janusgraph:janusgraph-lucene:0.5.2")
+            runtimeOnly("org.xerial.snappy:snappy-java:1.1.8")
             testImplementation("junit:junit:4.13.1")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
@@ -200,11 +196,14 @@ subprojects {
             testImplementation("org.mockito:mockito-junit-jupiter:3.6.0")
             testImplementation("org.slf4j:slf4j-simple:1.7.30")
             testImplementation("org.testng:testng:7.3.0")
+            testImplementation("org.springframework.boot:spring-boot-starter-test:2.3.3.RELEASE")
+
         }
     }
 
     java {
         withSourcesJar()
+        withJavadocJar()
     }
 
     publishing {
@@ -221,4 +220,11 @@ subprojects {
         targetCompatibility = "1.8"
     }
 
+}
+
+/*
+ * Configuration for sub projects only
+ */
+
+subprojects {
 }

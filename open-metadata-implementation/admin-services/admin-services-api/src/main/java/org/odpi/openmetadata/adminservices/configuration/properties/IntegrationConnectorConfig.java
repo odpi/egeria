@@ -35,13 +35,14 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String     connectorId                 = UUID.randomUUID().toString();
-    private String     connectorName               = null;
-    private String     connectorUserId             = null;
-    private Connection connection                  = null;
-    private String     metadataSourceQualifiedName = null;
-    private long       refreshTimeInterval         = 0L;
-    private boolean    usesBlockingCalls           = false;
+    private String                   connectorId                 = UUID.randomUUID().toString();
+    private String                   connectorName               = null;
+    private String                   connectorUserId             = null;
+    private Connection               connection                  = null;
+    private String                   metadataSourceQualifiedName = null;
+    private long                     refreshTimeInterval         = 0L;
+    private boolean                  usesBlockingCalls           = false;
+    private PermittedSynchronization permittedSynchronization    = null;
 
 
     /**
@@ -70,6 +71,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
             metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
             refreshTimeInterval         = template.getRefreshTimeInterval();
             usesBlockingCalls           = template.getUsesBlockingCalls();
+            permittedSynchronization    = template.getPermittedSynchronization();
         }
     }
 
@@ -241,6 +243,30 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the permitted direction of metadata flow (see the enum definition for more details).  Any attempt
+     * by the connector to send/receive metadata in a direction that is not permitted results in a UserNotAuthorizedException.
+     *
+     * @return enum
+     */
+    public PermittedSynchronization getPermittedSynchronization()
+    {
+        return permittedSynchronization;
+    }
+
+
+    /**
+     * Set up the permitted direction of metadata flow (see the enum definition for more details).  Any attempt
+     * by the connector to send/receive metadata in a direction that is not permitted results in a UserNotAuthorizedException.
+     *
+     * @param permittedSynchronization enum
+     */
+    public void setPermittedSynchronization(PermittedSynchronization permittedSynchronization)
+    {
+        this.permittedSynchronization = permittedSynchronization;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -249,14 +275,15 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     public String toString()
     {
         return "IntegrationConnectorConfig{" +
-                "connectorId='" + connectorId + '\'' +
-                ", connectorName='" + connectorName + '\'' +
-                ", connectorUserId='" + connectorUserId + '\'' +
-                ", connection=" + connection +
-                ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
-                ", refreshTimeInterval=" + refreshTimeInterval +
-                ", usesBlockingCalls=" + usesBlockingCalls +
-                '}';
+                       "connectorId='" + connectorId + '\'' +
+                       ", connectorName='" + connectorName + '\'' +
+                       ", connectorUserId='" + connectorUserId + '\'' +
+                       ", connection=" + connection +
+                       ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
+                       ", refreshTimeInterval=" + refreshTimeInterval +
+                       ", usesBlockingCalls=" + usesBlockingCalls +
+                       ", permittedSynchronization=" + permittedSynchronization +
+                       '}';
     }
 
 
@@ -278,13 +305,14 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
             return false;
         }
         IntegrationConnectorConfig that = (IntegrationConnectorConfig) objectToCompare;
-        return refreshTimeInterval == that.refreshTimeInterval &&
-                usesBlockingCalls == that.usesBlockingCalls &&
-                Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
-                Objects.equals(connectorId, that.connectorId) &&
-                Objects.equals(connectorName, that.connectorName) &&
-                Objects.equals(connectorUserId, that.connectorUserId) &&
-                Objects.equals(connection, that.connection);
+        return getRefreshTimeInterval() == that.getRefreshTimeInterval() &&
+                       getUsesBlockingCalls() == that.getUsesBlockingCalls() &&
+                       Objects.equals(getConnectorId(), that.getConnectorId()) &&
+                       Objects.equals(getConnectorName(), that.getConnectorName()) &&
+                       Objects.equals(getConnectorUserId(), that.getConnectorUserId()) &&
+                       Objects.equals(getConnection(), that.getConnection()) &&
+                       Objects.equals(getMetadataSourceQualifiedName(), that.getMetadataSourceQualifiedName()) &&
+                       getPermittedSynchronization() == that.getPermittedSynchronization();
     }
 
 
@@ -297,6 +325,6 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     public int hashCode()
     {
         return Objects.hash(connectorId, connectorName, connectorUserId, connection, metadataSourceQualifiedName, refreshTimeInterval,
-                            usesBlockingCalls);
+                            usesBlockingCalls, permittedSynchronization);
     }
 }

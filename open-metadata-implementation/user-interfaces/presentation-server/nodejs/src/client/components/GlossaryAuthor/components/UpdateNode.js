@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
+  Button,
   DatePicker,
   DatePickerInput,
   DataTable,
@@ -162,8 +163,8 @@ export default function UpdateNode(props) {
   };
   const onClickBack = () => {
     console.log("Back clicked");
-    // use props.history, as there is another window history object in scope in the event listener
-    console.log(props.history);
+    // use history, as there is another window history object in scope in the event listener
+    console.log(history);
     // go  back
     history.goBack();
   };
@@ -250,20 +251,21 @@ export default function UpdateNode(props) {
         </Accordion>
       )}
        <div style={{ color: "red" }}>{errorMsg}</div>
-      <button
+      <Button
         className="bx--btn bx--btn--primary"
         onClick={handleClickUpdate}
         type="button"
       >
         Update
-      </button>
-      <button
+      </Button>
+      <Button
+        kind="secondary"
         className="bx--btn bx--btn--primary"
         onClick={onClickBack}
         type="button"
       >
         Back
-      </button>
+      </Button>
     </div>
   );
 }

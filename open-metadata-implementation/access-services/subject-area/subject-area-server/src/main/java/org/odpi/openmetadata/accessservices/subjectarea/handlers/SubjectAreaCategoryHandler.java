@@ -429,7 +429,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, SubjectAreaTermHandler termHandler, int startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getTerms";
         if (pageSize == null) {
             pageSize = maxPageSize;

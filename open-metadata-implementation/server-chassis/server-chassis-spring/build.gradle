@@ -40,6 +40,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:repository-services:repository-services-spring')
     runtimeOnly project(':open-metadata-conformance-suite:open-metadata-conformance-suite-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-spring')
+    runtimeOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-owner:asset-owner-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-spring')

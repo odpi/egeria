@@ -22,9 +22,19 @@ public class RexRelationshipDigest {
     private Integer idx;
     private Integer gen;
     private String  metadataCollectionName;
+    private String  metadataCollectionId;
+    private String  provenance;
 
-    public RexRelationshipDigest(String relationshipGUID, String label, String end1GUID, String end2GUID, Integer idx, Integer gen,
-                                 String metadataCollectionName) {
+    public RexRelationshipDigest(String relationshipGUID,
+                                 String label,
+                                 String end1GUID,
+                                 String end2GUID,
+                                 Integer idx,
+                                 Integer gen,
+                                 String metadataCollectionName,
+                                 String metadataCollectionId,
+                                 String provenance)
+    {
        this.relationshipGUID = relationshipGUID;
        this.label = label;
        this.end1GUID = end1GUID;
@@ -32,6 +42,8 @@ public class RexRelationshipDigest {
        this.idx = idx;
        this.gen = gen;
        this.metadataCollectionName = metadataCollectionName;
+       this.metadataCollectionId = metadataCollectionId;
+       this.provenance = provenance;
     }
 
     /*
@@ -45,6 +57,8 @@ public class RexRelationshipDigest {
     public Integer getIdx() { return idx; }
     public Integer getGen() { return gen; }
     public String getMetadataCollectionName() { return metadataCollectionName; }
+    public String getMetadataCollectionId() { return metadataCollectionId; }
+    public String getProvenance() { return provenance; }
 
     public void setRelationshipGUID(String relationshipGUID) { this.relationshipGUID = relationshipGUID; }
     public void setLabel(String label) { this.label = label; }
@@ -53,19 +67,24 @@ public class RexRelationshipDigest {
     public void setIdx(Integer idx) { this.idx = idx; }
     public void setGen(Integer gen) { this.gen = gen; }
     public void setMetadataCollectionName(String metadataCollectionName) { this.metadataCollectionName = metadataCollectionName; }
+    public void setMetadataCollectionId(String metadataCollectionId) { this.metadataCollectionId = metadataCollectionId; }
+    public void setProvenance(String provenance) { this.provenance = provenance; }
 
 
 
     @Override
     public String toString()
     {
-        return "RexTypeStats{" +
+        return "RexRelationshipDigest{" +
                 ", relationshipGUID=" + relationshipGUID +
                 ", label=" + label +
                 ", end1GUID=" + end1GUID +
                 ", end2GUID=" + end2GUID +
                 ", idx=" + idx +
                 ", gen=" + gen +
+                ", metadataCollectionName=" + metadataCollectionName +
+                ", metadataCollectionId=" + metadataCollectionId +
+                ", provenance=" + provenance +
                 '}';
     }
 

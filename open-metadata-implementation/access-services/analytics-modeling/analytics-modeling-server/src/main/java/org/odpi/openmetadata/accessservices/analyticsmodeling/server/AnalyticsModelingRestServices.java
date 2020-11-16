@@ -69,7 +69,7 @@ public class AnalyticsModelingRestServices {
 			
 			DatabasesResponse response = new DatabasesResponse();
 			List<ResponseContainerDatabase> databases = getHandler()
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(startFrom, pageSize);
+					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(userId, startFrom, pageSize);
 			response.setDatabasesList(databases);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
@@ -106,7 +106,7 @@ public class AnalyticsModelingRestServices {
 			SchemasResponse response = new SchemasResponse();
 			List<ResponseContainerDatabaseSchema> databasesSchemas = getHandler()
 					.getDatabaseContextHandler(serverName, userId, methodName)
-					.getDatabaseSchemas(databaseGuid, startFrom, pageSize);
+					.getDatabaseSchemas(userId, databaseGuid, startFrom, pageSize);
 			
 			response.setSchemaList(databasesSchemas);
 			ret = response;

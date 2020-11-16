@@ -33,10 +33,8 @@
         <module>catalog-integrator</module>
         <module>files-integrator</module>
         <module>database-integrator</module>
+        <module>lineage-integrator</module>
         <module>organization-integrator</module>
     </modules>
-    <dependencies>
-
-    </dependencies>
 
 </project>

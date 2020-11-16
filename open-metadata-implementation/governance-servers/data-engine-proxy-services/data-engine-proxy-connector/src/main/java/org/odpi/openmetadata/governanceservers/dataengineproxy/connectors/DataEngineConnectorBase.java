@@ -103,6 +103,21 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     }
 
     /**
+     * Retrieve a list of the changed processes between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<Process>}
+     */
+    @Override
+    public List<Process> getChangedProcesses(Date from, Date to) {
+        if (requiresPolling()) {
+            log.debug("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
+        }
+        return Collections.emptyList();
+    }
+
+    /**
      * Retrieve a list of the changed port aliases between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
@@ -118,16 +133,16 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     }
 
     /**
-     * Retrieve a list of the changed processes between the dates and times provided.
+     * Retrieve a list of the changed process hierarchies between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<Process>}
+     * @return {@code List<ProcessHierarchy>}
      */
     @Override
-    public List<Process> getChangedProcesses(Date from, Date to) {
+    public List<ProcessHierarchy> getChangedProcessHierarchies(Date from, Date to) {
         if (requiresPolling()) {
-            log.debug("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
+            log.debug("DataEngineConnectorBase::getChangedProcessHierarchies(Date, Date) is not overridden (unimplemented).");
         }
         return Collections.emptyList();
     }

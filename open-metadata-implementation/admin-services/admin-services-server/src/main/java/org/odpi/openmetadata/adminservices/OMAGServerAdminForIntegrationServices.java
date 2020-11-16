@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.slf4j.LoggerFactory;
 
@@ -70,40 +71,26 @@ public class OMAGServerAdminForIntegrationServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            List<RegisteredOMAGService> registeredServices = new ArrayList<>();
 
-            /*
-             * Get the list of Integration Services configured in this server.
-             */
-            List<IntegrationServiceConfig> integrationServiceConfigList = serverConfig.getIntegrationServicesConfig();
-
-            /*
-             * Set up the available integration services.
-             */
-            if ((integrationServiceConfigList != null) && (! integrationServiceConfigList.isEmpty()))
+            for (IntegrationServiceDescription integrationServiceDescription : IntegrationServiceDescription.values())
             {
-                List<RegisteredOMAGService> services = new ArrayList<>();
-                for (IntegrationServiceConfig integrationServiceConfig : integrationServiceConfigList)
+                if (integrationServiceDescription != null)
                 {
-                    if (integrationServiceConfig != null)
-                    {
-                        if (integrationServiceConfig.getIntegrationServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
-                        {
-                            RegisteredOMAGService service = new RegisteredOMAGService();
+                    RegisteredOMAGService service = new RegisteredOMAGService();
 
-                            service.setServiceName(integrationServiceConfig.getIntegrationServiceFullName());
-                            service.setServiceDescription(integrationServiceConfig.getIntegrationServiceDescription());
-                            service.setServiceURLMarker(integrationServiceConfig.getIntegrationServiceURLMarker());
-                            service.setServiceWiki(integrationServiceConfig.getIntegrationServiceWiki());
-                            services.add(service);
-                        }
-                    }
-                }
-                if (!services.isEmpty())
-                {
-                    response.setServices(services);
-                }
+                    service.setServiceName(integrationServiceDescription.getIntegrationServiceFullName());
+                    service.setServiceDescription(integrationServiceDescription.getIntegrationServiceDescription());
+                    service.setServiceURLMarker(integrationServiceDescription.getIntegrationServiceURLMarker());
+                    service.setServiceWiki(integrationServiceDescription.getIntegrationServiceWiki());
 
+                    registeredServices.add(service);
+                }
+            }
+
+            if (!registeredServices.isEmpty())
+            {
+                response.setServices(registeredServices);
             }
         }
         catch (OMAGInvalidParameterException error)

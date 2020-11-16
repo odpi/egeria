@@ -37,6 +37,12 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
             "The system is unable to shutdown the server correctly.",
             "Review other error messages to determine the cause of the problem.  This is likely to be a logic error in the services listed in the message"),
 
+    NO_TOPIC_INFORMATION(400,"OMAG-MULTI-TENANT-400-003",
+                         "Method {0} called on behalf of the {1} service is unable to create a client-side open " +
+                                 "metadata topic connection because the topic name is not configured in the configuration for this service.",
+                         "This is a configuration error and an exception is sent to the requester.",
+                         "Correct the configuration of the access service to include the name of the topic."),
+
     SERVER_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-001",
             "The OMAG Server {0} is not available to service a request from user {1}",
             "The system is unable to process the request because the server is not running.",
@@ -65,6 +71,12 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
             "The system is unable to connect to the open metadata repository services because they are not in the correct state to be called.",
             "Check that the server where the called service is running initialized correctly and is not in the process of shutting down.  " +
                     "Correct any errors discovered and retry the request when the open metadata repository services are available."),
+
+    BAD_TOPIC_CONNECTOR_PROVIDER(500, "OMAG-MULTI-TENANT-500-003",
+                                 "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
+                                         "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
+                                 "This is an internal error.  The access service is not using a valid connector provider.",
+                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
     ;
 
     private ExceptionMessageDefinition messageDefinition;

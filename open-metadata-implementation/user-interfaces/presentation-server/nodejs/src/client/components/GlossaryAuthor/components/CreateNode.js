@@ -18,12 +18,15 @@ import {
 } from "carbon-components-react";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import { issueRestCreate } from "./RestCaller";
+import { useHistory } from "react-router-dom";
 
 export default function CreateNode(props) {
   const [createBody, setCreateBody] = useState({});
   const [createdNode, setCreatedNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [restCallInProgress, setRestCallInProgress] = useState(false);
+
+  let history = useHistory();
 
   console.log("CreateNode");
 
@@ -32,7 +35,9 @@ export default function CreateNode(props) {
    * @param {*} e end anomation event
    */
   const handleOnAnimationEnd = (e) => {
-    document.getElementById(createLabelIdForSubmitButton()).classList.remove("shaker");
+    document
+      .getElementById(createLabelIdForSubmitButton())
+      .classList.remove("shaker");
   };
 
   const handleClick = (e) => {
@@ -41,10 +46,10 @@ export default function CreateNode(props) {
     setRestCallInProgress(true);
     let body = createBody;
     if (props.glossaryGuid) {
-      let glossary= {};
+      let glossary = {};
       glossary.guid = props.glossaryGuid;
       body.glossary = glossary;
-    } 
+    }
     // TODO consider moving this up to a node controller as per the CRUD pattern.
     // inthe meantime this will be self contained.
     const url = props.currentNodeType.url;
@@ -57,6 +62,9 @@ export default function CreateNode(props) {
     if (json.result.length == 1) {
       const node = json.result[0];
       setCreatedNode(node);
+      if (props.onCreateCallback) {
+        props.onCreateCallback();
+      }
     } else {
       onErrorGet("Error did not get a node from the server");
     }
@@ -78,7 +86,7 @@ export default function CreateNode(props) {
     setErrorMsg(msg);
   };
   const createLabelIdForAttribute = (labelKey) => {
-    return "text-input-create"+props.currentNodeType.name +"-"+ labelKey;
+    return "text-input-create" + props.currentNodeType.name + "-" + labelKey;
   };
   const createLabelIdForSubmitButton = (labelKey) => {
     return props.currentNodeType.name + "CreateViewButton";
@@ -160,14 +168,19 @@ export default function CreateNode(props) {
   };
   const onClickBack = () => {
     console.log("Back clicked");
-    // use props.history, as there is another window history object in scope in the event listener
-    console.log(props.history);
+    // use history, as there is another window history object in scope in the event listener
+    console.log(history);
     // go  back
-    props.history.goBack();
+    history.goBack();
   };
   return (
     <div>
-      {restCallInProgress && <Loading description="Waiting for network call to the server to complete" withOverlay={true} />}
+      {restCallInProgress && (
+        <Loading
+          description="Waiting for network call to the server to complete"
+          withOverlay={true}
+        />
+      )}
       {!restCallInProgress && createdNode != undefined && (
         <div>
           <DataTable
@@ -250,13 +263,25 @@ export default function CreateNode(props) {
           >
             Create Another
           </button>
-          <button
-            className="bx--btn bx--btn--primary"
-            onClick={onClickBack}
-            type="button"
-          >
-            Back
-          </button>
+          {!props.onCreateCallback && (
+            <button
+              kind="secondary"
+              className="bx--btn bx--btn--primary"
+              onClick={onClickBack}
+              type="button"
+            >
+              Back
+            </button>
+          )}
+          {props.onCreateCallback && (
+            <button
+              className="bx--btn bx--btn--primary"
+              onClick={onClickBack}
+              type="button"
+            >
+              Finished
+            </button>
+          )}
         </div>
       )}
 
@@ -265,7 +290,8 @@ export default function CreateNode(props) {
           <form>
             <div>
               <h4>
-                Create {props.currentNodeType ? props.currentNodeType.typeName : ""}
+                Create{" "}
+                {props.currentNodeType ? props.currentNodeType.typeName : ""}
                 <Info16 />
               </h4>
             </div>

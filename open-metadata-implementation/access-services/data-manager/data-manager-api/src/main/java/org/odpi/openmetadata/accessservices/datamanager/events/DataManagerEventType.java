@@ -93,7 +93,7 @@ public enum DataManagerEventType implements Serializable
     @Override
     public String toString()
     {
-        return "AssetConsumerEventType{" +
+        return "DataManagerEventType{" +
                 "eventTypeCode=" + eventTypeCode +
                 ", eventTypeName='" + eventTypeName + '\'' +
                 ", eventTypeDescription='" + eventTypeDescription + '\'' +

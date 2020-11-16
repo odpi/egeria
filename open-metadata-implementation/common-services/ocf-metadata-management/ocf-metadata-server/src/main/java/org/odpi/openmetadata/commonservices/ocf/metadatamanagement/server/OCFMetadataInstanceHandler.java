@@ -221,7 +221,7 @@ public class OCFMetadataInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ExternalIdentifierHandler<ExternalIdentifier> getExternalIdentifierHandler(String userId,
+    ExternalIdentifierHandler<ExternalIdentifier, Object> getExternalIdentifierHandler(String userId,
                                                                                String serverName,
                                                                                String serviceOperationName) throws InvalidParameterException,
                                                                                                                    UserNotAuthorizedException,

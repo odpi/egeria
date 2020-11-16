@@ -9,7 +9,7 @@ It is hosted in an [integration service](../../../integration-services)
 which is, in turn, running in an [Integration Daemon](../../../admin-services/docs/concepts/integration-daemon.md).
  
 The integration connectors can:
- * Listen on a blocking call for the third party technology to send a notification.</li>
+ * Listen on a blocking call for the third party technology to send a notification.
  * Register with an external notification service that sends notifications on its own thread.
  * Register a listener with the OMAS client to act on notifications from the OMAS's Out Topic.
  * Poll the third party technology each time that the refresh() method is called.
