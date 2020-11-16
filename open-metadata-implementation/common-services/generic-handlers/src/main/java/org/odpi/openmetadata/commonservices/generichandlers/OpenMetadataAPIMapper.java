@@ -12,6 +12,9 @@ public class OpenMetadataAPIMapper
     /* Area 0 - Basic definitions and Infrastructure                                                                               */
     /* ============================================================================================================================*/
 
+    public static final String OPEN_METADATA_ROOT_TYPE_GUID              = "4e7761e8-3969-4627-8f40-bfe3cde85a1d";
+    public static final String OPEN_METADATA_ROOT_TYPE_NAME              = "OpenMetadataRoot";        /* from Area 0 */
+
     public static final String REFERENCEABLE_TYPE_GUID                   = "a32316b8-dc8c-48c5-b12b-71c1b2a080bf";
     public static final String REFERENCEABLE_TYPE_NAME                   = "Referenceable";          /* from Area 0 */
 
@@ -44,8 +47,6 @@ public class OpenMetadataAPIMapper
     public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";   /* from feedback relationships - Area 1 */
     public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";         /* from many entities */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from Asset entity */
-
-
 
     public static final String ANCHORS_CLASSIFICATION_TYPE_GUID                  = "aa44f302-2e43-4669-a1e7-edaae414fc6e";
     public static final String ANCHORS_CLASSIFICATION_TYPE_NAME                  = "Anchors";
@@ -767,6 +768,16 @@ public class OpenMetadataAPIMapper
     public static final String SEMANTIC_ASSIGNMENT_STEWARD_PROPERTY_NAME     = "steward";
     public static final String SEMANTIC_ASSIGNMENT_SOURCE_PROPERTY_NAME      = "source";
     public static final String SEMANTIC_ASSIGNMENT_CREATED_BY_PROPERTY_NAME  = "createdBy";
+
+
+    public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_GUID       = "58520015-ce6e-47b7-a1fd-864030544819";
+    public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME       = "ElementSupplement";   /* from Area 3 */
+    /* Project */
+
+    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_GUID                = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
+    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_NAME                = "SupplementaryProperties";
+    /* End1 = Referenceable; End 2 = GlossaryTerm */
+
 
     /* ============================================================================================================================*/
     /* Area 4 - Governance                                                                                                         */

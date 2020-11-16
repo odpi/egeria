@@ -168,7 +168,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             externalIdGUID = createExternalIdentifier(userId,
                                                       identifier,
                                                       identifierKeyPattern,
-                                                      identifierMappingProperties,
                                                       scopeGUID,
                                                       scopeGUIDParameterName,
                                                       scopeTypeName,
@@ -195,7 +194,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                      externalIdGUIDParameterName,
                                      identifier,
                                      identifierKeyPattern,
-                                     identifierMappingProperties,
                                      methodName);
         }
 
@@ -223,6 +221,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                  identifierDescription,
                                  identifierUsage,
                                  identifierSource,
+                                 identifierMappingProperties,
                                  methodName);
         }
         else
@@ -232,6 +231,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                  identifierDescription,
                                  identifierUsage,
                                  identifierSource,
+                                 identifierMappingProperties,
                                  methodName);
         }
     }
@@ -695,7 +695,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param userId calling user
      * @param identifier identifier from the third party technology
      * @param identifierKeyPattern key pattern that defines the logic used to maintain the identifier
-     * @param identifierMappingProperties additional properties used to manage the mapping to the elements in the third party technology
      * @param scopeGUID unique identifier of the software server capability that represents the third metadata source
      * @param scopeGUIDParameterName parameter supplying scopeGUID
      * @param scopeTypeName specific type name of the software server capability that represents the third party metadata source
@@ -713,7 +712,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     private String createExternalIdentifier(String              userId,
                                             String              identifier,
                                             int                 identifierKeyPattern,
-                                            Map<String, String> identifierMappingProperties,
                                             String              scopeGUID,
                                             String              scopeGUIDParameterName,
                                             String              scopeTypeName,
@@ -728,7 +726,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
-                                                                          identifierMappingProperties,
                                                                           repositoryHelper,
                                                                           serviceName,
                                                                           serverName);
@@ -777,7 +774,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param externalIdGUID unique identifier of the
      * @param identifier identifier from the third party technology
      * @param identifierKeyPattern key pattern that defines the logic used to maintain the identifier
-     * @param identifierMappingProperties additional properties used to manage the mapping to the elements in the third party technology
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -789,14 +785,12 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                           String              externalIdGUIDParameterName,
                                           String              identifier,
                                           int                 identifierKeyPattern,
-                                          Map<String, String> identifierMappingProperties,
                                           String              methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
-                                                                          identifierMappingProperties,
                                                                           repositoryHelper,
                                                                           serviceName,
                                                                           serverName);
@@ -826,30 +820,33 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param identifierSource name of the connector/client supplying the identifier
      * @param externalIdGUID unique identifier of the external id entity
      * @param externalIdGUIDParameterName parameter supplying externalIdGUID
+     * @param identifierMappingProperties additional properties used to manage the mapping to the elements in the third party technology
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private void createExternalIdLink(String userId,
-                                      String elementGUID,
-                                      String elementGUIDParameterName,
-                                      String elementTypeName,
-                                      String externalIdGUID,
-                                      String externalIdGUIDParameterName,
-                                      String identifierDescription,
-                                      String identifierUsage,
-                                      String identifierSource,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    private void createExternalIdLink(String              userId,
+                                      String              elementGUID,
+                                      String              elementGUIDParameterName,
+                                      String              elementTypeName,
+                                      String              externalIdGUID,
+                                      String              externalIdGUIDParameterName,
+                                      String              identifierDescription,
+                                      String              identifierUsage,
+                                      String              identifierSource,
+                                      Map<String, String> identifierMappingProperties,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(repositoryHelper, serviceName, serverName);
 
         InstanceProperties resourceLinkProperties = builder.getExternalIdResourceLinkProperties(identifierDescription,
                                                                                                 identifierUsage,
                                                                                                 identifierSource,
+                                                                                                identifierMappingProperties,
                                                                                                 methodName);
 
         this.linkElementToElement(userId,
@@ -876,18 +873,20 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param identifierDescription name of the identifier in the third party technology
      * @param identifierUsage usage information from the connector/client supplying the identifier
      * @param identifierSource name of the connector/client supplying the identifier
+     * @param identifierMappingProperties additional properties used to manage the mapping to the elements in the third party technology
      * @param methodName calling method
      *
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private void updateExternalIdLink(String       userId,
-                                      Relationship externalIdLink,
-                                      String       identifierDescription,
-                                      String       identifierUsage,
-                                      String       identifierSource,
-                                      String       methodName) throws UserNotAuthorizedException,
-                                                                      PropertyServerException
+    private void updateExternalIdLink(String              userId,
+                                      Relationship        externalIdLink,
+                                      String              identifierDescription,
+                                      String              identifierUsage,
+                                      String              identifierSource,
+                                      Map<String, String> identifierMappingProperties,
+                                      String              methodName) throws UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(repositoryHelper, serviceName, serverName);
 
@@ -905,6 +904,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                 InstanceProperties properties = builder.getExternalIdResourceLinkProperties(identifierDescription,
                                                                                             identifierUsage,
                                                                                             identifierSource,
+                                                                                            identifierMappingProperties,
                                                                                             methodName);
 
                 repositoryHandler.updateRelationshipProperties(userId,

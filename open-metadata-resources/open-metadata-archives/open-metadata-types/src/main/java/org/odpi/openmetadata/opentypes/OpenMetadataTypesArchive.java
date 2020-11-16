@@ -156,11 +156,275 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        update0010BaseEntity();
         update0017ExternalIdentifiers();
         add0056AssetManager();
+        add0395SupplementaryProperties();
         update0750DataPassing();
         update0770LineageMapping();
 
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0010 Add a common root entity
+     */
+    private void update0010BaseEntity()
+    {
+        this.archiveBuilder.addEntityDef(addOpenMetadataRootEntity());
+
+        this.archiveBuilder.addTypeDefPatch(updateReferenceable());
+        this.archiveBuilder.addTypeDefPatch(updateLastAttachment());
+        this.archiveBuilder.addTypeDefPatch(updateSearchKeyword());
+        this.archiveBuilder.addTypeDefPatch(updateLike());
+        this.archiveBuilder.addTypeDefPatch(updateRating());
+        this.archiveBuilder.addTypeDefPatch(updateInformalTag());
+        this.archiveBuilder.addTypeDefPatch(updateAnnotation());
+        this.archiveBuilder.addTypeDefPatch(updateAnnotationReview());
+        this.archiveBuilder.addTypeDefPatch(updateDataField());
+
+        this.archiveBuilder.addTypeDefPatch(updateAnchorsClassification());
+
+    }
+
+
+    private EntityDef addOpenMetadataRootEntity()
+    {
+        final String guid            = "4e7761e8-3969-4627-8f40-bfe3cde85a1d";
+        final String name            = "OpenMetadataRoot";
+        final String description     = "Common root for all open metadata entity types.";
+        final String descriptionGUID = null;
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                null,
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "identifier";
+        final String attribute1Description     = "Identifier used in an external system.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "keyPattern";
+        final String attribute2Description     = "Management pattern associated with the identifier.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("KeyPattern",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    private TypeDefPatch updateReferenceable()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "Referenceable";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateLastAttachment()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "LastAttachment";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateSearchKeyword()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "SearchKeyword";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateLike()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "Like";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateRating()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "Rating";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateInformalTag()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "InformalTag";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateAnnotation()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "Annotation";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateAnnotationReview()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "AnnotationReview";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateDataField()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName      = "DataField";
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateAnchorsClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Anchors";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
+
+        linkedToEntities.add(this.archiveBuilder.getEntityDef("OpenMetadataRoot"));
+
+        typeDefPatch.setValidEntityDefs(linkedToEntities);
+
+        return typeDefPatch;
     }
 
 
@@ -174,10 +438,8 @@ public class OpenMetadataTypesArchive
     private void update0017ExternalIdentifiers()
     {
         this.archiveBuilder.addEnumDef(getPermittedSynchronizationEnum());
-        this.archiveBuilder.addTypeDefPatch(updateExternalIdEntity());
         this.archiveBuilder.addTypeDefPatch(updateExternalIdScopeRelationship());
         this.archiveBuilder.addTypeDefPatch(updateExternalIdLinkRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateAnchorsClassification());
     }
 
     private EnumDef getPermittedSynchronizationEnum()
@@ -243,40 +505,6 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private TypeDefPatch updateExternalIdEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ExternalId";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "mappingProperties";
-        final String attribute1Description     = "Additional properties to aid the mapping to the the element in an external metadata source.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
-                                                                    attribute1Description,
-                                                                    attribute1DescriptionGUID);
-
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-
     private TypeDefPatch updateExternalIdScopeRelationship()
     {
         /*
@@ -320,7 +548,6 @@ public class OpenMetadataTypesArchive
     }
 
 
-
     private TypeDefPatch updateExternalIdLinkRelationship()
     {
         /*
@@ -333,6 +560,25 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1AttributeName            = "resources";
+        final String                     end1AttributeDescription     = "Resource being identified.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
         /*
          * Build the attributes
          */
@@ -342,41 +588,21 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "lastSynchronized";
         final String attribute1Description     = "Timestamp documenting the last time the metadata in the external metadata source was synchronized with open metadata element.";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "mappingProperties";
+        final String attribute2Description     = "Additional properties to aid the mapping to the the element in an external metadata source.";
+        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
+                                                                    attribute2Description,
+                                                                    attribute2DescriptionGUID);
+
+        properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateAnchorsClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "Anchors";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Referenceable"));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Annotation"));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("AnnotationReview"));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("DataField"));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Like"));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Rating"));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("ExternalId"));
-
-        typeDefPatch.setValidEntityDefs(linkedToEntities);
 
         return typeDefPatch;
     }
@@ -414,6 +640,98 @@ public class OpenMetadataTypesArchive
                                                   false);
 
     }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0395 Supplementary Properties
+     */
+    private void add0395SupplementaryProperties()
+    {
+        this.archiveBuilder.addClassificationDef(addElementSupplementClassification());
+        this.archiveBuilder.addRelationshipDef(getSupplementaryPropertiesRelationship());
+    }
+
+
+    private ClassificationDef addElementSupplementClassification()
+    {
+        final String guid            = "58520015-ce6e-47b7-a1fd-864030544819";
+        final String name            = "ElementSupplement";
+        final String description     = "Identifies a glossary term that is being used to supplement asset descriptions.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "GlossaryTerm";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+
+    }
+
+
+    private RelationshipDef getSupplementaryPropertiesRelationship()
+    {
+        final String guid            = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
+        final String name            = "SupplementaryProperties";
+        final String description     = "Provides additional descriptive properties to augment technical metadata extracted from a third party technology.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "supplementsElement";
+        final String                     end1AttributeDescription     = "Describes this technical element.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "GlossaryTerm";
+        final String                     end2AttributeName            = "supplementaryProperties";
+        final String                     end2AttributeDescription     = "Provides more information about this element.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
