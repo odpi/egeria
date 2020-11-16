@@ -209,23 +209,21 @@ public class DataEngineProxyOperationalServices {
     /**
      * Shutdown the Data Engine Proxy Services.
      *
-     * @param permanent boolean flag indicating whether this server permanently shutting down or not
      * @return boolean indicated whether the disconnect was successful.
      */
-    public boolean disconnect(boolean permanent) {
+    public boolean disconnect() {
         final String methodName = "disconnect";
-        DataEngineProxyAuditCode auditCode;
         try {
             // Stop the change polling thread, if there is one and it is active
             if (changePoller != null) {
                 changePoller.stop();
             }
             // Disconnect the data engine connector
-            if(dataEngineConnector!=null) {
+            if (dataEngineConnector != null) {
                 dataEngineConnector.disconnect();
             }
             // Disconnect the topic connector if initialized previously
-            if(dataEngineTopicConnector!=null) {
+            if (dataEngineTopicConnector != null) {
                 dataEngineTopicConnector.disconnect();
             }
             auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(localServerName));

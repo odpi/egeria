@@ -1,0 +1,57 @@
+' SPDX-License-Identifier: Apache-2.0
+' Copyright Contributors to the Egeria project.
+
+@startuml
+
+autonumber "[0]"
+
+skinparam noteBackgroundColor LightSkyBlue
+skinparam participant {
+    backgroundColor Lavender
+}
+skinparam sequenceMessageAlign direction
+
+title TLS exchange showing client/server access to truststores and keystores (1 way SSL - RFC5246)
+
+participant ClientKeyStore
+participant ClientTrustStore
+participant Client
+participant Server
+participant ServerKeyStore
+
+group TCP handshake
+
+    Client -> Server: SYN
+    Server --> Client: SYN, ACK
+    Client -> Server: ACK
+end
+
+group TLS handshake
+
+    Client -> Server: **ClientHello** (client-random, TLS version, ciphers, compression,extensions)
+    Server -> ServerKeyStore: get my certificate (private key)
+    note right of ServerKeyStore: Looks for first matching server key
+    ServerKeyStore -> Server: Certificate
+    Server -> Client: **ServerHello** (server-random, agreed cipher)
+    Server -> Client: **Certificate** (server certificate chain)
+    Server -> Client: **ServerHelloDone**
+    Client -> ClientKeyStore: retrieve certs to trust
+    ClientKeyStore -> Client: certificate list
+    note left of Client: validates certificate against it's configured truststore
+    note left of Client: generates a pre-master secret encrypted using server's public key
+    Client -> Server: **ClientKeyExchange** (premaster secret)
+    note right of Server: descrypts pre-master key using private key
+    note right of Server: creates Master secret using premaster secret, client-random, server-random
+    Client -> Server: **ChangeCipherSpec**
+    Client -> Server: <&lock-locked>**Finished**
+    Server -> Client: **ChangeCipherSpec**
+    Server -> Client: <&lock-locked>**Finished**
+
+end
+
+group Application  Use
+   Client -> Server: <&lock-locked> GET /path/request
+   Server -> Client: <&lock-locked> response
+end
+
+@enduml

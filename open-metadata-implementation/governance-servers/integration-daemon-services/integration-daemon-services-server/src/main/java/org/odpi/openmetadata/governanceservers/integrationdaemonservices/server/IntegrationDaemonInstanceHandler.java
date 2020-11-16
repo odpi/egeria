@@ -13,6 +13,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registr
 import org.odpi.openmetadata.integrationservices.catalogintegrator.contextmanager.CatalogIntegratorContextManager;
 import org.odpi.openmetadata.integrationservices.database.contextmanager.DatabaseIntegratorContextManager;
 import org.odpi.openmetadata.integrationservices.files.contextmanager.FilesIntegratorContextManager;
+import org.odpi.openmetadata.integrationservices.lineageintegrator.contextmanager.LineageIntegratorContextManager;
 import org.odpi.openmetadata.integrationservices.organizationintegrator.contextmanager.OrganizationIntegratorContextManager;
 
 import java.util.List;
@@ -37,6 +38,8 @@ class IntegrationDaemonInstanceHandler extends GovernanceServerServiceInstanceHa
                                                               DatabaseIntegratorContextManager.class.getName());
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS,
                                                               FilesIntegratorContextManager.class.getName());
+        IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS,
+                                                              LineageIntegratorContextManager.class.getName());
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.ORGANIZATION_INTEGRATOR_OMIS,
                                                               OrganizationIntegratorContextManager.class.getName());
     }

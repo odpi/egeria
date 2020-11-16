@@ -74,16 +74,6 @@
             <organization>IBM Corporation</organization>
         </developer>
         <developer>
-            <id>GuyAckermans</id>
-            <name>Guy Ackermans</name>
-            <email>guy.ackermans92@gmail.com</email>
-            <timezone>Europe/Amsterdam</timezone>
-            <roles>
-                <role>maintainer</role>
-            </roles>
-            <organization>ING</organization>
-        </developer>
-        <developer>
             <id>planetf1</id>
             <name>Nigel Jones</name>
             <email>nigel.l.jones+git@gmail.com</email>
@@ -689,8 +679,6 @@
                 <version>${junit.jupiter.version}</version>
             </dependency>
 
-
-
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
@@ -877,6 +865,41 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-lineage-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-manager-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-manager-topic-connectors</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-manager-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-manager-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-manager-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1814,11 +1837,24 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-metadata-ut</artifactId>
                 <scope>test</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>lineage-integrator-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>lineage-integrator-server</artifactId>
+                <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
@@ -2139,7 +2175,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-folder-connector</artifactId>
+                <artifactId> data-folder-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
