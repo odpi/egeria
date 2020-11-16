@@ -942,7 +942,7 @@ public class InvalidParameterTest
         try
         {
             DataManagerRESTClient  restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
-            DataManagerEventClient client     = new DataManagerEventClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            DataManagerEventClient client     = new DataManagerEventClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog, "");
 
             testRegisterListener(userId, client);
         }

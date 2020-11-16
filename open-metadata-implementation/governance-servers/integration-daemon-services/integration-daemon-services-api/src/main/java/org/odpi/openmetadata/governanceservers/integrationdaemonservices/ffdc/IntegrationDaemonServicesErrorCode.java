@@ -114,6 +114,12 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                          "The integration service fails to start and this causes the hosting integration daemon to fail.",
                          "Add a suitable value for this configuration property in the integration service configuration."),
 
+    NO_PERMITTED_SYNCHRONIZATION( 400,"INTEGRATION-DAEMON-SERVICES-400-012",
+                                 "The integration service {0} does not have a default permitted synchronization value set.",
+                                 "The integration daemon is not able to initialize one of the configured integration because its defaultPermittedSynchronization value is null.  " +
+                                 "The integration daemon shuts down, this error is reported to the caller and a similar message is written to the audit log.",
+                                  "Update the configuration for the integration service to include a value for the default permitted synchronization."),
+
 
     /*
      * Invalid use of statistics methods.
