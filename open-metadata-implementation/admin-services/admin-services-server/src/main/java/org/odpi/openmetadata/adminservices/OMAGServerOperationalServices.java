@@ -1272,6 +1272,15 @@ public class OMAGServerOperationalServices
 
             try
             {
+
+                /*
+                 * Shutdown the data engine proxy services
+                 */
+                if (instance.getOperationalDataEngineProxyServices() != null)
+                {
+                    instance.getOperationalDataEngineProxyServices().disconnect();
+                }
+
                 /*
                  * Shutdown the access services
                  */
