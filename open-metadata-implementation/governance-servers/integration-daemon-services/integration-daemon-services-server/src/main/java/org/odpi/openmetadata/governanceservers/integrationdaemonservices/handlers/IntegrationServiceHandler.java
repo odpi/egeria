@@ -73,8 +73,14 @@ public class IntegrationServiceHandler
             {
                 if (connectorConfig != null)
                 {
+                    if (connectorConfig.getPermittedSynchronization() == null)
+                    {
+                        connectorConfig.setPermittedSynchronization(serviceConfig.getDefaultPermittedSynchronization());
+                    }
+
                     IntegrationConnectorHandler connectorHandler = new IntegrationConnectorHandler(connectorConfig,
                                                                                                    serviceConfig.getIntegrationServiceFullName(),
+                                                                                                   serviceConfig.getIntegrationServiceOptions(),
                                                                                                    localServerName,
                                                                                                    contextManager,
                                                                                                    auditLog);

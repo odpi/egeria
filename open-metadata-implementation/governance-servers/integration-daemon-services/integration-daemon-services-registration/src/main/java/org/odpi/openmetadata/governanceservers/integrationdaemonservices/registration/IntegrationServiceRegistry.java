@@ -52,6 +52,7 @@ public class IntegrationServiceRegistry
             config.setIntegrationServiceDescription(serviceDescription.getIntegrationServiceDescription());
             config.setIntegrationServiceWiki(serviceDescription.getIntegrationServiceWiki());
             config.setIntegrationServicePartnerOMAS(serviceDescription.getIntegrationServicePartnerOMAS());
+            config.setDefaultPermittedSynchronization(serviceDescription.getDefaultPermittedSynchronization());
 
             config.setIntegrationServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
             config.setIntegrationServiceContextManagerClass(contextManagerClass);

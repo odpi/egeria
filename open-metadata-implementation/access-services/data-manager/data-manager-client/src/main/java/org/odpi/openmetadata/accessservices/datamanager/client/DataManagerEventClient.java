@@ -26,6 +26,7 @@ public class DataManagerEventClient implements DataManagerEventInterface
 
     private String        serverName;               /* Initialized in constructor */
     private String        serverPlatformURLRoot;    /* Initialized in constructor */
+    private String        callerId;                 /* Initialized in constructor */
     private OCFRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -39,11 +40,13 @@ public class DataManagerEventClient implements DataManagerEventInterface
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DataManagerEventClient(String serverName,
-                                  String serverPlatformURLRoot) throws InvalidParameterException
+                                  String serverPlatformURLRoot,
+                                  String callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
@@ -52,6 +55,7 @@ public class DataManagerEventClient implements DataManagerEventInterface
         this.serverName            = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient            = new OCFRESTClient(serverName, serverPlatformURLRoot);
+        this.callerId              = callerId;
     }
 
 
@@ -63,13 +67,15 @@ public class DataManagerEventClient implements DataManagerEventInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DataManagerEventClient(String serverName,
                                   String serverPlatformURLRoot,
                                   String userId,
-                                  String password) throws InvalidParameterException
+                                  String password,
+                                  String callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -78,6 +84,7 @@ public class DataManagerEventClient implements DataManagerEventInterface
         this.serverName            = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient            = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.callerId              = callerId;
     }
 
 
@@ -89,13 +96,15 @@ public class DataManagerEventClient implements DataManagerEventInterface
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination
+     * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
     public DataManagerEventClient(String        serverName,
                                   String        serverPlatformURLRoot,
                                   OCFRESTClient restClient,
                                   int           maxPageSize,
-                                  AuditLog      auditLog) throws InvalidParameterException
+                                  AuditLog      auditLog,
+                                  String        callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with REST Client)";
 
@@ -106,6 +115,7 @@ public class DataManagerEventClient implements DataManagerEventInterface
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient            = restClient;
         this.auditLog              = auditLog;
+        this.callerId              = callerId;
     }
 
 
@@ -145,7 +155,7 @@ public class DataManagerEventClient implements DataManagerEventInterface
         final String methodName = "registerListener";
         final String nameParameter = "listener";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/topics/out-topic-connection";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/topics/out-topic-connection/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(listener, nameParameter, methodName);
@@ -159,7 +169,8 @@ public class DataManagerEventClient implements DataManagerEventInterface
             ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
                                                                                  serverPlatformURLRoot + urlTemplate,
                                                                                  serverName,
-                                                                                 userId);
+                                                                                 userId,
+                                                                                 callerId);
 
             Connection      topicConnection = restResult.getConnection();
             ConnectorBroker connectorBroker = new ConnectorBroker();

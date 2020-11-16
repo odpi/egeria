@@ -26,7 +26,7 @@ Once Postman is installed it can be started like any other desktop application.
 Egeria by default uses secure HTTP requests (`https://`) with a self-signed certificate.
 By default, Postman does not allow self-signed certificate.
 Any PostMan users therefore will need to
-go into `Settings->Settings` and on the `General` tab, turn off `SSL certificate verification`
+go into `Preferences->Settings` and on the `General` tab, turn off `SSL certificate verification`
 or requests will fail.
 
 ![Turn off self-signed certificate checking](postman-turn-off-certificate-checking.png)

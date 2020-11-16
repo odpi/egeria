@@ -3,12 +3,14 @@
 
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
+
+import java.util.Map;
 
 /**
  * IntegrationContextManager is the base class for the context manager that is implemented
@@ -68,18 +70,23 @@ public abstract class IntegrationContextManager
     /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
      * @param connectorName name of connector from config
      * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
+     * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     * @param serviceOptions options from the integration service's configuration
+     *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
-     * @throws ConnectorCheckedException the connector is reporting an error
      */
-    public abstract void setContext(String                connectorName,
-                                    String                metadataSourceQualifiedName,
-                                    IntegrationConnector  integrationConnector) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException,
-                                                                                       ConnectorCheckedException;
+    public abstract void setContext(String                   connectorId,
+                                    String                   connectorName,
+                                    String                   metadataSourceQualifiedName,
+                                    IntegrationConnector     integrationConnector,
+                                    PermittedSynchronization permittedSynchronization,
+                                    Map<String, Object>      serviceOptions) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 }

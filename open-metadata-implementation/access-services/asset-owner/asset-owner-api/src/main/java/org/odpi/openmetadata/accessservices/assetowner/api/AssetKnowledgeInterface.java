@@ -39,6 +39,6 @@ public interface AssetKnowledgeInterface
      * @throws UserNotAuthorizedException security access problem
      */
     Map<String, String> getTypesOfAssetWithDescriptions(String userId) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 }

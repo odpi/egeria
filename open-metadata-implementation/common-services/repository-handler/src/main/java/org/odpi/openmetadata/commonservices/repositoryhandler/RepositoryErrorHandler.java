@@ -676,6 +676,7 @@ public class RepositoryErrorHandler
                                           methodName);
     }
 
+
     /**
      * Throw an exception if no relationships are returned when not expected.
      *
