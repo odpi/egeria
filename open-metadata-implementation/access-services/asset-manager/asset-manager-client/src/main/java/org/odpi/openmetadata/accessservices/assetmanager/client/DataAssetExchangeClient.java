@@ -233,6 +233,50 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
     }
 
 
+
+
+    /**
+     * Update the zones for the asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Asset Manager OMAS).
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishAsset(String userId,
+                             String assetGUID) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Update the zones for the asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawAsset(String userId,
+                              String assetGUID) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException
+    {
+
+    }
+
+
     /**
      * Remove the metadata element representing an asset.  This will delete the asset and all anchored
      * elements such as schema and comments.
