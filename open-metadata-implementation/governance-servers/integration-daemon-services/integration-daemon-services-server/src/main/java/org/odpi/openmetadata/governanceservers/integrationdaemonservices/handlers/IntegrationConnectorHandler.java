@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handle
 
 
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -34,9 +35,12 @@ public class IntegrationConnectorHandler implements Serializable
      * These values are set in the constructor and do not change.
      */
     private String                     integrationServiceFullName;
+    private Map<String, Object>        integrationServiceOptions;
     private String                     integrationDaemonName;
+    private String                     integrationConnectorId;
     private String                     integrationConnectorName;
     private String                     metadataSourceQualifiedName;
+    private PermittedSynchronization   permittedSynchronization;
     private Connection                 connection;
     private boolean                    needDedicatedThread;
     private long                       minSecondsBetweenRefresh;
@@ -61,12 +65,14 @@ public class IntegrationConnectorHandler implements Serializable
      *
      * @param integrationConnectorConfig  the configuration for this connector
      * @param integrationServiceFullName full name of the integration service - used for messages
+     * @param integrationServiceOptions options from the integration service configuration
      * @param integrationDaemonName name of the integration daemon - used for messages
      * @param contextManager the specialized context manager ofr this connector's integration service
      * @param auditLog logging destination
      */
     IntegrationConnectorHandler(IntegrationConnectorConfig integrationConnectorConfig,
                                 String                     integrationServiceFullName,
+                                Map<String, Object>        integrationServiceOptions,
                                 String                     integrationDaemonName,
                                 IntegrationContextManager  contextManager,
                                 AuditLog                   auditLog)
@@ -74,12 +80,15 @@ public class IntegrationConnectorHandler implements Serializable
         final String actionDescription = "Initializing integration connector";
 
         this.integrationServiceFullName  = integrationServiceFullName;
+        this.integrationServiceOptions   = integrationServiceOptions;
         this.integrationDaemonName       = integrationDaemonName;
+        this.integrationConnectorId      = integrationConnectorConfig.getConnectorId();
         this.integrationConnectorName    = integrationConnectorConfig.getConnectorName();
         this.metadataSourceQualifiedName = integrationConnectorConfig.getMetadataSourceQualifiedName();
         this.minSecondsBetweenRefresh    = integrationConnectorConfig.getRefreshTimeInterval();
         this.connection                  = integrationConnectorConfig.getConnection();
         this.needDedicatedThread         = integrationConnectorConfig.getUsesBlockingCalls();
+        this.permittedSynchronization    = integrationConnectorConfig.getPermittedSynchronization();
         this.contextManager              = contextManager;
         this.auditLog                    = auditLog;
 
@@ -212,7 +221,8 @@ public class IntegrationConnectorHandler implements Serializable
         auditLog.logMessage(actionDescription,
                             IntegrationDaemonServicesAuditCode.INTEGRATION_CONNECTOR_INITIALIZING.getMessageDefinition(integrationConnectorName,
                                                                                                                        integrationServiceFullName,
-                                                                                                                       integrationDaemonName));
+                                                                                                                       integrationDaemonName,
+                                                                                                                       permittedSynchronization.getName()));
 
         Connector genericConnector = null;
 
@@ -224,7 +234,12 @@ public class IntegrationConnectorHandler implements Serializable
 
             this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
 
-            contextManager.setContext(integrationConnectorName, metadataSourceQualifiedName, integrationConnector);
+            contextManager.setContext(integrationConnectorId,
+                                      integrationConnectorName,
+                                      metadataSourceQualifiedName,
+                                      integrationConnector,
+                                      permittedSynchronization,
+                                      integrationServiceOptions);
 
             if (needDedicatedThread)
             {

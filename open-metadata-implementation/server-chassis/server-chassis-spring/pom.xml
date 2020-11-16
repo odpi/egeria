@@ -108,6 +108,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-manager-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-owner-spring</artifactId>
             <scope>runtime</scope>
         </dependency>

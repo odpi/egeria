@@ -21,6 +21,10 @@ import java.util.*;
 
 /**
  * FilesAndFoldersHandler provides the support for managing catalog entries about files and folders.
+ *
+ * @param <FILESYSTEM> the class representing a file system
+ * @param <FOLDER> the class representing a folder in the file system
+ * @param <FILE> the class representing a file in the file system
  */
 public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 {

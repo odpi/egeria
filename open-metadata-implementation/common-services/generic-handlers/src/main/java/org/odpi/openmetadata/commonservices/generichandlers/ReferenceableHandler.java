@@ -318,8 +318,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
+        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 
         if (typeGUID != null)
         {
@@ -933,7 +933,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.SEMANTIC_ASSIGNMENT_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
                                                                     OpenMetadataAPIMapper.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME,
                                                                     statusOrdinal,

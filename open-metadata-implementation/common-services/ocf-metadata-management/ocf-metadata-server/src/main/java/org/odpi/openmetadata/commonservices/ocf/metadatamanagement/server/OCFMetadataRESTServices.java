@@ -327,8 +327,9 @@ public class OCFMetadataRESTServices
             CertificationHandler<Certification> certificationHandler = instanceHandler.getCertificationHandler(userId, serverName, methodName);
             CommentHandler<Comment>       commentHandler       = instanceHandler.getCommentHandler(userId, serverName, methodName);
             ConnectionHandler<Connection>    connectionHandler    = instanceHandler.getConnectionHandler(userId, serverName, methodName);
-            ExternalIdentifierHandler<ExternalIdentifier> externalIdentifierHandler = instanceHandler.getExternalIdentifierHandler(userId, serverName,
-                                                                                                                       methodName);
+            ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
             ExternalReferenceHandler<ExternalReference>  externalReferenceHandler  = instanceHandler.getExternalReferenceHandler(userId, serverName,
                                                                                                                        methodName);
             InformalTagHandler<InformalTag>             informalTagHandler  = instanceHandler.getInformalTagHandler(userId, serverName,
@@ -817,7 +818,7 @@ public class OCFMetadataRESTServices
                                                               int     elementStart,
                                                               int     maxElements)
     {
-        final String methodName = "getExternalIdentifiers";
+        final String methodName = "getExternalIdentifiersForElement";
         final String guidParameterName = "assetGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -827,17 +828,17 @@ public class OCFMetadataRESTServices
 
         try
         {
-            ExternalIdentifierHandler<ExternalIdentifier> handler = instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
+            ExternalIdentifierHandler<ExternalIdentifier, Object> handler = instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getExternalIdentifiers(userId,
-                                                            assetGUID,
-                                                            guidParameterName,
-                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                            elementStart,
-                                                            maxElements,
-                                                            methodName));
+            response.setList(handler.getExternalIdentifiersForElement(userId,
+                                                                      assetGUID,
+                                                                      guidParameterName,
+                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                      elementStart,
+                                                                      maxElements,
+                                                                      methodName));
         }
         catch (InvalidParameterException error)
         {

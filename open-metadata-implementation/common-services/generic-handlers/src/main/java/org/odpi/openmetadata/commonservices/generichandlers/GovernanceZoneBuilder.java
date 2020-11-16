@@ -21,29 +21,6 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
 
 
     /**
-     * Minimal constructor used for searching
-     *
-     * @param qualifiedName unique name
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    public GovernanceZoneBuilder(String               qualifiedName,
-                                 OMRSRepositoryHelper repositoryHelper,
-                                 String               serviceName,
-                                 String               serverName)
-    {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-
-        this.displayName = null;
-        this.description = null;
-        this.criteria = null;
-        this.scope= null;
-        this.domainIdentifier = 0;
-    }
-
-
-    /**
      * Create constructor
      *
      * @param qualifiedName unique name for the zone - used in other configuration

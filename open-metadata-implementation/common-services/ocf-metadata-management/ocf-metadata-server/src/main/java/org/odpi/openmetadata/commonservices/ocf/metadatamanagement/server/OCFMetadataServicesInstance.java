@@ -20,28 +20,28 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class OCFMetadataServicesInstance extends OMASServiceInstance
 {
-    private AssetHandler<Asset>                                 assetHandler;
-    private CertificationHandler<Certification>                 certificationHandler;
-    private CommentHandler<Comment>                             commentHandler;
-    private ConnectionHandler<Connection>                       connectionHandler;
-    private ConnectorTypeHandler<ConnectorType>                 connectorTypeHandler;
-    private EndpointHandler<Endpoint>                           endpointHandler;
-    private ExternalIdentifierHandler<ExternalIdentifier>       externalIdentifierHandler;
-    private ExternalReferenceHandler<ExternalReference>         externalReferenceHandler;
-    private GlossaryTermHandler<Meaning>                        glossaryTermHandler;
-    private InformalTagHandler<InformalTag>                     informalTagHandler;
-    private LicenseHandler<License>                             licenseHandler;
-    private LikeHandler<Like>                                   likeHandler;
-    private SearchKeywordHandler<SearchKeyword>                 keywordHandler;
-    private LocationHandler<Location>                           locationHandler;
-    private NoteLogHandler<NoteLog>                             noteLogHandler;
-    private NoteHandler<Note>                                   noteHandler;
-    private RatingHandler<Rating>                               ratingHandler;
-    private ReferenceableHandler<Referenceable>                 referenceableHandler;
-    private RelatedAssetHandler<RelatedAsset>                   relatedAssetHandler;
-    private RelatedMediaHandler<RelatedMediaReference>          relatedMediaHandler;
-    private SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler;
-    private SchemaTypeHandler<SchemaType>                       schemaTypeHandler;
+    private AssetHandler<Asset>                                   assetHandler;
+    private CertificationHandler<Certification>                   certificationHandler;
+    private CommentHandler<Comment>                               commentHandler;
+    private ConnectionHandler<Connection>                         connectionHandler;
+    private ConnectorTypeHandler<ConnectorType>                   connectorTypeHandler;
+    private EndpointHandler<Endpoint>                             endpointHandler;
+    private ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler;
+    private ExternalReferenceHandler<ExternalReference>           externalReferenceHandler;
+    private GlossaryTermHandler<Meaning>                          glossaryTermHandler;
+    private InformalTagHandler<InformalTag>                       informalTagHandler;
+    private LicenseHandler<License>                               licenseHandler;
+    private LikeHandler<Like>                                     likeHandler;
+    private SearchKeywordHandler<SearchKeyword>                   keywordHandler;
+    private LocationHandler<Location>                             locationHandler;
+    private NoteLogHandler<NoteLog>                               noteLogHandler;
+    private NoteHandler<Note>                                     noteHandler;
+    private RatingHandler<Rating>                                 ratingHandler;
+    private ReferenceableHandler<Referenceable>                   referenceableHandler;
+    private RelatedAssetHandler<RelatedAsset>                     relatedAssetHandler;
+    private RelatedMediaHandler<RelatedMediaReference>            relatedMediaHandler;
+    private SchemaAttributeHandler<SchemaAttribute, SchemaType>   schemaAttributeHandler;
+    private SchemaTypeHandler<SchemaType>                         schemaTypeHandler;
 
 
     /**
@@ -157,6 +157,8 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
                                                                                                                serviceName,
                                                                                                                serverName),
                                                                              ExternalIdentifier.class,
+                                                                             null,
+                                                                             Object.class,
                                                                              serviceName,
                                                                              serverName,
                                                                              invalidParameterHandler,
@@ -493,7 +495,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ExternalIdentifierHandler<ExternalIdentifier> getExternalIdentifierHandler() throws PropertyServerException
+    ExternalIdentifierHandler<ExternalIdentifier, Object> getExternalIdentifierHandler() throws PropertyServerException
     {
         final String methodName = "getExternalIdentifierHandler";
 
