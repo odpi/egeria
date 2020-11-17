@@ -1981,6 +1981,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 updatedTypeDef.setDescriptionGUID(typeDefPatch.getDescriptionGUID());
             }
 
+            if (typeDefPatch.getSuperType() != null)
+            {
+                updatedTypeDef.setSuperType(typeDefPatch.getSuperType());
+            }
+
             if (typeDefPatch.getPropertyDefinitions() != null)
             {
                 /*

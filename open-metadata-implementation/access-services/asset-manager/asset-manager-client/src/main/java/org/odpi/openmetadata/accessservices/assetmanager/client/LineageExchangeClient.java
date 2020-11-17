@@ -316,6 +316,48 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
 
     /**
+     * Update the zones for the asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Asset Manager OMAS).
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishProcess(String userId,
+                               String processGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Update the zones for the asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawProcess(String userId,
+                                String processGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+
+    }
+
+
+    /**
      * Remove the metadata element representing a process.
      *
      * @param userId calling user

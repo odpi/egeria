@@ -63,6 +63,32 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
     }
 
 
+    /*
+     * =============================================================
+     * Learn about all possible integration services
+     */
+
+    /**
+     * Return the list of integration services for this server.
+     *
+     * @return list of integration service descriptions
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public List<RegisteredOMAGService> getRegisteredIntegrationServices() throws OMAGNotAuthorizedException,
+                                                                                 OMAGInvalidParameterException,
+                                                                                 OMAGConfigurationErrorException
+    {
+        final String methodName  = "getRegisteredIntegrationServices";
+        final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/integration-services";
+
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
+                                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                                     adminUserId);
+        return restResult.getServices();
+    }
+
 
     /*
      * =============================================================

@@ -37,6 +37,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     private Date                          updateTime               = null;
     private String                        description              = null;
     private String                        descriptionGUID          = null;
+    private TypeDefLink                   superType                = null;
     private List<TypeDefAttribute>        propertyDefinitions      = null;
     private Map<String, String>           typeDefOptions           = null;
     private List<ExternalStandardMapping> externalStandardMappings = null;
@@ -76,6 +77,7 @@ public class TypeDefPatch extends TypeDefElementHeader
             updateTime               = template.getUpdateTime();
             description              = template.getDescription();
             descriptionGUID          = template.getDescriptionGUID();
+            superType                = template.getSuperType();
             propertyDefinitions      = template.getPropertyDefinitions();
             typeDefOptions           = template.getTypeDefOptions();
             externalStandardMappings = template.getExternalStandardMappings();
@@ -299,6 +301,28 @@ public class TypeDefPatch extends TypeDefElementHeader
     public void setDescriptionGUID(String descriptionGUID)
     {
         this.descriptionGUID = descriptionGUID;
+    }
+
+
+    /**
+     * Return the new supertype.
+     *
+     * @return super type link
+     */
+    public TypeDefLink getSuperType()
+    {
+        return superType;
+    }
+
+
+    /**
+     * Set up the new super type.
+     *
+     * @param superType super type link
+     */
+    public void setSuperType(TypeDefLink superType)
+    {
+        this.superType = superType;
     }
 
 
@@ -555,23 +579,24 @@ public class TypeDefPatch extends TypeDefElementHeader
     public String toString()
     {
         return "TypeDefPatch{" +
-                "typeDefGUID='" + typeDefGUID + '\'' +
-                ", typeDefName='" + typeDefName + '\'' +
-                ", typeDefStatus='" + typeDefStatus + '\'' +
-                ", applyToVersion=" + applyToVersion +
-                ", updateToVersion=" + updateToVersion +
-                ", newVersionName='" + newVersionName + '\'' +
-                ", description='" + description + '\'' +
-                ", descriptionGUID='" + descriptionGUID + '\'' +
-                ", propertyDefinitions=" + propertyDefinitions +
-                ", typeDefOptions=" + typeDefOptions +
-                ", externalStandardMappings=" + externalStandardMappings +
-                ", validInstanceStatusList=" + validInstanceStatusList +
-                ", initialStatus=" + initialStatus +
-                ", validEntityDefs=" + validEntityDefs +
-                ", endDef1=" + endDef1 +
-                ", endDef2=" + endDef2 +
-                '}';
+                       "typeDefGUID='" + typeDefGUID + '\'' +
+                       ", typeDefName='" + typeDefName + '\'' +
+                       ", typeDefStatus='" + typeDefStatus + '\'' +
+                       ", applyToVersion=" + applyToVersion +
+                       ", updateToVersion=" + updateToVersion +
+                       ", newVersionName='" + newVersionName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", descriptionGUID='" + descriptionGUID + '\'' +
+                       ", superType='" + superType + '\'' +
+                       ", propertyDefinitions=" + propertyDefinitions +
+                       ", typeDefOptions=" + typeDefOptions +
+                       ", externalStandardMappings=" + externalStandardMappings +
+                       ", validInstanceStatusList=" + validInstanceStatusList +
+                       ", initialStatus=" + initialStatus +
+                       ", validEntityDefs=" + validEntityDefs +
+                       ", endDef1=" + endDef1 +
+                       ", endDef2=" + endDef2 +
+                       '}';
     }
 
 
@@ -593,24 +618,25 @@ public class TypeDefPatch extends TypeDefElementHeader
             return false;
         }
         TypeDefPatch that = (TypeDefPatch) objectToCompare;
-        return applyToVersion == that.applyToVersion &&
-                updateToVersion == that.updateToVersion &&
-                Objects.equals(typeDefGUID, that.typeDefGUID) &&
-                Objects.equals(typeDefName, that.typeDefName) &&
-                typeDefStatus == that.typeDefStatus &&
-                Objects.equals(newVersionName, that.newVersionName) &&
-                Objects.equals(updatedBy, that.updatedBy) &&
-                Objects.equals(updateTime, that.updateTime) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(descriptionGUID, that.descriptionGUID) &&
-                Objects.equals(propertyDefinitions, that.propertyDefinitions) &&
-                Objects.equals(typeDefOptions, that.typeDefOptions) &&
-                Objects.equals(externalStandardMappings, that.externalStandardMappings) &&
-                Objects.equals(validInstanceStatusList, that.validInstanceStatusList) &&
-                initialStatus == that.initialStatus &&
-                Objects.equals(validEntityDefs, that.validEntityDefs) &&
-                Objects.equals(endDef1, that.endDef1) &&
-                Objects.equals(endDef2, that.endDef2);
+        return getApplyToVersion() == that.getApplyToVersion() &&
+                       getUpdateToVersion() == that.getUpdateToVersion() &&
+                       Objects.equals(getTypeDefGUID(), that.getTypeDefGUID()) &&
+                       Objects.equals(getTypeDefName(), that.getTypeDefName()) &&
+                       getTypeDefStatus() == that.getTypeDefStatus() &&
+                       Objects.equals(getNewVersionName(), that.getNewVersionName()) &&
+                       Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
+                       Objects.equals(getUpdateTime(), that.getUpdateTime()) &&
+                       Objects.equals(getDescription(), that.getDescription()) &&
+                       Objects.equals(getDescriptionGUID(), that.getDescriptionGUID()) &&
+                       Objects.equals(getSuperType(), that.getSuperType()) &&
+                       Objects.equals(getPropertyDefinitions(), that.getPropertyDefinitions()) &&
+                       Objects.equals(getTypeDefOptions(), that.getTypeDefOptions()) &&
+                       Objects.equals(getExternalStandardMappings(), that.getExternalStandardMappings()) &&
+                       Objects.equals(getValidInstanceStatusList(), that.getValidInstanceStatusList()) &&
+                       getInitialStatus() == that.getInitialStatus() &&
+                       Objects.equals(getValidEntityDefs(), that.getValidEntityDefs()) &&
+                       Objects.equals(getEndDef1(), that.getEndDef1()) &&
+                       Objects.equals(getEndDef2(), that.getEndDef2());
     }
 
 

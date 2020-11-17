@@ -337,6 +337,74 @@ public class LineageExchangeService extends SchemaExchangeService
 
 
     /**
+     * Update the zones for the asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Asset Manager OMAS).
+     *
+     * @param processGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishProcess(String processGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        final String methodName = "publishProcess";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            lineageExchangeClient.publishProcess(userId, processGUID);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Update the zones for the asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
+     *
+     * @param processGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawProcess(String processGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        final String methodName = "withdrawProcess";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            lineageExchangeClient.withdrawProcess(userId, processGUID);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
      * Remove the metadata element representing a process.
      *
      * @param processGUID unique identifier of the metadata element to remove
