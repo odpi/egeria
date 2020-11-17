@@ -93,7 +93,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processRegistryEvent(OMRSRegistryEvent event) {
-        log.debug("Ignoring registry event: " + event.toString());
+        log.trace("Ignoring registry event: " + event.toString());
     }
 
     /**
@@ -102,7 +102,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        log.debug("Ignoring type event: " + event.toString());
+        log.trace("Ignoring type event: " + event.toString());
     }
 
     /**
@@ -178,6 +178,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         if (isProcessStatusChangedToActive(entityDetail, originalEntity)) {
             publisher.publishProcessContext(entityDetail);
+
+            log.info("Asset Lineage OMAS published the context for process with guid {}", entityDetail.getGUID());
         } else {
             publishEntityEvent(entityDetail, AssetLineageEventType.UPDATE_ENTITY_EVENT);
         }
