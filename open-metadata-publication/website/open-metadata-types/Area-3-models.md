@@ -5,7 +5,7 @@
 
 Area 3 describes the glossary.
 
-This enables the definition of the terminology used in a business.
+This enables the definition of the terminology used in an organization.
 This terminology reflects the processing and the data needed in its operations.
 
 The glossary is made up of terms, each one describing a word or short phrase.
@@ -28,6 +28,9 @@ data that is managed by the data assets.
 This is a key relationship that helps people locate and
 understand the data assets they are working with.
 
+
+![UML Packages](area-3-glossary-overview.png#pagewidth)
+
 * **[0310 Glossary](0310-Glossary.md)**
 * **[0320 Category Hierarchy](0320-Category-Hierarchy.md)**
 * **[0330 Glossary Terms](0330-Terms.md)**
@@ -38,6 +41,7 @@ understand the data assets they are working with.
 * **[0380 Spine Objects](0380-Spine-Objects.md)**
 * **[0385 Controlled Glossary Development](0385-Controlled-Glossary-Development.md)**
 * **[0390 Glossary Projects](0390-Glossary-Projects.md)**
+* **[0395 Supplementary Properties](0395-Supplementary-Properties.md)**
 
 
 Return to [Overview](README.md).

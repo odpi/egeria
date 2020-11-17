@@ -9,16 +9,17 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * ExternalIdentifierBuilder is able to build the properties for an ExternalId entity and the relationships that connect it
  * to the element it represents and the source of the external id.
  */
-class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
+class ExternalIdentifierBuilder extends ReferenceableBuilder
 {
     private String              identifier        = null;
     private int                 keyPattern        = 0;
-    private Map<String, String> mappingProperties = null;
+
 
 
     /**
@@ -45,19 +46,18 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
      *
      * @param identifier the identifier from the external technology
      * @param keyPattern identifier from the external party
-     * @param mappingProperties additional properties to help with the mapping to the external metadata
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     ExternalIdentifierBuilder(String               identifier,
                               int                  keyPattern,
-                              Map<String, String>  mappingProperties,
                               OMRSRepositoryHelper repositoryHelper,
                               String               serviceName,
                               String               serverName)
     {
-        super(OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
+        super(identifier + UUID.randomUUID().toString(),
+              OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
               OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
               repositoryHelper,
               serviceName,
@@ -65,8 +65,6 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
 
         this.identifier = identifier;
         this.keyPattern = keyPattern;
-        this.mappingProperties = mappingProperties;
-
     }
 
 
@@ -105,14 +103,6 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME);
         }
 
-        if (mappingProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.MAPPING_PROPERTIES_PROPERTY_NAME,
-                                                                         mappingProperties,
-                                                                         methodName);
-        }
 
         return properties;
     }
@@ -124,13 +114,15 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
      * @param description description of the linkage between the open metadata referenceable (resource) and the external id)
      * @param usage the way that the external identifier should be used.
      * @param source the description of the source (typically the integration connector name)
+     * @param mappingProperties additional properties to help with the mapping to the external metadata
      * @param methodName calling method
      * @return these properties packed into an OMRS instance properties object (or null if all of the properties are null)
      */
-    InstanceProperties getExternalIdResourceLinkProperties(String description,
-                                                           String usage,
-                                                           String source,
-                                                           String methodName)
+    InstanceProperties getExternalIdResourceLinkProperties(String              description,
+                                                           String              usage,
+                                                           String              source,
+                                                           Map<String, String> mappingProperties,
+                                                           String              methodName)
     {
         InstanceProperties properties = null;
 
@@ -159,6 +151,15 @@ class ExternalIdentifierBuilder extends OpenMetadataAPIGenericBuilder
                                                                       OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
                                                                       source,
                                                                       methodName);
+        }
+
+        if (mappingProperties != null)
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.MAPPING_PROPERTIES_PROPERTY_NAME,
+                                                                         mappingProperties,
+                                                                         methodName);
         }
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
