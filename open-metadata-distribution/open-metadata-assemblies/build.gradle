@@ -9,6 +9,7 @@ plugins {
 
 apply plugin: 'distribution'
 
+jar.enabled=false
 
 description = 'Open Metadata Assemblies'
 
@@ -211,6 +212,12 @@ task unzip(type: Copy) {
 
 egeriaomagDistTar.finalizedBy unzip
 
+// Define the output from this module - in this case our distributions
+sourceSets {
+    main {
+        output.dir("${project.buildDir}/distributions")
+    }
+}
 
 
 
