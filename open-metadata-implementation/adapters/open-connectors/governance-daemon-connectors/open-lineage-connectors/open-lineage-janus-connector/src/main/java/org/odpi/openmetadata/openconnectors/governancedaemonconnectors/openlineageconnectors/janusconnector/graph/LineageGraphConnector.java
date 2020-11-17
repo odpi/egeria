@@ -602,178 +602,178 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         }
     }
 
-        @Override
-        public void deleteEntity (String guid, Object version){
-            Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).has(PROPERTY_KEY_ENTITY_VERSION, version);
+    @Override
+    public void deleteEntity(String guid, Object version) {
+        Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).has(PROPERTY_KEY_ENTITY_VERSION, version);
 
-            //TODO add check when we will have classifications to delete classifications first
-            if (!vertex.hasNext()) {
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().rollback();
-                }
-                log.debug("Vertex with guid did not delete {}", guid);
-                return;
-            }
-
-            g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).drop();
+        //TODO add check when we will have classifications to delete classifications first
+        if (!vertex.hasNext()) {
             if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
+                g.tx().rollback();
             }
-            log.debug("Vertex with guid {} deleted", guid);
+            log.debug("Vertex with guid did not delete {}", guid);
+            return;
         }
 
-        @Override
-        public void deleteRelationship (String guid){
-            Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, guid);
-            if (!edge.hasNext()) {
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().rollback();
-                }
-                log.debug("Edge with guid did not delete {}", guid);
-                return;
-            }
+        g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).drop();
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
+        }
+        log.debug("Vertex with guid {} deleted", guid);
+    }
 
-            g.E(edge.next().id()).drop();
+    @Override
+    public void deleteRelationship(String guid) {
+        Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, guid);
+        if (!edge.hasNext()) {
             if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
+                g.tx().rollback();
             }
-            log.debug("Edge with guid {} deleted", guid);
+            log.debug("Edge with guid did not delete {}", guid);
+            return;
         }
 
-        /**
-         * Adds or updates properties of an edge.
-         *
-         * @param lineageRelationship - LineageEntity object that has the updates values
-         */
-        private void addOrUpdatePropertiesEdge (LineageRelationship lineageRelationship){
-
-            Map<String, Object> properties = lineageRelationship.getProperties().entrySet().stream().collect(Collectors.toMap(
-                    e -> PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY + e.getKey(),
-                    Map.Entry::getValue
-            ));
-
-            properties.values().remove(null);
-            properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATE_TIME, val -> lineageRelationship.getCreateTime());
-            properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATED_BY, val -> lineageRelationship.getCreatedBy());
-            properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATE_TIME, val -> lineageRelationship.getUpdateTime());
-            properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATED_BY, val -> lineageRelationship.getUpdatedBy());
-            properties.computeIfAbsent(PROPERTY_KEY_LABEL, val -> lineageRelationship.getTypeDefName());
-            properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION, val -> lineageRelationship.getVersion());
-            properties.computeIfAbsent(PROPERTY_KEY_METADATA_ID, val -> lineageRelationship.getMetadataCollectionId());
-
-            g.inject(properties)
-                    .as("properties")
-                    .V(lineageRelationship.getSourceEntity().getGuid())
-                    .outE()
-                    .where(inV().hasId(lineageRelationship.getTargetEntity().getGuid()))
-                    .as("edge")
-                    .sideEffect(__.select("properties")
-                            .unfold()
-                            .as("kv")
-                            .select("edge")
-                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate();
-
-
+        g.E(edge.next().id()).drop();
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
         }
+        log.debug("Edge with guid {} deleted", guid);
+    }
 
-        /**
-         * Returns a list of vertices of output schema elements
-         *
-         * @param endingVertex   - The vertex that is being checked if it is the output schema element
-         * @param g              - Graph traversal object
-         * @param startingVertex - The vertex of the input schema element
-         *
-         * @return Return a list of vertices of output schema elements
-         */
-        private List<Vertex> findPathForOutputAsset (Vertex endingVertex, GraphTraversalSource g, Vertex startingVertex){
-            //add null check for endingVertex
-            if (endingVertex == null) {
-                return null;
-            }
+    /**
+     * Adds or updates properties of an edge.
+     *
+     * @param lineageRelationship - LineageEntity object that has the updates values
+     */
+    private void addOrUpdatePropertiesEdge(LineageRelationship lineageRelationship) {
 
-            List<Vertex> endVertices = new ArrayList<>();
-            try {
-                if (isEndColumn(g, endingVertex)) {
-                    endVertices.add(endingVertex);
-                } else {
-                    List<Vertex> nextVertices = g.V(endingVertex.id()).out(LINEAGE_MAPPING).toList();
+        Map<String, Object> properties = lineageRelationship.getProperties().entrySet().stream().collect(Collectors.toMap(
+                e -> PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY + e.getKey(),
+                Map.Entry::getValue
+        ));
 
-                    for (Vertex vertex : nextVertices) {
-                        if (vertex.equals(startingVertex)) {
-                            continue;
-                        }
-                        Optional.ofNullable(findPathForOutputAsset(vertex, g, endingVertex)).ifPresent(endVertices::addAll);
-                    }
+        properties.values().remove(null);
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATE_TIME, val -> lineageRelationship.getCreateTime());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATED_BY, val -> lineageRelationship.getCreatedBy());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATE_TIME, val -> lineageRelationship.getUpdateTime());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATED_BY, val -> lineageRelationship.getUpdatedBy());
+        properties.computeIfAbsent(PROPERTY_KEY_LABEL, val -> lineageRelationship.getTypeDefName());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION, val -> lineageRelationship.getVersion());
+        properties.computeIfAbsent(PROPERTY_KEY_METADATA_ID, val -> lineageRelationship.getMetadataCollectionId());
 
-                }
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().commit();
-                }
-                return endVertices;
-            } catch (Exception e) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Vertex does not exist with guid {} and display name {}", startingVertex.id(),
-                            startingVertex.property(PROPERTY_KEY_DISPLAY_NAME).value());
-                }
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().rollback();
-                }
-                return null;
-            }
-        }
-
-        /**
-         * Returns true if the vertex is part of an asset
-         *
-         * @param g      - Graph traversal object
-         * @param vertex - The vertex of the schema element
-         */
-        private boolean isEndColumn (GraphTraversalSource g, Vertex vertex){
-            final String VERTEX = "vertex";
-
-            Iterator<Vertex> end = g.V(vertex.id())
-                    .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
-                                    .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
-                            __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
-                                    .store(VERTEX)).select(VERTEX).unfold();
-            return end.hasNext();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public LineageResponse lineage (Scope scope, String guid, String displayNameMustContain,boolean includeProcesses){
-            GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
-            if (!vertexGraphTraversal.hasNext()) {
-                return new LineageResponse();
-            }
-
-            Optional<LineageVerticesAndEdges> lineageVerticesAndEdges = Optional.empty();
-
-            switch (scope) {
-                case SOURCE_AND_DESTINATION:
-                    lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses);
-                    break;
-                case END_TO_END:
-                    lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses);
-                    break;
-                case ULTIMATE_SOURCE:
-                    lineageVerticesAndEdges = helper.ultimateSource(guid, includeProcesses);
-                    break;
-                case ULTIMATE_DESTINATION:
-                    lineageVerticesAndEdges = helper.ultimateDestination(guid, includeProcesses);
-                    break;
-                case VERTICAL:
-                    lineageVerticesAndEdges = helper.verticalLineage(guid);
-                    break;
-            }
-            if (lineageVerticesAndEdges.isPresent() && !displayNameMustContain.isEmpty()) {
-                helper.filterDisplayName(lineageVerticesAndEdges.get(), displayNameMustContain);
-            }
-
-            return new LineageResponse(lineageVerticesAndEdges.orElse(null));
-        }
+        g.inject(properties)
+                .as("properties")
+                .V(lineageRelationship.getSourceEntity().getGuid())
+                .outE()
+                .where(inV().hasId(lineageRelationship.getTargetEntity().getGuid()))
+                .as("edge")
+                .sideEffect(__.select("properties")
+                        .unfold()
+                        .as("kv")
+                        .select("edge")
+                        .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate();
 
 
     }
+
+    /**
+     * Returns a list of vertices of output schema elements
+     *
+     * @param endingVertex   - The vertex that is being checked if it is the output schema element
+     * @param g              - Graph traversal object
+     * @param startingVertex - The vertex of the input schema element
+     *
+     * @return Return a list of vertices of output schema elements
+     */
+    private List<Vertex> findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g, Vertex startingVertex) {
+        //add null check for endingVertex
+        if (endingVertex == null) {
+            return null;
+        }
+
+        List<Vertex> endVertices = new ArrayList<>();
+        try {
+            if (isEndColumn(g, endingVertex)) {
+                endVertices.add(endingVertex);
+            } else {
+                List<Vertex> nextVertices = g.V(endingVertex.id()).out(LINEAGE_MAPPING).toList();
+
+                for (Vertex vertex : nextVertices) {
+                    if (vertex.equals(startingVertex)) {
+                        continue;
+                    }
+                    Optional.ofNullable(findPathForOutputAsset(vertex, g, endingVertex)).ifPresent(endVertices::addAll);
+                }
+
+            }
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().commit();
+            }
+            return endVertices;
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                log.debug("Vertex does not exist with guid {} and display name {}", startingVertex.id(),
+                        startingVertex.property(PROPERTY_KEY_DISPLAY_NAME).value());
+            }
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().rollback();
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns true if the vertex is part of an asset
+     *
+     * @param g      - Graph traversal object
+     * @param vertex - The vertex of the schema element
+     */
+    private boolean isEndColumn(GraphTraversalSource g, Vertex vertex) {
+        final String VERTEX = "vertex";
+
+        Iterator<Vertex> end = g.V(vertex.id())
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
+                                .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
+                                .store(VERTEX)).select(VERTEX).unfold();
+        return end.hasNext();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
+        GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
+        if (!vertexGraphTraversal.hasNext()) {
+            return new LineageResponse();
+        }
+
+        Optional<LineageVerticesAndEdges> lineageVerticesAndEdges = Optional.empty();
+
+        switch (scope) {
+            case SOURCE_AND_DESTINATION:
+                lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses);
+                break;
+            case END_TO_END:
+                lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses);
+                break;
+            case ULTIMATE_SOURCE:
+                lineageVerticesAndEdges = helper.ultimateSource(guid, includeProcesses);
+                break;
+            case ULTIMATE_DESTINATION:
+                lineageVerticesAndEdges = helper.ultimateDestination(guid, includeProcesses);
+                break;
+            case VERTICAL:
+                lineageVerticesAndEdges = helper.verticalLineage(guid);
+                break;
+        }
+        if (lineageVerticesAndEdges.isPresent() && !displayNameMustContain.isEmpty()) {
+            helper.filterDisplayName(lineageVerticesAndEdges.get(), displayNameMustContain);
+        }
+
+        return new LineageResponse(lineageVerticesAndEdges.orElse(null));
+    }
+
+
+}
 

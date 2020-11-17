@@ -21,14 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LineageEvent extends AssetLineageEventHeader {
 
-   Set<GraphContext> assetContext;
+    Set<GraphContext> assetContext;
 
     /**
      * Gets asset context.
      *
      * @return the asset context
      */
-    public  Set<GraphContext> getAssetContext() {
+    public Set<GraphContext> getAssetContext() {
         return assetContext;
     }
 
