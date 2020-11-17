@@ -55,7 +55,7 @@ public class DataEngineEventProcessor {
     public void processDataEngineRegistrationEvent(String dataEngineEvent) {
         final String methodName = "processDataEngineRegistrationEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
             dataEngineRESTServices.createExternalDataEngine(dataEngineRegistrationEvent.getUserId(), serverName,
