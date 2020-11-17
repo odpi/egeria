@@ -8,7 +8,8 @@ These relationships show the structure of the data processing.
 They can link [Assets](0010-Base-Model.md), or [Ports](0290-Ports.md) or [SchemaAttributes](0505-Schema-Attributes.md)
 depending on the level of detail that is known.
 
-These relationships are then 
+These relationships are then overlaid by the [LineageMapping](0770-Lineage-Mapping.md) relationship to
+show which are significant for lineage.
 
 
 ![UML](0750-Data-Passing.png#pagewidth)

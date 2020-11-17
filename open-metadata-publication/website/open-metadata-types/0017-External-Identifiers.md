@@ -22,17 +22,17 @@ It includes:
   * STABLE_KEY    - Key value will remain active even if records are merged.
   * OTHER         - Another key pattern.
 
-* **mappingProperties** can take additional values to help with the mapping process.
-
 This mapping can be many-to-many which is why you see
 that the **ExternalIdLink** relationship between the open metadata
-element (resources Referenceable) and the external identifier is also many-to-many.
+element (resources) and the external identifier is also many-to-many.
+
+This relationship includes properties to help to map the open metadata element to the external identifier.
 
 There is no guarantee that external identifiers from a third party metadata catalog
 are globally unique and so the **ExternalIdScope** relationship links the external
 identifier to the open metadata element that represents the third party metadata catalog.
 Typically this is a type of [SoftwareServerCapability](0042-Software-Server-Capabilities.md),
-for example, [AssetManager]()
+for example, [AssetManager](0056-Asset-Managers.md).
 
 ![UML](0017-External-Identifiers.png#pagewidth)
 

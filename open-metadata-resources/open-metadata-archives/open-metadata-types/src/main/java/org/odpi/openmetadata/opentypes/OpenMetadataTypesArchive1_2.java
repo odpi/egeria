@@ -1488,7 +1488,7 @@ public class OpenMetadataTypesArchive1_2
 
 
     /**
-     * 0017 External Identifiers define identifiers used to identify this entity in other systems.
+     * 0019 More information
      */
     private void add0019MoreInformation()
     {
