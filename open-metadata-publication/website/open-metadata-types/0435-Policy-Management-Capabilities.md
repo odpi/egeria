@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# 0457 Policy Management Capabilities
+# 0435 Policy Management Capabilities
 
 The policy management capabilities describe the different capabilities needed to automate
 the enforcement of policies.  These capabilities were originally identified in the 
