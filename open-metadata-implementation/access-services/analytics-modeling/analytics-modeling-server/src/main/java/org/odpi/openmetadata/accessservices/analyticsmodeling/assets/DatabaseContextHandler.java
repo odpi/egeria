@@ -21,6 +21,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsMode
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.TableBean;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
@@ -57,7 +58,7 @@ public class DatabaseContextHandler {
 	
 	private RelationalDataHandler<Database, 
 									Schema, 
-									Object, 
+									TableBean, 
 									Object, 
 									Object, 
 									Object> relationalDataHandler;
@@ -73,7 +74,7 @@ public class DatabaseContextHandler {
 	}
 
 	public DatabaseContextHandler(
-		RelationalDataHandler<Database, Schema, Object, Object, Object, Object> relationalDataHandler, 
+		RelationalDataHandler<Database, Schema, TableBean, Object, Object, Object> relationalDataHandler, 
 		OMEntityDao omEntityDao, 
 		InvalidParameterHandler invalidParameterHandler) {
 		
@@ -204,31 +205,59 @@ public class DatabaseContextHandler {
 	/**
 	 * Get tables for schema.
 	 * 
-	 * @param guidDataSource of the schema.
+	 * @param userId for the call.
+	 * @param guidDatabase of the schema.
 	 * @param schema         name.
 	 * @return list of table names.
 	 * @throws AnalyticsModelingCheckedException if failed
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException, InvalidParameterException {
+	public ResponseContainerSchemaTables getSchemaTables(String userId, String guidDatabase, String schema) throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		String context = "getSchemaTables";
-		setContext(context);
+		String methodName = "getSchemaTables";
+		setContext(methodName);
 
-		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
+		invalidParameterHandler.validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
 
-		ResponseContainerSchemaTables ret = new ResponseContainerSchemaTables();
+		try {
+			List<Schema> schemas = relationalDataHandler.getSchemasForDatabase(userId, guidDatabase, 0, 0, methodName);
+			
+			if (schemas == null) {
+				throw new AnalyticsModelingCheckedException(
+						AnalyticsModelingErrorCode.FAILED_FETCH_DATABASE_SCHEMAS.getMessageDefinition(guidDatabase),
+						this.getClass().getSimpleName(),
+						methodName);
+			}
+			
+			Optional<Schema> theSchema  = schemas.stream().filter(e->e.getName().equals(schema)).findFirst();
+			
+			if (!theSchema.isPresent()) {
+				throw new AnalyticsModelingCheckedException(
+						AnalyticsModelingErrorCode.FAILED_FIND_DATABASE_SCHEMA.getMessageDefinition(schema, guidDatabase),
+						this.getClass().getSimpleName(),
+						methodName);
+			}
+			
+			List<TableBean> tables = relationalDataHandler.getTablesForDatabaseSchema(userId, theSchema.get().getGuid(), 0, 0, methodName);
+			List<String> tablesNames = tables == null ? Collections.emptyList() : tables.stream()
+									.map(TableBean::getName)
+									.filter(Objects::nonNull).collect(Collectors.toList());
+	
+			Collections.sort(tablesNames);		
 
-		EntityDetail dbSchemaEntity = getSchemaEntityByName(guidDataSource, schema);
-		List<String> tables = getTablesForSchema(dbSchemaEntity)
-								.parallelStream()
-								.map(t->getEntityStringProperty(t, Constants.DISPLAY_NAME))
-								.filter(Objects::nonNull).collect(Collectors.toList());
+			ResponseContainerSchemaTables ret = new ResponseContainerSchemaTables();
+			ret.setTablesList(tablesNames);
+			return ret;
+		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
+				| PropertyServerException ex) {
 
-		Collections.sort(tables);			
-		ret.setTablesList(tables);
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_FETCH_SCHEMAS_TABLES.getMessageDefinition(schema, guidDatabase),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
+		}
 
-		return ret;
 	}
 
 	/**

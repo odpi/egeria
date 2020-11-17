@@ -16,10 +16,12 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OME
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.DatabaseConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.SchemaConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.TableConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.TableBean;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
@@ -66,14 +68,14 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 				metadataCollection,
 	            PAGE_SIZE);
 
-		RelationalDataHandler<Database, Schema, Object, Object, Object, Object> relationalDataHandler =
+		RelationalDataHandler<Database, Schema, TableBean, Object, Object, Object> relationalDataHandler =
 		new RelationalDataHandler<>(
         		new DatabaseConverter(omrsRepositoryHelper, serviceName,serverName),
                 Database.class,
         		new SchemaConverter(omrsRepositoryHelper, serviceName,serverName),
                 Schema.class,
-        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
-                Object.class,
+        		new TableConverter(omrsRepositoryHelper, serviceName,serverName),
+        		TableBean.class,
         		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
                 Object.class,
         		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
@@ -236,34 +238,36 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
-		ResponseContainerSchemaTables tables = databaseContextHandler.getSchemaTables(entityDB.getGUID(), SCHEMA_DBO);
+		ResponseContainerSchemaTables tables = databaseContextHandler.getSchemaTables(USER_ID, entityDB.getGUID(), SCHEMA_DBO);
 		assertTrue(tables.getTablesList().isEmpty(), "Table list expected to be empty.");
 	}
 
 	@Test
-	public void getSchemaTablesForUnknownSchema() {
+	public void getSchemaTablesForUnknownSchema() throws AnalyticsModelingCheckedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
+		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 		String schemaName = "NonExistingSchemaName";
 
 		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
-				() -> databaseContextHandler.getSchemaTables(entityDB.getGUID(), schemaName));
+				() -> databaseContextHandler.getSchemaTables(USER_ID, entityDB.getGUID(), schemaName));
 
-		assertEquals(AnalyticsModelingErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
+		assertEquals(AnalyticsModelingErrorCode.FAILED_FIND_DATABASE_SCHEMA.getMessageDefinition(schemaName,entityDB.getGUID()).getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
 		assertTrue(thrown.getMessage().contains(schemaName), "Failed schema name should be in the message.");
 	}
 
 	@Test
-	public void getSchemaTables() throws AnalyticsModelingCheckedException, InvalidParameterException {
+	public void getSchemaTables() throws Exception {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		EntityDetail entitySchema = createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
-		createSchemaTable(entitySchema, "A");
-		createSchemaTable(entitySchema, "B");
+		EntityDetail entityTableA = createSchemaTable(entitySchema, "A");		// table with single column
+		addColumn(entityTableA, "CA1", DATA_TYPE_INTEGER, VENDOR_TYPE_INT32);
+		createSchemaTable(entitySchema, "B");									// table without columns
 
-		ResponseContainerSchemaTables tableResponse = databaseContextHandler.getSchemaTables(entityDB.getGUID(),
+		ResponseContainerSchemaTables tableResponse = databaseContextHandler.getSchemaTables(USER_ID, entityDB.getGUID(),
 				SCHEMA_DBO);
 		assertNotNull(tableResponse);
 		List<String> tables = tableResponse.getTablesList();
@@ -380,7 +384,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getSchemaTablesInvalidParameter() {
 
 		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
-				() -> databaseContextHandler.getSchemaTables(null, SCHEMA_DBO));
+				() -> databaseContextHandler.getSchemaTables(USER_ID, null, SCHEMA_DBO));
 		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
 	}
 
