@@ -9,7 +9,9 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseCon
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.DatabaseConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.SchemaConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -26,7 +28,7 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
     private DatabaseContextHandler databaseContextHandler;
     
     private RelationalDataHandler<Database,
-								    Object,
+								    Schema,
 								    Object,
 								    Object,
 								    Object,
@@ -55,8 +57,8 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
         this.relationalDataHandler = new RelationalDataHandler<>(
         		new DatabaseConverter(repositoryHelper, serviceName,serverName),
                 Database.class,
-                new EmptyConverter(repositoryHelper, serviceName,serverName),
-                Object.class,
+                new SchemaConverter(repositoryHelper, serviceName,serverName),
+                Schema.class,
                 new EmptyConverter(repositoryHelper, serviceName,serverName),
                 Object.class,
                 new EmptyConverter(repositoryHelper, serviceName,serverName),

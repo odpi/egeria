@@ -24,6 +24,8 @@ import java.util.Map;
 /**
  * AssetHandler manages B objects and optionally connections in the property server.  It runs server-side in
  * the OMAG Server Platform and retrieves Assets and Connections through the OMRSRepositoryConnector.
+ *
+ * @param <B> class that represents the asset
  */
 public class AssetHandler<B> extends ReferenceableHandler<B>
 {

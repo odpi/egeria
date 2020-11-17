@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
+package org.odpi.openmetadata.accessservices.analyticsmodeling.metadata;
+
 /**
  * Database contains the properties and guid for a database entity retrieved from the metadata repository.
  */
-package org.odpi.openmetadata.accessservices.analyticsmodeling.metadata;
-
 public class Database extends MetadataBase {
 
 	String name;

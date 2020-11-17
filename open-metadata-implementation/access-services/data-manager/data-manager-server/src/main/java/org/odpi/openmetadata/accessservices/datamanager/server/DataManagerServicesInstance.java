@@ -142,14 +142,6 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 
 
     /**
-     * Return the connection used in the client to create a connector to access events from the out topic.
-     *
-     * @return connection object for client
-     */
-    Connection getOutTopicConnection() { return outTopicConnection; }
-
-
-    /**
      * Return the handler for managing database  objects.
      *
      * @return  handler object

@@ -8,7 +8,7 @@ public final class Constants {
 
     //Asset Types
     public static final String GLOSSARY_TERM = "GlossaryTerm";
-
+    public static final String GLOSSARY_CATEGORY = "GlossaryCategory";
     public static final String RELATIONAL_COLUMN_TYPE = "RelationalColumnType";
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String RELATIONAL_TABLE_TYPE = "RelationalTableType";
@@ -23,6 +23,16 @@ public final class Constants {
     public static final String FILE_FOLDER = "FileFolder";
     public static final String CONNECTION = "Connection";
     public static final String PROCESS = "Process";
+    public static final String ENDPOINT = "Endpoint";
+    public static final String GLOSSARY = "Glossary";
+
+    public static final String RELATIONAL_TABLE_KEY = "relationalTable";
+    public static final String SCHEMA_TYPE_KEY = "schema";
+    public static final String DATABASE_KEY = "database";
+    public static final String DATA_FILE_KEY = "dataFile";
+    public static final String FILE_FOLDER_KEY = "fileFolder";
+    public static final String CONNECTION_KEY = "connection";
+    public static final String GLOSSARY_KEY = "glossary";
 
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";

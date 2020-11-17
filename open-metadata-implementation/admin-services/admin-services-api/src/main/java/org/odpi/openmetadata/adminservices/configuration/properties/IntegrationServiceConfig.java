@@ -34,6 +34,7 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
     private String                           integrationServiceDescription         = null;
     private String                           integrationServiceWiki                = null;
     private String                           integrationServicePartnerOMAS         = null;
+    private PermittedSynchronization         defaultPermittedSynchronization       = null;
     private ServiceOperationalStatus         integrationServiceOperationalStatus   = null;
     private Map<String, Object>              integrationServiceOptions             = null;
     private List<IntegrationConnectorConfig> integrationConnectorConfigs           = null;
@@ -253,6 +254,30 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
     public void setIntegrationServicePartnerOMAS(String integrationServicePartnerOMAS)
     {
         this.integrationServicePartnerOMAS = integrationServicePartnerOMAS;
+    }
+
+
+    /**
+     * Return the default value for permitted synchronization that should be set up for the integration connectors
+     * as they are configured.
+     *
+     * @return enum default
+     */
+    public PermittedSynchronization getDefaultPermittedSynchronization()
+    {
+        return defaultPermittedSynchronization;
+    }
+
+
+    /**
+     * Set up the default value for permitted synchronization that should be set up for the integration connectors
+     * as they are configured.
+     *
+     * @param defaultPermittedSynchronization enum default
+     */
+    public void setDefaultPermittedSynchronization(PermittedSynchronization defaultPermittedSynchronization)
+    {
+        this.defaultPermittedSynchronization = defaultPermittedSynchronization;
     }
 
 

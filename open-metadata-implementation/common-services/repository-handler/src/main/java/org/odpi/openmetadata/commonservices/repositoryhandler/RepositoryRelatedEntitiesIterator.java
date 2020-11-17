@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 
 /**
- * RepositoryRelatedEntitiesIterator is an iterator class for iteratively retrieving relationships for an anchor entity (possibly restricting
+ * RepositoryRelatedEntitiesIterator is an iterator class for iteratively retrieving relationships for an starting entity (possibly restricting
  * the type of relationships returned) and returning the entity at the other end.  It is used where the caller needs to filter the results coming
  * from the repository and may need to make more than one call to the repository in order to accumulate the number of requested results.
  *

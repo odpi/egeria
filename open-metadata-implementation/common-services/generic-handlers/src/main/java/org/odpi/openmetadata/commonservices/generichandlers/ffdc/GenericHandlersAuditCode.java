@@ -35,6 +35,33 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                   "optimization provided through the Anchors classification, add an Egeria native metadata server to the cohort.  " +
                                   "This will provide the support for the Anchors classification."),
 
+    SETTING_UP_EXTERNAL_ID("OMAG-GENERIC-HANDLERS-0002",
+                          OMRSAuditLogRecordSeverity.INFO,
+                          "{0} has linked {1} element {2} to external identifier {3} from third party metadata source {4} ({5}) as part of the {6} operation.",
+                          "The described linkage is stored in one of the connected open metadata repositories.",
+                          "No specific action is required.  This message is to highlight that the association has been made."),
+
+    PERMITTED_SYNC_CHANGING("OMAG-GENERIC-HANDLERS-0003",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The permitted synchronization for {0} {1} ({2}) has changed for identifier {3} from {4} to {5}",
+                           "The described synchronization configuration is stored in one of the connected open metadata repositories.",
+                           "Verify that the configuration for the integration connector supporting this third party technology " +
+                                   "has legitimately changed to the new permitted synchronization."),
+
+    NEW_EXTERNAL_RELATIONSHIP("OMAG-GENERIC-HANDLERS-0004",
+                            OMRSAuditLogRecordSeverity.INFO,
+                            "{0} has created a new {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})",
+                            "The described new relationship is stored in one of the connected open metadata repositories.",
+                            "No action is required now but this message can be useful to understand where particular relationships " +
+                                    "came from."),
+
+    EXTERNAL_RELATIONSHIP_REMOVED("OMAG-GENERIC-HANDLERS-0005",
+                              OMRSAuditLogRecordSeverity.INFO,
+                              "{0} has removed the {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})",
+                              "The removed relationship was stored in one of the connected open metadata repositories but has now been removed.",
+                              "No action is required now but this message can be useful to understand why a particular relationship " +
+                                      "has been removed."),
+
     ;
 
     private String                     logMessageId;

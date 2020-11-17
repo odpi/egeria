@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * The discovery engine connectors are the interfaces of the
+ * The Data Manager connectors are the interfaces of the
  * connectors supported by the Data Manager OMAS.
  *
  * Currently there are two connectors, one for the client
