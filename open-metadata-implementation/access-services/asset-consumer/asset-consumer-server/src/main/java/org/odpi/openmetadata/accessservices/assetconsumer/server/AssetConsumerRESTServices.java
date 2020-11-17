@@ -753,12 +753,12 @@ public class AssetConsumerRESTServices
             GlossaryTermHandler<MeaningElement> glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeanings(glossaryTermHandler.getTermByName(userId,
-                                                                   term,
-                                                                   nameParameterName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   methodName));
+            response.setMeanings(glossaryTermHandler.getTermsByName(userId,
+                                                                    term,
+                                                                    nameParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)

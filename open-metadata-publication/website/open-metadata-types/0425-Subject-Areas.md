@@ -17,14 +17,14 @@ coordinates other subject matter experts to author and maintain the common defin
 
 This includes:
 
-* A [glossary of terms](0310-Glossary-Model.md) that describe the key concepts in the subject area.
+* A [glossary of terms](0310-Glossary.md) that describe the key concepts in the subject area.
 * Lists and hierarchies of [reference data](0545-Reference-Data.md) that relate to particular data values
   in the subject area.
 * Quality rules for specific data values in the subject area.
 * Preferred data structures and schemas.
 
 The effort required to author and maintain these definitions, plus the governance process required to
-ensure they are used wherever appropriate is startingFrom by the savings in managing and using the shared
+ensure they are used wherever appropriate is offset by the savings in managing and using the shared
 data associated with the subject area.
 
 ## Open Metadata Types

@@ -34,8 +34,4 @@
         <module>catalog-integrator-server</module>
     </modules>
 
-    <dependencies>
-
-    </dependencies>
-
 </project>

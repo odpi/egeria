@@ -23,16 +23,16 @@ class EndpointBuilder extends ReferenceableBuilder
     /**
      * Constructor supporting all properties.
      *
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param description new description for the discovery engine.
-     * @param networkAddress new description of the type ofg discovery engine.
-     * @param protocol protocol supported by the endpoint.
-     * @param encryptionMethod new patch level for the discovery engine implementation.
+     * @param qualifiedName unique name of the endpoint
+     * @param displayName new value for the display name
+     * @param description new description for the endpoint
+     * @param networkAddress location of the resource
+     * @param protocol protocol supported by the endpoint
+     * @param encryptionMethod algorithm used to encrypt data or null for clear data
      * @param additionalProperties additional properties
      * @param typeId unique identifier of the endpoint's type
      * @param typeName unique name of the endpoint's type
-     * @param extendedProperties  properties from the subtype.
+     * @param extendedProperties  properties from the subtype
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server

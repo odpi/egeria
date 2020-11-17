@@ -14,6 +14,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-api')
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

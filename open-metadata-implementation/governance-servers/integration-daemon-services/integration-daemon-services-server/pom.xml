@@ -87,6 +87,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>lineage-integrator-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>organization-integrator-server</artifactId>
         </dependency>
 
