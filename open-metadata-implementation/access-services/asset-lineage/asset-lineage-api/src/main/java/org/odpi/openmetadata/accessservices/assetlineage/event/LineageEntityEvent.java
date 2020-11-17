@@ -5,10 +5,9 @@ package org.odpi.openmetadata.accessservices.assetlineage.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 
 import java.util.Objects;
-import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,47 +18,46 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LineageEvent extends AssetLineageEventHeader {
+public class LineageEntityEvent extends AssetLineageEventHeader {
 
-   Set<GraphContext> assetContext;
+    private LineageEntity lineageEntity;
 
     /**
-     * Gets asset context.
+     * Gets lineage entity.
      *
-     * @return the asset context
+     * @return the lineage entity
      */
-    public  Set<GraphContext> getAssetContext() {
-        return assetContext;
+    public LineageEntity getLineageEntity() {
+        return lineageEntity;
     }
 
     /**
-     * Sets asset context.
+     * Sets lineage entity.
      *
-     * @param assetContext the asset context
+     * @param lineageEntity the lineage entity
      */
-    public void setAssetContext(Set<GraphContext> assetContext) {
-
-        this.assetContext = assetContext;
+    public void setLineageEntity(LineageEntity lineageEntity) {
+        this.lineageEntity = lineageEntity;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LineageEvent that = (LineageEvent) o;
-        return Objects.equals(assetContext, that.assetContext);
+        LineageEntityEvent that = (LineageEntityEvent) o;
+        return Objects.equals(lineageEntity, that.lineageEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assetContext);
+        return Objects.hash(lineageEntity);
     }
 
     @Override
     public String toString() {
-        return "LineageEvent{" +
-                "assetContext=" + assetContext +
-                "} " + super.toString();
+        return "LineageEntityEvent{" +
+                "lineageEntity=" + lineageEntity +
+                '}';
     }
 }
 
