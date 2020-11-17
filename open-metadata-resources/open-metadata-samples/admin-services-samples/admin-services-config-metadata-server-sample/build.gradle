@@ -3,6 +3,10 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
 
 dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
@@ -18,4 +22,9 @@ description = 'Admin Services Config Metadata Server Sample'
 
 java {
     withJavadocJar()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.adminservices.samples.configure.ConfigMetadataServerSample'
+    archiveClassifier = 'jar-with-dependencies'
 }

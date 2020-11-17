@@ -22,7 +22,7 @@ import java.util.Map;
 public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the governance zone handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -68,7 +68,6 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
-
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
@@ -107,8 +106,6 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String qualifiedNameParameterName = "qualifiedName";
-
         GovernanceZoneBuilder governanceZoneBuilder = new GovernanceZoneBuilder(qualifiedName,
                                                                               displayName,
                                                                               description,
@@ -120,6 +117,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               repositoryHelper,
                                                                               serviceName,
                                                                               serverName);
+
         this.createBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,

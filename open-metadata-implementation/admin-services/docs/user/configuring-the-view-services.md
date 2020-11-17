@@ -25,9 +25,22 @@ Within the view server configuration, the `viewServicesConfig` property lists th
 
 ## View Services
 
-Each view service listed in the `viewServicesConfig` is configured using a view service configuration object. 
+It is possible to get a description of each of the registered
+view services using the following command:
+
+```
+GET {serverURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/view-services
+```
+Note the `viewServiceURLMarker` for the view service that you want to configure.
+
+To activate a specific view service in a view server, is is necessary to add an entry for the view
+service to the view server's configuration document.
+
+Each view service listed in the view server's configuration document is configured using a view service configuration object. 
 There are two types of view services, each with a different type of view service configuration object. The types of view
 service are:
+* Solution View Services
+* Integration (or Ecosystem) View Services
 
 ### Solution View Services
 
@@ -43,7 +56,7 @@ properties:
 * `viewServiceName`  - required property, set to the name of the view service being configured
 * `viewServiceFullName` - required property, set to the full name of view service
 * `viewServiceURLMarker` - required property, set to the serviceURL Marker of the service - this can be discovered by 
-listing the registered view services as described below under [Adminstrative Operations](#administrative-perations)
+listing the registered view services as described below under [Administrative Operations](#administrative-operations)
 * `viewServiceDescription` - optional property that describes the view service
 * `viewServiceWiki` - optional property specifying the location of the view service documentation
 * `viewServiceOperationalStatus` - required property, set to ENABLED or DISABLED
@@ -87,7 +100,7 @@ It additionally has the following configuration properties:
 * `viewServiceName`  - required property, set to the name of the view service being configured
 * `viewServiceFullName` - required property, set to the full name of view service
 * `viewServiceURLMarker` - required property, set to the serviceURL Marker of the service - this can be discovered by 
-listing the registered view services as described below under [Adminstrative Operations](#administrative-perations)
+listing the registered view services as described below under [Administrative Operations](#administrative-operations)
 * `viewServiceDescription` - optional property that describes the view service
 * `viewServiceWiki` - optional property specifying the location of the view service documentation
 * `viewServiceOperationalStatus` - required property, set to ENABLED or DISABLED

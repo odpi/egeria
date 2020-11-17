@@ -33,7 +33,7 @@ if one of the test fails.
 
 ## Running in the build
 
-These tests are also configured to run in the 
+These tests are also configured to run in the build using the failsafe plugin.
 
 
 

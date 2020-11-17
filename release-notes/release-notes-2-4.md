@@ -30,6 +30,11 @@
   * Spring Boot has been updated to 2.3.3
   * For a full list run 'mvn dependency:tree' against top level directory and/or review the top level pom.xml
 
+## Known Issues
+
+* The docker-compose based lab environment is incorrectly pulling docker images from the wrong repository.  To correct this change `open-metadata-resources/open-metadata-deployment/compose/tutorials/.env` to `egeria_repo=odpi`. The original repository
+has however been updated to include 2.4 images, so will now work even if unchanged.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

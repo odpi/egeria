@@ -3,12 +3,14 @@
 
 # 0750 Data Passing
 
-Describes relationships that show where data is passed between processes and assets.
-There is no detail beyond text descriptions on the type and structure of the data
-that is being passed.
+Describes relationships that show where data and control is passed between processes and assets.
+These relationships show the structure of the data processing.
+They can link [Assets](0010-Base-Model.md), or [Ports](0290-Ports.md) or [SchemaAttributes](0505-Schema-Attributes.md)
+depending on the level of detail that is known.
 
-However it does establish the flow of data among the systems and processing engines
-in use by the organization.
+These relationships are then overlaid by the [LineageMapping](0770-Lineage-Mapping.md) relationship to
+show which are significant for lineage.
+
 
 ![UML](0750-Data-Passing.png#pagewidth)
 

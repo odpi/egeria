@@ -35,7 +35,25 @@ public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
                               "Either move it to an appropriate integration service or update the connector implementation " +
                               "to inherit from the correct class."),
 
-   ;
+    DISABLED_EXCHANGE_SERVICE(400,"CATALOG-INTEGRATOR-400-002",
+                      "The {0} has been disabled by the configuration for the {1} integration service",
+                      "The integration service's context is unable to return the client interface to this service.",
+                      "The exchange service was disabled through the administration calls for the integration service." +
+                              "Either change the configuration of the integration service or change the connector to skip the part of the " +
+                              "synchronization that uses this exchange service since the organization does not want this type of metadata synchronized."),
+
+    NOT_PERMITTED_SYNCHRONIZATION(400,"CATALOG-INTEGRATOR-400-003",
+                              "The permitted synchronization direction of {0} does not allow connector {1} to issue {2} requests on behalf of asset manager {3}",
+                              "The request is not issued and an exception is returned to the caller.",
+                              "The request was disabled through the administration calls for the integration connector." +
+                                      "Either change the configuration of the integration service or change the connector to skip the part of the " +
+                                      "synchronization that uses this request since the organization does not want this type of metadata synchronized."),
+
+    BAD_CONFIG_PROPERTIES(400, "CATALOG-INTEGRATOR-400-004",
+                          "The {0} Open Metadata Integration Service (OMIS) has been passed an invalid value of {1} in the {2} property.  The resulting exception of {3} included the following message: {4}",
+                          "The access service has not been passed valid configuration .",
+                          "Correct the value of the failing configuration property and restart the server."),
+    ;
 
 
     private ExceptionMessageDefinition messageDefinition;

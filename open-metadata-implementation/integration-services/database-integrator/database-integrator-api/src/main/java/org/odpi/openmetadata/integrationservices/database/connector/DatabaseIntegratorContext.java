@@ -34,7 +34,7 @@ public class DatabaseIntegratorContext
      * @param databaseManagerGUID unique identifier of the software server capability for the database manager
      * @param databaseManagerName unique name of the software server capability for the database manager
      */
-    public DatabaseIntegratorContext(DatabaseManagerClient client,
+    public DatabaseIntegratorContext(DatabaseManagerClient  client,
                                      DataManagerEventClient eventClient,
                                      String                 userId,
                                      String                 databaseManagerGUID,

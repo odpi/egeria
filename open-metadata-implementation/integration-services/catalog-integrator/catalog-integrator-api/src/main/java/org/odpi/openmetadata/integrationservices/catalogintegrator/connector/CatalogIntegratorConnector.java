@@ -11,5 +11,15 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connect
  */
 public abstract class CatalogIntegratorConnector extends IntegrationConnectorBase
 {
+    protected CatalogIntegratorContext context = null;
 
+    /**
+     * Set up the context for this connector.  It is called by the context manager.
+     *
+     * @param context context for this connector's private use.
+     */
+    public void setContext(CatalogIntegratorContext context)
+    {
+        this.context = context;
+    }
 }

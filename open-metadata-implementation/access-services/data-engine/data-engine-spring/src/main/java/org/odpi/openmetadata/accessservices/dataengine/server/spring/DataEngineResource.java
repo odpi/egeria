@@ -115,6 +115,22 @@ public class DataEngineResource {
     }
 
     /**
+     * Add a ProcessHierarchy relationship between Process entities
+     *
+     * @param serverName                  name of server instance to call
+     * @param userId                      the name of the calling user
+     * @param processHierarchyRequestBody properties of the process hierarchy
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     */
+    @PostMapping(path = "/process-hierarchies")
+    public GUIDResponse addProcessHierarchy(@PathVariable("userId") String userId,
+                                            @PathVariable("serverName") String serverName,
+                                            @RequestBody ProcessHierarchyRequestBody processHierarchyRequestBody) {
+        return restAPI.addProcessHierarchy(userId, serverName, processHierarchyRequestBody);
+    }
+
+    /**
      * Create or update  the Process entities with ports, schema types and all needed relationships
      *
      * @param serverName           name of server instance to call
