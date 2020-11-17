@@ -72,7 +72,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
-    implementation project(':open-metadata-implementation:user-interfaces:presentation-server')
+    //implementation project(':open-metadata-implementation:user-interfaces:presentation-server')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
