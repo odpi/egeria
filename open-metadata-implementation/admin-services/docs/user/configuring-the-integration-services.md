@@ -18,7 +18,7 @@ It is possible to get a description of each of the registered
 integration services using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/integration-services
+GET {serverURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/integration-services
 ```
 Note the `integrationServiceURLMarker` for the integration service that you want to configure.
 
