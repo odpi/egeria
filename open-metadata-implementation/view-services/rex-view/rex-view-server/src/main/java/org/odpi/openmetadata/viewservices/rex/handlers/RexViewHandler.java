@@ -120,7 +120,7 @@ public class RexViewHandler
 
 
     /**
-     * Default constructor for TexViewHandler
+     * Default constructor for RexViewHandler
      */
     public RexViewHandler() {
 
@@ -129,7 +129,7 @@ public class RexViewHandler
 
     /**
      * Constructor for RexViewHandler with configured resourceEndpoints
-     * @param resourceEndpoints
+     * @param resourceEndpoints - list of resource endpoint configuration objects for this view service
      */
     public RexViewHandler(List<ResourceEndpointConfig>  resourceEndpoints) {
 
@@ -179,7 +179,7 @@ public class RexViewHandler
      *
      * @param userId  userId under which the request is performed
      * @param methodName The name of the method being invoked
-     * This method will return the resource endpoints that have been configured for the view service
+     * @return The resource endpoints that have been configured for the view service
      *
      */
     public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
@@ -952,18 +952,8 @@ public class RexViewHandler
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
-     * Exceptions returned by the server
-     *
-     * @throws InvalidParameterException     a parameter is invalid or null.
-     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
-     * @throws EntityNotKnownException       the specified start entity could not be found
-     * @throws EntityProxyOnlyException      the specified start entity could not be found
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
-     *                                       the metadata collection is stored.
-     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
-     *                                       entity.
-     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
-     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public RexPreTraversal preTraversal(String          userId,
                                         String          repositoryServerName,
@@ -1214,18 +1204,8 @@ public class RexViewHandler
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
-     * Exceptions returned by the server
-     *
-     * @throws InvalidParameterException     a parameter is invalid or null.
-     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
-     * @throws EntityNotKnownException       the specified start entity could not be found
-     * @throws EntityProxyOnlyException      the specified start entity could not be found
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
-     *                                       the metadata collection is stored.
-     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
-     *                                       entity.
-     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
-     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public RexTraversal traversal(String          userId,
                                   String          repositoryServerName,
@@ -1524,9 +1504,9 @@ public class RexViewHandler
      * MetadataCollection interface. This client is used when the enterprise option is not set, and will
      * connect to the local repository.
      *
-     * @param serverName
-     * @param serverRootURL
-     * @throws InvalidParameterException
+     * @param serverName - name of the server to connect to
+     * @param serverRootURL - the root URL to connect to the server
+     * @throws InvalidParameterException - an invalid parameter was detected and reported
      */
     private LocalRepositoryServicesClient getLocalRepositoryServicesClient(String serverName,
                                                                            String serverRootURL)
@@ -1557,9 +1537,9 @@ public class RexViewHandler
      * MetadataCollection interface. This client is used when the enterprise option is set, and will
      * perform federation.
      *
-     * @param serverName
-     * @param serverRootURL
-     * @throws InvalidParameterException
+     * @param serverName - name of the server to connect to
+     * @param serverRootURL - the root URL to connect to the server
+     * @throws InvalidParameterException - an invalid parameter was detected and reported
      */
     private EnterpriseRepositoryServicesClient getEnterpriseRepositoryServicesClient(String serverName,
                                                                                      String serverRootURL)

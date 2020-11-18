@@ -4,8 +4,6 @@ package org.odpi.openmetadata.viewservices.rex.api.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-
 
 import java.util.Arrays;
 

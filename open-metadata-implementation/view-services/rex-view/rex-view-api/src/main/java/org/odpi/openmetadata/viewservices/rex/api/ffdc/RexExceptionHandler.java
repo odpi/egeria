@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.rex.api.ffdc;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponse;
