@@ -20,6 +20,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OME
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
@@ -55,7 +56,7 @@ public class DatabaseContextHandler {
 	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
 	
 	private RelationalDataHandler<Database, 
-									Object, 
+									Schema, 
 									Object, 
 									Object, 
 									Object, 
@@ -72,7 +73,7 @@ public class DatabaseContextHandler {
 	}
 
 	public DatabaseContextHandler(
-		RelationalDataHandler<Database, Object, Object, Object, Object, Object> relationalDataHandler, 
+		RelationalDataHandler<Database, Schema, Object, Object, Object, Object> relationalDataHandler, 
 		OMEntityDao omEntityDao, 
 		InvalidParameterHandler invalidParameterHandler) {
 		
@@ -128,17 +129,6 @@ public class DatabaseContextHandler {
 		}
 	}
 	
-	private <T> List<T> getPage(Integer startFrom, Integer pageSize, List<T> list) {
-
-		int toElement = pageSize == 0 ? list.size() : (startFrom + pageSize);
-		
-		if (toElement > list.size()) {
-			toElement = list.size();
-		}
-
-		return list.subList(startFrom,  toElement);
-	}
-	
 	private ResponseContainerDatabase buildDatabase(Database e) {
 		ResponseContainerDatabase ret = new ResponseContainerDatabase();
 		ret.setDbName(e.getName());
@@ -152,56 +142,56 @@ public class DatabaseContextHandler {
 	/**
 	 * Retrieve schemas for given database from repository.
 	 * 
-	 * @param guidDataSource defines database
+	 * @param userId for the call.
+	 * @param guidDatabase defines database
      * @param startFrom	starting element (used in paging through large result sets)
      * @param pageSize	maximum number of results to return
 	 * @return list of schemas attributes.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource, Integer startFrom, Integer pageSize) 
+	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String userId, String guidDatabase, Integer startFrom, Integer pageSize) 
 			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		String context = "getDatabaseSchemas";
-		setContext(context);
+		String methodName = "getDatabaseSchemas";
+		setContext(methodName);
 		
-		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
+		invalidParameterHandler.validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
+		
+		try {
+			Database db = relationalDataHandler.getDatabaseByGUID(userId, guidDatabase, methodName);
+			String dbName = db.getName();
+			
+			List<Schema> schemas = relationalDataHandler.getSchemasForDatabase(userId, guidDatabase, startFrom, pageSize, methodName);
 
-		EntityDetail db = omEntityDao.getEntityByGuid(guidDataSource);
-		String catalogName = getEntityStringProperty(db, Constants.ATTRIBUTE_NAME);
-
-		List<Relationship> db2SchemaRelationships = omEntityDao.getRelationshipsForEntity(db, Constants.DATA_CONTENT_FOR_DATASET);
-
-		if (db2SchemaRelationships == null) {
-			return Collections.emptyList();	// no schemas
+			return Optional.ofNullable(schemas).map(Collection::stream).orElseGet(Stream::empty)
+					.map(e->buildSchema(dbName, e))
+					.filter(Objects::nonNull).collect(Collectors.toList());
+			
+		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
+				| PropertyServerException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_FETCH_DATABASE_SCHEMAS.getMessageDefinition(guidDatabase),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
 		}
-		
-		List<ResponseContainerDatabaseSchema> ret = db2SchemaRelationships.parallelStream()
-				.map(this::getSchemaEntityFromRelationship)
-				.filter(Objects::nonNull)
-				.map(e->buildSchemaForRelationship(catalogName, e))
-				.filter(Objects::nonNull).collect(Collectors.toList());
-		
-		ret.sort(Comparator.comparing(e->e.getSchema()));
-
-		return getPage(startFrom, pageSize, ret);
 	}
 
 	/**
-	 * Helper function to build database response object from entity of the schema.
+	 * Helper function to build database schema response object from the schema element.
 	 * @param catalogName the schema belongs to.
 	 * @param dbSchemaEntity source of the schema data.
 	 * @return response element.
 	 */
-	private ResponseContainerDatabaseSchema buildSchemaForRelationship(String catalogName, EntityDetail dbSchemaEntity) {
-			String schemaName = getEntityStringProperty(dbSchemaEntity, Constants.ATTRIBUTE_NAME);
+	private ResponseContainerDatabaseSchema buildSchema(String catalogName, Schema dbSchema) {
+			String schemaName = dbSchema.getName();
 			ResponseContainerDatabaseSchema schema = new ResponseContainerDatabaseSchema();
 			schema.setCatalog(catalogName);
 			schema.setSchema(schemaName);
 			schema.setId(schema.buildId());
 		return schema;
 	}
-
 	/**
 	 * Get schema entity from relationship catalog->schema
 	 * @param r relationship

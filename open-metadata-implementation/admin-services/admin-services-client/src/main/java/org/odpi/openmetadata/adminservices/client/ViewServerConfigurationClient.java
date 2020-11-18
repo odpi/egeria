@@ -64,6 +64,33 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
 
     /*
      * =============================================================
+     * Learn about all possible view services
+     */
+
+    /**
+     * Return the list of view services for this server.
+     *
+     * @return list of view service descriptions
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public List<RegisteredOMAGService> getRegisteredViewServices() throws OMAGNotAuthorizedException,
+                                                                          OMAGInvalidParameterException,
+                                                                          OMAGConfigurationErrorException
+    {
+        final String methodName  = "getRegisteredViewServices";
+        final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/view-services";
+
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
+                                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                                     adminUserId);
+        return restResult.getServices();
+    }
+
+
+    /*
+     * =============================================================
      * Retrieve the current state of the view service configuration
      */
 

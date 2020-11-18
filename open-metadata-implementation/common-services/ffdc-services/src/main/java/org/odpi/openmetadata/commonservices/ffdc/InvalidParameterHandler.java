@@ -113,7 +113,7 @@ public class InvalidParameterHandler
     public void validateUserId(String userId,
                                String methodName) throws InvalidParameterException
     {
-        if (userId == null)
+        if ((userId == null) || (userId.isEmpty()))
         {
             final String parameterName = "userId";
 
@@ -138,7 +138,7 @@ public class InvalidParameterHandler
                              String guidParameter,
                              String methodName) throws InvalidParameterException
     {
-        if (guid == null)
+        if ((guid == null) || (guid.isEmpty()))
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.NULL_GUID.getMessageDefinition(guidParameter, methodName),
                                                 this.getClass().getName(),
@@ -161,7 +161,7 @@ public class InvalidParameterHandler
                              String nameParameter,
                              String methodName) throws InvalidParameterException
     {
-        if (name == null)
+        if ((name == null) || (name.isEmpty()))
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.NULL_NAME.getMessageDefinition(nameParameter, methodName),
                                                 this.getClass().getName(),
@@ -457,7 +457,7 @@ public class InvalidParameterHandler
                                                 parameterName);
         }
 
-        if (! repositoryHelper.isTypeOf(serviceName, typeName, superTypeName))
+        if (! repositoryHelper.isTypeOf(serviceName, typeDef.getName(), superTypeName))
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.BAD_SUB_TYPE_NAME.getMessageDefinition(typeName,
                                                                                                            methodName,

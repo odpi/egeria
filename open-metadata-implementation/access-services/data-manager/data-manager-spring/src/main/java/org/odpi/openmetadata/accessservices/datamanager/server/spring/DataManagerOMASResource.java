@@ -39,8 +39,9 @@ public class DataManagerOMASResource
     /**
      * Return the connection object for the Data Manager OMAS's out topic.
      *
-     * @param serverName name of the server to route the request to.
-     * @param userId identifier of calling user.
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     * @param callerId unique identifier of the caller
      *
      * @return connection object for the out topic or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -50,9 +51,10 @@ public class DataManagerOMASResource
     @GetMapping(path = "/topics/out-topic-connection")
 
     public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId)
+                                                    @PathVariable String userId,
+                                                    @PathVariable String callerId)
     {
-        return restAPI.getOutTopicConnection(serverName, userId);
+        return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }
 
 

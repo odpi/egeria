@@ -38,8 +38,7 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
 
   const getChildren = () => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    let url = props.getCategoriesURL +"onlyTop="+onlyTop; 
-     url = encodeURI(props.getCategoriesURL);
+    const url = encodeURI(props.getCategoriesURL  + "?onlyTop="+onlyTop);
     issueRestGet(url, onSuccessfulGetChildren, onErrorGetChildren);
   };
 

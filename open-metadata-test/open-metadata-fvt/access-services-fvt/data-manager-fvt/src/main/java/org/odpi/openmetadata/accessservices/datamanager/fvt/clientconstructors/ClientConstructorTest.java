@@ -23,6 +23,7 @@ public class ClientConstructorTest
 {
     private final static String testCaseName   = "ClientConstructorTest";
 
+    private final static String callerId       = "TestCallerId";
     private final static String serverUserId   = "TestNPA";
     private final static String serverPassword = "TestNPAPassword";
     private final static int    maxPageSize    = 100;
@@ -167,11 +168,11 @@ public class ClientConstructorTest
                                             String   serverPlatformRootURL,
                                             AuditLog auditLog) throws InvalidParameterException
     {
-        new DataManagerEventClient(serverName, serverPlatformRootURL);
-        new DataManagerEventClient(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new DataManagerEventClient(serverName, serverPlatformRootURL, callerId);
+        new DataManagerEventClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, callerId);
 
         DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
 
-        new DataManagerEventClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+        new DataManagerEventClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog, callerId);
     }
 }

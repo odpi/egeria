@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +17,8 @@ public enum IntegrationServiceDescription implements Serializable
                             "catalog-integrator",
                             "Exchange metadata with third party data catalogs.",
                             "https://egeria.odpi.org/open-metadata-implementation/integration-services/catalog-integrator/",
-                            "Asset Manager OMAS"),
+                            "Asset Manager OMAS",
+                            PermittedSynchronization.BOTH_DIRECTIONS),
 
     DATABASE_INTEGRATOR_OMIS     (4004,
                                   "Database Integrator",
@@ -23,7 +26,8 @@ public enum IntegrationServiceDescription implements Serializable
                                   "database-integrator",
                                   "Extract metadata such as schema, tables and columns from database managers.",
                                   "https://egeria.odpi.org/open-metadata-implementation/integration-services/database-integrator/",
-                                  "Data Manager OMAS"),
+                                  "Data Manager OMAS",
+                                  PermittedSynchronization.FROM_THIRD_PARTY),
 
     FILES_INTEGRATOR_OMIS(4005,
                           "Files Integrator",
@@ -31,7 +35,17 @@ public enum IntegrationServiceDescription implements Serializable
                           "files-integrator",
                           "Extract metadata about files stored in a file system or file manager.",
                           "https://egeria.odpi.org/open-metadata-implementation/integration-services/files-integrator/",
-                          "Data Manager OMAS"),
+                          "Data Manager OMAS",
+                          PermittedSynchronization.FROM_THIRD_PARTY),
+
+    LINEAGE_INTEGRATOR_OMIS(4006,
+                          "Lineage Integrator",
+                          "Lineage Integrator OMIS",
+                          "lineage-integrator",
+                          "Manage capture of lineage from a third party tool.",
+                          "https://egeria.odpi.org/open-metadata-implementation/integration-services/lineage-integrator/",
+                          "Data Engine OMAS",
+                          PermittedSynchronization.FROM_THIRD_PARTY),
 
     ORGANIZATION_INTEGRATOR_OMIS     (4007,
                                       "Organization Integrator",
@@ -39,18 +53,20 @@ public enum IntegrationServiceDescription implements Serializable
                                       "organization-integrator",
                                       "Load information about the teams and people in an organization and return collaboration activity.",
                                       "https://egeria.odpi.org/open-metadata-implementation/integration-services/organization-integrator/",
-                                      "Community Profile OMAS"),
+                                      "Community Profile OMAS",
+                                      PermittedSynchronization.FROM_THIRD_PARTY),
     ;
 
     private static final long     serialVersionUID    = 1L;
 
-    private int    integrationServiceCode;
-    private String integrationServiceName;
-    private String integrationServiceFullName;
-    private String integrationServiceURLMarker;
-    private String integrationServiceDescription;
-    private String integrationServiceWiki;
-    private String integrationServicePartnerOMAS;
+    private int                      integrationServiceCode;
+    private String                   integrationServiceName;
+    private String                   integrationServiceFullName;
+    private String                   integrationServiceURLMarker;
+    private String                   integrationServiceDescription;
+    private String                   integrationServiceWiki;
+    private String                   integrationServicePartnerOMAS;
+    private PermittedSynchronization defaultPermittedSynchronization;
 
 
     /**
@@ -64,24 +80,26 @@ public enum IntegrationServiceDescription implements Serializable
      * @param integrationServiceWiki wiki page for the integration service for this integration service
      * @param integrationServicePartnerOMAS name of the OMAS that is partnered with this integration service
      */
-    IntegrationServiceDescription(int    integrationServiceCode,
-                                  String integrationServiceName,
-                                  String integrationServiceFullName,
-                                  String integrationServiceURLMarker,
-                                  String integrationServiceDescription,
-                                  String integrationServiceWiki,
-                                  String integrationServicePartnerOMAS)
+    IntegrationServiceDescription(int                      integrationServiceCode,
+                                  String                   integrationServiceName,
+                                  String                   integrationServiceFullName,
+                                  String                   integrationServiceURLMarker,
+                                  String                   integrationServiceDescription,
+                                  String                   integrationServiceWiki,
+                                  String                   integrationServicePartnerOMAS,
+                                  PermittedSynchronization defaultPermittedSynchronization)
     {
         /*
          * Save the values supplied
          */
-        this.integrationServiceCode        = integrationServiceCode;
-        this.integrationServiceName        = integrationServiceName;
-        this.integrationServiceFullName    = integrationServiceFullName;
-        this.integrationServiceURLMarker   = integrationServiceURLMarker;
-        this.integrationServiceDescription = integrationServiceDescription;
-        this.integrationServiceWiki        = integrationServiceWiki;
-        this.integrationServicePartnerOMAS = integrationServicePartnerOMAS;
+        this.integrationServiceCode          = integrationServiceCode;
+        this.integrationServiceName          = integrationServiceName;
+        this.integrationServiceFullName      = integrationServiceFullName;
+        this.integrationServiceURLMarker     = integrationServiceURLMarker;
+        this.integrationServiceDescription   = integrationServiceDescription;
+        this.integrationServiceWiki          = integrationServiceWiki;
+        this.integrationServicePartnerOMAS   = integrationServicePartnerOMAS;
+        this.defaultPermittedSynchronization = defaultPermittedSynchronization;
     }
 
 
@@ -159,5 +177,17 @@ public enum IntegrationServiceDescription implements Serializable
     public String getIntegrationServicePartnerOMAS()
     {
         return integrationServicePartnerOMAS;
+    }
+
+
+    /**
+     * Return the default value for permitted synchronization that should be set up for the integration connectors
+     * as they are configured.
+     *
+     * @return enum default
+     */
+    public PermittedSynchronization getDefaultPermittedSynchronization()
+    {
+        return defaultPermittedSynchronization;
     }
 }

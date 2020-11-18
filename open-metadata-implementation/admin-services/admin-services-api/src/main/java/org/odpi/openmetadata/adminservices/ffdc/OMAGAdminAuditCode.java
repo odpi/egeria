@@ -389,7 +389,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
 
     /**
      * The constructor for OMAGAdminAuditCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerAuditCode above.   For example:
+     * OMAGAdminAuditCode above.   For example:
      *
      *     OMAGAdminAuditCode   auditCode = OMAGAdminAuditCode.SERVER_NOT_AVAILABLE;
      *
