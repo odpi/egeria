@@ -35,14 +35,14 @@ public class ConfigViewServicesResource
 
 
     /**
-     * Return the list of registered view services that are configured for this server.
+     * Return the list of view services that are configured for this server.
      *
      * @param userId calling user
      * @param serverName name of server
      * @return list of view service descriptions
      */
     @GetMapping(path = "/view-services")
-    public RegisteredOMAGServicesResponse getRegisteredViewServices(@PathVariable String userId,
+    public RegisteredOMAGServicesResponse getConfiguredViewServices(@PathVariable String userId,
                                                                     @PathVariable String serverName)
     {
         return adminAPI.getConfiguredViewServices(userId, serverName);
