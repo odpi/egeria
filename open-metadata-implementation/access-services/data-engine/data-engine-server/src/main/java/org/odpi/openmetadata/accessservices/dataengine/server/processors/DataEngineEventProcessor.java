@@ -182,7 +182,7 @@ public class DataEngineEventProcessor {
     public void processProcessesEvent(String dataEngineEvent) {
         final String methodName = "processProcessesEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 

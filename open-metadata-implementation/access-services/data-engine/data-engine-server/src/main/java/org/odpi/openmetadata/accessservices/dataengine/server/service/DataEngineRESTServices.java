@@ -842,7 +842,7 @@ public class DataEngineRESTServices {
 
             addLineageMappings(userId, serverName, lineageMappings, response, externalSourceName);
 
-            log.info("Data Engine OMAS has created or update a Process with qualified name {} and guid {}", qualifiedName, processGUID);
+            log.info("Data Engine OMAS has created or updated a Process with qualified name {} and guid {}", qualifiedName, processGUID);
 
             response.setGUID(processGUID);
         } catch (InvalidParameterException error) {
