@@ -86,9 +86,6 @@ export default function ServerSelector() {
          */
         const relatedHTTPCode = json.relatedHTTPCode;
         const exceptionMessage = json.exceptionErrorMessage;
-        /*
-         * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-         */
         alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
       }
     }
