@@ -9,6 +9,8 @@ import { InstancesContext }                    from "../../contexts/InstancesCon
 
 import { RepositoryServerContext }             from "../../contexts/RepositoryServerContext";
 
+import { InteractionContext }                  from "../../contexts/InteractionContext";
+
 import FilterManager                           from "./FilterManager";
 
 import SearchResultHandler                     from "./SearchResultHandler";
@@ -19,9 +21,9 @@ import "./instance-retriever.scss"
 export default function InstanceSearch(props) {
 
   
-
-
   const repositoryServerContext = useContext(RepositoryServerContext);
+
+  const interactionContext      = useContext(InteractionContext);
 
   const instancesContext        = useContext(InstancesContext);
 
@@ -117,7 +119,6 @@ export default function InstanceSearch(props) {
    * either for entities or relationships
    */
   const searchForInstances = () => {    
-    setStatus("pending");
 
     if (searchCategory === "Entity") {
       findEntities();
@@ -135,6 +136,14 @@ export default function InstanceSearch(props) {
 
     let typeName = searchType || null;
     let classificationList = Object.keys(searchClassifications);
+
+    /*
+     * Clear the searchResults before the operation.
+     */
+    setSearchResults([]);
+
+    setStatus("pending");
+
     repositoryServerContext.repositoryPOST("instances/entities/by-property-value", 
       { searchText           : searchText, 
         typeName             : typeName,
@@ -149,34 +158,41 @@ export default function InstanceSearch(props) {
 
     if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
-        let entityDigests = json.entities;
-        let entityGUIDs = Object.keys(entityDigests);
-        let instances = [];
-        let count = Math.min(entityGUIDs.length, searchResultLimit);
-        for (let i=0; i<count; i++) {
-          let entityGUID = entityGUIDs[i];
-          let entityDigest = entityDigests[entityGUID];
-          entityDigest.checked = false;
-          instances.push(entityDigest);
-        }     
+        if (json.relatedHTTPCode === 200) {
+          let entityDigests = json.entities;
+          if (entityDigests) {
+            let entityGUIDs = Object.keys(entityDigests);
+            let instances = [];
+            let count = Math.min(entityGUIDs.length, searchResultLimit);
+            for (let i=0; i<count; i++) {
+              let entityGUID = entityGUIDs[i];
+              let entityDigest = entityDigests[entityGUID];
+              entityDigest.checked = false;
+              instances.push(entityDigest);
+            }
 
-        /*
-         * Store the results
-         */
-        setSearchResultCount(entityGUIDs.length);
-        setSearchResults(instances);
+            /*
+             * Store the results
+             */
+            setSearchResultCount(entityGUIDs.length);
+            setSearchResults(instances);
+          }
+          setStatus("complete");
+          return;
+        }
       }
-      else {
-        alert("Search for entities did not get back a result from the server");
-      }
-      setStatus("complete");
+      /*
+       * On failure ...
+       */
+      interactionContext.reportFailedOperation("find entities",json);
+      setStatus("cancelled");
     }
-
     else {
       setStatus("idle");
     }
    
   };
+
 
  
 
@@ -186,6 +202,13 @@ export default function InstanceSearch(props) {
   const findRelationships = () => {   
 
     let typeName = searchType || null;
+
+    /*
+     * Clear the searchResults before the operation.
+     */
+    setSearchResults([]);
+
+    setStatus("pending");
 
     /* 
      * Add the typeName and classifications list to the body here....
@@ -203,35 +226,41 @@ export default function InstanceSearch(props) {
    
     if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
-        let relationshipDigests = json.relationships;
-        let relationshipGUIDs = Object.keys(relationshipDigests);
-        let instances = [];
-        let count = Math.min(relationshipGUIDs.length, searchResultLimit);
-        for (let i=0; i<count; i++) {
-          let relationshipGUID = relationshipGUIDs[i];
-          var relationshipDigest = relationshipDigests[relationshipGUID];
-          relationshipDigest.checked = false;
-          instances.push(relationshipDigest);
+        if (json.relatedHTTPCode === 200) {
+          let relationshipDigests = json.relationships;
+          if (relationshipDigests) {
+            let relationshipGUIDs = Object.keys(relationshipDigests);
+            let instances = [];
+            let count = Math.min(relationshipGUIDs.length, searchResultLimit);
+            for (let i=0; i<count; i++) {
+              let relationshipGUID = relationshipGUIDs[i];
+              var relationshipDigest = relationshipDigests[relationshipGUID];
+              relationshipDigest.checked = false;
+              instances.push(relationshipDigest);
+            }
+
+            /*
+             * Store the results
+             */
+            setSearchResultCount(relationshipGUIDs.length);
+            setSearchResults(instances);
+          }
+          setStatus("complete");
+          return;
         }
-
-        /*
-         * Store the results
-         */
-        setSearchResultCount(relationshipGUIDs.length);
-        setSearchResults(instances);
       }
-      else {
-        alert("Search for relationships did not get a result from the server");
-      }
-
-      setStatus("complete");
+      /*
+       * On failure ...
+       */
+      interactionContext.reportFailedOperation("find relationships",json);
+      setStatus("cancelled");
     }
-
     else {
       setStatus("idle");
     }
 
   };
+
   
 
   /*
