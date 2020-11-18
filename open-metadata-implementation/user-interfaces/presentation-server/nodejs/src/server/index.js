@@ -337,7 +337,7 @@ app.post("/servers/*", (req, res) => {
       })
       .catch(function (error) {
         console.log(error);
-        res.status(400).send(error);
+        res.status(400).send(error.toString());  // Use the Error object toString function
       })
       .then(function () {
         // always executed
@@ -368,7 +368,7 @@ app.put("/servers/*", (req, res) => {
       })
       .catch(function (error) {
         console.log(error);
-        res.status(400).send(error);
+        res.status(400).send(error.toString());  // Use the Error object toString function
       })
       .then(function () {
         // always executed
@@ -398,7 +398,7 @@ app.delete("/servers/*", (req, res) => {
       })
       .catch(function (error) {
         console.log(error);
-        res.status(400).send(error);
+        res.status(400).send(error.toString());  // Use the Error object toString function
       })
       .then(function () {
         // always executed
@@ -428,8 +428,8 @@ app.get("/servers/*", (req, res) => {
         res.json(resBody);
       })
       .catch(function (error) {
-        console.log("error received: "+error);
-        res.status(400).send(error);
+        console.log("Server catch block: error received: "+error);
+        res.status(400).send(error.toString());  // Use the Error object toString function
       })
       .then(function () {
         // always executed
@@ -474,7 +474,7 @@ app.get("/open-metadata/admin-services/*", (req, res) => {
     })
     .catch(function (error) {
       console.error({error});
-      res.status(400).send(error);
+      res.status(400).send(error.toString());  // Use the Error object toString function
     })
 });
 
@@ -512,7 +512,7 @@ app.post("/open-metadata/admin-services/*", (req, res) => {
       })
       .catch(function (error) {
         console.log(error);
-        res.status(400).send(error);
+        res.status(400).send(error.toString());  // Use the Error object toString function
       });
   } else {
     res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
