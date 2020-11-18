@@ -10,6 +10,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexExceptionHandler;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewErrorCode;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewServiceException;
 import org.odpi.openmetadata.viewservices.rex.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipAndEntitiesDigest;
@@ -77,28 +80,38 @@ public class RexViewRESTServices {
 
         AuditLog auditLog = null;
 
-        try {
+        try
+        {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
 
-            Map<String, List<ResourceEndpoint>> lists =  handler.getResourceEndpoints(userId, methodName);
+            Map<String, List<ResourceEndpoint>> lists = handler.getResourceEndpoints(userId, methodName);
             List<ResourceEndpoint> platformList = null;
             List<ResourceEndpoint> serverList = null;
-            if (lists != null) {
+            if (lists != null)
+            {
                 platformList = lists.get("platformList");
                 serverList = lists.get("serverList");
             }
             response.setPlatformList(platformList);
             response.setServerList(serverList);
 
-        } catch (InvalidParameterException error) {
+        }
+        catch (InvalidParameterException error)
+        {
             restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
+        }
+        catch (PropertyServerException error)
+        {
             restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
+        }
+        catch (UserNotAuthorizedException error)
+        {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
@@ -132,29 +145,67 @@ public class RexViewRESTServices {
 
         TypeExplorerResponse response = new TypeExplorerResponse();
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            RexViewHandler handler = null;
 
-            if (requestBody != null) {
-                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+                handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error) {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            /*
+             * Attempt to retrieve the type information
+             */
+            try
+            {
                 response.setTypeExplorer(handler.getTypeExplorer(userId,
                                                                  requestBody.getServerName(),
                                                                  requestBody.getPlatformName(),
                                                                  requestBody.getEnterpriseOption(),
                                                                  methodName));
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (RexViewServiceException error)
+            {
+                RexExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            }
+            catch (Throwable error) {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
         }
+
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            RexExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -187,13 +238,44 @@ public class RexViewRESTServices {
 
         RexEntityDetailResponse response = new RexEntityDetailResponse();
 
-        AuditLog auditLog = null;
+        /*
+         * If there is no requestBody then do not proceed - just raise an exception
+         */
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            RexViewHandler handler = null;
 
-            if (requestBody != null) {
-                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            /*
+             * Attempt to retrieve the entity
+             */
+            try
+            {
 
                 response.setExpandedEntityDetail(handler.getEntity(userId,
                                                                    requestBody.getServerName(),
@@ -202,15 +284,29 @@ public class RexViewRESTServices {
                                                                    requestBody.getEntityGUID(),
                                                                    methodName));
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (RexViewServiceException error)
+            {
+                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
         }
+
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+        }
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -243,13 +339,39 @@ public class RexViewRESTServices {
 
         RexRelationshipResponse response = new RexRelationshipResponse();
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
+            AuditLog auditLog = null;
+            RexViewHandler handler = null;
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null) {
-                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+                handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            /*
+             * Attempt to retrieve the relationship
+             */
+            try
+            {
 
                 response.setExpandedRelationship(handler.getRelationship(userId,
                                                                          requestBody.getServerName(),
@@ -257,16 +379,29 @@ public class RexViewRESTServices {
                                                                          requestBody.getEnterpriseOption(),
                                                                          requestBody.getRelationshipGUID(),
                                                                          methodName));
+
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (RexViewServiceException error)
+            {
+                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
         }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            RexExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -300,13 +435,37 @@ public class RexViewRESTServices {
 
         RexSearchResponse response = new RexSearchResponse();
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            RexViewHandler handler = null;
 
-            if (requestBody != null) {
-                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            try
+            {
 
                 response.setEntities(handler.findEntities(userId,
                                                           requestBody.getServerName(),
@@ -321,16 +480,29 @@ public class RexViewRESTServices {
                 response.setSearchText(requestBody.getSearchText());
                 response.setServerName(requestBody.getServerName());
 
+
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (RexViewServiceException error)
+            {
+                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
         }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+        }
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -356,7 +528,8 @@ public class RexViewRESTServices {
 
     public RexSearchResponse findRelationships(String         serverName,
                                                String         userId,
-                                               RexSearchBody  requestBody) {
+                                               RexSearchBody  requestBody)
+    {
 
         final String methodName = "findRelationships";
 
@@ -364,21 +537,45 @@ public class RexViewRESTServices {
 
         RexSearchResponse response = new RexSearchResponse();
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            RexViewHandler handler = null;
 
-            if (requestBody != null) {
-                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            try
+            {
 
                 Map<String, RexRelationshipAndEntitiesDigest> superDigests = handler.findRelationships(userId,
-                                                                                            requestBody.getServerName(),
-                                                                                            requestBody.getPlatformName(),
-                                                                                            requestBody.getEnterpriseOption(),
-                                                                                            requestBody.getSearchText(),
-                                                                                            requestBody.getTypeName(),
-                                                                                            methodName);
+                                                                                                       requestBody.getServerName(),
+                                                                                                       requestBody.getPlatformName(),
+                                                                                                       requestBody.getEnterpriseOption(),
+                                                                                                       requestBody.getSearchText(),
+                                                                                                       requestBody.getTypeName(),
+                                                                                                       methodName);
 
                 response.setRelationships(superDigests);
 
@@ -388,15 +585,27 @@ public class RexViewRESTServices {
                 response.setServerName(requestBody.getServerName());
 
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (RexViewServiceException error)
+            {
+                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
         }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+        }
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -428,7 +637,8 @@ public class RexViewRESTServices {
 
     public RexPreTraversalResponse preTraversal(String                  serverName,
                                                 String                  userId,
-                                                RexTraversalRequestBody requestBody) {
+                                                RexTraversalRequestBody requestBody)
+    {
 
         final String methodName = "preTraversal";
 
@@ -436,35 +646,72 @@ public class RexViewRESTServices {
 
         RexPreTraversalResponse response = new RexPreTraversalResponse();
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            RexViewHandler handler = null;
 
-            if (requestBody != null) {
-                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            try
+            {
 
                 RexPreTraversal preTraversal = handler.preTraversal(userId,
-                                                                       requestBody.getServerName(),
-                                                                       requestBody.getPlatformName(),
-                                                                       requestBody.getEnterpriseOption(),
-                                                                       requestBody.getEntityGUID(),
-                                                                       requestBody.getDepth(),
-                                                                       methodName);
+                                                                    requestBody.getServerName(),
+                                                                    requestBody.getPlatformName(),
+                                                                    requestBody.getEnterpriseOption(),
+                                                                    requestBody.getEntityGUID(),
+                                                                    requestBody.getDepth(),
+                                                                    methodName);
 
-                if (preTraversal != null) {
+                if (preTraversal != null)
+                {
                     response.setRexPreTraversal(preTraversal);
                 }
 
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (RexViewServiceException error)
+            {
+                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+        }
+
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -497,7 +744,8 @@ public class RexViewRESTServices {
 
     public RexTraversalResponse traversal(String                  serverName,
                                              String                  userId,
-                                             RexTraversalRequestBody requestBody) {
+                                             RexTraversalRequestBody requestBody)
+    {
 
         final String methodName = "traversal";
 
@@ -505,39 +753,75 @@ public class RexViewRESTServices {
 
         RexTraversalResponse response = new RexTraversalResponse();
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            RexViewHandler handler = null;
 
-            if (requestBody != null) {
-                RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            try {
 
                 RexTraversal traversal = handler.traversal(userId,
-                                                              requestBody.getServerName(),
-                                                              requestBody.getPlatformName(),
-                                                              requestBody.getEnterpriseOption(),
-                                                              requestBody.getEntityGUID(),
-                                                              requestBody.getDepth(),
-                                                              requestBody.getEntityTypeGUIDs(),
-                                                              requestBody.getRelationshipTypeGUIDs(),
-                                                              requestBody.getClassificationNames(),
-                                                              methodName);
+                                                           requestBody.getServerName(),
+                                                           requestBody.getPlatformName(),
+                                                           requestBody.getEnterpriseOption(),
+                                                           requestBody.getEntityGUID(),
+                                                           requestBody.getDepth(),
+                                                           requestBody.getEntityTypeGUIDs(),
+                                                           requestBody.getRelationshipTypeGUIDs(),
+                                                           requestBody.getClassificationNames(),
+                                                           methodName);
 
-                if (traversal != null) {
+                if (traversal != null)
+                {
                     response.setRexTraversal(traversal);
                 }
 
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (RexViewServiceException error)
+            {
+                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
         }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+        }
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -545,6 +829,7 @@ public class RexViewRESTServices {
 
         return response;
     }
+
 
 
 

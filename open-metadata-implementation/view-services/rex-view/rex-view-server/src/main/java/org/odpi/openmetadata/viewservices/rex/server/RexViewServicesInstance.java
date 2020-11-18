@@ -33,6 +33,7 @@ public class RexViewServicesInstance extends OMVSServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
+     * @param resourceEndpoints list of resource endpoint configuration objects
      */
     public RexViewServicesInstance(String                       serverName,
                                    AuditLog                     auditLog,

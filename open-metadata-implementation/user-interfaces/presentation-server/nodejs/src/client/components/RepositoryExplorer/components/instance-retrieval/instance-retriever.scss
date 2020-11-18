@@ -19,6 +19,13 @@
   border-color     : rgb(12, 175, 240) ;*/
 }
 
+.retrieval-group {
+  margin-top       : auto;
+  margin-left      : auto;
+  margin-right     : 0px;
+  margin-bottom    : 0px;
+}
+
 .retrieval-button {
   margin-top       : auto;
   margin-left      : auto;
@@ -30,5 +37,9 @@
 }
 
 .search-text {
-  width        : 250px;
+  width            : 250px;
+}
+
+.search-limit-text {
+  width            : 50px;
 }

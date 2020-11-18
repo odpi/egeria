@@ -8,6 +8,8 @@ import PropTypes                                      from "prop-types";
 
 import { RepositoryServerContext }                    from "./RepositoryServerContext";
 
+import { InteractionContext }                         from "./InteractionContext";
+
 
 /*
  * The InstancesContext holds the state for the instances that are retrieved from the 
@@ -24,7 +26,9 @@ export const InstancesContextConsumer = InstancesContext.Consumer;
 const InstancesContextProvider = (props) => {
 
 
-  const repositoryServerContext = useContext(RepositoryServerContext);
+  const repositoryServerContext    = useContext(RepositoryServerContext);
+
+  const interactionContext         = useContext(InteractionContext);
 
  
 
@@ -183,7 +187,6 @@ const InstancesContextProvider = (props) => {
     const platformName = expEntity.platformName;
     const entityGUID = expEntity.entityDigest.entityGUID;
 
-    
     let genId;
     if (guidToGenId[entityGUID] !== undefined) {
       /*
@@ -215,9 +218,7 @@ const InstancesContextProvider = (props) => {
       rexTraversal.serverName           = serverName;
       rexTraversal.platformName         = platformName;
       rexTraversal.operation            = "getEntity";
-      rexTraversal.enterprise           = expEntity.entityDigest.provenance === "ent";
-
-      guidToGenId[entityGUID] = genId;
+      rexTraversal.enterpriseOption     = expEntity.entityDigest.provenance === "ent";
       
       /*
        * Add the traversal to the sequence of gens in the graph.
@@ -238,11 +239,11 @@ const InstancesContextProvider = (props) => {
    */
   const processRetrievedRelationship = (expRelationship) => {  
 
+
     const serverName       = expRelationship.serverName;
     const platformName     = expRelationship.platformName;
     const relationshipGUID = expRelationship.relationshipDigest.relationshipGUID;
 
-    
     let genId;
     if (guidToGenId[relationshipGUID] !== undefined) {
       /*
@@ -268,9 +269,8 @@ const InstancesContextProvider = (props) => {
       rexTraversal.serverName                       = serverName;
       rexTraversal.platformName                     = platformName;
       rexTraversal.operation                        = "getRelationship";
-      rexTraversal.enterprise                       = expRelationship.relationshipDigest.provenance === "ent";
+      rexTraversal.enterpriseOption                 = expRelationship.relationshipDigest.provenance === "ent";
 
-      guidToGenId[relationshipGUID] = genId;
 
       /*
        * We need to retrieve the end entity digests from the expRelationship and find out
@@ -325,11 +325,9 @@ const InstancesContextProvider = (props) => {
        */
       if (!entityOneKnown) {
         rexTraversal.entities[entityOneGUID] = entityOneDigest;
-        guidToGenId[entityOneGUID]           = e1gen;
       }
       if (!entityTwoKnown) {
         rexTraversal.entities[entityTwoGUID] = entityTwoDigest;
-        guidToGenId[entityTwoGUID]           = e2gen;
       }
       
       /*
@@ -408,7 +406,6 @@ const InstancesContextProvider = (props) => {
                * Update the new entity's gen
                */
               rexTraversal.entities[entityGUID].gen = genId;
-              guidToGenId[entityGUID] = genId;
           }
       });
 
@@ -446,7 +443,6 @@ const InstancesContextProvider = (props) => {
                * Update the new relationship's gen
                */
               rexTraversal.relationships[relationshipGUID].gen = genId;
-              guidToGenId[relationshipGUID] = genId;
           }
       });
 
@@ -499,6 +495,7 @@ const InstancesContextProvider = (props) => {
      */
 
     if (entityGUID === focus.instanceGUID) {
+
       clearFocusInstance();         
     }
 
@@ -608,22 +605,26 @@ const InstancesContextProvider = (props) => {
    * A component has requested that the focus is changed to the relationship with the specified GUID.
    */
   const changeFocusRelationship = (relationshipGUID) => {
+
+
     /*
      * If the relationship is the current focus - deselect it.
      */
+
     if (relationshipGUID === focus.instanceGUID) {
+
       clearFocusInstance();         
     }
 
     else {
-        
+
       /*
        * The relationship was retrieved from the server identified by serverName in the gen.
        * The setting of enterpriseOption at the time is also recorded in the gen.
        * The home metadataCollection (Name and Id) are both recorded in the relationshipDigest (in the gen).
        *
        * The relationship may have been a home relationship or reference copy when it was retrieved - that
-       * doesn't matter, it should be retrieable from the same server used when the digest was
+       * doesn't matter, it should be retrievable from the same server used when the digest was
        * originally loaded.
        * The relationship may be marked as 'ent' - which means it was an enterprise operation (this can be
        * verified by looking at enterpriseOption in the gen) - in which case Rex does not know which server
@@ -699,8 +700,11 @@ const InstancesContextProvider = (props) => {
    */  
   const setFocusEntity = (expEntity) => {    
 
-    const newFocus = { instanceCategory : "Entity", instanceGUID : expEntity.entityDetail.guid, instance : expEntity };
-   setFocus( newFocus );
+
+    const newFocus = { instanceCategory : "Entity",
+                       instanceGUID : expEntity.entityDetail.guid,
+                       instance : expEntity };
+    setFocus( newFocus );
   }
 
   /*
@@ -711,9 +715,10 @@ const InstancesContextProvider = (props) => {
    */  
   const setFocusRelationship = (expRelationship) => {  
 
-    setFocus( { instanceCategory : "Relationship", 
-                instanceGUID     : expRelationship.relationship.guid,
-                instance         : expRelationship });
+    const newFocus = { instanceCategory : "Relationship",
+                       instanceGUID     : expRelationship.relationship.guid,
+                       instance         : expRelationship };
+    setFocus( newFocus );
   }
 
   /*
@@ -755,10 +760,11 @@ const InstancesContextProvider = (props) => {
    */  
   const clearFocusInstance = () => {
     
-    setFocus( { instanceCategory : "Entity", 
-                instanceGUID     : "",
-                instance         : null });
-   
+    const newFocus = { instanceCategory : "Entity",
+                       instanceGUID     : "",
+                       instance         : null };
+    setFocus( newFocus );
+
   }
 
 
@@ -798,17 +804,12 @@ const InstancesContextProvider = (props) => {
           return;
         }
       }  
-      else {
-        /*
-         * Request failed
-         */
-        alert("Entity could not be retrieved. The repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
-      }
     }   
     /*
-     * On failure ...  
+     * On failure ...
      */
-    alert("Could not get entity from repository server");
+    interactionContext.reportFailedOperation("get entity",json);
+
   };
 
 
@@ -841,7 +842,7 @@ const InstancesContextProvider = (props) => {
 
     if (json !== null) {
       if (json.relatedHTTPCode === 200) {
-         /*
+        /*
          * Should have an expandedRelationship, if the relationship was not found the response
          * will have included a non 200 status code and a RelationshipNotKnownException
          */
@@ -851,17 +852,11 @@ const InstancesContextProvider = (props) => {
           return;
         }
       }  
-      else {
-        /*
-         * Request failed
-         */
-        alert("Relationship could not be retrieved. The repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
-      }
-    }   
+    }
     /*
      * On failure ...
      */
-    alert("Attempt to load a relationship from the repository got back nothing");
+    interactionContext.reportFailedOperation("get relationship",json);
   };
 
 
@@ -940,17 +935,11 @@ const InstancesContextProvider = (props) => {
           return;
         }
       }  
-      else {
-        /*
-         * Request failed
-         */     
-        alert("Traversal request to repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
-      }
-    }   
+    }
     /*
      * On failure ...
      */
-    alert("Traversal request to repository server failed to get a response");  
+    interactionContext.reportFailedOperation("explore neighborhood around entity",json);
   };
 
 
@@ -1090,8 +1079,8 @@ const InstancesContextProvider = (props) => {
 
       const serverName = genContent.serverName;
       let querySummary = "["+serverName+"]";
-      const enterprise = genContent.enterpriseOption;
-      querySummary = querySummary.concat(enterprise ? " Enterprise" : " Local");
+      const enterpriseOption = genContent.enterpriseOption;
+      querySummary = querySummary.concat(enterpriseOption ? " Enterprise" : " Local");
 
       switch (genContent.operation) {
 
@@ -1252,7 +1241,11 @@ const InstancesContextProvider = (props) => {
   return (
     <InstancesContext.Provider
       value={{      
+        gens,
+        guidToGenId,
         focus,
+        latestActiveGenId,
+        setGuidToGenId,
         setFocus,
         getFocusGUID,
         getFocusGen,
