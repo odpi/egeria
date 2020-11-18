@@ -39,6 +39,4 @@ public class InfoController {
     public OmasSettings getOmasSettings(){
         return new OmasSettings(serverName,serverUrl);
     }
-
-
 }
