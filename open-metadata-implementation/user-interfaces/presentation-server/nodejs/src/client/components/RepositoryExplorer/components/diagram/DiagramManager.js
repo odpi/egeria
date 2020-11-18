@@ -13,6 +13,10 @@ import { InstancesContext }               from "../../contexts/InstancesContext"
 
 export default function DiagramManager(props) {
 
+  let height = props.height;
+  let width = props.width;
+
+
   /*
    * Access instancesContext to get access to gens
    */
@@ -352,7 +356,9 @@ export default function DiagramManager(props) {
                links={linkArray} 
                numGens={latestActiveGenId} 
                onNodeClick={onNodeClick} 
-               onLinkClick={onLinkClick}               
+               onLinkClick={onLinkClick}
+               outerHeight={height}
+               outerWidth={width}
                />
     </div>     
   );
@@ -361,5 +367,7 @@ export default function DiagramManager(props) {
 
 
 DiagramManager.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  height   : PropTypes.number,
+  width    : PropTypes.number
 };
