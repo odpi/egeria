@@ -318,14 +318,10 @@ export default function Diagram(props) {
 
  
   const nodeClicked = (guid) => {
-    console.log("Diag nodeClicked: reports getFocusGUID as "+instancesContext.getFocusGUID());
     props.onNodeClick(guid);
   }
 
   const linkClicked = (guid) => {
-    console.log("Diag linkClicked: reports getFocusGUID as "+instancesContext.getFocusGUID());
-    console.log("Diag linkClicked: reports instancesContext.focus.instanceGUID as "+instancesContext.focus.instanceGUID);
-    console.log("Diag linkClicked: reports diagramfocusGUID as "+diagramFocusGUID);
     props.onLinkClick(guid);
   }
 
