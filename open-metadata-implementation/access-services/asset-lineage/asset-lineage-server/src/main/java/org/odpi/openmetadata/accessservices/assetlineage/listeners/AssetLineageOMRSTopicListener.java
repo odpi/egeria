@@ -47,8 +47,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
-    private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning relationship {}: ";
-    private static final String PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning entity {}: ";
+    private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning relationship {} ";
+    private static final String PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning entity {} ";
 
     private AssetLineagePublisher publisher;
     private AuditLog auditLog;
