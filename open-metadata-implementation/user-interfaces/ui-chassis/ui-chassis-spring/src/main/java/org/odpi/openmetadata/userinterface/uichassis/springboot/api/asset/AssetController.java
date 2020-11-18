@@ -27,6 +27,8 @@ public class AssetController {
      *
      * @param searchCriteria the query parameter with the search phrase
      * @param types OM types list to search for
+     * @param from the offset for the results
+     * @param pageSize the number of results per page
      * @return list of assets
      * @throws PropertyServerException if a configuration on the backend
      * @throws InvalidParameterException if parameter validation fails
