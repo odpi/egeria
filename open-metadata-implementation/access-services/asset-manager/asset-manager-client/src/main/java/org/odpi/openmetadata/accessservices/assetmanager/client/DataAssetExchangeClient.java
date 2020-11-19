@@ -308,14 +308,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                    assetExternalIdentifier,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}?isMergeUpdate={3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        assetGUID);
+                                        assetGUID,
+                                        isMergeUpdate);
     }
     
 
