@@ -9,6 +9,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetE
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -23,6 +26,8 @@ import java.util.Map;
  */
 public class DataAssetExchangeClient extends SchemaExchangeClientBase implements DataAssetExchangeInterface
 {
+    private static NullRequestBody nullRequestBody = new NullRequestBody();
+
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -152,14 +157,41 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                               String              assetExternalIdentifierName,
                               String              assetExternalIdentifierUsage,
                               String              assetExternalIdentifierSource,
-                              KeyPattern assetExternalIdentifierKeyPattern,
+                              KeyPattern          assetExternalIdentifierKeyPattern,
                               Map<String, String> mappingProperties,
-                              AssetProperties assetProperties) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                              AssetProperties     assetProperties) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createAsset";
+        final String propertiesParameterName     = "assetProperties";
+        final String qualifiedNameParameterName  = "assetProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        AssetRequestBody requestBody = new AssetRequestBody();
+        requestBody.setElementProperties(assetProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   assetExternalIdentifier,
+                                                                                   assetExternalIdentifierName,
+                                                                                   assetExternalIdentifierUsage,
+                                                                                   assetExternalIdentifierSource,
+                                                                                   assetExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
     }
 
 
@@ -199,8 +231,38 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createAssetFromTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+        requestBody.setElementProperties(templateProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   assetExternalIdentifier,
+                                                                                   assetExternalIdentifierName,
+                                                                                   assetExternalIdentifierUsage,
+                                                                                   assetExternalIdentifierSource,
+                                                                                   assetExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/from-template/{2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -229,11 +291,34 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        // todo
+        final String methodName                  = "updateAsset";
+        final String assetGUIDParameterName      = "assetGUID";
+        final String propertiesParameterName     = "assetProperties";
+        final String qualifiedNameParameterName  = "assetProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        AssetRequestBody requestBody = new AssetRequestBody();
+        requestBody.setElementProperties(assetProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   assetExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        isMergeUpdate);
     }
-
-
-
+    
 
     /**
      * Update the zones for the asset so that it becomes visible to consumers.
@@ -252,7 +337,20 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                       UserNotAuthorizedException,
                                                       PropertyServerException
     {
-        // todo
+        final String methodName             = "publishAsset";
+        final String assetGUIDParameterName = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/publish";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -273,7 +371,19 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
+        final String methodName               = "withdrawAsset";
+        final String assetGUIDParameterName   = "assetGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/withdraw";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -299,7 +409,23 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        // todo
+        final String methodName               = "removeAsset";
+        final String assetGUIDParameterName   = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      assetExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -324,7 +450,29 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        // todo
+        final String methodName             = "setAssetAsReferenceData";
+        final String assetGUIDParameterName = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+
+        TaxonomyClassificationRequestBody requestBody = new TaxonomyClassificationRequestBody();
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   assetExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/is-reference-data";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      assetExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -349,7 +497,23 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        // todo
+        final String methodName = "clearAssetAsReferenceData";
+        final String assetGUIDParameterName = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/is-reference-data/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      assetExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        assetGUID);
     }
 
 
@@ -379,8 +543,30 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                = "findAssets";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-search-string?startFrom={2}&pageSize={3}";
+
+        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 requestBody,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 startFrom,
+                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -410,8 +596,31 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getAssetsByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-name?startFrom={2}&pageSize={3}";
+
+        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 requestBody,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 startFrom,
+                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -438,8 +647,23 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getAssetsForAssetManager";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-asset-manager?startFrom={2}&pageSize={3}";
+
+        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                       assetManagerName),
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 startFrom,
+                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -464,7 +688,22 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getAssetByGUID";
+        final String guidParameterName = "openMetadataGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(openMetadataGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/retrieve";
+
+        AssetElementResponse restResult = restClient.callDataAssetPostRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                     assetManagerName),
+                                                                               serverName,
+                                                                               userId,
+                                                                               openMetadataGUID);
+
+        return restResult.getElement();
     }
 }
