@@ -81,7 +81,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param language the language used in the glossary definitions
      * @param usage intended usage of the glossary
      * @param additionalProperties additional properties for a glossary
-     * @param typeName type name from the caller (enables creation of subtypes)
+     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance glossary subtype
      * @param methodName calling method
      *
@@ -97,7 +97,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                  String              language,
                                  String              usage,
                                  Map<String, String> additionalProperties,
-                                 String              typeName,
+                                 String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
@@ -107,6 +107,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
