@@ -43,17 +43,16 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     /**
      * Updates an entity's classification in the Graph
      *
-     * @param assetContext asset context
+     * @param classificationContext classification context
      */
-    void updateClassification(Map<String, Set<GraphContext>> assetContext);
+    void updateClassification(Set<GraphContext> classificationContext);
 
     /**
      * Deletes an entity's classification in the Graph
      *
-     * @param entityGuid entity guid
      * @param classificationContext classification context
      */
-    void deleteClassification(String entityGuid, Map<String, Set<GraphContext>> classificationContext);
+    void deleteClassification(Set<GraphContext> classificationContext);
 
     /**
      * Deletes a relationship in the graph
