@@ -259,9 +259,6 @@ public class DataEngineRESTServices {
             response.setGUID(addProcessHierarchyToProcess(userId, serverName, processHierarchyRequestBody.getProcessHierarchy(),
                     processHierarchyRequestBody.getExternalSourceName()));
 
-            log.info("Data Engine OMAS has added a relationship of type ProcessHierarchy between child process {} and parent process {}",
-                    processHierarchyRequestBody.getProcessHierarchy().getChildProcess(),
-                    processHierarchyRequestBody.getProcessHierarchy().getParentProcess());
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -383,8 +380,10 @@ public class DataEngineRESTServices {
                     this.getClass().getName(), methodName, "childProcess");
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, childProcessGUID);
+        log.info("Data Engine OMAS has added a relationship of type ProcessHierarchy between child process {} and parent process {}",
+                processHierarchy.getChildProcess(), processHierarchy.getParentProcess());
 
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, childProcessGUID);
         return childProcessGUID;
     }
 
