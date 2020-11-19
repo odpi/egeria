@@ -12,6 +12,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoExceptionHandler;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException;
 import org.odpi.openmetadata.viewservices.dino.api.properties.RequestSummary;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.dino.api.rest.DinoPlatformOverviewResponse;
@@ -74,31 +77,43 @@ public class DinoViewRESTServices {
         DinoResourceEndpointListResponse response = new DinoResourceEndpointListResponse();
 
         AuditLog auditLog = null;
+        DinoViewHandler handler = null;
 
-        try {
+        try
+        {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DinoViewHandler handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
-
-            Map<String, List<ResourceEndpoint>> lists =  handler.getResourceEndpoints(userId, methodName);
-            List<ResourceEndpoint> platformList = null;
-            List<ResourceEndpoint> serverList = null;
-            if (lists != null) {
-                platformList = lists.get("platformList");
-                serverList = lists.get("serverList");
-            }
-            response.setPlatformList(platformList);
-            response.setServerList(serverList);
-
-        } catch (InvalidParameterException error) {
+            handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
             restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
+        }
+        catch (PropertyServerException error)
+        {
             restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
+        }
+        catch (UserNotAuthorizedException error)
+        {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
+
+        Map<String, List<ResourceEndpoint>> lists = handler.getResourceEndpoints(userId, methodName);
+
+        List<ResourceEndpoint> platformList = null;
+        List<ResourceEndpoint> serverList = null;
+        if (lists != null)
+        {
+            platformList = lists.get("platformList");
+            serverList = lists.get("serverList");
+        }
+        response.setPlatformList(platformList);
+        response.setServerList(serverList);
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -127,25 +142,61 @@ public class DinoViewRESTServices {
         response.setRequestSummary(request);
 
         AuditLog auditLog = null;
+        DinoViewHandler handler = null;
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+        if (requestBody != null)
+        {
 
-            if (requestBody != null) {
-                DinoViewHandler handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                response.setPlatformOverview(handler.platformGetOverview(userId,
-                                                             requestBody.getPlatformName(),
-                                                             methodName));
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+
+            try
+            {
+                response.setPlatformOverview(handler.platformGetOverview(userId,
+                                                                         requestBody.getPlatformName(),
+                                                                         methodName));
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -166,7 +217,8 @@ public class DinoViewRESTServices {
      * @return response     the origin string for the platform.
      *
      */
-    public DinoStringResponse platformGetOrigin(String serverName, String userId, DinoPlatformRequestBody requestBody) {
+    public DinoStringResponse platformGetOrigin(String serverName, String userId, DinoPlatformRequestBody requestBody)
+    {
 
         final String methodName = "platformGetOrigin";
 
@@ -178,26 +230,62 @@ public class DinoViewRESTServices {
         RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
         response.setRequestSummary(request);
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            DinoViewHandler handler = null;
 
-            if (requestBody != null) {
-                DinoViewHandler handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+
+            try
+            {
                 response.setString(handler.platformGetOrigin(userId,
                                                              requestBody.getPlatformName(),
                                                              methodName));
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -230,26 +318,63 @@ public class DinoViewRESTServices {
         RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
         response.setRequestSummary(request);
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            DinoViewHandler handler = null;
 
-            if (requestBody != null) {
-                DinoViewHandler handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            try
+            {
 
                 response.setServerList(handler.platformGetActiveServerList(userId,
                                                                            requestBody.getPlatformName(),
                                                                            methodName));
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -281,26 +406,62 @@ public class DinoViewRESTServices {
         RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
         response.setRequestSummary(request);
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            DinoViewHandler handler = null;
 
-            if (requestBody != null) {
-                DinoViewHandler handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            try
+            {
 
                 response.setServerList(handler.platformGetKnownServerList(userId,
-                                                                           requestBody.getPlatformName(),
-                                                                           methodName));
+                                                                          requestBody.getPlatformName(),
+                                                                          methodName));
+
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -332,26 +493,60 @@ public class DinoViewRESTServices {
         RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
         response.setRequestSummary(request);
 
-        AuditLog auditLog = null;
+        if (requestBody != null)
+        {
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AuditLog auditLog = null;
+            DinoViewHandler handler = null;
 
-            if (requestBody != null) {
-                DinoViewHandler handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                response.setServiceList(handler.platformGetAccessServiceList(userId,
-                                                                          requestBody.getPlatformName(),
-                                                                          methodName));
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+            try
+            {
+                response.setServiceList(handler.platformGetAccessServiceList(userId,
+                                                                             requestBody.getPlatformName(),
+                                                                             methodName));
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -382,13 +577,17 @@ public class DinoViewRESTServices {
         RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
         response.setRequestSummary(request);
 
-        AuditLog auditLog = null;
+        if (requestBody != null) {
 
-        try {
+        AuditLog auditLog = null;
+            DinoViewHandler handler = null;
+
+
+            try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null) {
-                DinoViewHandler handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
 
                 response.setServiceList(handler.platformGetViewServiceList(userId,
                                                                              requestBody.getPlatformName(),

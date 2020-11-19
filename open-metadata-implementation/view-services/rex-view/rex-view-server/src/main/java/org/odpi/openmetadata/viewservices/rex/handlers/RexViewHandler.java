@@ -185,7 +185,6 @@ public class RexViewHandler
     public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
 
     {
-
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
 
         List<ResourceEndpoint> platformList = null;
