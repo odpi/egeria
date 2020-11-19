@@ -9,6 +9,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Elemen
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -158,8 +160,35 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createSchemaType";
+        final String propertiesParameterName     = "schemaTypeProperties";
+        final String qualifiedNameParameterName  = "schemaTypeProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
+        requestBody.setElementProperties(schemaTypeProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaTypeExternalIdentifier,
+                                                                                   schemaTypeExternalIdentifierName,
+                                                                                   schemaTypeExternalIdentifierUsage,
+                                                                                   schemaTypeExternalIdentifierSource,
+                                                                                   schemaTypeExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
     }
 
 
@@ -199,8 +228,38 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createSchemaTypeFromTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+        requestBody.setElementProperties(templateProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaTypeExternalIdentifier,
+                                                                                   schemaTypeExternalIdentifierName,
+                                                                                   schemaTypeExternalIdentifierUsage,
+                                                                                   schemaTypeExternalIdentifierSource,
+                                                                                   schemaTypeExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/from-template/{2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -229,7 +288,32 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        // todo
+        final String methodName                  = "updateSchemaType";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+        final String propertiesParameterName     = "schemaTypeProperties";
+        final String qualifiedNameParameterName  = "schemaTypeProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
+        requestBody.setElementProperties(schemaTypeProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaTypeExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-type/{2}?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaTypeGUID,
+                                        isMergeUpdate);
     }
 
 
@@ -304,7 +388,23 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        // todo
+        final String methodName                  = "removeSchemaType";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      schemaTypeExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        schemaTypeGUID);
     }
 
 
@@ -334,8 +434,30 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                = "findSchemaType";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/by-search-string?startFrom={2}&pageSize={3}";
+
+        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -393,8 +515,31 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getSchemaTypeByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/by-name?startFrom={2}&pageSize={3}";
+
+        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -419,8 +564,23 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getSchemaTypeByGUID";
+        final String guidParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/retrieve";
+
+        SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                           assetManagerName),
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     schemaTypeGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -492,8 +652,35 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createSchemaAttribute";
+        final String propertiesParameterName     = "schemaAttributeProperties";
+        final String qualifiedNameParameterName  = "schemaAttributeProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        SchemaAttributeRequestBody requestBody = new SchemaAttributeRequestBody();
+        requestBody.setElementProperties(schemaAttributeProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaAttributeExternalIdentifier,
+                                                                                   schemaAttributeExternalIdentifierName,
+                                                                                   schemaAttributeExternalIdentifierUsage,
+                                                                                   schemaAttributeExternalIdentifierSource,
+                                                                                   schemaAttributeExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
     }
 
 
@@ -533,8 +720,38 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createSchemaAttributeFromTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+        requestBody.setElementProperties(templateProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaAttributeExternalIdentifier,
+                                                                                   schemaAttributeExternalIdentifierName,
+                                                                                   schemaAttributeExternalIdentifierUsage,
+                                                                                   schemaAttributeExternalIdentifierSource,
+                                                                                   schemaAttributeExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/from-template/{2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -563,7 +780,32 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        // todo
+        final String methodName                       = "updateSchemaAttribute";
+        final String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
+        final String propertiesParameterName          = "schemaAttributeProperties";
+        final String qualifiedNameParameterName       = "schemaAttributeProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        SchemaAttributeRequestBody requestBody = new SchemaAttributeRequestBody();
+        requestBody.setElementProperties(schemaAttributeProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaAttributeExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attribute/{2}?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID,
+                                        isMergeUpdate);
     }
 
 
@@ -589,7 +831,27 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        // todo
+        final String methodName = "setSchemaElementAsCalculatedValue";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
+
+        CalculatedValueClassificationRequestBody requestBody = new CalculatedValueClassificationRequestBody();
+        requestBody.setFormula(formula);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaElementExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/is-calculated-value";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaElementGUID);
     }
 
 
@@ -614,90 +876,23 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        // todo
-    }
+        final String methodName = "clearSchemaElementAsCalculatedValue";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
 
-    /**
-     * Link two schema elements together to show how a calculated value is derived.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
-     * @param query query issued to the target
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void setupSchemaQueryTarget(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String schemaElementOneGUID,
-                                       String schemaElementTwoGUID,
-                                       String queryId,
-                                       String query) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
-    {
-        // todo
-    }
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/is-calculated-value/remove";
 
-
-    /**
-     * Update the relationship properties for the query target.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
-     * @param query query issued to the target
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateSchemaQueryTarget(String userId,
-                                        String assetManagerGUID,
-                                        String assetManagerName,
-                                        String schemaElementOneGUID,
-                                        String schemaElementTwoGUID,
-                                        String queryId,
-                                        String query) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Remove the relationship between two schema elements.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void clearSchemaQueryTarget(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String schemaElementOneGUID,
-                                       String schemaElementTwoGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        // todo
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      schemaElementExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        schemaElementGUID);
     }
 
 
@@ -728,7 +923,32 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        // todo
+        final String methodName = "setupColumnAsPrimaryKey";
+        final String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+
+        PrimaryKeyClassificationRequestBody requestBody = new PrimaryKeyClassificationRequestBody();
+
+        PrimaryKeyProperties                primaryKeyProperties = new PrimaryKeyProperties();
+        primaryKeyProperties.setName(primaryKeyName);
+        primaryKeyProperties.setKeyPattern(primaryKeyPattern);
+
+        requestBody.setPrimaryKeyProperties(primaryKeyProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   schemaAttributeExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/is-primary-key";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID);
     }
 
 
@@ -753,7 +973,23 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        // todo
+        final String methodName = "clearColumnAsPrimaryKey";
+        final String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/is-primary-key/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      schemaAttributeExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID);
     }
 
 
@@ -782,7 +1018,28 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        // todo
+        final String methodName                  = "setupForeignKeyRelationship";
+        final String primaryKeyGUIDParameterName = "primaryKeyGUID";
+        final String foreignKeyGUIDParameterName = "foreignKeyGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryKeyGUID, primaryKeyGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(foreignKeyGUID, foreignKeyGUIDParameterName, methodName);
+
+        ForeignKeyRequestBody requestBody = new ForeignKeyRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setProperties(foreignKeyProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/relationships/foreign-keys/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        primaryKeyGUID,
+                                        foreignKeyGUID);
     }
 
 
@@ -809,7 +1066,28 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        // todo
+        final String methodName                  = "updateForeignKeyRelationship";
+        final String primaryKeyGUIDParameterName = "primaryKeyGUID";
+        final String foreignKeyGUIDParameterName = "foreignKeyGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryKeyGUID, primaryKeyGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(foreignKeyGUID, foreignKeyGUIDParameterName, methodName);
+
+        ForeignKeyRequestBody requestBody = new ForeignKeyRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setProperties(foreignKeyProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/relationships/foreign-keys/{3}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        primaryKeyGUID,
+                                        foreignKeyGUID);
     }
 
 
@@ -834,7 +1112,23 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        // todo
+        final String methodName                  = "clearForeignKeyRelationship";
+        final String primaryKeyGUIDParameterName = "primaryKeyGUID";
+        final String foreignKeyGUIDParameterName = "foreignKeyGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryKeyGUID, primaryKeyGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(foreignKeyGUID, foreignKeyGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        primaryKeyGUID,
+                                        foreignKeyGUID);
     }
 
 
@@ -859,7 +1153,23 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        // todo
+        final String methodName                       = "removeSchemaAttribute";
+        final String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      schemaAttributeExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID);
     }
 
 
@@ -889,8 +1199,30 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                = "findSchemaAttributes";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-search-string?startFrom={2}&pageSize={3}";
+
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 requestBody,
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 startFrom,
+                                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -919,8 +1251,26 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getAttributesForSchemaType";
+        final String guidParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/schema-attributes/retrieve?startFrom={3}&pageSize={4}";
+
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                       assetManagerName),
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 schemaTypeGUID,
+                                                                                                 startFrom,
+                                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -950,8 +1300,31 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getSchemaAttributesByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-name?startFrom={2}&pageSize={3}";
+
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 requestBody,
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 startFrom,
+                                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -976,7 +1349,22 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getSchemaAttributeByGUID";
+        final String guidParameterName = "schemaAttributeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/retrieve";
+
+        SchemaAttributeElementResponse restResult = restClient.callSchemaAttributePostRESTCall(methodName,
+                                                                                               urlTemplate,
+                                                                                               getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                     assetManagerName),
+                                                                                               serverName,
+                                                                                               userId,
+                                                                                               schemaAttributeGUID);
+
+        return restResult.getElement();
     }
 }
