@@ -86,7 +86,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param abbreviation string text
      * @param usage string text
      * @param additionalProperties additional properties for a term
-     * @param typeName type name from the caller (enables creation of subtypes)
+     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a term subtype
      * @param initialStatus glossary term status to use when the object is created
      * @param methodName calling method
@@ -108,7 +108,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                      String              abbreviation,
                                      String              usage,
                                      Map<String, String> additionalProperties,
-                                     String              typeName,
+                                     String              suppliedTypeName,
                                      Map<String, Object> extendedProperties,
                                      InstanceStatus      initialStatus,
                                      String              methodName) throws InvalidParameterException,
@@ -125,6 +125,13 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         if (initialStatus != null)
         {
             instanceStatus = initialStatus;
+        }
+
+        String typeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
