@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = LineageEvent.class, name = "LineageEvent"),
+        @JsonSubTypes.Type(value = LineageEntityEvent.class, name = "LineageEntityEvent"),
         @JsonSubTypes.Type(value = LineageRelationshipEvent.class, name = "LineageRelationshipEvent")
 })
 
