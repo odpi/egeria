@@ -9,6 +9,8 @@ import { InstancesContext }                    from "../../contexts/InstancesCon
 
 import { RepositoryServerContext }             from "../../contexts/RepositoryServerContext";
 
+import { InteractionContext }                  from "../../contexts/InteractionContext";
+
 import FilterManager                           from "./FilterManager";
 
 import SearchResultHandler                     from "./SearchResultHandler";
@@ -19,9 +21,9 @@ import "./instance-retriever.scss"
 export default function InstanceSearch(props) {
 
   
-
-
   const repositoryServerContext = useContext(RepositoryServerContext);
+
+  const interactionContext      = useContext(InteractionContext);
 
   const instancesContext        = useContext(InstancesContext);
 
@@ -55,18 +57,21 @@ export default function InstanceSearch(props) {
   const [searchClassifications, setSearchClassifications]   = useState({});    // map of selected class'ns
   const [searchResults,         setSearchResults]           = useState([]); 
 
+  const [searchResultLimit,     setSearchResultLimit]       = useState(100);
+  const [searchResultCount,     setSearchResultCount]       = useState(0);
+
   
   
-  const filterTypeSelected = (category, typeName) => {      
+  const filterTypeSelected = (category, typeName) => {
     setSearchType(typeName);
-    setSearchCategory(category); 
+    setSearchCategory(category);
   };
 
 
   /*
    * Add/remove this classification to/from the map...
    */
-  const filterClassificationChanged = (typeName, checked) => {    
+  const filterClassificationChanged = (typeName, checked) => {
     let currentClassifications = Object.assign(searchClassifications);
     if (checked) {
       /* 
@@ -103,11 +108,17 @@ export default function InstanceSearch(props) {
   }
 
   /*
+   * Handler for change to search limit field
+   */
+  const updatedSearchResultLimit = (evt) => {
+    setSearchResultLimit(evt.target.value);
+  }
+
+  /*
    * Handler for search button - depending on search category, initiate a search
    * either for entities or relationships
    */
   const searchForInstances = () => {    
-    setStatus("pending");
 
     if (searchCategory === "Entity") {
       findEntities();
@@ -115,7 +126,6 @@ export default function InstanceSearch(props) {
     else {
       findRelationships();
     }
-    
   };
   
 
@@ -126,6 +136,14 @@ export default function InstanceSearch(props) {
 
     let typeName = searchType || null;
     let classificationList = Object.keys(searchClassifications);
+
+    /*
+     * Clear the searchResults before the operation.
+     */
+    setSearchResults([]);
+
+    setStatus("pending");
+
     repositoryServerContext.repositoryPOST("instances/entities/by-property-value", 
       { searchText           : searchText, 
         typeName             : typeName,
@@ -140,30 +158,41 @@ export default function InstanceSearch(props) {
 
     if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
-        let entityDigests = json.entities;           
-        let instances = [];
-        for (var guid in entityDigests) {
-          var entityDigest = entityDigests[guid];
-          entityDigest.checked = false;
-          instances.push(entityDigest);
-        }     
+        if (json.relatedHTTPCode === 200) {
+          let entityDigests = json.entities;
+          if (entityDigests) {
+            let entityGUIDs = Object.keys(entityDigests);
+            let instances = [];
+            let count = Math.min(entityGUIDs.length, searchResultLimit);
+            for (let i=0; i<count; i++) {
+              let entityGUID = entityGUIDs[i];
+              let entityDigest = entityDigests[entityGUID];
+              entityDigest.checked = false;
+              instances.push(entityDigest);
+            }
 
-        /*
-         * Store the results
-         */
-        setSearchResults(instances);
+            /*
+             * Store the results
+             */
+            setSearchResultCount(entityGUIDs.length);
+            setSearchResults(instances);
+          }
+          setStatus("complete");
+          return;
+        }
       }
-      else {
-        alert("Search for entities did not get back a result from the server");
-      }
-      setStatus("complete");
+      /*
+       * On failure ...
+       */
+      interactionContext.reportFailedOperation("find entities",json);
+      setStatus("cancelled");
     }
-
     else {
       setStatus("idle");
     }
    
   };
+
 
  
 
@@ -173,6 +202,13 @@ export default function InstanceSearch(props) {
   const findRelationships = () => {   
 
     let typeName = searchType || null;
+
+    /*
+     * Clear the searchResults before the operation.
+     */
+    setSearchResults([]);
+
+    setStatus("pending");
 
     /* 
      * Add the typeName and classifications list to the body here....
@@ -190,31 +226,41 @@ export default function InstanceSearch(props) {
    
     if (statusRef.current !== "cancelled" && statusRef.current !== "complete") {
       if (json !== null) {
-        let relationshipDigests = json.relationships;
-        let instances = [];
-        for (var guid in relationshipDigests) {
-          var relationshipDigest = relationshipDigests[guid];
-          relationshipDigest.checked = false;
-          instances.push(relationshipDigest);
+        if (json.relatedHTTPCode === 200) {
+          let relationshipDigests = json.relationships;
+          if (relationshipDigests) {
+            let relationshipGUIDs = Object.keys(relationshipDigests);
+            let instances = [];
+            let count = Math.min(relationshipGUIDs.length, searchResultLimit);
+            for (let i=0; i<count; i++) {
+              let relationshipGUID = relationshipGUIDs[i];
+              var relationshipDigest = relationshipDigests[relationshipGUID];
+              relationshipDigest.checked = false;
+              instances.push(relationshipDigest);
+            }
+
+            /*
+             * Store the results
+             */
+            setSearchResultCount(relationshipGUIDs.length);
+            setSearchResults(instances);
+          }
+          setStatus("complete");
+          return;
         }
-
-       /*
-        * Store the results
-        */
-       setSearchResults(instances);
       }
-      else {
-        alert("Search for relationships did not get a result from the server");
-      }
-
-      setStatus("complete");
+      /*
+       * On failure ...
+       */
+      interactionContext.reportFailedOperation("find relationships",json);
+      setStatus("cancelled");
     }
-
     else {
       setStatus("idle");
     }
 
   };
+
   
 
   /*
@@ -467,12 +513,21 @@ export default function InstanceSearch(props) {
         <br/>
         <FilterManager searchCategory={searchCategory} typeSelected={filterTypeSelected} clsChanged={filterClassificationChanged} />
 
-
         </div>
+
+        <div className="retrieval-group">
+
+        <label htmlFor="searchLimitField">Max search results : </label>
+        <input name="searchLimitField" className="search-limit-text"
+               value = { searchResultLimit }
+               onChange = { updatedSearchResultLimit } >
+        </input>
 
         <button className="retrieval-button" onClick = { searchForInstances } >
           Search for instances
         </button>
+        </div>
+
       </div>
 
       <SearchResultHandler status                = { status }
@@ -483,6 +538,8 @@ export default function InstanceSearch(props) {
                            serverName            = { repositoryServerContext.repositoryServer.serverName }
                            enterpriseOption      = { repositoryServerContext.enterpriseOption }
                            results               = { searchResults }
+                           searchResultCount     = { searchResultCount }
+                           searchResultLimit     = { searchResultLimit }
                            selectCallback        = { selectCallback }
                            setAllCallback        = { setAllCallback }
                            onCancel              = { cancelSearchModal }

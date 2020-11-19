@@ -25,6 +25,8 @@ export default function SearchResultHandler(props) {
   const results               = props.results; 
   const selectCallback        = props.selectCallback;
   const setAllCallback        = props.setAllCallback;
+  const searchResultCount     = props.searchResultCount;
+  const searchResultLimit     = props.searchResultLimit;
  
   
 
@@ -203,6 +205,17 @@ export default function SearchResultHandler(props) {
                ? searchClassifications.map(c => <li className="details-sublist-item" key={c}> {c}  </li>)
                : " none"}
            </p>
+
+           {
+             (searchResultCount > searchResultLimit) ?
+             <p  className="dialog-text">
+               Search found {searchResultCount} instances but was limited to {searchResultLimit}
+             </p>
+             :
+             <p  className="dialog-text">
+                Search returned {searchResultCount} instances
+             </p>
+           }
            <p  className="dialog-text">
            Please select instances to add to the graph.  
            </p>     
@@ -242,8 +255,10 @@ export default function SearchResultHandler(props) {
     }
     if (props.status === "cancelled") {
       /*
-       * NO OP
+       * This state can be reached because another component - such as an error handler in a REST callback
+       * has abandoned the operation. It is not only reached by the user pressing the cancel button.
        */
+      cancelCallback();
     }
     if (props.status === "complete") {
       triggerPortal();
@@ -267,6 +282,8 @@ SearchResultHandler.propTypes = {
   selectCallback        : PropTypes.func.isRequired, 
   setAllCallback        : PropTypes.func.isRequired,   
   results               : PropTypes.array,
+  searchResultCount     : PropTypes.number,
+  searchResultLimit     : PropTypes.number,
   searchCategory        : PropTypes.string,
   searchText            : PropTypes.string,
   searchClassifications : PropTypes.array,
