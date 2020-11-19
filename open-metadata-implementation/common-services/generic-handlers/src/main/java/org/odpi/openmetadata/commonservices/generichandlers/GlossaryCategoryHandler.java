@@ -82,7 +82,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param displayName short display name for the category
      * @param description description of the category
      * @param additionalProperties additional properties for a category
-     * @param typeName type name from the caller (enables creation of subtypes)
+     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a category subtype
      * @param methodName calling method
      *
@@ -98,7 +98,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                          String              displayName,
                                          String              description,
                                          Map<String, String> additionalProperties,
-                                         String              typeName,
+                                         String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
@@ -106,7 +106,14 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
-        
+
+        String typeName = OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                    serviceName,

@@ -200,38 +200,11 @@ public class OpenMetadataTypesArchive
         final String description     = "Common root for all open metadata entity types.";
         final String descriptionGUID = null;
 
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                null,
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "identifier";
-        final String attribute1Description     = "Identifier used in an external system.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "keyPattern";
-        final String attribute2Description     = "Management pattern associated with the identifier.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("KeyPattern",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 null,
+                                                 description,
+                                                 descriptionGUID);
     }
 
 

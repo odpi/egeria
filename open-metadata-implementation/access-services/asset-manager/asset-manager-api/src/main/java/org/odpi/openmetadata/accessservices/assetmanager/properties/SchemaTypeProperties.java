@@ -40,8 +40,8 @@ public class SchemaTypeProperties extends SchemaProperties
     /*
      * Values for when the schemaType is derived from other values rather than stored
      */
-    private String                                       formula = null;
-    private List<DerivedSchemaTypeQueryTargetProperties> queries = null;
+    private String                      formula = null;
+    private List<QueryTargetProperties> queries = null;
 
     /**
      * Default constructor
@@ -200,7 +200,7 @@ public class SchemaTypeProperties extends SchemaProperties
      *
      * @return list of queries
      */
-    public List<DerivedSchemaTypeQueryTargetProperties> getQueries()
+    public List<QueryTargetProperties> getQueries()
     {
         if (queries == null)
         {
@@ -222,7 +222,7 @@ public class SchemaTypeProperties extends SchemaProperties
      *
      * @param queries list of queries
      */
-    public void setQueries(List<DerivedSchemaTypeQueryTargetProperties> queries)
+    public void setQueries(List<QueryTargetProperties> queries)
     {
         this.queries = queries;
     }
