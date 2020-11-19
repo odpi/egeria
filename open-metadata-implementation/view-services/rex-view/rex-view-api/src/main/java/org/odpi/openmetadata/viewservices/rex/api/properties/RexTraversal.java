@@ -36,6 +36,8 @@ public class RexTraversal {
     private Integer              depth;                    // the depth used to create the subgraph
     private Integer              gen;                      // which generation this subgraph pertains to
     private String               serverName;               // the name of the repo server that was traversed
+    private String               platformName;             // the name of the platform for the operation
+
 
     // Fields that contain the maps of instance summaries.
     // An instance summary is much smaller than the full instance.
@@ -80,6 +82,8 @@ public class RexTraversal {
 
     public String getServerName() { return serverName; }
 
+    public String getPlatformName() { return platformName; }
+
 
 
 
@@ -101,6 +105,8 @@ public class RexTraversal {
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
+    public void setPlatformName(String platformName) { this.platformName = platformName; }
+
     @Override
     public String toString()
     {
@@ -114,6 +120,7 @@ public class RexTraversal {
                 ", entities=" + entities +
                 ", relationships=" + relationships +
                 ", serverName=" + serverName +
+                ", platformName=" + platformName +
                 '}';
     }
 

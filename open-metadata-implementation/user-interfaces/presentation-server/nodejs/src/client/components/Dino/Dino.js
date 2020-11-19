@@ -160,7 +160,7 @@ export default function Dino() {
                 </div>
 
                 <div className="dino-rhs">
-                  <DiagramManager height={workingHeight-150} width={workingWidth-500}/>
+                  <DiagramManager height={workingHeight-210} width={workingWidth-500}/>
                 </div>
 
               </div>

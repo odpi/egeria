@@ -64,6 +64,34 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
     }
 
 
+
+    /*
+     * =============================================================
+     * Learn about all possible access services
+     */
+
+    /**
+     * Return the list of access services for this server.
+     *
+     * @return list of access service descriptions
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public List<RegisteredOMAGService> getRegisteredAccessServices() throws OMAGNotAuthorizedException,
+                                                                            OMAGInvalidParameterException,
+                                                                            OMAGConfigurationErrorException
+    {
+        final String methodName  = "getRegisteredAccessServices";
+        final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/access-services";
+
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
+                                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                                     adminUserId);
+        return restResult.getServices();
+    }
+
+
     /*
      * =============================================================
      * Retrieve the current state of the access service configuration
