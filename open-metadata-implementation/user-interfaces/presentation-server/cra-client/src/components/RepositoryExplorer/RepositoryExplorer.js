@@ -167,7 +167,7 @@ export default function RepositoryExplorer() {
                 </div>
 
                 <div className="rex-rhs">
-                  <DiagramManager height={workingHeight-150} width={workingWidth-500}/>
+                  <DiagramManager height={workingHeight-300} width={workingWidth-500}/>
                 </div>
 
               </div>
