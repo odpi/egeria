@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
@@ -36,7 +37,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
     @Override
     public void processEvent(String assetLineageEvent) {
         try {
-            log.info("Started processing OpenLineageEvent {}", assetLineageEvent);
+            log.debug("Started processing OpenLineageEvent {}", assetLineageEvent);
             if (!assetLineageEvent.isEmpty()) {
                 processEventBasedOnType(assetLineageEvent);
             }
@@ -64,6 +65,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
         if (assetLineageEventHeader != null) {
             LineageEvent lineageEvent;
             LineageRelationshipEvent lineageRelationshipEvent;
+            LineageEntityEvent lineageEntityEvent;
             switch (assetLineageEventHeader.getAssetLineageEventType()) {
                 case PROCESS_CONTEXT_EVENT:
                 case GLOSSARY_TERM_CONTEXT_EVENT:
@@ -76,8 +78,8 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                     storingServices.upsertRelationship(lineageRelationshipEvent);
                     break;
                 case UPDATE_ENTITY_EVENT:
-                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
-                    storingServices.updateEntity(lineageEvent);
+                    lineageEntityEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEntityEvent.class);
+                    storingServices.updateEntity(lineageEntityEvent);
                     break;
                 case UPDATE_RELATIONSHIP_EVENT:
                     lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
@@ -88,8 +90,8 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                     storingServices.updateClassification(lineageEvent);
                     break;
                 case DELETE_ENTITY_EVENT:
-                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
-                    storingServices.deleteEntity(lineageEvent);
+                    lineageEntityEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEntityEvent.class);
+                    storingServices.deleteEntity(lineageEntityEvent);
                     break;
                 case DELETE_RELATIONSHIP_EVENT:
                     lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
