@@ -21,7 +21,7 @@ processing is correct.
 * **[0740 Solution Blueprints](0740-Solution-Blueprints.md)**
 * **[0750 Data Passing](0750-Data-Passing.md)**
 * **[0760 Business Lineage](0760-Business-Lineage.md)**
-* **[0770 Data Field Level Lineage](0770-Data-Field-Level-Lineage.md)**
+* **[0770 Lineage Mapping](0770-Lineage-Mapping.md)**
 
 ![UML Packages](area-7-lineage-Overview.png#pagewidth)
 

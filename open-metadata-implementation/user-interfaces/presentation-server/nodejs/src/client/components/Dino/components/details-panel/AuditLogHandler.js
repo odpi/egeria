@@ -144,7 +144,7 @@ export default function AuditLogHandler(props) {
    
           <hr></hr>
                
-          <div className="history-results-area">                        
+          <div className="audit-results-area">
             {resultsDisplay}
           </div>
 

@@ -63,12 +63,35 @@ export default function ServerSelector() {
           return;
         }
       }
-    }
+      else {
+        /*
+         * This is not the correct way to determine the type of error, but
+         * the better solution requires an overhaul of index.js to improve its
+         * error reporting.
+         */
+        let message = json.exceptionErrorMessage;
 
-    /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
-     */
-    reportFailedOperation("getServers",json);
+        if (message.includes("invalid supplied URL")) {
+          let tokens = message.split("/");
+          let tenantName = tokens[2];
+          json.exceptionErrorMessage = "Check the Presentation Server for tenant "+tenantName+" is configured. [Detail "+ json.exceptionErrorMessage + "]";
+        }
+        else if (message.includes("ECONNREFUSED")) {
+          let url = json.requestURL;
+          let tokens = url.split("/");
+          let tenantName = tokens[4];
+          json.exceptionErrorMessage = "Check the configuration of the Presentation Server for tenant "+tenantName+", and that the correspinding View Server is running. [Detail "+ json.exceptionErrorMessage + "]";
+        }
+        reportFailedOperation("get servers from view service",json);
+      }
+    }
+    else {
+      /*
+       * If there is no JSON in the response this constitutes a coding error, so raise
+       * an alert to make it conspicuous...
+       */
+      alert("ServerSelector received a response with no JSON. Please raise an issue on the Egeria github page.");
+    }
   }
 
 
@@ -89,10 +112,7 @@ export default function ServerSelector() {
          */
         const relatedHTTPCode = json.relatedHTTPCode;
         const exceptionMessage = json.exceptionErrorMessage;
-        /*
-         * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-         */
-        alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
+        alert("Could not "+operation+" (status : "+relatedHTTPCode+"). "+exceptionMessage);
       }
     }
     else {

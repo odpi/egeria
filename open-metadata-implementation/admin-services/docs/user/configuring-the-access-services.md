@@ -183,6 +183,8 @@ that support them) with default configuration values use the following command.
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
 ```
 
+## Configure an individual access service
+
 Alternatively, each service can be configured individually with the following command:
 
 ```

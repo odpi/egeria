@@ -38,20 +38,4 @@ public class SettingsController {
     public String getRootPath(HttpServletRequest request){
         return "window.MyAppGlobals = { rootPath: '" + request.getContextPath() + "/' };";
     }
-
-    @GetMapping( path = "/api/src/app/info")
-    public AppBean getAppTitle(HttpServletRequest request){
-        return app;
-    }
-
-    /**
-     *
-     * @return omas settings object
-     */
-    @GetMapping( value = "/api/omas/settings")
-    public OmasSettings getOmasSettings(){
-        return new OmasSettings(serverName,serverUrl);
-    }
-
-
 }

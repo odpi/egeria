@@ -11,14 +11,14 @@ Each integration service hosts one or more [integration connectors](../../../gov
 is responsible for the exchange of metadata with a specific deployment of a third party technology.
 For example, the [Database Integrator](../../../integration-services/database-integrator) integration service
 supports integration connectors that work with relational databases (RDBMS).
-A deployment of this service in an integration daemon may host
+A deployment of this service in an integration daemon may host, say,
 two integration connectors each loading metadata from their own relational database server.
 
 It is possible to get a description of each of the registered
 integration services using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/integration-services
+GET {serverURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/integration-services
 ```
 Note the `integrationServiceURLMarker` for the integration service that you want to configure.
 
@@ -54,7 +54,8 @@ POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{s
              "connection" : { ... },               
              "metadataSourceQualifiedName" : " ... ",
              "refreshTimeInterval" : "60", 
-             "usesBlockingCalls" : "false"
+             "usesBlockingCalls" : "false",
+             "permittedSynchronization" : " ... "
         } ]      
 }
 ```
@@ -71,6 +72,23 @@ Where:
   is only called at server start up and whenever the refresh REST API request is made to the integration daemon.                     
   If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.        
 * **usesBlockingCalls** - Set up whether the connector should be started in its own thread to allow it is block on a listening call.
+* **permittedSynchronization** - An optional property that defines the permitted directions of metadata flow
+  between the third party technology and open metadata.  If the integration connector
+  attempts to flow metadata in a direction that is not permitted, it receives the `UserNotAuthorizedException`.
+  The default for this value is set up automatically in the integration service's descriptive information so this
+  value only needs to be set if it is necessary to restrict the behavior of the
+  connector.  These are the different values for this property and their effect.
+  
+  *    "TO_THIRD_PARTY" - The third party technology is logically downstream of open metadata.  This means the open metadata
+                        ecosystem is the originator and owner of the metadata being synchronized. Any updates detected
+                        in the third technology are overridden by the latest open metadata values.
+  *    "FROM_THIRD_PARTY" - The third party technology is logically upstream (the originator and owner of the metadata). 
+                        Any updates made in open metadata are not passed to the third party technology and the
+                        third party technology is requested to refresh the open metadata version.
+  *    "BOTH_DIRECTIONS" - Metadata exchange is permitted in both directions.  Synchronization is halted on a specific
+                        element if potentially clashing updates have occurred both in the third party technology and
+                        open metadata.  Such conflicts are logged on the audit log and resolved through manual stewardship.
+
 
 
 

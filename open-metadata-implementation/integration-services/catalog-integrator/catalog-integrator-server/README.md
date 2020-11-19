@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# Asset Manager Integrator Server-side
+# Catalog Integrator Server-side
 
-The Asset Manager Integrator integration service's server-side implementation provides
+The Catalog Integrator integration service's server-side implementation provides
 the implementation of the context manager.  The context manager sets the context in an integration
 connector just before `start()` is called.
  

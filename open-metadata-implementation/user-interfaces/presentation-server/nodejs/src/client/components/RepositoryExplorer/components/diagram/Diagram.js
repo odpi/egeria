@@ -107,12 +107,25 @@ export default function Diagram(props) {
    */
   const d3Container = useRef(null);
 
+  const drgContainerDiv  = useRef();
+
   /*
    * Databind the latest links and add/remove SVG elements accordingly
    */
   const updateLinks = () => {
   
     const svg = d3.select(d3Container.current);
+
+    /*
+     * Removal and replacement of links (and nodes, below) means that attributes like labels are updated.
+     * If we decide to avoid the removal and replacement then we will need to protect the asynchronous use
+     * of context states (like InstancesContext's focus state) so that it is refreshed and event handler
+     * closures get the current value, otherwise detecting that a node or link is already the focus (for
+     * highlighting or de-focussing) will not work.
+     */
+
+    svg.selectAll(".link").remove();
+
     const links = svg.selectAll(".link")
       .data(props.links)
 
@@ -140,7 +153,7 @@ export default function Diagram(props) {
       .attr("y",                 function(d) { return DiagramUtils.path_func(d, link_distance).midpoint.y; } )      
       .attr('text-anchor',       'middle')
       .text( function(d) { return d.label; } )
-      .on("click",                d => { linkClicked(d.id); })  // The link's id is the relationshipGUID      
+      .on("click",                d => { linkClicked(d.id); })  // The link's id is the relationshipGUID
       .clone(true)
       .lower()
       .attr("stroke-linejoin",    "round")
@@ -164,15 +177,14 @@ export default function Diagram(props) {
   };
 
 
- 
-
   /*
-   * Databind the latest nodes and add/remove SVG elements accordingly
+   * Function to ensure that all nodes have initial coordinates so that path
+   * calculations on initial render have valid values to work with.
    */
-  const updateNodes = () => {  
+  const placeNodes = () => {
 
     if (props.nodes) {
-    
+
       if (props.nodes.length > 0) {        
 
         /*
@@ -197,10 +209,16 @@ export default function Diagram(props) {
              n.x = width/2;
              n.y = DiagramUtils.yPlacement(n, height, props.numGens);
           }          
-        });      
-      
+        });
       }
     }
+  };
+
+
+  /*
+   * Databind the latest nodes and add/remove SVG elements accordingly
+   */
+  const updateNodes = () => {
   
     const svg = d3.select(d3Container.current);
 
@@ -267,13 +285,23 @@ export default function Diagram(props) {
   const dragstarted = (d) => {
     if (!d3.event.active)
       loc_force.alphaTarget(0.3).restart();
-    //d.fx = d3.event.x;
-    //d.fy = d3.event.y;
+    d.xinit = d3.event.x;
+    d.yinit = d3.event.y;
   }
 
   const dragged = (d) => {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
+    if ( d.xinit && d.yinit) {
+      if ( (Math.abs(d3.event.x - d.xinit) > 5) || (Math.abs(d3.event.y - d.yinit) > 5)) {
+        d.xinit = undefined;
+        d.yinit = undefined;
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      }
+    }
+    else {
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
   }
 
   const dragended = (d) => {
@@ -290,12 +318,10 @@ export default function Diagram(props) {
 
  
   const nodeClicked = (guid) => {
-
     props.onNodeClick(guid);
   }
 
   const linkClicked = (guid) => {
-
     props.onLinkClick(guid);
   }
 
@@ -314,7 +340,7 @@ export default function Diagram(props) {
      * that can be allocated, by which time we are at 100% black. If this number proves to
      * be insufficient, we can shorten the two-stops or assign a single hue, e.g. green.
      */
-    let colorString = repositoryToColor[d.metadataCollectionName];
+    let colorString = repositoryToColor[d.metadataCollectionId];
     if (colorString !== undefined) {
       return colorString;
     }
@@ -330,8 +356,8 @@ export default function Diagram(props) {
           /*
            * Color is available
            */
-          repositoryToColor[d.metadataCollectionName] = colorString;
-          colorToRepository[colorString] = d.metadataCollectionName;
+          repositoryToColor[d.metadataCollectionId] = colorString;
+          colorToRepository[colorString] = d.metadataCollectionId;
           return colorString;
         }
       }
@@ -348,7 +374,7 @@ export default function Diagram(props) {
          * be allocated to a new repository, but not to repositories remembered below.
          */
         const col = '#000';
-        this.repositoryToColor[d.metadataCollectionName] = col;
+        this.repositoryToColor[d.metadataCollectionId] = col;
         return col;
       }
     }
@@ -416,7 +442,7 @@ export default function Diagram(props) {
 
     if (!loc_force) {
       loc_force = d3.forceSimulation(props.nodes)
-        .force('horiz', d3.forceX(width/2).strength(0.01))
+        .force('horiz', d3.forceX(width/2).strength(0.05))
         .force('repulsion', d3.forceManyBody().strength(-500))        
         .alphaDecay(.002)
         .alphaMin(0.001)
@@ -432,7 +458,7 @@ export default function Diagram(props) {
         loc_force.force('vert', d3.forceY().strength(0.1).y(function(d) {return DiagramUtils.yPlacement(d, height, props.numGens);}));
       }      
       else {            
-        loc_force.force('vert', d3.forceY(height/2).strength(0.001))
+        loc_force.force('vert', d3.forceY(height/2).strength(0.05))
       }
 
       loc_force.on('tick', tick);    
@@ -467,7 +493,14 @@ export default function Diagram(props) {
     }
   };
   
+  /*
+   * Function to update all SVG node and link elements. Nodes must be initially positioned,
+   * then links can be rendered. Nodes are rendered last so that they appear to be 'in front'
+   * of links - this has better aesthetics and makes node and link selection simpler because
+   * it avoids having link ends overlapping nodes.
+   */
   const updateData = () => {
+    placeNodes();
     updateLinks();
     updateNodes();
   };
@@ -497,15 +530,27 @@ export default function Diagram(props) {
         startSim();
       }
       if ( props.nodes || props.links) {   
-        updateData();
-        startSim();
+        try {
+          updateData();
+          startSim();
+        }
+        catch(err) {
+          alert("Exception from diagram data, sim update  : " + err);
+        }
       }
-      if ( instancesContext.focus ) {   
-        setDiagramFocus();     
+      if ( instancesContext.focus ) {
+        setDiagramFocus();
       }
     },
-  
-    [d3Container.current, props.nodes, props.links, instancesContext.focus, props.onNodeClick, props.onLinkClick, layoutMode]
+    [d3Container.current, props.nodes, props.links, instancesContext.focus, props.onLinkClick, props.onNodeClick, layoutMode]
+  )
+
+  useEffect(
+    () => {
+      drgContainerDiv.current.style.width=""+props.outerWidth+"px";
+      drgContainerDiv.current.style.height=""+props.outerHeight+"px";
+    },
+    [props.outerHeight, props.outerWidth]
   )
  
  
@@ -547,7 +592,7 @@ export default function Diagram(props) {
       
       <br />
       
-      <div>
+      <div className="drawing-container" id="drawingContainer" ref={drgContainerDiv}>
         <svg className="d3-component"
              width={width} 
              height={height} 
@@ -566,6 +611,8 @@ Diagram.propTypes = {
   links       : PropTypes.array,
   numGens     : PropTypes.number,
   onNodeClick : PropTypes.func,
-  onLinkClick : PropTypes.func
+  onLinkClick : PropTypes.func,
+  outerHeight: PropTypes.number,
+  outerWidth: PropTypes.number
   
 };

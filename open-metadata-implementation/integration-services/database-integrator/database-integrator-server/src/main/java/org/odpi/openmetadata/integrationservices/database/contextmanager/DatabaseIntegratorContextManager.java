@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventC
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
+import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -19,6 +20,8 @@ import org.odpi.openmetadata.integrationservices.database.connector.DatabaseInte
 import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
 import org.odpi.openmetadata.integrationservices.database.ffdc.DatabaseIntegratorErrorCode;
 
+import java.util.Map;
+
 
 /**
  * DatabaseIntegratorContextManager provides the bridge between the integration daemon services and
@@ -26,9 +29,9 @@ import org.odpi.openmetadata.integrationservices.database.ffdc.DatabaseIntegrato
  */
 public class DatabaseIntegratorContextManager extends IntegrationContextManager
 {
-    private DatabaseManagerClient  databaseManagerClient  = null;
-    private DataManagerEventClient dataManagerEventClient = null;
-    private MetadataSourceClient   metadataSourceClient   = null;
+    private DatabaseManagerClient databaseManagerClient  = null;
+    private MetadataSourceClient  metadataSourceClient   = null;
+    private DataManagerRESTClient restClient             = null;
 
     /**
      * Default constructor
@@ -45,8 +48,6 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
      */
     public void createClients() throws InvalidParameterException
     {
-        DataManagerRESTClient restClient;
-
         if (localServerPassword == null)
         {
             restClient = new DataManagerRESTClient(partnerOMASServerName,
@@ -68,12 +69,6 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
                                                           maxPageSize,
                                                           auditLog);
 
-        dataManagerEventClient = new DataManagerEventClient(partnerOMASServerName,
-                                                            partnerOMASPlatformRootURL,
-                                                            restClient,
-                                                            maxPageSize,
-                                                            auditLog);
-
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
                                                         restClient,
@@ -86,8 +81,10 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
      * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
      * for this integrator.
      *
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration
-     *                                service
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
+     *
+     * @return unique identifier of the metadata source
+     *
      * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
      * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
      * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
@@ -123,23 +120,37 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
     /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
      *
-     * @param connectorName name of the connector
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
+     * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     * @param serviceOptions options from the integration service's configuration
+     *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void setContext(String               connectorName,
-                           String               metadataSourceQualifiedName,
-                           IntegrationConnector integrationConnector) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void setContext(String                   connectorId,
+                           String                   connectorName,
+                           String                   metadataSourceQualifiedName,
+                           IntegrationConnector     integrationConnector,
+                           PermittedSynchronization permittedSynchronization,
+                           Map<String, Object>      serviceOptions) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         if (integrationConnector instanceof DatabaseIntegratorConnector)
         {
             DatabaseIntegratorConnector serviceSpecificConnector = (DatabaseIntegratorConnector)integrationConnector;
 
             String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            DataManagerEventClient dataManagerEventClient = new DataManagerEventClient(partnerOMASServerName,
+                                                                                       partnerOMASPlatformRootURL,
+                                                                                       restClient,
+                                                                                       maxPageSize,
+                                                                                       auditLog,
+                                                                                       connectorId);
 
             serviceSpecificConnector.setContext(new DatabaseIntegratorContext(databaseManagerClient,
                                                                               dataManagerEventClient,
