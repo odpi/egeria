@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
+@RequestMapping("/api/public")
 public class PublicController {
 
     @Value("${theme:default}")
@@ -23,7 +24,7 @@ public class PublicController {
      *
      * @return an AppBean that contains the app build information
      */
-    @GetMapping( path = "/api/public/app/info")
+    @GetMapping( path = "/app/info")
     public AppBean getAppTitle(HttpServletRequest request){
         return app;
     }
@@ -32,12 +33,12 @@ public class PublicController {
      *
      * @return a redirectView to the theme URI css file
      */
-    @GetMapping( path = "/api/css/theme")
+    @GetMapping( path = "/css/theme")
     public RedirectView getThemeCss(){
-        return new RedirectView("/api/themes/" + theme + "/css/style.css", true);
+        return new RedirectView("/api/public/themes/" + theme + "/css/style.css", true);
     }
 
-    @GetMapping( path = "/api/js/global")
+    @GetMapping( path = "/js/global")
     public String getRootPath(HttpServletRequest request){
         return "window.MyAppGlobals = { rootPath: '" + request.getContextPath() + "/' };";
     }
