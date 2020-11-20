@@ -35,7 +35,7 @@ public class PublicController {
      */
     @GetMapping( path = "/css/theme")
     public RedirectView getThemeCss(){
-        return new RedirectView("/api/public/themes/" + theme + "/css/style.css", true);
+        return new RedirectView("/themes/" + theme + "/css/style.css", true);
     }
 
     @GetMapping( path = "/js/global")
