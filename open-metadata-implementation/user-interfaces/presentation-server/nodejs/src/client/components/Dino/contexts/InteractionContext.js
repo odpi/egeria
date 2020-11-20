@@ -73,9 +73,9 @@ const InteractionContextProvider = (props) => {
    * manner that matches the context and concepts the user will be familiar with. For example,
    * use a phrase like "get types for server" rather than "loadTypes".
    * The second parameter is a json response object that has the fields from the associated
-   * RexViewServiceException. The main fields to note are (with example values):
+   * DinoViewServiceException. The main fields to note are (with example values):
    *  relatedHTTPCode                 :  400,
-   *  exceptionClassName              : 'org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewServiceException',
+   *  exceptionClassName              : 'org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException',
    *  actionDescription               : 'getTypeExplorer',
    *  exceptionErrorMessage           : 'The repository explorer view service operation getTypeExplorer found that platform for server Metadata_Server2 is not available',
    *  exceptionErrorMessageId         : 'OMVS-REPOSITORY-EXPLORER-400-006',
