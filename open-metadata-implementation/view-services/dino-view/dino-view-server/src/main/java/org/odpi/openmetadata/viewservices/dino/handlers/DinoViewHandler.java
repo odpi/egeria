@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
@@ -431,11 +432,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -484,11 +485,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -513,7 +514,8 @@ public class DinoViewHandler {
 
     {
 
-        try {
+        try
+        {
 
             /*
              * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
@@ -530,33 +532,44 @@ public class DinoViewHandler {
             /* Retrieve the server names */
             List<String> serverNames = platformServicesClient.getActiveServers(userId);
 
-            /*
-             * Construct the return list indicating that all servers it contains are active
-             */
-            List<DinoServerInstance> serverList = new ArrayList<>();
-            serverNames.forEach(serverName -> {
-                DinoServerInstance dinoServerInstance = new DinoServerInstance();
-                // Try to locate the serverName and plaformRootURL in the configured serverInstances. If found include the serverInstanceName,
-                // else ensure it is set to null.
-                String configuredInstanceName = null;
 
-                Iterator<ResourceEndpoint> configuredServerInstances = this.configuredServerInstances.values().iterator();
-                while (configuredServerInstances.hasNext()) {
-                    ResourceEndpoint csire = configuredServerInstances.next();
-                    if (   csire.getServerName().equals(serverName)
-                        && csire.getPlatformName().equals(platformName) ) {
-                        // This is our configuration entry...
-                        configuredInstanceName = csire.getServerInstanceName();
+            if (serverNames != null)
+            {
+                /*
+                 * Construct the return list indicating that all servers it contains are active
+                 */
+                List<DinoServerInstance> serverList = new ArrayList<>();
+
+                serverNames.forEach(serverName -> {
+                    DinoServerInstance dinoServerInstance = new DinoServerInstance();
+                    // Try to locate the serverName and plaformRootURL in the configured serverInstances. If found include the serverInstanceName,
+                    // else ensure it is set to null.
+                    String configuredInstanceName = null;
+
+                    Iterator<ResourceEndpoint> configuredServerInstances = this.configuredServerInstances.values().iterator();
+                    while (configuredServerInstances.hasNext())
+                    {
+                        ResourceEndpoint csire = configuredServerInstances.next();
+                        if (csire.getServerName().equals(serverName)
+                                && csire.getPlatformName().equals(platformName))
+                        {
+                            // This is our configuration entry...
+                            configuredInstanceName = csire.getServerInstanceName();
+                        }
                     }
-                }
-                dinoServerInstance.setServerInstanceName(configuredInstanceName);
-                dinoServerInstance.setIsActive(true);
-                dinoServerInstance.setServerName(serverName);
-                dinoServerInstance.setPlatformName(platformName);
-                serverList.add(dinoServerInstance);
-            });
+                    dinoServerInstance.setServerInstanceName(configuredInstanceName);
+                    dinoServerInstance.setIsActive(true);
+                    dinoServerInstance.setServerName(serverName);
+                    dinoServerInstance.setPlatformName(platformName);
+                    serverList.add(dinoServerInstance);
+                });
 
-            return serverList;
+                return serverList;
+            }
+            else
+            {
+                return null;
+            }
 
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
@@ -565,11 +578,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -594,9 +607,8 @@ public class DinoViewHandler {
 
     {
 
-
-        try {
-
+        try
+        {
             /*
              * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
              */
@@ -611,30 +623,37 @@ public class DinoViewHandler {
 
             List<String> serverNames = platformServicesClient.getKnownServers(userId);
 
+            if (serverNames != null)
+            {
+                /*
+                 * Construct the return list indicating which servers are active
+                 */
+                List<DinoServerInstance> serverList = new ArrayList<>();
 
-            /*
-             * Construct the return list indicating which servers are active
-             */
-            List<DinoServerInstance> serverList = new ArrayList<>();
+                /* Retrieve a list of names of the active servers */
+                List<String> activeServerNames = platformServicesClient.getActiveServers(userId);
+                serverNames.forEach(serverName -> {
+                    DinoServerInstance dinoServerInstance = new DinoServerInstance();
+                    dinoServerInstance.setServerName(serverName);
+                    dinoServerInstance.setPlatformName(platformName);
+                    if (activeServerNames != null && activeServerNames.contains(serverName))
+                    {
+                        dinoServerInstance.setIsActive(true);
+                    }
+                    else
+                    {
+                        dinoServerInstance.setIsActive(false);
+                    }
+                    serverList.add(dinoServerInstance);
+                });
 
-            /* Retrieve a list of names of the active servers */
-            List<String> activeServerNames = platformServicesClient.getActiveServers(userId);
-            serverNames.forEach(serverName -> {
-                DinoServerInstance dinoServerInstance = new DinoServerInstance();
-                dinoServerInstance.setServerName(serverName);
-                dinoServerInstance.setPlatformName(platformName);
-                if (activeServerNames.contains(serverName)) {
-                    dinoServerInstance.setIsActive(true);
-                }
-                else {
-                    dinoServerInstance.setIsActive(false);
-                }
-                serverList.add(dinoServerInstance);
-            });
+                return serverList;
 
-            return serverList;
-
-
+            }
+            else
+            {
+                return null;
+            }
 
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
@@ -643,11 +662,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -696,11 +715,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -748,11 +767,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -799,11 +818,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -852,11 +871,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -950,11 +969,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -1003,11 +1022,11 @@ public class DinoViewHandler {
         }
         catch (UserNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (PropertyServerException e)
         {
-            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -1054,10 +1073,10 @@ public class DinoViewHandler {
             throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
         }
         catch (OMAGNotAuthorizedException e) {
-            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (OMAGConfigurationErrorException e) {
-            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
         }
 
     }
@@ -1091,12 +1110,12 @@ public class DinoViewHandler {
              */
             String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
-
             /*
              *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classfiication method is in the abstract superclass.
              *
              * Can throw OMAGInvalidParameterException
              */
+
             OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
             /*
@@ -1113,12 +1132,13 @@ public class DinoViewHandler {
         }
         catch (OMAGNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (OMAGConfigurationErrorException e)
         {
-            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
         }
+
 
     }
 
@@ -1145,7 +1165,6 @@ public class DinoViewHandler {
 
         try
         {
-
             /*
              * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
              */
@@ -1166,18 +1185,34 @@ public class DinoViewHandler {
             return adminServicesClient.getOMAGServerInstanceConfig();
 
         }
-
         catch (OMAGInvalidParameterException e)
         {
             throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
         }
         catch (OMAGNotAuthorizedException e)
         {
-            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, e);
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
         }
         catch (OMAGConfigurationErrorException e)
         {
-            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, e);
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
         }
 
     }
