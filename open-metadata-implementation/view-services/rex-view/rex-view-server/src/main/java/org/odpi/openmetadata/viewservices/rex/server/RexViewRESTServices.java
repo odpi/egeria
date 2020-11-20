@@ -130,10 +130,6 @@ public class RexViewRESTServices {
      * @param userId        userId under which the request is performed
      * @param requestBody   request body
      * @return response     the repository's type information or exception information
-     *
-     * <ul>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * </ul>
      */
 
     public TypeExplorerResponse getTypeExplorer(String serverName, String userId, RexTypesRequestBody requestBody)
