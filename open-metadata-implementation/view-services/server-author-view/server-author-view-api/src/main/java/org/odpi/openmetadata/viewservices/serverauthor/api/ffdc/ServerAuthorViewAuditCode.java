@@ -36,7 +36,7 @@ public enum ServerAuthorViewAuditCode implements AuditLogMessageSet
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Server Author View Service (OMVS) is initialized",
                          "The Server Author OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
-                         "No action is required.  This is part of the normal operation of the Repository Explorer OMVS. Once the OMRS is configured and the server is started, Server Author View Service requests can be accepted."),
+                         "No action is required. Once the OMRS is configured and the server is started, Server Author View Service requests can be accepted."),
 
     SERVICE_SHUTDOWN("OMVS-SERVER-AUTHOR-0003",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
