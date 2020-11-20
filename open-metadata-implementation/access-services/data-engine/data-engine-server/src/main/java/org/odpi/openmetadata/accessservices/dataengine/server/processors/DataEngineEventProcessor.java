@@ -55,7 +55,7 @@ public class DataEngineEventProcessor {
     public void processDataEngineRegistrationEvent(String dataEngineEvent) {
         final String methodName = "processDataEngineRegistrationEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
             dataEngineRESTServices.createExternalDataEngine(dataEngineRegistrationEvent.getUserId(), serverName,
@@ -74,7 +74,7 @@ public class DataEngineEventProcessor {
     public void processPortAliasEvent(String dataEngineEvent) {
         final String methodName = "processPortAliasEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
 
@@ -94,7 +94,7 @@ public class DataEngineEventProcessor {
     public void processProcessHierarchyEvent(String dataEngineEvent) {
         final String methodName = "processProcessHierarchyEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             ProcessHierarchyEvent processHierarchyEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessHierarchyEvent.class);
 
@@ -114,7 +114,7 @@ public class DataEngineEventProcessor {
     public void processPortImplementationEvent(String dataEngineEvent) {
         final String methodName = "processPortImplementationEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
 
@@ -134,7 +134,7 @@ public class DataEngineEventProcessor {
     public void processProcessToPortListEvent(String dataEngineEvent) {
         final String methodName = "processProcessToPortListEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
             ProcessToPortListEvent processToPortListEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessToPortListEvent.class);
@@ -155,7 +155,7 @@ public class DataEngineEventProcessor {
     public void processLineageMappingsEvent(String dataEngineEvent) {
         final String methodName = "processLineageMappingsEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
             LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, LineageMappingsEvent.class);
@@ -182,7 +182,7 @@ public class DataEngineEventProcessor {
     public void processProcessesEvent(String dataEngineEvent) {
         final String methodName = "processProcessesEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 
@@ -202,7 +202,7 @@ public class DataEngineEventProcessor {
      */
     public void processSchemaTypeEvent(String schemaTypeEvent) {
         final String methodName = "processSchemaTypeEvent";
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
             dataEngineRESTServices.createOrUpdateSchemaType(schemaEvent.getUserId(), serverName, schemaEvent.getSchemaType(),
