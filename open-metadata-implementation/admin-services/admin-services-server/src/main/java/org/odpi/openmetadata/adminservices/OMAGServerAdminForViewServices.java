@@ -453,6 +453,8 @@ public class OMAGServerAdminForViewServices
             IntegrationViewServiceConfig createdViewServiceConfig = new IntegrationViewServiceConfig(registration);
             createdViewServiceConfig.setResourceEndpoints(requestedIntegrationViewServiceConfig.getResourceEndpoints());
             viewServiceConfig = createdViewServiceConfig;
+            // some integration services require the OMAGServerPlatformRootURL
+            createdViewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
         }
         else if (requestedViewServiceConfig instanceof SolutionViewServiceConfig)
         {
