@@ -218,7 +218,7 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
                                                                                             OMAGInvalidParameterException,
                                                                                             OMAGConfigurationErrorException
     {
-;        final String methodName  = "configureAllAccessServices";
+        final String methodName  = "configureAllAccessServices";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services";
 
         restClient.callVoidPostRESTCall(methodName,
