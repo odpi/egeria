@@ -53,7 +53,7 @@ public class DinoPlatformOverviewResponse extends DinoViewOMVSAPIResponse {
     /**
      * Set the platformOverview.
      *
-     * @param platformOverview
+     * @param platformOverview - the platform overview object to set
      */
     public void setPlatformOverview(PlatformOverview platformOverview)
     {

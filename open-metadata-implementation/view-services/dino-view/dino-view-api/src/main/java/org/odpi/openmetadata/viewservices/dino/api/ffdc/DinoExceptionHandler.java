@@ -8,25 +8,15 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-import org.springframework.web.client.ResourceAccessException;
 
-import javax.annotation.Resource;
+
+
 import java.net.ConnectException;
 
 public class DinoExceptionHandler {
 
-    // TODO this class contains unused methods....waiting for proper exception handling of parameters and then
-    // elimination of anything we don't need....
 
     /**
      * Method for capturing an exception into a REST response.
@@ -124,17 +114,17 @@ public class DinoExceptionHandler {
     {
         /*
          * This error is caught if a platform services client tries to contact a platform that is not running.
-         * In this case the exception has relatedHTTPCode 503 and a cause -> cause (i.e. double nested) that is a
-         * ResourceAccessException and has a (further) cause which is aConnectException with message containing "Connection refused".
+         * In this case the exception has relatedHTTPCode 503 and a cause -> cause (i.e. double nested) that is an
+         * Exception and has a (further) cause which is a ConnectException with message containing "Connection refused".
          * This is not nice but the exceptions are nested deeply and we need to dig to find the cause.
          */
 
-        if (ocfException.getCause() != null && ocfException.getCause() instanceof RESTServerException)
+        if (ocfException.getCause() != null)
         {
-            RESTServerException cause1 = (RESTServerException) (ocfException.getCause());
-            if (cause1.getCause() != null && cause1.getCause() instanceof ResourceAccessException)
+            Exception cause1 = (Exception)(ocfException.getCause());
+            if (cause1.getCause() != null)
             {
-                ResourceAccessException cause2 = (ResourceAccessException) (cause1.getCause());
+                Exception cause2 = (Exception)(cause1.getCause());
                 if (cause2.getCause() != null && cause2.getCause() instanceof ConnectException)
                 {
                     String message = cause2.getCause().getMessage();
