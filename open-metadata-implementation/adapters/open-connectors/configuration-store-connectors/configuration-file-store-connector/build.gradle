@@ -1,0 +1,20 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'commons-io:commons-io'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+description = 'Configuration File Store Connector'
+
+java {
+    withJavadocJar()
+}

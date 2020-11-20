@@ -5,27 +5,18 @@ package org.odpi.openmetadata.accessservices.dataengine.server.processors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessToPortListEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineException;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
+import org.odpi.openmetadata.accessservices.dataengine.event.*;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 
 /**
  * The Data Engine event processor is processing events from external data engines about
@@ -37,7 +28,7 @@ public class DataEngineEventProcessor {
     private static final Logger log = LoggerFactory.getLogger(DataEngineEventProcessor.class);
     private static final String DEBUG_MESSAGE_METHOD = "Calling method: {}";
 
-    private final OMRSAuditLog auditLog;
+    private final AuditLog auditLog;
     private final String serverName;
 
     private DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
@@ -51,7 +42,7 @@ public class DataEngineEventProcessor {
      *
      * @throws NewInstanceException * @throws NewInstanceException a problem occurred during initialization
      */
-    public DataEngineEventProcessor(DataEngineServicesInstance instance, OMRSAuditLog auditLog) throws NewInstanceException {
+    public DataEngineEventProcessor(DataEngineServicesInstance instance, AuditLog auditLog) throws NewInstanceException {
         this.auditLog = auditLog;
         this.serverName = instance.getServerName();
     }
@@ -64,7 +55,7 @@ public class DataEngineEventProcessor {
     public void processDataEngineRegistrationEvent(String dataEngineEvent) {
         final String methodName = "processDataEngineRegistrationEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
             dataEngineRESTServices.createExternalDataEngine(dataEngineRegistrationEvent.getUserId(), serverName,
@@ -83,12 +74,32 @@ public class DataEngineEventProcessor {
     public void processPortAliasEvent(String dataEngineEvent) {
         final String methodName = "processPortAliasEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
 
             dataEngineRESTServices.createOrUpdatePortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
                     portAliasEvent.getExternalSourceName());
+
+        } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link ProcessHierarchyEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processProcessHierarchyEvent(String dataEngineEvent) {
+        final String methodName = "processProcessHierarchyEvent";
+
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            ProcessHierarchyEvent processHierarchyEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessHierarchyEvent.class);
+
+            dataEngineRESTServices.addProcessHierarchyToProcess(processHierarchyEvent.getUserId(), serverName, processHierarchyEvent.getProcessHierarchy(),
+                    processHierarchyEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -103,7 +114,7 @@ public class DataEngineEventProcessor {
     public void processPortImplementationEvent(String dataEngineEvent) {
         final String methodName = "processPortImplementationEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
 
@@ -123,7 +134,7 @@ public class DataEngineEventProcessor {
     public void processProcessToPortListEvent(String dataEngineEvent) {
         final String methodName = "processProcessToPortListEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
             ProcessToPortListEvent processToPortListEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessToPortListEvent.class);
@@ -144,7 +155,7 @@ public class DataEngineEventProcessor {
     public void processLineageMappingsEvent(String dataEngineEvent) {
         final String methodName = "processLineageMappingsEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
             LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, LineageMappingsEvent.class);
@@ -157,9 +168,8 @@ public class DataEngineEventProcessor {
             dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName, lineageMappingsEvent.getLineageMappings(),
                     response, lineageMappingsEvent.getExternalSourceName());
 
-            validateResponse(response, dataEngineEvent, methodName);
 
-        } catch (JsonProcessingException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException | DataEngineException e) {
+        } catch (JsonProcessingException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -172,37 +182,40 @@ public class DataEngineEventProcessor {
     public void processProcessesEvent(String dataEngineEvent) {
         final String methodName = "processProcessesEvent";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 
-            ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(processesEvent.getUserId(), serverName,
+            dataEngineRESTServices.createOrUpdateProcesses(processesEvent.getUserId(), serverName,
                     processesEvent.getProcesses(), processesEvent.getExternalSourceName());
-            validateResponse(response, dataEngineEvent, methodName);
 
-        } catch (JsonProcessingException | DataEngineException e) {
+        } catch (JsonProcessingException e) {
             log.debug("Exception in parsing event from in Data Engine In Topic", e);
             logException(dataEngineEvent, methodName, e);
         }
     }
 
-    private void logException(String dataEngineEvent, String methodName, Exception e) {
-        log.debug("Exception in processing {} from in Data Engine In Topic: {}", methodName, e);
+    /**
+     * Process a {@link SchemaTypeEvent}
+     *
+     * @param schemaTypeEvent the event to be processed
+     */
+    public void processSchemaTypeEvent(String schemaTypeEvent) {
+        final String methodName = "processSchemaTypeEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
+            dataEngineRESTServices.createOrUpdateSchemaType(schemaEvent.getUserId(), serverName, schemaEvent.getSchemaType(),
+                    schemaEvent.getExternalSourceName());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(schemaTypeEvent, methodName, e);
+        }
 
-        DataEngineErrorCode errorCode = DataEngineErrorCode.PARSE_EVENT_EXCEPTION;
-        auditLog.logException(methodName, errorCode.getErrorMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
-                errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(), errorCode.getSystemAction(),
-                errorCode.getUserAction(), e);
     }
 
-    private void validateResponse(FFDCResponseBase response, String dataEngineEvent, String methodName) throws DataEngineException {
-        // extra validation needed because the FFDCResponseBase object captures the potential exceptions
-        // thrown during a parallel processing
-        if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
-            DataEngineErrorCode errorCode = DataEngineErrorCode.DATA_ENGINE_EXCEPTION;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(dataEngineEvent);
-            throw new DataEngineException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                    errorCode.getSystemAction(), errorCode.getUserAction(), dataEngineEvent);
-        }
+    private void logException(String dataEngineEvent, String methodName, Exception e) {
+        log.debug("Exception in processing {} from in Data Engine In Topic: {}", dataEngineEvent, e);
+
+        auditLog.logException(methodName, DataEngineAuditCode.PARSE_EVENT_EXCEPTION.getMessageDefinition(dataEngineEvent, e.toString()), e);
     }
 }

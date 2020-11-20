@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
+import java.util.List;
 
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -23,7 +23,7 @@ public class RexSearchBody {
      */
 
     private String                    serverName;                    // must be non-null
-    private String                    serverURLRoot;                 // must be non-null
+    private String                    platformName;                  // must be non-null
     private String                    searchText;                    // must be non-null
     private Boolean                   enterpriseOption;
     private String                    typeName;                      // filter by type, or null
@@ -41,7 +41,7 @@ public class RexSearchBody {
 
     public String getServerName() { return serverName; }
 
-    public String getServerURLRoot() { return serverURLRoot; }
+    public String getPlatformName() { return platformName; }
 
     public String getSearchText() { return searchText; }
 
@@ -56,7 +56,7 @@ public class RexSearchBody {
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
-    public void setServerURLRoot(String serverURLRoot) { this.serverURLRoot = serverURLRoot; }
+    public void setPlatformName(String platformName) { this.platformName = platformName; }
 
     public void setSearchText(String searchText) { this.searchText = searchText; }
 
@@ -77,7 +77,7 @@ public class RexSearchBody {
     {
         return "RexSearchBody{" +
                 ", serverName=" + serverName +
-                ", serverURLRoot=" + serverURLRoot +
+                ", platformName=" + platformName +
                 ", searchText=" + searchText +
                 ", enterpriseOption=" + enterpriseOption +
                 ", typeName=" + typeName +

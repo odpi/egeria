@@ -2,10 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaCategoryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +25,8 @@ import java.util.Date;
 
 public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryRESTServices.class);
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
     private static final String className = SubjectAreaGlossaryRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
@@ -51,28 +57,18 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li>ClassificationException              Error processing a classification.</li>
-     * <li>StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
+    public SubjectAreaOMASAPIResponse<Glossary> createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.createGlossary(userId, suppliedGlossary);
-
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -87,26 +83,18 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getGlossaryByGuid(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Glossary> getGlossaryByGuid(String serverName, String userId, String guid) {
         final String methodName = "getGlossaryByGuid";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.getGlossaryByGuid(userId, guid);
-
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -118,43 +106,46 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Glossary property values. If not specified then all glossaries are returned.
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of Glossaries meeting the search Criteria
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findGlossary(String serverName,
-                                                   String userId,
-                                                   String searchCriteria,
-                                                   Date asOfTime,
-                                                   Integer offset,
-                                                   Integer pageSize,
-                                                   org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                   String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Glossary> findGlossary(String serverName,
+                                                             String userId,
+                                                             String searchCriteria,
+                                                             Date asOfTime,
+                                                             Integer startingFrom,
+                                                             Integer pageSize,
+                                                             SequencingOrder sequencingOrder,
+                                                             String sequencingProperty) {
 
         final String methodName = "findGlossary";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-            response = handler.findGlossary(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setStartingFrom(startingFrom);
+            if (pageSize == null){
+                findRequest.setPageSize(handler.getMaxPageSize());
+            } else {
+                findRequest.setPageSize(pageSize);
+            }
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.findGlossary(userId, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
 
         return response;
@@ -167,47 +158,44 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Glossary guid
      *
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException   Function not supported.</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(String serverName,
-                                                               String userId,
-                                                               String guid,
-                                                               Date asOfTime,
-                                                               Integer offset,
-                                                               Integer pageSize,
-                                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                               String sequencingProperty
-                                                              ) {
+    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(String serverName,
+                                                                     String userId,
+                                                                     String guid,
+                                                                     Date asOfTime,
+                                                                     Integer startingFrom,
+                                                                     Integer pageSize,
+                                                                     SequencingOrder sequencingOrder,
+                                                                     String sequencingProperty) {
         String methodName = "getGlossaryRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-            response = handler.getGlossaryRelationships(userId,
-                                                    guid,
-                                                    asOfTime,
-                                                    offset,
-                                                    pageSize,
-                                                    sequencingOrder,
-                                                    sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setStartingFrom(startingFrom);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.getGlossaryRelationships(userId, guid, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -233,24 +221,22 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Glossary> updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
         final String methodName = "updateGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.updateGlossary(userId, guid, suppliedGlossary, isReplace);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -279,26 +265,24 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.deleteGlossary(userId, guid, isPurge);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -318,24 +302,99 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreGlossary(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Glossary> restoreGlossary(String serverName, String userId, String guid) {
         final String methodName = "restoreGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.restoreGlossary(userId, guid);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        }
+        return response;
+    }
+
+    /**
+     * Get terms that are owned by this glossary
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     *
+     * @return A list of terms owned by the glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getTerms";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        try {
+            SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
+            if (pageSize == null) {
+                pageSize = handler.getMaxPageSize();
+            }
+            response = handler.getTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize );
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        }
+        return response;
+    }
+
+    /**
+     * Get the Categories owned by this glossary.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param onlyTop      when only the top categories (those categories without parents) are returned.
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of categories owned by the glossary
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(String serverName, String userId, String guid, Boolean onlyTop, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategories";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        try {
+            SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
+            if (pageSize == null) {
+                pageSize = handler.getMaxPageSize();
+            }
+            response = handler.getCategories(userId, guid, onlyTop, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName), startingFrom, pageSize);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

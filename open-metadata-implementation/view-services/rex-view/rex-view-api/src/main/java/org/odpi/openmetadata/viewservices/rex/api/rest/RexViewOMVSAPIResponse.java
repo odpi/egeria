@@ -2,14 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.rex.api.rest;
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-
-import java.util.Arrays;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -26,10 +27,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = TypeExplorerResponse.class, name = "TypeExplorerResponse"),
-        @JsonSubTypes.Type(value = RexSearchResponse.class, name = "RexSearchrResponse")
-        // TODO - add further subtypes...
-
+        @JsonSubTypes.Type(value = TypeExplorerResponse.class,    name = "TypeExplorerResponse"),
+        @JsonSubTypes.Type(value = RexSearchResponse.class,       name = "RexSearchResponse"),
+        @JsonSubTypes.Type(value = RexEntityDetailResponse.class, name = "RexEntityDetailResponse"),
+        @JsonSubTypes.Type(value = RexPreTraversalResponse.class, name = "RexPreTraversalResponse"),
+        @JsonSubTypes.Type(value = RexRelationshipResponse.class, name = "RexRelationshipResponse"),
+        @JsonSubTypes.Type(value = RexTraversalResponse.class,    name = "RexTraversalResponse")
 })
 
 public abstract class RexViewOMVSAPIResponse extends FFDCResponseBase

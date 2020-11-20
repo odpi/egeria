@@ -1,0 +1,17 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:access-services:design-model:design-model-server')
+    implementation 'org.springframework:spring-web'
+    implementation 'io.swagger.core.v3:swagger-annotations'
+}
+
+description = 'Design Model OMAS with Spring'
+
+java {
+    withJavadocJar()
+}

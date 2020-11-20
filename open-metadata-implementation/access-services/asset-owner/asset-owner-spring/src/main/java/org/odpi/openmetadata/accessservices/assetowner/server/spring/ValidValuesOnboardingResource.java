@@ -4,13 +4,13 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValueResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesResponse;
 import org.odpi.openmetadata.accessservices.assetowner.server.ValidValuesRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValuesResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -226,6 +226,8 @@ public class ValidValuesOnboardingResource
      *
      * @param serverName name of calling server
      * @param userId calling user
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
      * @param validValueName qualified name of the valid value.
      *
      * @return Valid value beans or
@@ -237,9 +239,11 @@ public class ValidValuesOnboardingResource
 
     public ValidValuesResponse getValidValueByName(@PathVariable String  serverName,
                                                    @PathVariable String  userId,
+                                                   @RequestParam int     startFrom,
+                                                   @RequestParam int     pageSize,
                                                    @RequestBody  String  validValueName)
     {
-        return restAPI.getValidValueByName(serverName, userId, validValueName);
+        return restAPI.getValidValueByName(serverName, userId, validValueName, startFrom, pageSize);
     }
 
 

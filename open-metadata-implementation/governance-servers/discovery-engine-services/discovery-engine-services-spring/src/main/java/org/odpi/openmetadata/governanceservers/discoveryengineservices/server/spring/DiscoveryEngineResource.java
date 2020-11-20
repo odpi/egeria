@@ -4,12 +4,12 @@ package org.odpi.openmetadata.governanceservers.discoveryengineservices.server.s
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationListResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalysisReportResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,12 +47,12 @@ public class DiscoveryEngineResource
      */
     @PostMapping(path = "/discovery-request-types/{discoveryRequestType}/assets/{assetGUID}")
 
-    public  GUIDResponse discoverAsset(@PathVariable String                       serverName,
-                                       @PathVariable String                       discoveryEngineName,
-                                       @PathVariable String                       userId,
-                                       @PathVariable String                       assetGUID,
-                                       @PathVariable String                       discoveryRequestType,
-                                       @RequestBody  DiscoveryRequestRequestBody  requestBody)
+    public  GUIDResponse discoverAsset(@PathVariable String                      serverName,
+                                       @PathVariable String                      discoveryEngineName,
+                                       @PathVariable String                      userId,
+                                       @PathVariable String                      assetGUID,
+                                       @PathVariable String                      discoveryRequestType,
+                                       @RequestBody  DiscoveryRequestRequestBody requestBody)
     {
         return restAPI.discoverAsset(serverName,
                                      discoveryEngineName,

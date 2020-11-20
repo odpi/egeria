@@ -39,8 +39,8 @@ for each one.
 - [jjwt](https://github.com/jwtk/jjwt) licensed under [Apache License 2.0](https://github.com/jwtk/jjwt/blob/master/LICENSE)
 - [Joda-Time](https://github.com/JodaOrg/joda-time) licensed under [Apache License 2.0](https://github.com/JodaOrg/joda-time/blob/master/LICENSE.txt)
 - JUnit
-    - [junit4](https://github.com/junit-team/junit4) licensed under [Eclipse Public License 1.0](https://github.com/junit-team/junit4/blob/master/LICENSE-junit.txt)
-    - [junit5](https://github.com/junit-team/junit5) junit-jupiter-api, junit-jupiter-engine, junit-platform-runner, junit-platform-suite-api licensed under [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/master/LICENSE.md)
+    - [junit4](https://github.com/junit-team/junit4) licensed under [Eclipse Public License 1.0](https://github.com/junit-team/junit4/blob/main/LICENSE-junit.txt)
+    - [junit5](https://github.com/junit-team/junit5) junit-jupiter-api, junit-jupiter-engine, junit-platform-runner, junit-platform-suite-api licensed under [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
 - [log4j](https://github.com/apache/log4j) licensed under [Apache License 2.0](https://github.com/apache/log4j/blob/trunk/LICENSE)
 - [logback](https://github.com/qos-ch/logback) licensed under the [Eclipse Public License v1.0](https://github.com/qos-ch/logback/blob/master/LICENSE.txt)
 - [Mockito](https://github.com/mockito/mockito) mockito-core, mockito-inline, mockito-junit-jupiter licensed under [MIT License](https://github.com/mockito/mockito/blob/release/3.x/LICENSE)
@@ -53,7 +53,7 @@ for each one.
     - [spring-boot](https://github.com/spring-projects/spring-boot) spring-boot-autoconfigure, spring-boot-starter-data-jpa, spring-boot-starter-security, spring-boot-starter-web licensed under [Apache License 2.0](https://github.com/spring-projects/spring-boot/blob/master/LICENSE.txt)
     - [spring-data-commons](https://github.com/spring-projects/spring-data-commons) licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
     - [spring-data-jpa](https://github.com/spring-projects/spring-data-jpa) licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
-    - [spring-security](https://github.com/spring-projects/spring-security) spring-security-config, spring-security-core, spring-security-ldap, spring-security-web licensed under [Apache License 2.0](https://github.com/spring-projects/spring-security/blob/master/license.txt)
+    - [spring-security](https://github.com/spring-projects/spring-security) spring-security-config, spring-security-core, spring-security-ldap, spring-security-web licensed under [Apache License 2.0](https://github.com/spring-projects/spring-security/blob/master/LICENSE.txt)
 - [springfox](https://github.com/springfox/springfox) core, spi, spring-web, swagger-ui, swagger2 licensed under [Apache License 2.0](https://github.com/springfox/springfox/blob/master/LICENSE)
 - [TestNG](https://github.com/cbeust/testng) licensed under [Apache License 2.0](https://github.com/cbeust/testng/blob/master/LICENSE.txt)
 

@@ -74,41 +74,56 @@ public class ConformanceSuiteOperationalServices
 
         if (enterpriseTopicConnector == null)
         {
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NO_ENTERPRISE_TOPIC;
-            String                    errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(localServerName);
+            ConformanceSuiteErrorCode errorCode              = ConformanceSuiteErrorCode.NO_ENTERPRISE_TOPIC;
+            String                    errorMessage           = errorCode.getErrorMessageId()
+                                                             + errorCode.getFormattedErrorMessage(localServerName);
+            String[]                  errorMessageParameters = { localServerName };
 
             throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                                                       this.getClass().getName(),
                                                       methodName,
                                                       errorMessage,
+                                                      errorCode.getErrorMessageId(),
+                                                      errorMessageParameters,
                                                       errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      errorCode.getUserAction(),
+                                                      null,
+                                                      null);
         }
 
         if (enterpriseConnectorManager == null)
         {
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NO_ENTERPRISE_CONNECTOR_MANAGER;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+            ConformanceSuiteErrorCode errorCode              = ConformanceSuiteErrorCode.NO_ENTERPRISE_CONNECTOR_MANAGER;
+            String                    errorMessage           = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+            String[]                  errorMessageParameters = { localServerName };
 
             throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                                                       this.getClass().getName(),
                                                       methodName,
                                                       errorMessage,
+                                                      errorCode.getErrorMessageId(),
+                                                      errorMessageParameters,
                                                       errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      errorCode.getUserAction(),
+                                                      null,
+                                                      null);
         }
         else if (! enterpriseConnectorManager.isEnterpriseAccessEnabled())
         {
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NO_ENTERPRISE_ACCESS;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+            ConformanceSuiteErrorCode errorCode              = ConformanceSuiteErrorCode.NO_ENTERPRISE_ACCESS;
+            String                    errorMessage           = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+            String[]                  errorMessageParameters = { localServerName };
 
             throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                                                       this.getClass().getName(),
                                                       methodName,
                                                       errorMessage,
+                                                      errorCode.getErrorMessageId(),
+                                                      errorMessageParameters,
                                                       errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      errorCode.getUserAction(),
+                                                      null,
+                                                      null);
         }
 
         /*

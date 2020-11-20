@@ -81,24 +81,23 @@ public class ClassificationAnnotation extends DataFieldAnnotation
     {
         return "ClassificationAnnotation{" +
                 "candidateClassifications=" + candidateClassifications +
-                ", annotationType='" + annotationType + '\'' +
-                ", summary='" + summary + '\'' +
-                ", confidenceLevel=" + confidenceLevel +
-                ", expression='" + expression + '\'' +
-                ", explanation='" + explanation + '\'' +
-                ", analysisStep='" + analysisStep + '\'' +
-                ", jsonProperties='" + jsonProperties + '\'' +
-                ", numAttachedAnnotations=" + numAttachedAnnotations +
-                ", annotationStatus=" + annotationStatus +
-                ", reviewDate=" + reviewDate +
-                ", steward='" + steward + '\'' +
-                ", reviewComment='" + reviewComment + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

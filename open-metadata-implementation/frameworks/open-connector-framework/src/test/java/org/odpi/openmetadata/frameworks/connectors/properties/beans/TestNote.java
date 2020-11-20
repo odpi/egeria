@@ -15,10 +15,10 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestNote
 {
-    private ElementType          type            = new ElementType();
-    private List<Classification> classifications = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
-    private Date                 lastUpdate      = new Date();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
+    private Date                        lastUpdate           = new Date();
 
 
     /**

@@ -1,0 +1,21 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.testng:testng'
+}
+
+description = 'HTTP Helper'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+}

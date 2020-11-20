@@ -83,3 +83,8 @@ See https://dev.azure.com/ODPi/Egeria/_build
 WHen the feature branch is no longer required, it can be deleted by an admin.
 
 Similarly to requesting a feature branch, an issue should be raised, and team agreement sought beforehand. 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -2,19 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +60,8 @@ public class AssetConsumerRESTServices
                                                   String   userId,
                                                   String   connectionName)
     {
-        final String        methodName = "getAssetForConnectionName";
+        final String connectionNameParameterName = "connectionName";
+        final String methodName                  = "getAssetForConnectionName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -73,11 +70,11 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUID(handler.getAssetForConnectionName(userId, connectionName, methodName));
+            response.setGUID(handler.getAssetForConnectionName(userId, connectionName, connectionNameParameterName, methodName));
         }
         catch (Throwable error)
         {
@@ -110,7 +107,8 @@ public class AssetConsumerRESTServices
                                        int      startFrom,
                                        int      pageSize)
     {
-        final String methodName    = "findAssets";
+        final String searchStringParameter = "searchString";
+        final String methodName            = "findAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -119,11 +117,11 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.findAssetGUIDs(userId, searchString, startFrom, pageSize, methodName));
+            response.setGUIDs(handler.findAssetGUIDs(userId, searchString, searchStringParameter, startFrom, pageSize, methodName));
         }
         catch (Throwable error)
         {
@@ -155,7 +153,8 @@ public class AssetConsumerRESTServices
                                             int      startFrom,
                                             int      pageSize)
     {
-        final String methodName = "getAssetsByName";
+        final String nameParameterName = "name";
+        final String methodName        = "getAssetsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -164,59 +163,17 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getAssetGUIDsByName(userId, name, startFrom, pageSize, methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /*
-     * ===========================================
-     * AssetConsumer Connection Interface
-     * ===========================================
-     */
-
-
-    /**
-     * Returns the connection object corresponding to the supplied connection name.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId userId of user making request.
-     * @param name   this may be the qualifiedName or displayName of the connection.
-     *
-     * @return connection object or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * UnrecognizedConnectionNameException - there is no connection defined for this name or
-     * AmbiguousConnectionNameException - there is more than one connection defined for this name or
-     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public ConnectionResponse getConnectionByName(String   serverName,
-                                                  String   userId,
-                                                  String   name)
-    {
-        final String        methodName = "getConnectionByName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        ConnectionResponse  response = new ConnectionResponse();
-        AuditLog            auditLog = null;
-
-        try
-        {
-            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(connectionHandler.getConnectionByName(userId, name, methodName));
+            response.setGUIDs(handler.getAssetGUIDsByName(userId,
+                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                          name,
+                                                          nameParameterName,
+                                                          startFrom,
+                                                          pageSize,
+                                                          methodName));
         }
         catch (Throwable error)
         {
@@ -236,12 +193,13 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Adds a star rating and optional review text to the asset.
+     * Adds a star rating and optional review text to the asset.  If the user has already attached
+     * a rating then the original one is over-ridden.
      *
      * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the asset.
-     * @param requestBody containing the StarRating and user review of asset.
+     * @param requestBody containing the StarRating and user review of referenceable (probably asset).
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -249,12 +207,13 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addRatingToAsset(String            serverName,
-                                         String            userId,
-                                         String            guid,
-                                         RatingRequestBody requestBody)
+    public VoidResponse addRatingToAsset(String           serverName,
+                                         String           userId,
+                                         String           guid,
+                                         RatingProperties requestBody)
     {
-        final String        methodName = "addRatingToAsset";
+        final String methodName = "addRatingToAsset";
+        final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -265,15 +224,24 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
+                int starRating = StarRating.NO_RECOMMENDATION.getOpenTypeOrdinal();
+
+                if (requestBody.getStarRating() != null)
+                {
+                    starRating = requestBody.getStarRating().getOpenTypeOrdinal();
+                }
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.addRatingToAsset(userId,
-                                         guid,
-                                         requestBody.getStarRating(),
-                                         requestBody.getReview(),
-                                         requestBody.isPublic(),
-                                         methodName);
+                handler.saveRating(userId,
+                                   null,
+                                   null,
+                                   guid,
+                                   guidParameterName,
+                                   starRating,
+                                   requestBody.getReview(),
+                                   requestBody.isPublic(),
+                                   methodName);
 
             }
             else
@@ -311,7 +279,8 @@ public class AssetConsumerRESTServices
                                               String          guid,
                                               NullRequestBody requestBody)
     {
-        final String        methodName = "removeRatingFromAsset";
+        final String methodName = "removeRatingFromAsset";
+        final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -320,10 +289,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            RatingHandler<RatingElement> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeRatingFromAsset(userId, guid, methodName);
+            handler.removeRating(userId,
+                                 null,
+                                 null,
+                                 guid,
+                                 guidParameterName,
+                                 methodName);
         }
         catch (Throwable error)
         {
@@ -336,7 +310,7 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Adds a "Like" to the asset.
+     * Adds a "LikeProperties" to the asset.
      *
      * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
@@ -354,7 +328,8 @@ public class AssetConsumerRESTServices
                                        String              guid,
                                        FeedbackRequestBody requestBody)
     {
-        final String        methodName = "addLikeToAsset";
+        final String methodName        = "addLikeToAsset";
+        final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -365,10 +340,16 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                LikeHandler<LikeElement> handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.addLikeToAsset(userId, guid, requestBody.isPublic(), methodName);
+                handler.saveLike(userId,
+                                 null,
+                                 null,
+                                 guid,
+                                 guidParameterName,
+                                 requestBody.getIsPublic(),
+                                 methodName);
             }
             else
             {
@@ -386,7 +367,7 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Removes a "Like" added to the asset by this user.
+     * Removes a "LikeProperties" added to the asset by this user.
      *
      * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
@@ -405,7 +386,8 @@ public class AssetConsumerRESTServices
                                             String          guid,
                                             NullRequestBody requestBody)
     {
-        final String        methodName = "removeLikeFromAsset";
+        final String methodName        = "removeLikeFromAsset";
+        final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -414,10 +396,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeLikeFromAsset(userId, guid, methodName);
+            handler.removeLike(userId,
+                               null,
+                               null,
+                               guid,
+                               guidParameterName,
+                               methodName);
         }
         catch (Throwable error)
         {
@@ -443,12 +430,13 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentToAsset(String             serverName,
-                                          String             userId,
-                                          String             guid,
-                                          CommentRequestBody requestBody)
+    public GUIDResponse addCommentToAsset(String            serverName,
+                                          String            userId,
+                                          String            guid,
+                                          CommentProperties requestBody)
     {
         final String        methodName = "addCommentToAsset";
+        final String        guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -459,14 +447,24 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+
+                if (requestBody.getCommentType() != null)
+                {
+                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                }
+                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.addCommentToAsset(userId,
+                response.setGUID(handler.attachNewComment(userId,
+                                                           null,
+                                                           null,
                                                            guid,
-                                                           requestBody.getCommentType(),
+                                                           guid,
+                                                           guidParameterName,
+                                                           commentType,
                                                            requestBody.getCommentText(),
-                                                           requestBody.isPublic(),
+                                                           requestBody.getIsPublic(),
                                                            methodName));
             }
             else
@@ -499,13 +497,14 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentReply(String             serverName,
-                                        String             userId,
-                                        String             assetGUID,
-                                        String             commentGUID,
-                                        CommentRequestBody requestBody)
+    public GUIDResponse addCommentReply(String            serverName,
+                                        String            userId,
+                                        String            assetGUID,
+                                        String            commentGUID,
+                                        CommentProperties requestBody)
     {
-        final String        methodName = "addCommentReply";
+        final String guidParameterName = "commentGUID";
+        final String methodName        = "addCommentReply";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -516,16 +515,26 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+
+                if (requestBody.getCommentType() != null)
+                {
+                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                }
+
+                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.addCommentReply(userId,
-                                                         assetGUID,
-                                                         commentGUID,
-                                                         requestBody.getCommentType(),
-                                                         requestBody.getCommentText(),
-                                                         requestBody.isPublic(),
-                                                         methodName));
+                response.setGUID(handler.attachNewComment(userId,
+                                                          null,
+                                                          null,
+                                                          assetGUID,
+                                                          commentGUID,
+                                                          guidParameterName,
+                                                          commentType,
+                                                          requestBody.getCommentText(),
+                                                          requestBody.getIsPublic(),
+                                                          methodName));
             }
             else
             {
@@ -556,13 +565,15 @@ public class AssetConsumerRESTServices
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateComment(String              serverName,
-                                        String              userId,
-                                        String              assetGUID,
-                                        String              commentGUID,
-                                        CommentRequestBody  requestBody)
+    @SuppressWarnings(value = "unused")
+    public VoidResponse   updateComment(String             serverName,
+                                        String             userId,
+                                        String             assetGUID,
+                                        String             commentGUID,
+                                        CommentProperties requestBody)
     {
-        final String        methodName = "updateComment";
+        final String guidParameterName = "commentGUID";
+        final String methodName        = "updateComment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -573,16 +584,25 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+
+                if (requestBody.getCommentType() != null)
+                {
+                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                }
+
+                CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updateAssetComment(userId,
-                                           assetGUID,
-                                           commentGUID,
-                                           requestBody.getCommentType(),
-                                           requestBody.getCommentText(),
-                                           requestBody.isPublic(),
-                                           methodName);
+                handler.updateComment(userId,
+                                      null,
+                                      null,
+                                      commentGUID,
+                                      guidParameterName,
+                                      commentType,
+                                      requestBody.getCommentText(),
+                                      requestBody.getIsPublic(),
+                                      methodName);
             }
             else
             {
@@ -621,7 +641,8 @@ public class AssetConsumerRESTServices
                                                String          commentGUID,
                                                NullRequestBody requestBody)
     {
-        final String        methodName = "removeAssetComment";
+        final String guidParameterName = "commentGUID";
+        final String methodName        = "removeAssetComment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -630,10 +651,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeAssetComment(userId, assetGUID, commentGUID, methodName);
+            handler.removeCommentFromElement(userId,
+                                             null,
+                                             null,
+                                             commentGUID,
+                                             guidParameterName,
+                                             methodName);
         }
         catch (Throwable error)
         {
@@ -669,7 +695,8 @@ public class AssetConsumerRESTServices
                                            String   userId,
                                            String   guid)
     {
-        final String        methodName = "getMeaning";
+        final String guidParameterName = "guid";
+        final String methodName        = "getMeaning";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -678,10 +705,10 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryTermHandler glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+            GlossaryTermHandler<MeaningElement> glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGlossaryTerm(glossaryTermHandler.getMeaning(userId, guid, methodName));
+            response.setMeaning(glossaryTermHandler.getTerm(userId, guid, guidParameterName, methodName));
         }
         catch (Throwable error)
         {
@@ -713,7 +740,8 @@ public class AssetConsumerRESTServices
                                                      int     startFrom,
                                                      int     pageSize)
     {
-        final String  methodName = "getMeaningByName";
+        final String nameParameterName = "term";
+        final String methodName        = "getMeaningByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -722,10 +750,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryTermHandler glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+            GlossaryTermHandler<MeaningElement> glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeanings(glossaryTermHandler.getMeaningByName(userId, term, startFrom, pageSize, methodName));
+            response.setMeanings(glossaryTermHandler.getTermsByName(userId,
+                                                                    term,
+                                                                    nameParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
@@ -758,6 +791,7 @@ public class AssetConsumerRESTServices
                                                  int     startFrom,
                                                  int     pageSize)
     {
+        final String nameParameterName = "term";
         final String methodName = "findMeanings";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -767,10 +801,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryTermHandler glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+            GlossaryTermHandler<MeaningElement> glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeanings(glossaryTermHandler.findMeanings(userId, term, startFrom, pageSize, methodName));
+            response.setMeanings(glossaryTermHandler.findTerms(userId,
+                                                               term,
+                                                               nameParameterName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
@@ -781,6 +820,7 @@ public class AssetConsumerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
 
     /**
      * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
@@ -803,7 +843,8 @@ public class AssetConsumerRESTServices
                                                int    startFrom,
                                                int    pageSize)
     {
-        final String   methodName  = "getAssetsByMeaning";
+        final String guidParameterName = "termGUID";
+        final String methodName        = "getAssetsByMeaning";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -812,10 +853,19 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getAssetsByMeaning(userId, termGUID, startFrom, pageSize, methodName));
+            response.setGUIDs(handler.getAttachedElementGUIDs(userId,
+                                                              termGUID,
+                                                              guidParameterName,
+                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                              startFrom,
+                                                              pageSize,
+                                                              methodName));
         }
         catch (Throwable error)
         {
@@ -914,9 +964,9 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createTag(String         serverName,
-                                   String         userId,
-                                   TagRequestBody requestBody)
+    public GUIDResponse createTag(String                serverName,
+                                  String                userId,
+                                  InformalTagProperties requestBody)
     {
         final String   methodName = "createTag";
 
@@ -929,13 +979,15 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+                InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setGUID(handler.createTag(userId,
-                                                   requestBody.getTagName(),
-                                                   requestBody.getTagDescription(),
-                                                   requestBody.isPublic(),
+                                                   null,
+                                                   null,
+                                                   requestBody.getName(),
+                                                   requestBody.getDescription(),
+                                                   (!requestBody.getIsPrivateTag()),
                                                    methodName));
             }
             else
@@ -966,12 +1018,13 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateTagDescription(String         serverName,
-                                               String         userId,
-                                               String         tagGUID,
-                                               TagRequestBody requestBody)
+    public VoidResponse   updateTagDescription(String                serverName,
+                                               String                userId,
+                                               String                tagGUID,
+                                               InformalTagProperties requestBody)
     {
-        final String   methodName = "updateTagDescription";
+        final String methodName           = "updateTagDescription";
+        final String tagGUIDParameterName = "tagGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -982,10 +1035,16 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+                InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updateTagDescription(userId, tagGUID, requestBody.getTagDescription(), methodName);
+                handler.updateTagDescription(userId,
+                                             null,
+                                             null,
+                                             tagGUID,
+                                             tagGUIDParameterName,
+                                             requestBody.getDescription(),
+                                             methodName);
             }
             else
             {
@@ -1021,7 +1080,8 @@ public class AssetConsumerRESTServices
                                     String          tagGUID,
                                     NullRequestBody requestBody)
     {
-        final String   methodName = "deleteTag";
+        final String methodName           = "deleteTag";
+        final String tagGUIDParameterName = "tagGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1030,10 +1090,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.deleteTag(userId, tagGUID, methodName);
+            handler.deleteTag(userId,
+                              null,
+                              null,
+                              tagGUID,
+                              tagGUIDParameterName,
+                              methodName);
         }
         catch (Throwable error)
         {
@@ -1061,7 +1126,8 @@ public class AssetConsumerRESTServices
                               String userId,
                               String guid)
     {
-        final String   methodName = "getTag";
+        final String methodName = "getTag";
+        final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1070,10 +1136,13 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement>  handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTag(handler.getTag(userId, guid, methodName));
+            response.setTag(handler.getTag(userId,
+                                           guid,
+                                           guidParameterName,
+                                           methodName));
         }
         catch (Throwable error)
         {
@@ -1105,7 +1174,8 @@ public class AssetConsumerRESTServices
                                       int    startFrom,
                                       int    pageSize)
     {
-        final String   methodName = "getTagsByName";
+        final String methodName = "getTagsByName";
+        final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1114,10 +1184,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.getTagsByName(userId, tagName, startFrom, pageSize, methodName));
+            response.setTags(handler.getTagsByName(userId,
+                                                   tagName,
+                                                   nameParameterName,
+                                                   startFrom,
+                                                   pageSize,
+                                                   methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
@@ -1150,7 +1225,8 @@ public class AssetConsumerRESTServices
                                         int    startFrom,
                                         int    pageSize)
     {
-        final String   methodName = "getMyTagsByName";
+        final String methodName = "getMyTagsByName";
+        final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1159,10 +1235,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.getMyTagsByName(userId, tagName, startFrom, pageSize, methodName));
+            response.setTags(handler.getMyTagsByName(userId,
+                                                     tagName,
+                                                     nameParameterName,
+                                                     startFrom,
+                                                     pageSize,
+                                                     methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
@@ -1195,7 +1276,8 @@ public class AssetConsumerRESTServices
                                  int    startFrom,
                                  int    pageSize)
     {
-        final String   methodName = "findTags";
+        final String methodName = "findTags";
+        final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1204,10 +1286,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.findTags(userId, tagName, startFrom, pageSize, methodName));
+            response.setTags(handler.findTags(userId,
+                                              tagName,
+                                              nameParameterName,
+                                              startFrom,
+                                              pageSize,
+                                              methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
@@ -1235,12 +1322,13 @@ public class AssetConsumerRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public TagsResponse findMyTags(String serverName,
-                                 String userId,
-                                 String tagName,
-                                 int    startFrom,
-                                 int    pageSize)
+                                   String userId,
+                                   String tagName,
+                                   int    startFrom,
+                                   int    pageSize)
     {
-        final String   methodName = "findMyTags";
+        final String methodName = "findMyTags";
+        final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1249,10 +1337,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.findMyTags(userId, tagName, startFrom, pageSize, methodName));
+            response.setTags(handler.findMyTags(userId,
+                                                tagName,
+                                                nameParameterName,
+                                                startFrom,
+                                                pageSize,
+                                                methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Throwable error)
@@ -1285,7 +1378,9 @@ public class AssetConsumerRESTServices
                                         String              tagGUID,
                                         FeedbackRequestBody requestBody)
     {
-        final String   methodName  = "addTagToAsset";
+        final String methodName             = "addTagToAsset";
+        final String assetGUIDParameterName = "assetGUID";
+        final String tagGUIDParameterName   = "tagGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1293,7 +1388,7 @@ public class AssetConsumerRESTServices
 
         if (requestBody != null)
         {
-            isPublic = requestBody.isPublic();
+            isPublic = requestBody.getIsPublic();
         }
 
         VoidResponse  response = new VoidResponse();
@@ -1301,10 +1396,83 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.addTagToAsset(userId, assetGUID, tagGUID, isPublic, methodName);
+            handler.addTagToElement(userId,
+                                    null,
+                                    null,
+                                    assetGUID,
+                                    assetGUIDParameterName,
+                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                    tagGUID,
+                                    tagGUIDParameterName,
+                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                    isPublic,
+                                    methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId       userId of user making request.
+     * @param elementGUID    unique id for the element.
+     * @param tagGUID      unique id of the tag.
+     * @param requestBody  feedback request body.
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse   addTagToElement(String              serverName,
+                                          String              userId,
+                                          String              elementGUID,
+                                          String              tagGUID,
+                                          FeedbackRequestBody requestBody)
+    {
+        final String   methodName  = "addTagToElement";
+        final String   elementGUIDParameterName  = "elementGUID";
+        final String   tagGUIDParameterName  = "tagGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        boolean  isPublic = false;
+
+        if (requestBody != null)
+        {
+            isPublic = requestBody.getIsPublic();
+        }
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.addTagToElement(userId,
+                                    null,
+                                    null,
+                                    elementGUID,
+                                    elementGUIDParameterName,
+                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                    tagGUID,
+                                    tagGUIDParameterName,
+                                    isPublic,
+                                    methodName);
         }
         catch (Throwable error)
         {
@@ -1338,6 +1506,8 @@ public class AssetConsumerRESTServices
                                              NullRequestBody requestBody)
     {
         final String   methodName  = "removeTagFromAsset";
+        final String   assetGUIDParameterName  = "assetGUID";
+        final String   tagGUIDParameterName  = "tagGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1346,10 +1516,78 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeTagFromAsset(userId, assetGUID, tagGUID, methodName);
+
+            handler.removeTagFromElement(userId,
+                                         null,
+                                         null,
+                                         assetGUID,
+                                         assetGUIDParameterName,
+                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                         tagGUID,
+                                         tagGUIDParameterName,
+                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                         methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Removes a tag from an element attached to an asset - such as schema element, glossary term, ... that was added by this user.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId    userId of user making request.
+     * @param elementGUID unique id for the element.
+     * @param tagGUID   unique id for the tag.
+     * @param requestBody  null request body needed for correct protocol exchange.
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse   removeTagFromElement(String          serverName,
+                                               String          userId,
+                                               String          elementGUID,
+                                               String          tagGUID,
+                                               NullRequestBody requestBody)
+    {
+        final String methodName               = "removeTagFromElement";
+        final String elementGUIDParameterName = "elementGUID";
+        final String tagGUIDParameterName     = "tagGUID";
+
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.removeTagFromElement(userId,
+                                         null,
+                                         null,
+                                         elementGUID,
+                                         elementGUIDParameterName,
+                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                         tagGUID,
+                                         tagGUIDParameterName,
+                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                         methodName);
         }
         catch (Throwable error)
         {
@@ -1382,7 +1620,8 @@ public class AssetConsumerRESTServices
                                            int    startFrom,
                                            int    pageSize)
     {
-        final String   methodName  = "getAssetsByTag";
+        final String methodName           = "getAssetsByTag";
+        final String tagGUIDParameterName = "tagGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1391,10 +1630,15 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getAssetsByTag(userId, tagGUID, startFrom, pageSize, methodName));
+            response.setGUIDs(handler.getAssetGUIDsByTag(userId,
+                                                         tagGUID,
+                                                         tagGUIDParameterName,
+                                                         startFrom,
+                                                         pageSize,
+                                                         methodName));
         }
         catch (Throwable error)
         {

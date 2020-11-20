@@ -16,18 +16,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
         property = "class",
-        defaultImpl = Category.class
+        defaultImpl = Category.class,
+        visible = true
 )
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = SubjectAreaDefinition.class, name = "SubjectAreaDefinition")
-        })
+@JsonSubTypes({ @JsonSubTypes.Type(value = SubjectAreaDefinition.class) })
 public class Category extends Node {
-    private GlossarySummary glossary =null;
-    private CategorySummary parentCategory;
+    private GlossarySummary glossary = null;
+    private CategorySummary parentCategory = null;
 
     public Category() {
         nodeType = NodeType.Category;

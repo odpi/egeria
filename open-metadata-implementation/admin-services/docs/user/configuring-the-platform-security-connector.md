@@ -44,7 +44,7 @@ It is possible to query the setting of the platform security connector
 using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/security/connection
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
 ```
 
 If the response is:
@@ -79,7 +79,7 @@ It is possible to remove the configuration for the connector using
 the following command:
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/security/connection
+DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
 ```
 
 This removes all authorization checking from the platform services.

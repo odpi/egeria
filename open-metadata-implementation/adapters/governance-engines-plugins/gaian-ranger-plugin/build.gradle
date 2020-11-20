@@ -1,0 +1,22 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.apache.commons:commons-collections4'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.apache.ranger:ranger-plugins-common'
+    implementation 'org.springframework:spring-web'
+    implementation 'org.apache.hadoop:hadoop-common'
+    compileOnly 'com.ibm.gaiandb:gaian:2.1.8'
+    compileOnly 'org.apache.derby:derby:10.8.3.1'
+}
+
+description = 'Ranger Gaian Plugin'
+
+java {
+    withJavadocJar()
+}

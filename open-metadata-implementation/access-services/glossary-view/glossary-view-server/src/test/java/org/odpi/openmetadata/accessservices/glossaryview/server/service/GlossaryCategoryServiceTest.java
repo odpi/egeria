@@ -39,6 +39,25 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBaseTest{
     }
 
     @Test
+    public void getAllCategories() throws Exception{
+        when(repositoryHandler.getEntitiesByType(eq(USER_ID), eq(CATEGORY_TYPE_GUID),
+                anyInt(), anyInt(), eq("getAllCategories"))).thenReturn(categories);
+
+        GlossaryViewEntityDetailResponse response = underTest.getAllCategories(USER_ID, SERVER_NAME, 0, 10);
+
+        assertEquals(3, response.getResult().size());
+
+        assertGlossaryCategoryProperties(categories.get(0), (GlossaryCategory)response.getResult().get(0));
+        assertGlossaryCategoryProperties(categories.get(1), (GlossaryCategory)response.getResult().get(1));
+        assertGlossaryCategoryProperties(categories.get(2), (GlossaryCategory)response.getResult().get(2));
+
+        assertTrue(isEffective.test(response.getResult().get(0)));
+        assertTrue(isEffective.test(response.getResult().get(1)));
+        assertTrue(isEffective.test(response.getResult().get(2)));
+
+    }
+
+    @Test
     public void getCategoriesViaCategoryAnchorRelationships() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
                 eq(CATEGORY_ANCHOR_RELATIONSHIP_GUID), eq(CATEGORY_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),

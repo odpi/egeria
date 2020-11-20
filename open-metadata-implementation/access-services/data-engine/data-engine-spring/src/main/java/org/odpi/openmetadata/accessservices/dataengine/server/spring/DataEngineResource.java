@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngine
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -114,6 +115,22 @@ public class DataEngineResource {
     }
 
     /**
+     * Add a ProcessHierarchy relationship between Process entities
+     *
+     * @param serverName                  name of server instance to call
+     * @param userId                      the name of the calling user
+     * @param processHierarchyRequestBody properties of the process hierarchy
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     */
+    @PostMapping(path = "/process-hierarchies")
+    public GUIDResponse addProcessHierarchy(@PathVariable("userId") String userId,
+                                            @PathVariable("serverName") String serverName,
+                                            @RequestBody ProcessHierarchyRequestBody processHierarchyRequestBody) {
+        return restAPI.addProcessHierarchy(userId, serverName, processHierarchyRequestBody);
+    }
+
+    /**
      * Create or update  the Process entities with ports, schema types and all needed relationships
      *
      * @param serverName           name of server instance to call
@@ -161,5 +178,24 @@ public class DataEngineResource {
                                            @PathVariable("serverName") String serverName,
                                            @RequestBody LineageMappingsRequestBody lineageMappingsRequestBody) {
         return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
+    }
+
+    /***
+     * Get connection details used to access Data Engine OMAS input topic
+     *
+     * @param serverName    name of server instance to call
+     * @param userId        name of the calling user
+     * @return OCF API ConnectionResponse object describing the details for the in topic connection used
+     * or
+     *      * InvalidParameterException one of the parameters is null or invalid or
+     *      * UserNotAuthorizedException user not authorized to issue this request or
+     *      * PropertyServerException problem retrieving the discovery engine definition
+     *
+     */
+    @GetMapping(path = "/topics/in-topic-connection")
+
+    public ConnectionResponse getInTopicConnection(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId) {
+        return restAPI.getInTopicConnection(serverName, userId);
     }
 }

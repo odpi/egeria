@@ -3,14 +3,16 @@
 package org.odpi.openmetadata.accessservices.subjectarea.samples.definition;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,8 +58,8 @@ public class SubjectAreaDefinitionSample
     private String              serverURLRoot;
     private String              clientUserId;
     private String              serverName;
-    private SubjectAreaGlossary subjectAreaGlossary  =null;
-    private SubjectAreaCategory subjectAreaCategory  =null;
+    private SubjectAreaNodeClient<Glossary> subjectAreaGlossary  =null;
+    private SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaCategory  =null;
 
 
     /**
@@ -78,11 +80,10 @@ public class SubjectAreaDefinitionSample
      * Run the sample
      * @throws SubjectAreaCheckedException error
      */
-    private void run() throws SubjectAreaCheckedException
-    {
+    private void run() throws SubjectAreaCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectArea subjectArea = new SubjectAreaImpl(this.serverName, this.serverURLRoot);
-        subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
-        subjectAreaCategory = subjectArea.getSubjectAreaCategory();
+        subjectAreaGlossary = subjectArea.nodeClients().glossaries();
+        subjectAreaCategory = subjectArea.nodeClients().categories();
 
         System.out.println("----------------------------");
         System.out.println("Creating the Coco Pharmaceutical Glossary for Subject Area Definitions : ");
@@ -139,10 +140,8 @@ public class SubjectAreaDefinitionSample
      * @param name name of the Subject Area Definition to create
      * @param glossaryGuid guid of the glossary to associate the Subject Area with.
      * @return SubjectAreaDefinition the created Subject Area Definition
-     * @throws  SubjectAreaCheckedException error
      */
-    private SubjectAreaDefinition createTopSubjectAreaDefinition( String name, String glossaryGuid)  throws SubjectAreaCheckedException
-    {
+    private SubjectAreaDefinition createTopSubjectAreaDefinition( String name, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         System.out.println("----------------------------");
         System.out.println("Creating a top level Subject Area Definition called " + name);
         SubjectAreaDefinition subjectAreaDefinition = new SubjectAreaDefinition();
@@ -150,7 +149,7 @@ public class SubjectAreaDefinitionSample
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         subjectAreaDefinition.setGlossary(glossarySummary);
-        return subjectAreaCategory.createSubjectAreaDefinition(clientUserId, subjectAreaDefinition);
+        return subjectAreaCategory.create(clientUserId, subjectAreaDefinition);
     }
 
 
@@ -160,10 +159,8 @@ public class SubjectAreaDefinitionSample
      * @param parent parent Category
      * @param glossaryGuid guid of the glossary to associate the Subject Area with.
      * @return SubjectAreaDefinition the created Subject Area Definition
-     * @throws SubjectAreaCheckedException error
      */
-    private SubjectAreaDefinition createChildSubjectAreaDefinition(String name, SubjectAreaDefinition parent, String glossaryGuid) throws SubjectAreaCheckedException
-    {
+    private SubjectAreaDefinition createChildSubjectAreaDefinition(String name, SubjectAreaDefinition parent, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaDefinition subjectAreaDefinition = new SubjectAreaDefinition();
         subjectAreaDefinition.setName(name);
         GlossarySummary glossarySummary = new GlossarySummary();
@@ -172,8 +169,7 @@ public class SubjectAreaDefinitionSample
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
         subjectAreaDefinition.setParentCategory(parentCategorysummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(clientUserId,
-                subjectAreaDefinition);
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.create(clientUserId, subjectAreaDefinition);
         if (newSubjectAreaDefinition != null)
         {
             System.out.println("Created Subject Area Definition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID() + ", parent SubjectArea Definition is " + parent.getName());
@@ -189,14 +185,12 @@ public class SubjectAreaDefinitionSample
      * @param glossaryName name of the glossary to create
      * @param glossaryDescription description of the Glossary
      * @return created glossary
-     * @throws SubjectAreaCheckedException error
      */
-    private Glossary createGlossary(String userId, String glossaryName, String glossaryDescription) throws SubjectAreaCheckedException
-    {
+    private Glossary createGlossary(String userId, String glossaryName, String glossaryDescription) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary = new Glossary();
         glossary.setName(glossaryName);
         glossary.setDescription(glossaryDescription);
-        return subjectAreaGlossary.createGlossary(userId, glossary);
+        return subjectAreaGlossary.create(userId, glossary);
     }
 
 

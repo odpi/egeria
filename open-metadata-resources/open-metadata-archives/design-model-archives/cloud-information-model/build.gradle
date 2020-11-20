@@ -1,0 +1,36 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
+
+dependencies {
+    implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    implementation 'com.github.jsonld-java:jsonld-java'
+    implementation 'ch.qos.logback:logback-classic'
+    testImplementation 'org.testng:testng'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'Cloud Information Model'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel.CloudInformationModelArchiveWriter'
+    archiveClassifier = 'jar-with-dependencies'
+}
+

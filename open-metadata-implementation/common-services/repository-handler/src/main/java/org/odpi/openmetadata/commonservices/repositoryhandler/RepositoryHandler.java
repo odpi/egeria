@@ -14,7 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RepositoryHandler issues common calls to the open metadata repository to retrieve and store metadata.  It converts the
@@ -71,6 +74,8 @@ public class RepositoryHandler
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String localMethodName = "validateEntityGUID";
+
         try
         {
             return metadataCollection.getEntitySummary(userId, guid);
@@ -89,7 +94,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -115,15 +120,13 @@ public class RepositoryHandler
                                         String                  guidParameterName) throws UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
+        final String localMethodName = "isEntityKnown";
+
         try
         {
             EntitySummary entity = metadataCollection.getEntitySummary(userId, guid);
 
-            errorHandler.validateInstanceType(userId,
-                                             entity,
-                                             guidParameterName,
-                                             entityTypeName,
-                                             methodName);
+            errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
 
             return entity;
         }
@@ -137,10 +140,49 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
+    }
+
+
+    /**
+     * Create a new entity from an external source in the open metadata repository with the specified instance status.
+     *
+     * @param userId calling user
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param properties properties for the entity
+     * @param instanceStatus initial status (needs to be valid for type)
+     * @param methodName name of calling method
+     *
+     * @return unique identifier of new entity
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public String  createExternalEntity(String                  userId,
+                                        String                  entityTypeGUID,
+                                        String                  entityTypeName,
+                                        String                  externalSourceGUID,
+                                        String                  externalSourceName,
+                                        InstanceProperties      properties,
+                                        InstanceStatus          instanceStatus,
+                                        String                  methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return this.createEntity(userId,
+                                 entityTypeGUID,
+                                 entityTypeName,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 properties,
+                                 null,
+                                 instanceStatus,
+                                 methodName);
     }
 
 
@@ -157,6 +199,7 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public String  createEntity(String                  userId,
                                 String                  entityTypeGUID,
                                 String                  entityTypeName,
@@ -167,6 +210,8 @@ public class RepositoryHandler
         return this.createEntity(userId,
                                  entityTypeGUID,
                                  entityTypeName,
+                                 null,
+                                 null,
                                  properties,
                                  null,
                                  InstanceStatus.ACTIVE,
@@ -180,6 +225,8 @@ public class RepositoryHandler
      * @param userId calling user
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
      * @param properties properties for the entity
      * @param initialClassifications list of classifications to attach to the entity
      * @param methodName name of calling method
@@ -191,6 +238,8 @@ public class RepositoryHandler
     public String  createEntity(String                  userId,
                                 String                  entityTypeGUID,
                                 String                  entityTypeName,
+                                String                  externalSourceGUID,
+                                String                  externalSourceName,
                                 InstanceProperties      properties,
                                 List<Classification>    initialClassifications,
                                 String                  methodName) throws UserNotAuthorizedException,
@@ -199,6 +248,8 @@ public class RepositoryHandler
         return this.createEntity(userId,
                                  entityTypeGUID,
                                  entityTypeName,
+                                 externalSourceGUID,
+                                 externalSourceName,
                                  properties,
                                  initialClassifications,
                                  InstanceStatus.ACTIVE,
@@ -207,11 +258,50 @@ public class RepositoryHandler
 
 
     /**
-     * Create a new entity in the open metadata repository with the specified instance status.
+     * Create a new entity in the open metadata repository with the ACTIVE instance status.
      *
      * @param userId calling user
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param properties properties for the entity
+     * @param methodName name of calling method
+     *
+     * @return unique identifier of new entity
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  createEntity(String                  userId,
+                                String                  entityTypeGUID,
+                                String                  entityTypeName,
+                                String                  externalSourceGUID,
+                                String                  externalSourceName,
+                                InstanceProperties      properties,
+                                String                  methodName) throws UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return this.createEntity(userId,
+                                 entityTypeGUID,
+                                 entityTypeName,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 properties,
+                                 null,
+                                 InstanceStatus.ACTIVE,
+                                 methodName);
+    }
+
+
+    /**
+     * Create a new entity in the open metadata repository with the specified instance status. The setting of externalSourceGUID determines
+     * whether a local or a remote entity is created.
+     *
+     * @param userId calling user
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
      * @param properties properties for the entity
      * @param instanceStatus initial status (needs to be valid for type)
      * @param methodName name of calling method
@@ -223,27 +313,34 @@ public class RepositoryHandler
     public String  createEntity(String                  userId,
                                 String                  entityTypeGUID,
                                 String                  entityTypeName,
+                                String                  externalSourceGUID,
+                                String                  externalSourceName,
                                 InstanceProperties      properties,
                                 InstanceStatus          instanceStatus,
                                 String                  methodName) throws UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-       return this.createEntity(userId,
-                                entityTypeGUID,
-                                entityTypeName,
-                                properties,
-                                null,
-                                instanceStatus,
-                                methodName);
+        return this.createEntity(userId,
+                                 entityTypeGUID,
+                                 entityTypeName,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 properties,
+                                 null,
+                                 instanceStatus,
+                                 methodName);
     }
 
 
     /**
-     * Create a new entity in the open metadata repository with the specified instance status.
+     * Create a new entity in the open metadata repository with the specified instance status.  The setting of externalSourceGUID determines
+     * whether a local or a remote entity is created.
      *
      * @param userId calling user
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
      * @param properties properties for the entity
      * @param initialClassifications list of classifications for the first version of this entity.
      * @param instanceStatus initial status (needs to be valid for type)
@@ -256,19 +353,37 @@ public class RepositoryHandler
     public String  createEntity(String                  userId,
                                 String                  entityTypeGUID,
                                 String                  entityTypeName,
+                                String                  externalSourceGUID,
+                                String                  externalSourceName,
                                 InstanceProperties      properties,
                                 List<Classification>    initialClassifications,
                                 InstanceStatus          instanceStatus,
                                 String                  methodName) throws UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        final String localMethodName = "createEntity";
+
         try
         {
-            EntityDetail newEntity = metadataCollection.addEntity(userId,
-                                                                  entityTypeGUID,
-                                                                  properties,
-                                                                  initialClassifications,
-                                                                  instanceStatus);
+            EntityDetail newEntity;
+            if (externalSourceGUID == null)
+            {
+                newEntity = metadataCollection.addEntity(userId,
+                                                         entityTypeGUID,
+                                                         properties,
+                                                         initialClassifications,
+                                                         instanceStatus);
+            }
+            else
+            {
+                newEntity = metadataCollection.addExternalEntity(userId,
+                                                                 entityTypeGUID,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 properties,
+                                                                 initialClassifications,
+                                                                 instanceStatus);
+            }
 
             if (newEntity != null)
             {
@@ -286,179 +401,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
-        }
-
-        return null;
-    }
-
-    /**
-     * Create a new entity from an external source in the open metadata repository with the ACTIVE instance status.
-     *
-     * @param userId calling user
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param externalSourceGUID unique identifier (guid) for the external source.
-     * @param externalSourceName unique name for the external source.
-     * @param properties properties for the entity
-     * @param methodName name of calling method
-     *
-     * @return unique identifier of new entity
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String  createExternalEntity(String                  userId,
-                                        String                  entityTypeGUID,
-                                        String                  entityTypeName,
-                                        String                  externalSourceGUID,
-                                        String                  externalSourceName,
-                                        InstanceProperties      properties,
-                                        String                  methodName) throws UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        return this.createExternalEntity(userId,
-                                         entityTypeGUID,
-                                         entityTypeName,
-                                         externalSourceGUID,
-                                         externalSourceName,
-                                         properties,
-                                         null,
-                                         InstanceStatus.ACTIVE,
-                                         methodName);
-    }
-
-
-    /**
-     * Create a new entity from an external source in the open metadata repository with the ACTIVE instance status.
-     *
-     * @param userId calling user
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param externalSourceGUID unique identifier (guid) for the external source.
-     * @param externalSourceName unique name for the external source.
-     * @param properties properties for the entity
-     * @param initialClassifications list of classifications to attach to the entity
-     * @param methodName name of calling method
-     *
-     * @return unique identifier of new entity
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String  createExternalEntity(String                  userId,
-                                        String                  entityTypeGUID,
-                                        String                  entityTypeName,
-                                        String                  externalSourceGUID,
-                                        String                  externalSourceName,
-                                        InstanceProperties      properties,
-                                        List<Classification>    initialClassifications,
-                                        String                  methodName) throws UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        return this.createExternalEntity(userId,
-                                         entityTypeGUID,
-                                         entityTypeName,
-                                         externalSourceGUID,
-                                         externalSourceName,
-                                         properties,
-                                         initialClassifications,
-                                         InstanceStatus.ACTIVE,
-                                         methodName);
-    }
-
-
-    /**
-     * Create a new entity from an external source in the open metadata repository with the specified instance status.
-     *
-     * @param userId calling user
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param externalSourceGUID unique identifier (guid) for the external source.
-     * @param externalSourceName unique name for the external source.
-     * @param properties properties for the entity
-     * @param instanceStatus initial status (needs to be valid for type)
-     * @param methodName name of calling method
-     *
-     * @return unique identifier of new entity
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String  createExternalEntity(String                  userId,
-                                        String                  entityTypeGUID,
-                                        String                  entityTypeName,
-                                        String                  externalSourceGUID,
-                                        String                  externalSourceName,
-                                        InstanceProperties      properties,
-                                        InstanceStatus          instanceStatus,
-                                        String                  methodName) throws UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        return this.createExternalEntity(userId,
-                                         entityTypeGUID,
-                                         entityTypeName,
-                                         externalSourceGUID,
-                                         externalSourceName,
-                                         properties,
-                                         null,
-                                         instanceStatus,
-                                         methodName);
-    }
-
-
-    /**
-     * Create a new entity from an external source in the open metadata repository with the specified instance status.
-     *
-     * @param userId calling user
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param externalSourceGUID unique identifier (guid) for the external source.
-     * @param externalSourceName unique name for the external source.
-     * @param properties properties for the entity
-     * @param initialClassifications list of classifications for the first version of this entity.
-     * @param instanceStatus initial status (needs to be valid for type)
-     * @param methodName name of calling method
-     *
-     * @return unique identifier of new entity
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String  createExternalEntity(String                  userId,
-                                        String                  entityTypeGUID,
-                                        String                  entityTypeName,
-                                        String                  externalSourceGUID,
-                                        String                  externalSourceName,
-                                        InstanceProperties      properties,
-                                        List<Classification>    initialClassifications,
-                                        InstanceStatus          instanceStatus,
-                                        String                  methodName) throws UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        try
-        {
-            EntityDetail newEntity = metadataCollection.addExternalEntity(userId,
-                                                        entityTypeGUID,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        properties,
-                                                        initialClassifications,
-                                                        instanceStatus);
-
-            if (newEntity != null)
-            {
-                return newEntity.getGUID();
-            }
-
-            errorHandler.handleNoEntity(entityTypeGUID,
-                    entityTypeName,
-                    properties,
-                    methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -466,15 +409,17 @@ public class RepositoryHandler
 
 
     /**
-     * Remove an entity attached to an anchor. There should be only one instance
+     * Remove an entity attached to an starting. There should be only one instance
      * of this relationship.
      *
      * @param userId calling user
-     * @param anchorEntityGUID unique identifier of the anchor entity
-     * @param anchorEntityTypeName name of anchor entity's type
-     * @param anchorRelationshipTypeGUID unique identifier for the relationship's type
-     * @param anchorRelationshipTypeName unique name for the relationship's type
-     * @param anchorRelationshipProperties properties from relationship
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param startingEntityGUID unique identifier of the starting entity
+     * @param startingEntityTypeName name of starting entity's type
+     * @param startingRelationshipTypeGUID unique identifier for the relationship's type
+     * @param startingRelationshipTypeName unique name for the relationship's type
+     * @param startingRelationshipProperties properties from relationship
      * @param attachedEntityTypeGUID unique identifier for the attached entity's type
      * @param attachedEntityTypeName name of the attached entity's type
      * @param attachedEntityProperties properties of entity
@@ -485,40 +430,46 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem accessing the property server
      */
-    public String addUniqueAttachedEntityToAnchor(String                  userId,
-                                                  String                  anchorEntityGUID,
-                                                  String                  anchorEntityTypeName,
-                                                  String                  anchorRelationshipTypeGUID,
-                                                  String                  anchorRelationshipTypeName,
-                                                  InstanceProperties      anchorRelationshipProperties,
-                                                  String                  attachedEntityTypeGUID,
-                                                  String                  attachedEntityTypeName,
-                                                  InstanceProperties      attachedEntityProperties,
-                                                  String                  methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public String addUniqueAttachedEntityToElement(String                  userId,
+                                                   String                  externalSourceGUID,
+                                                   String                  externalSourceName,
+                                                   String                  startingEntityGUID,
+                                                   String                  startingEntityTypeName,
+                                                   String                  startingRelationshipTypeGUID,
+                                                   String                  startingRelationshipTypeName,
+                                                   InstanceProperties      startingRelationshipProperties,
+                                                   String                  attachedEntityTypeGUID,
+                                                   String                  attachedEntityTypeName,
+                                                   InstanceProperties      attachedEntityProperties,
+                                                   String                  methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
-        final String guidParameterName = "anchorEntityGUID";
+        final String guidParameterName = "elementEntityGUID";
 
         this.validateEntityGUID(userId,
-                                anchorEntityGUID,
-                                anchorEntityTypeName,
+                                startingEntityGUID,
+                                startingEntityTypeName,
                                 methodName,
                                 guidParameterName);
 
         String  attachedEntityGUID = this.createEntity(userId,
                                                        attachedEntityTypeGUID,
                                                        attachedEntityTypeName,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
                                                        attachedEntityProperties,
                                                        methodName);
 
         if (attachedEntityGUID != null)
         {
             this.createRelationship(userId,
-                                    anchorRelationshipTypeGUID,
-                                    anchorEntityGUID,
+                                    startingRelationshipTypeGUID,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    startingEntityGUID,
                                     attachedEntityGUID,
-                                    anchorRelationshipProperties,
+                                    startingRelationshipProperties,
                                     methodName);
         }
 
@@ -526,11 +477,807 @@ public class RepositoryHandler
     }
 
 
+
     /**
-     * Update an existing entity in the open metadata repository.
+     * Update the properties of an existing entity in the open metadata repository.
      *
      * @param userId calling user
      * @param entityGUID unique identifier of entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param updateProperties properties for the entity
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail  updateEntityProperties(String                  userId,
+                                                String                  entityGUID,
+                                                String                  entityTypeGUID,
+                                                String                  entityTypeName,
+                                                InstanceProperties      updateProperties,
+                                                String                  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String guidParameterName = "entityGUID";
+
+        EntityDetail originalEntity = this.getEntityByGUID(userId,
+                                                           entityGUID,
+                                                           guidParameterName,
+                                                           entityTypeName,
+                                                           methodName);
+
+        return updateEntityProperties(userId,
+                                      entityGUID,
+                                      originalEntity,
+                                      entityTypeGUID,
+                                      entityTypeName,
+                                      updateProperties,
+                                      methodName);
+    }
+
+
+
+    /**
+     * Update the properties of an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identifier of entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param updateProperties properties for the entity
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail  updateEntityProperties(String                  userId,
+                                                String                  externalSourceGUID,
+                                                String                  externalSourceName,
+                                                String                  entityGUID,
+                                                String                  entityTypeGUID,
+                                                String                  entityTypeName,
+                                                InstanceProperties      updateProperties,
+                                                String                  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String guidParameterName = "entityGUID";
+
+        EntityDetail originalEntity = this.getEntityByGUID(userId,
+                                                           entityGUID,
+                                                           guidParameterName,
+                                                           entityTypeName,
+                                                           methodName);
+
+        return updateEntityProperties(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      entityGUID,
+                                      originalEntity,
+                                      entityTypeGUID,
+                                      entityTypeName,
+                                      updateProperties,
+                                      methodName);
+    }
+
+
+    /**
+     * Update the properties of an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param originalEntity entity retrieved from repository
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param newProperties properties for the entity
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail  updateEntityProperties(String                  userId,
+                                                String                  entityGUID,
+                                                EntityDetail            originalEntity,
+                                                String                  entityTypeGUID,
+                                                String                  entityTypeName,
+                                                InstanceProperties      newProperties,
+                                                String                  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String localMethodName = "updateEntityProperties";
+
+        if (originalEntity != null)
+        {
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (originalEntity.getProperties() == null))
+            {
+                return originalEntity;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(originalEntity.getProperties())))
+            {
+                return originalEntity;
+            }
+
+            try
+            {
+                EntityDetail newEntity = metadataCollection.updateEntityProperties(userId, entityGUID, newProperties);
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntity(entityTypeGUID,
+                                                entityTypeName,
+                                                newProperties,
+                                                methodName);
+                }
+
+                return newEntity;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Throwable error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update the properties of an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identifier of entity to update
+     * @param originalEntity entity retrieved from repository
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param newProperties properties for the entity
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail  updateEntityProperties(String                  userId,
+                                                String                  externalSourceGUID,
+                                                String                  externalSourceName,
+                                                String                  entityGUID,
+                                                EntityDetail            originalEntity,
+                                                String                  entityTypeGUID,
+                                                String                  entityTypeName,
+                                                InstanceProperties      newProperties,
+                                                String                  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String localMethodName = "updateEntityProperties";
+
+        if (originalEntity != null)
+        {
+            errorHandler.validateProvenance(userId,
+                                            originalEntity,
+                                            entityGUID,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (originalEntity.getProperties() == null))
+            {
+                return originalEntity;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(originalEntity.getProperties())))
+            {
+                return originalEntity;
+            }
+
+            try
+            {
+                EntityDetail newEntity = metadataCollection.updateEntityProperties(userId, entityGUID, newProperties);
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntity(entityTypeGUID,
+                                                entityTypeName,
+                                                newProperties,
+                                                methodName);
+                }
+
+                return newEntity;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Throwable error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update just the specific list of classifications on an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identifier of entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param newClassifications classifications for the entity
+     * @param methodName name of calling method
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateSelectedEntityClassifications(String                  userId,
+                                                    String                  externalSourceGUID,
+                                                    String                  externalSourceName,
+                                                    String                  entityGUID,
+                                                    String                  entityTypeGUID,
+                                                    String                  entityTypeName,
+                                                    List<Classification>    newClassifications,
+                                                    String                  methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String guidParameterName = "entityGUID";
+
+        /*
+         * The current entity is needed to work out which classifications are new, updated or deleted
+         */
+        EntityDetail entity = this.getEntityByGUID(userId, entityGUID, guidParameterName, entityTypeName, methodName);
+
+        if ((entity != null) && (newClassifications != null) && (! newClassifications.isEmpty()))
+        {
+            if ((entity.getClassifications() == null) || (entity.getClassifications().isEmpty()))
+            {
+                updateEntityClassifications(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            entityGUID,
+                                            entity.getClassifications(),
+                                            newClassifications,
+                                            methodName);
+            }
+            else
+            {
+                Map<String, Classification> classificationMap = new HashMap<>();
+
+                for (Classification classification : entity.getClassifications())
+                {
+                    if ((classification != null) && (classification.getName() != null))
+                    {
+                        classificationMap.put(classification.getName(), classification);
+                    }
+                }
+
+                for (Classification classification : newClassifications)
+                {
+                    if ((classification != null) && (classification.getName() != null))
+                    {
+                        classificationMap.put(classification.getName(), classification);
+                    }
+                }
+
+                List<Classification> fullClassificationList = new ArrayList<>(classificationMap.values());
+
+                updateEntityClassifications(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            entityGUID,
+                                            fullClassificationList,
+                                            newClassifications,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
+     * to the supplied values.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID entity to update
+     * @param existingEntityClassifications existing classifications
+     * @param classifications classifications for the entity
+     * @param methodName name of calling method
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private void updateEntityClassifications(String                  userId,
+                                             String                  externalSourceGUID,
+                                             String                  externalSourceName,
+                                             String                  entityGUID,
+                                             List<Classification>    existingEntityClassifications,
+                                             List<Classification>    classifications,
+                                             String                  methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String localMethodName = "updateEntityClassifications";
+
+        try
+        {
+            if ((existingEntityClassifications == null) || (existingEntityClassifications.isEmpty()))
+            {
+                if ((classifications != null) && (! classifications.isEmpty()))
+                {
+                    /*
+                     * All of the classifications are new
+                     */
+                    for (Classification  newClassification : classifications)
+                    {
+                        if (newClassification != null)
+                        {
+                            this.classifyEntity(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                entityGUID,
+                                                null,
+                                                newClassification.getName(),
+                                                newClassification.getClassificationOrigin(),
+                                                newClassification.getClassificationOriginGUID(),
+                                                newClassification.getProperties(),
+                                                methodName);
+                        }
+                    }
+                }
+
+                /*
+                 * If both the existing and new classifications are null then nothing to do.
+                 */
+            }
+            else if ((classifications == null) || (classifications.isEmpty()))
+            {
+                /*
+                 * All of the classifications are deleted
+                 */
+                for (Classification  obsoleteClassification : existingEntityClassifications)
+                {
+                    if (obsoleteClassification != null)
+                    {
+                        this.declassifyEntity(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              entityGUID,
+                                              null,
+                                              obsoleteClassification.getName(),
+                                              obsoleteClassification,
+                                              methodName);
+                    }
+                }
+            }
+            else /* there are existing classifications as well as new ones */
+            {
+                Map<String, Classification> entityClassificationMap = new HashMap<>();
+
+                for (Classification entityClassification : existingEntityClassifications)
+                {
+                    if ((entityClassification != null) && (entityClassification.getName() != null))
+                    {
+                        entityClassificationMap.put(entityClassification.getName(), entityClassification);
+                    }
+                }
+
+                for (Classification classification : classifications)
+                {
+                    if ((classification != null) && (classification.getName() != null))
+                    {
+                        Classification matchingEntityClassification = entityClassificationMap.get(classification.getName());
+
+                        if (matchingEntityClassification == null)
+                        {
+                            this.classifyEntity(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                entityGUID,
+                                                null,
+                                                classification.getName(),
+                                                classification.getClassificationOrigin(),
+                                                classification.getClassificationOriginGUID(),
+                                                classification.getProperties(),
+                                                methodName);
+                        }
+                        else /* new and old match */
+                        {
+                            if (classification.getProperties() == null)
+                            {
+                                if (matchingEntityClassification.getProperties() != null)
+                                {
+                                    this.reclassifyEntity(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          entityGUID,
+                                                          null,
+                                                          classification.getName(),
+                                                          matchingEntityClassification,
+                                                          null, // clears all properties
+                                                          methodName);
+                                }
+                            }
+                            else if (!classification.getProperties().equals(matchingEntityClassification.getProperties()))
+                            {
+                                this.reclassifyEntity(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      entityGUID,
+                                                      null,
+                                                      classification.getName(),
+                                                      matchingEntityClassification,
+                                                      classification.getProperties(),
+                                                      methodName);
+                            }
+
+                            entityClassificationMap.remove(classification.getName());
+                        }
+                    }
+
+                    /*
+                     * Whatever is left in the map needs to be removed
+                     */
+                    for (String entityClassificationName : entityClassificationMap.keySet())
+                    {
+                        if (entityClassificationName != null)
+                        {
+                            this.declassifyEntity(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  entityGUID,
+                                                  null,
+                                                  classification.getName(),
+                                                  entityClassificationMap.get((entityClassificationName)),
+                                                  methodName);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+    /**
+     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
+     * to the supplied values.
+     *
+     * @param userId calling user
+     * @param entityGUID entity to update
+     * @param existingEntityClassifications existing classifications
+     * @param classifications classifications for the entity
+     * @param methodName name of calling method
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    private void updateEntityClassifications(String                  userId,
+                                             String                  entityGUID,
+                                             List<Classification>    existingEntityClassifications,
+                                             List<Classification>    classifications,
+                                             String                  methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String localMethodName = "updateEntityClassifications";
+
+        try
+        {
+            if ((existingEntityClassifications == null) || (existingEntityClassifications.isEmpty()))
+            {
+                if ((classifications != null) && (! classifications.isEmpty()))
+                {
+                    /*
+                     * All of the classifications are new
+                     */
+                    for (Classification  newClassification : classifications)
+                    {
+                        if (newClassification != null)
+                        {
+                            this.classifyEntity(userId,
+                                                entityGUID,
+                                                newClassification.getName(),
+                                                newClassification.getProperties(),
+                                                methodName);
+                        }
+                    }
+                }
+
+                /*
+                 * If both the existing and new classifications are null then nothing to do.
+                 */
+            }
+            else if ((classifications == null) || (classifications.isEmpty()))
+            {
+                /*
+                 * All of the classifications are deleted
+                 */
+                for (Classification  obsoleteClassification : existingEntityClassifications)
+                {
+                    if (obsoleteClassification != null)
+                    {
+                        this.declassifyEntity(userId,
+                                              entityGUID,
+                                              obsoleteClassification.getName(),
+                                              obsoleteClassification,
+                                              methodName);
+                    }
+                }
+            }
+            else /* there are existing classifications as well as new ones */
+            {
+                Map<String, Classification> entityClassificationMap = new HashMap<>();
+
+                for (Classification entityClassification : existingEntityClassifications)
+                {
+                    if ((entityClassification != null) && (entityClassification.getName() != null))
+                    {
+                        entityClassificationMap.put(entityClassification.getName(), entityClassification);
+                    }
+                }
+
+                for (Classification classification : classifications)
+                {
+                    if ((classification != null) && (classification.getName() != null))
+                    {
+                        Classification matchingEntityClassification = entityClassificationMap.get(classification.getName());
+
+                        if (matchingEntityClassification == null)
+                        {
+                            this.classifyEntity(userId,
+                                                entityGUID,
+                                                classification.getName(),
+                                                classification.getProperties(),
+                                                methodName);
+                        }
+                        else /* new and old match */
+                        {
+                            if (classification.getProperties() == null)
+                            {
+                                if (matchingEntityClassification.getProperties() != null)
+                                {
+                                    this.reclassifyEntity(userId,
+                                                          entityGUID,
+                                                          classification.getName(),
+                                                          matchingEntityClassification,
+                                                          null, // clears all properties
+                                                          methodName);
+                                }
+                            }
+                            else if (!classification.getProperties().equals(matchingEntityClassification.getProperties()))
+                            {
+                                this.reclassifyEntity(userId,
+                                                      entityGUID,
+                                                      classification.getName(),
+                                                      matchingEntityClassification,
+                                                      classification.getProperties(),
+                                                      methodName);
+                            }
+
+                            entityClassificationMap.remove(classification.getName());
+                        }
+                    }
+
+                    /*
+                     * Whatever is left in the map needs to be removed
+                     */
+                    for (String entityClassificationName : entityClassificationMap.keySet())
+                    {
+                        if (entityClassificationName != null)
+                        {
+                            this.declassifyEntity(userId,
+                                                  entityGUID,
+                                                  classification.getName(),
+                                                  entityClassificationMap.get(entityClassificationName),
+                                                  methodName);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Retrieve a specific classification for an entity. Null is returned if the entity is not classified
+     * in this way.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identity of the entity - if this entity is not known then an exception occurs
+     * @param classificationName name of the classification
+     * @param methodName calling method
+     * @return located classification or null if not found
+     * @throws InvalidParameterException invalid parameter (probably the guid)
+     * @throws UserNotAuthorizedException calling user does not have appropriate permissions
+     * @throws PropertyServerException internal error
+     */
+    private Classification getClassificationForEntity(String userId,
+                                                      String entityGUID,
+                                                      String classificationName,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String entityGUIDParameterName = "entityGUID";
+
+        EntityDetail entity = this.getEntityByGUID(userId,
+                                                   entityGUID,
+                                                   entityGUIDParameterName,
+                                                   null, // any type allowed
+                                                   methodName);
+
+
+        if (entity != null)
+        {
+            if ((classificationName != null) && (entity.getClassifications() != null))
+            {
+                for (Classification classification : entity.getClassifications())
+                {
+                    if (classification != null)
+                    {
+                        if (classificationName.equals(classification.getName()))
+                        {
+                            return classification;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
+     * to the supplied values.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param properties properties for the entity
+     * @param classifications classifications for entity
+     * @param methodName name of calling method
+     *
+     * @return returned entity containing the update
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail updateEntity(String                  userId,
+                                     String                  entityGUID,
+                                     String                  entityTypeGUID,
+                                     String                  entityTypeName,
+                                     InstanceProperties      properties,
+                                     List<Classification>    classifications,
+                                     String                  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        EntityDetail entity = this.updateEntityProperties(userId,
+                                                          entityGUID,
+                                                          entityTypeGUID,
+                                                          entityTypeName,
+                                                          properties,
+                                                          methodName);
+
+        this.updateEntityClassifications(userId,
+                                         entity.getGUID(),
+                                         entity.getClassifications(),
+                                         classifications,
+                                         methodName);
+
+        return entity;
+    }
+
+
+    /**
+     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
+     * to the supplied values.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identifier entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param properties properties for the entity
+     * @param classifications classifications for entity
+     * @param methodName name of calling method
+     *
+     * @return returned entity containing the update
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail updateEntity(String                  userId,
+                                     String                  externalSourceGUID,
+                                     String                  externalSourceName,
+                                     String                  entityGUID,
+                                     String                  entityTypeGUID,
+                                     String                  entityTypeName,
+                                     InstanceProperties      properties,
+                                     List<Classification>    classifications,
+                                     String                  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        EntityDetail entity = this.updateEntityProperties(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          entityGUID,
+                                                          entityTypeGUID,
+                                                          entityTypeName,
+                                                          properties,
+                                                          methodName);
+
+        this.updateEntityClassifications(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         entity.getGUID(),
+                                         entity.getClassifications(),
+                                         classifications,
+                                         methodName);
+
+        return entity;
+    }
+
+
+    /**
+     * Update an existing entity in the open metadata repository. The external source identifiers
+     * are used to validate the provenance of the entity before the update.  If they are null,
+     * only local cohort entities can be updated.  If they are not null, they need to match the instances
+     * metadata collection identifiers.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityHeader unique identifier of entity to update
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
      * @param properties properties for the entity
@@ -539,18 +1286,30 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void    updateEntity(String                  userId,
-                                String                  entityGUID,
-                                String                  entityTypeGUID,
-                                String                  entityTypeName,
-                                InstanceProperties      properties,
-                                String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void updateEntityProperties(String                  userId,
+                                       String                  externalSourceGUID,
+                                       String                  externalSourceName,
+                                       InstanceHeader          entityHeader,
+                                       String                  entityTypeGUID,
+                                       String                  entityTypeName,
+                                       InstanceProperties      properties,
+                                       String                  methodName) throws UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
+        final String localMethodName = "updateEntityProperties";
+
+
         try
         {
+            errorHandler.validateProvenance(userId,
+                                            entityHeader,
+                                            entityHeader.getGUID(),
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
             EntityDetail newEntity = metadataCollection.updateEntityProperties(userId,
-                                                                               entityGUID,
+                                                                               entityHeader.getGUID(),
                                                                                properties);
 
             if (newEntity == null)
@@ -561,19 +1320,30 @@ public class RepositoryHandler
                                             methodName);
             }
         }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
+        }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
 
+
     /**
      * Update an existing entity status in the open metadata repository.
+     * This method is deprecated because it is not possible to validate the metadata provenance without
+     * the external source identifiers (if any)
      *
      * @param userId calling user
      * @param entityGUID unique identifier of entity to update
@@ -585,6 +1355,7 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void    updateEntityStatus(String                  userId,
                                       String                  entityGUID,
                                       String                  entityTypeGUID,
@@ -593,6 +1364,8 @@ public class RepositoryHandler
                                       String                  methodName) throws UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
+        final String localMethodName = "updateEntityStatus(deprecated)";
+
         try
         {
             EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
@@ -613,8 +1386,138 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
+    }
+
+
+    /**
+     * Update an existing entity status in the open metadata repository.  The external source identifiers
+     * are used to validate the provenance of the entity before the update.  If they are null,
+     * only local cohort entities can be updated.  If they are not null, they need to match the instances
+     * metadata collection identifiers.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identifier of entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param instanceStatus initial status (needs to be valid for type)
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void    updateEntityStatus(String                  userId,
+                                      String                  externalSourceGUID,
+                                      String                  externalSourceName,
+                                      String                  entityGUID,
+                                      String                  entityTypeGUID,
+                                      String                  entityTypeName,
+                                      InstanceStatus          instanceStatus,
+                                      String                  methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String guidParameterName = "entityGUID";
+        final String localMethodName = "updateEntityStatus";
+
+        EntityDetail entity = this.getEntityByGUID(userId, entityGUID, guidParameterName, entityTypeName, methodName);
+
+        try
+        {
+            errorHandler.validateProvenance(userId,
+                                            entity,
+                                            entityGUID,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
+            EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
+                                                                           entityGUID,
+                                                                           instanceStatus);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntity(entityTypeGUID,
+                                            entityTypeName,
+                                            null,
+                                            methodName);
+            }
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Update the properties of an existing entity in the open metadata repository.
+     * This method is deprecated because it does not pass the external source identifiers and so the
+     * metadata provenance can not be verified.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param properties properties for the entity
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail    updateEntity(String                  userId,
+                                        String                  entityGUID,
+                                        String                  entityTypeGUID,
+                                        String                  entityTypeName,
+                                        InstanceProperties      properties,
+                                        String                  methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String localMethodName = "updateEntity(deprecated)";
+
+        try
+        {
+            EntityDetail newEntity = metadataCollection.updateEntityProperties(userId,
+                                                                               entityGUID,
+                                                                               properties);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntity(entityTypeGUID,
+                                            entityTypeName,
+                                            properties,
+                                            methodName);
+            }
+
+            return newEntity;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
     }
 
 
@@ -623,22 +1526,82 @@ public class RepositoryHandler
      *
      * @param userId calling user
      * @param entityGUID unique identifier of entity to update
-     * @param classificationTypeGUID type of classification to create
-     * @param classificationTypeName name of the classification's type
+     * @param classificationName name of the classification's type
      * @param properties properties for the classification
      * @param methodName name of calling method
+     * @return updated entity
      *
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void    classifyEntity(String                  userId,
-                                  String                  entityGUID,
-                                  String                  classificationTypeGUID,
-                                  String                  classificationTypeName,
-                                  InstanceProperties      properties,
-                                  String                  methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+    @Deprecated
+    public EntityDetail    classifyEntity(String                  userId,
+                                          String                  entityGUID,
+                                          String                  classificationName,
+                                          InstanceProperties      properties,
+                                          String                  methodName) throws UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
+        final String localMethodName = "classifyEntity(deprecated)";
+
+        try
+        {
+            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
+                                                                       entityGUID,
+                                                                       classificationName,
+                                                                       properties);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntityForClassification(entityGUID,
+                                                             null,
+                                                             classificationName,
+                                                             properties,
+                                                             methodName);
+            }
+            else
+            {
+                return newEntity;
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add a new classification to an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeGUID identifier of the classification's type
+     * @param classificationTypeName name of the classification's type
+     * @param properties properties for the classification
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail    classifyEntity(String                  userId,
+                                          String                  entityGUID,
+                                          String                  classificationTypeGUID,
+                                          String                  classificationTypeName,
+                                          InstanceProperties      properties,
+                                          String                  methodName) throws UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String localMethodName = "classifyEntity(deprecated)";
+
         try
         {
             EntityDetail newEntity = metadataCollection.classifyEntity(userId,
@@ -654,6 +1617,10 @@ public class RepositoryHandler
                                                              properties,
                                                              methodName);
             }
+            else
+            {
+                return newEntity;
+            }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -661,38 +1628,55 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
+
+        return null;
     }
 
 
     /**
-     * Update the properties of an existing classification to an existing entity in the open metadata repository.
+     * Add a new classification to an existing entity in the open metadata repository.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
      * @param entityGUID unique identifier of entity to update
      * @param classificationTypeGUID type of classification to create
      * @param classificationTypeName name of the classification's type
+     * @param classificationOrigin is this classification assigned or propagated?
+     * @param classificationOriginGUID which entity did a propagated classification originate from?
      * @param properties properties for the classification
      * @param methodName name of calling method
+     * @return updated entity
      *
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void    reclassifyEntity(String                  userId,
-                                    String                  entityGUID,
-                                    String                  classificationTypeGUID,
-                                    String                  classificationTypeName,
-                                    InstanceProperties      properties,
-                                    String                  methodName) throws UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public EntityDetail    classifyEntity(String                  userId,
+                                          String                  externalSourceGUID,
+                                          String                  externalSourceName,
+                                          String                  entityGUID,
+                                          String                  classificationTypeGUID,
+                                          String                  classificationTypeName,
+                                          ClassificationOrigin    classificationOrigin,
+                                          String                  classificationOriginGUID,
+                                          InstanceProperties      properties,
+                                          String                  methodName) throws UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
+        final String localMethodName = "classifyEntity";
+
         try
         {
-            EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
-                                                                                   entityGUID,
-                                                                                   classificationTypeName,
-                                                                                   properties);
+            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
+                                                                       entityGUID,
+                                                                       classificationTypeName,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       classificationOrigin,
+                                                                       classificationOriginGUID,
+                                                                       properties);
 
             if (newEntity == null)
             {
@@ -702,6 +1686,10 @@ public class RepositoryHandler
                                                              properties,
                                                              methodName);
             }
+            else
+            {
+                return newEntity;
+            }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -709,7 +1697,182 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update the properties of an existing classification to an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeName name of the classification's type
+     * @param existingClassificationHeader current value of classification
+     * @param newProperties properties for the classification
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException invalid parameters passed - probably GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public void    reclassifyEntity(String                  userId,
+                                    String                  entityGUID,
+                                    String                  classificationTypeName,
+                                    InstanceAuditHeader     existingClassificationHeader,
+                                    InstanceProperties      newProperties,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String localMethodName = "reclassifyEntity";
+
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * OK to reclassify.
+         */
+        if (auditHeader != null)
+        {
+            try
+            {
+                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
+                                                                                       entityGUID,
+                                                                                       classificationTypeName,
+                                                                                       newProperties);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 null,
+                                                                 classificationTypeName,
+                                                                 newProperties,
+                                                                 methodName);
+                }
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Throwable error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+        else /* should be a classify */
+        {
+            this.classifyEntity(userId,
+                                entityGUID,
+                                classificationTypeName,
+                                newProperties,
+                                methodName);
+        }
+    }
+
+
+    /**
+     * Update the properties of an existing classification to an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeGUID type of classification to create
+     * @param classificationTypeName name of the classification's type
+     * @param existingClassificationHeader current value of classification
+     * @param newProperties properties for the classification
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException invalid parameters passed - probably GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void    reclassifyEntity(String                  userId,
+                                    String                  externalSourceGUID,
+                                    String                  externalSourceName,
+                                    String                  entityGUID,
+                                    String                  classificationTypeGUID,
+                                    String                  classificationTypeName,
+                                    InstanceAuditHeader     existingClassificationHeader,
+                                    InstanceProperties      newProperties,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String localMethodName = "reclassifyEntity";
+
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * OK to reclassify.
+         */
+        if (auditHeader != null)
+        {
+            try
+            {
+                errorHandler.validateProvenance(userId,
+                                                existingClassificationHeader,
+                                                entityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+
+                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
+                                                                                       entityGUID,
+                                                                                       classificationTypeName,
+                                                                                       newProperties);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 classificationTypeGUID,
+                                                                 classificationTypeName,
+                                                                 newProperties,
+                                                                 methodName);
+                }
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                /*
+                 * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+                 * in case the caller has passed bad parameters.
+                 */
+                throw error;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Throwable error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+        else /* should be a classify */
+        {
+            this.classifyEntity(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                entityGUID,
+                                classificationTypeGUID,
+                                classificationTypeName,
+                                ClassificationOrigin.ASSIGNED,
+                                null,
+                                newProperties,
+                                methodName);
         }
     }
 
@@ -719,42 +1882,141 @@ public class RepositoryHandler
      *
      * @param userId calling user
      * @param entityGUID unique identifier of entity to update
-     * @param classificationTypeGUID type of classification to create
      * @param classificationTypeName name of the classification's type
+     * @param existingClassificationHeader current value of classification
      * @param methodName name of calling method
      *
+     * @throws InvalidParameterException one of the parameters is invalid = probably the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public void    declassifyEntity(String                  userId,
+                                    String                  entityGUID,
+                                    String                  classificationTypeName,
+                                    InstanceAuditHeader     existingClassificationHeader,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String localMethodName = "declassifyEntity";
+
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * Nothing to do if the classification is already gone.
+         */
+        if (auditHeader != null)
+        {
+            try
+            {
+                EntityDetail newEntity = metadataCollection.declassifyEntity(userId, entityGUID, classificationTypeName);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 null,
+                                                                 classificationTypeName,
+                                                                 null,
+                                                                 methodName);
+                }
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Exception error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+    }
+
+
+    /**
+     * Remove an existing classification from an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeGUID type of classification to create
+     * @param classificationTypeName name of the classification's type
+     * @param existingClassificationHeader current value of classification
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException one of the parameters is invalid = probably the GUID
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public void    declassifyEntity(String                  userId,
+                                    String                  externalSourceGUID,
+                                    String                  externalSourceName,
                                     String                  entityGUID,
                                     String                  classificationTypeGUID,
                                     String                  classificationTypeName,
-                                    String                  methodName) throws UserNotAuthorizedException,
+                                    InstanceAuditHeader     existingClassificationHeader,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        try
-        {
-            EntityDetail newEntity = metadataCollection.declassifyEntity(userId,
-                                                                         entityGUID,
-                                                                         classificationTypeName);
+        final String localMethodName = "declassifyEntity";
 
-            if (newEntity == null)
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * Nothing to do if the classification is already gone.
+         */
+        if (auditHeader != null)
+        {
+            try
             {
-                errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             null,
-                                                             methodName);
+                errorHandler.validateProvenance(userId,
+                                                auditHeader,
+                                                entityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+
+                EntityDetail newEntity = metadataCollection.declassifyEntity(userId,
+                                                                             entityGUID,
+                                                                             classificationTypeName);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 classificationTypeGUID,
+                                                                 classificationTypeName,
+                                                                 null,
+                                                                 methodName);
+                }
             }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
+            catch (UserNotAuthorizedException error)
+            {
+                /*
+                 * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+                 * in case the caller has passed bad parameters.
+                 */
+                throw error;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Exception error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
         }
     }
 
@@ -774,6 +2036,7 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws InvalidParameterException mismatch on properties
      */
+    @Deprecated
     public void removeEntity(String           userId,
                              String           obsoleteEntityGUID,
                              String           entityTypeGUID,
@@ -785,6 +2048,7 @@ public class RepositoryHandler
                                                                   PropertyServerException
     {
         final String guidParameterName = "obsoleteEntityGUID";
+        final String localMethodName   = "removeEntity(deprecated)";
 
         try
         {
@@ -802,7 +2066,6 @@ public class RepositoryHandler
                                                 obsoleteEntity.getProperties(),
                                                 methodName);
 
-                this.removeIsolatedEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
             }
         }
         catch (UserNotAuthorizedException | PropertyServerException | InvalidParameterException error)
@@ -811,7 +2074,99 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        try
+        {
+            metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+        {
+            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Remove an entity from the open metadata repository if the validating properties match. The external source identifiers
+     * are used to validate the provenance of the entity before the update.  If they are null,
+     * only local cohort entities can be updated.  If they are not null, they need to match the instances
+     * metadata collection identifiers.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param obsoleteEntityGUID unique identifier of the entity
+     * @param obsoleteEntityGUIDParameterName name for unique identifier of the entity
+     * @param entityTypeGUID type of entity to delete
+     * @param entityTypeName name of the entity's type
+     * @param validatingPropertyName name of property that should be in the entity if we have the correct one.
+     * @param validatingProperty value of property that should be in the entity if we have the correct one.
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     * @throws InvalidParameterException mismatch on properties
+     */
+    public void removeEntity(String           userId,
+                             String           externalSourceGUID,
+                             String           externalSourceName,
+                             String           obsoleteEntityGUID,
+                             String           obsoleteEntityGUIDParameterName,
+                             String           entityTypeGUID,
+                             String           entityTypeName,
+                             String           validatingPropertyName,
+                             String           validatingProperty,
+                             String           methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String localMethodName = "removeEntity";
+
+        try
+        {
+            EntityDetail obsoleteEntity = this.getEntityByGUID(userId,
+                                                               obsoleteEntityGUID,
+                                                               obsoleteEntityGUIDParameterName,
+                                                               entityTypeName,
+                                                               methodName);
+
+            if (obsoleteEntity != null)
+            {
+                errorHandler.validateProvenance(userId,
+                                                obsoleteEntity,
+                                                obsoleteEntityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+
+                errorHandler.validateProperties(obsoleteEntityGUID,
+                                                validatingPropertyName,
+                                                validatingProperty,
+                                                obsoleteEntity.getProperties(),
+                                                methodName);
+
+                this.isolateAndRemoveEntity(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            obsoleteEntityGUID,
+                                            entityTypeGUID,
+                                            entityTypeName,
+                                            methodName);
+            }
+        }
+        catch (UserNotAuthorizedException | PropertyServerException | InvalidParameterException error)
+        {
+            throw error;
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -820,6 +2175,8 @@ public class RepositoryHandler
      * Remove an entity from the repository if it is no longer connected to any other entity.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
      * @param obsoleteEntityGUID unique identifier of the entity
      * @param guidParameterName name of parameter that passed the entity guid
      * @param entityTypeGUID unique identifier for the entity's type
@@ -830,15 +2187,19 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem accessing the property server
      */
-    public void removeEntityOnLastUse(String                  userId,
-                                      String                  obsoleteEntityGUID,
-                                      String                  guidParameterName,
-                                      String                  entityTypeGUID,
-                                      String                  entityTypeName,
-                                      String                  methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void removeEntityOnLastUse(String userId,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
+                                      String obsoleteEntityGUID,
+                                      String guidParameterName,
+                                      String entityTypeGUID,
+                                      String entityTypeName,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
+        final String localMethodName = "removeEntityOnLastUse";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -853,7 +2214,13 @@ public class RepositoryHandler
 
             if ((relationships == null) || (relationships.isEmpty()))
             {
-                this.removeIsolatedEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+                this.isolateAndRemoveEntity(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            obsoleteEntityGUID,
+                                            entityTypeGUID,
+                                            entityTypeName,
+                                            methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
@@ -864,13 +2231,61 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
+        catch (Throwable error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Remove an entity from the open metadata repository after checking that is is not connected to
+     * anything else.  The repository handler helps to ensure that all relationships are deleted explicitly
+     * ensuring the events are created and making it easier for third party repositories to keep track of
+     * changes rather than have to implement the implied deletes from the logical graph.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param obsoleteEntityGUID unique identifier of the entity
+     * @param entityTypeGUID type of entity to delete
+     * @param entityTypeName name of the entity's type
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private void isolateAndRemoveEntity(String userId,
+                                        String externalSourceGUID,
+                                        String externalSourceName,
+                                        String obsoleteEntityGUID,
+                                        String entityTypeGUID,
+                                        String entityTypeName,
+                                        String methodName) throws UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String localMethodName = "isolateAndRemoveEntity";
+
+        this.removeAllRelationshipsOfType(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          obsoleteEntityGUID,
+                                          entityTypeName,
+                                          null,
+                                          null,
+                                          methodName);
+
+        try
+        {
+            metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+        }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
         {
-            this.purgeEntity(userId, entityTypeGUID,entityTypeName, obsoleteEntityGUID, methodName);
+            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -890,6 +2305,7 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void removeIsolatedEntity(String           userId,
                                      String           obsoleteEntityGUID,
                                      String           entityTypeGUID,
@@ -897,21 +2313,25 @@ public class RepositoryHandler
                                      String           methodName) throws UserNotAuthorizedException,
                                                                          PropertyServerException
     {
+        final String localMethodName = "removeIsolatedEntity";
+
         // Todo - validate that the entity is in fact isolated.
         try
         {
-            metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+            try
+            {
+                metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+            {
+                this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+            }
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
-
 
 
     /**
@@ -926,13 +2346,15 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private void  purgeEntity(String           userId,
-                              String           obsoleteEntityGUID,
-                              String           entityTypeGUID,
-                              String           entityTypeName,
-                              String           methodName) throws UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void  purgeEntity(String           userId,
+                             String           obsoleteEntityGUID,
+                             String           entityTypeGUID,
+                             String           entityTypeName,
+                             String           methodName) throws UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
+        final String localMethodName = "purgeEntity";
+
         try
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
@@ -949,101 +2371,96 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
 
     /**
-     * Remove an entity attached to an anchor. There should be only one instance
-     * of this relationship.
+     * Restore the requested entity to the state it was before it was deleted.
      *
-     * @param userId calling user
-     * @param anchorEntityGUID unique identifier of the anchor entity
-     * @param anchorEntityTypeName name of anchor entity's type
-     * @param anchorRelationshipTypeGUID unique identifier for the relationship's type
-     * @param anchorRelationshipTypeName unique name for the relationship's type
-     * @param attachedEntityTypeGUID unique identifier for the attached entity's type
-     * @param attachedEntityTypeName name of the attached entity's type
+     * @param userId unique identifier for requesting user.
+     * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @param methodName name of calling method
      *
-     * @throws InvalidParameterException the entity guid is not known
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
-    public void removeUniqueEntityTypeFromAnchor(String                  userId,
-                                                 String                  anchorEntityGUID,
-                                                 String                  anchorEntityTypeName,
-                                                 String                  anchorRelationshipTypeGUID,
-                                                 String                  anchorRelationshipTypeName,
-                                                 String                  attachedEntityTypeGUID,
-                                                 String                  attachedEntityTypeName,
-                                                 String                  methodName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    @Deprecated
+    public void  restoreEntity(String userId,
+                               String deletedEntityGUID,
+                               String methodName) throws UserNotAuthorizedException,
+                                                         PropertyServerException
     {
-        Relationship relationship = getUniqueRelationshipByType(userId,
-                                                                anchorEntityGUID,
-                                                                anchorEntityTypeName,
-                                                                anchorRelationshipTypeGUID,
-                                                                anchorRelationshipTypeName,
-                                                                methodName);
+        final String localMethodName = "restoreEntity(deprecated)";
 
-        EntityDetail entity = getEntityForRelationshipType(userId,
-                                                           anchorEntityGUID,
-                                                           anchorEntityTypeName,
-                                                           anchorRelationshipTypeGUID,
-                                                           anchorRelationshipTypeName,
-                                                           methodName);
-        if (relationship != null)
+        try
         {
-            this.removeRelationship(userId,
-                                    anchorRelationshipTypeGUID,
-                                    anchorRelationshipTypeName,
-                                    relationship.getGUID(),
-                                    methodName);
+            metadataCollection.restoreEntity(userId, deletedEntityGUID);
         }
-
-        if (entity != null)
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
-            String attachedEntityGUID = entity.getGUID();
-
-            try
-            {
-                metadataCollection.deleteEntity(userId,
-                                                attachedEntityTypeGUID,
-                                                attachedEntityTypeName,
-                                                attachedEntityGUID);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
-            {
-                final String guidParameterName = "attachedEntityGUID";
-
-                errorHandler.handleUnknownEntity(error,
-                                                 anchorEntityGUID,
-                                                 attachedEntityTypeName,
-                                                 methodName,
-                                                 guidParameterName);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-            {
-                errorHandler.handleUnauthorizedUser(userId, methodName);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-            {
-                this.purgeEntity(userId,
-                                 attachedEntityTypeGUID,
-                                 attachedEntityTypeGUID,
-                                 attachedEntityGUID,
-                                 methodName);
-            }
-            catch (Throwable error)
-            {
-                errorHandler.handleRepositoryError(error, methodName);
-            }
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
+
+    /**
+     * Restore the requested entity to the state it was before it was deleted.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param deletedEntityGUID String unique identifier (guid) for the entity.
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  restoreEntity(String userId,
+                               String externalSourceGUID,
+                               String externalSourceName,
+                               String deletedEntityGUID,
+                               String methodName) throws UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        final String localMethodName = "restoreEntity";
+
+        try
+        {
+            EntityDetail entity = metadataCollection.restoreEntity(userId, deletedEntityGUID);
+
+            if (entity != null)
+            {
+                errorHandler.validateProvenance(userId,
+                                                entity,
+                                                deletedEntityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+            }
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
 
 
     /**
@@ -1067,6 +2484,8 @@ public class RepositoryHandler
                                                  String                 methodName) throws UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        final String localMethodName = "getEntitiesForType";
+
         try
         {
             List<EntityDetail> results = metadataCollection.findEntitiesByProperty(userId,
@@ -1095,7 +2514,7 @@ public class RepositoryHandler
                 {
                     if (entity != null)
                     {
-                        errorHandler.validateInstanceType(userId, entity, "<null>", entityTypeName, methodName);
+                        errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
                     }
                 }
                 return results;
@@ -1108,7 +2527,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1119,8 +2538,8 @@ public class RepositoryHandler
      * Return the list of entities at the other end of the requested relationship type.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param startingFrom initial position in the stored list.
@@ -1131,8 +2550,8 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      */
     public List<EntityDetail> getEntitiesForRelationshipType(String                 userId,
-                                                             String                 anchorEntityGUID,
-                                                             String                 anchorEntityTypeName,
+                                                             String                 startingEntityGUID,
+                                                             String                 startingEntityTypeName,
                                                              String                 relationshipTypeGUID,
                                                              String                 relationshipTypeName,
                                                              int                    startingFrom,
@@ -1140,12 +2559,14 @@ public class RepositoryHandler
                                                              String                 methodName) throws UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        final String localMethodName = "getEntitiesForRelationshipType";
+
         List<EntityDetail> results = new ArrayList<>();
 
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
+                                                                                            startingEntityGUID,
                                                                                             relationshipTypeGUID,
                                                                                             startingFrom,
                                                                                             null,
@@ -1158,13 +2579,9 @@ public class RepositoryHandler
             {
                 for (Relationship relationship : relationships)
                 {
-                    EntityProxy requiredEnd = relationship.getEntityOneProxy();
-                    if (anchorEntityGUID.equals(requiredEnd.getGUID()))
-                    {
-                        requiredEnd = relationship.getEntityTwoProxy();
-                    }
+                    EntityProxy requiredEnd = getOtherEnd(startingEntityGUID, startingEntityTypeName, relationship, methodName);
 
-                    results.add(metadataCollection.getEntityDetail(userId, requiredEnd.getGUID()));
+                    results.add(this.getEntityForRelationship(userId, requiredEnd, methodName));
                 }
             }
             else
@@ -1172,7 +2589,7 @@ public class RepositoryHandler
                 if (log.isDebugEnabled())
                 {
                     log.debug("No relationships of type " + relationshipTypeName +
-                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                                      " found for " + startingEntityTypeName + " entity " + startingEntityGUID);
                 }
             }
         }
@@ -1182,7 +2599,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         if (results.isEmpty())
@@ -1216,6 +2633,8 @@ public class RepositoryHandler
                                                                String methodName) throws    UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
+        final String localMethodName = "getEntitiesForClassificationType";
+
         try
         {
             List<EntityDetail> entitiesByClassification = metadataCollection.findEntitiesByClassification(userId,
@@ -1245,7 +2664,7 @@ public class RepositoryHandler
         }
         catch (Exception error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return new ArrayList<>();
@@ -1279,6 +2698,8 @@ public class RepositoryHandler
                                                             String                 methodName) throws UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        final String localMethodName = "getEntitiesForRelationshipEnd";
+
         List<EntityDetail> results = new ArrayList<>();
 
         try
@@ -1327,7 +2748,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         if (results.isEmpty())
@@ -1346,66 +2767,56 @@ public class RepositoryHandler
      * the requesting user.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param attachedEntityTypeGUID  identifier for the relationship to follow
      * @param attachedEntityTypeName  type name for the relationship to follow
      * @param methodName  name of calling method
      * @return retrieved entities or null
+     * @throws InvalidParameterException the entity at the other end is not of the expected type
      * @throws PropertyServerException problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
      */
     public EntityDetail getAttachedEntityFromUser(String  userId,
-                                                  String  anchorEntityGUID,
-                                                  String  anchorEntityTypeName,
+                                                  String  startingEntityGUID,
+                                                  String  startingEntityTypeName,
                                                   String  relationshipTypeGUID,
                                                   String  relationshipTypeName,
-                                                  String  attachedEntityTypeGUID,// todo error message
-                                                  String  attachedEntityTypeName,// todo error message
-                                                  String  methodName) throws UserNotAuthorizedException,
+                                                  String  attachedEntityTypeGUID,
+                                                  String  attachedEntityTypeName,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        try
+        final String localMethodName = "getAttachedEntityFromUser";
+
+        RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(this,
+                                                                                           userId,
+                                                                                           startingEntityGUID,
+                                                                                           startingEntityTypeName,
+                                                                                           relationshipTypeGUID,
+                                                                                           relationshipTypeName,
+                                                                                           0,
+                                                                                           maxPageSize,
+                                                                                           methodName);
+
+
+
+
+        while (iterator.moreToReceive())
         {
-            boolean      moreResultsAvailable = true;
-            int          startNextQueryFrom = 0;
+            EntityDetail entity = iterator.getNext();
 
-            while (moreResultsAvailable)
+            if (entity != null)
             {
-                List<EntityDetail> retrievedEntities = this.getEntitiesForRelationshipType(userId, anchorEntityGUID, anchorEntityTypeName, relationshipTypeGUID, relationshipTypeName, startNextQueryFrom, maxPageSize, methodName);
-
-                if (retrievedEntities != null)
+                if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
                 {
-                    moreResultsAvailable = (retrievedEntities.size() == maxPageSize);
-                    startNextQueryFrom   = startNextQueryFrom + maxPageSize;
-
-                    for (EntityDetail entity : retrievedEntities)
-                    {
-                        if (entity != null)
-                        {
-                            if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
-                            {
-                                return entity;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    moreResultsAvailable = false;
-
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("No entities of type " + attachedEntityTypeName + " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
-                    }
+                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
+                    return entity;
                 }
             }
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
         }
 
         return null;
@@ -1417,8 +2828,8 @@ public class RepositoryHandler
      * edited by the requesting user.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param attachedEntityTypeGUID  identifier for the relationship to follow
@@ -1429,60 +2840,47 @@ public class RepositoryHandler
      * @return retrieved entities or null
      * @throws PropertyServerException problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
+     * @throws InvalidParameterException one of the parameters is in error
      */
     public List<EntityDetail> getAttachedEntitiesFromUser(String  userId,
-                                                          String  anchorEntityGUID,
-                                                          String  anchorEntityTypeName,
+                                                          String  startingEntityGUID,
+                                                          String  startingEntityTypeName,
                                                           String  relationshipTypeGUID,
                                                           String  relationshipTypeName,
-                                                          String  attachedEntityTypeGUID,// todo error message
-                                                          String  attachedEntityTypeName,// todo error message
+                                                          String  attachedEntityTypeGUID,
+                                                          String  attachedEntityTypeName,
                                                           int     startingFrom,
                                                           int     pageSize,
-                                                          String  methodName) throws UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
+        final String localMethodName = "getAttachedEntitiesFromUser";
+
         List<EntityDetail> results = new ArrayList<>();
 
-        try
+        RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(this,
+                                                                                           userId,
+                                                                                           startingEntityGUID,
+                                                                                           startingEntityTypeName,
+                                                                                           relationshipTypeGUID,
+                                                                                           relationshipTypeName,
+                                                                                           startingFrom,
+                                                                                           pageSize,
+                                                                                           methodName);
+
+        while ((iterator.moreToReceive() && ((pageSize == 0) || (results.size() < pageSize))))
         {
-            boolean      moreResultsAvailable = true;
-            int          startNextQueryFrom = startingFrom;
+            EntityDetail entity = iterator.getNext();
 
-            while (moreResultsAvailable && (results.size() < pageSize))
+            if (entity != null)
             {
-                List<EntityDetail> retrievedEntities = this.getEntitiesForRelationshipType(userId, anchorEntityGUID, anchorEntityTypeName, relationshipTypeGUID, relationshipTypeName, startNextQueryFrom, pageSize, methodName);
-
-                if (retrievedEntities != null)
+                if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
                 {
-                    moreResultsAvailable = (retrievedEntities.size() == pageSize);
-                    startNextQueryFrom = startNextQueryFrom + pageSize;
-
-                    for (EntityDetail entity : retrievedEntities)
-                    {
-                        if (entity != null)
-                        {
-                            if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
-                            {
-                                results.add(entity);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    moreResultsAvailable = false;
-
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("No entities of type " + attachedEntityTypeName + " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
-                    }
+                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
+                    results.add(entity);
                 }
             }
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
         }
 
         if (results.isEmpty())
@@ -1498,33 +2896,35 @@ public class RepositoryHandler
 
     /**
      * Return the list of entity proxies for the entities at the far end of the relationships linked to the
-     * anchor entity.
+     * starting entity.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
+     * @throws InvalidParameterException the starting entity is not of the expected type
      * @throws PropertyServerException problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
      * @return list of entity proxies
      */
     public List<EntityProxy>  getRelatedEntityProxies(String                 userId,
-                                                      String                 anchorEntityGUID,
-                                                      String                 anchorEntityTypeName,
+                                                      String                 startingEntityGUID,
+                                                      String                 startingEntityTypeName,
                                                       String                 relationshipTypeGUID,
                                                       String                 relationshipTypeName,
                                                       int                    startingFrom,
                                                       int                    pageSize,
-                                                      String                 methodName) throws UserNotAuthorizedException,
+                                                      String                 methodName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
         List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                       anchorEntityGUID,
-                                                                       anchorEntityTypeName,
+                                                                       startingEntityGUID,
+                                                                       startingEntityTypeName,
                                                                        relationshipTypeGUID,
                                                                        relationshipTypeName,
                                                                        startingFrom,
@@ -1539,7 +2939,7 @@ public class RepositoryHandler
             {
                 if (relationship != null)
                 {
-                    EntityProxy relatedEntityProxy = this.getOtherEnd(anchorEntityGUID, relationship);
+                    EntityProxy relatedEntityProxy = this.getOtherEnd(startingEntityGUID, startingEntityTypeName, relationship, methodName);
 
                     if (relatedEntityProxy != null)
                     {
@@ -1565,28 +2965,62 @@ public class RepositoryHandler
     /**
      * Return the entity proxy for the related entity.
      *
-     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param startingEntityGUID unique identifier of the starting entity
      * @param relationship relationship to another entity
      * @return proxy to the other entity.
      */
-    public  EntityProxy  getOtherEnd(String                 anchorEntityGUID,
+    public  EntityProxy  getOtherEnd(String                 startingEntityGUID,
                                      Relationship           relationship)
     {
         if (relationship != null)
         {
-            // todo this is a good place to add validation that the entity proxies are ok
-
             EntityProxy entityProxy = relationship.getEntityOneProxy();
 
             if (entityProxy != null)
             {
-                if (anchorEntityGUID.equals(entityProxy.getGUID()))
+                if (startingEntityGUID.equals(entityProxy.getGUID()))
                 {
                     entityProxy = relationship.getEntityTwoProxy();
                 }
             }
 
             return entityProxy;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the entity proxy for the related entity.
+     *
+     * @param startingEntityGUID unique identifier of the starting entity
+     * @param startingEntityTypeName type of the entity
+     * @param relationship relationship to another entity
+     * @param methodName calling method
+     * @return proxy to the other entity.
+     * @throws InvalidParameterException the type of the starting entity is incorrect
+     */
+    public  EntityProxy  getOtherEnd(String       startingEntityGUID,
+                                     String       startingEntityTypeName,
+                                     Relationship relationship,
+                                     String       methodName) throws InvalidParameterException
+    {
+        final String localMethodName = "getOtherEnd";
+
+        if (relationship != null)
+        {
+            EntityProxy requiredEnd = relationship.getEntityOneProxy();
+            EntityProxy startingEnd = relationship.getEntityTwoProxy();
+            if (startingEntityGUID.equals(requiredEnd.getGUID()))
+            {
+                requiredEnd = relationship.getEntityTwoProxy();
+                startingEnd = relationship.getEntityOneProxy();
+            }
+
+            errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName, localMethodName);
+
+            return requiredEnd;
         }
 
         return null;
@@ -1603,11 +3037,13 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public EntityDetail getEntityForRelationship(String                 userId,
-                                                 EntityProxy            requiredEnd,
-                                                 String                 methodName) throws UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    private EntityDetail getEntityForRelationship(String                 userId,
+                                                  EntityProxy            requiredEnd,
+                                                  String                 methodName) throws UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
+        final String localMethodName = "getEntityForRelationship";
+
         try
         {
             return metadataCollection.getEntityDetail(userId, requiredEnd.getGUID());
@@ -1618,13 +3054,11 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
     }
-
-
 
 
     /**
@@ -1633,8 +3067,8 @@ public class RepositoryHandler
      * PropertyServerException is thrown.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param methodName  name of calling method
@@ -1643,17 +3077,19 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      */
     public EntityDetail getEntityForRelationshipType(String                 userId,
-                                                     String                 anchorEntityGUID,
-                                                     String                 anchorEntityTypeName,
+                                                     String                 startingEntityGUID,
+                                                     String                 startingEntityTypeName,
                                                      String                 relationshipTypeGUID,
                                                      String                 relationshipTypeName,
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String localMethodName = "getEntityForRelationshipType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
+                                                                                            startingEntityGUID,
                                                                                             relationshipTypeGUID,
                                                                                             0,
                                                                                             null,
@@ -1669,17 +3105,21 @@ public class RepositoryHandler
                     Relationship  relationship = relationships.get(0);
 
                     EntityProxy requiredEnd = relationship.getEntityOneProxy();
-                    if (anchorEntityGUID.equals(requiredEnd.getGUID()))
+                    EntityProxy startingEnd = relationship.getEntityTwoProxy();
+                    if (startingEntityGUID.equals(requiredEnd.getGUID()))
                     {
                         requiredEnd = relationship.getEntityTwoProxy();
+                        startingEnd = relationship.getEntityOneProxy();
                     }
 
-                    return metadataCollection.getEntityDetail(userId, requiredEnd.getGUID());
+                    errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName, localMethodName);
+
+                    return this.getEntityForRelationship(userId, requiredEnd, methodName);
                 }
                 else if (relationships.size() > 1)
                 {
-                    errorHandler.handleAmbiguousRelationships(anchorEntityGUID,
-                                                              anchorEntityTypeName,
+                    errorHandler.handleAmbiguousRelationships(startingEntityGUID,
+                                                              startingEntityTypeName,
                                                               relationshipTypeName,
                                                               relationships,
                                                               methodName);
@@ -1692,7 +3132,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1723,11 +3163,13 @@ public class RepositoryHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
+        final String localMethodName = "getEntityByGUID";
+
         try
         {
             EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
 
-            errorHandler.validateInstanceType(userId, entity, guidParameterName, entityTypeName, methodName);
+            errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
 
             return entity;
         }
@@ -1745,7 +3187,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1775,6 +3217,8 @@ public class RepositoryHandler
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
+        final String localMethodName = "isEntityATypeOf";
+
         try
         {
             EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
@@ -1795,12 +3239,11 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return false;
     }
-
 
 
     /**
@@ -1821,6 +3264,8 @@ public class RepositoryHandler
                                                String                 methodName) throws UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
+        final String localMethodName = "getEntityByName";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -1841,7 +3286,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1870,6 +3315,8 @@ public class RepositoryHandler
                                                  String                 methodName) throws UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        final String localMethodName = "getEntitiesByName";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -1890,7 +3337,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1920,6 +3367,8 @@ public class RepositoryHandler
                                                           String                 methodName) throws UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
+        final String localMethodName = "getEntitiesByAllProperties";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -1940,7 +3389,167 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Return the entities that match all supplied properties.
+     *
+     * @param userId calling userId
+     * @param properties list of name properties to search on.
+     * @param entityTypeGUID unique identifier of the entity's type
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName calling method
+     *
+     * @return list of returned entities
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail>  getEntitiesWithoutPropertyValues(String                 userId,
+                                                                InstanceProperties     properties,
+                                                                String                 entityTypeGUID,
+                                                                int                    startingFrom,
+                                                                int                    pageSize,
+                                                                String                 methodName) throws UserNotAuthorizedException,
+                                                                                                          PropertyServerException
+    {
+        final String localMethodName = "getEntitiesWithoutPropertyValues";
+
+        try
+        {
+            return metadataCollection.findEntitiesByProperty(userId,
+                                                             entityTypeGUID,
+                                                             properties,
+                                                             MatchCriteria.NONE,
+                                                             startingFrom,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             pageSize);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the entities that match all supplied properties.
+     *
+     * @param userId calling userId
+     * @param propertyValue string value to search on - may be a RegEx.
+     * @param entityTypeGUID unique identifier of the entity's type
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName calling method
+     *
+     * @return list of returned entities
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail>  getEntitiesByValue(String     userId,
+                                                  String     propertyValue,
+                                                  String     entityTypeGUID,
+                                                  int        startingFrom,
+                                                  int        pageSize,
+                                                  String     methodName) throws UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String localMethodName = "getEntitiesByValue";
+
+        try
+        {
+            return metadataCollection.findEntitiesByPropertyValue(userId,
+                                                                  entityTypeGUID,
+                                                                  propertyValue,
+                                                                  startingFrom,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  pageSize);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the entities that match all supplied properties.
+     *
+     * @param userId calling user
+     * @param entityTypeGUID unique identifier of the entity's type
+     * @param searchCriteria String Java regular expression used to match against any of the String property values
+     *                             within entity instances of the specified type(s).
+     *                             This parameter must not be null.
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param methodName calling method
+     *
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                              Null means do not sequence on a property name (see SequencingOrder).
+     * @param methodName calling method
+     *
+     * @return list of returned entities
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail>  getEntitiesByPropertyValue(String          userId,
+                                                          String          entityTypeGUID,
+                                                          String          searchCriteria,
+                                                          int             startingFrom,
+                                                          int             pageSize,
+                                                          Date            asOfTime,
+                                                          String          sequencingProperty,
+                                                          SequencingOrder sequencingOrder,
+                                                          String          methodName) throws UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String localMethodName = "getEntitiesByPropertyValue";
+        try
+        {
+            return metadataCollection.findEntitiesByPropertyValue(userId,
+                                                                  entityTypeGUID,
+                                                                  searchCriteria,
+                                                                  startingFrom,
+                                                                  null,
+                                                                  null,
+                                                                  asOfTime,
+                                                                  sequencingProperty,
+                                                                  sequencingOrder,
+                                                                  pageSize);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1971,6 +3580,8 @@ public class RepositoryHandler
                                                String                 methodName) throws UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
+        final String localMethodName = "getUniqueEntityByName";
+
         try
         {
             List<EntityDetail> returnedEntities = metadataCollection.findEntitiesByProperty(userId,
@@ -2004,7 +3615,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2031,6 +3642,46 @@ public class RepositoryHandler
                                                 String                 methodName) throws UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
+        return getEntitiesByType(userId,
+                                 entityTypeGUID,
+                                 startingFrom,
+                                 pageSize,
+                                 null,
+                                 null,
+                                 null,
+                                 methodName);
+    }
+
+
+    /**
+     * Return the requested entities that match the requested type.
+     *
+     * @param userId calling userId
+     * @param entityTypeGUID type of entity required
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                                Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param methodName calling method
+     *
+     * @return list of returned entities
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail> getEntitiesByType(String          userId,
+                                                String          entityTypeGUID,
+                                                int             startingFrom,
+                                                int             pageSize,
+                                                Date            asOfTime,
+                                                String          sequencingProperty,
+                                                SequencingOrder sequencingOrder,
+                                                String          methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String localMethodName = "getEntitiesByType";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -2040,9 +3691,9 @@ public class RepositoryHandler
                                                              startingFrom,
                                                              null,
                                                              null,
-                                                             null,
-                                                             null,
-                                                             null,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
                                                              pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -2051,7 +3702,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2059,12 +3710,12 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the anchor entity.
+     * Return the list of relationships of the requested type connected to the starting entity.
      * The list is expected to be small.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param methodName  name of calling method
@@ -2075,16 +3726,16 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing the property server
      */
     public List<Relationship> getRelationshipsByType(String                 userId,
-                                                     String                 anchorEntityGUID,
-                                                     String                 anchorEntityTypeName,
+                                                     String                 startingEntityGUID,
+                                                     String                 startingEntityTypeName,
                                                      String                 relationshipTypeGUID,
                                                      String                 relationshipTypeName,
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
         return this.getRelationshipsByType(userId,
-                                           anchorEntityGUID,
-                                           anchorEntityTypeName,
+                                           startingEntityGUID,
+                                           startingEntityTypeName,
                                            relationshipTypeGUID,
                                            relationshipTypeName,
                                            0,
@@ -2094,12 +3745,48 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the anchor entity.
+     * Return the current version of a requested relationship.
+     *
+     * @param userId  user making the request
+     * @param relationshipGUID String unique identifier for the relationship.
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationship or null
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public Relationship getRelationshipByGUID(String                 userId,
+                                              String                 relationshipGUID,
+                                              String                 methodName) throws UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String localMethodName = "getRelationshipByGUID";
+
+        try
+        {
+            return metadataCollection.getRelationship(userId, relationshipGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of relationships of the requested type connected to the starting entity.
      * The list is expected to be small.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param startingFrom initial position in the stored list.
@@ -2112,8 +3799,8 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing the property server
      */
     public List<Relationship> getRelationshipsByType(String                 userId,
-                                                     String                 anchorEntityGUID,
-                                                     String                 anchorEntityTypeName,
+                                                     String                 startingEntityGUID,
+                                                     String                 startingEntityTypeName,
                                                      String                 relationshipTypeGUID,
                                                      String                 relationshipTypeName,
                                                      int                    startingFrom,
@@ -2121,10 +3808,12 @@ public class RepositoryHandler
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String localMethodName = "getRelationshipsByType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
+                                                                                            startingEntityGUID,
                                                                                             relationshipTypeGUID,
                                                                                             startingFrom,
                                                                                             null,
@@ -2137,14 +3826,32 @@ public class RepositoryHandler
             {
                 if (log.isDebugEnabled())
                 {
-                    log.debug("No relationships of type " + relationshipTypeName +
-                              " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                    log.debug("No relationships of type " + relationshipTypeGUID +
+                                      " found for entity " + startingEntityGUID);
                 }
 
                 return null;
             }
 
-            return relationships;
+            List<Relationship>  results = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    errorHandler.validateInstanceType(relationship, relationshipTypeName, methodName, localMethodName);
+                    this.getOtherEnd(startingEntityGUID, startingEntityTypeName, relationship, methodName);
+
+                    results.add(relationship);
+                }
+            }
+
+            if (results.isEmpty())
+            {
+                return null;
+            }
+
+            return results;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2152,12 +3859,105 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
     }
 
+
+    /**
+     * Return the list of relationships of the requested type connected to the starting entity.
+     * The list is expected to be small.
+     *
+     * @param userId  user making the request
+     * @param startingEntityGUID  starting entity's GUID
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationships or null
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public List<Relationship> getRelationshipsByType(String                 userId,
+                                                     String                 startingEntityGUID,
+                                                     String                 relationshipTypeGUID,
+                                                     List<InstanceStatus>   limitResultsByStatus,
+                                                     Date                   asOfTime,
+                                                     String                 sequencingProperty,
+                                                     SequencingOrder        sequencingOrder,
+                                                     int                    startingFrom,
+                                                     int                    pageSize,
+                                                     String                 methodName) throws UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String localMethodName = "getRelationshipsByType";
+
+        try
+        {
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                            startingEntityGUID,
+                                                                                            relationshipTypeGUID,
+                                                                                            startingFrom,
+                                                                                            limitResultsByStatus,
+                                                                                            asOfTime,
+                                                                                            sequencingProperty,
+                                                                                            sequencingOrder,
+                                                                                            pageSize);
+
+            if ((relationships == null) || (relationships.isEmpty()))
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("No relationships of type " + relationshipTypeGUID +
+                              " found for entity " + startingEntityGUID);
+                }
+
+                return null;
+            }
+
+            List<Relationship>  results = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    errorHandler.validateInstanceType(relationship, relationshipTypeGUID, methodName, localMethodName);
+                    this.getOtherEnd(startingEntityGUID, relationship);
+
+                    results.add(relationship);
+                }
+            }
+
+            if (results.isEmpty())
+            {
+                return null;
+            }
+
+            return results;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
 
 
     /**
@@ -2184,31 +3984,71 @@ public class RepositoryHandler
                                                              String                 methodName) throws UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        return this.getRequiredRelationshipsByType(userId,
+                                                   anchorEntityGUID,
+                                                   anchorEntityTypeName,
+                                                   relationshipTypeGUID,
+                                                   relationshipTypeName,
+                                                   0,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   100,
+                                                   methodName);
+    }
+
+
+    /**
+     * Return the list of relationships of the requested type connected to the anchor entity.
+     * No relationships found results in an exception.
+     *
+     * @param userId  user making the request
+     * @param anchorEntityGUID  starting entity's GUID
+     * @param anchorEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationships or null
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public List<Relationship> getRequiredRelationshipsByType(String                 userId,
+                                                             String                 anchorEntityGUID,
+                                                             String                 anchorEntityTypeName,
+                                                             String                 relationshipTypeGUID,
+                                                             String                 relationshipTypeName,
+                                                             int                    startingFrom,
+                                                             List<InstanceStatus>   limitResultsByStatus,
+                                                             Date                   asOfTime,
+                                                             String                 sequencingProperty,
+                                                             SequencingOrder        sequencingOrder,
+                                                             int                    pageSize,
+                                                             String                 methodName) throws UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        final String localMethodName = "getRequiredRelationshipsByType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
                                                                                             anchorEntityGUID,
                                                                                             relationshipTypeGUID,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            100);
+                                                                                            startingFrom,
+                                                                                            limitResultsByStatus,
+                                                                                            asOfTime,
+                                                                                            sequencingProperty,
+                                                                                            sequencingOrder,
+                                                                                            pageSize);
 
-            if ((relationships == null) || (relationships.isEmpty()))
+            if (relationships.isEmpty())
             {
-                errorHandler.handleNoRelationship(anchorEntityGUID,
-                                                  anchorEntityTypeName,
-                                                  relationshipTypeName,
-                                                  methodName);
+                return null;
             }
 
             return relationships;
-        }
-        catch (PropertyServerException  error)
-        {
-            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2216,7 +4056,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2225,11 +4065,11 @@ public class RepositoryHandler
 
 
     /**
-     * Count the number of relationships of a specific type attached to an anchor entity.
+     * Count the number of relationships of a specific type attached to an starting entity.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param methodName  name of calling method
@@ -2240,16 +4080,16 @@ public class RepositoryHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     public int countAttachedRelationshipsByType(String                 userId,
-                                                String                 anchorEntityGUID,
-                                                String                 anchorEntityTypeName,
+                                                String                 startingEntityGUID,
+                                                String                 startingEntityTypeName,
                                                 String                 relationshipTypeGUID,
                                                 String                 relationshipTypeName,
                                                 String                 methodName) throws PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
         List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                       anchorEntityGUID,
-                                                                       anchorEntityTypeName,
+                                                                       startingEntityGUID,
+                                                                       startingEntityTypeName,
                                                                        relationshipTypeGUID,
                                                                        relationshipTypeName,
                                                                        methodName);
@@ -2272,7 +4112,7 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the anchor entity.
+     * Return the list of relationships of the requested type connected to the starting entity.
      *
      * @param userId  user making the request
      * @param entity1GUID  entity at end 1 GUID
@@ -2284,6 +4124,7 @@ public class RepositoryHandler
      *
      * @return retrieved relationship or null
      *
+     * @throws InvalidParameterException wrong type in entity 1
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
@@ -2293,7 +4134,8 @@ public class RepositoryHandler
                                                        String                 entity2GUID,
                                                        String                 relationshipTypeGUID,
                                                        String                 relationshipTypeName,
-                                                       String                 methodName) throws UserNotAuthorizedException,
+                                                       String                 methodName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
         List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
@@ -2309,8 +4151,7 @@ public class RepositoryHandler
             {
                 if (relationship != null)
                 {
-                    EntityProxy  entity2Proxy = relationship.getEntityTwoProxy();
-
+                    EntityProxy  entity2Proxy = this.getOtherEnd(entity1GUID, entity1TypeName, relationship, methodName);
                     if (entity2Proxy != null)
                     {
                         if (entity2GUID.equals(entity2Proxy.getGUID()))
@@ -2327,11 +4168,12 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the anchor entity.
+     * Return the list of relationships of the requested type connected to the starting entity.  If there are no relationships
+     * null is returned
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param startingFrom results starting point
@@ -2343,20 +4185,22 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
-    public List<Relationship> getPagedRelationshipsByType(String                 userId,
-                                                          String                 anchorEntityGUID,
-                                                          String                 anchorEntityTypeName,
-                                                          String                 relationshipTypeGUID,
-                                                          String                 relationshipTypeName,
-                                                          int                    startingFrom,
-                                                          int                    maximumResults,
-                                                          String                 methodName) throws UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<Relationship> getPagedRelationshipsByType(String userId,
+                                                          String startingEntityGUID,
+                                                          String startingEntityTypeName,
+                                                          String relationshipTypeGUID,
+                                                          String relationshipTypeName,
+                                                          int    startingFrom,
+                                                          int    maximumResults,
+                                                          String methodName) throws UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
+        final String localMethodName = "getPagedRelationshipsByType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
+                                                                                            startingEntityGUID,
                                                                                             relationshipTypeGUID,
                                                                                             startingFrom,
                                                                                             null,
@@ -2367,17 +4211,10 @@ public class RepositoryHandler
 
             if ((relationships == null) || (relationships.isEmpty()))
             {
-                errorHandler.handleNoRelationship(anchorEntityGUID,
-                                                  anchorEntityTypeName,
-                                                  relationshipTypeName,
-                                                  methodName);
+                return null;
             }
 
             return relationships;
-        }
-        catch (PropertyServerException  error)
-        {
-            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2385,7 +4222,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2393,13 +4230,13 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the anchor entity.
+     * Return the list of relationships of the requested type connected to the starting entity.
      * The assumption is that this is a 0..1 relationship so one relationship (or null) is returned.
      * If lots of relationships are found then the PropertyServerException is thrown.
      *
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param methodName  name of calling method
@@ -2410,18 +4247,20 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing the property server
      */
     public Relationship getUniqueRelationshipByType(String                 userId,
-                                                    String                 anchorEntityGUID,
-                                                    String                 anchorEntityTypeName,
+                                                    String                 startingEntityGUID,
+                                                    String                 startingEntityTypeName,
                                                     String                 relationshipTypeGUID,
                                                     String                 relationshipTypeName,
                                                     String                 methodName) throws UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
+        final String localMethodName = "getUniqueRelationshipByType";
+
         try
         {
             List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                           anchorEntityGUID,
-                                                                           anchorEntityTypeName,
+                                                                           startingEntityGUID,
+                                                                           startingEntityTypeName,
                                                                            relationshipTypeGUID,
                                                                            relationshipTypeName,
                                                                            methodName);
@@ -2434,8 +4273,8 @@ public class RepositoryHandler
                 }
                 else if (relationships.size() > 1)
                 {
-                    errorHandler.handleAmbiguousRelationships(anchorEntityGUID,
-                                                              anchorEntityTypeName,
+                    errorHandler.handleAmbiguousRelationships(startingEntityGUID,
+                                                              startingEntityTypeName,
                                                               relationshipTypeName,
                                                               relationships,
                                                               methodName);
@@ -2448,7 +4287,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2456,7 +4295,106 @@ public class RepositoryHandler
 
 
     /**
-     * Create a relationship between two entities.
+     * Return the list of relationships of the requested type connected to the starting entity where the
+     * starting entity is at the end indicated by the startAtEnd1 boolean parameter.
+     * The assumption is that this is a 0..1 relationship so one relationship (or null) is returned.
+     * If lots of relationships are found then the PropertyServerException is thrown.
+     *
+     * @param userId  user making the request
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
+     * @param startAtEnd1 is the starting entity at end 1 of the relationship
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationship or null
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public Relationship getUniqueRelationshipByType(String                 userId,
+                                                    String                 startingEntityGUID,
+                                                    String                 startingEntityTypeName,
+                                                    boolean                startAtEnd1,
+                                                    String                 relationshipTypeGUID,
+                                                    String                 relationshipTypeName,
+                                                    String                 methodName) throws UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String localMethodName = "getUniqueRelationshipByType";
+
+        try
+        {
+            List<Relationship> relationships = this.getRelationshipsByType(userId,
+                                                                           startingEntityGUID,
+                                                                           startingEntityTypeName,
+                                                                           relationshipTypeGUID,
+                                                                           relationshipTypeName,
+                                                                           methodName);
+
+            if (relationships != null)
+            {
+                Relationship  result = null;
+
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        EntityProxy proxy;
+
+                        if (startAtEnd1)
+                        {
+                            proxy = relationship.getEntityOneProxy();
+                        }
+                        else
+                        {
+                            proxy = relationship.getEntityTwoProxy();
+                        }
+
+                        if (proxy != null)
+                        {
+                            if (startingEntityGUID.equals(proxy.getGUID()))
+                            {
+                                if (result == null)
+                                {
+                                    /*
+                                     * Although we have found the relationship requests, the loop continues to make
+                                     * sure this is the only one.
+                                     */
+                                    result = relationship;
+                                }
+                                else
+                                {
+                                    errorHandler.handleAmbiguousRelationships(startingEntityGUID,
+                                                                              startingEntityTypeName,
+                                                                              relationshipTypeName,
+                                                                              relationships,
+                                                                              methodName);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return result;
+            }
+        }
+        catch (PropertyServerException | UserNotAuthorizedException error)
+        {
+            throw error;
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a local relationship between two entities.
      *
      * @param userId calling user
      * @param relationshipTypeGUID unique identifier of the relationship's type
@@ -2468,6 +4406,7 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void createRelationship(String                  userId,
                                    String                  relationshipTypeGUID,
                                    String                  end1GUID,
@@ -2476,14 +4415,68 @@ public class RepositoryHandler
                                    String                  methodName) throws UserNotAuthorizedException,
                                                                               PropertyServerException
     {
+        this.createRelationship(userId,
+                                relationshipTypeGUID,
+                                null,
+                                null,
+                                end1GUID,
+                                end2GUID,
+                                relationshipProperties,
+                                methodName);
+    }
+
+
+    /**
+     * Create a relationship between two entities.  The value of external source GUID determines if it is local or remote.
+     *
+     * @param userId calling user
+     * @param relationshipTypeGUID unique identifier of the relationship's type
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param end1GUID entity to store at end 1
+     * @param end2GUID entity to store at end 2
+     * @param relationshipProperties properties for the relationship
+     * @param methodName name of calling method
+     * @return Relationship structure with the new header, requested entities and properties or null.
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Relationship createRelationship(String                  userId,
+                                           String                  relationshipTypeGUID,
+                                           String                  externalSourceGUID,
+                                           String                  externalSourceName,
+                                           String                  end1GUID,
+                                           String                  end2GUID,
+                                           InstanceProperties      relationshipProperties,
+                                           String                  methodName) throws UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String localMethodName = "createRelationship";
+
         try
         {
-            metadataCollection.addRelationship(userId,
-                                               relationshipTypeGUID,
-                                               relationshipProperties,
-                                               end1GUID,
-                                               end2GUID,
-                                               InstanceStatus.ACTIVE);
+            if (externalSourceGUID == null)
+            {
+                return metadataCollection.addRelationship(userId,
+                                                          relationshipTypeGUID,
+                                                          relationshipProperties,
+                                                          end1GUID,
+                                                          end2GUID,
+                                                          InstanceStatus.ACTIVE);
+            }
+            else
+            {
+                return metadataCollection.addExternalRelationship(userId,
+                                                                  relationshipTypeGUID,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  relationshipProperties,
+                                                                  end1GUID,
+                                                                  end2GUID,
+                                                                  InstanceStatus.ACTIVE);
+            }
+
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2491,16 +4484,20 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
+
+        return null;
     }
 
 
     /**
-     * Create a relationship between two entities.
+     * Ensure a relationship exists between two entities.  The setting of external source GUID determines if the relationship is external or not
      *
      * @param userId calling user
      * @param end1TypeName unique name of the end 1's type
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
      * @param end1GUID entity to store at end 1
      * @param end2GUID entity to store at end 2
      * @param relationshipTypeGUID unique identifier of the relationship's type
@@ -2508,17 +4505,21 @@ public class RepositoryHandler
      * @param relationshipProperties properties for the relationship
      * @param methodName name of calling method
      *
+     * @throws InvalidParameterException type of end 1 is not correct
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public void ensureRelationship(String                  userId,
                                    String                  end1TypeName,
+                                   String                  externalSourceGUID,
+                                   String                  externalSourceName,
                                    String                  end1GUID,
                                    String                  end2GUID,
                                    String                  relationshipTypeGUID,
                                    String                  relationshipTypeName,
                                    InstanceProperties      relationshipProperties,
-                                   String                  methodName) throws UserNotAuthorizedException,
+                                   String                  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
                                                                               PropertyServerException
     {
        Relationship relationship = this.getRelationshipBetweenEntities(userId,
@@ -2530,18 +4531,28 @@ public class RepositoryHandler
                                                                        methodName);
        if (relationship == null)
        {
-           this.createRelationship(userId, relationshipTypeGUID, end1GUID, end2GUID, relationshipProperties, methodName);
+           this.createRelationship(userId, relationshipTypeGUID, externalSourceGUID, externalSourceName, end1GUID, end2GUID, relationshipProperties, methodName);
        }
        else
        {
+           errorHandler.validateProvenance(userId,
+                                           relationship,
+                                           relationship.getGUID(),
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           methodName);
+
            if ((relationshipProperties != null) || (relationship.getProperties() != null))
            {
                /*
-                * This ensures the properties are identical.  It may create unnecessary update events if the properties have not changed.
-                * This could therefore be made more efficient if additional validation of whether the properties have changed is made.
+                * This ensures the properties are identical.
                 */
-               // TODO make more efficient by avoiding unnecessary updates?
-               this.updateRelationshipProperties(userId, relationship.getGUID(), relationshipProperties, methodName);
+               this.updateRelationshipProperties(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 relationship,
+                                                 relationshipProperties,
+                                                 methodName);
            }
        }
     }
@@ -2572,30 +4583,21 @@ public class RepositoryHandler
                                            String                  methodName) throws UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        try
-        {
-            metadataCollection.addExternalRelationship(userId,
-                                                       relationshipTypeGUID,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
-                                                       relationshipProperties,
-                                                       end1GUID,
-                                                       end2GUID,
-                                                       InstanceStatus.ACTIVE);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
-        }
+        this.createRelationship(userId,
+                                relationshipTypeGUID,
+                                externalSourceGUID,
+                                externalSourceName,
+                                end1GUID,
+                                end2GUID,
+                                relationshipProperties,
+                                methodName);
     }
 
 
     /**
      * Delete a relationship between two entities.  If delete is not supported, purge is used.
+     * This method is deprecated because it is not possible to verify the metadata provenance of the
+     * relationship being deleted.
      *
      * @param userId calling user
      * @param relationshipTypeGUID unique identifier of the type of relationship to delete
@@ -2606,6 +4608,7 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void removeRelationship(String                  userId,
                                    String                  relationshipTypeGUID,
                                    String                  relationshipTypeName,
@@ -2613,12 +4616,138 @@ public class RepositoryHandler
                                    String                  methodName) throws UserNotAuthorizedException,
                                                                               PropertyServerException
     {
+        final String localMethodName = "removeRelationship";
+
         try
         {
+            try
+            {
+                metadataCollection.deleteRelationship(userId,
+                                                      relationshipTypeGUID,
+                                                      relationshipTypeName,
+                                                      relationshipGUID);
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+            {
+                this.purgeRelationship(userId, relationshipTypeGUID, relationshipTypeName, relationshipGUID, methodName);
+                auditLog.logMessage(methodName,
+                                    RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
+                                                                                                        relationshipTypeName,
+                                                                                                        relationshipTypeGUID,
+                                                                                                        methodName,
+                                                                                                        metadataCollection.getMetadataCollectionId(userId)));
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Delete a relationship between two entities.  If delete is not supported, purge is used.
+     * The external source identifiers
+     * are used to validate the provenance of the entity before the update.  If they are null,
+     * only local cohort entities can be updated.  If they are not null, they need to match the instances
+     * metadata collection identifiers.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param relationshipTypeName name of the type of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship to delete
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeRelationship(String userId,
+                                   String externalSourceGUID,
+                                   String externalSourceName,
+                                   String relationshipTypeName,
+                                   String relationshipGUID,
+                                   String methodName) throws UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        final String localMethodName = "removeRelationship";
+
+        try
+        {
+            Relationship relationship = metadataCollection.getRelationship(userId, relationshipGUID);
+
+            if (relationship != null)
+            {
+                errorHandler.validateInstanceType(relationship, relationshipTypeName, methodName, localMethodName);
+
+                removeRelationship(userId, externalSourceGUID, externalSourceName, relationship, methodName);
+            }
+        }
+        catch (UserNotAuthorizedException | PropertyServerException error)
+        {
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Delete a relationship between two entities.  If delete is not supported, purge is used.
+     * The external source identifiers
+     * are used to validate the provenance of the entity before the update.  If they are null,
+     * only local cohort entities can be updated.  If they are not null, they need to match the instances
+     * metadata collection identifiers.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param relationship relationship to delete
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public  void removeRelationship(String       userId,
+                                    String       externalSourceGUID,
+                                    String       externalSourceName,
+                                    Relationship relationship,
+                                    String       methodName) throws UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String localMethodName = "removeRelationship";
+
+        try
+        {
+            errorHandler.validateProvenance(userId,
+                                            relationship,
+                                            relationship.getGUID(),
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
             metadataCollection.deleteRelationship(userId,
-                                                  relationshipTypeGUID,
-                                                  relationshipTypeName,
-                                                  relationshipGUID);
+                                                  relationship.getType().getTypeDefGUID(),
+                                                  relationship.getType().getTypeDefName(),
+                                                  relationship.getGUID());
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2626,17 +4755,21 @@ public class RepositoryHandler
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException  error)
         {
-            this.purgeRelationship(userId, relationshipTypeGUID, relationshipTypeName, relationshipGUID, methodName);
+            this.purgeRelationship(userId,
+                                   relationship.getType().getTypeDefGUID(),
+                                   relationship.getType().getTypeDefName(),
+                                   relationship.getGUID(),
+                                   methodName);
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
 
     /**
-     * Purge a relationship between two entities.
+     * Purge a relationship between two entities.  Used if delete fails.
      *
      * @param userId calling user
      * @param relationshipTypeGUID unique identifier of the type of relationship to delete
@@ -2647,26 +4780,21 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void purgeRelationship(String                  userId,
-                                  String                  relationshipTypeGUID,
-                                  String                  relationshipTypeName,
-                                  String                  relationshipGUID,
-                                  String                  methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void purgeRelationship(String userId,
+                                  String relationshipTypeGUID,
+                                  String relationshipTypeName,
+                                  String relationshipGUID,
+                                  String methodName) throws UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
+        final String localMethodName = "purgeRelationship";
+
         try
         {
             metadataCollection.purgeRelationship(userId,
                                                  relationshipTypeGUID,
                                                  relationshipTypeName,
                                                  relationshipGUID);
-
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
-                                                                                                    relationshipTypeName,
-                                                                                                    relationshipTypeGUID,
-                                                                                                    methodName,
-                                                                                                    metadataCollection.getMetadataCollectionId(userId)));
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2674,85 +4802,152 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
 
     /**
-     * Remove all relationships of a certain type anchored at a particular entity.
+     * Restore the requested relationship to the state it was before it was deleted.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public void restoreRelationship(String userId,
+                                    String deletedRelationshipGUID,
+                                    String methodName) throws UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        final String localMethodName = "restoreRelationship(deprecated)";
+
+        try
+        {
+            metadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Restore the requested relationship to the state it was before it was deleted.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void restoreRelationship(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String deletedRelationshipGUID,
+                                    String methodName) throws UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        final String localMethodName = "restoreRelationship";
+
+        try
+        {
+            Relationship relationship = metadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
+            if (relationship != null)
+            {
+                errorHandler.validateProvenance(userId,
+                                                relationship,
+                                                deletedRelationshipGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+            }
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Remove all relationships of a certain type starting at a particular entity.
      *
      * @param userId calling user
-     * @param anchorEntityGUID identifier of starting entity
-     * @param anchorEntityTypeName type of entity
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param startingEntityGUID identifier of starting entity
+     * @param startingEntityTypeName type of entity
      * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
      * @param methodName calling method
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeAllRelationshipsOfType(String                 userId,
-                                             String                 anchorEntityGUID,
-                                             String                 anchorEntityTypeName,
-                                             String                 relationshipTypeGUID,
-                                             String                 relationshipTypeName,
-                                             String                 methodName) throws UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public void removeAllRelationshipsOfType(String userId,
+                                             String externalSourceGUID,
+                                             String externalSourceName,
+                                             String startingEntityGUID,
+                                             String startingEntityTypeName,
+                                             String relationshipTypeGUID,
+                                             String relationshipTypeName,
+                                             String methodName) throws UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        try
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
+                                                                                       userId,
+                                                                                       startingEntityGUID,
+                                                                                       startingEntityTypeName,
+                                                                                       relationshipTypeGUID,
+                                                                                       relationshipTypeName,
+                                                                                       0,
+                                                                                       maxPageSize,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
         {
-            boolean moreToReceive = true;
+            Relationship relationship = iterator.getNext();
 
-            while (moreToReceive)
+            if (relationship != null)
             {
-                /*
-                 * Because removing relationships, the startingFrom value is always 0 because retrieving what is left.
-                 */
-                List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                               anchorEntityGUID,
-                                                                               anchorEntityTypeName,
-                                                                               relationshipTypeGUID,
-                                                                               relationshipTypeName,
-                                                                               0,
-                                                                               maxPageSize,
-                                                                               methodName);
-
-                if ((relationships != null) && (! relationships.isEmpty()))
-                {
-                    for (Relationship relationship : relationships)
-                    {
-                        if (relationship != null)
-                        {
-                            this.removeRelationship(userId,
-                                                    relationshipTypeGUID,
-                                                    relationshipTypeName,
-                                                    relationship.getGUID(),
-                                                    methodName);
-                        }
-                    }
-                }
-                else
-                {
-                    moreToReceive = false;
-                }
+                this.removeRelationship(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        relationship,
+                                        methodName);
             }
         }
-        catch (PropertyServerException | UserNotAuthorizedException error)
-        {
-            throw error;
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
-        }
-
     }
 
 
     /**
-     * Delete a relationship between two entities.
+     * Delete a relationship between two specific entities.  The relationship must have compatible provenance
+     * to allow the update to proceed.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
      * @param relationshipTypeGUID unique identifier of the type of relationship to delete
      * @param relationshipTypeName name of the type of relationship to delete
      * @param entity1GUID unique identifier of the entity at end 1 of the relationship to delete
@@ -2760,17 +4955,21 @@ public class RepositoryHandler
      * @param entity2GUID unique identifier of the entity at end 1 of the relationship to delete
      * @param methodName name of calling method
      *
+     * @throws InvalidParameterException type of entity 1 is not correct
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeRelationshipBetweenEntities(String   userId,
-                                                  String   relationshipTypeGUID,
-                                                  String   relationshipTypeName,
-                                                  String   entity1GUID,
-                                                  String   entity1TypeName,
-                                                  String   entity2GUID,
-                                                  String   methodName) throws UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public void removeRelationshipBetweenEntities(String userId,
+                                                  String externalSourceGUID,
+                                                  String externalSourceName,
+                                                  String relationshipTypeGUID,
+                                                  String relationshipTypeName,
+                                                  String entity1GUID,
+                                                  String entity1TypeName,
+                                                  String entity2GUID,
+                                                  String methodName) throws UserNotAuthorizedException,
+                                                                            PropertyServerException,
+                                                                            InvalidParameterException
     {
         Relationship  relationship = this.getRelationshipBetweenEntities(userId,
                                                                          entity1GUID,
@@ -2780,12 +4979,13 @@ public class RepositoryHandler
                                                                          relationshipTypeName,
                                                                          methodName);
 
+
         if (relationship != null)
         {
             this.removeRelationship(userId,
-                                    relationshipTypeGUID,
-                                    relationshipTypeName,
-                                    relationship.getGUID(),
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    relationship,
                                     methodName);
         }
     }
@@ -2795,24 +4995,55 @@ public class RepositoryHandler
      * Update the properties in the requested relationship.
      *
      * @param userId calling user
-     * @param relationshipGUID unique identifier of the relationship.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param relationship relationship to update.
      * @param relationshipProperties new properties for relationship
      * @param methodName name of calling method.
      *
      * @throws PropertyServerException there is a problem communicating with the repository.
      * @throws UserNotAuthorizedException security access problem
      */
-    public void updateRelationshipProperties(String                 userId,
-                                             String                 relationshipGUID,
-                                             InstanceProperties     relationshipProperties,
-                                             String                 methodName) throws UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public void updateRelationshipProperties(String             userId,
+                                             String             externalSourceGUID,
+                                             String             externalSourceName,
+                                             Relationship       relationship,
+                                             InstanceProperties relationshipProperties,
+                                             String             methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
+        final String localMethodName = "updateRelationshipProperties";
+
+        /*
+         * This avoids any unnecessary updates
+         */
+        if ((relationship == null) ||
+                ((relationship.getProperties() == null) && (relationshipProperties == null))  ||
+                (((relationshipProperties != null) && (relationshipProperties.equals(relationship.getProperties())))))
+        {
+            return;
+        }
+
         try
         {
+            errorHandler.validateProvenance(userId,
+                                            relationship,
+                                            relationship.getGUID(),
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
             metadataCollection.updateRelationshipProperties(userId,
-                                               relationshipGUID,
-                                               relationshipProperties);
+                                                            relationship.getGUID(),
+                                                            relationshipProperties);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2820,9 +5051,183 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
+
+
+    /**
+     * Update the properties in the requested relationship.  This method is deprecated because it is not
+     * possible to verify the metadata provenance of the relationship.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param relationshipProperties new properties for relationship
+     * @param methodName name of calling method.
+     *
+     * @throws PropertyServerException there is a problem communicating with the repository.
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public void updateRelationshipProperties(String                 userId,
+                                             String                 relationshipGUID,
+                                             InstanceProperties     relationshipProperties,
+                                             String                 methodName) throws UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String localMethodName = "updateRelationshipProperties";
+
+        try
+        {
+            metadataCollection.updateRelationshipProperties(userId,
+                                                            relationshipGUID,
+                                                            relationshipProperties);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Update the properties in the requested relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param relationshipProperties new properties for relationship
+     * @param methodName name of calling method.
+     *
+     * @throws PropertyServerException there is a problem communicating with the repository.
+     * @throws UserNotAuthorizedException security access problem
+     */
+
+    public void updateRelationshipProperties(String             userId,
+                                             String             externalSourceGUID,
+                                             String             externalSourceName,
+                                             String             relationshipGUID,
+                                             InstanceProperties relationshipProperties,
+                                             String             methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String localMethodName = "updateRelationshipProperties";
+
+        try
+        {
+            Relationship relationship = metadataCollection.getRelationship(userId, relationshipGUID);
+
+            if (relationship != null)
+            {
+                updateRelationshipProperties(userId, externalSourceGUID, externalSourceName, relationship, relationshipProperties, methodName);
+            }
+        }
+        catch (UserNotAuthorizedException | PropertyServerException error)
+        {
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Update the status in the requested relationship.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param instanceStatus new InstanceStatus for the entity.
+     * @param methodName name of calling method.
+     *
+     * @throws PropertyServerException there is a problem communicating with the repository.
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public void updateRelationshipStatus(String                 userId,
+                                         String                 relationshipGUID,
+                                         InstanceStatus         instanceStatus,
+                                         String                 methodName) throws UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String localMethodName = "updateRelationshipStatus(deprecated)";
+
+        try
+        {
+            metadataCollection.updateRelationshipStatus(userId, relationshipGUID, instanceStatus);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Update the status in the requested relationship.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param instanceStatus new InstanceStatus for the entity.
+     * @param methodName name of calling method.
+     *
+     * @throws PropertyServerException there is a problem communicating with the repository.
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateRelationshipStatus(String         userId,
+                                         String         externalSourceGUID,
+                                         String         externalSourceName,
+                                         String         relationshipGUID,
+                                         InstanceStatus instanceStatus,
+                                         String         methodName) throws UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String localMethodName = "updateRelationshipStatus";
+
+        try
+        {
+            Relationship relationship = this.getRelationshipByGUID(userId, relationshipGUID, methodName);
+
+            errorHandler.validateProvenance(userId,
+                                            relationship,
+                                            relationshipGUID,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
+            metadataCollection.updateRelationshipStatus(userId, relationshipGUID, instanceStatus);
+        }
+        catch (UserNotAuthorizedException | PropertyServerException error)
+        {
+            /*
+             * These exceptions have already been correctly mapped.
+             */
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
 
 
     /**
@@ -2831,6 +5236,8 @@ public class RepositoryHandler
      * removed first.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
      * @param end1GUID unique identifier of the entity for end 1 of the relationship.
      * @param end1TypeName type of the entity for end 1
      * @param end2GUID unique identifier of the entity for end 2 of the relationship.
@@ -2842,15 +5249,17 @@ public class RepositoryHandler
      * @throws PropertyServerException there is a problem communicating with the repository.
      * @throws UserNotAuthorizedException security access problem
      */
-    public void updateUniqueRelationshipByType(String                 userId,
-                                               String                 end1GUID,
-                                               String                 end1TypeName,
-                                               String                 end2GUID,
-                                               String                 end2TypeName,
-                                               String                 relationshipTypeGUID,
-                                               String                 relationshipTypeName,
-                                               String                 methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public void updateUniqueRelationshipByType(String userId,
+                                               String externalSourceGUID,
+                                               String externalSourceName,
+                                               String end1GUID,
+                                               String end1TypeName,
+                                               String end2GUID,
+                                               String end2TypeName,
+                                               String relationshipTypeGUID,
+                                               String relationshipTypeName,
+                                               String methodName) throws UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         Relationship  existingRelationshipForEntity1 = this.getUniqueRelationshipByType(userId,
                                                                                         end1GUID,
@@ -2860,11 +5269,11 @@ public class RepositoryHandler
                                                                                         methodName);
 
         existingRelationshipForEntity1 = this.removeIncompatibleRelationship(userId,
+                                                                             externalSourceGUID,
+                                                                             externalSourceName,
                                                                              existingRelationshipForEntity1,
                                                                              end1GUID,
                                                                              end2GUID,
-                                                                             relationshipTypeGUID,
-                                                                             relationshipTypeName,
                                                                              methodName);
 
         Relationship  existingRelationshipForEntity2 = this.getUniqueRelationshipByType(userId,
@@ -2875,11 +5284,11 @@ public class RepositoryHandler
                                                                                         methodName);
 
         existingRelationshipForEntity2 = this.removeIncompatibleRelationship(userId,
+                                                                             externalSourceGUID,
+                                                                             externalSourceName,
                                                                              existingRelationshipForEntity2,
                                                                              end1GUID,
                                                                              end2GUID,
-                                                                             relationshipTypeGUID,
-                                                                             relationshipTypeName,
                                                                              methodName);
 
         if ((existingRelationshipForEntity1 == null) && (existingRelationshipForEntity2 == null))
@@ -2899,7 +5308,9 @@ public class RepositoryHandler
      * relationship, only one is expected.
      *
      * @param userId calling user
-     * @param entityGUID unique identity of the anchor entity.
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID unique identity of the starting entity.
      * @param entityTypeName type name of entity
      * @param relationshipTypeGUID unique identifier of the relationship's type
      * @param relationshipTypeName name of the relationship's type
@@ -2908,13 +5319,15 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException there is a problem communicating with the repository.
      */
-    public void removeUniqueRelationshipByType(String                 userId,
-                                               String                 entityGUID,
-                                               String                 entityTypeName,
-                                               String                 relationshipTypeGUID,
-                                               String                 relationshipTypeName,
-                                               String                 methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public void removeUniqueRelationshipByType(String userId,
+                                               String externalSourceGUID,
+                                               String externalSourceName,
+                                               String entityGUID,
+                                               String entityTypeName,
+                                               String relationshipTypeGUID,
+                                               String relationshipTypeName,
+                                               String methodName) throws UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         Relationship obsoleteRelationship = this.getUniqueRelationshipByType(userId,
                                                                              entityGUID,
@@ -2926,9 +5339,9 @@ public class RepositoryHandler
         if (obsoleteRelationship != null)
         {
             this.removeRelationship(userId,
-                                    relationshipTypeGUID,
-                                    relationshipTypeName,
-                                    obsoleteRelationship.getGUID(),
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    obsoleteRelationship,
                                     methodName);
         }
     }
@@ -2939,25 +5352,25 @@ public class RepositoryHandler
      * identifiers (guids) are supplied.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
      * @param relationship relationship to validate
      * @param end1GUID unique identifier of the entity for end 1 of the relationship.
      * @param end2GUID unique identifier of the entity for end 2 of the relationship.
-     * @param relationshipTypeGUID unique identifier of the type of relationship to create.
-     * @param relationshipTypeName name of the type of relationship to create.
      * @param methodName name of calling method.
      * @return valid relationship or null
      *
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException there is a problem communicating with the repository.
      */
-    private Relationship removeIncompatibleRelationship(String                 userId,
-                                                        Relationship           relationship,
-                                                        String                 end1GUID,
-                                                        String                 end2GUID,
-                                                        String                 relationshipTypeGUID,
-                                                        String                 relationshipTypeName,
-                                                        String                 methodName) throws UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+    private Relationship removeIncompatibleRelationship(String       userId,
+                                                        String       externalSourceGUID,
+                                                        String       externalSourceName,
+                                                        Relationship relationship,
+                                                        String       end1GUID,
+                                                        String       end2GUID,
+                                                        String       methodName) throws UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         if (relationship == null)
         {
@@ -2977,13 +5390,73 @@ public class RepositoryHandler
              * The current relationship is between different entities.  It needs to be deleted.
              */
             this.removeRelationship(userId,
-                                    relationshipTypeGUID,
-                                    relationshipTypeName,
-                                    relationship.getGUID(),
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    relationship,
                                     methodName);
 
             return null;
         }
+    }
+
+    /**
+     * Return the entities and relationships that radiate out from the supplied entity GUID.
+     * The results are scoped both the instance type guids and the level.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID the starting point of the query.
+     * @param entityTypeGUIDs list of entity types to include in the query results.  Null means include
+     *                          all entities found, irrespective of their type.
+     * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
+     *                                all relationships found, irrespective of their type.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param level the number of the relationships out from the starting entity that the query will traverse to
+     *              gather results.
+     * @param methodName name of calling method.
+     * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships or null.
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public InstanceGraph getEntityNeighborhood(String               userId,
+                                               String               entityGUID,
+                                               List<String>         entityTypeGUIDs,
+                                               List<String>         relationshipTypeGUIDs,
+                                               List<InstanceStatus> limitResultsByStatus,
+                                               List<String>         limitResultsByClassification,
+                                               Date                 asOfTime,
+                                               int                  level,
+                                               String               methodName) throws UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String localMethodName = "getEntityNeighborhood";
+
+        try
+        {
+            return metadataCollection.getEntityNeighborhood(userId,
+                                                            entityGUID,
+                                                            entityTypeGUIDs,
+                                                            relationshipTypeGUIDs,
+                                                            limitResultsByStatus,
+                                                            limitResultsByClassification,
+                                                            asOfTime,
+                                                            level);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
     }
 
 

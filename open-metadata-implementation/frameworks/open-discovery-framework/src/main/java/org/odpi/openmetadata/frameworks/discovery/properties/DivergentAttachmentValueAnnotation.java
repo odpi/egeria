@@ -24,7 +24,7 @@ public class DivergentAttachmentValueAnnotation extends DivergentAttachmentAnnot
 {
     private static final long serialVersionUID = 1L;
 
-    protected List<String> divergentPropertyNames  = null;
+    private List<String> divergentPropertyNames  = null;
 
 
     /**
@@ -88,7 +88,33 @@ public class DivergentAttachmentValueAnnotation extends DivergentAttachmentAnnot
      *
      * @return print out of variables in a JSON-style
      */
-
+    @Override
+    public String toString()
+    {
+        return "DivergentAttachmentValueAnnotation{" +
+                "divergentPropertyNames=" + divergentPropertyNames +
+                ", attachmentGUID='" + getAttachmentGUID() + '\'' +
+                ", duplicateAttachmentGUID='" + getDuplicateAttachmentGUID() + '\'' +
+                ", duplicateAnchorGUIDs='" + getDuplicateAnchorGUID() + '\'' +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
+    }
 
 
     /**

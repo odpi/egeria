@@ -9,7 +9,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataSetProperties is a class for representing a generic data store.
+ * DataSetProperties is a class for representing a generic data set.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -59,8 +59,7 @@ public class DataSetProperties extends AssetProperties
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", typeName='" + getTypeName() + '\'' +

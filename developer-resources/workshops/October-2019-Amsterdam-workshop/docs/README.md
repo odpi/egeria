@@ -79,3 +79,8 @@ Whether we need to differentiate `Process Template` from `process`. Check conclu
 ### Egeria Blog
 - [Blog](https://www.odpi.org/category/blog/egeria)
 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

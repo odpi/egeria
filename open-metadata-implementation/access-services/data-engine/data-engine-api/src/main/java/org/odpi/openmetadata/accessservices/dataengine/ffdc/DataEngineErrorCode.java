@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataengine.ffdc;
 
 
-import java.text.MessageFormat;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
  * The DataEngineErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -25,33 +26,29 @@ import java.text.MessageFormat;
  * </ul>
  */
 
-public enum DataEngineErrorCode {
+public enum DataEngineErrorCode implements ExceptionMessageSet {
     OMRS_NOT_INITIALIZED(404, "OMAS-DATA-ENGINE-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
             "The system is unable to connect to the open metadata property server.",
             "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-    INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-001 ",
-            "The port type passed for the {0} is invalid, or different from {1}",
+    INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-001",
+            "The port type passed for the entity with qualifiedName {0} is invalid, or different from expected type {1}",
             "The system is unable to create a new PortDelegation relation without equal types between the ports.",
             "Correct the code in the caller to provide the correct port type."),
     PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-002",
             "The data engine event {0} could not be processed. Error: {1}",
             "The system is unable to process the event.",
             "Verify the topic configuration or the event schema."),
-    PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
-            "The data engine event {0} could not be parsed. Error: {1}",
-            "The system is unable to process the event.",
-            "Verify the topic configuration or the event schema."),
     DATA_ENGINE_EXCEPTION(400, "OMAS-DATA-ENGINE-400-004",
             "Exception while processing the data engine event {0}",
             "The system is unable to process the event.",
             "Verify the topic configuration or the event schema."),
-    SCHEMA_ATTRIBUTE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005 ",
+    SCHEMA_ATTRIBUTE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005",
             "SchemaAttribute with qualifiedName {0} was not found",
             "The system is unable to create a new LineageMapping relation.",
             "Correct the code in the caller to provide the correct schema attribute qualified name."),
-    PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006 ",
+    PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006",
             "Port with qualifiedName {0} was not found",
             "The system is unable to create a new PortDelegation relation.",
             "Correct the code in the caller to provide the correct port qualified name."),
@@ -62,16 +59,20 @@ public enum DataEngineErrorCode {
                                  "Review previous error messages to determine the precise error in the " +
                                  "start up configuration. " +
                                  "Correct the configuration and reconnect the server to the cohort. "),
-    PROCESS_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-008 ",
+    PROCESS_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-008",
             "Process with qualifiedName {0} was not found",
             "The system is unable to create a new ProcessHierarchy relation.",
-            "Correct the code in the caller to provide the correct port qualified name.");
+            "Correct the code in the caller to provide the correct port qualified name."),
+    UNABLE_TO_SEND_EVENT(500, "OMAS-DATA-ENGINE-500-001",
+            "An unexpected exception occurred when sending an event through connector {0} to the Data Engine OMAS out topic.  The failing " +
+                    "event was {1}, the exception was {2} with message {2}",
+            "The system has issued a call to an open metadata access service input topic using event message broker",
+            "Look for errors in the remote server's audit log and console to understand and correct the source of the error.");
 
-    private int httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private static final long serialVersionUID = 1L;
+
+    private ExceptionMessageDefinition messageDefinition;
+
 
     /**
      * The constructor for DataEngineErrorCode expects to be passed one of the enumeration rows defined in
@@ -81,77 +82,36 @@ public enum DataEngineErrorCode {
      * <p>
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode  - error code to use over REST calls
-     * @param newErrorMessageId - unique Id for the message
-     * @param newErrorMessage   - text for the message
-     * @param newSystemAction   - description of the action taken by the system when the error condition happened
-     * @param newUserAction     - instructions for resolving the error
+     * @param httpErrorCode  error code to use over REST calls
+     * @param errorMessageId unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction     instructions for resolving the error
      */
-    DataEngineErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction,
-                        String newUserAction) {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
+    DataEngineErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction);
     }
 
     /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @param params - strings that plug into the placeholders in the errorMessage
-     *
-     * @return errorMessage (formatted with supplied parameters)
+     * @return message definition object.
      */
-    public String getFormattedErrorMessage(String... params) {
-        MessageFormat mf = new MessageFormat(errorMessage);
-        return mf.format(params);
+    public ExceptionMessageDefinition getMessageDefinition() {
+        return messageDefinition;
     }
+
 
     /**
-     * Returns the numeric code that can be used in a REST response.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return int
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public int getHttpErrorCode() {
-        return httpErrorCode;
-    }
+    public ExceptionMessageDefinition getMessageDefinition(String... params) {
+        messageDefinition.setMessageParameters(params);
 
-    /**
-     * Returns the unique error message identifier of the error.
-     *
-     * @return String
-     */
-    public String getErrorMessageId() {
-        return errorMessageId;
+        return messageDefinition;
     }
-
-    /**
-     * Returns the un-formatted error message.
-     *
-     * @return String
-     */
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    /**
-     * Returns the action taken by the system when the error occurred.
-     *
-     * @return String
-     */
-    public String getSystemAction() {
-        return systemAction;
-    }
-
-    /**
-     * Returns the proposed action for a user to take when encountering the error.
-     *
-     * @return String
-     */
-    public String getUserAction() {
-        return userAction;
-    }
-
 }
 

@@ -27,8 +27,8 @@ public interface DataManagerEventInterface
      */
     void registerListener(String                   userId,
                           DataManagerEventListener listener) throws InvalidParameterException,
-                                                                     ConnectionCheckedException,
-                                                                     ConnectorCheckedException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException;
+                                                                    ConnectionCheckedException,
+                                                                    ConnectorCheckedException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException;
 }

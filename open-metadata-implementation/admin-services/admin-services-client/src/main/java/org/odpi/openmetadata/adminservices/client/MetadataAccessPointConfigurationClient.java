@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAc
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.AccessServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
@@ -63,6 +64,34 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
     }
 
 
+
+    /*
+     * =============================================================
+     * Learn about all possible access services
+     */
+
+    /**
+     * Return the list of access services for this server.
+     *
+     * @return list of access service descriptions
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public List<RegisteredOMAGService> getRegisteredAccessServices() throws OMAGNotAuthorizedException,
+                                                                            OMAGInvalidParameterException,
+                                                                            OMAGConfigurationErrorException
+    {
+        final String methodName  = "getRegisteredAccessServices";
+        final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/access-services";
+
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
+                                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                                     adminUserId);
+        return restResult.getServices();
+    }
+
+
     /*
      * =============================================================
      * Retrieve the current state of the access service configuration
@@ -82,12 +111,35 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
                                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "getConfiguredAccessServices";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
                                                                                                      serverPlatformRootURL + urlTemplate,
                                                                                                      adminUserId,
                                                                                                      serverName);
+        return restResult.getServices();
+    }
+
+
+    /**
+     * Return the configuration for the access services in this server.
+     *
+     * @return list of access service configuration
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public List<AccessServiceConfig> getAccessServicesConfiguration() throws OMAGNotAuthorizedException,
+                                                                             OMAGInvalidParameterException,
+                                                                             OMAGConfigurationErrorException
+    {
+        final String methodName  = "getAccessServicesConfiguration";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/configuration";
+
+        AccessServicesResponse restResult = restClient.callAccessServicesGetRESTCall(methodName,
+                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                     adminUserId,
+                                                                                     serverName);
         return restResult.getServices();
     }
 

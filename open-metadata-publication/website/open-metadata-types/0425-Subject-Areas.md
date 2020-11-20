@@ -17,7 +17,7 @@ coordinates other subject matter experts to author and maintain the common defin
 
 This includes:
 
-* A [glossary of terms](0310-Glossary-Model.md) that describe the key concepts in the subject area.
+* A [glossary of terms](0310-Glossary.md) that describe the key concepts in the subject area.
 * Lists and hierarchies of [reference data](0545-Reference-Data.md) that relate to particular data values
   in the subject area.
 * Quality rules for specific data values in the subject area.

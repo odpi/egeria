@@ -27,26 +27,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Graph implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(Graph.class);
-    private static final String className = Graph.class.getName();
-
-    private Set<Node> nodes = null;
-    private Set<Line> lines = null;
+    private Set<? extends Node> nodes = null;
+    private Set<? extends Line> lines = null;
 
 
-    public Set<Node> getNodes() {
+    public Set<? extends Node> getNodes() {
         return nodes;
     }
 
-    public void setNodes(Set<Node> nodes) {
+    public void setNodes(Set<? extends Node> nodes) {
         this.nodes = nodes;
     }
 
-    public Set<Line> getLines() {
+    public Set<? extends Line> getLines() {
         return lines;
     }
 
-    public void setLines(Set<Line> lines) {
+    public void setLines(Set<? extends Line> lines) {
         this.lines = lines;
     }
 

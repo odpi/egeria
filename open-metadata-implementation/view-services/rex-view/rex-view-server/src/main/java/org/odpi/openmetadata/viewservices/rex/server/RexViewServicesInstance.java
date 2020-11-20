@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.rex.server;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.rex.handlers.RexViewHandler;
+
+import java.util.List;
 
 
 /**
@@ -32,11 +33,13 @@ public class RexViewServicesInstance extends OMVSServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
+     * @param resourceEndpoints list of resource endpoint configuration objects
      */
-    public RexViewServicesInstance(String       serverName,
-                                   AuditLog     auditLog,
-                                   String       localServerUserId,
-                                   int          maxPageSize)
+    public RexViewServicesInstance(String                       serverName,
+                                   AuditLog                     auditLog,
+                                   String                       localServerUserId,
+                                   int                          maxPageSize,
+                                   List<ResourceEndpointConfig> resourceEndpoints)
     {
 
 
@@ -50,7 +53,7 @@ public class RexViewServicesInstance extends OMVSServiceInstance
               null);  // .... and remoteServerURL.
 
 
-        this.rexViewHandler = new RexViewHandler();
+        this.rexViewHandler = new RexViewHandler(resourceEndpoints);
     }
 
 

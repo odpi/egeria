@@ -183,6 +183,8 @@ that support them) with default configuration values use the following command.
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
 ```
 
+## Configure an individual access service
+
 Alternatively, each service can be configured individually with the following command:
 
 ```
@@ -221,6 +223,13 @@ save it back:
 ```
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/configuration
 ```
+
+----
+* Return to [Configuring an OMAG Server](configuring-an-omag-server.md)
+* Return to [Configuring a Metadata Access Point](../concepts/metadata-access-point.md#Configuring-a-Metadata-Access-Point)
+* Return to [Configuring a Metadata Server](../concepts/metadata-server.md#Configuring-a-Metadata-Server)
+* Return to [configuration document structure](../concepts/configuration-document.md)
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

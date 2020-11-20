@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import javax.validation.constraints.PositiveOrZero;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
@@ -28,84 +31,100 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class AnalyticsModelingOMASResource {
 
-    private final AnalyticsModelingRestServices restAPI = new AnalyticsModelingRestServices();
+    private AnalyticsModelingRestServices restAPI = new AnalyticsModelingRestServices();
 
 	/**
 	 * Get list of databases.
-     * @param serverName  unique identifier for requested server.
-     * @param userId      the unique identifier for the user
+     * @param serverName	unique identifier for requested server.
+     * @param userId		the unique identifier for the user
+     * @param startFrom		starting element (used in paging through large result sets)
+     * @param pageSize		maximum number of results to return
 	 * @return Analytics Modeling response contains list of databases.
 	 */
+    @Operation(summary = "Get list of databases")
 	@GetMapping(path = "/databases")
 	public AnalyticsModelingOMASAPIResponse getDatabases(
 			@PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId
-			)
+            @PathVariable("userId") String userId,
+            @PositiveOrZero(message = "startFrom should be a positive number")
+            @RequestParam Integer startFrom,
+            @PositiveOrZero(message = "pageSize should be a positive number")
+            @RequestParam Integer pageSize
+            )
 	{
-		return restAPI.getDatabases(serverName, userId);
+		return restAPI.getDatabases(serverName, userId, startFrom, pageSize);
 	}
 
 	/**
-	 * Get list of schemas of a given dataSource.
-     * @param serverName  unique identifier for requested server.
-     * @param userId      the unique identifier for the user
-	 * @param dataSource data source GUID.
+	 * Get list of schemas of a given database.
+     * @param serverName	unique identifier for requested server.
+     * @param userId		the unique identifier for the user
+	 * @param database		database GUID.
+     * @param startFrom		starting element (used in paging through large result sets)
+     * @param pageSize		maximum number of results to return
 	 * @return Analytics Modeling response contains list of database schemas.
 	 */
-	@GetMapping(path = "/{dataSourceGUID}/schemas")
+    @Operation(summary = "Get list of schemas of a given database")
+	@GetMapping(path = "/{databaseGUID}/schemas")
 	public AnalyticsModelingOMASAPIResponse getSchemas(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
-            @PathVariable("dataSourceGUID") String dataSource
+            @PathVariable("databaseGUID") String database,
+            @PositiveOrZero(message = "startFrom should be a positive number")
+            @RequestParam Integer startFrom,
+            @PositiveOrZero(message = "pageSize should be a positive number")
+            @RequestParam Integer pageSize
 			)
 	{
-		return restAPI.getSchemas(serverName, userId, dataSource);
+		return restAPI.getSchemas(serverName, userId, database, startFrom, pageSize);
 	}
 
 	/**
-	 * Get list of tables of a given dataSource, catalog and schema.
+	 * Get list of tables of a given database, catalog and schema.
      * @param serverName  unique identifier for requested server.
      * @param userId      the unique identifier for the user
-	 * @param dataSource data source id.
-	 * @param catalog of the db.
-	 * @param schema of the db.
+	 * @param database	  data source id.
+	 * @param catalog	  of the db.
+	 * @param schema	  of the db.
 	 * @param request body.
 	 * @return Analytics Modeling response contains list of tables in the database schema.
 	 */
-	@PostMapping(path = "/{dataSourceGUID}/tables")
+    @Operation(summary = "Get list of tables of a given database, catalog and schema")
+	@PostMapping(path = "/{databaseGUID}/tables")
 	public AnalyticsModelingOMASAPIResponse getTables(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
-			@PathVariable("dataSourceGUID") String dataSource,
+			@PathVariable("databaseGUID") String database,
 			@RequestParam(required = false) String catalog,
 			@RequestParam(required = true) String schema,
 			@RequestBody(required=false) Object request
 			) 
 	{
-		return restAPI.getTables(serverName, userId, dataSource, schema);
+		return restAPI.getTables(serverName, userId, database, schema);
 	}
 	
 	/**
-	 * Get physical module of a given dataSource, catalog and schema.
+	 * Get physical module of a given database, catalog and schema.
      * @param serverName  unique identifier for requested server.
      * @param userId      the unique identifier for the user
-	 * @param dataSource data source id.
-	 * @param catalog of the db.
-	 * @param schema of the db.
+	 * @param database	  database guid.
+	 * @param catalog	  of the db.
+	 * @param schema	  of the db.
 	 * @param request body.
 	 * @return Analytics Modeling module for the database schema.
 	 */
-	@PostMapping(path = "/{dataSourceGUID}/physicalModule")
+    @Operation(summary = "Get physical module of a given database, catalog and schema")
+	@PostMapping(path = "/{databaseGUID}/physicalModule")
 	public AnalyticsModelingOMASAPIResponse getPhysicalModule(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
-			@PathVariable("dataSourceGUID") String dataSource,
+			@PathVariable("databaseGUID") String database,
 			@RequestParam(required=false) String catalog,
 			@RequestParam(required=true) String schema,
 			@RequestBody(required=false) Object request
 			) {
 
-		return restAPI.getModule(serverName, userId, dataSource, catalog, schema);
+		return restAPI.getModule(serverName, userId, database, catalog, schema);
 	}
-	
+    
 }

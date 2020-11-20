@@ -1,0 +1,91 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+
+
+.tex-container {
+  position         : absolute;
+  top              : 0px;
+  left             : 260px;
+  height           : 100%;
+  display          : flex;
+  flex-flow        : column;
+}
+
+.tex-top {
+  display          : flex;
+  flex-flow        : row;
+  width            : 100%; 
+  overflow         : none;
+  padding          : 10px;
+  font-size        : 10px;
+  background-color : rgb(240,240,240);  
+  color            : 'black';
+}
+
+.tex-top-left {
+  flex             : 0 0 auto;
+  width            : 300px;   
+  height           : 140px;  
+}
+
+.tex-top-middle {
+  flex             : 0 0 auto;
+  width            : 300px;   
+  height           : 140px;  
+}
+
+
+.tex-content {
+  flex             : 2;
+  display          : flex;
+  flex-flow        : row;
+  width            : 100%;
+  padding          : 10px;
+  font-size        : 10px;
+  background-color : rgb(240,240,240);  
+  color            : 'black';
+}
+
+.tex-lhs {  
+  flex             : 0 0 auto;
+  width            : 450px;
+  overflow         : auto;
+  padding          : 0px 10px 10px 10px;
+  font-size        : 10px;
+  background-color : rgb(240,240,240);    
+  color            : 'black';
+}
+
+.tex-rhs {
+  flex             : 1 1 auto; 
+  padding          : 10px;
+  font-size        : 10px;
+  background-color : white;  
+  background       : 'white';
+  color            : 'black';
+}
+
+.descriptive-text {
+  font-size        : 12px;
+}
+
+.top-control-button {
+  position         : absolute;
+  right            : 0px;
+  bottom           : 40px;
+  height           : 40px;
+  width            : 100px;
+  background-color : rgb(180,180,180);  
+}
+
+.graph-control-button {  
+  height           : 40px;
+  width            : 100px;
+  background-color : rgb(180,180,180);  
+}
+
+.title {
+  padding          : 20px;
+  font-size        : 20px;
+}

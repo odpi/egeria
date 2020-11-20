@@ -1,0 +1,11 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+description = 'Software Developer OMAS Client'
+
+java {
+    withJavadocJar()
+}

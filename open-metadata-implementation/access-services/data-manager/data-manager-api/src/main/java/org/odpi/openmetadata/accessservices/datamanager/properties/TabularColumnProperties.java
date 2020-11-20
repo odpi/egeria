@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -13,6 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * TabularColumnProperties is a class for representing a column within a table type structure.
+ * Tabular columns are schema attributes with a simple type attached
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -28,8 +28,11 @@ public class TabularColumnProperties extends SchemaAttributeProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String                        dataType     = null;
-    private String                        defaultValue = null;
+    private String dataType           = null;
+    private String defaultValue       = null;
+    private String fixedValue         = null;
+    private String externalTypeGUID   = null;
+    private String validValuesSetGUID = null;
 
     /**
      * Default constructor used by subclasses
@@ -45,14 +48,17 @@ public class TabularColumnProperties extends SchemaAttributeProperties
      *
      * @param template template object to copy.
      */
-    public TabularColumnProperties(DatabaseColumnProperties template)
+    public TabularColumnProperties(TabularColumnProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            dataType = template.getDataType();
-            defaultValue = template.getDefaultValue();
+            dataType           = template.getDataType();
+            defaultValue       = template.getDefaultValue();
+            fixedValue         = template.getFixedValue();
+            externalTypeGUID   = template.getExternalTypeGUID();
+            validValuesSetGUID = template.getValidValuesSetGUID();
         }
     }
 
@@ -95,6 +101,73 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     }
 
 
+    /**
+     * Return a fixed literal value - an alternative to default value.
+     *
+     * @return string value
+     */
+    public String getFixedValue()
+    {
+        return fixedValue;
+    }
+
+
+    /**
+     * If the column contains a fixed literal value, set this value here - an alternative to default value.
+     *
+     * @param fixedValue string
+     */
+    public void setFixedValue(String fixedValue)
+    {
+        this.fixedValue = fixedValue;
+    }
+
+
+    /**
+     * Return the unique identifier of this column's type.
+     *
+     * @return unique identifier (guid) of the external schema type
+     */
+    public String getExternalTypeGUID()
+    {
+        return externalTypeGUID;
+    }
+
+
+    /**
+     * If the type of this column is represented by an external (standard type) put its value here.  No need to set
+     * dataType, FixedType or defaultType
+     *
+     * @param externalTypeGUID unique identifier (guid) of the external schema type
+     */
+    public void setExternalTypeGUID(String externalTypeGUID)
+    {
+        this.externalTypeGUID = externalTypeGUID;
+    }
+
+
+    /**
+     * Return the set of valid values for this column.
+     *
+     * @return unique identifier (guid) of the valid values set
+     */
+    public String getValidValuesSetGUID()
+    {
+        return validValuesSetGUID;
+    }
+
+
+    /**
+     * If the type is controlled by a fixed set of values, set up the unique identifier of the valid values set
+     * that lists the valid values.
+     *
+     * @param validValuesSetGUID unique identifier (guid) of the valid values set
+     */
+    public void setValidValuesSetGUID(String validValuesSetGUID)
+    {
+        this.validValuesSetGUID = validValuesSetGUID;
+    }
+
 
     /**
      * Standard toString method.
@@ -107,21 +180,23 @@ public class TabularColumnProperties extends SchemaAttributeProperties
         return "TabularColumnProperties{" +
                 "dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
+                ", fixedValue='" + fixedValue + '\'' +
+                ", externalTypeGUID='" + externalTypeGUID + '\'' +
+                ", validValuesSetGUID='" + validValuesSetGUID + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + isAllowsDuplicateValues() +
-                ", orderedValues=" + isOrderedValues() +
+                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
+                ", orderedValues=" + getOrderedValues() +
                 ", sortOrder=" + getSortOrder() +
                 ", minimumLength=" + getMinimumLength() +
                 ", length=" + getLength() +
-                ", significantDigits=" + getSignificantDigits() +
-                ", nullable=" + isNullable() +
+                ", significantDigits=" + getPrecision() +
+                ", nullable=" + getIsNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -156,9 +231,11 @@ public class TabularColumnProperties extends SchemaAttributeProperties
         }
         TabularColumnProperties that = (TabularColumnProperties) objectToCompare;
         return Objects.equals(dataType, that.dataType) &&
-                Objects.equals(defaultValue, that.defaultValue);
+                Objects.equals(defaultValue, that.defaultValue) &&
+                Objects.equals(fixedValue, that.fixedValue) &&
+                Objects.equals(externalTypeGUID, that.externalTypeGUID) &&
+                Objects.equals(validValuesSetGUID, that.validValuesSetGUID);
     }
-
 
     /**
      * Return has code based on properties.
@@ -168,6 +245,6 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), dataType, defaultValue);
+        return Objects.hash(super.hashCode(), dataType, defaultValue, fixedValue, externalTypeGUID, validValuesSetGUID);
     }
 }

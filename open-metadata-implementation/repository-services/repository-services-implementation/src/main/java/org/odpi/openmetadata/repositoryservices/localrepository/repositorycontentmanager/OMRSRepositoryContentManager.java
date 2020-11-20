@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -519,41 +521,59 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String methodName = "isTypeOf";
 
-        log.debug("IsTypeOf: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeName = " + expectedTypeName);
+        log.debug("isTypeOf: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeName = " + expectedTypeName);
 
-        if ((expectedTypeName != null) && (actualTypeName != null))
+        if (expectedTypeName == null)
         {
             /*
-             * Do the obvious first.
+             * If the expected type name is null, it means that any type is allowed.
              */
-            if (actualTypeName.equals(expectedTypeName))
-            {
-                log.debug("Simple match success");
-                return true;
-            }
+            return true;
+        }
 
-            /*
-             * Looking for a match in the superTypes.
-             */
-            List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+        /*
+         * If the actual type is null then the object retrieved is a bit weird.  It is treated as not
+         * matching on type.
+         */
+        if (actualTypeName == null)
+        {
+            return false;
+        }
 
-            if (typeHierarchy != null)
+        /*
+         * Do the obvious first.
+         */
+        if (actualTypeName.equals(expectedTypeName))
+        {
+            log.debug("Simple match success");
+            return true;
+        }
+
+        /*
+         * Looking for a match in the superTypes.
+         */
+        List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+
+        if (typeHierarchy != null)
+        {
+            for (TypeDefLink superType : typeHierarchy)
             {
-                for (TypeDefLink superType : typeHierarchy)
+                if (superType != null)
                 {
-                    if (superType != null)
+                    if (expectedTypeName.equals(superType.getName()))
                     {
-                        if (expectedTypeName.equals(superType.getName()))
-                        {
-                            log.debug("SuperType match success");
-                            return true;
-                        }
-                        log.debug("No match with " + superType.getName());
+                        log.debug("SuperType match success");
+                        return true;
                     }
+
+                    log.debug("No match with " + superType.getName());
                 }
             }
         }
 
+        /*
+         * No match found
+         */
         return false;
     }
 
@@ -577,35 +597,51 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         log.debug("IsTypeOfByGUID: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeGUID = " + expectedTypeGUID);
 
-        if ((expectedTypeGUID != null) && (actualTypeGUID != null))
+        if (expectedTypeGUID == null)
         {
             /*
-             * Do the obvious first.
+             * If the expected type GUID is null, it means that any type is allowed.
              */
-            if (actualTypeGUID.equals(expectedTypeGUID))
-            {
-                log.debug("Simple match success");
-                return true;
-            }
+            log.debug("Any type will do");
+            return true;
+        }
 
-            /*
-             * Looking for a match in the superTypes.
-             */
-           List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+        /*
+         * If the actual type is null then the object retrieved is a bit weird.  It is treated as not
+         * matching on type.
+         */
+        if (actualTypeGUID == null)
+        {
+            log.debug("No type to test against");
+            return false;
+        }
 
-            if (typeHierarchy != null)
+        /*
+         * Do the obvious first.
+         */
+        if (actualTypeGUID.equals(expectedTypeGUID))
+        {
+            log.debug("Simple match success");
+            return true;
+        }
+
+        /*
+         * Looking for a match in the superTypes.
+         */
+       List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+
+        if (typeHierarchy != null)
+        {
+            for (TypeDefLink superType : typeHierarchy)
             {
-                for (TypeDefLink superType : typeHierarchy)
+                if (superType != null)
                 {
-                    if (superType != null)
+                    if (expectedTypeGUID.equals(superType.getGUID()))
                     {
-                        if (expectedTypeGUID.equals(superType.getGUID()))
-                        {
-                            log.debug("SuperType match success");
-                            return true;
-                        }
-                        log.debug("No match with " + superType.getGUID());
+                        log.debug("SuperType match success");
+                        return true;
                     }
+                    log.debug("No match with " + superType.getGUID());
                 }
             }
         }
@@ -1289,6 +1325,85 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param enumTypeGUID unique Id of Enum requested
+     * @param enumTypeName unique name of enum requested
+     * @param ordinal numeric value of property
+     * @param methodName calling method name
+     * @return instance properties object.
+     * @throws TypeErrorException the enum type is not recognized
+     */
+    public InstanceProperties addEnumPropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        String             enumTypeGUID,
+                                                        String             enumTypeName,
+                                                        int                ordinal,
+                                                        String             methodName) throws TypeErrorException
+    {
+        final String thisMethodName = "addEnumPropertyToInstance";
+
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+        AttributeTypeDef attributeTypeDef = this.getAttributeTypeDef(sourceName, enumTypeGUID, enumTypeName, methodName);
+
+        if (attributeTypeDef instanceof EnumDef)
+        {
+            EnumDef enumDef = (EnumDef)attributeTypeDef;
+
+            List<EnumElementDef> enumDefValues = enumDef.getElementDefs();
+
+            if (enumDefValues != null)
+            {
+                for (EnumElementDef  enumElementDef : enumDefValues)
+                {
+                    if (enumElementDef != null)
+                    {
+                        if (enumElementDef.getOrdinal() == ordinal)
+                        {
+                            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
+
+                            enumPropertyValue.setOrdinal(ordinal);
+                            enumPropertyValue.setSymbolicName(enumPropertyValue.getSymbolicName());
+                            enumPropertyValue.setDescription(enumPropertyValue.getDescription());
+
+                            resultingProperties.setProperty(propertyName, enumPropertyValue);
+
+                            return resultingProperties;
+                        }
+                    }
+                }
+            }
+        }
+
+        throw new TypeErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
+                                                                                    enumTypeName,
+                                                                                    sourceName,
+                                                                                    methodName),
+                                     this.getClass().getName(),
+                                     methodName);
+    }
+
+
+    /**
      * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
      *
      * @param sourceName name of caller.
@@ -1802,7 +1917,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate request parameters";
 
-        auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_INSTANCE_ID.getMessageDefinition(methodName, sourceName));
+        auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_INSTANCE.getMessageDefinition(methodName, sourceName));
     }
 
 

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.properties;
 
-
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
@@ -10,6 +9,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * SoftwareServerCapabilitiesProperties describe the properties for a capability deployed to a software server.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -18,7 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = IntegratorCapabilityProperties.class, name = "IntegratorCapabilityProperties"),
+                @JsonSubTypes.Type(value = DatabaseManagerProperties.class, name = "DatabaseManagerProperties"),
+                @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties"),
+                @JsonSubTypes.Type(value = FileManagerProperties.class, name = "FileManagerProperties"),
         })
 public class SoftwareServerCapabilitiesProperties extends ReferenceableProperties
 {
@@ -85,7 +89,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Return the description of the discovery engine.
+     * Return the description of the capability.
      *
      * @return string description
      */
@@ -96,7 +100,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Set up the description of the discovery engine.
+     * Set up the description of the capability.
      *
      * @param description string
      */
@@ -107,7 +111,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Return the description of the type of discovery engine this is.
+     * Return the description of the type of capability this is.
      *
      * @return string description
      */
@@ -118,7 +122,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Set up the description of the type of discovery engine this is.
+     * Set up the description of the type of capability this is.
      *
      * @param typeDescription string
      */
@@ -129,7 +133,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Return the version of the discovery engine.
+     * Return the version of the capability.
      *
      * @return version string
      */
@@ -140,7 +144,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Set up the version string of the discovery engine.
+     * Set up the version string of the capability.
      *
      * @param version string
      */
@@ -151,7 +155,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Return the patch level of the discovery engine.
+     * Return the patch level of the capability.
      *
      * @return patch level string
      */
@@ -162,7 +166,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Set up the patch level of the discovery engine.
+     * Set up the patch level of the capability.
      *
      * @param patchLevel string
      */
@@ -173,7 +177,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Return the source of the discovery engine implementation.
+     * Return the source of the capability implementation.
      *
      * @return string url
      */
@@ -184,7 +188,7 @@ public class SoftwareServerCapabilitiesProperties extends ReferenceablePropertie
 
 
     /**
-     * Set up the source of the discovery engine implementation.
+     * Set up the source of the capability implementation.
      *
      * @param source string url
      */

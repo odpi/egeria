@@ -1,0 +1,24 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-topic-connectors')
+    implementation 'org.springframework:spring-core'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Asset Manager OMAS Client'
+
+java {
+    withJavadocJar()
+}

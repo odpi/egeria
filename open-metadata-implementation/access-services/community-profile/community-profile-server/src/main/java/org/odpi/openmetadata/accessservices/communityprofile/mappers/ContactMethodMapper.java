@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.mappers;
 
 /**
- * ExternalReferenceMapper provides the property name mapping for External Reference.
+ * ContactMethodMapper provides the property name mapping for External Reference.
  */
 public class ContactMethodMapper
 {

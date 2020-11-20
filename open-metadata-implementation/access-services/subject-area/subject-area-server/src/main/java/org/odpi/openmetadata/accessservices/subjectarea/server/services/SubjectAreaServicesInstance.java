@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * It is also responsible for registering itself in the instance map.
  */
 
-public class SubjectAreaServicesInstance extends OCFOMASServiceInstance
+public class SubjectAreaServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.SUBJECT_AREA_OMAS;
     private OMRSAPIHelper oMRSAPIHelper;
@@ -53,62 +54,31 @@ public class SubjectAreaServicesInstance extends OCFOMASServiceInstance
         if (repositoryHandler != null)
         {
             if (this.oMRSAPIHelper == null ) {
-                this.oMRSAPIHelper = new OMRSAPIHelper(serviceName);
+                this.oMRSAPIHelper = new OMRSAPIHelper(
+                        serviceName,
+                        serverName,
+                        repositoryHandler,
+                        repositoryHelper
+                );
             }
-            this.glossaryHandler= new SubjectAreaGlossaryHandler(serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHelper,
-                                                                     repositoryHandler,
-                                                                     oMRSAPIHelper,
-                                                                     errorHandler);
-            this.termHandler= new SubjectAreaTermHandler(serviceName,
-                                                                 serverName,
-                                                                 invalidParameterHandler,
-                                                                 repositoryHelper,
-                                                                 repositoryHandler,
-                                                                 oMRSAPIHelper,
-                                                                 errorHandler);
 
-            this.categoryHandler= new SubjectAreaCategoryHandler(serviceName,
-                                                                         serverName,
-                                                                         invalidParameterHandler,
-                                                                         repositoryHelper,
-                                                                         repositoryHandler,
-                                                                         oMRSAPIHelper,
-                                                                         errorHandler);
+            this.glossaryHandler= new SubjectAreaGlossaryHandler(oMRSAPIHelper, maxPageSize);
 
-            this.projectHandler= new SubjectAreaProjectHandler(serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHelper,
-                                                                     repositoryHandler,
-                                                                     oMRSAPIHelper
-            );
+            this.termHandler= new SubjectAreaTermHandler(oMRSAPIHelper, maxPageSize);
 
-            this.graphHandler= new SubjectAreaGraphHandler(serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHelper,
-                                                               repositoryHandler,
-                                                               oMRSAPIHelper,
-                                                               errorHandler);
+            this.categoryHandler= new SubjectAreaCategoryHandler(oMRSAPIHelper, maxPageSize);
 
-            this.relationshipHandler= new SubjectAreaRelationshipHandler(serviceName,
-                                                           serverName,
-                                                           invalidParameterHandler,
-                                                           repositoryHelper,
-                                                           repositoryHandler,
-                                                           oMRSAPIHelper,
-                                                           errorHandler);
+            this.projectHandler= new SubjectAreaProjectHandler(oMRSAPIHelper, maxPageSize);
 
+            this.graphHandler= new SubjectAreaGraphHandler(oMRSAPIHelper, maxPageSize);
 
+            this.relationshipHandler= new SubjectAreaRelationshipHandler(oMRSAPIHelper, maxPageSize);
         }
         else
         {
-//            throw new NewInstanceException(SubjectAreaErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
-//                                           this.getClass().getName(),
-//                                           methodName);
+           throw new NewInstanceException(SubjectAreaErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
+                                           this.getClass().getName(),
+                                           methodName);
 
         }
     }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.client;
 import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineEventInterface;
 import org.odpi.openmetadata.accessservices.discoveryengine.api.DiscoveryEngineEventListener;
 import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicClientConnector;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -13,14 +14,11 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
@@ -699,13 +697,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @param guid unique identifier of the discovery service - used to locate the definition.
      * @param qualifiedName new value for unique name of discovery service.
      * @param displayName new value for the display name.
-     * @param shortDescription new value for the short description.
      * @param description new value for the description.
-     * @param owner new owner of the discovery service.
-     * @param ownerType new type for the owner of the discovery service.
-     * @param origin properties describing the origin of the discovery service.
-     * @param latestChange short description of this update.
-     * @param zoneMembership new list of zones for this discovery service.
      * @param connection connection used to create an instance of this discovery service.
      * @param additionalProperties additional properties for the discovery engine.
      * @param extendedProperties properties to populate the subtype of the discovery service.
@@ -718,13 +710,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
                                            String                guid,
                                            String                qualifiedName,
                                            String                displayName,
-                                           String                shortDescription,
                                            String                description,
-                                           String                owner,
-                                           OwnerType             ownerType,
-                                           List<String>          zoneMembership,
-                                           Map<String, String>   origin,
-                                           String                latestChange,
                                            Connection            connection,
                                            Map<String, String>   additionalProperties,
                                            Map<String, Object>   extendedProperties) throws InvalidParameterException,
@@ -745,13 +731,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         UpdateDiscoveryServiceRequestBody requestBody = new UpdateDiscoveryServiceRequestBody();
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setDisplayName(displayName);
-        requestBody.setShortDescription(shortDescription);
         requestBody.setDescription(description);
-        requestBody.setOwner(owner);
-        requestBody.setOwnerType(ownerType);
-        requestBody.setZoneMembership(zoneMembership);
-        requestBody.setOrigin(origin);
-        requestBody.setLatestChange(latestChange);
         requestBody.setConnection(connection);
         requestBody.setAdditionalProperties(additionalProperties);
         requestBody.setExtendedProperties(extendedProperties);

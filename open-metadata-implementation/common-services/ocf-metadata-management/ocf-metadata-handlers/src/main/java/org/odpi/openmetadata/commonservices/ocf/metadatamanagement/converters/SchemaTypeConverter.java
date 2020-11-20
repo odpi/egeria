@@ -34,9 +34,10 @@ public class SchemaTypeConverter extends ReferenceableConverter
                                InstanceProperties       properties,
                                int                      schemaAttributeCount,
                                OMRSRepositoryHelper     repositoryHelper,
-                               String                   serviceName)
+                               String                   serviceName,
+                               String                   serverName)
     {
-        super(null, repositoryHelper, serviceName);
+        super(null, repositoryHelper, serviceName, serverName);
 
         super.typeName = typeName;
         this.schemaTypeProperties = properties;
@@ -55,9 +56,10 @@ public class SchemaTypeConverter extends ReferenceableConverter
     public SchemaTypeConverter(EntityDetail             entity,
                                int                      schemaAttributeCount,
                                OMRSRepositoryHelper     repositoryHelper,
-                               String                   serviceName)
+                               String                   serviceName,
+                               String                   serverName)
     {
-        super(entity, repositoryHelper, serviceName);
+        super(entity, repositoryHelper, serviceName, serverName);
 
         if (entity != null)
         {
@@ -131,12 +133,6 @@ public class SchemaTypeConverter extends ReferenceableConverter
             {
                 return this.getSchemaTypeChoiceBean();
             }
-            else if (repositoryHelper.isTypeOf(serviceName,
-                                               typeName,
-                                               SchemaElementMapper.BOUNDED_SCHEMA_TYPE_TYPE_NAME))
-            {
-                return this.getBoundedSchemaTypeBean();
-            }
             else
             {
                 return this.getBasicSchemaTypeBean();
@@ -166,27 +162,27 @@ public class SchemaTypeConverter extends ReferenceableConverter
                                                                         instanceProperties,
                                                                         methodName));
             bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
-                                                                      SchemaElementMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
                                                                       instanceProperties,
                                                                       methodName));
 
             bean.setVersionNumber(repositoryHelper.removeStringProperty(serviceName,
-                                                                        SchemaElementMapper.VERSION_NUMBER_PROPERTY_NAME,
+                                                                        SchemaElementMapper.SCHEMA_VERSION_NUMBER_PROPERTY_NAME,
                                                                         instanceProperties,
                                                                         methodName));
 
             bean.setAuthor(repositoryHelper.removeStringProperty(serviceName,
-                                                                 SchemaElementMapper.AUTHOR_PROPERTY_NAME,
+                                                                 SchemaElementMapper.SCHEMA_AUTHOR_PROPERTY_NAME,
                                                                  instanceProperties,
                                                                  methodName));
 
             bean.setUsage(repositoryHelper.removeStringProperty(serviceName,
-                                                                SchemaElementMapper.USAGE_PROPERTY_NAME,
+                                                                SchemaElementMapper.SCHEMA_USAGE_PROPERTY_NAME,
                                                                 instanceProperties,
                                                                 methodName));
 
             bean.setEncodingStandard(repositoryHelper.removeStringProperty(serviceName,
-                                                                           SchemaElementMapper.ENCODING_STANDARD_PROPERTY_NAME,
+                                                                           SchemaElementMapper.SCHEMA_ENCODING_STANDARD_PROPERTY_NAME,
                                                                            instanceProperties,
                                                                            methodName));
 
@@ -351,34 +347,6 @@ public class SchemaTypeConverter extends ReferenceableConverter
         final String  methodName = "getMapSchemaTypeBean";
 
         MapSchemaType  bean = new MapSchemaType();
-
-        super.updateBean(bean);
-
-        InstanceProperties instanceProperties = new InstanceProperties(schemaTypeProperties);;
-
-        /*
-         * The properties are removed from the instance properties and stowed in the bean.
-         * Any remaining properties are stored in extendedProperties.
-         */
-        this.updateBasicSchemaTypeProperties(bean, instanceProperties, methodName);
-
-        bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-
-        return bean;
-    }
-
-
-    /**
-     * Create a bounded schema type bean.
-     *
-     * @return the bean
-     */
-    @SuppressWarnings(value = "deprecation")
-    SchemaType getBoundedSchemaTypeBean()
-    {
-        final String  methodName = "getBoundedSchemaTypeBean";
-
-        BoundedSchemaType  bean = new BoundedSchemaType();
 
         super.updateBean(bean);
 

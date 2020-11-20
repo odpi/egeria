@@ -2,15 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.CategoryHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -21,9 +23,7 @@ import java.util.List;
  */
 
 public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorView {
-
     private static String className = GlossaryAuthorViewCategoryRESTServices.class.getName();
-    private static final Logger LOG = LoggerFactory.getLogger(className);
 
     /**
      * Default constructor
@@ -42,28 +42,24 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory) {
+    public SubjectAreaOMASAPIResponse<Category> createCategory(String serverName, String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
 
         RESTCallToken              token    = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog                   auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            Category createdCategory = handler.createCategory(userId,
-                    suppliedCategory);
-            response = new CategoryResponse(createdCategory);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Category createdCategory = clients.categories().create(userId, suppliedCategory);
+            response.addResult(createdCategory);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -82,27 +78,23 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getCategory(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Category> getCategory(String serverName, String userId, String guid) {
         final String methodName = "getCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            Category obtainedCategory = handler.getCategoryByGuid(userId,
-                    guid);
-            response = new CategoryResponse(obtainedCategory);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Category obtainedCategory = clients.categories().getByGUID(userId, guid);
+            response.addResult(obtainedCategory);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -117,27 +109,25 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Category property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findCategory(
+    public SubjectAreaOMASAPIResponse<Category> findCategory(
             String serverName,
             String userId,
             Date asOfTime,
             String searchCriteria,
-            Integer offset,
+            Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
@@ -145,28 +135,29 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         final String methodName = "findCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
+
         try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            if (offset == null) {
-                offset = new Integer(0);
+            if (startingFrom == null) {
+                startingFrom = 0;
             }
             if (pageSize == null) {
-                pageSize = new Integer(0);
+                pageSize = invalidParameterHandler.getMaxPagingSize();
             }
-            List<Category> categories = handler.findCategory(
-                    userId,
-                    searchCriteria,
-                    asOfTime,
-                    offset,
-                    pageSize,
-                    sequencingOrder,
-                    sequencingProperty);
-            CategoriesResponse categoriesResponse = new CategoriesResponse();
-            categoriesResponse.setCategories(categories);
-            response = categoriesResponse;
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setStartingFrom(startingFrom);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Category> categories = clients.categories().find(userId, findRequest);
+            response.addAllResults(categories);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -181,27 +172,25 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @param userId             user identifier
      * @param guid               guid of the category to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the category relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getCategoryRelationships(
+    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(
             String serverName,
             String userId,
             String guid,
             Date asOfTime,
-            Integer offset,
+            Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
@@ -211,15 +200,27 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         final String methodName = "getCategoryRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            List<Line> lines =  handler.getCategoryRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-            LinesResponse linesResponse = new LinesResponse();
-            linesResponse.setLines(lines);
-            response = linesResponse;
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setStartingFrom(startingFrom);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Line> lines =  clients.categories().getRelationships(userId, guid, findRequest);
+            response.addAllResults(lines);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -240,43 +241,36 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse updateCategory(
+    public SubjectAreaOMASAPIResponse<Category> updateCategory(
             String serverName,
             String userId,
             String guid,
             Category category,
-            Boolean isReplace
+            boolean isReplace
     ) {
         final String methodName = "updateCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Category updatedCategory;
-            if (isReplace == null) {
-                isReplace = false;
-            }
             if (isReplace) {
-                updatedCategory = handler.replaceCategory(userId, guid, category);
+                updatedCategory = clients.categories().replace(userId, guid, category);
             } else {
-                updatedCategory = handler.updateCategory(userId, guid, category);
+                updatedCategory = clients.categories().update(userId, guid, category);
             }
-            CategoryResponse categoryResponse = new CategoryResponse();
-            categoryResponse.setCategory(updatedCategory);
-            response = categoryResponse;
+            response.addResult(updatedCategory);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -304,48 +298,36 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteCategory(
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(
             String serverName,
             String userId,
             String guid,
-            Boolean isPurge
+            boolean isPurge
     ) {
 
         final String methodName = "deleteCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            if (isPurge == null) {
-                // default to soft delete if isPurge is not specified.
-                isPurge = false;
-            }
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
 
             if (isPurge) {
-                handler.purgeCategory(userId, guid);
-                response = new VoidResponse();
+                clients.categories().purge(userId, guid);
             } else {
-                Category category = handler.deleteCategory(userId, guid);
-                CategoryResponse categoryResponse = new CategoryResponse();
-                categoryResponse.setCategory(category);
-                response = categoryResponse;
+                clients.categories().delete(userId, guid);
             }
         }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -362,35 +344,87 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreCategory(
+    public SubjectAreaOMASAPIResponse<Category> restoreCategory(
             String serverName,
             String userId,
             String guid) {
         final String methodName = "restoreCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            Category category = handler.restoreCategory(userId, guid);
-            CategoryResponse categoryResponse = new CategoryResponse();
-            categoryResponse.setCategory(category);
-            response = categoryResponse;
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Category category = clients.categories().restore(userId, guid);
+            response.addResult(category);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategoryChildren";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+        FindRequest findRequest = new FindRequest();
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
+        }
+        try {
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
+            findRequest.setStartingFrom(startingFrom);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
+            response.addAllResults(categories);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+            final String methodName = "getCategorizedTerms";
+
+            RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+            SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+            AuditLog auditLog = null;
+            FindRequest findRequest = new FindRequest();
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            try {
+                invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+                findRequest.setPageSize(pageSize);
+                findRequest.setStartingFrom(startingFrom);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+                List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest);
+                response.addAllResults(terms);
+            } catch (Throwable error) {
+                response = getResponseForError(error, auditLog, className, methodName);
+            }
+            restCallLogger.logRESTCallReturn(token, response.toString());
+            return response;
+        }
 }

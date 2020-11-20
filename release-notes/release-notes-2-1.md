@@ -1,23 +1,21 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.1 (Planned July 2020)
+# Release 2.1 (July 2020)
 
-Release 2.1 adds support for Governance Programs and Data Privacy initiatives.
-This includes licenses, certification, terms and conditions governance
+Release 2.1 primarily contains bug fixes and preparatory work for future capabilities.
 
-Below are the highlights:
+A full list of changes can be seen [by comparing on github](https://github.com/odpi/egeria/compare/egeria-release-2.0...egeria-release-2.1) .
 
-* There are new access services:
-   * The [Governance Program OMAS](../open-metadata-implementation/access-services/governance-program) provides support for defining, reviewing and refining governance programs.
-   * The [Data Privacy OMAS](../open-metadata-implementation/access-services/data-privacy) supports the management of data privacy initiatives.
+The highlights include:
 
-* There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs),
-  [samples](../open-metadata-resources/open-metadata-samples) and
-  [open metadata archives](../open-metadata-resources/open-metadata-archives) demonstrating
-  these new capabilities of Egeria.
-   
+* Bug fixes
+  - Subject Area OMAS has added testing including automated FVTs, code cleanup & bug fixes
+  - User Interface fixes & usability improvements
+* Dependency Updates
+  - Spring updated to 5.2.8
+  - additional dependencies to remain current
+  
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

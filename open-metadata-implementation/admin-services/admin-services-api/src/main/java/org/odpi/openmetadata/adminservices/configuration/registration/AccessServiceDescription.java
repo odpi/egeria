@@ -27,6 +27,12 @@ public enum AccessServiceDescription implements Serializable
                                       "asset-lineage",
                                       "Store asset lineage",
                                       "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-lineage/"),
+    ASSET_MANAGER_OMAS               (1028,
+                                      "Asset Manager",
+                                      "Asset Manager OMAS",
+                                      "asset-manager",
+                                      "Manage metadata from a third party asset manager",
+                                      "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-manager/"),
     ASSET_OWNER_OMAS                 (1002,
                                       "Asset Owner",
                                       "Asset Owner OMAS",
@@ -99,18 +105,18 @@ public enum AccessServiceDescription implements Serializable
                                       "devops",
                                       "Manage a DevOps pipeline",
                                       "https://egeria.odpi.org/open-metadata-implementation/access-services/dev-ops/"),
-    DIGITAL_ARCHITECTURE_OMAS        (1013,
+    DIGITAL_ARCHITECTURE_OMAS        (1026,
                                       "Digital Architecture",
                                       "Digital Architecture OMAS",
                                       "digital-architecture",
                                       "Design of the digital services for an organization",
                                       "https://egeria.odpi.org/open-metadata-implementation/access-services/digital-architecture/"),
-    DIGITAL_SERVICE_OMAS            ( 1024,
+    DIGITAL_SERVICE_OMAS            ( 1027,
                                       "DigitalService",
                                       "Digital Service OMAS",
                                       "digital-service",
                                       "Manage a Digital Service Lifecycle",
-            "https://egeria.odpi.org/open-metadata-implementation/access-services/digital-service/"),
+                                        "https://egeria.odpi.org/open-metadata-implementation/access-services/digital-service/"),
     DISCOVERY_ENGINE_OMAS            (1015,
                                       "Discovery Engine",
                                       "Discovery Engine OMAS",
@@ -186,17 +192,18 @@ public enum AccessServiceDescription implements Serializable
      * Default Constructor
      *
      * @param accessServiceCode ordinal for this access service
-     * @param accessServiceURLMarker string used in URLs
      * @param accessServiceName symbolic name for this access service
+     * @param accessServiceFullName full name for this access service
+     * @param accessServiceURLMarker string used in URLs
      * @param accessServiceDescription short description for this access service
      * @param accessServiceWiki wiki page for the access service for this access service
      */
-    AccessServiceDescription(int                            accessServiceCode,
-                             String                         accessServiceName,
-                             String                         accessServiceFullName,
-                             String                         accessServiceURLMarker,
-                             String                         accessServiceDescription,
-                             String                         accessServiceWiki)
+    AccessServiceDescription(int    accessServiceCode,
+                             String accessServiceName,
+                             String accessServiceFullName,
+                             String accessServiceURLMarker,
+                             String accessServiceDescription,
+                             String accessServiceWiki)
     {
         /*
          * Save the values supplied
@@ -247,7 +254,7 @@ public enum AccessServiceDescription implements Serializable
      * Return the string that appears in the REST API URL that identifies the owning service.
      * Null means no REST APIs supported by this service.
      *
-     * @return String default name
+     * @return String default URL marker
      */
     public String getAccessServiceURLMarker()
     {

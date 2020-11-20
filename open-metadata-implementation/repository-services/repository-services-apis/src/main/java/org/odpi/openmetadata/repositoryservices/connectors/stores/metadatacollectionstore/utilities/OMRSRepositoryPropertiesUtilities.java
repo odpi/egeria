@@ -24,6 +24,9 @@ import java.util.*;
  */
 public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryPropertiesHelper
 {
+    public static final String METADATA_COLLECTION_ID_PROPERTY_NAME     = "metadataCollectionId";
+    public static final String METADATA_COLLECTION_NAME_PROPERTY_NAME   = "metadataCollectionName";
+
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryPropertiesUtilities.class);
 
     /**
@@ -135,6 +138,61 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * Retrieve the ordinal value from an enum property.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return int ordinal or -1 if not found
+     */
+    public int getEnumPropertyOrdinal(String             sourceName,
+                                      String             propertyName,
+                                      InstanceProperties properties,
+                                      String             methodName)
+    {
+        InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+        if (instancePropertyValue instanceof EnumPropertyValue)
+        {
+            EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+
+            return enumPropertyValue.getOrdinal();
+        }
+
+        return -1;
+    }
+
+
+    /**
+     * Retrieve the ordinal value from an enum property.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return int ordinal or -1 if not found
+     */
+    public int removeEnumPropertyOrdinal(String             sourceName,
+                                         String             propertyName,
+                                         InstanceProperties properties,
+                                         String             methodName)
+    {
+        int  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getEnumPropertyOrdinal(sourceName, propertyName, properties, methodName);
+            this.removeProperty(propertyName, properties);
+            log.debug("Properties left: " + properties.toString());
+        }
+
+        log.debug("Retrieved " + propertyName + " property ordinal : " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
      * Return the requested property or null if property is not found.  If the property is not
      * a map property then a logic exception is thrown
      *
@@ -215,7 +273,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     {
                         ArrayPropertyValue arrayPropertyValue = (ArrayPropertyValue) instancePropertyValue;
 
-                        if ((arrayPropertyValue != null) && (arrayPropertyValue.getArrayCount() > 0))
+                        if (arrayPropertyValue.getArrayCount() > 0)
                         {
                             /*
                              * There are values to extract
@@ -279,8 +337,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param callingMethodName method of caller
      * @return list of strings
      */
-    public List<String> getInstancePropertiesAsArray(InstanceProperties     instanceProperties,
-                                                     String                 callingMethodName)
+    private List<String> getInstancePropertiesAsArray(InstanceProperties     instanceProperties,
+                                                      String                 callingMethodName)
     {
         final String  thisMethodName = "getInstancePropertiesAsArray";
 
@@ -391,6 +449,230 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         if (properties != null)
         {
             retrievedProperty = this.getStringMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Boolean> getBooleanMapFromProperty(String             sourceName,
+                                                          String             propertyName,
+                                                          InstanceProperties properties,
+                                                          String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Boolean>  booleanMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    booleanMap.put(mapPropertyName, (Boolean)actualPropertyValue);
+                }
+            }
+
+            if (! booleanMap.isEmpty())
+            {
+                return booleanMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Boolean> removeBooleanMapFromProperty(String             sourceName,
+                                                             String             propertyName,
+                                                             InstanceProperties properties,
+                                                             String             methodName)
+    {
+        Map<String, Boolean>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getBooleanMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Long> getLongMapFromProperty(String             sourceName,
+                                                    String             propertyName,
+                                                    InstanceProperties properties,
+                                                    String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Long>  longMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    longMap.put(mapPropertyName, (Long)actualPropertyValue);
+                }
+            }
+
+            if (! longMap.isEmpty())
+            {
+                return longMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Long> removeLongMapFromProperty(String             sourceName,
+                                                       String             propertyName,
+                                                       InstanceProperties properties,
+                                                       String             methodName)
+    {
+        Map<String, Long>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getLongMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Integer> getIntegerMapFromProperty(String             sourceName,
+                                                          String             propertyName,
+                                                          InstanceProperties properties,
+                                                          String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Integer>  integerMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    integerMap.put(mapPropertyName, (Integer) actualPropertyValue);
+                }
+            }
+
+            if (! integerMap.isEmpty())
+            {
+                return integerMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Integer> removeIntegerMapFromProperty(String             sourceName,
+                                                             String             propertyName,
+                                                             InstanceProperties properties,
+                                                             String             methodName)
+    {
+        Map<String, Integer>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getIntegerMapFromProperty(sourceName, propertyName, properties, methodName);
 
             if (retrievedProperty != null)
             {
@@ -1202,7 +1484,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             log.debug("Adding property " + propertyName + " for " + methodName);
 
-            if ((mapValues != null) && (! mapValues.isEmpty()))
+            if (! mapValues.isEmpty())
             {
                 InstanceProperties  resultingProperties;
 
@@ -1268,7 +1550,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             log.debug("Adding property " + propertyName + " for " + methodName);
 
-            if ((mapValues != null) && (! mapValues.isEmpty()))
+            if (! mapValues.isEmpty())
             {
                 InstanceProperties  resultingProperties;
 
@@ -1697,6 +1979,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (typeDefPatch.getDescriptionGUID() != null)
             {
                 updatedTypeDef.setDescriptionGUID(typeDefPatch.getDescriptionGUID());
+            }
+
+            if (typeDefPatch.getSuperType() != null)
+            {
+                updatedTypeDef.setSuperType(typeDefPatch.getSuperType());
             }
 
             if (typeDefPatch.getPropertyDefinitions() != null)

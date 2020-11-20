@@ -5,8 +5,22 @@
 
 The Data Manager OMAS supports a REST API for requests and an event-based
 interface for asynchronous integration.  This client
-package provides language-specific client packages to make it easier
+package provides Java clients to make it easier
 for data tools and applications to call these interfaces.
+
+There are 4 clients:
+
+ * **MetadataSourceClient** enables the caller to create the Software Server Capability that represents
+   the source, or owner, of the metadata.  These sources are database manager, file managers and 
+   file owning applications.
+         
+ * **DatabaseManagerClient** enables the caller to describe databases, database schemas, database tables
+   and database columns.
+    
+ * **FilesAndFoldersClient** enables the caller to describe files and the organizing folder structure
+   around it.
+
+ * **DataManagerEventClient** enables the client to send and receive events from the Data Manager OMAS.
 
 
 ----

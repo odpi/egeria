@@ -4,23 +4,10 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
@@ -31,6 +18,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -62,9 +50,11 @@ import static java.util.stream.Collectors.partitioningBy;
 public class DataEngineRESTServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineRESTServices.class);
-    private static final String DEBUG_MESSAGE_METHOD = "Calling method: {}";
+    private static final String DEBUG_MESSAGE_METHOD_DETAILS = "Calling method {} for entity: {}";
     private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
-    private static final String DEBUG_METHOD_RETURN_VOID_RESPONSE = "Returning from method: {} with void response";
+    public static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
+    public static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
+    public static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
 
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -82,8 +72,6 @@ public class DataEngineRESTServices {
     public GUIDResponse createExternalDataEngine(String serverName, String userId,
                                                  DataEngineRegistrationRequestBody requestBody) {
         final String methodName = "createExternalDataEngine";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -120,7 +108,7 @@ public class DataEngineRESTServices {
     public GUIDResponse getExternalDataEngineByQualifiedName(String serverName, String userId, String qualifiedName) {
         final String methodName = "getExternalDataEngineByQualifiedName";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, qualifiedName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -154,8 +142,6 @@ public class DataEngineRESTServices {
     public GUIDResponse createOrUpdateSchemaType(String userId, String serverName, SchemaTypeRequestBody schemaTypeRequestBody) {
         final String methodName = "createOrUpdateSchemaType";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         GUIDResponse response = new GUIDResponse();
 
         try {
@@ -177,8 +163,6 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
-
         return response;
     }
 
@@ -194,8 +178,6 @@ public class DataEngineRESTServices {
     public GUIDResponse createOrUpdatePortImplementation(String userId, String serverName,
                                                          PortImplementationRequestBody portImplementationRequestBody) {
         final String methodName = "createOrUpdatePortImplementation";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         GUIDResponse response = new GUIDResponse();
         try {
@@ -217,8 +199,6 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
-
         return response;
     }
 
@@ -233,8 +213,6 @@ public class DataEngineRESTServices {
      */
     public GUIDResponse createOrUpdatePortAlias(String userId, String serverName, PortAliasRequestBody portAliasRequestBody) {
         final String methodName = "createOrUpdatePortAliasWithDelegation";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -255,7 +233,40 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
+        return response;
+    }
+
+    /**
+     * Add the provided ProcessHierarchy relationship
+     *
+     * @param serverName                  name of server instance to call
+     * @param userId                      the name of the calling user
+     * @param processHierarchyRequestBody properties of the process hierarchy
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     */
+    public GUIDResponse addProcessHierarchy(String userId, String serverName, ProcessHierarchyRequestBody processHierarchyRequestBody) {
+        final String methodName = "addProcessHierarchy";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            if (processHierarchyRequestBody == null) {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return response;
+            }
+
+            response.setGUID(addProcessHierarchyToProcess(userId, serverName, processHierarchyRequestBody.getProcessHierarchy(),
+                    processHierarchyRequestBody.getExternalSourceName()));
+
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
 
         return response;
     }
@@ -272,8 +283,6 @@ public class DataEngineRESTServices {
     public ProcessListResponse createOrUpdateProcesses(String userId, String serverName, ProcessesRequestBody processesRequestBody) {
         final String methodName = "createOrUpdateProcesses";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         ProcessListResponse response = new ProcessListResponse();
 
         try {
@@ -286,8 +295,6 @@ public class DataEngineRESTServices {
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         }
-
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
 
         return response;
     }
@@ -312,7 +319,7 @@ public class DataEngineRESTServices {
                                                                                                                                           UserNotAuthorizedException {
         final String methodName = "createOrUpdatePortAliasWithDelegation";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portAlias);
 
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
@@ -330,9 +337,54 @@ public class DataEngineRESTServices {
             portHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(), externalSourceName);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, portAliasGUID);
+        log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, portAliasGUID);
 
         return portAliasGUID;
+    }
+
+    /**
+     * Add a a ProcessHierarchy relationship to the process
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param processHierarchy   the process hierarchy values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String addProcessHierarchyToProcess(String userId, String serverName, ProcessHierarchy processHierarchy, String externalSourceName) throws
+                                                                                                                                               InvalidParameterException,
+                                                                                                                                               PropertyServerException,
+                                                                                                                                               UserNotAuthorizedException {
+        final String methodName = "addProcessHierarchyToProcess";
+
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processHierarchy);
+
+        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+
+        Optional<EntityDetail> childProcessEntity = processHandler.findProcessEntity(userId, processHierarchy.getChildProcess());
+
+        String childProcessGUID;
+        if (childProcessEntity.isPresent()) {
+            childProcessGUID = childProcessEntity.get().getGUID();
+            ParentProcess parentProcess = new ParentProcess();
+            parentProcess.setQualifiedName(processHierarchy.getParentProcess());
+            parentProcess.setProcessContainmentType(processHierarchy.getProcessContainmentType());
+            processHandler.createOrUpdateProcessHierarchyRelationship(userId, parentProcess, childProcessGUID, externalSourceName);
+        } else {
+            throw new InvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND.getMessageDefinition(processHierarchy.getChildProcess()),
+                    this.getClass().getName(), methodName, "childProcess");
+        }
+
+        log.info("Data Engine OMAS has added a relationship of type ProcessHierarchy between child process {} and parent process {}",
+                processHierarchy.getChildProcess(), processHierarchy.getParentProcess());
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, childProcessGUID);
+        return childProcessGUID;
     }
 
     /**
@@ -355,7 +407,7 @@ public class DataEngineRESTServices {
                                                                                                    UserNotAuthorizedException {
         final String methodName = "createOrUpdatePortImplementationWithSchemaType";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portImplementation);
 
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
@@ -377,7 +429,7 @@ public class DataEngineRESTServices {
 
         portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, externalSourceName);
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, portImplementationGUID);
+        log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, portImplementationGUID);
 
         return portImplementationGUID;
     }
@@ -401,7 +453,7 @@ public class DataEngineRESTServices {
                                                                                                                                 UserNotAuthorizedException {
         final String methodName = "createExternalDataEngine";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, softwareServerCapability);
 
         if (softwareServerCapability == null) {
             return null;
@@ -409,7 +461,11 @@ public class DataEngineRESTServices {
 
         DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-        return handler.createOrUpdateExternalDataEngine(userId, softwareServerCapability);
+        String softwareServerCapabilityGUID = handler.createOrUpdateExternalDataEngine(userId, softwareServerCapability);
+
+        log.info("Data Engine OMAS has registered an external engine with qualified name {} and GUID {}",
+                softwareServerCapability.getQualifiedName(), softwareServerCapabilityGUID);
+        return softwareServerCapabilityGUID;
     }
 
     /**
@@ -430,8 +486,6 @@ public class DataEngineRESTServices {
                                                                                                                                                     PropertyServerException,
                                                                                                                                                     UserNotAuthorizedException {
         final String methodName = "addPortsToProcess";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         if (CollectionUtils.isEmpty(portQualifiedNames)) {
             return;
@@ -468,7 +522,7 @@ public class DataEngineRESTServices {
                                                                      UserNotAuthorizedException {
         final String methodName = "addLineageMappings";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, lineageMappings);
 
         if (CollectionUtils.isEmpty(lineageMappings)) {
             return;
@@ -481,10 +535,13 @@ public class DataEngineRESTServices {
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
                         lineageMapping.getTargetAttribute(), externalSourceName);
             } catch (InvalidParameterException error) {
+                log.error(EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING, lineageMapping.toString(), error.toString());
                 restExceptionHandler.captureInvalidParameterException(response, error);
             } catch (PropertyServerException error) {
+                log.error(EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING, lineageMapping.toString(), error.toString());
                 restExceptionHandler.capturePropertyServerException(response, error);
             } catch (UserNotAuthorizedException error) {
+                log.error(EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING, lineageMapping.toString(), error.toString());
                 restExceptionHandler.captureUserNotAuthorizedException(response, error);
             }
         });
@@ -499,6 +556,9 @@ public class DataEngineRESTServices {
      * @return a list unique identifiers (GUIDs) of the created/updated processes
      */
     public ProcessListResponse createOrUpdateProcesses(String userId, String serverName, List<Process> processes, String externalSourceName) {
+        final String methodName = "createOrUpdateProcesses";
+
+        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processes);
 
         Predicate<? super Process> hasPortImplementationsPredicate = process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
         Map<Boolean, List<Process>> partitionedProcesses = processes.parallelStream().collect(partitioningBy(hasPortImplementationsPredicate));
@@ -531,6 +591,8 @@ public class DataEngineRESTServices {
 
         addProcessHierarchyRelationships(userId, serverName, processes, response, externalSourceName);
 
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
+
         return response;
     }
 
@@ -539,14 +601,13 @@ public class DataEngineRESTServices {
      *
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
+     * @param processGuid         the guid of the process
      * @param portListRequestBody list of port qualified names
      *
      * @return the unique identifier (guid) of the updated process entity
      */
     public GUIDResponse addPortsToProcess(String userId, String serverName, String processGuid, PortListRequestBody portListRequestBody) {
         final String methodName = "addPortsToProcess";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -568,7 +629,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
+        log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
 
         return response;
     }
@@ -584,8 +645,6 @@ public class DataEngineRESTServices {
      */
     public VoidResponse addLineageMappings(String userId, String serverName, LineageMappingsRequestBody lineageMappingsRequestBody) {
         final String methodName = "addLineageMappings";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         VoidResponse response = new VoidResponse();
         try {
@@ -609,14 +668,58 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Retrieve in topic connection details from the service instance hosting Data Engine access service
+     *
+     * @param serverName the name of server instance to call
+     * @param userId     the name/identifier of the calling user
+     *
+     * @return OCF API ConnectionResponse object describing the details for the input topic connection used
+     * or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition
+     */
+    public ConnectionResponse getInTopicConnection(String serverName, String userId) {
 
-    private String createOrUpdateSchemaType(String userId, String serverName, SchemaType schemaType, String externalSourceName) throws
-                                                                                                                                InvalidParameterException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException {
+        final String methodName = "getInTopicConnection";
+        ConnectionResponse response = new ConnectionResponse();
+
+        try {
+            response.setConnection(instanceHandler.getInTopicConnection(userId, serverName, methodName));
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Create or update a SchemaType
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param schemaType         the schema type values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created schema type
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String createOrUpdateSchemaType(String userId, String serverName, SchemaType schemaType, String externalSourceName) throws
+                                                                                                                               InvalidParameterException,
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException {
         final String methodName = "createOrUpdateSchemaType";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, schemaType);
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
@@ -633,15 +736,11 @@ public class DataEngineRESTServices {
                                                                                                                              PropertyServerException {
         final String methodName = "deleteObsoleteSchemaType";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         if (!oldSchemaTypeGUID.equalsIgnoreCase(schemaTypeGUID)) {
             DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
             dataEngineSchemaTypeHandler.removeSchemaType(userId, oldSchemaTypeGUID);
         }
-
-        log.debug(DEBUG_METHOD_RETURN_VOID_RESPONSE, methodName);
     }
 
     private void handleFailedProcesses(ProcessListResponse response, List<GUIDResponse> failedProcesses) {
@@ -661,7 +760,7 @@ public class DataEngineRESTServices {
     private VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus) {
         final String methodName = "updateProcessStatus";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processGUID);
 
         VoidResponse response = new VoidResponse();
         try {
@@ -676,7 +775,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
+        log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
 
         return response;
     }
@@ -693,7 +792,7 @@ public class DataEngineRESTServices {
     private GUIDResponse createOrUpdateProcess(String userId, String serverName, Process process, String externalSourceName) {
         final String methodName = "createOrUpdateProcess";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, process);
 
         String qualifiedName = process.getQualifiedName();
         List<PortImplementation> portImplementations = process.getPortImplementations();
@@ -742,12 +841,17 @@ public class DataEngineRESTServices {
 
             addLineageMappings(userId, serverName, lineageMappings, response, externalSourceName);
 
+            log.info("Data Engine OMAS has created or updated a Process with qualified name {} and guid {}", qualifiedName, processGUID);
+
             response.setGUID(processGUID);
         } catch (InvalidParameterException error) {
+            log.error(EXCEPTION_WHILE_CREATING_PROCESS, qualifiedName, error.toString());
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
+            log.error(EXCEPTION_WHILE_CREATING_PROCESS, qualifiedName, error.toString());
             restExceptionHandler.capturePropertyServerException(response, error);
         } catch (UserNotAuthorizedException error) {
+            log.error(EXCEPTION_WHILE_CREATING_PROCESS, qualifiedName, error.toString());
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
@@ -780,8 +884,6 @@ public class DataEngineRESTServices {
                                                   String externalSourceName) {
         final String methodName = "addProcessHierarchyRelationships";
 
-        ArrayList<String> failedGUIDS = new ArrayList<>();
-
         // add the ProcessHierarchy relationships only for successfully created processes
         processes.parallelStream().filter(process -> response.getGUIDs().contains(process.getGUID())).forEach(process -> {
             List<ParentProcess> parentProcesses = process.getParentProcesses();
@@ -793,24 +895,17 @@ public class DataEngineRESTServices {
                         processHandler.createOrUpdateProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
                     }
                 } catch (InvalidParameterException error) {
+                    log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error.toString());
                     restExceptionHandler.captureInvalidParameterException(response, error);
                 } catch (PropertyServerException error) {
+                    log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error.toString());
                     restExceptionHandler.capturePropertyServerException(response, error);
                 } catch (UserNotAuthorizedException error) {
+                    log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error.toString());
                     restExceptionHandler.captureUserNotAuthorizedException(response, error);
                 }
             }
-            // failed to create a processHierarchy relationship, set the status of the process back to DRAFT and add the processGUID
-            // to the list of failed processes
-            if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
-                updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT);
-                failedGUIDS.add(processGUID);
-            }
         });
-
-        // update the ProcessListResponse to reflect the updated status for the created/failed processes
-        response.getGUIDs().removeAll(failedGUIDS);
-        response.getFailedGUIDs().addAll(failedGUIDS);
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,
@@ -840,8 +935,6 @@ public class DataEngineRESTServices {
                                                                    UserNotAuthorizedException {
         final String methodName = "deleteObsoletePorts";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         if (CollectionUtils.isEmpty(newPortGUIDs)) {
             return;
         }
@@ -865,16 +958,11 @@ public class DataEngineRESTServices {
             }
         });
 
-        log.debug(DEBUG_METHOD_RETURN_VOID_RESPONSE, methodName);
     }
 
 
     private Set<String> createOrUpdatePortImplementations(String userId, String serverName, List<PortImplementation> portImplementations,
                                                           GUIDResponse response, String externalSourceName) {
-        final String methodName = "createOrUpdatePortImplementations";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         Set<String> portImplementationGUIDs = new HashSet<>();
 
         if (CollectionUtils.isNotEmpty(portImplementations)) {
@@ -893,16 +981,11 @@ public class DataEngineRESTServices {
             });
         }
 
-
         return portImplementationGUIDs;
     }
 
     private Set<String> createOrUpdatePortAliases(String userId, String serverName, List<PortAlias> portAliases, GUIDResponse response,
                                                   String externalSourceName) {
-        final String methodName = "createOrUpdatePortAliases";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         Set<String> portAliasGUIDs = new HashSet<>();
 
         if (CollectionUtils.isNotEmpty(portAliases)) {

@@ -4,13 +4,12 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SoftwareServerCapabilitiesProperties;
+import org.odpi.openmetadata.accessservices.datamanager.rest.DatabaseManagerRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.FileManagerRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.FileSystemRequestBody;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Data Manager OMAS",
         description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers.",
         externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
+                url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager"))
 
 public class DataManagerOMASResource
 {
@@ -38,10 +37,11 @@ public class DataManagerOMASResource
 
 
     /**
-     * Return the connection object for the Discovery Engine OMAS's out topic.
+     * Return the connection object for the Data Manager OMAS's out topic.
      *
-     * @param serverName name of the server to route the request to.
-     * @param userId identifier of calling user.
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     * @param callerId unique identifier of the caller
      *
      * @return connection object for the out topic or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -51,37 +51,81 @@ public class DataManagerOMASResource
     @GetMapping(path = "/topics/out-topic-connection")
 
     public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId)
+                                                    @PathVariable String userId,
+                                                    @PathVariable String callerId)
     {
-        return restAPI.getOutTopicConnection(serverName, userId);
+        return restAPI.getOutTopicConnection(serverName, userId, callerId);
+    }
+
+
+
+    /**
+     * Files live on a file system.  This method creates a top level software server capability for a filesystem.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param requestBody properties of the file system
+     *
+     * @return unique identifier for the file system or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/metadata-sources/filesystems")
+
+    public GUIDResponse   createFileSystemInCatalog(@PathVariable String                serverName,
+                                                    @PathVariable String                userId,
+                                                    @RequestBody  FileSystemRequestBody requestBody)
+    {
+        return restAPI.createFileSystemInCatalog(serverName, userId, requestBody);
+    }
+
+    /**
+     * Files can be owned by a file manager.  This method creates a top level software server capability for a file manager.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param requestBody properties of the file manager
+     *
+     * @return unique identifier for the file system or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/metadata-sources/file-managers")
+
+    public GUIDResponse   createFileManagerInCatalog(@PathVariable String                 serverName,
+                                                     @PathVariable String                 userId,
+                                                     @RequestBody  FileManagerRequestBody requestBody)
+    {
+        return restAPI.createFileManagerInCatalog(serverName, userId, requestBody);
     }
 
 
     /**
-     * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * data manager.  Typically this is Egeria's data manager proxy.
+     * Create information about the database manager (DBMS) that manages database schemas.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param integratorCapabilities description of the integration daemon (specify qualified name at a minimum)
+     * @param requestBody description of the integration daemon (specify qualified name at a minimum)
      *
-     * @return unique identifier of the integration daemon's software server capability or
+     * @return unique identifier of the database manager's software server capability or
      * InvalidParameterException  the bean properties are invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException    problem accessing the property server
      */
-    @PostMapping(path = "/integrators")
+    @PostMapping(path = "/metadata-sources/database-managers")
 
-    public GUIDResponse createDataManagerIntegrator(@PathVariable String                               serverName,
-                                                     @PathVariable String                               userId,
-                                                     @RequestBody  SoftwareServerCapabilitiesProperties integratorCapabilities)
+    public GUIDResponse createDatabaseManager(@PathVariable String                     serverName,
+                                              @PathVariable String                     userId,
+                                              @RequestBody  DatabaseManagerRequestBody requestBody)
     {
-        return restAPI.createDataManagerIntegrator(serverName, userId, integratorCapabilities);
+        return restAPI.createDatabaseManagerInCatalog(serverName, userId, requestBody);
     }
 
 
     /**
-     * Retrieve the unique identifier of the integration daemon.
+     * Retrieve the unique identifier of the software server capability representing a metadata source.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -92,12 +136,12 @@ public class DataManagerOMASResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException    problem accessing the property server
      */
-    @GetMapping(path = "integrators/by-name/{qualifiedName}")
+    @GetMapping(path = "metadata-sources/by-name/{qualifiedName}")
 
-    public GUIDResponse  getDataManagerIntegratorGUID(@PathVariable String serverName,
-                                                       @PathVariable String userId,
-                                                       @PathVariable String qualifiedName)
+    public GUIDResponse  getMetadataSourceGUID(@PathVariable String serverName,
+                                               @PathVariable String userId,
+                                               @PathVariable String qualifiedName)
     {
-        return restAPI.getDataManagerIntegratorGUID(serverName, userId, qualifiedName);
+        return restAPI.getMetadataSourceGUID(serverName, userId, qualifiedName);
     }
 }

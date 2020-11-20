@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.comm
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import java.util.Date;
 import java.util.Objects;
@@ -20,16 +21,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FindRequest
 {
+    private String               searchCriteria       = null;
     private String               sequencingProperty   = null;
     private SequencingOrder      sequencingOrder      = null;
-    private int                  offset               = 0;
-    private int                  pageSize             = 0;
+    private int                  startingFrom         = 0;
+    private Integer              pageSize             = null;
     private Date                 asOfTime;
     /**
      * Default constructor
      */
-    public FindRequest()
-    {
+    public FindRequest() {
     }
 
     /**
@@ -37,17 +38,24 @@ public class FindRequest
      *
      * @param template object to copy
      */
-    public FindRequest(FindRequest template)
-    {
-        if (template != null)
-        {
+    public FindRequest(FindRequest template) {
+        if (template != null) {
+            this.searchCriteria = template.getSearchCriteria();
             this.sequencingProperty = template.getSequencingProperty();
             this.sequencingOrder = template.getSequencingOrder();
-            this.offset = template.getOffset();
+            this.asOfTime = template.getAsOfTime();
+            this.startingFrom = template.getStartingFrom();
             this.pageSize = getPageSize();
         }
     }
 
+    public String getSearchCriteria() {
+        return searchCriteria;
+    }
+
+    public void setSearchCriteria(String searchCriteria) {
+        this.searchCriteria = searchCriteria;
+    }
 
     /**
      * Return the name of the property that should be used to sequence the results.
@@ -97,11 +105,11 @@ public class FindRequest
      * Return the starting element number for this set of results.  This is used when retrieving elements
      * beyond the first page of results. Zero means the results start from the first element.
      *
-     * @return offset number
+     * @return startingFrom number
      */
-    public int getOffset()
+    public int getStartingFrom()
     {
-        return offset;
+        return startingFrom;
     }
 
 
@@ -109,20 +117,19 @@ public class FindRequest
      * Set up the starting element number for this set of results.  This is used when retrieving elements
      * beyond the first page of results. Zero means the results start from the first element.
      *
-     * @param offset offset number
+     * @param startingFrom startingFrom number
      */
-    public void setOffset(int offset)
+    public void setStartingFrom(int startingFrom)
     {
-        this.offset = offset;
+        this.startingFrom = startingFrom;
     }
 
 
     /**
      * Return the maximum number of elements that can be returned on this request.
-     *0 means there is not limit to the page size
      * @return page size
      */
-    public int getPageSize()
+    public Integer getPageSize()
     {
         return pageSize;
     }
@@ -133,7 +140,7 @@ public class FindRequest
      *
      * @param pageSize integer number
      */
-    public void setPageSize(int pageSize)
+    public void setPageSize(Integer pageSize)
     {
         this.pageSize = pageSize;
     }
@@ -165,7 +172,7 @@ public class FindRequest
         return "OMRSAPIPagedFindRequest{" +
                 "sequencingProperty='" + sequencingProperty + '\'' +
                 ", sequencingOrder=" + sequencingOrder +
-                ", offset=" + offset +
+                ", startingFrom=" + startingFrom +
                 ", pageSize=" + pageSize +
                 '}';
     }
@@ -173,32 +180,20 @@ public class FindRequest
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
     @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof FindRequest))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-       FindRequest that = (FindRequest) objectToCompare;
-        return getOffset() == that.getOffset() &&
-                getPageSize() == that.getPageSize() &&
-                Objects.equals(getSequencingProperty(), that.getSequencingProperty()) &&
-                getSequencingOrder() == that.getSequencingOrder();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FindRequest that = (FindRequest) o;
+        return startingFrom == that.startingFrom &&
+                pageSize == that.pageSize &&
+                Objects.equals(searchCriteria, that.searchCriteria) &&
+                Objects.equals(sequencingProperty, that.sequencingProperty) &&
+                sequencingOrder == that.sequencingOrder &&
+                Objects.equals(asOfTime, that.asOfTime);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -206,13 +201,7 @@ public class FindRequest
      * @return int hash code
      */
     @Override
-    public int hashCode()
-    {
-
-        return Objects.hash(super.hashCode(),
-                getSequencingProperty(),
-                getSequencingOrder(),
-                getOffset(),
-                getPageSize());
+    public int hashCode() {
+        return Objects.hash(searchCriteria, sequencingProperty, sequencingOrder, startingFrom, pageSize, asOfTime);
     }
 }

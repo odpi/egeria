@@ -1,0 +1,22 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
+    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Catalog Integrator OMIS API'
+
+java {
+    withJavadocJar()
+}

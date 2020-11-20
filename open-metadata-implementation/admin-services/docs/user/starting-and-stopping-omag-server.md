@@ -21,7 +21,7 @@ The configuration document is not changed by these calls.
 It is possible to query the running server's configuration using the following REST API:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverNAme}/instance/configuration
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance/configuration
 ```
 
 If you want to delete the server's configuration document then issue:

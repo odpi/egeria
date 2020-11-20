@@ -104,6 +104,21 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"The access service can't find instance for server {0}, user {1}, operation {2}.",
 			"The system is unable to process the request.",
             "Review the exception and resolve the configuration. "),
+    INVALID_REQUEST_PARAMER(400,
+			"OMAS-ANALYTICS-MODELING-015",
+			"The request parameter {0} has invalid value.",
+			"The system is unable to process the request.",
+            "Verify parameter value."),
+	FAILED_FETCH_DATABASES(
+			"OMAS-ANALYTICS-MODELING-016", 
+			"Databases could not be fetched.",
+			"The system is unable to process the request.", 
+			"Review the exception to resolve the issue."),
+	FAILED_FETCH_DATABASE_SCHEMAS(
+			"OMAS-ANALYTICS-MODELING-017", 
+			"Schemas for database {} could not be fetched.",
+			"The system is unable to process the request.", 
+			"Review the exception to resolve the issue."),
 
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 

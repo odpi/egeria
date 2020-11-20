@@ -5,9 +5,11 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewTermRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,23 +50,20 @@ public class GlossaryAuthorViewTermRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping()
-    public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @RequestBody Term suppliedTerm) {
+    public SubjectAreaOMASAPIResponse<Term> createTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @RequestBody Term suppliedTerm) {
         return restAPI.createTerm(serverName, userId, suppliedTerm);
 
     }
 
     /**
-     * Get a term.
+     * Get a term. The server has a maximum page size defined, the number of categories (a field of Term) returned is limited by that maximum page size.
      *
      * @param serverName local UI server name
      * @param userId     userid
@@ -72,18 +71,15 @@ public class GlossaryAuthorViewTermRESTResource {
      * @return response which when successful contains the term with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse getTerm(@PathVariable String serverName,
-                                              @PathVariable String userId,
-                                              @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getTerm(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String guid) {
         return restAPI.getTerm(serverName, userId, guid);
 
     }
@@ -95,84 +91,70 @@ public class GlossaryAuthorViewTermRESTResource {
      * @param userId             userid
      * @param searchCriteria     String expression matching Term property values .
      * @param asOfTime           the terms returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of terms meeting the search Criteria
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping()
-    public SubjectAreaOMASAPIResponse findTerm(
-            @PathVariable String serverName,
-            @PathVariable String userId,
-            @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-                                              ) {
-        return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
+    public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
+                                                     @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                     @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
+                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
+        return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
-     * Get Term relationships
+     * Get Term relationships. The server has a maximum page size defined, the number of relationships returned is limited by that maximum page size.
      *
      * @param serverName         local UI server name
      * @param userId             userid
      * @param guid               guid of the term to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the term relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getTermRelationships(
-            @PathVariable String serverName,
-            @PathVariable String userId,
-            @PathVariable String guid,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                 @PathVariable String guid,
+                                                                 @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                 @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
+                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                 @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                 @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
 
-                                                          ) {
-        return restAPI.getTermRelationships(serverName,
-                                            userId,
-                                            guid,
-                                            asOfTime,
-                                            offset,
-                                            pageSize,
-                                            sequencingOrder,
-                                            sequencingProperty);
-
+    ) {
+        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
      * Update a Term
      * <p>
      * Status is not updated using this call.
+     * The Categories categorising this Term can be amended using this call. For an update (rather than a replace) with no categories supplied, no changes are made to the categories; otherwise the
+     * supplied categories will replace the existing ones. The server has a maximum page size defined, the number of categories returned is limited by that maximum page size.
      *
      * @param serverName   local UI server name
      * @param userId       userid
@@ -182,20 +164,18 @@ public class GlossaryAuthorViewTermRESTResource {
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse updateTerm(
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(
             @PathVariable String serverName,
             @PathVariable String userId,
             @PathVariable String guid,
             @RequestBody Term suppliedTerm,
-            @RequestParam(value = "isReplace", required = false) Boolean isReplace) {
+            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
 
         return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
 
@@ -222,20 +202,16 @@ public class GlossaryAuthorViewTermRESTResource {
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String guid,
-                                                 @RequestParam(value = "isPurge", required = false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String guid,
+                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteTerm(serverName, userId, guid, isPurge);
     }
 
@@ -250,18 +226,41 @@ public class GlossaryAuthorViewTermRESTResource {
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(@PathVariable String serverName,
+                                                        @PathVariable String userId,
+                                                        @PathVariable String guid) {
         return restAPI.restoreTerm(serverName, userId, guid);
 
+    }
+    /**
+     * Get the Categories categorizing this Term. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of categories categorizing this Term
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @GetMapping(path = "{guid}/categories")
+    public SubjectAreaOMASAPIResponse<Category> getTermCategories(@PathVariable String serverName,
+                                                                  @PathVariable String userId,
+                                                                  @PathVariable String guid,
+                                                                  @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+
+        return restAPI.getCategories(serverName, userId, guid, startingFrom, pageSize);
     }
 }

@@ -147,8 +147,9 @@ public class DataEngineCommonHandler {
     /**
      * Find out if the entity is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the entity to be searched
+     * @param userId         the name of the calling user
+     * @param qualifiedName  the qualifiedName name of the entity to be searched
+     * @param entityTypeName the type name of the entity
      *
      * @return optional with entity details if found, empty optional if not found
      *
@@ -174,7 +175,7 @@ public class DataEngineCommonHandler {
         Optional<EntityDetail> retrievedEntity = Optional.ofNullable(repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
                 CommonMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName));
 
-        log.debug("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName,
+        log.trace("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName,
                 retrievedEntity.map(InstanceHeader::getGUID).orElse(null));
 
         return retrievedEntity;
@@ -251,10 +252,9 @@ public class DataEngineCommonHandler {
         repositoryHandler.removeEntity(userId, entityGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, methodName);
     }
 
-    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws InvalidParameterException {
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(params);
+    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String parameterName, String... params) throws
+                                                                                                                                            InvalidParameterException {
 
-        throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                errorCode.getSystemAction(), errorCode.getUserAction(), SchemaTypePropertiesMapper.GUID_PROPERTY_NAME);
+        throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, parameterName);
     }
 }

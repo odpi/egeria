@@ -24,10 +24,10 @@ public enum LineType {
     TypedBy,
     Synonym,
     Antonym,
-    Isa,
-    IsaTypeOf,
+    IsA,
+    IsATypeOf,
     RelatedTerm,
-    Hasa,
+    HasA,
     // category category
     LibraryCategoryReference,
     CategoryHierarchyLink,

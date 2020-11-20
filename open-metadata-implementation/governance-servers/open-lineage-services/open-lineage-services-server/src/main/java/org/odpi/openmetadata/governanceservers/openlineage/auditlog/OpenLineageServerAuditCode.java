@@ -25,7 +25,6 @@ public enum OpenLineageServerAuditCode {
             "The Open Lineage Services has completed initialization.",
             "No action is required. This is part of the normal operation of the server."),
 
-
     SERVER_REGISTERED_WITH_IN_TOPIC("OPEN-LINEAGE-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The Open Lineage Services server {0} is registering a listener for its in topic ",
@@ -62,42 +61,23 @@ public enum OpenLineageServerAuditCode {
             "The topic connector could not be started.",
             "Review the status of the eventbus server and review the topic name set by the Open Lineage Services configuration."),
 
-    ERROR_OBTAINING_BUFFER_GRAPH_CONNNECTOR("OPEN-LINEAGE-SERVICES-0009",
+    ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0009",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} is not able to obtain a Buffergraph database connector with the values provided in configuration {1}.",
-            "The Buffergraph database connector could not be obtained.",
-            "Please verify the Buffergraph connection object within the Open Lineage Services configuration."),
+            "The Open Lineage Services server {0} is not able to obtain a LineageGraph database connector with the values provided in configuration {1}.",
+            "The LineageGraph database connector could not be obtained.",
+            "Please verify the LineageGraph connection object within the Open Lineage Services configuration."),
 
-    ERROR_OBTAINING_MAIN_GRAPH_CONNNECTOR("OPEN-LINEAGE-SERVICES-0010",
+    ERROR_INITIALIZING_LINEAGE_GRAPH_CONNECTOR_DB("OPEN-LINEAGE-SERVICES-0011",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} is not able to obtain a Maingraph database connector with the values provided in configuration {1}.",
-            "The Maingraph database connector could not be obtained.",
-            "Please verify the Maingraph connection object within the Open Lineage Services configuration."),
+            "The Open Lineage Services server {0} is not able to initialize the LineageGraph database connector with the values provided in configuration {1}.",
+            "The LineageGraph database connector could not be initialized.",
+            "Please check that the LineageGraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
-    ERROR_INITIALIZING_BUFFER_GRAPH_CONNNECTOR_DB("OPEN-LINEAGE-SERVICES-0011",
+    ERROR_STARTING_LINEAGE_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0013",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} is not able to initialize the Buffergraph database connector with the values provided in configuration {1}.",
-            "The Buffergraph database connector could not be initialized.",
-            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
-
-    ERROR_INITIALIZING_MAIN_GRAPH_CONNECTOR_DB("OPEN-LINEAGE-SERVICES-0012",
-            OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} is not able to initialize the Maingraph database connector with the values provided in configuration {1}.",
-            "The Maingraph database connector could not be initialized.",
-            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
-
-    ERROR_STARTING_BUFFER_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0013",
-            OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} is not able to register the Buffergraph database connector as \"active\" with the values provided in configuration {1}.",
-            "The Buffergraph database connector could not be started.",
-            "Please check that the Buffergraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
-
-    ERROR_STARTING_MAIN_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0014",
-            OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} is not able to register the Maingraph database connector as \"active\" with the values provided in configuration {1}.",
-            "The Maingraph database connector could not be started.",
-            "Please check that the Maingraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
-
+            "The Open Lineage Services server {0} is not able to register the LineageGraph database connector as \"active\" with the values provided in configuration {1}.",
+            "The LineageGraph database connector could not be started.",
+            "Please check that the LineageGraph database exists and is not in use by another process, and verify the Open Lineage Services configuration."),
 
     ERROR_INITIALIZING_OLS("OPEN-LINEAGE-SERVICES-0015",
             OMRSAuditLogRecordSeverity.ERROR,
@@ -105,24 +85,16 @@ public enum OpenLineageServerAuditCode {
             "An unexpected error occurred while initializing the Open Lineage Services.",
             "Please contact an Egeria maintainer about your issue."),
 
-
     PROCESS_EVENT_EXCEPTION("OPEN-LINEAGE-SERVICES-0016",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Event {0} could not be consumed. Error: {1}",
             "The system is unable to process the request.",
             "Verify the topic configuration."),
 
-
-    ERROR_DISCONNECTING_BUFFER_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0017",
+    ERROR_DISCONNECTING_LINEAGE_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0017",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} encountered an error while disconnecting the Buffergraph connector",
-            "An error occured while disconnecting the Buffergraph connector",
-            "Please verify that the Open Lineage Services have shut down properly."),
-
-    ERROR_DISCONNECTING_MAIN_GRAPH_CONNECTOR("OPEN-LINEAGE-SERVICES-0018",
-            OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Lineage Services server {0} encountered an error while disconnecting the Maingraph connector",
-            "An error occured while disconnecting the Maingraph connector",
+            "The Open Lineage Services server {0} encountered an error while disconnecting the LineageGraph connector",
+            "An error occured while disconnecting the LineageGraph connector",
             "Please verify that the Open Lineage Services have shut down properly."),
 
     ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR("OPEN-LINEAGE-SERVICES-0019",

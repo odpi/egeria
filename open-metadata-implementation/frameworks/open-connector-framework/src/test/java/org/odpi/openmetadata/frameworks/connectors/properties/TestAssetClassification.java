@@ -36,7 +36,7 @@ public class TestAssetClassification
      */
     private AssetClassification getTestObject()
     {
-        Classification testObject = new Classification();
+        ElementClassification testObject = new ElementClassification();
 
         testObject.setClassificationName("TestClassificationName");
         testObject.setClassificationProperties(classificationProperties);
@@ -52,7 +52,7 @@ public class TestAssetClassification
      */
     private AssetClassification getDifferentObject()
     {
-        Classification testObject = new Classification();
+        ElementClassification testObject = new ElementClassification();
 
         testObject.setClassificationName("TestClassificationName");
         testObject.setClassificationProperties(classificationProperties);
@@ -69,7 +69,7 @@ public class TestAssetClassification
      */
     private AssetClassification getAnotherDifferentObject()
     {
-        Classification testObject = new Classification();
+        ElementClassification testObject = new ElementClassification();
 
         testObject.setClassificationName("TestDifferentClassificationName");
         testObject.setClassificationProperties(classificationProperties);
@@ -107,9 +107,9 @@ public class TestAssetClassification
      */
     @Test public void testNullObject()
     {
-        Classification           nullBean = new Classification();
-        AssetClassification      nullTemplate = null;
-        AssetDescriptor          parentAsset = null;
+        ElementClassification nullBean     = new ElementClassification();
+        AssetClassification   nullTemplate = null;
+        AssetDescriptor       parentAsset  = null;
 
         try
         {
@@ -134,7 +134,7 @@ public class TestAssetClassification
 
         try
         {
-            new AssetClassification(parentAsset, (Classification)null);
+            new AssetClassification(parentAsset, (ElementClassification)null);
             assertTrue(false);
         }
         catch (Throwable exc)
@@ -176,7 +176,7 @@ public class TestAssetClassification
         propertyMap.put("property1", "TestString");
         propertyMap.put("property2", "Two");
 
-        Classification classificationBean = new Classification();
+        ElementClassification classificationBean = new ElementClassification();
         classificationBean.setClassificationName("TestClassificationName");
         classificationBean.setClassificationProperties(propertyMap);
 
@@ -208,7 +208,7 @@ public class TestAssetClassification
             assertTrue(true);
         }
 
-        classificationBean = new Classification();
+        classificationBean = new ElementClassification();
         classificationBean.setClassificationName("TestClassificationName");
 
         testObject = new AssetClassification(classificationBean);
@@ -218,7 +218,7 @@ public class TestAssetClassification
         assertTrue(classificationProperties == null);
 
         propertyMap = new HashMap<>();
-        classificationBean = new Classification();
+        classificationBean = new ElementClassification();
         classificationBean.setClassificationName("TestClassificationName");
 
         classificationBean.setClassificationProperties(propertyMap);

@@ -6,8 +6,8 @@
 # Open Metadata User Interface
 
 Egeria provides a basic user interface (UI() to demonstrate the power of the open
-metadata and governance capabilities.  They are fully functional as
-far as the standards go, and could be used by a small company.  However,
+metadata and governance capabilities. They are fully functional as
+far as the standards go, and could be used by a small company. However,
 it is likely that commercial offerings will offer a richer user experience,
 particularly for a larger organization.
 

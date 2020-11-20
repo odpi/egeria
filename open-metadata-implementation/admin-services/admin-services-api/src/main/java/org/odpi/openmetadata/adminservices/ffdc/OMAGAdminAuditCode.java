@@ -371,6 +371,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                   "Verify that this is the intended value for this service (null means that the published " +
                           "asset will be visible in all zones."),
 
+    RESOURCE_ENDPOINTS("OMAG-ADMIN-0214",
+                  OMRSAuditLogRecordSeverity.STARTUP,
+                  "The {0} Open Metadata View Service (OMVS) is using the following resource endpoints as permitted endpoints: {1}",
+                  "The view service was passed a list of resource endpoints in the resourceEndpoints property of the view services options " +
+                          "and will use it to set the endpoints that the view service may query.",
+                  "Verify that this is the intended value for this service (null means that the view service will not be able to perform queries."),
+
     ;
 
     private String                     logMessageId;
@@ -382,7 +389,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
 
     /**
      * The constructor for OMAGAdminAuditCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerAuditCode above.   For example:
+     * OMAGAdminAuditCode above.   For example:
      *
      *     OMAGAdminAuditCode   auditCode = OMAGAdminAuditCode.SERVER_NOT_AVAILABLE;
      *

@@ -22,31 +22,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling().and()
-                .anonymous().and()
-                .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/error/**").permitAll()
-                .antMatchers("/service-worker.js").permitAll()
-                .antMatchers("/manifest.json").permitAll()
-                .antMatchers("/favicon.ico").permitAll()
-                .antMatchers("/node_modules/**").permitAll()
-                .antMatchers("/src/**").permitAll()
-                .antMatchers("/h2/**").permitAll()
-                .antMatchers("/images/**").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/js/**").permitAll()
-                .antMatchers("/themes/**").permitAll()
-                .antMatchers("/locales/**").permitAll()
-                .antMatchers("/properties/**").permitAll()
-                .antMatchers("/open-metadata/ui-admin-services/**").permitAll()
-                .antMatchers("/csrf").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new LoginFilter("/auth/login", authenticationManager(), authService),
-                        UsernamePasswordAuthenticationFilter.class)
-                ;
+            .exceptionHandling().and()
+            .anonymous().and()
+            .authorizeRequests()
+            .antMatchers("/api/css/**").permitAll()
+            .antMatchers("/api/js/**").permitAll()
+            .antMatchers("/api/**").authenticated()
+            .antMatchers("/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new LoggingRequestFilter("/api/auth/login"), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new LoginFilter("/api/auth/login", authenticationManager(), authService),
+                    UsernamePasswordAuthenticationFilter.class)
+        ;
     }
 
     @Bean

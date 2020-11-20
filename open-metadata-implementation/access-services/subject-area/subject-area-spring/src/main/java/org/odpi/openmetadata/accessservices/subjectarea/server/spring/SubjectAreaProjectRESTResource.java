@@ -5,16 +5,15 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaProjectRESTServices;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-
-import static org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance.*;
-
 
 /**
  * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
@@ -24,7 +23,7 @@ import static org.odpi.openmetadata.accessservices.subjectarea.server.services.S
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
 @Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
 public class SubjectAreaProjectRESTResource {
-    private SubjectAreaProjectRESTServices restAPI = new SubjectAreaProjectRESTServices();
+    private final SubjectAreaProjectRESTServices restAPI = new SubjectAreaProjectRESTServices();
 
     /**
      * Default constructor
@@ -53,9 +52,9 @@ public class SubjectAreaProjectRESTResource {
      * StatusNotSupportedException          A status value is not supported
      */
     @PostMapping(path = "/users/{userId}/projects")
-    public SubjectAreaOMASAPIResponse createProject(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @RequestBody Project suppliedProject) {
+    public SubjectAreaOMASAPIResponse<Project> createProject(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @RequestBody Project suppliedProject) {
         return restAPI.createProject(serverName, userId, suppliedProject);
     }
 
@@ -77,9 +76,9 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse getProject(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Project> getProject(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String guid) {
         return restAPI.getProjectByGuid(serverName, userId, guid);
     }
 
@@ -90,10 +89,9 @@ public class SubjectAreaProjectRESTResource {
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Project property values. If not specified then all glossaries are returned.
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
@@ -106,15 +104,15 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/projects")
-    public SubjectAreaOMASAPIResponse findProject(@PathVariable String serverName, @PathVariable String userId,
-                                                  @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
-                                                  @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                  @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                  @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
-                                                  @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                  @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Project> findProject(@PathVariable String serverName, @PathVariable String userId,
+                                                           @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                           @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                           @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                           @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                           @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                           @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findProject(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findProject(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -124,10 +122,9 @@ public class SubjectAreaProjectRESTResource {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the Project relationships
@@ -142,30 +139,26 @@ public class SubjectAreaProjectRESTResource {
 
 
     @GetMapping(path = "/users/{userId}/projects/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                              @PathVariable String guid,
-                                                              @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                              @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                              @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
-                                                              @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                              @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                    @PathVariable String guid,
+                                                                    @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                    @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                    @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                    @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                    @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
-    /*
+    /**
      * Get the terms in this project.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the Project relationships
      * when not successful the following Exception responses can occur
      * <ul>
@@ -175,14 +168,14 @@ public class SubjectAreaProjectRESTResource {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-
     @GetMapping(path = "/users/{userId}/projects/{guid}/terms")
-    public SubjectAreaOMASAPIResponse getProjectTerms(@PathVariable String serverName,
-                                                      @PathVariable String userId,
-                                                      @PathVariable String guid,
-                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime
+    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String guid,
+                                                            @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                            @RequestParam(value = "pageSize", required = false) Integer pageSize
     ) {
-        return restAPI.getProjectTerms(serverName, userId, guid, asOfTime);
+        return restAPI.getProjectTerms(serverName, userId, guid, startingFrom, pageSize);
     }
 
     /**
@@ -210,11 +203,11 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse updateProject(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String guid,
-                                                    @RequestBody Project Project,
-                                                    @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<Project> updateProject(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String guid,
+                                                             @RequestBody Project Project,
+                                                             @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateProject(serverName, userId, guid, Project, isReplace);
     }
@@ -247,10 +240,10 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse deleteProject(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String guid,
-                                                    @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String guid,
+                                                             @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteProject(serverName, userId, guid, isPurge);
     }
@@ -274,9 +267,9 @@ public class SubjectAreaProjectRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/projects/{guid}")
-    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String guid
+    public SubjectAreaOMASAPIResponse<Project> restoreProject(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @PathVariable String guid
     ) {
         return restAPI.restoreProject(serverName, userId, guid);
     }

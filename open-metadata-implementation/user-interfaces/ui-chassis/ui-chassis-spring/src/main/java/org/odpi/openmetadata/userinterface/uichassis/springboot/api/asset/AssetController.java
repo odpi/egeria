@@ -24,17 +24,28 @@ public class AssetController {
     AssetCatalogOMASService assetCatalogOMASService;
 
     /**
+     *
      * @param searchCriteria the query parameter with the search phrase
+     * @param types OM types list to search for
+     * @param from the offset for the results
+     * @param pageSize the number of results per page
      * @return list of assets
+     * @throws PropertyServerException if a configuration on the backend
+     * @throws InvalidParameterException if parameter validation fails
      */
     @GetMapping( path = "/search")
-    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types)
+    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria,
+                                            @RequestParam("types") List<String> types,
+                                            @RequestParam(defaultValue="0") Integer from,
+                                            @RequestParam(defaultValue="10") Integer pageSize)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
         if(CollectionUtils.isNotEmpty(types) ) {
             searchParameters.setEntityTypes(types);
         }
+        searchParameters.setPageSize(pageSize);
+        searchParameters.setFrom(from);
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
     }
 

@@ -19,12 +19,8 @@ stages:
       - job: VerifyBuild
         pool:
           vmImage: 'ubuntu-latest'
-        strategy:
-          matrix:
-            Java8:
-              JAVA_VERSION: '1.8'
-            Java11:
-              JAVA_VERSION: '1.11'
+        variables:
+          JAVA_VERSION: 1.8
         steps:
           - task: Maven@3
             inputs:
@@ -38,7 +34,6 @@ stages:
                   --batch-mode
                   -e
                   -s .m2/settings.xml
-                  -DskipFVT
                   -Dstream=$(System.PullRequest.TargetBranch)
                   -DaltDeploymentRepository=staging::default::file:$(Agent.BuildDirectory)/local-repo
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn

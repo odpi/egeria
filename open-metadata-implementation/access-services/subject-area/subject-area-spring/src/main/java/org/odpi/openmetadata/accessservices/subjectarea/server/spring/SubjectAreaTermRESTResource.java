@@ -5,15 +5,15 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaTermRESTServices;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-
-import static org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance.*;
 
 
 /**
@@ -24,7 +24,7 @@ import static org.odpi.openmetadata.accessservices.subjectarea.server.services.S
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
 @Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
 public class SubjectAreaTermRESTResource {
-    private SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
+    private final SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
 
     /**
      * Default constructor
@@ -58,9 +58,9 @@ public class SubjectAreaTermRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/terms")
-    public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @RequestBody Term suppliedTerm) {
+    public SubjectAreaOMASAPIResponse<Term> createTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @RequestBody Term suppliedTerm) {
         return restAPI.createTerm(serverName, userId, suppliedTerm);
     }
 
@@ -80,9 +80,9 @@ public class SubjectAreaTermRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getTermByGuid(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String guid) {
         return restAPI.getTermByGuid(serverName, userId, guid);
     }
 
@@ -93,10 +93,9 @@ public class SubjectAreaTermRESTResource {
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of Terms meeting the search Criteria
@@ -109,15 +108,15 @@ public class SubjectAreaTermRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/terms")
-    public SubjectAreaOMASAPIResponse findTerm(@PathVariable String serverName, @PathVariable String userId,
-                                               @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
-                                               @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                               @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                               @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
-                                               @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                               @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
+                                                     @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -127,10 +126,9 @@ public class SubjectAreaTermRESTResource {
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid of the term to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the term relationships
@@ -145,16 +143,16 @@ public class SubjectAreaTermRESTResource {
 
 
     @GetMapping(path = "/users/{userId}/terms/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                           @PathVariable String guid,
-                                                           @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                           @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                           @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
-                                                           @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                           @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                 @PathVariable String guid,
+                                                                 @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                 @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                 @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                 @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
 
     ) {
-        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -177,11 +175,11 @@ public class SubjectAreaTermRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String guid,
-                                                 @RequestBody Term suppliedTerm,
-                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String guid,
+                                                       @RequestBody Term suppliedTerm,
+                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
     }
@@ -214,10 +212,10 @@ public class SubjectAreaTermRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String guid,
-                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String guid,
+                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteTerm(serverName, userId, guid, isPurge);
     }
@@ -241,9 +239,35 @@ public class SubjectAreaTermRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(@PathVariable String serverName,
+                                                        @PathVariable String userId,
+                                                        @PathVariable String guid) {
         return restAPI.restoreTerm(serverName, userId, guid);
+    }
+
+    /**
+     * Get the Categories categorizing this Term. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of categories categorizing this Term
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @GetMapping(path = "/users/{userId}/terms/{guid}/categories")
+    public SubjectAreaOMASAPIResponse<Category> getTermCategories(@PathVariable String serverName,
+                                                                  @PathVariable String userId,
+                                                                  @PathVariable String guid,
+                                                                  @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+
+        return restAPI.getTermCategories(serverName, userId, guid, startingFrom, pageSize);
     }
 }

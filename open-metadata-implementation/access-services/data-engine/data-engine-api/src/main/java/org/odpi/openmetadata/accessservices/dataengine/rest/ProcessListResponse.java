@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +26,7 @@ public class ProcessListResponse extends GUIDListResponse {
 
     @Override
     public List<String> getGUIDs() {
-        if(CollectionUtils.isEmpty(super.getGUIDs())) {
+        if (CollectionUtils.isEmpty(super.getGUIDs())) {
             return Collections.emptyList();
         }
         return super.getGUIDs();
@@ -50,7 +49,8 @@ public class ProcessListResponse extends GUIDListResponse {
     @Override
     public String toString() {
         return "ProcessListResponse{" +
-                "failedGUIDs=" + failedGUIDs +
+                "GUIDs=" + getGUIDs() +
+                ", failedGUIDs=" + failedGUIDs +
                 '}';
     }
 }

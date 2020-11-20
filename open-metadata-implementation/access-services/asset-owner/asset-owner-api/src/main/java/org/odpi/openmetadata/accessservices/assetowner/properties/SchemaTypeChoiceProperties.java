@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaTypeChoice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,44 +52,6 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
         }
     }
 
-
-    /**
-     * Copy/clone operator.
-     *
-     * @param objectToFill schema attribute object
-     * @return filled object
-     */
-    public SchemaTypeChoice cloneProperties(SchemaTypeChoice objectToFill)
-    {
-        SchemaTypeChoice clone = objectToFill;
-
-        if (clone == null)
-        {
-            clone = new SchemaTypeChoice();
-        }
-
-        if (schemaOptions != null)
-        {
-            List<SchemaType> schemaTypes = new ArrayList<>();
-
-            for (SchemaTypeProperties properties : schemaOptions)
-            {
-                if (properties != null)
-                {
-                    schemaTypes.add(properties.cloneProperties(null));
-                }
-            }
-
-            if (! schemaTypes.isEmpty())
-            {
-                clone.setSchemaOptions(schemaTypes);
-            }
-        }
-
-        super.cloneProperties(clone);
-
-        return clone;
-    }
 
     /**
      * Return the list of alternative schema types that this attribute or asset may use.
@@ -167,11 +127,21 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), schemaOptions);
     }
 }

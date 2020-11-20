@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.slf4j.Logger;
@@ -23,15 +22,14 @@ public class LineTypeMapper {
      * the node type into a guid of an relationship type so it can be used to call omrs.
      * @param lineType lineType this is the type of node that is exposed in the nodetype API
      * @return relationship Type guid.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    static public String  mapLineTypeToRelationshipTypeGuid(LineType lineType) throws InvalidParameterException {
+    static public String  mapLineTypeToRelationshipTypeGuid(LineType lineType) {
         String relationshipTypeName = lineType.name();
-        if (lineType.equals(LineType.Hasa)) {
+        if (lineType.equals(LineType.HasA)) {
             relationshipTypeName ="TermHASARelationship";
-        } else if (lineType.equals(LineType.Isa)) {
+        } else if (lineType.equals(LineType.IsA)) {
             relationshipTypeName ="ISARelationship";
-        } else if (lineType.equals(LineType.IsaTypeOf)) {
+        } else if (lineType.equals(LineType.IsATypeOf)) {
             relationshipTypeName ="TermISATypeOFRelationship";
         } else if (lineType.equals(LineType.TypedBy)) {
             relationshipTypeName ="TermTYPEDBYRelationship";

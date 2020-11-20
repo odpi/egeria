@@ -29,6 +29,7 @@ public class ServerStatusResponse extends FFDCResponseBase
     private Date                            serverEndTime   = null;
     private List<OMAGServerInstanceHistory> serverHistory   = null;
 
+
     /**
      * Default constructor
      */
@@ -57,11 +58,10 @@ public class ServerStatusResponse extends FFDCResponseBase
         }
     }
 
-
     /**
      * Return the name of the server where the services are running.
      *
-     * @return name of server
+     * @return name of server		      * @return name of server
      */
     public String getServerName()
     {
@@ -100,7 +100,6 @@ public class ServerStatusResponse extends FFDCResponseBase
     {
         isActive = active;
     }
-
 
     /**
      * Return the time that the server last started.
@@ -167,7 +166,6 @@ public class ServerStatusResponse extends FFDCResponseBase
         }
     }
 
-
     /**
      * Set up the list of start and stop times for the previous restarts of the server.
      *
@@ -177,6 +175,7 @@ public class ServerStatusResponse extends FFDCResponseBase
     {
         this.serverHistory = serverHistory;
     }
+
 
 
     /**
@@ -193,7 +192,6 @@ public class ServerStatusResponse extends FFDCResponseBase
                 ", serverStartTime=" + serverStartTime +
                 ", serverEndTime=" + serverEndTime +
                 ", serverHistory=" + serverHistory +
-                ", active=" + isActive() +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -227,10 +225,11 @@ public class ServerStatusResponse extends FFDCResponseBase
         }
         ServerStatusResponse that = (ServerStatusResponse) objectToCompare;
         return isActive() == that.isActive() &&
-                Objects.equals(getServerName(), that.getServerName()) &&
-                Objects.equals(getServerStartTime(), that.getServerStartTime()) &&
-                Objects.equals(getServerEndTime(), that.getServerEndTime()) &&
-                Objects.equals(getServerHistory(), that.getServerHistory());
+              Objects.equals(getServerName(), that.getServerName()) &&
+              Objects.equals(getServerStartTime(), that.getServerStartTime()) &&
+              Objects.equals(getServerEndTime(), that.getServerEndTime()) &&
+              Objects.equals(getServerHistory(), that.getServerHistory());
+
     }
 
 
@@ -242,7 +241,6 @@ public class ServerStatusResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getServerName(), isActive(), getServerStartTime(), getServerEndTime(),
-                            getServerHistory());
+        return Objects.hash(super.hashCode(), getServerName(), isActive(), getServerStartTime(), getServerEndTime(), getServerHistory());
     }
 }

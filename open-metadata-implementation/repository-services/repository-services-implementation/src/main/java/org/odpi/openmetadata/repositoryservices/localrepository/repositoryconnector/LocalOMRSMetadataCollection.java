@@ -1322,6 +1322,14 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 instance.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
             }
 
+            if (instance.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE)
+            {
+                if (instance.getReplicatedBy() == null)
+                {
+                    instance.setReplicatedBy(metadataCollectionId);
+                }
+            }
+
             if (instance.getMetadataCollectionName() == null)
             {
                 if (metadataCollectionId.equals(instance.getMetadataCollectionId()))
@@ -1339,23 +1347,68 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
      * fixes up the provenance.
      *
+     * @param entityClassifications instance returned from the real repository
+     */
+    private void  setLocalProvenanceInEntityClassifications(List<Classification>   entityClassifications)
+    {
+        if (entityClassifications != null)
+        {
+            for (Classification homeClassification : entityClassifications)
+            {
+                if (homeClassification != null)
+                {
+                    setLocalProvenance(homeClassification);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Ensure the provenance of any returned instance is correctly set.  A repository may not support the storing of
+     * the metadata collection id in the repository (or uses null to mean "local").  When the instance
+     * is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
+     * fixes up the provenance.
+     *
+     * @param entity instance returned from the real repository
+     */
+    private void  setLocalProvenanceThroughoutEntity(EntityDetail   entity)
+    {
+        if (entity != null)
+        {
+            setLocalProvenance(entity);
+            setLocalProvenanceInEntityClassifications(entity.getClassifications());
+        }
+    }
+
+
+
+    /**
+     * Ensure the provenance of any returned instance is correctly set.  A repository may not support the storing of
+     * the metadata collection id in the repository (or uses null to mean "local").  When the instance
+     * is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
+     * fixes up the provenance.
+     *
      * @param relationship instance returned from the real repository
      */
     private void  setLocalProvenanceThroughoutRelationship(Relationship   relationship)
     {
-        setLocalProvenance(relationship);
+        if (relationship != null)
+        {
+            setLocalProvenance(relationship);
 
-        /*
-         * Ensure that for each EntityProxy, the home metadataCollectionId and metadataCollectionName are set.
-         * Note that these proxies are clones - so we need to set back into the relationship when modified.
-         */
-        EntityProxy endOneProxy = relationship.getEntityOneProxy();
-        setLocalProvenance(endOneProxy);
-        relationship.setEntityOneProxy(endOneProxy);
+            /*
+             * Ensure that for each EntityProxy, the home metadataCollectionId and metadataCollectionName are set.
+             * Note that these proxies are clones - so we need to set back into the relationship when modified.
+             */
+            EntityProxy endOneProxy = relationship.getEntityOneProxy();
+            setLocalProvenance(endOneProxy);
+            relationship.setEntityOneProxy(endOneProxy);
 
-        EntityProxy endTwoProxy = relationship.getEntityTwoProxy();
-        setLocalProvenance(endTwoProxy);
-        relationship.setEntityTwoProxy(endTwoProxy);
+            EntityProxy endTwoProxy = relationship.getEntityTwoProxy();
+            setLocalProvenance(endTwoProxy);
+            relationship.setEntityTwoProxy(endTwoProxy);
+        }
     }
 
 
@@ -1379,7 +1432,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 if (entity != null)
                 {
-                    setLocalProvenance(entity);
+                    setLocalProvenanceThroughoutEntity(entity);
                     resultList.add(entity);
                 }
             }
@@ -1409,7 +1462,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 if (relationship != null)
                 {
-                    setLocalProvenance(relationship);
+                    setLocalProvenanceThroughoutRelationship(relationship);
                     resultList.add(relationship);
                 }
             }
@@ -1510,10 +1563,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     private InstanceGraph  setLocalProvenanceInGraph(InstanceGraph   instanceGraph)
     {
+        /*
+         * Always return a graph, even if empty
+         */
         InstanceGraph  resultGraph = new InstanceGraph();
 
-        resultGraph.setEntities(setLocalProvenanceInEntityList(instanceGraph.getEntities()));
-        resultGraph.setRelationships(setLocalProvenanceInRelationshipList(instanceGraph.getRelationships()));
+        if (instanceGraph != null)
+        {
+            resultGraph.setEntities(setLocalProvenanceInEntityList(instanceGraph.getEntities()));
+            resultGraph.setRelationships(setLocalProvenanceInRelationshipList(instanceGraph.getRelationships()));
+        }
 
         return resultGraph;
     }
@@ -1532,32 +1591,35 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                    InstanceGraph   instanceGraph) throws UserNotAuthorizedException
     {
         InstanceGraph              resultGraph = new InstanceGraph();
-        UserNotAuthorizedException savedException = null;
 
-        try
+        if (instanceGraph != null)
         {
-            resultGraph.setEntities(securityVerifyReadEntityList(userId, instanceGraph.getEntities()));
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            savedException = error;
-        }
+            UserNotAuthorizedException savedException = null;
 
-        try
-        {
-            resultGraph.setRelationships(securityVerifyReadRelationshipList(userId, instanceGraph.getRelationships()));
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            savedException = error;
-        }
-
-        if ((resultGraph.getEntities() == null) && (resultGraph.getRelationships() == null))
-        {
-            if (savedException != null)
+            try
             {
-                throw savedException;
+                resultGraph.setEntities(securityVerifyReadEntityList(userId, instanceGraph.getEntities()));
+            } catch (UserNotAuthorizedException error)
+            {
+                savedException = error;
             }
+
+            try
+            {
+                resultGraph.setRelationships(securityVerifyReadRelationshipList(userId, instanceGraph.getRelationships()));
+            } catch (UserNotAuthorizedException error)
+            {
+                savedException = error;
+            }
+
+            if ((resultGraph.getEntities() == null) && (resultGraph.getRelationships() == null))
+            {
+                if (savedException != null)
+                {
+                    throw savedException;
+                }
+            }
+
         }
         return resultGraph;
     }
@@ -1591,18 +1653,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
 
         EntityDetail entity = realMetadataCollection.isEntityKnown(userId, guid);
-        setLocalProvenance(entity);
 
-        /*
-         * Check operation is allowed
-         */
-        try
+        if (entity != null)
         {
-            securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutEntity(entity);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
 
         return entity;
@@ -1640,18 +1705,23 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntitySummary entity =  realMetadataCollection.getEntitySummary(userId, guid);
 
-        setLocalProvenance(entity);
+        if (entity != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenance(entity);
+            setLocalProvenanceInEntityClassifications(entity.getClassifications());
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
         }
 
         return entity;
@@ -1688,21 +1758,23 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Perform operation
          */
-
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid);
 
-        setLocalProvenance(entity);
+        if (entity != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutEntity(entity);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
 
         return entity;
@@ -1747,18 +1819,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid, asOfTime);
 
-        setLocalProvenance(entity);
+        if (entity != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutEntity(entity);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
         }
 
         return entity;
@@ -1839,8 +1915,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                           sequencingOrder,
                                                                                           pageSize);
 
-        return this.securityVerifyReadRelationshipList(userId,
-                                                       setLocalProvenanceInRelationshipList(resultList));
+        return this.securityVerifyReadRelationshipList(userId, setLocalProvenanceInRelationshipList(resultList));
     }
 
 
@@ -1932,13 +2007,43 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                    pageSize);
 
 
-        return this.securityVerifyReadEntityList(userId,
-                                                 setLocalProvenanceInEntityList(resultList));
+        return this.securityVerifyReadEntityList(userId, setLocalProvenanceInEntityList(resultList));
     }
 
 
     /**
-     * {@inheritDoc}
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param matchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support this optional method.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public List<EntityDetail> findEntities(String                    userId,
@@ -1993,8 +2098,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                          sequencingOrder,
                                                          pageSize);
 
-        return this.securityVerifyReadEntityList(userId,
-                                                 setLocalProvenanceInEntityList(resultList));
+        return this.securityVerifyReadEntityList(userId, setLocalProvenanceInEntityList(resultList));
     }
 
 
@@ -2087,8 +2191,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                          sequencingOrder,
                                                                          pageSize);
 
-        return this.securityVerifyReadEntityList(userId,
-                                                 setLocalProvenanceInEntityList(resultList));
+        return this.securityVerifyReadEntityList(userId, setLocalProvenanceInEntityList(resultList));
     }
 
 
@@ -2175,8 +2278,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                            sequencingOrder,
                                                                                            pageSize);
 
-        return this.securityVerifyReadEntityList(userId,
-                                                 setLocalProvenanceInEntityList(resultList));
+        return this.securityVerifyReadEntityList(userId, setLocalProvenanceInEntityList(resultList));
     }
 
 
@@ -2209,18 +2311,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         Relationship relationship = realMetadataCollection.isRelationshipKnown(userId, guid);
 
-        setLocalProvenance(relationship);
+        if (relationship != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutRelationship(relationship);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
         }
 
         return relationship;
@@ -2259,19 +2365,24 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid);
 
-        setLocalProvenance(relationship);
+        if (relationship != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            setLocalProvenanceThroughoutRelationship(relationship);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+
+        repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
         return relationship;
     }
@@ -2312,26 +2423,64 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid, asOfTime);
 
-        setLocalProvenance(relationship);
+        if (relationship != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            setLocalProvenanceThroughoutRelationship(relationship);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+
+        repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
         return relationship;
     }
 
 
     /**
-     * {@inheritDoc}
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<Relationship> findRelationships(String                    userId,
@@ -2382,8 +2531,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                               sequencingOrder,
                                                               pageSize);
 
-        return this.securityVerifyReadRelationshipList(userId,
-                setLocalProvenanceInRelationshipList(resultList));
+        return this.securityVerifyReadRelationshipList(userId, setLocalProvenanceInRelationshipList(resultList));
     }
 
 
@@ -2471,8 +2619,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                         sequencingOrder,
                                                                         pageSize);
 
-        return this.securityVerifyReadRelationshipList(userId,
-                                                       setLocalProvenanceInRelationshipList(resultList));
+        return this.securityVerifyReadRelationshipList(userId, setLocalProvenanceInRelationshipList(resultList));
     }
 
 
@@ -2554,8 +2701,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                 sequencingOrder,
                                                                                                 pageSize);
 
-        return this.securityVerifyReadRelationshipList(userId,
-                                                       setLocalProvenanceInRelationshipList(resultList));
+        return this.securityVerifyReadRelationshipList(userId, setLocalProvenanceInRelationshipList(resultList));
     }
 
 
@@ -2612,8 +2758,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Check result before return
          */
-        return this.securityVerifyReadGraph(userId,
-                                            setLocalProvenanceInGraph(resultGraph));
+        return this.securityVerifyReadGraph(userId, setLocalProvenanceInGraph(resultGraph));
     }
 
 
@@ -2690,8 +2835,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Check result before return
          */
-        return this.securityVerifyReadGraph(userId,
-                                            setLocalProvenanceInGraph(resultGraph));
+        return this.securityVerifyReadGraph(userId, setLocalProvenanceInGraph(resultGraph));
     }
 
 
@@ -2777,8 +2921,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                    sequencingOrder,
                                                                                    pageSize);
 
-        return this.securityVerifyReadEntityList(userId,
-                                                 setLocalProvenanceInEntityList(resultList));
+        return this.securityVerifyReadEntityList(userId, setLocalProvenanceInEntityList(resultList));
     }
 
 
@@ -2865,7 +3008,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
@@ -2975,8 +3118,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
-            entity.setReplicatedBy(metadataCollectionId);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
@@ -3189,12 +3331,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    private EntityDetail validateEntityCanBeClassified(String           userId,
-                                                       String           entityGUID,
-                                                       String           methodName) throws InvalidParameterException,
-                                                                                           RepositoryErrorException,
-                                                                                           EntityNotKnownException,
-                                                                                           UserNotAuthorizedException
+    private EntityDetail validateEntityCanBeClassified(String  userId,
+                                                       String  entityGUID,
+                                                       String  methodName) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  UserNotAuthorizedException
     {
 
         /*
@@ -3203,6 +3345,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   that the entity can be retrieved (it exists and the entity is not a proxy) -
          *      if the entity is not found this method will throw EntityNotKnownException
          *      if the entity is found but is a proxy this method will map the underlying EntityProxyOnlyException to InvalidParameterException
+         *   that the classification is supported by this repository
          *
          * This method differs from the other entity validation methods because it is valid to classify or declassify a reference copy. So there
          * is no check as in the update validation regarding reference copies of entities sourced from the local cohort or externally sourced.
@@ -3480,14 +3623,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @return current relationship
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the metadata collection.
+     * @throws RepositoryErrorException if the relationship identified is invalid
      */
     private Relationship validateRelationshipCanBeUpdatedByRepository(String           relationshipGUID,
                                                                       Relationship     relationship,
                                                                       String           methodName) throws InvalidParameterException,
-                                                                                                          RelationshipNotKnownException
+                                                                                                          RelationshipNotKnownException,
+                                                                                                          RepositoryErrorException
     {
         if (relationship != null)
         {
+            repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, relationship, methodName);
             if (relationship.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
             {
                 if (metadataCollectionId.equals(relationship.getMetadataCollectionId()))
@@ -3756,8 +3902,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail   newEntity = realMetadataCollection.updateEntityStatus(userId, entityGUID, newStatus);
 
-        setLocalProvenance(newEntity);
-        notifyOfUpdatedEntity(currentEntity, newEntity);
+        if (newEntity != null)
+        {
+            setLocalProvenanceThroughoutEntity(newEntity);
+            notifyOfUpdatedEntity(currentEntity, newEntity);
+        }
 
         return newEntity;
     }
@@ -3817,8 +3966,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail   newEntity = realMetadataCollection.updateEntityProperties(userId, entityGUID, properties);
 
-        setLocalProvenance(newEntity);
-        notifyOfUpdatedEntity(currentEntity, newEntity);
+        if (newEntity != null)
+        {
+            setLocalProvenanceThroughoutEntity(newEntity);
+            notifyOfUpdatedEntity(currentEntity, newEntity);
+        }
 
         return newEntity;
     }
@@ -3876,7 +4028,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
@@ -3964,16 +4116,20 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                   typeDefName,
                                                                   obsoleteEntityGUID);
 
-        if (produceEventsForRealConnector)
+        if (entity != null)
         {
-            setLocalProvenance(entity);
 
-            outboundRepositoryEventProcessor.processDeletedEntityEvent(repositoryName,
-                                                                       metadataCollectionId,
-                                                                       localServerName,
-                                                                       localServerType,
-                                                                       localOrganizationName,
-                                                                       entity);
+            if (produceEventsForRealConnector)
+            {
+                setLocalProvenanceThroughoutEntity(entity);
+
+                outboundRepositoryEventProcessor.processDeletedEntityEvent(repositoryName,
+                                                                           metadataCollectionId,
+                                                                           localServerName,
+                                                                           localServerType,
+                                                                           localOrganizationName,
+                                                                           entity);
+            }
         }
 
         return entity;
@@ -4121,7 +4277,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
@@ -4176,7 +4332,13 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.classifyEntityParameterValidation(userId, entityGUID, classificationName, classificationProperties, methodName);
+        TypeDef typeDef = this.classifyEntityParameterValidation(userId, entityGUID, classificationName, classificationProperties, methodName);
+        if (! repositoryValidator.isActiveType(repositoryName, typeDef.getGUID(), typeDef.getName()))
+        {
+            throw new ClassificationErrorException(OMRSErrorCode.UNSUPPORTED_CLASSIFICATION.getMessageDefinition(repositoryName, classificationName),
+                                                   this.getClass().getName(),
+                                                   methodName);
+        }
 
         /*
          * Locate entity and check it can be updated
@@ -4209,19 +4371,137 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
              */
             if (produceEventsForRealConnector)
             {
+                Classification newClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                                entity,
+                                                                                                classificationName,
+                                                                                                methodName);
+
                 outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
                                                                               metadataCollectionId,
                                                                               localServerName,
                                                                               localServerType,
                                                                               localOrganizationName,
-                                                                              entity);
+                                                                              entity,
+                                                                              newClassification);
+            }
+        }
+
+        return entity;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  EntityDetail classifyEntity(String               userId,
+                                        String               entityGUID,
+                                        String               classificationName,
+                                        String               externalSourceGUID,
+                                        String               externalSourceName,
+                                        ClassificationOrigin classificationOrigin,
+                                        String               classificationOriginGUID,
+                                        InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                              RepositoryErrorException,
+                                                                                              EntityNotKnownException,
+                                                                                              ClassificationErrorException,
+                                                                                              PropertyErrorException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              FunctionNotSupportedException
+    {
+        final String  methodName = "classifyEntity (detailed)";
+
+        /*
+         * Validate parameters
+         */
+        TypeDef typeDef = this.classifyEntityParameterValidation(userId, entityGUID, classificationName, classificationProperties, methodName);
+        if (! repositoryValidator.isActiveType(repositoryName, typeDef.getGUID(), typeDef.getName()))
+        {
+            throw new ClassificationErrorException(OMRSErrorCode.UNSUPPORTED_CLASSIFICATION.getMessageDefinition(repositoryName, classificationName),
+                                                   this.getClass().getName(),
+                                                   methodName);
+        }
+
+        /*
+         * Locate entity and check it can be updated
+         */
+        EntityDetail currentEntity = this.validateEntityCanBeClassified(userId, entityGUID, methodName);
+
+        /*
+         * Check operation is allowed
+         */
+        try
+        {
+            securityVerifier.validateUserForEntityClassificationAdd(userId,
+                                                                    metadataCollectionName,
+                                                                    currentEntity,
+                                                                    classificationName,
+                                                                    classificationProperties);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+
+        /*
+         * Update entity
+         */
+        EntityDetail   entity = realMetadataCollection.classifyEntity(userId,
+                                                                      entityGUID,
+                                                                      classificationName,
+                                                                      externalSourceGUID,
+                                                                      externalSourceName,
+                                                                      classificationOrigin,
+                                                                      classificationOriginGUID,
+                                                                      classificationProperties);
+
+        if (entity != null)
+        {
+            setLocalProvenanceThroughoutEntity(entity);
+
+            /*
+             * OK to send out
+             */
+            if (produceEventsForRealConnector)
+            {
+                Classification newClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                                entity,
+                                                                                                classificationName,
+                                                                                                methodName);
+
+                outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
+                                                                              metadataCollectionId,
+                                                                              localServerName,
+                                                                              localServerType,
+                                                                              localOrganizationName,
+                                                                              entity,
+                                                                              newClassification);
             }
         }
 
@@ -4265,6 +4545,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail currentEntity = this.validateEntityCanBeClassified(userId, entityGUID, methodName);
 
+        Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                            currentEntity,
+                                                                                            classificationName,
+                                                                                            methodName);
         /*
          * Check operation is allowed
          */
@@ -4289,7 +4573,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
@@ -4301,7 +4585,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                 localServerName,
                                                                                 localServerType,
                                                                                 localOrganizationName,
-                                                                                entity);
+                                                                                entity,
+                                                                                currentClassification);
             }
         }
 
@@ -4349,7 +4634,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Locate entity and check it can be updated
          */
         EntityDetail currentEntity = this.validateEntityCanBeClassified(userId, entityGUID, methodName);
-
+        Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                            currentEntity,
+                                                                                            classificationName,
+                                                                                            methodName);
         /*
          * Check operation is allowed
          */
@@ -4376,19 +4664,25 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
              */
             if (produceEventsForRealConnector)
             {
+                Classification newClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                                entity,
+                                                                                                classificationName,
+                                                                                                methodName);
                 outboundRepositoryEventProcessor.processReclassifiedEntityEvent(repositoryName,
                                                                                 metadataCollectionId,
                                                                                 localServerName,
                                                                                 localServerType,
                                                                                 localOrganizationName,
-                                                                                entity);
+                                                                                entity,
+                                                                                currentClassification,
+                                                                                newClassification);
             }
         }
 
@@ -4672,8 +4966,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         Relationship   newRelationship     = realMetadataCollection.updateRelationshipStatus(userId,
                                                                                              relationshipGUID,
                                                                                              newStatus);
-        setLocalProvenanceThroughoutRelationship(newRelationship);
-        notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+
+        if (newRelationship != null)
+        {
+            setLocalProvenanceThroughoutRelationship(newRelationship);
+            notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+        }
 
         return newRelationship;
     }
@@ -4734,8 +5032,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                              relationshipGUID,
                                                                                              properties);
 
-        setLocalProvenanceThroughoutRelationship(newRelationship);
-        notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+        if (newRelationship != null)
+        {
+
+            setLocalProvenanceThroughoutRelationship(newRelationship);
+            notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+        }
 
         return newRelationship;
     }
@@ -4817,7 +5119,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Restore previous version
          */
         Relationship   newRelationship = realMetadataCollection.undoRelationshipUpdate(userId,
-                                                                                    relationshipGUID);
+                                                                                       relationshipGUID);
 
         if (newRelationship != null)
         {
@@ -4909,16 +5211,20 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                  typeDefName,
                                                                                  obsoleteRelationshipGUID);
 
-        if (produceEventsForRealConnector)
+        if (newRelationship != null)
         {
-            setLocalProvenanceThroughoutRelationship(newRelationship);
 
-            outboundRepositoryEventProcessor.processDeletedRelationshipEvent(repositoryName,
-                                                                             metadataCollectionId,
-                                                                             localServerName,
-                                                                             localServerType,
-                                                                             localOrganizationName,
-                                                                             newRelationship);
+            if (produceEventsForRealConnector)
+            {
+                setLocalProvenanceThroughoutRelationship(newRelationship);
+
+                outboundRepositoryEventProcessor.processDeletedRelationshipEvent(repositoryName,
+                                                                                 metadataCollectionId,
+                                                                                 localServerName,
+                                                                                 localServerType,
+                                                                                 localOrganizationName,
+                                                                                 newRelationship);
+            }
         }
 
         return newRelationship;
@@ -5166,7 +5472,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
@@ -5261,7 +5567,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (entity != null)
         {
-            setLocalProvenance(entity);
+            setLocalProvenanceThroughoutEntity(entity);
 
             /*
              * OK to send out
@@ -5784,6 +6090,93 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     }
 
 
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID) throws InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, entityGUID, methodName);
+
+        /*
+         * Perform operation
+         */
+        List<Classification>  homeClassifications = realMetadataCollection.getHomeClassifications(userId, entityGUID);
+
+        if (homeClassifications != null)
+        {
+            setLocalProvenanceInEntityClassifications(homeClassifications);
+        }
+
+        return homeClassifications;
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param asOfTime the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID,
+                                                       Date   asOfTime) throws InvalidParameterException,
+                                                                               RepositoryErrorException,
+                                                                               EntityNotKnownException,
+                                                                               UserNotAuthorizedException,
+                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications (with history)";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, entityGUID, methodName);
+
+        /*
+         * Perform operation
+         */
+        List<Classification>  homeClassifications = realMetadataCollection.getHomeClassifications(userId, entityGUID, asOfTime);
+
+        if (homeClassifications != null)
+        {
+            setLocalProvenanceInEntityClassifications(homeClassifications);
+        }
+
+        return homeClassifications;
+    }
+
+
     /**
      * Remove a reference copy of the the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
@@ -6007,6 +6400,137 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                        typeDefName,
                                                                        entityGUID,
                                                                        homeMetadataCollectionId);
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      EntityConflictException,
+                                                                                      InvalidEntityException,
+                                                                                      PropertyErrorException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
+    {
+        final String  methodName = "saveClassificationReferenceCopy";
+        final String  instanceParameterName = "entity";
+
+        /*
+         * Validate parameters
+         */
+        this.basicRequestValidation(userId, methodName);
+        if (entity == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                instanceParameterName);
+        }
+
+        repositoryValidator.validateInstanceType(repositoryName, entity);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, instanceParameterName, entity.getMetadataCollectionId(), methodName);
+
+        /*
+         * Validate that this instance is not from a future version of this OMRS with header values that
+         * this version of the implementation does not understand.  Only save it if it is from the same or
+         * past version of the OMRS.
+         */
+        if (entity.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            /*
+             * Remove classification
+             */
+            realMetadataCollection.saveClassificationReferenceCopy(userId, entity, classification);
+        }
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityDetail   entity,
+                                                  Classification classification) throws InvalidParameterException,
+                                                                                        TypeErrorException,
+                                                                                        PropertyErrorException,
+                                                                                        EntityConflictException,
+                                                                                        InvalidEntityException,
+                                                                                        RepositoryErrorException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        FunctionNotSupportedException
+    {
+        final String  methodName = "purgeClassificationReferenceCopy";
+        final String  instanceParameterName = "entity";
+
+        /*
+         * Validate parameters
+         */
+        this.basicRequestValidation(userId, methodName);
+        if (entity == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                instanceParameterName);
+        }
+
+        repositoryValidator.validateInstanceType(repositoryName, entity);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, instanceParameterName, entity.getMetadataCollectionId(), methodName);
+
+        /*
+         * Validate that this instance is not from a future version of this OMRS with header values that
+         * this version of the implementation does not understand.  Only save it if it is from the same or
+         * past version of the OMRS.
+         */
+        if (entity.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            /*
+             * Remove classification
+             */
+            realMetadataCollection.purgeClassificationReferenceCopy(userId, entity, classification);
+        }
     }
 
 
@@ -6295,4 +6819,25 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                            homeMetadataCollectionId);
 
     }
+    
+    @Override
+    public void saveInstanceReferenceCopies(String          userId,
+                                            InstanceGraph   instances) throws InvalidParameterException,
+                                                                              RepositoryErrorException,
+                                                                              TypeErrorException,
+                                                                              EntityNotKnownException,
+                                                                              PropertyErrorException,
+                                                                              EntityConflictException,
+                                                                              RelationshipConflictException,
+                                                                              InvalidEntityException,
+                                                                              InvalidRelationshipException,
+                                                                              UserNotAuthorizedException,
+                                                                              FunctionNotSupportedException
+    {
+      
+        //delegate processing to the real metadata collection
+        realMetadataCollection.saveInstanceReferenceCopies(userId, instances);
+      
+    }
+
 }

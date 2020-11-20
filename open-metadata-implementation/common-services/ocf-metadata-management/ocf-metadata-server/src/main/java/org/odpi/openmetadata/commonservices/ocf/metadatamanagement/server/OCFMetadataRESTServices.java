@@ -2,18 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server;
 
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
-import org.slf4j.Logger;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -21,15 +22,15 @@ import java.util.List;
 
 
 /**
- * The ConnectedAssetRESTServices is the server-side implementation of the Connected Asset OMAS REST interface.
+ * The OCFMetadataRESTServices is the server-side implementation of the Connected Asset REST interface used by connectors.
  */
 public class OCFMetadataRESTServices
 {
     static private OCFMetadataInstanceHandler instanceHandler = new OCFMetadataInstanceHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(OCFMetadataRESTServices.class);
-
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(OCFMetadataRESTServices.class),
+                                                                                  instanceHandler.getServiceName());
+    private    RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -58,19 +59,28 @@ public class OCFMetadataRESTServices
                                                   String     userId,
                                                   String     guid)
     {
-        final String        methodName = "getConnectionByGUID";
+        final String guidParameterName = "guid";
+        final String methodName = "getConnectionByGUID";
 
-        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionResponse response = new ConnectionResponse();
         AuditLog           auditLog = null;
 
         try
         {
-            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+            ConnectionHandler<Connection> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(connectionHandler.getConnection(userId, guid));
+            response.setConnection(connectionHandler.getBeanFromRepository(userId,
+                                                                           guid,
+                                                                           guidParameterName,
+                                                                           OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                           instanceHandler.getSupportedZones(userId,
+                                                                                                             serverName,
+                                                                                                             serviceURLName,
+                                                                                                             methodName),
+                                                                           methodName));
         }
         catch (InvalidParameterException  error)
         {
@@ -89,11 +99,61 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
 
+
+    /**
+     * Returns the connection object corresponding to the supplied connection name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId userId of user making request.
+     * @param name   this may be the qualifiedName or displayName of the connection.
+     *
+     * @return connection object or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException - there is no connection defined for this name or
+     * AmbiguousConnectionNameException - there is more than one connection defined for this name or
+     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public ConnectionResponse getConnectionByName(String   serverName,
+                                                  String   serviceURLName,
+                                                  String   userId,
+                                                  String   name)
+    {
+        final String nameParameterName = "name";
+        final String methodName = "getConnectionByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ConnectionResponse response = new ConnectionResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            ConnectionHandler<Connection> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setConnection(connectionHandler.getBeanByUniqueName(userId,
+                                                                         name,
+                                                                         nameParameterName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                         methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**
@@ -116,9 +176,10 @@ public class OCFMetadataRESTServices
                                                   String   userId,
                                                   String   connectionGUID)
     {
-        final String        methodName = "getAssetForConnectionGUID";
+        final String connectionGUIDParameterName = "connectionGUID";
+        final String methodName = "getAssetForConnectionGUID";
 
-        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         AuditLog      auditLog = null;
@@ -126,10 +187,17 @@ public class OCFMetadataRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.getAssetForConnection(userId, connectionGUID));
+            response.setGUID(handler.getAssetForConnection(userId,
+                                                           connectionGUID,
+                                                           connectionGUIDParameterName,
+                                                           instanceHandler.getSupportedZones(userId,
+                                                                                             serverName,
+                                                                                             serviceURLName,
+                                                                                             methodName),
+                                                           methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -148,7 +216,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -173,19 +241,27 @@ public class OCFMetadataRESTServices
                                                     String   userId,
                                                     String   assetGUID)
     {
-        final String        methodName = "getConnectionForAsset";
+        final String assetGUIDParameterName = "assetGUID";
+        final String methodName = "getConnectionForAsset";
 
-        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
         AuditLog            auditLog = null;
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ConnectionHandler<Connection> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(handler.getConnectionForAsset(userId, assetGUID));
+            response.setConnection(handler.getConnectionForAsset(userId,
+                                                                 assetGUID,
+                                                                 assetGUIDParameterName,
+                                                                 instanceHandler.getSupportedZones(userId,
+                                                                                                   serverName,
+                                                                                                   serviceURLName,
+                                                                                                   methodName),
+                                                                 methodName));
         }
         catch (InvalidParameterException  error)
         {
@@ -204,7 +280,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -235,7 +311,9 @@ public class OCFMetadataRESTServices
                                            String   connectionGUID,
                                            String   methodName)
     {
-        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        final String assetGUIDParameterName = "assetGUID";
 
         AssetResponse response = new AssetResponse();
         AuditLog      auditLog = null;
@@ -244,40 +322,86 @@ public class OCFMetadataRESTServices
         {
             List<String>  supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName);
 
-            AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset>  assetHandler         = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            RelatedAssetHandler<RelatedAsset>  relatedAssetHandler  = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
+            CertificationHandler<Certification> certificationHandler = instanceHandler.getCertificationHandler(userId, serverName, methodName);
+            CommentHandler<Comment>       commentHandler       = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            ConnectionHandler<Connection>    connectionHandler    = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+            ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
+            ExternalReferenceHandler<ExternalReference>  externalReferenceHandler  = instanceHandler.getExternalReferenceHandler(userId, serverName,
+                                                                                                                       methodName);
+            InformalTagHandler<InformalTag>             informalTagHandler  = instanceHandler.getInformalTagHandler(userId, serverName,
+                                                                                                                       methodName);
+            LicenseHandler<License>                     licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
+                                                                                                                       methodName);
+            LikeHandler<Like>                           likeHandler         = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            LocationHandler<Location>                   locationHandler     = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLog>                     noteLogHandler      = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            RatingHandler<Rating>                       ratingHandler       = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            RelatedMediaHandler<RelatedMediaReference>  relatedMediaHandler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
+            SearchKeywordHandler<SearchKeyword>         keywordHandler      = instanceHandler.getKeywordHandler(userId, serverName, methodName);
+            SchemaTypeHandler<SchemaType>               schemaTypeHandler   = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            String assetSummary = null;
             if (connectionGUID != null)
             {
-                response.setAsset(assetHandler.getValidatedVisibleAsset(userId,
-                                                                        supportedZones,
-                                                                        assetGUID,
-                                                                        connectionGUID,
-                                                                        instanceHandler.getServiceName(serviceURLName),
-                                                                        methodName));
+                Relationship relationship = assetHandler.getUniqueAttachmentLink(userId,
+                                                                                 assetGUID,
+                                                                                 assetGUIDParameterName,
+                                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                 OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                                 OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                                 connectionGUID,
+                                                                                 OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                                 methodName);
+
+                if (relationship != null)
+                {
+                    OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+                    assetSummary = repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
+                                                                      OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                      relationship.getProperties(),
+                                                                      methodName);
+                }
             }
-            else
+            Asset asset = assetHandler.getBeanFromRepository(userId,
+                                                             assetGUID,
+                                                             assetGUIDParameterName,
+                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                             supportedZones,
+                                                             methodName);
+            if (asset != null)
             {
-                response.setAsset(assetHandler.getValidatedVisibleAsset(userId,
-                                                                        supportedZones,
-                                                                        assetGUID,
-                                                                        instanceHandler.getServiceName(serviceURLName),
-                                                                        methodName));
+                asset.setShortDescription(assetSummary);
+                response.setAsset(asset);
+                response.setCertificationCount(certificationHandler.countCertifications(userId, assetGUID, methodName));
+                response.setCommentCount(commentHandler.countAttachedComments(userId, assetGUID, methodName));
+                response.setConnectionCount(connectionHandler.countConnections(userId, assetGUID, methodName));
+                response.setExternalIdentifierCount(externalIdentifierHandler.countExternalIdentifiers(userId, assetGUID, methodName));
+                response.setExternalReferencesCount(externalReferenceHandler.countExternalReferences(userId, assetGUID, methodName));
+                response.setInformalTagCount(informalTagHandler.countTags(userId, assetGUID, methodName));
+                response.setLicenseCount(licenseHandler.countLicenses(userId, assetGUID, methodName));
+                response.setLikeCount(likeHandler.countLikes(userId, assetGUID, methodName));
+                response.setKeywordCount(keywordHandler.countKeywords(userId, assetGUID, methodName));
+                response.setKnownLocationsCount(locationHandler.countKnownLocations(userId, assetGUID, methodName));
+                response.setNoteLogsCount(noteLogHandler.countAttachedNoteLogs(userId, assetGUID, methodName));
+                response.setRatingsCount(ratingHandler.countRatings(userId, assetGUID, methodName));
+                response.setRelatedAssetCount(relatedAssetHandler.getRelatedAssetCount(userId,
+                                                                                       assetGUID,
+                                                                                       assetGUIDParameterName,
+                                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                       null,
+                                                                                       null,
+                                                                                       supportedZones,
+                                                                                       methodName));
+                response.setRelatedMediaReferenceCount(relatedMediaHandler.countRelatedMedia(userId, assetGUID, methodName));
+                response.setSchemaType(schemaTypeHandler.getSchemaTypeForAsset(userId, assetGUID, assetGUIDParameterName, methodName));
             }
-            response.setCertificationCount(assetHandler.getCertificationCount(userId, assetGUID, methodName));
-            response.setCommentCount(assetHandler.getCommentCount(userId, assetGUID, methodName));
-            response.setConnectionCount(assetHandler.getConnectionCount(userId, assetGUID, methodName));
-            response.setExternalIdentifierCount(assetHandler.getExternalIdentifierCount(userId, assetGUID, methodName));
-            response.setExternalReferencesCount(assetHandler.getExternalReferencesCount(userId, assetGUID, methodName));
-            response.setInformalTagCount(assetHandler.getInformalTagCount(userId, assetGUID, methodName));
-            response.setLicenseCount(assetHandler.getLicenseCount(userId, assetGUID, methodName));
-            response.setLikeCount(assetHandler.getLikeCount(userId, assetGUID, methodName));
-            response.setKnownLocationsCount(assetHandler.getKnownLocationsCount(userId, assetGUID, methodName));
-            response.setNoteLogsCount(assetHandler.getNoteLogsCount(userId, assetGUID, methodName));
-            response.setRatingsCount(assetHandler.getRatingsCount(userId, assetGUID, methodName));
-            response.setRelatedAssetCount(assetHandler.getRelatedAssetCount(userId, assetGUID, methodName));
-            response.setRelatedMediaReferenceCount(assetHandler.getRelatedMediaReferenceCount(userId, assetGUID, methodName));
-            response.setSchemaType(assetHandler.getSchemaType(userId, assetGUID, methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -296,7 +420,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -378,19 +502,27 @@ public class OCFMetadataRESTServices
                                                     int     elementStart,
                                                     int     maxElements)
     {
-        final String        methodName = "getCertifications";
+        final String methodName = "getCertifications";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        final String  assetGUIDParameterName = "assetGUID";
 
         CertificationsResponse  response = new CertificationsResponse();
         AuditLog                auditLog = null;
 
         try
         {
-            CertificationHandler handler = instanceHandler.getCertificationHandler(userId, serverName, methodName);
+            CertificationHandler<Certification> handler = instanceHandler.getCertificationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setList(handler.getCertifications(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getCertifications(userId,
+                                                       assetGUID,
+                                                       assetGUIDParameterName,
+                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                       elementStart,
+                                                       maxElements,
+                                                       methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -409,22 +541,25 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
 
 
     /**
-     * Returns the list of comments for the requested anchor.
+     * Returns the list of comments for the requested element.
      *
-     * @param serverName   String   name of server instance to call.
-     * @param serviceURLName  String   name of the service that created the connector that issued this request.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param anchorGUID    String   unique id for anchor object.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
+     * @param serverName   String   name of server instance to call
+     * @param serviceURLName  String   name of the service that created the connector that issued this request
+     * @param userId       String   userId of user making request
+     * @param assetGUID    String   unique id for asset
+     * @param assetGUIDParameterName String name of parameter supplying assetGUID
+     * @param elementGUID    String   unique id for element object
+     * @param elementGUIDParameterName String name of parameter supplying elementGUID
+     * @param elementTypeName String type name of the requested element
+     * @param elementStart int      starting position for fist returned element
+     * @param maxElements  int      maximum number of elements to return on the call
      * @param methodName  String name of calling method.
      *
      * @return a list of comments or
@@ -436,29 +571,35 @@ public class OCFMetadataRESTServices
                                                  String  serviceURLName,
                                                  String  userId,
                                                  String  assetGUID,
-                                                 String  anchorGUID,
+                                                 String  assetGUIDParameterName,
+                                                 String  elementGUID,
+                                                 String  elementGUIDParameterName,
+                                                 String  elementTypeName,
                                                  int     elementStart,
                                                  int     maxElements,
                                                  String  methodName)
     {
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         CommentsResponse  response = new CommentsResponse();
         AuditLog          auditLog = null;
 
         try
         {
-            AssetHandler  handler = instanceHandler.getAssetHandler(userId,serverName, methodName);
+            CommentHandler<Comment>  handler = instanceHandler.getCommentHandler(userId,serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<Comment>  attachedComments = handler.getAssetComments(userId,
-                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                                       assetGUID,
-                                                                       anchorGUID,
-                                                                       elementStart,
-                                                                       maxElements,
-                                                                       methodName);
-            List<CommentResponse> results          = new ArrayList<>();
+            List<Comment>  attachedComments = handler.getComments(userId,
+                                                                  assetGUID,
+                                                                  assetGUIDParameterName,
+                                                                  elementGUID,
+                                                                  elementGUIDParameterName,
+                                                                  elementTypeName,
+                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                  elementStart,
+                                                                  maxElements,
+                                                                  methodName);
+            List<CommentResponse> results = new ArrayList<>();
 
             if (attachedComments != null)
             {
@@ -469,7 +610,7 @@ public class OCFMetadataRESTServices
                         CommentResponse commentResponse = new CommentResponse();
 
                         commentResponse.setComment(comment);
-                        commentResponse.setReplyCount(handler.getCommentCount(userId, comment.getGUID(), methodName));
+                        commentResponse.setReplyCount(handler.countAttachedComments(userId, comment.getGUID(), methodName));
 
                         results.add(commentResponse);
                     }
@@ -502,7 +643,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -530,9 +671,20 @@ public class OCFMetadataRESTServices
                                              int     elementStart,
                                              int     maxElements)
     {
+        final String assetGUIDParameterName = "assetGUID";
         final String methodName = "getAssetComments";
 
-        return getAttachedComments(serverName, serviceURLName, userId, assetGUID, assetGUID, elementStart, maxElements, methodName);
+        return getAttachedComments(serverName,
+                                   serviceURLName,
+                                   userId,
+                                   assetGUID,
+                                   assetGUIDParameterName,
+                                   assetGUID,
+                                   assetGUIDParameterName,
+                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                   elementStart,
+                                   maxElements,
+                                   methodName);
     }
 
 
@@ -560,9 +712,21 @@ public class OCFMetadataRESTServices
                                                    int     elementStart,
                                                    int     maxElements)
     {
-        final String        methodName = "getAssetCommentReplies";
+        final String assetGUIDParameterName = "assetGUID";
+        final String commentGUIDParameterName = "commentGUID";
+        final String methodName = "getAssetCommentReplies";
 
-        return getAttachedComments(serverName, serviceURLName, userId, assetGUID, commentGUID, elementStart, maxElements, methodName);
+        return getAttachedComments(serverName,
+                                   serviceURLName,
+                                   userId,
+                                   assetGUID,
+                                   assetGUIDParameterName,
+                                   commentGUID,
+                                   commentGUIDParameterName,
+                                   OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                   elementStart,
+                                   maxElements,
+                                   methodName);
     }
 
 
@@ -588,19 +752,26 @@ public class OCFMetadataRESTServices
                                               int     elementStart,
                                               int     maxElements)
     {
-        final String        methodName = "getConnections";
+        final String methodName = "getConnections";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionsResponse  response = new ConnectionsResponse();
         AuditLog             auditLog = null;
 
         try
         {
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+            ConnectionHandler<Connection> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getConnections(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getConnectionsForAsset(userId,
+                                                            assetGUID,
+                                                            guidParameterName,
+                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                            elementStart,
+                                                            maxElements,
+                                                            methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -619,7 +790,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -647,19 +818,27 @@ public class OCFMetadataRESTServices
                                                               int     elementStart,
                                                               int     maxElements)
     {
-        final String        methodName = "getExternalIdentifiers";
+        final String methodName = "getExternalIdentifiersForElement";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ExternalIdentifiersResponse  response = new ExternalIdentifiersResponse();
         AuditLog                     auditLog = null;
 
         try
         {
-            ExternalIdentifierHandler handler = instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
+            ExternalIdentifierHandler<ExternalIdentifier, Object> handler = instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getExternalIdentifiers(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getExternalIdentifiersForElement(userId,
+                                                                      assetGUID,
+                                                                      guidParameterName,
+                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                      elementStart,
+                                                                      maxElements,
+                                                                      methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -678,7 +857,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -706,19 +885,27 @@ public class OCFMetadataRESTServices
                                                             int     elementStart,
                                                             int     maxElements)
     {
-        final String        methodName = "getExternalReferences";
+        final String methodName = "getExternalReferences";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ExternalReferencesResponse  response = new ExternalReferencesResponse();
         AuditLog                    auditLog = null;
 
         try
         {
-            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, methodName);
+            ExternalReferenceHandler<ExternalReference> handler = instanceHandler.getExternalReferenceHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getExternalReferences(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getExternalReferences(userId,
+                                                           assetGUID,
+                                                           guidParameterName,
+                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                           elementStart,
+                                                           maxElements,
+                                                           methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -737,7 +924,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -765,21 +952,24 @@ public class OCFMetadataRESTServices
                                                 int     elementStart,
                                                 int     maxElements)
     {
-        final String        methodName = "getInformalTags";
+        final String methodName = "getInformalTags";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         InformalTagsResponse  response = new InformalTagsResponse();
         AuditLog              auditLog = null;
 
         try
         {
-            InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            InformalTagHandler<InformalTag> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getAttachedTags(userId,
                                                      assetGUID,
-                                                     AssetMapper.ASSET_TYPE_NAME,
+                                                     guidParameterName,
+                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                      elementStart,
                                                      maxElements,
                                                      methodName));
@@ -801,7 +991,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -829,19 +1019,27 @@ public class OCFMetadataRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
-        final String        methodName = "getLicenses";
+        final String methodName = "getLicenses";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         LicensesResponse  response = new LicensesResponse();
         AuditLog          auditLog = null;
 
         try
         {
-            LicenseHandler handler = instanceHandler.getLicenseHandler(userId, serverName, methodName);
+            LicenseHandler<License> handler = instanceHandler.getLicenseHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getLicenses(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getLicenses(userId,
+                                                 assetGUID,
+                                                 guidParameterName,
+                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                 elementStart,
+                                                 maxElements,
+                                                 methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -860,7 +1058,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -888,19 +1086,27 @@ public class OCFMetadataRESTServices
                                   int     elementStart,
                                   int     maxElements)
     {
-        final String        methodName = "getLikes";
+        final String methodName = "getLikes";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         LikesResponse  response = new LikesResponse();
         AuditLog       auditLog = null;
 
         try
         {
-            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            LikeHandler<Like> handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getLikes(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getLikes(userId,
+                                              assetGUID,
+                                              guidParameterName,
+                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                              elementStart,
+                                              maxElements,
+                                              methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -919,7 +1125,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -947,19 +1153,27 @@ public class OCFMetadataRESTServices
                                                int     elementStart,
                                                int     maxElements)
     {
-        final String        methodName = "getKnownLocations";
+        final String methodName = "getKnownLocations";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         LocationsResponse  response = new LocationsResponse();
         AuditLog           auditLog = null;
 
         try
         {
-            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            LocationHandler<Location> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getLocations(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getLocations(userId,
+                                                  assetGUID,
+                                                  guidParameterName,
+                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                  elementStart,
+                                                  maxElements,
+                                                  methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -978,7 +1192,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1006,31 +1220,43 @@ public class OCFMetadataRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
-        final String        methodName = "getNoteLogs";
+        final String methodName = "getNoteLogs";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         NoteLogsResponse  response = new NoteLogsResponse();
         AuditLog          auditLog = null;
 
         try
         {
-            NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLog> handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<NoteLog>          noteLogs = handler.getAttachedNoteLogs(userId, assetGUID, elementStart, maxElements, methodName);
+            List<NoteLog>          noteLogs = handler.getAttachedNoteLogs(userId,
+                                                                          assetGUID,
+                                                                          guidParameterName,
+                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                          elementStart,
+                                                                          maxElements,
+                                                                          methodName);
             List<NoteLogResponse>  results = new ArrayList<>();
 
-            for (NoteLog  noteLog : noteLogs)
+            if (noteLogs != null)
             {
-                if (noteLog != null)
+                NoteHandler<Note>  noteHandler = instanceHandler.getNoteHandler(userId, serverName, methodName);
+                for (NoteLog noteLog : noteLogs)
                 {
-                    NoteLogResponse   noteLogResponse = new NoteLogResponse();
+                    if (noteLog != null)
+                    {
+                        NoteLogResponse noteLogResponse = new NoteLogResponse();
 
-                    noteLogResponse.setNoteLog(noteLog);
-                    noteLogResponse.setNoteCount(handler.countAttachedNoteLogs(userId, noteLog.getGUID(), methodName));
+                        noteLogResponse.setNoteLog(noteLog);
+                        noteLogResponse.setNoteCount(noteHandler.countAttachedNotes(userId, noteLog.getGUID(), methodName));
 
-                    results.add(noteLogResponse);
+                        results.add(noteLogResponse);
+                    }
                 }
             }
 
@@ -1062,7 +1288,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1090,19 +1316,27 @@ public class OCFMetadataRESTServices
                                   int     elementStart,
                                   int     maxElements)
     {
-        final String        methodName = "getNotes";
+        final String methodName = "getNotes";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         NotesResponse  response = new NotesResponse();
         AuditLog       auditLog = null;
 
         try
         {
-            NoteHandler handler = instanceHandler.getNoteHandler(userId, serverName, methodName);
+            NoteHandler<Note> handler = instanceHandler.getNoteHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getNotes(userId, noteLogGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getNotes(userId,
+                                              noteLogGUID,
+                                              guidParameterName,
+                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                              elementStart,
+                                              maxElements,
+                                              methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -1121,7 +1355,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1149,19 +1383,27 @@ public class OCFMetadataRESTServices
                                       int     elementStart,
                                       int     maxElements)
     {
-        final String        methodName = "getRatings";
+        final String methodName = "getRatings";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RatingsResponse  response = new RatingsResponse();
         AuditLog         auditLog = null;
 
         try
         {
-            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            RatingHandler<Rating> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getRatings(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getRatings(userId,
+                                                assetGUID,
+                                                guidParameterName,
+                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                elementStart,
+                                                maxElements,
+                                                methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -1180,7 +1422,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1208,26 +1450,28 @@ public class OCFMetadataRESTServices
                                                   int     elementStart,
                                                   int     maxElements)
     {
-        final String        methodName = "getRelatedAssets";
+        final String methodName = "getRelatedAssets";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelatedAssetsResponse  response = new RelatedAssetsResponse();
         AuditLog               auditLog = null;
 
         try
         {
-            List<String>  supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName);
-
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            RelatedAssetHandler<RelatedAsset> handler = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getRelatedAssets(userId,
-                                                      supportedZones,
                                                       assetGUID,
+                                                      guidParameterName,
+                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      null,
+                                                      null,
+                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                       elementStart,
                                                       maxElements,
-                                                      serviceURLName,
                                                       methodName));
         }
         catch (InvalidParameterException error)
@@ -1247,7 +1491,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1277,20 +1521,25 @@ public class OCFMetadataRESTServices
                                                       int     elementStart,
                                                       int     maxElements)
     {
-        final String        methodName = "getMoreInformation";
+        final String methodName = "getMoreInformation";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         MoreInformationResponse  response = new MoreInformationResponse();
         AuditLog                 auditLog = null;
 
         try
         {
-            ReferenceableHandler handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
+            ReferenceableHandler<Referenceable> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getMoreInformation(userId,
                                                         elementGUID,
+                                                        guidParameterName,
+                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                         elementStart,
                                                         maxElements,
                                                         methodName));
@@ -1313,7 +1562,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1341,19 +1590,27 @@ public class OCFMetadataRESTServices
                                                                     int     elementStart,
                                                                     int     maxElements)
     {
-        final String        methodName = "getRelatedMediaReferences";
+        final String methodName = "getRelatedMediaReferences";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelatedMediaReferencesResponse  response = new RelatedMediaReferencesResponse();
         AuditLog                        auditLog = null;
 
         try
         {
-            RelatedMediaHandler handler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
+            RelatedMediaHandler<RelatedMediaReference> handler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getRelatedMedia(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getRelatedMedia(userId,
+                                                     assetGUID,
+                                                     guidParameterName,
+                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                     elementStart,
+                                                     maxElements,
+                                                     methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -1372,7 +1629,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1400,19 +1657,28 @@ public class OCFMetadataRESTServices
                                                        int     elementStart,
                                                        int     maxElements)
    {
-        final String        methodName = "getSchemaAttributes";
+        final String methodName = "getSchemaAttributes";
+        final String guidParameterName = "assetGUID";
 
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+       RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         SchemaAttributesResponse  response = new SchemaAttributesResponse();
         AuditLog                  auditLog = null;
 
         try
         {
-            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+            SchemaAttributeHandler<SchemaAttribute, SchemaType> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getSchemaAttributes(userId, schemaTypeGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getSchemaAttributesForComplexSchemaType(userId,
+                                                                             schemaTypeGUID,
+                                                                             guidParameterName,
+                                                                             null,
+                                                                             null,
+                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                             elementStart,
+                                                                             maxElements,
+                                                                             methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -1431,7 +1697,7 @@ public class OCFMetadataRESTServices
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
    }

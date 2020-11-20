@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.server;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the CommunityProfileAdmin class.
  */
-class CommunityProfileInstanceHandler extends OCFOMASServiceInstanceHandler
+class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
 {
     /**
      * Default constructor registers the access service

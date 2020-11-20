@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.viewservices.rex.handlers;
 
 
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -33,13 +34,18 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexExceptionHandler;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewErrorCode;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewServiceException;
 import org.odpi.openmetadata.viewservices.rex.api.properties.ClassificationExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.EntityExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RelationshipExplorer;
+import org.odpi.openmetadata.viewservices.rex.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexEntityDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedEntityDetail;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipAndEntitiesDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTypeStats;
@@ -49,14 +55,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 /**
- * The RexHandler is initialised with the server the call should be sent to.
+ * The RexViewHandler is initialised with the server the call should be sent to.
  * The handler exposes methods for functionality for the repository explorer view
  */
 public class RexViewHandler
@@ -69,42 +74,202 @@ public class RexViewHandler
     private static final int TRUNCATED_STRING_LENGTH = 24;
 
 
+    /*
+     * viewServiceOptions should have been validated in the Admin layer.
+     * The viewServiceOptions contains a list of resource endpoints that the
+     * view service can connect to. It is formatted like this:
+     *
+     *  "resourceEndpoints" : [
+     *            {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Platform",
+     *               "platformName"       : "Platform1",
+     *               "platformRootURL"    : "https://localhost:8082",
+     *               "description"        : "Egeria deployment on local development server"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Platform",
+     *               "platformName"       : "Platform2",
+     *               "platformRootURL"    : "https://localhost:9443",
+     *               "description"        : "Egeria deployment on local test server"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Server",
+     *               "serverName"         : "Metadata_Server",
+     *               "serverInstanceName" : "Metadata Server 1",
+     *               "platformName"       : "Platform1",
+     *               "description"        : "Metadata server for development testing"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Server",
+     *               "serverName"         : "Metadata_Server2",
+     *               "serverInstanceName" : "Metadata Server 2",
+     *               "platformName"       : "Platform2",
+     *               "description"        : "Metadata server used as home for test artefacts"
+     *           }
+     *       ]
+     */
+
+    private Map<String, ResourceEndpoint>  configuredPlatforms = null;          // map is keyed using platformRootURL
+    private Map<String, ResourceEndpoint>  configuredServerInstances   = null;  // map is keyed using serverName+platformRootURL so each instance is unique
+
+
+
+
     /**
-     * Constructor for the RexHandler
+     * Default constructor for RexViewHandler
      */
     public RexViewHandler() {
 
     }
 
+
+    /**
+     * Constructor for RexViewHandler with configured resourceEndpoints
+     * @param resourceEndpoints - list of resource endpoint configuration objects for this view service
+     */
+    public RexViewHandler(List<ResourceEndpointConfig>  resourceEndpoints) {
+
+        /*
+         * Populate map of resources with their endpoints....
+         */
+
+        // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
+
+        configuredPlatforms         = new HashMap<>();
+        configuredServerInstances   = new HashMap<>();
+
+        if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
+
+            resourceEndpoints.forEach(res -> {
+
+                String resCategory   = res.getResourceCategory();
+                ResourceEndpoint rep = new ResourceEndpoint(res);
+
+                String resName = null;
+
+                switch (resCategory) {
+                    case "Platform":
+                        resName = res.getPlatformName();
+                        configuredPlatforms.put(resName, rep);
+                        break;
+
+                    case "Server":
+                        resName = res.getServerInstanceName();
+                        configuredServerInstances.put(resName, rep);
+                        break;
+
+                    default:
+                        // Unsupported category is ignored
+                        break;
+
+                }
+            });
+        }
+
+    }
+
+
+
+    /**
+     * getResourceEndpoints - returns a list of the configured resource endpoints. Does not include discovered resource endpoints.
+     *
+     * @param userId  userId under which the request is performed
+     * @param methodName The name of the method being invoked
+     * @return The resource endpoints that have been configured for the view service
+     *
+     */
+    public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
+
+    {
+
+        Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
+
+        List<ResourceEndpoint> platformList = null;
+        List<ResourceEndpoint> serverList   = null;
+
+        if (!configuredPlatforms.isEmpty())
+        {
+            platformList = new ArrayList<>();
+            platformList.addAll(configuredPlatforms.values());
+        }
+
+        if (!configuredServerInstances.isEmpty())
+        {
+            serverList = new ArrayList<>();
+            serverList.addAll(configuredServerInstances.values());
+        }
+
+        returnMap.put("platformList",platformList);
+        returnMap.put("serverList",serverList);
+
+        return returnMap;
+    }
+
+
+
+    /**
+     * resolvePlatformRootURL
+     *
+     * This method will look up the configured root URL for the named platform.
+     *
+     * @param platformName - the name if the platform to be resolved (to a URL)
+     * @return resolved platform URL Root
+     *
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
+     */
+    private String resolvePlatformRootURL(String platformName, String methodName) throws RexViewServiceException
+
+    {
+        String platformRootURL = null;
+
+        if (platformName != null) {
+            ResourceEndpoint resource = configuredPlatforms.get(platformName);
+            if (resource != null) {
+                platformRootURL = resource.getResourceRootURL();
+            }
+        }
+        if (platformName == null || platformRootURL == null) {
+            throw new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                methodName);
+        }
+
+        return platformRootURL;
+    }
+    
+
     /**
      * Retrieve type information from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param methodName The name of the method being invoked
      * @return response containing the TypeExplorer object.
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     *
-     * Client library Exceptions
-     * @throws RepositoryErrorException Repository could not satisfy the request
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public TypeExplorer getTypeExplorer(String    userId,
                                         String    repositoryServerName,
-                                        String    repositoryServerURLRoot,
+                                        String    platformName,
                                         boolean   enterpriseOption,
                                         String    methodName)
     throws
-        RepositoryErrorException,
-        InvalidParameterException,
-        UserNotAuthorizedException
+        RexViewServiceException
 
     {
 
-        try {
+
+        try
+        {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Switch between local and enterprise services clients depending
@@ -112,10 +277,13 @@ public class RexViewHandler
              */
             MetadataCollectionServicesClient repositoryServicesClient;
 
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
-            } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            if (!enterpriseOption)
+            {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
+            }
+            else
+            {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             TypeExplorer tex = new TypeExplorer();
@@ -123,9 +291,11 @@ public class RexViewHandler
             TypeDefGallery typeDefGallery = repositoryServicesClient.getAllTypes(userId);
 
             List<TypeDef> typeDefs = typeDefGallery.getTypeDefs();
-            for (TypeDef typeDef : typeDefs) {
+            for (TypeDef typeDef : typeDefs)
+            {
                 TypeDefCategory tdCat = typeDef.getCategory();
-                switch (tdCat) {
+                switch (tdCat)
+                {
                     case ENTITY_DEF:
                         EntityExplorer eex = new EntityExplorer((EntityDef) typeDef);
                         tex.addEntityExplorer(typeDef.getName(), eex);
@@ -146,9 +316,11 @@ public class RexViewHandler
 
             // Include EnumDefs in the TEX
             List<AttributeTypeDef> attributeTypeDefs = typeDefGallery.getAttributeTypeDefs();
-            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs) {
+            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs)
+            {
                 AttributeTypeDefCategory tdCat = attributeTypeDef.getCategory();
-                switch (tdCat) {
+                switch (tdCat)
+                {
                     case ENUM_DEF:
                         tex.addEnumExplorer(attributeTypeDef.getName(), (EnumDef) attributeTypeDef);
                         break;
@@ -163,11 +335,21 @@ public class RexViewHandler
             return tex;
 
         }
-        catch (UserNotAuthorizedException |
-                RepositoryErrorException |
-                InvalidParameterException e) {
-            throw e;
+
+
+        catch (UserNotAuthorizedException e)
+        {
+            throw RexExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(), methodName, e);
         }
+        catch (RepositoryErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSRepositoryErrorException(this.getClass().getName(), methodName, e);
+        }
+        catch (InvalidParameterException e)
+        {
+            throw RexExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+
 
     }
 
@@ -175,37 +357,31 @@ public class RexViewHandler
      * Retrieve entity (by GUID) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the GUID of the entity to retrieve
      * @param methodName The name of the method being invoked
      * @return response containing the RexExpandedEntityDetail object.
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws EntityNotKnownException     no entity was found using the supplied GUID.
-     * @throws EntityProxyOnlyException    an entity proxy was found, but it's not the entity you are looking for.
-     *
-     * Client library Exceptions
-     * @throws RepositoryErrorException Repository could not satisfy the request
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public RexExpandedEntityDetail getEntity(String    userId,
                                              String    repositoryServerName,
-                                             String    repositoryServerURLRoot,
+                                             String    platformName,
                                              boolean   enterpriseOption,
                                              String    entityGUID,
                                              String    methodName)
     throws
-    RepositoryErrorException,
-    InvalidParameterException,
-    UserNotAuthorizedException,
-    EntityNotKnownException,
-    EntityProxyOnlyException
+    RexViewServiceException
 
     {
 
-        try {
+
+        try
+        {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Switch between local and enterprise services clients depending
@@ -213,34 +389,72 @@ public class RexViewHandler
              */
             MetadataCollectionServicesClient repositoryServicesClient;
 
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
-            } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            if (!enterpriseOption)
+            {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
+            else
+            {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
+            }
+
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
 
 
             EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(userId, entityGUID);
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
             String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-            RexExpandedEntityDetail rexExpEntityDetail = new RexExpandedEntityDetail(entityDetail, label, repositoryServerName);
+            String provenance = determineInstanceProvenance(entityDetail, metadataCollectionId, enterpriseOption);
+
+            RexExpandedEntityDetail rexExpEntityDetail = new RexExpandedEntityDetail(entityDetail,
+                                                                                     label,
+                                                                                     repositoryServerName,
+                                                                                     platformName,
+                                                                                     provenance);
 
             return rexExpEntityDetail;
 
         }
-        catch (UserNotAuthorizedException  |
-                RepositoryErrorException   |
-                InvalidParameterException  |
-                EntityNotKnownException    |
-                EntityProxyOnlyException   e) {
-            throw e;
+        catch (UserNotAuthorizedException e)
+        {
+            throw RexExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(),
+                                                                        methodName,
+                                                                        e);
+        }
+        catch (RepositoryErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSRepositoryErrorException(this.getClass().getName(),
+                                                                      methodName,
+                                                                      e);
+        }
+        catch (InvalidParameterException e)
+        {
+            throw RexExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(),
+                                                                       methodName,
+                                                                       e);
+        }
+        catch (EntityNotKnownException e)
+        {
+            throw RexExceptionHandler.mapOMRSEntityNotKnownException(this.getClass().getName(),
+                                                                     methodName,
+                                                                     repositoryServerName,
+                                                                     enterpriseOption,
+                                                                     e);
+        }
+        catch (EntityProxyOnlyException e)
+        {
+            throw RexExceptionHandler.mapOMRSEntityProxyOnlyException(this.getClass().getName(), methodName, e);
         }
 
     }
@@ -250,36 +464,32 @@ public class RexViewHandler
      * Retrieve relationship (by GUID) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param relationshipGUID the GUID of the relationship to retrieve
      * @param methodName The name of the method being invoked
      * @return response containing the RexExpandedEntityDetail object.
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException     the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException      one of the parameters is null or invalid.
-     * @throws RelationshipNotKnownException  no relationship was found using the supplied GUID.
-     *
-     *
-     * Client library Exceptions
-     * @throws RepositoryErrorException Repository could not satisfy the request
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public RexExpandedRelationship getRelationship(String    userId,
                                                    String    repositoryServerName,
-                                                   String    repositoryServerURLRoot,
+                                                   String    platformName,
                                                    boolean   enterpriseOption,
                                                    String    relationshipGUID,
                                                    String    methodName)
     throws
-    RepositoryErrorException,
-    InvalidParameterException,
-    UserNotAuthorizedException,
-    RelationshipNotKnownException
+    RexViewServiceException
 
     {
 
-        try {
+
+        try
+        {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
 
             /*
              *  Switch between local and enterprise services clients depending
@@ -287,11 +497,20 @@ public class RexViewHandler
              */
             MetadataCollectionServicesClient repositoryServicesClient;
 
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
-            } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            if (!enterpriseOption)
+            {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
+            else
+            {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
+            }
+
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
 
 
             Relationship relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID);
@@ -300,7 +519,7 @@ public class RexViewHandler
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -309,22 +528,62 @@ public class RexViewHandler
             String label1 = this.chooseLabelForEntityProxy(entity1, typeExplorer);
             String label2 = this.chooseLabelForEntityProxy(entity2, typeExplorer);
 
-            RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),label1,0, entity1.getMetadataCollectionName());
-            RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),label2,0, entity2.getMetadataCollectionName());
+            RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),
+                                                          label1,
+                                                          0,
+                                                          entity1.getMetadataCollectionName(),
+                                                          entity1.getMetadataCollectionId(),
+                                                          "proxy");
+            RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),
+                                                          label2,
+                                                          0,
+                                                          entity2.getMetadataCollectionName(),
+                                                          entity2.getMetadataCollectionId(),
+                                                          "proxy");
 
             String label = this.chooseLabelForRelationship(relationship);
 
-            RexExpandedRelationship rexExpRelationship = new RexExpandedRelationship(relationship, label, digest1, digest2, repositoryServerName);
+            String provenance = determineInstanceProvenance(relationship, metadataCollectionId, enterpriseOption);
+
+
+            RexExpandedRelationship rexExpRelationship = new RexExpandedRelationship(relationship,
+                                                                                     label,
+                                                                                     digest1,
+                                                                                     digest2,
+                                                                                     repositoryServerName,
+                                                                                     platformName,
+                                                                                     provenance);
 
             return rexExpRelationship;
 
         }
-        catch (UserNotAuthorizedException     |
-                RepositoryErrorException      |
-                InvalidParameterException     |
-                RelationshipNotKnownException e) {
-            throw e;
+        catch (UserNotAuthorizedException e)
+        {
+            throw RexExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(),
+                                                                        methodName,
+                                                                        e);
         }
+        catch (RepositoryErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSRepositoryErrorException(this.getClass().getName(),
+                                                                      methodName,
+                                                                      e);
+        }
+        catch (InvalidParameterException e)
+        {
+            throw RexExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(),
+                                                                       methodName,
+                                                                       e);
+        }
+        catch (RelationshipNotKnownException e)
+        {
+            throw RexExceptionHandler.mapOMRSRelationshipNotKnownException(this.getClass().getName(),
+                                                                           methodName,
+                                                                           repositoryServerName,
+                                                                           enterpriseOption,
+                                                                           e);
+        }
+
 
     }
 
@@ -332,7 +591,7 @@ public class RexViewHandler
      * Retrieve entities (by text search) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param searchText the search expression that entities must match
      * @param entityTypeName the name of a type used to filter the entity search
@@ -340,38 +599,28 @@ public class RexViewHandler
      * @param methodName The name of the method being invoked
      * @return a map of entity digests for the entities that matched the search
      *
-     * Exceptions returned by the server
-     *
-     * @throws InvalidParameterException     a parameter is invalid or null.
-     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
-     *                                       the metadata collection is stored.
-     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
-     *                                       entity.
-     * @throws PagingErrorException          the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
-     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public Map<String, RexEntityDigest> findEntities(String       userId,
                                                      String       repositoryServerName,
-                                                     String       repositoryServerURLRoot,
+                                                     String       platformName,
                                                      boolean      enterpriseOption,
                                                      String       searchText,
                                                      String       entityTypeName,
                                                      List<String> classificationNames,
                                                      String       methodName)
     throws
-    RepositoryErrorException,
-    InvalidParameterException,
-    UserNotAuthorizedException,
-    TypeErrorException,
-    PropertyErrorException,
-    PagingErrorException,
-    FunctionNotSupportedException
+    RexViewServiceException
 
     {
 
-        try {
+
+        try
+        {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
 
             /*
              *  Switch between local and enterprise services clients depending
@@ -379,15 +628,25 @@ public class RexViewHandler
              */
             MetadataCollectionServicesClient repositoryServicesClient;
 
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
-            } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            if (!enterpriseOption)
+            {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
+            else
+            {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
+            }
+
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -407,17 +666,26 @@ public class RexViewHandler
                     0);
 
 
-            if (entities != null) {
+            if (entities != null)
+            {
 
                 // Process the list of EntityDetail objects and produce a map of EntityDigest objects
 
                 Map<String, RexEntityDigest> digestMap = new HashMap<>();
 
-                for (int e = 0; e < entities.size(); e++) {
+                for (int e = 0; e < entities.size(); e++)
+                {
                     EntityDetail entityDetail = entities.get(e);
                     String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-                    RexEntityDigest entityDigest = new RexEntityDigest(entityDetail.getGUID(), label, 0, entityDetail.getMetadataCollectionName());
+                    String provenance = determineInstanceProvenance(entityDetail, metadataCollectionId, enterpriseOption);
+
+                    RexEntityDigest entityDigest = new RexEntityDigest(entityDetail.getGUID(),
+                                                                       label,
+                                                                       0,
+                                                                       entityDetail.getMetadataCollectionName(),
+                                                                       entityDetail.getMetadataCollectionId(),
+                                                                       provenance);
 
                     digestMap.put(entityDetail.getGUID(), entityDigest);
 
@@ -425,19 +693,54 @@ public class RexViewHandler
 
                 return digestMap;
             }
-            else {
+            else
+            {
                 return null;
             }
 
         }
-        catch (UserNotAuthorizedException  |
-                RepositoryErrorException   |
-                InvalidParameterException  |
-                TypeErrorException         |
-                PropertyErrorException     |
-                PagingErrorException       |
-                FunctionNotSupportedException   e) {
-            throw e;
+
+        catch (UserNotAuthorizedException e)
+        {
+            throw RexExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(),
+                                                                        methodName,
+                                                                        e);
+        }
+        catch (RepositoryErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSRepositoryErrorException(this.getClass().getName(),
+                                                                      methodName,
+                                                                      e);
+        }
+        catch (InvalidParameterException e)
+        {
+            throw RexExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(),
+                                                                       methodName,
+                                                                       e);
+        }
+        catch (TypeErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSTypeErrorException(this.getClass().getName(),
+                                                                methodName,
+                                                                e);
+        }
+        catch (PropertyErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSPropertyErrorException(this.getClass().getName(),
+                                                                    methodName,
+                                                                    e);
+        }
+        catch (PagingErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSPagingErrorException(this.getClass().getName(),
+                                                                  methodName,
+                                                                  e);
+        }
+        catch (FunctionNotSupportedException e)
+        {
+            throw RexExceptionHandler.mapOMRSFunctionNotSupportedException(this.getClass().getName(),
+                                                                           methodName,
+                                                                           e);
         }
 
     }
@@ -447,44 +750,33 @@ public class RexViewHandler
      * Retrieve relationships (by text search) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param searchText the search expression that relationships must match
      * @param relationshipTypeName the name of a type used to filter the relationship search
      * @param methodName The name of the method being invoked
      * @return a map of relationship digests for the relationships that matched the search
      *
-     * Exceptions returned by the server
-     *
-     * @throws InvalidParameterException     a parameter is invalid or null.
-     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
-     *                                       the metadata collection is stored.
-     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
-     *                                       entity.
-     * @throws PagingErrorException          the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
-     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
-    public Map<String, RexRelationshipDigest> findRelationships(String    userId,
-                                                                String    repositoryServerName,
-                                                                String    repositoryServerURLRoot,
-                                                                boolean   enterpriseOption,
-                                                                String    searchText,
-                                                                String    relationshipTypeName,
-                                                                String    methodName)
+    public Map<String, RexRelationshipAndEntitiesDigest> findRelationships(String    userId,
+                                                                           String    repositoryServerName,
+                                                                           String    platformName,
+                                                                           boolean   enterpriseOption,
+                                                                           String    searchText,
+                                                                           String    relationshipTypeName,
+                                                                           String    methodName)
     throws
-    RepositoryErrorException,
-    InvalidParameterException,
-    UserNotAuthorizedException,
-    TypeErrorException,
-    PropertyErrorException,
-    PagingErrorException,
-    FunctionNotSupportedException
+    RexViewServiceException
 
     {
 
-        try {
+
+        try
+        {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Switch between local and enterprise services clients depending
@@ -492,20 +784,30 @@ public class RexViewHandler
              */
             MetadataCollectionServicesClient repositoryServicesClient;
 
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
-            } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            if (!enterpriseOption)
+            {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
+            else
+            {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
+            }
+
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
 
-            String relationshipTypeGUID = typeExplorer.getEntityTypeGUID(relationshipTypeName);
+            String relationshipTypeGUID = typeExplorer.getRelationshipTypeGUID(relationshipTypeName);
 
             List<Relationship> relationships = repositoryServicesClient.findRelationshipsByPropertyValue(
                     userId,
@@ -519,15 +821,27 @@ public class RexViewHandler
                     0);
 
 
-            if (relationships != null) {
+            if (relationships != null)
+            {
 
-                // Process the list of EntityDetail objects and produce a map of EntityDigest objects
+                // Process the list of Relationship objects and produce a list of super digests...
 
-                Map<String, RexRelationshipDigest> digestMap = new HashMap<>();
+                Map<String, RexRelationshipAndEntitiesDigest> superDigests = new HashMap<>();
 
-                for (int r = 0; r < relationships.size(); r++) {
+
+                for (int r = 0; r < relationships.size(); r++)
+                {
+
                     Relationship relationship = relationships.get(r);
                     String label = this.chooseLabelForRelationship(relationship);
+
+                    String provenance = determineInstanceProvenance(relationship, metadataCollectionId, enterpriseOption);
+
+                    // Create the super digest
+
+                    RexRelationshipAndEntitiesDigest superDigest = new RexRelationshipAndEntitiesDigest();
+
+                    // Create the relationship digest
 
                     RexRelationshipDigest relationshipDigest = new RexRelationshipDigest(relationship.getGUID(),
                                                                                          label,
@@ -535,27 +849,91 @@ public class RexViewHandler
                                                                                          relationship.getEntityTwoProxy().getGUID(),
                                                                                          0,
                                                                                          0,
-                                                                                         relationship.getMetadataCollectionName());
+                                                                                         relationship.getMetadataCollectionName(),
+                                                                                         relationship.getMetadataCollectionId(),
+                                                                                         provenance);
 
-                    digestMap.put(relationship.getGUID(), relationshipDigest);
+
+                    superDigest.setRelationshipDigest(relationshipDigest);
+
+                    // Create digests for both ends
+
+                    EntityProxy entity1 = relationship.getEntityOneProxy();
+                    EntityProxy entity2 = relationship.getEntityTwoProxy();
+                    String label1 = this.chooseLabelForEntityProxy(entity1, typeExplorer);
+                    String label2 = this.chooseLabelForEntityProxy(entity2, typeExplorer);
+
+                    RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),
+                                                                  label1,
+                                                                  0,
+                                                                  entity1.getMetadataCollectionName(),
+                                                                  entity1.getMetadataCollectionId(),
+                                                                  "proxy");
+                    RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),
+                                                                  label2,
+                                                                  0,
+                                                                  entity2.getMetadataCollectionName(),
+                                                                  entity2.getMetadataCollectionId(),
+                                                                  "proxy");
+
+
+                    superDigest.setEnd1Digest(digest1);
+                    superDigest.setEnd2Digest(digest2);
+
+                    superDigests.put(relationship.getGUID(), superDigest);
+
 
                 }
 
-                return digestMap;
+                return superDigests;
             }
-            else {
+            else
+            {
                 return null;
             }
 
         }
-        catch (UserNotAuthorizedException  |
-                RepositoryErrorException   |
-                InvalidParameterException  |
-                TypeErrorException         |
-                PropertyErrorException     |
-                PagingErrorException       |
-                FunctionNotSupportedException   e) {
-            throw e;
+        catch (UserNotAuthorizedException e)
+        {
+            throw RexExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(),
+                                                                        methodName,
+                                                                        e);
+        }
+        catch (RepositoryErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSRepositoryErrorException(this.getClass().getName(),
+                                                                      methodName,
+                                                                      e);
+        }
+        catch (InvalidParameterException e)
+        {
+            throw RexExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(),
+                                                                       methodName,
+                                                                       e);
+        }
+        catch (TypeErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSTypeErrorException(this.getClass().getName(),
+                                                                methodName,
+                                                                e);
+        }
+        catch (PropertyErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSPropertyErrorException(this.getClass().getName(),
+                                                                    methodName,
+                                                                    e);
+        }
+        catch (PagingErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSPagingErrorException(this.getClass().getName(),
+                                                                  methodName,
+                                                                  e);
+        }
+        catch (FunctionNotSupportedException e)
+        {
+            throw RexExceptionHandler.mapOMRSFunctionNotSupportedException(this.getClass().getName(),
+                                                                           methodName,
+                                                                           e);
         }
 
     }
@@ -567,46 +945,33 @@ public class RexViewHandler
      * Retrieve the neighborhood surrounding an entity for pre-traversal.
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the identity of the entity from which to traverse
      * @param depth the depth to which the method should traverse
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
-     * Exceptions returned by the server
-     *
-     * @throws InvalidParameterException     a parameter is invalid or null.
-     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
-     * @throws EntityNotKnownException       the specified start entity could not be found
-     * @throws EntityProxyOnlyException      the specified start entity could not be found
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
-     *                                       the metadata collection is stored.
-     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
-     *                                       entity.
-     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
-     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public RexPreTraversal preTraversal(String          userId,
-                                           String          repositoryServerName,
-                                           String          repositoryServerURLRoot,
-                                           boolean         enterpriseOption,
-                                           String          entityGUID,
-                                           int             depth,
-                                           String          methodName)
+                                        String          repositoryServerName,
+                                        String          platformName,
+                                        boolean         enterpriseOption,
+                                        String          entityGUID,
+                                        int             depth,
+                                        String          methodName)
     throws
-    RepositoryErrorException,
-    InvalidParameterException,
-    EntityNotKnownException,
-    EntityProxyOnlyException,
-    UserNotAuthorizedException,
-    TypeErrorException,
-    PropertyErrorException,
-    FunctionNotSupportedException
+    RexViewServiceException
 
     {
 
-        try {
+
+        try
+        {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Switch between local and enterprise services clients depending
@@ -614,10 +979,13 @@ public class RexViewHandler
              */
             MetadataCollectionServicesClient repositoryServicesClient;
 
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
-            } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            if (!enterpriseOption)
+            {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
+            }
+            else
+            {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             /*
@@ -626,13 +994,14 @@ public class RexViewHandler
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
             InstanceGraph instGraph = null;
 
-            if (depth >0) {
+            if (depth > 0)
+            {
 
                 instGraph = repositoryServicesClient.getEntityNeighborhood(userId,
                                                                            entityGUID,
@@ -645,7 +1014,8 @@ public class RexViewHandler
             }
 
 
-            else {
+            else
+            {
 
                 /*
                  * Since depth is 0 - use getEntityDetail instead of neighborhood
@@ -665,8 +1035,10 @@ public class RexViewHandler
             }
 
 
-            // Should have an InstanceGraph with one or more entities and maybe relationships
-            // Parse the RexTraversal into a RexPreTraversal for the PreTraversalResponse
+            /*
+             * Should have an InstanceGraph with one or more entities and maybe relationships
+             * Parse the RexTraversal into a RexPreTraversal for the PreTraversalResponse
+             */
 
             RexPreTraversal rexPreTraversal = new RexPreTraversal();
 
@@ -677,37 +1049,50 @@ public class RexViewHandler
             // Process entities
             List<EntityDetail> entities = instGraph.getEntities();
             Map<String, RexTypeStats> entityCountsByType = new HashMap<>();
-            Map<String,RexTypeStats> classificationCountsByType = new HashMap<>();
-            if (entities != null) {
-                for (EntityDetail ent : entities) {
-                    // Process entity type information
-                    /* Skip the entity that the traversal started from.
+            Map<String, RexTypeStats> classificationCountsByType = new HashMap<>();
+            if (entities != null)
+            {
+                for (EntityDetail ent : entities)
+                {
+                    /*
+                     * Process entity type information
+                     *
+                     * Skip the entity that the traversal started from.
                      * Counting the starting entity will distort the counts
                      */
-                    if (! ent.getGUID().equals(entityGUID)) {
+                    if (!ent.getGUID().equals(entityGUID))
+                    {
 
                         InstanceType instanceType = ent.getType();
                         String typeGUID = instanceType.getTypeDefGUID();
                         String typeName = instanceType.getTypeDefName();
-                        if (entityCountsByType.get(typeName) == null) {
+                        if (entityCountsByType.get(typeName) == null)
+                        {
                             // First sight of an instance of this type
                             RexTypeStats stats = new RexTypeStats(typeGUID, 1);
                             entityCountsByType.put(typeName, stats);
-                        } else {
+                        }
+                        else
+                        {
                             // Add to the count of instances of this type
                             Integer existingCount = entityCountsByType.get(typeName).getCount();
                             entityCountsByType.get(typeName).setCount(existingCount + 1);
                         }
                         // Process entity classification information
                         List<Classification> classifications = ent.getClassifications();
-                        if (classifications != null) {
-                            for (Classification classification : classifications) {
+                        if (classifications != null)
+                        {
+                            for (Classification classification : classifications)
+                            {
                                 String classificationName = classification.getName();
-                                if (classificationCountsByType.get(classificationName) == null) {
+                                if (classificationCountsByType.get(classificationName) == null)
+                                {
                                     // First sight of an instance of this type
                                     RexTypeStats stats = new RexTypeStats(null, 1);
                                     classificationCountsByType.put(classificationName, stats);
-                                } else {
+                                }
+                                else
+                                {
                                     // Add to the count of instances of this type
                                     Integer existingCount = classificationCountsByType.get(classificationName).getCount();
                                     classificationCountsByType.get(classificationName).setCount(existingCount + 1);
@@ -719,17 +1104,22 @@ public class RexViewHandler
             }
             // Process relationships
             List<Relationship> relationships = instGraph.getRelationships();
-            Map<String,RexTypeStats> relationshipCountsByType = new HashMap<>();
-            if (relationships != null) {
-                for (Relationship rel : relationships) {
+            Map<String, RexTypeStats> relationshipCountsByType = new HashMap<>();
+            if (relationships != null)
+            {
+                for (Relationship rel : relationships)
+                {
                     InstanceType instanceType = rel.getType();
                     String typeGUID = instanceType.getTypeDefGUID();
                     String typeName = instanceType.getTypeDefName();
-                    if (relationshipCountsByType.get(typeName) == null) {
+                    if (relationshipCountsByType.get(typeName) == null)
+                    {
                         // First sight of an instance of this type
                         RexTypeStats stats = new RexTypeStats(typeGUID, 1);
                         relationshipCountsByType.put(typeName, stats);
-                    } else {
+                    }
+                    else
+                    {
                         // Add to the count of instances of this type
                         Integer existingCount = relationshipCountsByType.get(typeName).getCount();
                         relationshipCountsByType.get(typeName).setCount(existingCount + 1);
@@ -744,15 +1134,56 @@ public class RexViewHandler
             return rexPreTraversal;
 
         }
-        catch (UserNotAuthorizedException  |
-                EntityNotKnownException    |
-                EntityProxyOnlyException   |
-                RepositoryErrorException   |
-                InvalidParameterException  |
-                TypeErrorException         |
-                FunctionNotSupportedException   e) {
-            throw e;
+        catch (UserNotAuthorizedException e)
+        {
+            throw RexExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(),
+                                                                        methodName,
+                                                                        e);
         }
+        catch (RepositoryErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSRepositoryErrorException(this.getClass().getName(),
+                                                                      methodName,
+                                                                      e);
+        }
+        catch (InvalidParameterException e)
+        {
+            throw RexExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(),
+                                                                       methodName,
+                                                                       e);
+        }
+        catch (TypeErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSTypeErrorException(this.getClass().getName(),
+                                                                methodName,
+                                                                e);
+        }
+        catch (PropertyErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSPropertyErrorException(this.getClass().getName(),
+                                                                    methodName,
+                                                                    e);
+        }
+        catch (FunctionNotSupportedException e)
+        {
+            throw RexExceptionHandler.mapOMRSFunctionNotSupportedException(this.getClass().getName(),
+                                                                           methodName,
+                                                                           e);
+        }
+        catch (EntityNotKnownException e)
+        {
+            throw RexExceptionHandler.mapOMRSEntityNotKnownException(this.getClass().getName(),
+                                                                     methodName,
+                                                                     repositoryServerName,
+                                                                     enterpriseOption,
+                                                                     e);
+        }
+        catch (EntityProxyOnlyException e)
+        {
+            throw RexExceptionHandler.mapOMRSEntityProxyOnlyException(this.getClass().getName(), methodName, e);
+        }
+
+
 
 
     }
@@ -763,7 +1194,7 @@ public class RexViewHandler
      * Retrieve the neighborhood surrounding an entity.
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the identity of the entity from which to traverse
      * @param depth the depth to which the method should traverse
@@ -773,42 +1204,29 @@ public class RexViewHandler
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
-     * Exceptions returned by the server
-     *
-     * @throws InvalidParameterException     a parameter is invalid or null.
-     * @throws TypeErrorException            the type guid passed on the request is not known by the metadata collection.
-     * @throws EntityNotKnownException       the specified start entity could not be found
-     * @throws EntityProxyOnlyException      the specified start entity could not be found
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
-     *                                       the metadata collection is stored.
-     * @throws PropertyErrorException        the sequencing property specified is not valid for any of the requested types of
-     *                                       entity.
-     * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
-     * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
+     * Exceptions
+     * @throws RexViewServiceException  an error was detected and details are reported in the exception
      */
     public RexTraversal traversal(String          userId,
-                                     String          repositoryServerName,
-                                     String          repositoryServerURLRoot,
-                                     boolean         enterpriseOption,
-                                     String          entityGUID,
-                                     int             depth,
-                                     List<String>    entityTypeGUIDs,
-                                     List<String>    relationshipTypeGUIDs,
-                                     List<String>    classificationNames,
-                                     String          methodName)
+                                  String          repositoryServerName,
+                                  String          platformName,
+                                  boolean         enterpriseOption,
+                                  String          entityGUID,
+                                  int             depth,
+                                  List<String>    entityTypeGUIDs,
+                                  List<String>    relationshipTypeGUIDs,
+                                  List<String>    classificationNames,
+                                  String          methodName)
     throws
-    RepositoryErrorException,
-    InvalidParameterException,
-    EntityNotKnownException,
-    EntityProxyOnlyException,
-    UserNotAuthorizedException,
-    TypeErrorException,
-    PropertyErrorException,
-    FunctionNotSupportedException
+    RexViewServiceException
 
     {
 
-        try {
+
+        try
+        {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Switch between local and enterprise services clients depending
@@ -816,11 +1234,23 @@ public class RexViewHandler
              */
             MetadataCollectionServicesClient repositoryServicesClient;
 
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
-            } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+            if (!enterpriseOption)
+            {
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
+            else
+            {
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
+            }
+
+
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
+
 
             /*
              * Because we will want to extract labels based on type we'll need to know the types supported by the repository...
@@ -828,26 +1258,28 @@ public class RexViewHandler
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
             InstanceGraph instGraph = null;
 
-            if (depth >0) {
+            if (depth > 0)
+            {
 
                 instGraph = repositoryServicesClient.getEntityNeighborhood(userId,
-                                                                                         entityGUID,
-                                                                                         entityTypeGUIDs,
-                                                                                         relationshipTypeGUIDs,
-                                                                                         null,
-                                                                                         classificationNames,
-                                                                                         null,
-                                                                                         depth);
+                                                                           entityGUID,
+                                                                           entityTypeGUIDs,
+                                                                           relationshipTypeGUIDs,
+                                                                           null,
+                                                                           classificationNames,
+                                                                           null,
+                                                                           depth);
             }
 
 
-            else {
+            else
+            {
 
                 /*
                  * Since depth is 0 - use getEntityDetail instead of neighborhood
@@ -869,7 +1301,8 @@ public class RexViewHandler
 
             // Should have an InstanceGraph with one or more entities and maybe relationships
 
-            if (instGraph != null) {
+            if (instGraph != null)
+            {
 
                 RexTraversal rt = new RexTraversal();
 
@@ -893,9 +1326,11 @@ public class RexViewHandler
                  */
                 List<EntityDetail> entities = instGraph.getEntities();
                 Map<String, RexEntityDigest> entityDigestMap = null;
-                if (entities != null && !entities.isEmpty()) {
+                if (entities != null && !entities.isEmpty())
+                {
                     entityDigestMap = new HashMap<>();
-                    for (EntityDetail entityDetail : entities) {
+                    for (EntityDetail entityDetail : entities)
+                    {
                         /*
                          * We need entityGUID, label (computed) and if !preTraversal also include gen
                          */
@@ -904,7 +1339,14 @@ public class RexViewHandler
                         // Pass the typeExplorer to the labeller so that it can traverse...
                         String entLabel = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-                        RexEntityDigest red = new RexEntityDigest(entGUID, entLabel, 0, entityDetail.getMetadataCollectionName());
+                        String provenance = determineInstanceProvenance(entityDetail, metadataCollectionId, enterpriseOption);
+
+                        RexEntityDigest red = new RexEntityDigest(entGUID,
+                                                                  entLabel,
+                                                                  0,
+                                                                  entityDetail.getMetadataCollectionName(),
+                                                                  entityDetail.getMetadataCollectionId(),
+                                                                  provenance);
                         entityDigestMap.put(entGUID, red);
                     }
 
@@ -912,9 +1354,11 @@ public class RexViewHandler
 
                 List<Relationship> relationships = instGraph.getRelationships();
                 Map<String, RexRelationshipDigest> relationshipDigestMap = null;
-                if (relationships != null && !relationships.isEmpty()) {
+                if (relationships != null && !relationships.isEmpty())
+                {
                     relationshipDigestMap = new HashMap<>();
-                    for (Relationship relationship : relationships) {
+                    for (Relationship relationship : relationships)
+                    {
                         /*
                          * We need: entityGUID, label (computed) and if !preTraversal also include gen
                          *   relationshipGUID, label (computed), end1GUID, end2GUID, idx (computed), gen
@@ -925,26 +1369,48 @@ public class RexViewHandler
                         String end2GUID = relationship.getEntityTwoProxy().getGUID();
 
                         /* check for proxies... */
-                        if (entityDigestMap.get(end1GUID) == null) {
+                        if (entityDigestMap.get(end1GUID) == null)
+                        {
                             /* add a digest for this proxy... */
                             EntityProxy end1Proxy = relationship.getEntityOneProxy();
                             String end1Label = this.chooseLabelForEntityProxy(end1Proxy, typeExplorer);
-                            RexEntityDigest red = new RexEntityDigest(end1GUID, end1Label, 0, end1Proxy.getMetadataCollectionName());
+                            RexEntityDigest red = new RexEntityDigest(end1GUID,
+                                                                      end1Label,
+                                                                      0,
+                                                                      end1Proxy.getMetadataCollectionName(),
+                                                                      end1Proxy.getMetadataCollectionId(),
+                                                                      "proxy"
+                            );
                             entityDigestMap.put(end1GUID, red);
                         }
-                        if (entityDigestMap.get(end2GUID) == null) {
+                        if (entityDigestMap.get(end2GUID) == null)
+                        {
                             /* add a digest for this proxy... */
                             EntityProxy end2Proxy = relationship.getEntityTwoProxy();
                             String end2Label = this.chooseLabelForEntityProxy(end2Proxy, typeExplorer);
-                            RexEntityDigest red = new RexEntityDigest(end2GUID, end2Label, 0, end2Proxy.getMetadataCollectionName());
+                            RexEntityDigest red = new RexEntityDigest(end2GUID,
+                                                                      end2Label,
+                                                                      0,
+                                                                      end2Proxy.getMetadataCollectionName(),
+                                                                      end2Proxy.getMetadataCollectionId(),
+                                                                      "proxy");
                             entityDigestMap.put(end2GUID, red);
                         }
 
 
                         int idx = 0;
 
-                        RexRelationshipDigest rrd = new RexRelationshipDigest(relGUID, relLabel, end1GUID, end2GUID, idx,
-                                                                              0, relationship.getMetadataCollectionName());
+                        String provenance = determineInstanceProvenance(relationship, metadataCollectionId, enterpriseOption);
+
+                        RexRelationshipDigest rrd = new RexRelationshipDigest(relGUID,
+                                                                              relLabel,
+                                                                              end1GUID,
+                                                                              end2GUID,
+                                                                              idx,
+                                                                              0,
+                                                                              relationship.getMetadataCollectionName(),
+                                                                              relationship.getMetadataCollectionId(),
+                                                                              provenance);
                         relationshipDigestMap.put(relGUID, rrd);
                     }
                 }
@@ -955,7 +1421,8 @@ public class RexViewHandler
                 // Instead of using type guids in the traversal (which is to be sent to the browser) use type names instead.
                 List<String> entityTypeNames = new ArrayList<>();
                 if (entityTypeGUIDs != null && !entityTypeGUIDs.isEmpty())
-                    for (String entityTypeGUID : entityTypeGUIDs) {
+                    for (String entityTypeGUID : entityTypeGUIDs)
+                    {
                         // Convert from typeGIUD to typeName
                         String entityTypeName = typeExplorer.getEntityTypeName(entityTypeGUID);
                         entityTypeNames.add(entityTypeName);
@@ -966,26 +1433,66 @@ public class RexViewHandler
                 rt.setEntities(entityDigestMap);
                 rt.setRelationships(relationshipDigestMap);
                 rt.setServerName(repositoryServerName);
+                rt.setPlatformName(platformName);
 
                 return rt;
             }
 
-            else {
+            else
+            {
 
                 String excMsg = "Could not retrieve subgraph for entity with guid" + entityGUID;
                 return null;
             }
         }
-        catch (UserNotAuthorizedException  |
-                EntityNotKnownException    |
-                EntityProxyOnlyException   |
-                RepositoryErrorException   |
-                InvalidParameterException  |
-                TypeErrorException         |
-                FunctionNotSupportedException   e) {
-            throw e;
+        catch (UserNotAuthorizedException e)
+        {
+            throw RexExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(),
+                                                                        methodName,
+                                                                        e);
         }
-
+        catch (RepositoryErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSRepositoryErrorException(this.getClass().getName(),
+                                                                      methodName,
+                                                                      e);
+        }
+        catch (InvalidParameterException e)
+        {
+            throw RexExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(),
+                                                                       methodName,
+                                                                       e);
+        }
+        catch (TypeErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSTypeErrorException(this.getClass().getName(),
+                                                                methodName,
+                                                                e);
+        }
+        catch (PropertyErrorException e)
+        {
+            throw RexExceptionHandler.mapOMRSPropertyErrorException(this.getClass().getName(),
+                                                                    methodName,
+                                                                    e);
+        }
+        catch (FunctionNotSupportedException e)
+        {
+            throw RexExceptionHandler.mapOMRSFunctionNotSupportedException(this.getClass().getName(),
+                                                                           methodName,
+                                                                           e);
+        }
+        catch (EntityNotKnownException e)
+        {
+            throw RexExceptionHandler.mapOMRSEntityNotKnownException(this.getClass().getName(),
+                                                                     methodName,
+                                                                     repositoryServerName,
+                                                                     enterpriseOption,
+                                                                     e);
+        }
+        catch (EntityProxyOnlyException e)
+        {
+            throw RexExceptionHandler.mapOMRSEntityProxyOnlyException(this.getClass().getName(), methodName, e);
+        }
 
     }
 
@@ -997,19 +1504,19 @@ public class RexViewHandler
      * MetadataCollection interface. This client is used when the enterprise option is not set, and will
      * connect to the local repository.
      *
-     * @param serverName
-     * @param serverURLRoot
-     * @throws InvalidParameterException
+     * @param serverName - name of the server to connect to
+     * @param serverRootURL - the root URL to connect to the server
+     * @throws InvalidParameterException - an invalid parameter was detected and reported
      */
     private LocalRepositoryServicesClient getLocalRepositoryServicesClient(String serverName,
-                                                                           String serverURLRoot)
+                                                                           String serverRootURL)
     throws
     InvalidParameterException
 
     {
         /*
          * The serverName is used as the repositoryName
-         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         * The serverRootURL is used as part of the restRootURL, along with the serverName
          */
 
         /*
@@ -1017,8 +1524,8 @@ public class RexViewHandler
          * here because we want to surface it to the REST API that called this method so that the
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
-        String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restURLRoot);
+        String restRootURL = serverRootURL + "/servers/" + serverName;
+        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restRootURL);
 
         return client;
     }
@@ -1030,18 +1537,19 @@ public class RexViewHandler
      * MetadataCollection interface. This client is used when the enterprise option is set, and will
      * perform federation.
      *
-     * @param serverName
-     * @param serverURLRoot
-     * @throws InvalidParameterException
+     * @param serverName - name of the server to connect to
+     * @param serverRootURL - the root URL to connect to the server
+     * @throws InvalidParameterException - an invalid parameter was detected and reported
      */
     private EnterpriseRepositoryServicesClient getEnterpriseRepositoryServicesClient(String serverName,
-                                                                                     String serverURLRoot)
+                                                                                     String serverRootURL)
     throws
     InvalidParameterException
     {
+
         /*
          * The serverName is used as the repositoryName
-         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         * The serverRootURL is used as part of the restRootURL, along with the serverName
          */
 
         /*
@@ -1049,8 +1557,8 @@ public class RexViewHandler
          * here because we want to surface it to the REST API that called this method so that the
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
-        String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restURLRoot);
+        String restRootURL = serverRootURL + "/servers/" + serverName;
+        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restRootURL);
 
         return client;
     }
@@ -1062,7 +1570,6 @@ public class RexViewHandler
         // label but if there is really nothing else to use, then the GUID is
         // better than nothing at all. Maybe.
         String label = entityDetail.getGUID();
-
 
 
         // Find the effective typeName - this is the highest supertype of the instance type
@@ -1082,18 +1589,25 @@ public class RexViewHandler
         // Traverse the TypeExplorer looking for the highest supertype..
         Map<String, EntityExplorer> entityTypes = typeExplorer.getEntities();
 
-        // Get the immediate entity instance type...
-        EntityExplorer eex = entityTypes.get(instanceTypeName);
-        TypeDefLink superType = eex.getEntityDef().getSuperType();
-        while (superType != null) {
-            String superTypeName = superType.getName();
-            eex = entityTypes.get(superTypeName);
-            superType = eex.getEntityDef().getSuperType();
-        }
-        // eex is now the effective type entry
-        TypeDef effectiveTypeDef = eex.getEntityDef();
+        String effTypeName = "DEFAULT";
+        if (entityTypes != null)
+        {
 
-        String effTypeName = effectiveTypeDef.getName();
+            // Get the immediate entity instance type...
+            EntityExplorer eex = entityTypes.get(instanceTypeName);
+            TypeDefLink superType = eex.getEntityDef().getSuperType();
+            while (superType != null)
+            {
+                String superTypeName = superType.getName();
+                eex = entityTypes.get(superTypeName);
+                superType = eex.getEntityDef().getSuperType();
+            }
+            // eex is now the effective type entry
+            TypeDef effectiveTypeDef = eex.getEntityDef();
+
+            effTypeName = effectiveTypeDef.getName();
+
+        }
 
         switch (effTypeName) {
 
@@ -1211,18 +1725,24 @@ public class RexViewHandler
         // Traverse the TypeExplorer looking for the highest supertype..
         Map<String, EntityExplorer> entityTypes = typeExplorer.getEntities();
 
-        // Get the immediate entity instance type...
-        EntityExplorer eex = entityTypes.get(instanceTypeName);
-        TypeDefLink superType = eex.getEntityDef().getSuperType();
-        while (superType != null) {
-            String superTypeName = superType.getName();
-            eex = entityTypes.get(superTypeName);
-            superType = eex.getEntityDef().getSuperType();
-        }
-        // eex is now the effective type entry
-        TypeDef effectiveTypeDef = eex.getEntityDef();
+        String effTypeName = "DEFAULT";
+        if (entityTypes != null)
+        {
 
-        String effTypeName = effectiveTypeDef.getName();
+            // Get the immediate entity instance type...
+            EntityExplorer eex = entityTypes.get(instanceTypeName);
+            TypeDefLink superType = eex.getEntityDef().getSuperType();
+            while (superType != null)
+            {
+                String superTypeName = superType.getName();
+                eex = entityTypes.get(superTypeName);
+                superType = eex.getEntityDef().getSuperType();
+            }
+            // eex is now the effective type entry
+            TypeDef effectiveTypeDef = eex.getEntityDef();
+
+            effTypeName = effectiveTypeDef.getName();
+        }
 
         switch (effTypeName) {
 
@@ -1336,6 +1856,44 @@ public class RexViewHandler
 
     }
 
+
+    /*
+     * Record the provenance of the instance, in so far as this is discernible.
+     * Depending on whether enterprise option is enabled or not, retrieve and compare the
+     * metadataCollectionId from the entity with the one retrieved by the caller for the
+     * repository's metadataCollection.
+     */
+    private String determineInstanceProvenance(InstanceAuditHeader   instance,
+                                               String                metadataCollectionId,
+                                               boolean               enterpriseOption)
+    {
+
+        String provenance;
+        if (enterpriseOption)
+        {
+            /*
+             * If enterprise option is set there is no way to differentiate home and reference copies.
+             */
+            provenance = "ent";
+        }
+        else if (instance.getMetadataCollectionId().equals(metadataCollectionId))
+        {
+            /*
+             * This entity looks very at home here...
+             */
+            provenance = "home";
+        }
+        else
+        {
+            /*
+             * This instance looks like it is not at home...
+             */
+            provenance = "refCopy";
+        }
+
+        return provenance;
+
+    }
 
 
 }

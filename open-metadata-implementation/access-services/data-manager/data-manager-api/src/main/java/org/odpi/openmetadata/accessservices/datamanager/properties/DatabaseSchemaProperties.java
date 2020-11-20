@@ -52,8 +52,7 @@ public class DatabaseSchemaProperties extends DataSetProperties
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

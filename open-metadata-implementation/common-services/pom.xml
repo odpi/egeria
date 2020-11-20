@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-implementation</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.0-SNAPSHOT</version>
+        <version>2.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -33,10 +33,9 @@
         <module>ffdc-services</module>
         <module>metadata-security</module>
         <module>multi-tenant</module>
+        <module>generic-handlers</module>
         <module>repository-handler</module>
         <module>ocf-metadata-management</module>
-        <module>odf-metadata-management</module>
-        <module>gaf-metadata-management</module>
     </modules>
 
     <dependencies>
