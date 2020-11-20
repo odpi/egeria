@@ -490,12 +490,25 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
+        String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
+                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      serviceName,
+                                                                      methodName,
+                                                                      repositoryHelper);
+
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 displayName,
                                                 description,
                                                 additionalProperties,
-                                                typeGUID,
-                                                typeName,
+                                                assetTypeId,
+                                                assetTypeName,
                                                 extendedProperties,
                                                 repositoryHelper,
                                                 serviceName,

@@ -54,6 +54,11 @@
             <artifactId>admin-services-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

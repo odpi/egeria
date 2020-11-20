@@ -106,13 +106,47 @@ const RequestContextProvider = (props) => {
         method     : "POST",
         headers    : { Accept: "application/json", "Content-Type": "application/json" },
         body       : JSON.stringify(body)
-      })         
-      .then(res => res.json())
-      .then(res => callback(res))
-      .catch((res) => {       
-        alert("Unexpected response from callPOST : " + JSON.stringify(res));
-      });
+      })
 
+      /*
+       * The response from fetch() should always:
+       * either:
+       *  - be ok and comtain a JSON body, which is retrieved using json(),
+       * or:
+       *  - be !ok and contain status, statusText and a text body, which is retrieved using text().
+       * In either case, this function will call the callback with a JSON object.
+       *
+       * The relatedHTTPCode (200, 400, etc.) should be checked in the callback,
+       * where there is contextual information about the operation that was performed
+       * and where more specific error context can be supplied in the message to the
+       * user.
+       */
+
+      .then(response => {
+        if (response.ok) {
+          response.json()
+          .then(json => {
+            /*
+             * No need to check status code here - leave it to the callback which knows the operation context.
+             */
+            callback(json)
+          });
+        }
+        else {
+          /*
+           * response was not 'ok'. Parse the status fields and body text and contruct
+           * a json response to pass to the callback...
+           */
+          let json = {};
+          json.relatedHTTPCode = response.status;
+          json.requestURL      = response.url;
+          response.text() // returns a promise...
+          .then(text => {
+            json.exceptionErrorMessage = text;
+            callback(json);
+          })
+        }
+      })
     }
   };
 
@@ -140,13 +174,47 @@ const RequestContextProvider = (props) => {
     fetch(url, {
       method     : "GET",
       headers    : { Accept: "application/json", "Content-Type": "application/json" },
-    })         
-    .then(res => res.json())
-    .then(res => callback(res))
-    .catch((res) => {
-      alert("Unexpected response from callGET : " + res);
-    });
+    })
 
+    /*
+     * The response from fetch() should always:
+     * either:
+     *  - be ok and comtain a JSON body, which is retrieved using json(),
+     * or:
+     *  - be !ok and contain status, statusText and a text body, which is retrieved using text().
+     * In either case, this function will call the callback with a JSON object.
+     *
+     * The relatedHTTPCode (200, 400, etc.) should be checked in the callback,
+     * where there is contextual information about the operation that was performed
+     * and where more specific error context can be supplied in the message to the
+     * user.
+     */
+
+    .then(response => {
+      if (response.ok) {
+        response.json()
+        .then(json => {
+          /*
+           * No need to check status code here - leave it to the callback which knows the operation context.
+           */
+          callback(json)
+        });
+      }
+      else {
+        /*
+         * response was not 'ok'. Parse the status fields and body text and contruct
+         * a json response to pass to the callback...
+         */
+        let json = {};
+        json.relatedHTTPCode = response.status;
+        json.requestURL      = response.url;
+        response.text() // returns a promise...
+        .then(text => {
+          json.exceptionErrorMessage = text;
+          callback(json);
+        })
+      }
+    })
   };
   
 

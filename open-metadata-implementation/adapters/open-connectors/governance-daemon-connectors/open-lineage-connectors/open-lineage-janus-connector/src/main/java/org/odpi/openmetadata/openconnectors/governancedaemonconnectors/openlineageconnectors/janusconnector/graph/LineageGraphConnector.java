@@ -293,6 +293,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             }
 
             addAssetToProcessEdges(columnIn, columnOut, process);
+
+            log.info("OLS has added the corresponding subProcess node and edges for input column {}, output column {} and process {} ",
+                    columnInGuid, columnOutGuid, processGuid);
         }
     }
 
@@ -486,7 +489,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         LineageEntity firstEnd = lineageRelationship.getSourceEntity();
         LineageEntity secondEnd = lineageRelationship.getTargetEntity();
 
-        try{
+        try {
             upsertToGraph(firstEnd, secondEnd, lineageRelationship.getTypeDefName(), lineageRelationship.getGuid());
             addOrUpdatePropertiesEdge(lineageRelationship);
             if (graphFactory.isSupportingTransactions()) {
@@ -516,7 +519,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             return;
         }
 
-        try{
+        try {
             addOrUpdatePropertiesEdge(lineageRelationship);
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
@@ -535,14 +538,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param classificationContext - LineageEntity object that has the updated values
      */
     @Override
-    public void updateClassification(Map<String, Set<GraphContext>> classificationContext) {
-        if (classificationContext.entrySet().size() != 1) {
-            log.debug("Unable to update classifications for no or multiple entities.");
-            return;
-        }
-
-        Set<GraphContext> graphContexts = classificationContext.entrySet().iterator().next().getValue();
-        for (GraphContext graphContext : graphContexts) {
+    public void updateClassification(Set<GraphContext> classificationContext) {
+        for (GraphContext graphContext : classificationContext) {
             String classificationGuid = graphContext.getToVertex().getGuid();
             Iterator<Vertex> vertexIterator = g.V().has(PROPERTY_KEY_ENTITY_GUID, classificationGuid);
             if (!vertexIterator.hasNext()) {
@@ -569,45 +566,38 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     /**
      * Deletes a classification of a vertex
      *
-     * @param entityGuid            entity guid
      * @param classificationContext - any remaining classifications, empty map if none
      */
     @Override
-    public void deleteClassification(String entityGuid, Map<String, Set<GraphContext>> classificationContext) {
-        if (classificationContext.entrySet().size() > 1) {
-            log.debug("Unable to delete classifications for multiple entities.");
-            return;
-        }
+    public void deleteClassification(Set<GraphContext> classificationContext) {
 
-        Set<GraphContext> remainingClassifications = classificationContext.entrySet().iterator().next().getValue();
+        for (GraphContext context : classificationContext) {
+            Graph entityAndClassificationsGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, context.getFromVertex().getGuid())
+                    .bothE(EDGE_LABEL_CLASSIFICATION).subgraph("s").cap("s").next();
 
-        Graph entityAndClassificationsGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGuid).bothE(EDGE_LABEL_CLASSIFICATION)
-                .subgraph("s").cap("s").next();
+            Iterator<Edge> edges = entityAndClassificationsGraph.edges();
 
-        Iterator<Edge> edges = entityAndClassificationsGraph.edges();
+            while (edges.hasNext()) {
+                Edge edge = edges.next();
+                String storedClassificationGuid =
+                        (String) g.E(edge.id()).inV().elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID);
 
-        while (edges.hasNext()) {
-            Edge edge = edges.next();
-            String storedClassificationGuid =
-                    (String) g.E(edge.id()).inV().elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID);
-
-            boolean classificationExists = remainingClassifications.stream()
-                    .anyMatch(gc -> gc.getToVertex().getGuid().equals(storedClassificationGuid));
-            if (!classificationExists) {
-                try{
-                    g.V().has(PROPERTY_KEY_ENTITY_GUID, storedClassificationGuid).drop();
-                    g.E(edge.id()).drop();
-                    if (graphFactory.isSupportingTransactions()) {
-                        g.tx().commit();
+                if (context.getToVertex().getGuid().equals(storedClassificationGuid)) {
+                    try {
+                        g.V().has(PROPERTY_KEY_ENTITY_GUID, storedClassificationGuid).drop();
+                        g.E(edge.id()).drop();
+                        if (graphFactory.isSupportingTransactions()) {
+                            g.tx().commit();
+                        }
+                        break;
+                    } catch (Exception e) {
+                        log.debug("An exception happened during delete of classifications with error:", e);
+                        if (graphFactory.isSupportingTransactions()) {
+                            g.tx().rollback();
+                        }
                     }
-                    break;
-                }catch (Exception e){
-                    log.debug("An exception happened during delete of classifications with error:", e);
-                    if (graphFactory.isSupportingTransactions()) {
-                        g.tx().rollback();
-                    }
+
                 }
-
             }
         }
     }
