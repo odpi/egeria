@@ -75,7 +75,7 @@ public enum DinoViewErrorCode implements ExceptionMessageSet
 
     PLATFORM_NOT_AVAILABLE
             (400, "OMVS-DINO-400-006",
-             "The dino view service operation {0} found that the platform for server {1} is not available",
+             "The dino view service operation {0} could not reach platform {1}",
              "The system reported that the platform is not reachable using the provided URL.",
              "Check the platform is running and check the dino resource endpoint configuration for the server and its platform."),
 
@@ -151,12 +151,24 @@ public enum DinoViewErrorCode implements ExceptionMessageSet
              "The system could not perform the requested action.",
              "Check the conformance of the target repository and retry with a supported operation."),
 
+    COULD_NOT_CREATE_HANDLER
+            (400, "OMVS-DINO-400-019",
+             "The dino view service could not instantiate its handler",
+             "The system could not perform the requested action.",
+             "Check the configuration of the view service and its platform."),
+
+    COULD_NOT_RETRIEVE_SERVER_CONFIGURATION
+            (400, "OMVS-DINO-400-020",
+             "The dino view service operation {0} could not retrieve the configuration for server {1}",
+             "The system could not perform the requested action.",
+             "Check the configuration of the view service and its platform."),
+
     /*
      * Provide a catch-all error code in case Rex catches a Throwable. It will capture the Throwable
      * and package it into the REST response, but does not specific error handling for the error
      */
     UNKNOWN_ERROR
-            (400, "OMVS-DINO-400-019",
+            (400, "OMVS-DINO-400-020",
              "The dino view service caught an unknown error during operation {0}. The detailed message is {1}",
              "The system could not perform the requested action.",
              "Please check the detailed message and the system log.")

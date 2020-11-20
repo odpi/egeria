@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.dino.api.ffdc;
 
+import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -17,9 +18,15 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKn
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.springframework.web.client.ResourceAccessException;
+
+import javax.annotation.Resource;
+import java.net.ConnectException;
 
 public class DinoExceptionHandler {
 
+    // TODO this class contains unused methods....waiting for proper exception handling of parameters and then
+    // elimination of anything we don't need....
 
     /**
      * Method for capturing an exception into a REST response.
@@ -70,37 +77,7 @@ public class DinoExceptionHandler {
                                            methodName);
     }
 
-    public static DinoViewServiceException mapOMRSRepositoryErrorException(String                   className,
-                                                                          String                   methodName,
-                                                                          RepositoryErrorException repositoryException)
-    {
 
-        String serverName;
-        switch (repositoryException.getReportedErrorMessageId()) {
-            case "OMAG-MULTI-TENANT-404-001":        // platform is contactable, but repository server is not available
-                serverName = repositoryException.getReportedErrorMessageParameters()[0];
-                return new DinoViewServiceException(DinoViewErrorCode.REPOSITORY_NOT_AVAILABLE.getMessageDefinition(methodName,serverName),
-                                                   className,
-                                                   methodName);
-
-            case "OMRS-REST-API-503-006":           // platform is not contactable, suspect wrong platform URL
-                serverName = repositoryException.getReportedErrorMessageParameters()[1];
-                return new DinoViewServiceException(DinoViewErrorCode.PLATFORM_NOT_AVAILABLE.getMessageDefinition(methodName,serverName),
-                                                   className,
-                                                   methodName);
-
-            default:
-                /*
-                 * This is a non-specific repository error - so just pass on the message from the original exception
-                 */
-                String message = repositoryException.getReportedErrorMessage();
-                return new DinoViewServiceException(DinoViewErrorCode.REPOSITORY_ERROR.getMessageDefinition(methodName,message),
-                                                   className,
-                                                   methodName);
-
-        }
-
-    }
 
     public static DinoViewServiceException mapOMRSInvalidParameterException(String className, String methodName, InvalidParameterException repositoryException)
     {
@@ -112,155 +89,10 @@ public class DinoExceptionHandler {
                                            methodName);
     }
 
-    public static DinoViewServiceException mapOMRSEntityNotKnownException(String className,
-                                                                         String methodName,
-                                                                         String repositoryServerName,
-                                                                         boolean enterpriseOption,
-                                                                         EntityNotKnownException repositoryException)
-    {
-        String entityGUID = repositoryException.getReportedErrorMessageParameters()[0];
-        if (! enterpriseOption)
-        {
-            /*
-             * Because this was a non-enterprise operation extract the server from the exception.
-             * It should be identical to the repositoryServerName parameter passed by the caller, but
-             * it's better to present the actual source of the exception.
-             */
-            String reportingServerName = repositoryException.getReportedErrorMessageParameters()[3];
-            return new DinoViewServiceException(DinoViewErrorCode.ENTITY_NOT_KNOWN_IN_REPOSITORY.getMessageDefinition(methodName, entityGUID, reportingServerName),
-                                               className,
-                                               methodName);
-        }
-        else
-        {
-            /* Because this was for an enterprise retrieval, do not rely on the server name in the exception - it
-             * could be from any of the repository servers that responded. Instead, use the repositoryServerName
-             * parameter from the caller.
-             */
-            return new DinoViewServiceException(DinoViewErrorCode.ENTITY_NOT_KNOWN_IN_ENTERPRISE.getMessageDefinition(methodName, entityGUID, repositoryServerName),
-                                               className,
-                                               methodName);
-        }
-    }
-
-    public static DinoViewServiceException mapOMRSEntityProxyOnlyException(String className,
-                                                                          String methodName,
-                                                                          EntityProxyOnlyException repositoryException)
-    {
-        /*
-         * The positional parameters to this exception's message vary depending on which
-         * connector raised the original error code. Rather than trying to unpick this
-         * just include the original exception's formatted message.
-         */
-        String  exceptionMessage = repositoryException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(methodName, exceptionMessage),
-                                           className,
-                                           methodName);
-    }
-
-    public static DinoViewServiceException mapOMRSRelationshipNotKnownException(String className,
-                                                                               String methodName,
-                                                                               String repositoryServerName,
-                                                                               boolean enterpriseOption,
-                                                                               RelationshipNotKnownException repositoryException)
-    {
-        String relationshipGUID = repositoryException.getReportedErrorMessageParameters()[0];
-        if (! enterpriseOption)
-        {
-            /*
-             * Because this was a non-enterprise operation extract the server from the exception.
-             * It should be identical to the repositoryServerName parameter passed by the caller, but
-             * it's better to present the actual source of the exception.
-             */
-            String reportingServerName = repositoryException.getReportedErrorMessageParameters()[2];
-            return new DinoViewServiceException(DinoViewErrorCode.RELATIONSHIP_NOT_KNOWN_IN_REPOSITORY.getMessageDefinition(methodName,
-                                                                                                                          relationshipGUID,
-                                                                                                                          reportingServerName),
-                                               className,
-                                               methodName);
-        }
-        else
-        {
-            /* Because this was for an enterprise retrieval, do not rely on the server name in the exception - it
-             * could be from any of the repository servers that responded. Instead, use the repositoryServerName
-             * parameter from the caller.
-             */
-            return new DinoViewServiceException(DinoViewErrorCode.RELATIONSHIP_NOT_KNOWN_IN_ENTERPRISE.getMessageDefinition(methodName,
-                                                                                                                          relationshipGUID,
-                                                                                                                          repositoryServerName),
-                                               className,
-                                               methodName);
-        }
-    }
-
-
-
-    public static DinoViewServiceException mapOMRSTypeErrorException(String className, String methodName, TypeErrorException repositoryException)
-    {
-        /*
-         * In the case of a PagingErrorException just wrap the existing message
-         */
-        String exceptionMessage = repositoryException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.TYPE_ERROR.getMessageDefinition(methodName, exceptionMessage),
-                                           className,
-                                           methodName);
-    }
-
-    public static DinoViewServiceException mapOMRSPropertyErrorException(String className, String methodName, PropertyErrorException repositoryException)
-    {
-        /*
-         * In the case of a PropertyErrorException there are many variations arising from different
-         * error codes. These include at least the following:
-         *  BAD_PROPERTY_FOR_TYPE
-         *  NO_PROPERTIES_FOR_TYPE
-         *  BAD_PROPERTY_TYPE
-         *  NULL_PROPERTY_NAME_FOR_INSTANCE
-         *  NULL_PROPERTY_VALUE_FOR_INSTANCE
-         *  NULL_PROPERTY_TYPE_FOR_INSTANCE
-         *  NO_NEW_PROPERTIES
-         *  BAD_PROPERTY_FOR_TYPE
-         *  BAD_PROPERTY_FOR_INSTANCE
-         *  NULL_PROPERTY_NAME
-         *  and more...
-         *
-         * Rather than attempting to cover them all and pick the salient parameters
-         * out of their varying positions in the message parameters list, it is preferred to simply
-         * include the message from the original exception - which wll have been quite comprehensively
-         * formatted with a mixture of repository, category, type, property name, value, etc.
-         *
-         * To achieve this, the Dino error code for a property exception is very simple and accepts
-         * the original message.
-         */
-        String exceptionMessage = repositoryException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.PROPERTY_ERROR.getMessageDefinition(methodName, exceptionMessage),
-                                           className,
-                                           methodName);
-    }
-
-
-    public static DinoViewServiceException mapOMRSPagingErrorException(String className, String methodName, PagingErrorException repositoryException)
-    {
-        /*
-         * In the case of a PagingErrorException just wrap the existing message
-         */
-        String exceptionMessage = repositoryException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.PAGING_ERROR.getMessageDefinition(methodName, exceptionMessage),
-                                           className,
-                                           methodName);
-    }
-
-
-    public static DinoViewServiceException mapOMRSFunctionNotSupportedException(String className, String methodName, FunctionNotSupportedException repositoryException)
-    {
-        String repositoryName = repositoryException.getReportedErrorMessageParameters()[2];
-        return new DinoViewServiceException(DinoViewErrorCode.FUNCTION_NOT_SUPPORTED_ERROR.getMessageDefinition(methodName, repositoryName ),
-                                           className,
-                                           methodName);
-    }
 
 
     /*
-     * Mapping functions for OCF (connector franework) exceptions
+     * Mapping functions for OCF (connector framework) exceptions
      */
 
     public static DinoViewServiceException mapOCFInvalidParameterException(String className,
@@ -273,22 +105,52 @@ public class DinoExceptionHandler {
                                             methodName);
     }
 
+
     public static DinoViewServiceException mapOCFUserNotAuthorizedException(String className,
                                                                             String methodName,
+                                                                            String userName,
                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  ocfException)
     {
-        String ocfMessage = ocfException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, ocfMessage),
+        return new DinoViewServiceException(DinoViewErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(methodName, userName),
                                             className,
                                             methodName);
     }
 
+
     public static DinoViewServiceException mapOCFPropertyServerException(String className,
                                                                          String methodName,
+                                                                         String platformName,
                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException ocfException)
     {
-        String ocfMessage = ocfException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, ocfMessage),
+        /*
+         * This error is caught if a platform services client tries to contact a platform that is not running.
+         * In this case the exception has relatedHTTPCode 503 and a cause -> cause (i.e. double nested) that is a
+         * ResourceAccessException and has a (further) cause which is aConnectException with message containing "Connection refused".
+         * This is not nice but the exceptions are nested deeply and we need to dig to find the cause.
+         */
+
+        if (ocfException.getCause() != null && ocfException.getCause() instanceof RESTServerException)
+        {
+            RESTServerException cause1 = (RESTServerException) (ocfException.getCause());
+            if (cause1.getCause() != null && cause1.getCause() instanceof ResourceAccessException)
+            {
+                ResourceAccessException cause2 = (ResourceAccessException) (cause1.getCause());
+                if (cause2.getCause() != null && cause2.getCause() instanceof ConnectException)
+                {
+                    String message = cause2.getCause().getMessage();
+                    if (message.contains("Connection refused"))
+                    {
+                        return new DinoViewServiceException(DinoViewErrorCode.PLATFORM_NOT_AVAILABLE.getMessageDefinition(methodName, platformName),
+                                                            className,
+                                                            methodName);
+                    }
+                }
+            }
+        }
+
+        /* In any other scenario, take the message from the OCF exception */
+        String exceptionMessage = ocfException.getReportedErrorMessage();
+        return new DinoViewServiceException(DinoViewErrorCode.UNKNOWN_ERROR.getMessageDefinition(methodName, exceptionMessage),
                                             className,
                                             methodName);
     }
@@ -302,29 +164,45 @@ public class DinoExceptionHandler {
                                                                             String methodName,
                                                                             OMAGInvalidParameterException omagException)
     {
-        String omagMessage = omagException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, omagMessage),
-                                            className,
-                                            methodName);
+        if (omagException != null)
+        {
+            String omagMessage = omagException.getReportedErrorMessage();
+            return new DinoViewServiceException(DinoViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, omagMessage),
+                                                className,
+                                                methodName);
+        }
+        else
+        {
+            return new DinoViewServiceException(DinoViewErrorCode.UNKNOWN_ERROR.getMessageDefinition(methodName),
+                                                className,
+                                                methodName);
+        }
+
     }
+
 
     public static DinoViewServiceException mapOMAGNotAuthorizedException(String className,
                                                                          String methodName,
+                                                                         String userName,
                                                                          OMAGNotAuthorizedException omagException)
     {
-        String omagMessage = omagException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, omagMessage),
-                                            className,
-                                            methodName);
+
+            return new DinoViewServiceException(DinoViewErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(methodName, userName),
+                                                className,
+                                                methodName);
+
     }
+
 
     public static DinoViewServiceException mapOMAGConfigurationErrorException(String className,
                                                                               String methodName,
+                                                                              String serverName,
                                                                               OMAGConfigurationErrorException omagException)
     {
-        String omagMessage = omagException.getReportedErrorMessage();
-        return new DinoViewServiceException(DinoViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, omagMessage),
-                                            className,
-                                            methodName);
+
+            return new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_RETRIEVE_SERVER_CONFIGURATION.getMessageDefinition(methodName, serverName),
+                                                className,
+                                                methodName);
+
     }
 }
