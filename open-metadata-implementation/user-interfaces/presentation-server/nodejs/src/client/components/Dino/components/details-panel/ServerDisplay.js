@@ -138,6 +138,22 @@ export default function ServerDisplay() {
     }
   };
 
+  /*
+   * Ensure the config section is visible, without issuing a request
+   */
+  const makeVisibleConfigSection = () => {
+
+    /*
+     * Find the section using its DOM id
+     */
+    const element = document.getElementById("configSection");
+    const content = element.nextElementSibling;
+    if (content.style.display !== "block") {
+      content.style.display = "block";
+      element.classList.toggle("active");
+    }
+  };
+
 
   /*
    * Handler for change to includeAuditTrail checkbox
@@ -306,6 +322,15 @@ export default function ServerDisplay() {
     matchingConfigs = true;
     differences = null;
   }
+  if (loading === "loading") {
+    /*
+     * A request has been been made to load the configuration - this
+     * might have come from the twistie and flipConfigSection or it
+     * might have come from the diagram (a right-click menu item).
+     * In either case, make sure the config section is visible.
+     */
+    makeVisibleConfigSection();
+  }
  
   
   /*
@@ -368,7 +393,7 @@ export default function ServerDisplay() {
 
 
       <div>
-      <button className="collapsible" onClick={flipConfigSection}> Server Configuration: </button>
+      <button className="collapsible" id="configSection" onClick={flipConfigSection}> Server Configuration: </button>
         <div className="content">
           <div>
            { (loading === "loading") && <div>Loading...</div>}
