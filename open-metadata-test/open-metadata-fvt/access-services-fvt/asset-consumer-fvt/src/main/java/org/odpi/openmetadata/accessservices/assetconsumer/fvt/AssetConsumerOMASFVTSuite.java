@@ -15,7 +15,6 @@ import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
 public class AssetConsumerOMASFVTSuite extends FVTSuiteBase
 {
 
-
     /**
      * Run all of the defined tests and capture the results.
      *
