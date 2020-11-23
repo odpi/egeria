@@ -39,6 +39,10 @@ public class LineageGraphDisplayRulesService {
         List<Edge> edges = graph.getEdges();
         List<Node> nodes = graph.getNodes();
 
+        if (rules == null || rules.isEmpty()) {
+            return;
+        }
+
         for (Edge edge : edges) {
             for (Rule rule : rules) {
                 if (rule.getEdgeType() != null && rule.getEdgeType().equals(edge.getLabel())) {
