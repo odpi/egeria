@@ -14,13 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DerivedSchemaTypeQueryTargetProperties defines a query on a schema element that returns all or part of the value for a
+ * QueryTargetProperties defines a query on a schema element that returns all or part of the value for a
  * derived schema type.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DerivedSchemaTypeQueryTargetProperties implements Serializable
+public class QueryTargetProperties implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class DerivedSchemaTypeQueryTargetProperties implements Serializable
     /**
      * Default constructor
      */
-    public DerivedSchemaTypeQueryTargetProperties()
+    public QueryTargetProperties()
     {
         super();
     }
@@ -44,7 +44,7 @@ public class DerivedSchemaTypeQueryTargetProperties implements Serializable
      *
      * @param template template schema query to copy.
      */
-    public DerivedSchemaTypeQueryTargetProperties(DerivedSchemaTypeQueryTargetProperties template)
+    public QueryTargetProperties(QueryTargetProperties template)
     {
         super();
 
@@ -129,7 +129,7 @@ public class DerivedSchemaTypeQueryTargetProperties implements Serializable
     @Override
     public String toString()
     {
-        return "DerivedSchemaTypeQueryTargetProperties{" +
+        return "QueryTargetProperties{" +
                 "queryId=" + queryId +
                 ", query='" + query + '\'' +
                 ", queryTargetGUID=" + queryTargetGUID +
@@ -150,11 +150,11 @@ public class DerivedSchemaTypeQueryTargetProperties implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof DerivedSchemaTypeQueryTargetProperties))
+        if (!(objectToCompare instanceof QueryTargetProperties))
         {
             return false;
         }
-        DerivedSchemaTypeQueryTargetProperties that = (DerivedSchemaTypeQueryTargetProperties) objectToCompare;
+        QueryTargetProperties that = (QueryTargetProperties) objectToCompare;
         return Objects.equals(getQueryId(), that.getQueryId()) &&
                 Objects.equals(getQuery(), that.getQuery()) &&
                 Objects.equals(getQueryTargetGUID(), that.getQueryTargetGUID());
