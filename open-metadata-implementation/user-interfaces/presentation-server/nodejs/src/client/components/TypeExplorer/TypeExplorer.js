@@ -169,7 +169,7 @@ export default function TypeExplorer() {
                   </div>
 
                   <div className="tex-rhs">
-                    <DiagramManager height={workingHeight-270} width={workingWidth-500}/>
+                    <DiagramManager height={workingHeight-270} width={workingWidth-450}/>
                   </div>
 
                 </div>
