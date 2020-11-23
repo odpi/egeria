@@ -103,19 +103,16 @@ public class AssetLineageRestServices {
                                                 AssetLineagePublisher publisher) {
         List<String> publishedGUIDs = new ArrayList<>();
 
-
-        for (int counter = 1; counter <= entitiesByType.size(); counter++) {
-            EntityDetail entityDetail = entitiesByType.get(counter - 1);
+        entitiesByType.parallelStream().forEach(entityDetail -> {
             try {
                 publishedGUIDs.add(publishEntityContext(entityDetail, publisher));
 
-                log.info("Asset Lineage OMAS published the context for entity with guid {}. {} out of {} entities processed",
-                        entityDetail.getGUID(), counter, entitiesByType.size());
+                log.info("Asset Lineage OMAS published the context for entity with guid {}", entityDetail.getGUID());
             } catch (JsonProcessingException | OCFCheckedExceptionBase e) {
                 log.error("Failed to publish context for entity of type " + entityDetail.getType() + " and guid "
                         + entityDetail.getGUID());
             }
-        }
+        });
 
         CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
         return publishedGUIDs;
