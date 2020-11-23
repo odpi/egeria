@@ -59,6 +59,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>http-helper</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

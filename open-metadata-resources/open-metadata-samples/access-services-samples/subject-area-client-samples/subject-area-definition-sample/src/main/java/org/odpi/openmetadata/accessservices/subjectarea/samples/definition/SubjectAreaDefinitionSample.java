@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -212,6 +213,9 @@ public class SubjectAreaDefinitionSample
         System.out.println("Running against OMAG server platform: " + serverURLRoot);
         System.out.println("OMAG server platform: " + serverName);
         System.out.println("Using userId: " + clientUserId);
+
+        HttpHelper.noStrictSSLIfConfigured();
+
         try
         {
             SubjectAreaDefinitionSample  sample = new SubjectAreaDefinitionSample(serverURLRoot,

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -189,6 +190,8 @@ public class ConfigMetadataServerSample
         {
             adminUserId = args[1];
         }
+
+        HttpHelper.noStrictSSLIfConfigured();
 
         if (args.length > 3)
         {
