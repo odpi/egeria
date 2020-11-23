@@ -29,8 +29,8 @@ export default function EntityInheritanceDiagram(props) {
 
   const focusContext = useContext(FocusContext);
 
-  const width                       = 1200;
-  const height                      = 1120;
+  const width                       = 1400;
+  const height                      = 1400;
   const margin                      = {top: 30, right: 30, bottom: 30, left: 30};
   const egeria_primary_color_string = "#71ccdc";
 
@@ -112,8 +112,8 @@ export default function EntityInheritanceDiagram(props) {
 
     const entityTypes = typesContext.getEntityTypes();
     const entityTypeNamesUnsorted = Object.keys(entityTypes);
-    const entityTypeNamessSorted = entityTypeNamesUnsorted.sort();
-    entityTypeNamessSorted.forEach(entityTypeName => {
+    const entityTypeNamesSorted = entityTypeNamesUnsorted.sort();
+    entityTypeNamesSorted.forEach(entityTypeName => {
       if (entityTypes[entityTypeName].entityDef.superType == null) {
         const typeName = entityTypes[entityTypeName].entityDef.name;
         treeDepth = 0;
@@ -457,7 +457,7 @@ export default function EntityInheritanceDiagram(props) {
              .attr("dy", "0.31em")
              .attr("x", 12)
              .attr("text-anchor", "start")
-             .text(d => d.data.name)
+             .text(d => typesContext.isTypeDeprecated("Entity", d.data.name) ? "["+d.data.name+"]" : d.data.name )
              .on("click", d => { typeSelected("Entity", d.data.name); })
              .clone(true)
              .lower()
@@ -582,6 +582,14 @@ export default function EntityInheritanceDiagram(props) {
 
 
 
+  /*
+   * Call the TypesContext to enquire whether the specified type is deprecated.
+   */
+  const isTypeDeprecated = (cat, typeName) => {
+
+    typesContext.isTypeDeprecated("Entity", typeName);
+  }
+
   useEffect(
     () => {
       if ( d3Container.current && typesContext.tex) {
@@ -612,6 +620,7 @@ export default function EntityInheritanceDiagram(props) {
 
   useEffect(
     () => {
+      console.log("TEX EntityInheritance Diagram resize - outerWidth is "+props.outerWidth);
       drgContainerDiv.current.style.width=""+props.outerWidth+"px";
       drgContainerDiv.current.style.height=""+props.outerHeight+"px";
     },

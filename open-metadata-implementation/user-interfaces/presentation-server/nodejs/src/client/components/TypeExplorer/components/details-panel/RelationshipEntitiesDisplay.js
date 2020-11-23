@@ -7,6 +7,8 @@ import PropTypes                     from "prop-types";
 
 import { FocusContext }              from "../../contexts/FocusContext";
 
+import { TypesContext }                    from "../../contexts/TypesContext";
+
 import "./details-panel.scss";
 
 
@@ -14,6 +16,8 @@ import "./details-panel.scss";
 export default function RelationshipEntitiesDisplay(props) {
 
   const focusContext    = useContext(FocusContext);
+
+  const typesContext    = useContext(TypesContext);
 
   const explorer        = props.expl;
 
@@ -24,11 +28,19 @@ export default function RelationshipEntitiesDisplay(props) {
   };
 
   const formatEnd = (endDef) => {
+
+    let entityTypeName = endDef.entityType.name;
+    let entityTypeDisplayName = entityTypeName;
+    let deprecated = typesContext.isTypeDeprecated("Entity", entityTypeName);
+    if (deprecated) {
+      entityTypeDisplayName = "["+ entityTypeName +"]";
+    }
+
     const endEntry = (
       <ul className="details-sublist">
         <li className="details-sublist-item"> Entity Type : <button className="linkable"
-            id={endDef.entityType.name} onClick={entityLinkHandler}>
-            {endDef.entityType.name}
+            id={entityTypeName} onClick={entityLinkHandler}>
+            {entityTypeDisplayName}
           </button>
         </li>
         <li className="details-sublist-item"> Cardinality : {endDef.attributeCardinality} </li>

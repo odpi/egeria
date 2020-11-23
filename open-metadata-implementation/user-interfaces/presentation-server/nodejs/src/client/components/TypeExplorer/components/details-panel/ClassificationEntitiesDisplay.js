@@ -7,6 +7,8 @@ import PropTypes                    from "prop-types";
 
 import { FocusContext }             from "../../contexts/FocusContext";
 
+import { TypesContext }             from "../../contexts/TypesContext";
+
 import "./details-panel.scss";
 
 
@@ -18,12 +20,20 @@ export default function ClassificationEntitiesDisplay(props) {
 
   const focusContext       = useContext(FocusContext);
 
+  const typesContext       = useContext(TypesContext);
+
   
   const formattedEntityName = (name) => {
 
+    let entityTypeDisplayName = name;
+    let deprecated = typesContext.isTypeDeprecated("Entity", name);
+    if (deprecated) {
+      entityTypeDisplayName = "["+ name +"]";
+    }
+
     let formattedEntity = (
       <div>
-        <button className="linkable" id={name} onClick={entityLinkHandler}> {name} </button>
+        <button className="linkable" id={name} onClick={entityLinkHandler}> {entityTypeDisplayName} </button>
       </div>
     );
     return formattedEntity;

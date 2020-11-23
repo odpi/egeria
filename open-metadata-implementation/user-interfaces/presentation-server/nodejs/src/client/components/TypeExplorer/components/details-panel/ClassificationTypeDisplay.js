@@ -29,6 +29,7 @@ export default function ClassificationTypeDisplay(props) {
     <div className="instance-details-container">
       <div className="instance-details-item-bold">Classification Type : {typeName}</div>
       <div className="instance-details-item">{classificationExpl.classificationDef.description}</div>
+      <div className="type-details-item">Type Status : {classificationExpl.classificationDef.status}</div>
       <div className="instance-details-item">Attributes : { !classificationExpl.classificationDef.propertiesDefinition ? "none" :
         <ClassificationPropertiesDisplay expl={classificationExpl} />}</div>
       <div className="instance-details-item">Valid entity types : { !classificationExpl.classificationDef.validEntityDefs && !classificationExpl.classificationDef.validEntityDefs.length > 0 ? "none" :

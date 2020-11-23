@@ -537,6 +537,7 @@ const nhbdUpdate = (nhbd) => {
            .attr("text-anchor", d => locateLabelAnchor(d,width,height))
            .style("font-style", d => d.inherited ? "italic" : "normal")
            .text(d => d.name)
+           .text(d => typesContext.isTypeDeprecated(d.category, d.name) ? "["+d.name+"]" : d.name )
            .on("click", d => { nodeSelected(d.category, d.name); })
            .clone(true)
            .lower()

@@ -30,7 +30,7 @@ export default function EntityRelationshipsDisplay(props) {
   let relationshipEntries = {};
     
   /*
-   * Inherited attributes
+   * Inherited relationships
    */
   const inheritedRelNames = explorer.inheritedRelationshipNames;
   if (inheritedRelNames !== undefined) {
@@ -56,12 +56,19 @@ export default function EntityRelationshipsDisplay(props) {
 
   const formatRelationship = (relationshipName, relationship) => {
     let formattedRelationship;
+
+    let relationshipTypeDisplayName = relationshipName;
+    let deprecated = typesContext.isTypeDeprecated("Relationship", relationshipName);
+    if (deprecated) {
+      relationshipTypeDisplayName = "["+ relationshipName +"]";
+    }
+
     
     if (relationship.inherited) {      
       
       formattedRelationship = (
         <div>
-          <button className="collapsible" onClick={flipSection}> <span className="italic">{relationshipName}</span> </button>
+          <button className="collapsible" onClick={flipSection}> <span className="italic">{relationshipTypeDisplayName}</span> </button>
           <div className="content">
             Attributes: { !typesContext.getRelationshipType(relationshipName).relationshipDef.propertiesDefinition ? "none" :
               <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />}
@@ -77,7 +84,7 @@ export default function EntityRelationshipsDisplay(props) {
       
       formattedRelationship = (
         <div>
-          <button className="collapsible" onClick={flipSection}> {relationshipName} </button>
+          <button className="collapsible" onClick={flipSection}> {relationshipTypeDisplayName} </button>
           <div className="content">
             Attributes: { !typesContext.getRelationshipType(relationshipName).relationshipDef.propertiesDefinition ? "none" :
               <RelationshipPropertiesDisplay expl={typesContext.getRelationshipType(relationshipName)} />}

@@ -136,6 +136,38 @@ const TypesContextProvider = (props) => {
     }
   }
 
+
+  const isTypeDeprecated = (cat, typeName) => {
+    if (cat === "Entity") {
+      if (tex && tex.entities) {
+        let entityType = tex.entities[typeName];
+        let entityDef = entityType.entityDef;
+        let deprecated = entityDef.status === "DEPRECATED_TYPEDEF";
+        return deprecated;
+     }
+    }
+    else if (cat === "Relationship") {
+      if (tex && tex.relatiosnhips) {
+        let relationshipType = tex.relationships[typeName];
+        let relationshipDef = relationshipType.relationshipDef;
+        let deprecated = relationshipDef.status === "DEPRECATED_TYPEDEF";
+        return deprecated;
+     }
+    }
+    else if (cat === "Classification") {
+      if (tex && tex.classifications) {
+        let classificationType = tex.classifications[typeName];
+        let classificationDef = classificationType.classificationDef;
+        let deprecated = classificationDef.status === "DEPRECATED_TYPEDEF";
+        return deprecated;
+      }
+     }
+     else {
+      console.log("Type Explorer TypesContext detected unknown type category "+cat+ "for tyoe "+typeName);
+      return false;
+    }
+  }
+
   return (
     <TypesContext.Provider
       value={{
@@ -149,7 +181,8 @@ const TypesContextProvider = (props) => {
         getEntityType,
         getRelationshipType,
         getClassificationType,
-        getEnumType
+        getEnumType,
+        isTypeDeprecated
       }}
     >
      {props.children}
