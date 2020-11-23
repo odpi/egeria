@@ -4,8 +4,8 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,29 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class SettingsController {
 
-    @Value("${theme:default}")
-    String theme;
-
     @Value("${omas.server.name}")
     String serverName;
 
     @Value("${omas.server.url}")
     String serverUrl;
 
-    @Autowired
-    AppBean app;
-
     /**
      *
-     * @return a redirectView to the theme URI css file
+     * @return omas settings object
      */
-    @GetMapping( path = "/api/css/theme")
-    public RedirectView getThemeCss(){
-        return new RedirectView("/api/themes/" + theme + "/css/style.css", true);
-    }
-
-    @GetMapping( path = "/api/js/global")
-    public String getRootPath(HttpServletRequest request){
-        return "window.MyAppGlobals = { rootPath: '" + request.getContextPath() + "/' };";
+    @GetMapping( value = "/api/omas/settings")
+    public OmasSettings getOmasSettings(){
+        return new OmasSettings(serverName,serverUrl);
     }
 }

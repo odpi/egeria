@@ -291,6 +291,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>server-author-view-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Spring for REST APIs -->
 
         <dependency>

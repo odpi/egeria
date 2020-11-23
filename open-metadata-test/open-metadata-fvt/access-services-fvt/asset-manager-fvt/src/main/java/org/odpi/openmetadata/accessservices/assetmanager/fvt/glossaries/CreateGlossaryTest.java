@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Glossa
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -147,8 +148,35 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                                    null);
 
         // String glossaryCategoryGUID = thisTest.getGlossaryCategory(client, assetManagerGUID, glossaryGUID, userId);
-    }
 
+        try
+        {
+            client.removeGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, externalGlossaryIdentifier);
+        }
+        catch (Throwable unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
+        try
+        {
+            client.getGlossaryByGUID(userId, assetManagerGUID, assetManagerName, glossaryGUID);
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(glossary not deleted)");
+        }
+        catch (InvalidParameterException notFound)
+        {
+            // all well
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Throwable unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
 
 
     /**

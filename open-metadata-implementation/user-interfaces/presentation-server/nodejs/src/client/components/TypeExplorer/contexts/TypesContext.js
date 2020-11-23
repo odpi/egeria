@@ -8,6 +8,8 @@ import PropTypes                                        from "prop-types";
 
 import { RequestContext }                               from "./RequestContext";
 
+import { InteractionContext }                           from "./InteractionContext";
+
 
 
 export const TypesContext = createContext();
@@ -18,7 +20,8 @@ export const TypesContextConsumer = TypesContext.Consumer;
 
 const TypesContextProvider = (props) => {
 
-  const requestContext    = useContext(RequestContext);
+  const requestContext         = useContext(RequestContext);
+  const interactionContext     = useContext(InteractionContext);
 
 
 
@@ -53,26 +56,9 @@ const TypesContextProvider = (props) => {
     /*
      * On failure ...     
      */
-    reportFailedOperation("loadTypeInfo",json);
+    interactionContext.reportFailedOperation("get types for server",json);
   }
-  
-        
-  /* 
-   * Always accept the operation name because operation name is needed even in the case where json is null
-   */
-  const reportFailedOperation = (operation, json) => {
-    if (json !== null) {      
-      const relatedHTTPCode = json.relatedHTTPCode;
-      const exceptionMessage = json.exceptionErrorMessage;
-      /*
-       * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-       */
-      alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
-    }
-    else {
-      alert("Operation "+operation+" did not get a response from the view server");
-    }
-  }
+
 
 
   /*
