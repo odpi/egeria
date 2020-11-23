@@ -51,15 +51,11 @@ public class LineageGraphDisplayRulesService {
     private void applyRule(List<Node> nodes, Edge edge, Rule rule) {
         if (rule.getSourceNodeType() != null && rule.getDestinationNodeType() != null) {
             applyRuleWithBothNodeTypes(nodes, edge, rule);
-            System.out.println("match from both");
         } else if (rule.getSourceNodeType() != null && rule.getDestinationNodeType() == null) {
             applyRuleWithOneNodeType(nodes, edge, edge.getFrom(), rule.getSourceNodeType());
-            System.out.println("match from destination Node");
         } else if (rule.getSourceNodeType() == null && rule.getDestinationNodeType() != null) {
             applyRuleWithOneNodeType(nodes, edge, edge.getTo(), rule.getDestinationNodeType());
-            System.out.println("match from source Node");
         } else {
-            System.out.println("match from default");
             invertEdgeDirection(edge);
         }
     }
