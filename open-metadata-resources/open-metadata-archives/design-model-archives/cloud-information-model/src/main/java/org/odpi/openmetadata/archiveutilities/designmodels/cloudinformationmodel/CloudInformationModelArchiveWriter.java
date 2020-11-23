@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel;
 
-import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 
 import java.io.IOException;
@@ -64,8 +63,6 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
             System.err.println("USAGE: filename");
             System.exit(-1);
         }
-
-        HttpHelper.noStrictSSLIfConfigured();
 
         try
         {
