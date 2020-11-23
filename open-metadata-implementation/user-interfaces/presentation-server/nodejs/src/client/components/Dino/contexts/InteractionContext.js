@@ -62,6 +62,46 @@ const InteractionContextProvider = (props) => {
     setPortalContent(null);
   };
 
+
+   /*
+   * General failure reporting utility
+   *
+   *
+   * This function provides a common utility for reporting errors to the user.
+   * For now these are posted as alerts. That could be modified.
+   * The 'operation' parameter should be a phrase that describes the operation in a non-technical
+   * manner that matches the context and concepts the user will be familiar with. For example,
+   * use a phrase like "get types for server" rather than "loadTypes".
+   * The second parameter is a json response object that has the fields from the associated
+   * DinoViewServiceException. The main fields to note are (with example values):
+   *  relatedHTTPCode                 :  400,
+   *  exceptionClassName              : 'org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException',
+   *  actionDescription               : 'getTypeExplorer',
+   *  exceptionErrorMessage           : 'The repository explorer view service operation getTypeExplorer found that platform for server Metadata_Server2 is not available',
+   *  exceptionErrorMessageId         : 'OMVS-REPOSITORY-EXPLORER-400-006',
+   *  exceptionErrorMessageParameters : [ 'getTypeExplorer', 'Metadata_Server2' ],
+   *  exceptionSystemAction           : 'The system reported that the platform is not reachable using the provided URL.',
+   *  exceptionUserAction             : 'Check the platform is running and check the repository explorer resource endpoint configuration for the server and its platform.'
+   * The exceptionErrorMessageParameters will already have been substituted into the exceptionErrorMessage,
+   * so there should be no need to perform any formatting; that is all done by the view service.
+   *
+   */
+  const reportFailedOperation = (operation, json) => {
+    if (json !== null) {
+      const relatedHTTPCode = json.relatedHTTPCode;
+      const exceptionMessage = json.exceptionErrorMessage;
+
+      let message = "Could not "+operation+" (status : "+relatedHTTPCode+"). "+exceptionMessage;
+      message = message + "\n\nSystem detail: " + json.exceptionSystemAction;
+      message = message + "\n\nRecommended user action: " + json.exceptionUserAction;
+      alert(message);
+
+    }
+    else {
+      alert("Attempt to "+operation+" did not get a JSON response from the view server");
+    }
+  }
+
  
   return (
     <InteractionContext.Provider
@@ -70,7 +110,8 @@ const InteractionContextProvider = (props) => {
         hidePortal,
         getPortalAnchor,
         portalCancel,
-        portalSubmit
+        portalSubmit,
+        reportFailedOperation
       }}
     >      
 
