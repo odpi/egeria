@@ -4,7 +4,10 @@
   animation: shake 0.5s;
   animation-iteration-count: 1;
 }
-
+.left-20 {
+   position: relative;
+   left: -20px;
+}
 .my-container {
   display: flex;
   justify-content: space-evenly;
@@ -22,7 +25,10 @@
   display          : flex;
   flex-flow        : row;
 }
-
+.row-container {
+  display          : flex;
+  flex-flow        : row;
+}
 .search-options-container {
   height           : 100%;
   width            : 300px;
@@ -76,6 +82,58 @@
 }
 .search-item {
   margin: 10px;
+}
+// .line-node-container {
+//   height           : 100%;
+//   display          : flex;
+//   flex-flow        : row;
+// }
+// .line-node-item {
+//   margin: 10px;
+// }
+
+
+
+// 2 column grid 
+.flex-grid-halves {
+  display: flex;
+  justify-content: space-between;
+}
+.col {
+  flex: 1;
+}
+
+.nodeline-button {
+  border: 0;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin:2px;
+}
+.clickable {
+  background-color: #4CAF50; /* Green */
+}
+.line-shape {
+  padding: 15px 32px;  
+}
+.node-shape {
+  padding: 32px 32px;
+}
+
+.nodeline-title {
+  background-color: dimgray;
+}
+
+.close-title {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.create-wizard-page-title {
+  background-color: #f0fff1;
+  margin: 40px;
 }
 
 @keyframes shake {

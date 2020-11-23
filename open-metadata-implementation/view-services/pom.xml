@@ -32,5 +32,7 @@
         <module>rex-view</module>
         <module>tex-view</module>
         <module>dino-view</module>
+        <module>server-author-view</module>
+
     </modules>
 </project>

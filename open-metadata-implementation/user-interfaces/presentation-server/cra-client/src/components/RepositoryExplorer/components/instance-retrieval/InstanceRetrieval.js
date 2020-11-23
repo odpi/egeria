@@ -62,36 +62,41 @@ export default function InstanceRetrieval(props) {
           
               
         <div className="retrieval-controls">
-        <p>
-        Get an instance by GUID
-        </p>        
-        <label htmlFor="category">Category: </label>
-        <input type="radio" 
-               id="catEntity" 
-               name="category" 
-               value="Entity" 
-               checked={categoryToLoad === "Entity"}
-               onChange={changeCategory}/>
-        <label htmlFor="catEntity">Entity</label>
+
+          <div className="retrieval-fields">
+
+          <p className="descriptive-text">Get an instance by GUID</p>
+
+          <label htmlFor="category">Category: </label>
+          <input type="radio"
+                 id="catEntity"
+                 name="category"
+                 value="Entity"
+                 checked={categoryToLoad === "Entity"}
+                 onChange={changeCategory}/>
+          <label htmlFor="catEntity">Entity</label>
         
-        <input type="radio" 
-               id="catRelationship" 
-               name="category" 
-               value="Relationship" 
-               checked={categoryToLoad === "Relationship"}
-               onChange={changeCategory} />
-        <label htmlFor="catRelationship">Relationship</label>
+          <input type="radio"
+                 id="catRelationship"
+                 name="category"
+                 value="Relationship"
+                 checked={categoryToLoad === "Relationship"}
+                 onChange={changeCategory} />
+          <label htmlFor="catRelationship">Relationship</label>
 
-        <br />
+          <br />
 
-        <label htmlFor="instanceGUIDField">Instance GUID: </label>
-        <input name="instanceGUIDField"
-           value = { guidToLoad }      
-           onChange = { updatedGuidToLoad }       
-        >
-        </input>
-        <br />
-        <button className="top-control-button"  onClick = { loadInstanceByGUID } >
+          <label htmlFor="instanceGUIDField">Instance GUID: </label>
+          <input name="instanceGUIDField"
+             value = { guidToLoad }
+             onChange = { updatedGuidToLoad }
+          >
+          </input>
+          <br />
+
+        </div>
+
+        <button className="retrieval-button"  onClick = { loadInstanceByGUID } >
           Get instance by GUID
         </button>
         </div>

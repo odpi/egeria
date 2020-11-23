@@ -35,6 +35,7 @@ import ConfigPreview from "./ConfigPreview";
 export default function ServerAuthor() {
 
   const { userId, serverName: tenantId } = useContext(IdentificationContext);
+  console.log(useContext(ServerAuthorContext))
   const {
     newServerName,
     newServerLocalServerType, setNewServerLocalServerType,

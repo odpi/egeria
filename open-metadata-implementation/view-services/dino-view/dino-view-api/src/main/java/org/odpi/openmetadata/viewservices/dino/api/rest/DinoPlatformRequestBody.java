@@ -21,8 +21,7 @@ public class DinoPlatformRequestBody {
      */
 
     private String                    platformName;                    // must be non-null
-    private boolean                   isPresent;
-    private boolean                   ixPresent;
+
 
 
     public DinoPlatformRequestBody() {
