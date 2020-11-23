@@ -31,11 +31,15 @@ export default function InstanceDisplay() {
      * An instance is selected as the focus - display it
      */
     const focusCategory = instancesContext.getFocusCategory();
+
+    const focusGen = instancesContext.getFocusGen();
+    const enterprise = focusGen.enterpriseOption;
+
     if (focusCategory === "Entity") {
-      return <EntityDisplay expEntity={instancesContext.getFocusEntity()} />
+      return <EntityDisplay expEntity={instancesContext.getFocusEntity()} enterprise={enterprise} />
     }
     else if (focusCategory === "Relationship") {
-      return <RelationshipDisplay expRelationship={instancesContext.getFocusRelationship()} />
+      return <RelationshipDisplay expRelationship={instancesContext.getFocusRelationship()} enterprise={enterprise} />
     }
   }
 
