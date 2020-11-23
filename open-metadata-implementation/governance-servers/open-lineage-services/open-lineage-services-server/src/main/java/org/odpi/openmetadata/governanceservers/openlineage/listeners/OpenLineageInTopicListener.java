@@ -37,7 +37,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
     @Override
     public void processEvent(String assetLineageEvent) {
         try {
-            log.debug("Started processing OpenLineageEvent {}", assetLineageEvent);
+            log.info("Started processing OpenLineageEvent {}", assetLineageEvent);
             if (!assetLineageEvent.isEmpty()) {
                 processEventBasedOnType(assetLineageEvent);
             }
