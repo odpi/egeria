@@ -32,6 +32,7 @@
         <module>asset-consumer-fvt</module>
         <module>asset-manager-fvt</module>
         <module>asset-owner-fvt</module>
+        <module>data-engine-fvt</module>
         <module>data-manager-fvt</module>
         <module>digital-architecture-fvt</module>
         <module>subject-area-fvt</module>
