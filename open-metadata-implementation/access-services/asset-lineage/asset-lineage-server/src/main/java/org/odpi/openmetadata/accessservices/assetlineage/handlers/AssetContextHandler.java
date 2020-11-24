@@ -90,8 +90,6 @@ public class AssetContextHandler {
      * @param guid           the guid of the entity
      * @param entityTypeName the name of the entity type
      * @return the existing list of glossary terms available in the repository
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException    something went wrong with the REST call stack.
      */
     public EntityDetail getEntityByTypeAndGuid(String userId, String guid, String entityTypeName) {
         EntityDetail entityDetails = null;
