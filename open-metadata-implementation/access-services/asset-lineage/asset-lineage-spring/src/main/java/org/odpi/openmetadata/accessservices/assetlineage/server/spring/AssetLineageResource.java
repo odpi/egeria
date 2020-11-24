@@ -47,7 +47,7 @@ public class AssetLineageResource {
      * @param entityType the name of the relationship type
      * @return a list of unique identifiers (guids) of the available entity with the given type provided as a response
      */
-    @GetMapping(path = "/publish-entity/{entityType}/guid/{guid}")
+    @GetMapping(path = "/publish-entity/{entityType}/{guid}")
     public GUIDListResponse publishEntitiesTest(@PathVariable String serverName,
                                             @PathVariable String userId,
                                             @PathVariable String guid,

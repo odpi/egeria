@@ -95,7 +95,7 @@ public class AssetLineageRestServices {
     public GUIDListResponse publishEntity(String serverName, String userId, String entityType, String guid) {
         GUIDListResponse response = new GUIDListResponse();
 
-        String methodName = "publishEntities";
+        String methodName = "publishEntity";
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
             EntityDetail entityByTypeAndGuid = assetContextHandler.getEntityByTypeAndGuid(userId, guid, entityType);
