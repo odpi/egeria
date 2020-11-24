@@ -86,6 +86,22 @@ public class AssetContextHandler {
     }
 
     /**
+     * @param userId         the user id
+     * @param guid           the guid of the entity
+     * @param entityTypeName the name of the entity type
+     * @return the existing list of glossary terms available in the repository
+     */
+    public EntityDetail getEntityByTypeAndGuid(String userId, String guid, String entityTypeName) {
+        EntityDetail entityDetails = null;
+        try {
+            entityDetails = handlerHelper.getEntityDetails(userId, guid, entityTypeName);
+        } catch (OCFCheckedExceptionBase ocfCheckedExceptionBase) {
+            ocfCheckedExceptionBase.printStackTrace();
+        }
+        return entityDetails;
+    }
+
+    /**
      * Gets asset context.
      *
      * @param userId       the user id
