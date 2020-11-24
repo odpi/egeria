@@ -78,6 +78,7 @@ public class AssetLineageRestServices {
             }
 
             List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher);
+            log.info("Asset Lineage OMAS finished publishing the entity context for {} entities with type {}", entitiesByTypeName.size(), entityType);
             response.setGUIDs(publishedEntitiesContext);
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);

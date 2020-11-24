@@ -39,7 +39,7 @@ public class AssetLineageResource {
     }
 
     /**
-     * Find the entoty and publish the context for it
+     * Find the entity by guid and publish the context for it
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
