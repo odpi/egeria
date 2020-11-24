@@ -9,6 +9,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraphFactory;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
  *     [
  *       "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID"
  *     ]
- * }
+ *   }
  * }
  *
  */
@@ -163,6 +164,7 @@ public class OpenLineageGraphValidation {
 
     private GraphTraversalSource g;
 
+    @Ignore
     @Test
     public void validateGraph() throws Exception{
 
