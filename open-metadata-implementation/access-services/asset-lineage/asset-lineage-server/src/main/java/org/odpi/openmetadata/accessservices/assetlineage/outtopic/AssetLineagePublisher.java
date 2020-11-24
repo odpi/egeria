@@ -113,7 +113,7 @@ public class AssetLineagePublisher {
         Map<String, Set<GraphContext>> context = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(context)) {
-            log.debug("Context not found for the entity {} ", entityDetail.getGUID());
+            log.error("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
