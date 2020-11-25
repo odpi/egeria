@@ -50,6 +50,17 @@ public class OpenMetadataAPIGenericHandler<B>
 
     protected AuditLog                           auditLog;
 
+    private final static String supplementaryPropertiesQualifiedNamePostFix = " Supplementary Properties";
+    private final static String supplementaryPropertiesQualifiedNameParameterName = "elementQualifiedName";
+    private final static String supplementaryPropertiesGlossaryName = "Supplementary Properties Glossary";
+    private final static String supplementaryPropertiesGlossaryParameterName = "supplementaryPropertiesGlossaryName";
+    private final static String supplementaryPropertiesGlossaryDescription =
+            "This glossary contains glossary terms containing the business-oriented descriptive names and related properties for " +
+                    "open metadata assets.";
+
+    private List<String> qualifiedNamePropertyNamesList;
+
+
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -103,6 +114,9 @@ public class OpenMetadataAPIGenericHandler<B>
         this.auditLog                = auditLog;
 
         this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+
+        this.qualifiedNamePropertyNamesList = new ArrayList<>();
+        this.qualifiedNamePropertyNamesList.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
     }
 
 
@@ -2642,9 +2656,290 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             throw new PropertyServerException(error);
         }
+    }
+
+
+    /**
+     * Retrieve the supplementary properties glossary object.  This is the anchor of all the supplementary properties
+     * glossary terms.
+     *
+     * @param methodName calling method
+     *
+     * @return unique identifier of the supplementary properties glossary
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    private String getSupplementaryPropertiesGlossary(String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+
+        String glossaryGUID = this.getEntityGUIDByValue(localServerUserId,
+                                                        supplementaryPropertiesGlossaryName,
+                                                        supplementaryPropertiesGlossaryParameterName,
+                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                        qualifiedNamePropertyNamesList,
+                                                        methodName);
+
+        if (glossaryGUID == null)
+        {
+            InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                         null,
+                                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                         supplementaryPropertiesGlossaryName,
+                                                                                         methodName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      supplementaryPropertiesGlossaryDescription,
+                                                                      methodName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      supplementaryPropertiesGlossaryDescription,
+                                                                      methodName);
+
+            glossaryGUID = repositoryHandler.createEntity(localServerUserId,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                          null,
+                                                          null,
+                                                          properties,
+                                                          null,
+                                                          InstanceStatus.ACTIVE,
+                                                          methodName);
+        }
+
+        return glossaryGUID;
+    }
+
+
+    /**
+     * Set up the instance properties for a supplementary properties glossary term.
+     *
+     * @param existingProperties properties to add the new properties to
+     * @param displayName  display name for the term
+     * @param summary short description
+     * @param description description of the term
+     * @param abbreviation abbreviation used for the term
+     * @param usage illustrations of how the term is used
+     * @param methodName calling method
+     * @return properties object or null
+     */
+    private InstanceProperties getSupplementaryInstanceProperties(InstanceProperties existingProperties,
+                                                                  String             displayName,
+                                                                  String             summary,
+                                                                  String             description,
+                                                                  String             abbreviation,
+                                                                  String             usage,
+                                                                  String             methodName)
+    {
+        InstanceProperties properties = existingProperties;
+
+        if (displayName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      displayName,
+                                                                      methodName);
+        }
+
+        if (summary != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                      summary,
+                                                                      methodName);
+        }
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
+                                                                      methodName);
+        }
+
+        if (abbreviation != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                      abbreviation,
+                                                                      methodName);
+        }
+
+        if (usage != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                      displayName,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
 
 
 
+    /**
+     * Maintain the supplementary properties of a technical metadata element in a glossary term linked to the supplied element.
+     * The glossary term needs to be connected to a glossary which may need to be created.
+     *
+     * @param userId calling user
+     * @param elementGUID element for the
+     * @param elementQualifiedName qualified name of the linked element
+     * @param displayName  display name for the term
+     * @param summary short description
+     * @param description description of the term
+     * @param abbreviation abbreviation used for the term
+     * @param usage illustrations of how the term is used
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    public void maintainSupplementaryProperties(String  userId,
+                                                String  elementGUID,
+                                                String  elementQualifiedName,
+                                                String  displayName,
+                                                String  summary,
+                                                String  description,
+                                                String  abbreviation,
+                                                String  usage,
+                                                boolean isMergeUpdate,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        if ((displayName != null) || (summary != null) || (description != null) || (abbreviation != null) || (usage != null))
+        {
+            EntityDetail glossaryTerm = this.getEntityByValue(localServerUserId,
+                                                              elementQualifiedName + supplementaryPropertiesQualifiedNamePostFix,
+                                                              supplementaryPropertiesQualifiedNameParameterName,
+                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                              qualifiedNamePropertyNamesList,
+                                                              methodName);
+
+            if (glossaryTerm == null)
+            {
+                String glossaryGUID = this.getSupplementaryPropertiesGlossary(methodName);
+
+                if (glossaryGUID != null)
+                {
+                    InstanceProperties glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
+                                                                                                        displayName,
+                                                                                                        summary,
+                                                                                                        description,
+                                                                                                        abbreviation,
+                                                                                                        usage,
+                                                                                                        methodName);
+
+                    /*
+                     * The glossary term is anchored to the element rather than the glossary.  This means that it deleted if/when
+                     * the element is deleted.
+                     */
+                    List<Classification> initialClassifications = new ArrayList<>();
+                    try
+                    {
+                        Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                              null,
+                                                                                              null,
+                                                                                              InstanceProvenanceType.LOCAL_COHORT,
+                                                                                              userId,
+                                                                                              OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                              ClassificationOrigin.ASSIGNED,
+                                                                                              null,
+                                                                                              repositoryHelper.addStringPropertyToInstance(
+                                                                                                      serviceName,
+                                                                                                      null,
+                                                                                                      OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                                                      elementGUID,
+                                                                                                      methodName));
+                        initialClassifications.add(classification);
+                    }
+                    catch (TypeErrorException error)
+                    {
+                        throw new PropertyServerException(error);
+                    }
+
+                    String glossaryTermGUID = repositoryHandler.createEntity(localServerUserId,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                             null,
+                                                                             null,
+                                                                             glossaryTermProperties,
+                                                                             initialClassifications,
+                                                                             InstanceStatus.ACTIVE,
+                                                                             methodName);
+
+                    repositoryHandler.createRelationship(userId,
+                                                         OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                         null,
+                                                         null,
+                                                         glossaryGUID,
+                                                         glossaryTermGUID,
+                                                         null,
+                                                         methodName);
+
+                    repositoryHandler.createRelationship(userId,
+                                                         OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
+                                                         null,
+                                                         null,
+                                                         elementGUID,
+                                                         glossaryTermGUID,
+                                                         null,
+                                                         methodName);
+                }
+            }
+            else
+            {
+                InstanceProperties glossaryTermProperties;
+
+                if (isMergeUpdate)
+                {
+                    glossaryTermProperties = this.getSupplementaryInstanceProperties(glossaryTerm.getProperties(),
+                                                                                     displayName,
+                                                                                     summary,
+                                                                                     description,
+                                                                                     abbreviation,
+                                                                                     usage,
+                                                                                     methodName);
+                }
+                else
+                {
+                    glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
+                                                                                     displayName,
+                                                                                     summary,
+                                                                                     description,
+                                                                                     abbreviation,
+                                                                                     usage,
+                                                                                     methodName);
+                }
+
+                repositoryHandler.updateEntityProperties(userId,
+                                                         null,
+                                                         null,
+                                                         glossaryTerm.getGUID(),
+                                                         glossaryTerm,
+                                                         null,
+                                                         null,
+                                                         glossaryTermProperties,
+                                                         methodName);
+            }
+        }
     }
 
 
@@ -5259,7 +5554,6 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
-
     /**
      * Retrieve the requested element from the supplied relationship.
      *
@@ -5647,8 +5941,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                EntityDetail entity,
                                String       entityParameterName,
                                String       methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(entity, entityParameterName, methodName);

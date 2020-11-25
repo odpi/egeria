@@ -24,8 +24,10 @@ public class ProcessCallElement implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader         elementHeader         = null;
+    private ElementHeader         processCallHeader     = null;
     private ProcessCallProperties processCallProperties = null;
+    private ElementHeader         caller                = null;
+    private ElementHeader         called                = null;
 
     /**
      * Default constructor
@@ -45,31 +47,33 @@ public class ProcessCallElement implements Serializable
     {
         if (template != null)
         {
-            elementHeader         = template.getElementHeader();
+            processCallHeader = template.getProcessCallHeader();
             processCallProperties = template.getProcessCallProperties();
+            caller = template.getCaller();
+            called = template.getCalled();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Return the element header associated with the relationship.
      *
      * @return element header object
      */
-    public ElementHeader getElementHeader()
+    public ElementHeader getProcessCallHeader()
     {
-        return elementHeader;
+        return processCallHeader;
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the element header associated with the relationship.
      *
-     * @param elementHeader element header object
+     * @param processCallHeader element header object
      */
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setProcessCallHeader(ElementHeader processCallHeader)
     {
-        this.elementHeader = elementHeader;
+        this.processCallHeader = processCallHeader;
     }
 
 
@@ -85,13 +89,58 @@ public class ProcessCallElement implements Serializable
 
 
     /**
-     * Set up the relationship properties
+     * Set up relationship properties
      *
      * @param processCallProperties relationship properties
      */
     public void setProcessCallProperties(ProcessCallProperties processCallProperties)
     {
         this.processCallProperties = processCallProperties;
+    }
+
+
+    /**
+     * Return the element header associated with end 1 of the relationship.
+     *
+     * @return element header object
+     */
+    public ElementHeader getCaller()
+    {
+        return caller;
+    }
+
+
+    /**
+     * Set up the element header associated with end 1 of the relationship.
+     *
+     * @param caller element header object
+     */
+    public void setCaller(ElementHeader caller)
+    {
+        this.caller = caller;
+    }
+
+
+
+    /**
+     * Return the element header associated with end 2 of the relationship.
+     *
+     * @return element header object
+     */
+    public ElementHeader getCalled()
+    {
+        return called;
+    }
+
+
+    /**
+     * Set up the element header associated with end 2 of the relationship.
+     *
+     * @param called element header object
+     */
+    public void setCalled(ElementHeader called)
+    {
+        this.called = called;
     }
 
 
@@ -104,8 +153,10 @@ public class ProcessCallElement implements Serializable
     public String toString()
     {
         return "ProcessCallElement{" +
-                       "elementHeader=" + elementHeader +
+                       "processCallHeader=" + processCallHeader +
                        ", processCallProperties=" + processCallProperties +
+                       ", caller=" + caller +
+                       ", called=" + called +
                        '}';
     }
 
@@ -127,13 +178,11 @@ public class ProcessCallElement implements Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         ProcessCallElement that = (ProcessCallElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(processCallProperties, that.processCallProperties);
+        return Objects.equals(getProcessCallHeader(), that.getProcessCallHeader()) &&
+                       Objects.equals(getProcessCallProperties(), that.getProcessCallProperties()) &&
+                       Objects.equals(getCaller(), that.getCaller()) &&
+                       Objects.equals(getCalled(), that.getCalled());
     }
 
 
@@ -145,6 +194,6 @@ public class ProcessCallElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, processCallProperties);
+        return Objects.hash(super.hashCode(), processCallHeader, processCallProperties, caller, called);
     }
 }

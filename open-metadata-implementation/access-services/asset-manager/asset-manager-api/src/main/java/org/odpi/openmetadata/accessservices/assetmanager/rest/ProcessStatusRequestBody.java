@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,18 +23,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermStatusRequestBody implements Serializable
+public class ProcessStatusRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private GlossaryTermStatus            glossaryTermStatus            = null;
+    private ProcessStatus                 processStatus                 = null;
 
 
     /**
      * Default constructor
      */
-    public GlossaryTermStatusRequestBody()
+    public ProcessStatusRequestBody()
     {
         super();
     }
@@ -45,12 +45,12 @@ public class GlossaryTermStatusRequestBody implements Serializable
      *
      * @param template object to copy
      */
-    public GlossaryTermStatusRequestBody(GlossaryTermStatusRequestBody template)
+    public ProcessStatusRequestBody(ProcessStatusRequestBody template)
     {
         if (template != null)
         {
             metadataCorrelationProperties = template.getMetadataCorrelationProperties();
-            glossaryTermStatus = template.getGlossaryTermStatus();
+            processStatus = template.getProcessStatus();
         }
     }
 
@@ -82,20 +82,20 @@ public class GlossaryTermStatusRequestBody implements Serializable
      *
      * @return enum object
      */
-    public GlossaryTermStatus getGlossaryTermStatus()
+    public ProcessStatus getProcessStatus()
     {
-        return glossaryTermStatus;
+        return processStatus;
     }
 
 
     /**
      * Set up the status for the element.
      *
-     * @param glossaryTermStatus enum object
+     * @param processStatus enum object
      */
-    public void setGlossaryTermStatus(GlossaryTermStatus glossaryTermStatus)
+    public void setProcessStatus(ProcessStatus processStatus)
     {
-        this.glossaryTermStatus = glossaryTermStatus;
+        this.processStatus = processStatus;
     }
 
 
@@ -107,9 +107,9 @@ public class GlossaryTermStatusRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryTermStatusRequestBody{" +
+        return "ProcessStatusRequestBody{" +
                        "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", glossaryTermStatus=" + glossaryTermStatus +
+                       ", processStatus=" + processStatus +
                        '}';
     }
 
@@ -131,9 +131,9 @@ public class GlossaryTermStatusRequestBody implements Serializable
         {
             return false;
         }
-        GlossaryTermStatusRequestBody that = (GlossaryTermStatusRequestBody) objectToCompare;
+        ProcessStatusRequestBody that = (ProcessStatusRequestBody) objectToCompare;
         return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getGlossaryTermStatus(), that.getGlossaryTermStatus());
+                       Objects.equals(getProcessStatus(), that.getProcessStatus());
     }
 
 
@@ -145,6 +145,6 @@ public class GlossaryTermStatusRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, glossaryTermStatus);
+        return Objects.hash(super.hashCode(), metadataCorrelationProperties, processStatus);
     }
 }
