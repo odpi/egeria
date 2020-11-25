@@ -30,39 +30,39 @@ public class TexViewAdmin extends ViewServiceAdmin {
     private static final Logger log = LoggerFactory.getLogger(TexViewAdmin.class);
 
 
-    protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
+    protected String resourceEndpointsPropertyName = "resourceEndpoints";      /* Common */
 
-
-    //private ViewServiceConfig       viewServiceConfig = null;
-    private AuditLog                auditLog          = null;
-    private String                  serverUserName    = null;
-    private TexViewServicesInstance instance          = null;
-    private String                  serverName        = null;
+    private AuditLog auditLog = null;
+    private String serverUserName = null;
+    private TexViewServicesInstance instance = null;
+    private String serverName = null;
 
     /**
      * Default constructor
      */
-    public TexViewAdmin() {
+    public TexViewAdmin()
+    {
     }
 
     /**
      * Initialize the TEX view service.
      *
-     * @param serverName                         name of the local server
-     * @param viewServiceConfig                  specific configuration properties for this view service.
-     * @param auditLog                           audit log component for logging messages.
-     * @param serverUserName                     user id to use to issue calls to the remote server.
-     * @param maxPageSize                        maximum page size. 0 means unlimited
+     * @param serverName        name of the local server
+     * @param viewServiceConfig specific configuration properties for this view service.
+     * @param auditLog          audit log component for logging messages.
+     * @param serverUserName    user id to use to issue calls to the remote server.
+     * @param maxPageSize       maximum page size. 0 means unlimited
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(String            serverName,
+    public void initialize(String serverName,
                            ViewServiceConfig viewServiceConfig,
-                           AuditLog          auditLog,
-                           String            serverUserName,
-                           int               maxPageSize)
+                           AuditLog auditLog,
+                           String serverUserName,
+                           int maxPageSize)
 
-    throws OMAGConfigurationErrorException {
+    throws OMAGConfigurationErrorException
+    {
 
         final String actionDescription = "initialize";
 
@@ -70,7 +70,8 @@ public class TexViewAdmin extends ViewServiceAdmin {
 
         this.auditLog = auditLog;
 
-        if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled())
+        {
             log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
         }
 
@@ -80,10 +81,12 @@ public class TexViewAdmin extends ViewServiceAdmin {
          */
 
         IntegrationViewServiceConfig integrationViewServiceConfig = null;
-        if (viewServiceConfig instanceof IntegrationViewServiceConfig) {
+        if (viewServiceConfig instanceof IntegrationViewServiceConfig)
+        {
             integrationViewServiceConfig = (IntegrationViewServiceConfig) viewServiceConfig;
         }
-        else {
+        else
+        {
             logBadConfiguration(viewServiceConfig.getViewServiceName(),
                                 "viewServiceConfig",
                                 viewServiceConfig.toString(),
@@ -96,14 +99,12 @@ public class TexViewAdmin extends ViewServiceAdmin {
 
         final String viewServiceFullName = viewServiceConfig.getViewServiceName();
 
-        try {
+        try
+        {
 
             List<ResourceEndpointConfig> resourceEndpoints = this.extractResourceEndpoints(integrationViewServiceConfig.getResourceEndpoints(),
                                                                                            viewServiceFullName,
                                                                                            auditLog);
-
-
-
 
 
 
@@ -112,19 +113,20 @@ public class TexViewAdmin extends ViewServiceAdmin {
              * because they are set at runtime by the user and potentially changed between operations.
              */
             this.instance = new TexViewServicesInstance(serverName,
-                                                         auditLog,
-                                                         serverUserName,
-                                                         maxPageSize,
-                                                         resourceEndpoints);
+                                                        auditLog,
+                                                        serverUserName,
+                                                        maxPageSize,
+                                                        resourceEndpoints);
 
-            this.serverUserName    = serverUserName;
-            this.serverName        = serverName;
+            this.serverUserName = serverUserName;
+            this.serverName = serverName;
 
             auditLog.logMessage(actionDescription,
                                 TexViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
                                 viewServiceConfig.toString());
 
-            if (log.isDebugEnabled()) {
+            if (log.isDebugEnabled())
+            {
                 log.debug("<== Method: " + actionDescription + ",userid=" + serverUserName);
             }
 
@@ -151,7 +153,8 @@ public class TexViewAdmin extends ViewServiceAdmin {
      * Shutdown the tex view service.
      */
     @Override
-    public void shutdown() {
+    public void shutdown()
+    {
         final String actionDescription = "shutdown";
 
         log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
@@ -170,55 +173,48 @@ public class TexViewAdmin extends ViewServiceAdmin {
     }
 
 
-        /**
-         * Extract the resource endpoints property from the view services option.
-         *
-         * @param resourceEndpoints options passed to the access service.
-         * @param viewServiceFullName name of calling service
-         * @param auditLog audit log for error messages
-         * @return null or list of resource endpoints
-         * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
+    /**
+     * Extract the resource endpoints property from the view services option.
+     *
+     * @param resourceEndpoints   options passed to the access service.
+     * @param viewServiceFullName name of calling service
+     * @param auditLog            audit log for error messages
+     * @return null or list of resource endpoints
+     * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
+     */
+    protected List<ResourceEndpointConfig> extractResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints,
+                                                                    String                       viewServiceFullName,
+                                                                    AuditLog                     auditLog)
+    throws OMAGConfigurationErrorException
+    {
+        final String methodName = "extractResourceEndpoints";
+        final String parameterName = "resourceEndpoints";
+
+        /*
+         * Tex cannot operate without any endpoints.
+         * Check if resourceEndpoints is null and if so call logBadConfigProperties, which will
+         * log the error and throw an OMAGConfigurationErrorException
          */
-        protected List<ResourceEndpointConfig> extractResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints,
-                String                       viewServiceFullName,
-                AuditLog                     auditLog)             throws OMAGConfigurationErrorException
+        if (resourceEndpoints == null || resourceEndpoints.isEmpty())
         {
-            final String methodName = "extractResourceEndpoints";
 
-            final String parameterName = "resourceEndpoints";
+            logBadConfiguration(viewServiceFullName,
+                                resourceEndpointsPropertyName,
+                                resourceEndpoints == null ? "null" : resourceEndpoints.toString(),
+                                auditLog,
+                                methodName);
 
-            try {
+            // unreachable
+            return null;
 
-                /*
-                 * Tex cannot operate without any endpoints.
-                 * Check if resourceEndpoints is null and if so throw am exception, which will be caught and logged by logBadConfigProperties, which will throw OMAGConfigurationErrorException...
-                 */
-                if (resourceEndpoints == null) {
-
-                    throw new InvalidParameterException(TexViewErrorCode.INVALID_CONFIG_PROPERTY.getMessageDefinition(parameterName),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        parameterName);
-
-                } else {
-
-                    @SuppressWarnings("unchecked")
-                    List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
-                    auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-                    return endpointList;
-                }
-
-            } catch (Throwable error) {
-
-                logBadConfigProperties(viewServiceFullName,
-                                       resourceEndpointsPropertyName,
-                                       resourceEndpoints.toString(),
-                                       auditLog,
-                                       methodName,
-                                       error);
-
-                // unreachable
-                return null;
-            }
         }
+        else
+        {
+
+            List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
+            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
+            return endpointList;
+        }
+
+    }
 }

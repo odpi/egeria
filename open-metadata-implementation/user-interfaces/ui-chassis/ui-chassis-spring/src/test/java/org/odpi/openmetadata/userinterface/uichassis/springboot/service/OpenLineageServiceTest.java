@@ -21,6 +21,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +77,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true);
+        Graph ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true);
         checkResponse(ultimateSource);
     }
 
@@ -89,7 +90,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getEndToEndLineage(USER_ID, guid, true);
+        Graph response = openLineageService.getEndToEndLineage(USER_ID, guid, true);
         checkResponse(response);
     }
 
@@ -103,7 +104,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getUltimateDestination(USER_ID, guid, true);
+        Graph response = openLineageService.getUltimateDestination(USER_ID, guid, true);
         checkResponse(response);
     }
 
@@ -116,7 +117,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getSourceAndDestination(USER_ID, guid, true);
+        Graph response = openLineageService.getSourceAndDestination(USER_ID, guid, true);
         checkResponse(response);
     }
 
@@ -129,7 +130,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getVerticalLineage(USER_ID, guid, true);
+        Graph response = openLineageService.getVerticalLineage(USER_ID, guid, true);
         checkResponse(response);
     }
 
@@ -146,10 +147,10 @@ public class OpenLineageServiceTest {
             e.printStackTrace();
         }
 
-        Map<String, List> response = openLineageService.getEndToEndLineage(USER_ID, "n11", true);
+        Graph response = openLineageService.getEndToEndLineage(USER_ID, "n11", true);
 
-        List<Node> nodes = response.get("nodes");
-        List<Edge> edges = response.get("edges");
+        List<Node> nodes = response.getNodes();
+        List<Edge> edges = response.getEdges();
 
         assertEquals("Response should contain 21 nodes", 21, nodes.size());
         assertEquals("Response should contain 20 edges", 20, edges.size());
@@ -170,14 +171,13 @@ public class OpenLineageServiceTest {
     }
 
     @SuppressWarnings("unchecked")
-    private void checkResponse(Map<String, List> responseMap) {
-        assertNotNull("Response is null", responseMap);
-        assertEquals("Response should only contain nodes and edges",2, responseMap.size());
-        assertTrue("Response should contain nodes", responseMap.containsKey("nodes"));
-        assertTrue("Response should contain edges", responseMap.containsKey("edges"));
-        List<Node> nodes = responseMap.get("nodes");
+    private void checkResponse(Graph responseGraph) {
+        assertNotNull("Response is null", responseGraph);
+        assertNotNull("Response should contain nodes", responseGraph.getNodes());
+        assertNotNull("Response should contain edges", responseGraph.getEdges());
+        List<Node> nodes = responseGraph.getNodes();
         assertNotNull("List of nodes is null", nodes);
-        List<String> nodesIds = nodes.stream().map(e -> e.getId()).collect(Collectors.toList());
+        List<String> nodesIds = nodes.stream().map(Node::getId).collect(Collectors.toList());
         assertEquals("Response should contain 4 nodes", 4, nodes.size());
         assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
 

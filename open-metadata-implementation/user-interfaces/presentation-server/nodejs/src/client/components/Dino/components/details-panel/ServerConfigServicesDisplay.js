@@ -91,7 +91,6 @@ export default function ServerConfigServicesDisplay(props) {
        * Access Services
        */
       case "AccessServiceConfig":
-        console.log("Call formatAccessService for service "+service.accessServiceName);
         formattedService = formatAccessService(service);
         break;
 
@@ -450,8 +449,6 @@ export default function ServerConfigServicesDisplay(props) {
     )
   }
   else {
-   
-    console.log("There are services to be parsed...");
     outServices = (
       <ul className="type-details-container">       
        {expandServices(inServices)}          

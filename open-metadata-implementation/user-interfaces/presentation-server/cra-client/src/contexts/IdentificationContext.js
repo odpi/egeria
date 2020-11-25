@@ -7,7 +7,6 @@ export const IdentificationContext = createContext();
 export const IdentificationContextConsumer = IdentificationContext.Consumer;
 
 const IdentificationContextProvider = props => {
-
   const [userId, setUserId] = useState("");
   const [user, setUser] = useState({});
   // TODO this will change if the user changes the url - are there any implications to that?
@@ -18,28 +17,29 @@ const IdentificationContextProvider = props => {
    * Get the home url for the browser
    */
   const getBrowserURL = pageName => {
-    return "/" + serverName + "/" + pageName;
-  };
-  /**
-  * Get the url to use for rest calls 
-  * @param {*} serviceName this is the viewservice name. 
-  */
-  const getRestURL = (serviceName) => {
-    const url =
-      window.location.protocol +
-      "//" +
-      window.location.hostname +
-      ":" +
-      window.location.port +
-      "/servers/" +
-      serverName +
-      "/" +
-      serviceName +
-      "/users/" +
-      userId;
-      console.log("rest url is ", url);
+    const url = "/" + serverName + "/" + pageName;
+    console.log("getBrowserURL" + url);
     return url;
   };
+  /**
+ * Get the url to use for rest calls 
+ * @param {*} serviceName this is the viewservice name. 
+ */
+const getRestURL = (serviceName) => {
+  const url =
+    window.location.protocol +
+    "//" +
+    window.location.hostname +
+    ":" +
+    window.location.port +
+    "/servers/" +
+    serverName +
+    "/" +
+    serviceName +
+    "/users/" +
+    userId;
+  return url;
+};
 
   return (
     <IdentificationContext.Provider
@@ -58,12 +58,9 @@ const IdentificationContextProvider = props => {
       {props.children}
     </IdentificationContext.Provider>
   );
-
 };
-
 IdentificationContextProvider.propTypes = {
   children: PropTypes.node
 };
-
 export default IdentificationContextProvider;
 // export default IdentificationContext;

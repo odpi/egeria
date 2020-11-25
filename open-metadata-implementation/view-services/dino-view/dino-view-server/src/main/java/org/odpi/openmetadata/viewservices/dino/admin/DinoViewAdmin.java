@@ -36,7 +36,6 @@ public class DinoViewAdmin extends ViewServiceAdmin {
 
     protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
 
-
     private AuditLog                  auditLog             = null;
     private String                    serverUserName       = null;
     private DinoViewServicesInstance  instance             = null;
@@ -63,7 +62,8 @@ public class DinoViewAdmin extends ViewServiceAdmin {
                            ViewServiceConfig            viewServiceConfig,
                            AuditLog                     auditLog,
                            String                       serverUserName,
-                           int                          maxPageSize)     throws OMAGConfigurationErrorException
+                           int                          maxPageSize)
+    throws OMAGConfigurationErrorException
 
     {
 
@@ -154,7 +154,8 @@ public class DinoViewAdmin extends ViewServiceAdmin {
      * Shutdown the dino view service.
      */
     @Override
-    public void shutdown() {
+    public void shutdown()
+    {
         final String actionDescription = "shutdown";
 
         log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
@@ -184,45 +185,37 @@ public class DinoViewAdmin extends ViewServiceAdmin {
      * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
      */
     protected List<ResourceEndpointConfig> extractResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints,
-                                                              String                       viewServiceFullName,
-                                                              AuditLog                     auditLog)             throws OMAGConfigurationErrorException
+                                                                    String                       viewServiceFullName,
+                                                                    AuditLog                     auditLog)
+    throws OMAGConfigurationErrorException
     {
         final String methodName = "extractResourceEndpoints";
-
         final String parameterName = "resourceEndpoints";
 
-        try {
 
-            /*
-             * Dino cannot operate without any endpoints.
-             * Check if resourceEndpoints is null and if so throw am exception, which will be caught and logged by logBadConfigProperties, which will throw OMAGConfigurationErrorException...
-             */
-            if (resourceEndpoints == null) {
+        /*
+         * Dino cannot operate without any endpoints.
+         * Check if resourceEndpoints is null and if so call logBadConfigProperties, which will
+         * log the error and throw an OMAGConfigurationErrorException
+         */
+        if (resourceEndpoints == null || resourceEndpoints.isEmpty())
+        {
 
-                throw new InvalidParameterException(DinoViewErrorCode.INVALID_CONFIG_PROPERTY.getMessageDefinition(parameterName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-
-            } else {
-
-                @SuppressWarnings("unchecked")
-                List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
-                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-                return endpointList;
-            }
-
-        } catch (Throwable error) {
-
-            logBadConfigProperties(viewServiceFullName,
-                                   resourceEndpointsPropertyName,
-                                   resourceEndpoints.toString(),
-                                   auditLog,
-                                   methodName,
-                                   error);
+            logBadConfiguration(viewServiceFullName,
+                                resourceEndpointsPropertyName,
+                                resourceEndpoints == null ? "null" : resourceEndpoints.toString(),
+                                auditLog,
+                                methodName);
 
             // unreachable
             return null;
+
+        }
+        else
+        {
+            List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
+            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
+            return endpointList;
         }
     }
 

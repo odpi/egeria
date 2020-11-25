@@ -8,6 +8,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException;
 import org.odpi.openmetadata.viewservices.dino.handlers.DinoViewHandler;
 
 /**
@@ -48,19 +50,26 @@ public class DinoViewInstanceHandler extends OMVSServiceInstanceHandler
         PropertyServerException
     {
 
-        /*
-         * Get the DinoViewServicesInstance. This is an instance associated with the UI servername (tenant).
-         */
-        DinoViewServicesInstance instance = (DinoViewServicesInstance)super.getServerServiceInstance(userId,
-                                                                                                   serverName,
-                                                                                                   serviceOperationName);
+        String methodName = "getDinoViewHandler";
 
-        if (instance != null)
-        {
-            return instance.getDinoViewHandler();
-        }
 
-        return null;
+            /*
+             * Get the DinoViewServicesInstance. This is an instance associated with the UI servername (tenant).
+             */
+            DinoViewServicesInstance instance = (DinoViewServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                          serverName,
+                                                                                                          serviceOperationName);
+
+            if (instance != null)
+            {
+                return instance.getDinoViewHandler();
+            }
+            else
+            {
+
+                return null;
+            }
+
     }
 
 

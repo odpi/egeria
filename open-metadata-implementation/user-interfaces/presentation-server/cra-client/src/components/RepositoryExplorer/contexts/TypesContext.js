@@ -8,6 +8,8 @@ import PropTypes                                        from "prop-types";
 
 import { RepositoryServerContext }                      from "./RepositoryServerContext";
 
+import { InteractionContext }                           from "./InteractionContext";
+
 
 
 
@@ -23,6 +25,7 @@ export const TypesContextConsumer = TypesContext.Consumer;
 const TypesContextProvider = (props) => {
 
   const repositoryServerContext    = useContext(RepositoryServerContext);
+  const interactionContext         = useContext(InteractionContext);
 
   /*
    * tex object is initially empty
@@ -35,27 +38,27 @@ const TypesContextProvider = (props) => {
    * loadTypeInfo function is an asynchronous function that triggers loading of types and (in _loadTypeInfo) sets the state for tex,
    * which can then be accessed by getter functions below
    */
-  const loadTypeInfo = () => {
-    repositoryServerContext.repositoryPOST("types", null, _loadTypeInfo);
+  const loadTypeInfo = (serverName, platformName) => {
+
+    repositoryServerContext.callPOST(serverName, platformName, "types", null, _loadTypeInfo);
   };
 
   const _loadTypeInfo = (json) => {
     
     if (json !== null) {
-      let typeExplorer = json.typeExplorer;
-      if (typeExplorer !== null) {
-        setTex(typeExplorer);
-        return;
+      if (json.relatedHTTPCode === 200 ) {
+        let typeExplorer = json.typeExplorer;
+        if (typeExplorer !== null) {
+          setTex(typeExplorer);
+          return;
+        }
       }
     }   
     /*
      * On failure ...     
      */
-    alert("Could not get types from repository server");
+    interactionContext.reportFailedOperation("get types for server",json);
   }
-  
-        
-
 
 
   /*
@@ -149,7 +152,7 @@ const TypesContextProvider = (props) => {
         getEnumType
       }}
     >
-     {props.children}
+      {props.children}
     </TypesContext.Provider>
   );
 };

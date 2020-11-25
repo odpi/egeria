@@ -10,6 +10,7 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.LineageGraphDisplayRulesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -30,7 +31,7 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
 @Configuration
-@EnableConfigurationProperties(ComponentService.class)
+@EnableConfigurationProperties({ComponentService.class, LineageGraphDisplayRulesService.class})
 public class EgeriaUIPlatform {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIPlatform.class);
