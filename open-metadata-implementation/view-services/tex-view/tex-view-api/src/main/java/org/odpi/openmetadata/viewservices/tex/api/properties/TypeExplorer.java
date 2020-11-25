@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus.DEPRECATED_TYPEDEF;
 
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -76,7 +78,7 @@ public class TypeExplorer {
         return entityTypeNameToGUID;
     }
 
-    public Map<String, String> getRelationshipyTypeGUIDToName() {
+    public Map<String, String> getRelationshipTypeGUIDToName() {
         return relationshipTypeGUIDToName;
     }
 
@@ -106,20 +108,31 @@ public class TypeExplorer {
         enums.put(enumTypeName, enumDef);
     }
 
-    public void resolve() {
+    public void resolve(boolean includeDeprecatedTypes) {
 
         /*
          * After all types have been loaded, call the resolver methods to expand the TEX for each type category
          * Order is important, entities are expanded first.
          */
 
-        resolveEntities();
-        resolveRelationships();
-        resolveClassifications();
+        resolveEntities(includeDeprecatedTypes);
+        resolveRelationships(includeDeprecatedTypes);
+        resolveClassifications(includeDeprecatedTypes);
 
     }
 
-    private void resolveEntities() {
+    private void resolveEntities(boolean includeDeprecatedTypes) {
+
+        // For each entity type, check whether deprecated and if it should be included
+        Map<String, EntityExplorer> includedEntities = new HashMap<>();
+        for (String entityTypeName : entities.keySet()) {
+            EntityExplorer entityExplorer = entities.get(entityTypeName);
+            EntityDef entityDef = entityExplorer.getEntityDef();
+            if (includeDeprecatedTypes || entityDef.getStatus() != DEPRECATED_TYPEDEF) {
+                includedEntities.put(entityTypeName, entityExplorer);
+            }
+        }
+        entities = includedEntities;
 
         // For each entityExplorer add it to its superType's subTypes
         for (String entityTypeName : entities.keySet()) {
@@ -151,9 +164,23 @@ public class TypeExplorer {
         }
     }
 
-    private void resolveRelationships()
+    private void resolveRelationships(boolean includeDeprecatedTypes)
     {
+
+        // For each relationship type, check whether deprecated and if it should be included
+        Map<String, RelationshipExplorer> includedRelationships = new HashMap<>();
+        for (String relationshipTypeName : relationships.keySet()) {
+            RelationshipExplorer relationshipExplorer = relationships.get(relationshipTypeName);
+            RelationshipDef relationshipDef = relationshipExplorer.getRelationshipDef();
+            if (includeDeprecatedTypes || relationshipDef.getStatus() != DEPRECATED_TYPEDEF) {
+                includedRelationships.put(relationshipTypeName, relationshipExplorer);
+            }
+        }
+        relationships = includedRelationships;
+
         // For each relationshipExplorer gets its end types and add the relationship type to each of the entity types
+        // If not including deprecated types and an entity type for an end is deprecated, ignore the entity type.
+
         for (String relationshipTypeName : relationships.keySet()) {
 
             RelationshipExplorer relationshipExplorer = relationships.get(relationshipTypeName);
@@ -163,20 +190,28 @@ public class TypeExplorer {
             if (entityOneDef != null) {
                 String entityOneTypeName = entityOneDef.getEntityType().getName();
                 EntityExplorer entityOneExplorer = entities.get(entityOneTypeName);
-                entityOneExplorer.addRelationship(relationshipTypeName);
-                List<String> subTypeNames = entityOneExplorer.getSubTypeNames();
-                for (String subTypeName : subTypeNames) {
-                    addRelationshipToSubType(relationshipTypeName,subTypeName);
+                if (entityOneExplorer != null)
+                {
+                    entityOneExplorer.addRelationship(relationshipTypeName);
+                    List<String> subTypeNames = entityOneExplorer.getSubTypeNames();
+                    for (String subTypeName : subTypeNames)
+                    {
+                        addRelationshipToSubType(relationshipTypeName, subTypeName);
+                    }
                 }
             }
 
             if (entityTwoDef != null) {
                 String entityTwoTypeName = entityTwoDef.getEntityType().getName();
                 EntityExplorer entityTwoExplorer = entities.get(entityTwoTypeName);
-                entityTwoExplorer.addRelationship(relationshipTypeName);
-                List<String> subTypeNames = entityTwoExplorer.getSubTypeNames();
-                for (String subTypeName : subTypeNames) {
-                    addRelationshipToSubType(relationshipTypeName,subTypeName);
+                if (entityTwoExplorer != null)
+                {
+                    entityTwoExplorer.addRelationship(relationshipTypeName);
+                    List<String> subTypeNames = entityTwoExplorer.getSubTypeNames();
+                    for (String subTypeName : subTypeNames)
+                    {
+                        addRelationshipToSubType(relationshipTypeName, subTypeName);
+                    }
                 }
             }
 
@@ -199,9 +234,23 @@ public class TypeExplorer {
     }
 
 
-    private void resolveClassifications()
+    private void resolveClassifications(boolean includeDeprecatedTypes)
     {
+        // For each classification type, check whether deprecated and if it should be included
+        Map<String, ClassificationExplorer> includedClassifications = new HashMap<>();
+        for (String classificationTypeName : classifications.keySet()) {
+            ClassificationExplorer classificationExplorer = classifications.get(classificationTypeName);
+            ClassificationDef classificationDef = classificationExplorer.getClassificationDef();
+            if (includeDeprecatedTypes || classificationDef.getStatus() != DEPRECATED_TYPEDEF) {
+                includedClassifications.put(classificationTypeName, classificationExplorer);
+            }
+        }
+        classifications = includedClassifications;
+
+
         // For each classificationExplorer add its name to the known classifications for its valid entity types
+        // If not including deprecated types and an entity type for an end is deprecated, ignore the entity type.
+
         for (String classificationTypeName : classifications.keySet()) {
             ClassificationExplorer classificationExplorer = classifications.get(classificationTypeName);
             List<TypeDefLink> validEntityTypes = classificationExplorer.getClassificationDef().getValidEntityDefs();
@@ -209,10 +258,14 @@ public class TypeExplorer {
                 for (TypeDefLink entityType : validEntityTypes) {
                     String entityTypeName = entityType.getName();
                     EntityExplorer entityExplorer = entities.get(entityTypeName);
-                    entityExplorer.addClassification(classificationTypeName);
-                    List<String> subTypeNames = entityExplorer.getSubTypeNames();
-                    for (String subTypeName : subTypeNames) {
-                        addClassificationToSubType(classificationTypeName,subTypeName);
+                    if (entityExplorer != null)
+                    {
+                        entityExplorer.addClassification(classificationTypeName);
+                        List<String> subTypeNames = entityExplorer.getSubTypeNames();
+                        for (String subTypeName : subTypeNames)
+                        {
+                            addClassificationToSubType(classificationTypeName, subTypeName);
+                        }
                     }
                 }
             }
