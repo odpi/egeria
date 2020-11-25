@@ -16,6 +16,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+/**
+ * A summary of the platform for the Server Author View. It contains a name a description of the platform, a status and
+ * the associated servers if we can get them. It is a minimal representation of the platforms and associated stored servers, that could be
+ * displayed in a UI table. The platform url root and technical ids are hidden from the user interface.
+ */
 public class Platform {
 
     private static final long    serialVersionUID = 1L;

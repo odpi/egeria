@@ -2,8 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.serverauthor.api.properties;
 
+/**
+ * The status of the platform for the Server Author View.
+ */
 public enum PlatformStatus {
-    UNKNOWN                 (0,  "<Unknown>",               "Unknown instance status."),
+
+    UNKNOWN                 (0,  "<Unknown>",               "Unknown platform status."),
     ACTIVE                  (1,  "Active",                  "The platform is active."),
     NOT_CONTACTABLE         (2,  "Not contactable",         "The platform is not contactable."),
     OTHER                   (99, "Other",                   "The platform has some other status.");

@@ -207,6 +207,7 @@ public class OMAGServerAdminForViewServices
      *
      * @param userId     calling user
      * @param serverName name of server
+     * @param serviceURLMarker server URL marker identifying the view service
      * @return view services response
      */
     public ViewServiceConfigResponse getViewServiceConfig(String userId,

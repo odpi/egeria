@@ -87,19 +87,19 @@ public class ConfigViewResource
      *
      * @param userId  user that is issuing the request
      * @param serverName  local server name
-     * @param serverBeingConfiguredName name of the server to be configured.
+     * @param serverBeingDeployedName name of the server to be configured.
      * @param destinationPlatformName  name of the platform where the config is to be deployed to
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration or
      * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
      */
-    @PostMapping(path = "/servers/{serverBeingConfiguredName}/configuration/deploy")
+    @PostMapping(path = "/servers/{serverBeingDeployedName}/configuration/deploy")
     public ServerAuthorConfigurationResponse deployOMAGServerConfig(@PathVariable String           userId,
                                                @PathVariable String           serverName,
                                                @PathVariable String           destinationPlatformName,
-                                               @PathVariable String           serverBeingConfiguredName)
+                                               @PathVariable String           serverBeingDeployedName)
     {
-        return adminAPI.deployOMAGServerConfig(userId, serverName, destinationPlatformName, serverBeingConfiguredName);
+        return adminAPI.deployOMAGServerConfig(userId, serverName, destinationPlatformName, serverBeingDeployedName);
     }
 }

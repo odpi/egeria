@@ -26,13 +26,12 @@ import java.util.*;
 
 
 /**
- * The TexViewHandler is initialised with the server the call should be sent to.
+ * The ServerAuthorViewHandler is initialised with the server the call should be sent to.
  * The handler exposes methods for functionality for the type explorer view
  */
 public class ServerAuthorViewHandler {
 
     private static final String className = ServerAuthorViewHandler.class.getName();
-//    private static final Logger log = LoggerFactory.getLogger(ServerAuthorViewHandler.class);
 
     /*
      * Specify a constant for the (max) length to which labels will be truncated.
@@ -127,11 +126,9 @@ public class ServerAuthorViewHandler {
     /**
      * getResourceEndpoints - returns a list of the configured resource endpoints. Does not include discovered resource endpoints.
      *
-     * @param userId     userId under which the request is performed
-     * @param methodName The name of the method being invoked
-     *                   This method will return the resource endpoints that have been configured for the view service
+     * @return the map of resource endpoints
      */
-    public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName) {
+    public Map<String, List<ResourceEndpoint>> getResourceEndpoints() {
 
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
 
@@ -153,6 +150,13 @@ public class ServerAuthorViewHandler {
         return returnMap;
     }
 
+    /**
+     * Get the server configurations associated with the platforms that this view service knows about.
+     * @param userId     userId under which the request is performed
+     * @param methodName The name of the method being invoked
+     * @return the known platforms, which if active will contain their associated omag server configurations
+     * @throws ServerAuthorViewServiceException the server author view has detected an error
+     */
     public Set<Platform> getKnownPlatforms(String userId, String methodName) throws ServerAuthorViewServiceException {
         Set<Platform> knownPlatforms = new HashSet<>();
         try {
@@ -252,6 +256,7 @@ public class ServerAuthorViewHandler {
      * @param className                class Name for diagnostic purposes
      * @param methodName               current operation
      * @param serverToBeConfiguredName name of the server being configured
+     * @param storageProperties        storage properties
      * @throws ServerAuthorViewServiceException server author exception
      */
     public void setGraphLocalRepository(String className, String methodName, String serverToBeConfiguredName, Map<String, Object> storageProperties) throws ServerAuthorViewServiceException {
@@ -299,7 +304,8 @@ public class ServerAuthorViewHandler {
      *
      * @param className               class Name for diagnostic purposes
      * @param methodName              current operation
-     * @param serverToBeRetrievedName name of the server whose configuration is to be retieved
+     * @param serverToBeRetrievedName name of the server whose configuration is to be retrieved
+     * @return the omag server configuration
      * @throws ServerAuthorViewServiceException server author exception
      */
     public OMAGServerConfig getStoredConfiguration(String className, String methodName, String serverToBeRetrievedName) throws ServerAuthorViewServiceException {
@@ -350,7 +356,8 @@ public class ServerAuthorViewHandler {
      *
      * @param className        class Name for diagnostic purposes
      * @param methodName       current operation
-     * @param omagServerConfig name of the server whose configuration we are setting
+     * @param serverToBeConfiguredName name of the server to be configured
+     * @param omagServerConfig the server configuration we are setting
      * @throws ServerAuthorViewServiceException server author exception
      */
     public void setOMAGServerConfig(String className, String methodName, String serverToBeConfiguredName, OMAGServerConfig omagServerConfig) throws ServerAuthorViewServiceException {

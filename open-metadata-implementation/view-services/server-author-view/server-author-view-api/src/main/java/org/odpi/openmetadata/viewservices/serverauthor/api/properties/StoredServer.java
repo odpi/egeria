@@ -15,6 +15,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+/**
+ * The is the Server Author View Service's concept of a stored server, it is a minimal representation of the stored server, including
+ * its name, description and type; so a UI could use htis information to show a meaningful summary of the stored server.
+ */
 public class StoredServer {
 
     private static final long    serialVersionUID = 1L;
@@ -35,9 +39,10 @@ public class StoredServer {
 
     /**
      * Constructor
-
+     *
      * @param storedServerName storedServer name
      * @param storedServerDescription storedServer description
+     * @param serverType meaningful name of the type of the server
      */
     public StoredServer(String storedServerName, String storedServerDescription, String serverType) {
 

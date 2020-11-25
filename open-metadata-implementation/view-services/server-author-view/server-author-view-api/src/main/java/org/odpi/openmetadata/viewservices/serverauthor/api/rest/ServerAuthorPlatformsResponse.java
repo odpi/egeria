@@ -58,9 +58,6 @@ public class ServerAuthorPlatformsResponse extends ServerAuthorViewOMVSAPIRespon
         this.platforms = platforms;
     }
 
-    public void addPlatform(Platform platform) {
-        platforms.add(platform);
-    }
     /**
      * JSON-style toString
      *
