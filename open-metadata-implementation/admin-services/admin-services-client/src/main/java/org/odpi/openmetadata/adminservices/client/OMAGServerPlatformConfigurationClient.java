@@ -269,7 +269,7 @@ public class OMAGServerPlatformConfigurationClient
                                                                    OMAGConfigurationErrorException,
                                                                    OMAGInvalidParameterException {
         final String methodName  = "getPlatformServerConfigs";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/configurations";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/platform/server-configurations";
 
         OMAGServerConfigsResponse restResult = restClient.callOMAGServerConfigsGetRESTCall(methodName,
                                                                                     serverPlatformRootURL + urlTemplate,

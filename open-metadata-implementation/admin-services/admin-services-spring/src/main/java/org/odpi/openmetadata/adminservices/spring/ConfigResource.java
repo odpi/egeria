@@ -46,16 +46,20 @@ public class ConfigResource
         return adminAPI.getStoredConfiguration(userId, serverName);
     }
     /**
-     * Return the configuration documents stored on the platform
+     * Return the server configuration documents stored on the platform
      *
      * @param userId  user that is issuing the request
      * @return OMAGServerConfigs properties or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid parameter occurred while processing.
      */
-    @GetMapping(path = "/configurations")
+    @GetMapping(path = "/platform/server-configurations")
     public OMAGServerConfigsResponse getStoredConfigurations(@PathVariable String userId)
     {
+        // this REST API is in the admin module rather than platform services module so the code can access the retrieve server config functionality.
+        // It might be that in time, we want to move this API to the platform services where it more naturally sits. This would require
+        // a refactor to the admin service and platform service to access the same server config retrieval code. In the mean time the Rest API is
+        // exposed named as a platform service would be - with the leading segment of /platform.
         return adminAPI.retrieveAllServerConfigs(userId);
     }
 
