@@ -12,19 +12,20 @@ import "./resource-selector.scss"
 
 
 /*
- * The DeprecationControl provides a checkbox that the user can check if they want to not
- * have display of deprecated types. The types are still read in the explorer but will not
- * be displayed in diagrams or on details panels.
+ * The DeprecatedTypeControl provides a checkbox that the user can check if they want
+ * display of deprecated types. If the option is checked, the types are read in 
+ * the explorer and will be displayed in diagrams or on details panels. If not 
+ * checked, the types are not read in the explorer.
  */
 
-export default function DeprecationControl() {
+export default function DeprecatedTypeControl() {
   
   const requestContext         = useContext(RequestContext);
 
   const typesContext           = useContext(TypesContext);
 
-  const updateDeprecationOption = () => {
-    requestContext.updateDeprecationOption();
+  const updateDeprecatedTypeOption = () => {
+    requestContext.updateDeprecatedTypeOption();
   };
 
   return (
@@ -35,9 +36,9 @@ export default function DeprecationControl() {
       <input type="checkbox"
              id="cbDeprecation"
              name="cbDeprecation"
-             onChange={updateDeprecationOption}
-             checked={ requestContext.deprecationOption }
-             value={ requestContext.deprecationOption }  />
+             onChange={updateDeprecatedTypeOption}
+             checked={ requestContext.deprecatedTypeOption }
+             value={ requestContext.deprecatedTypeOption }  />
       <br />
 
     </div>

@@ -55,7 +55,7 @@ export default function ClassificationEntitiesDisplay(props) {
     let entityTypeStatus = entityTypeDefLink.status;
     let entityTypeDeprecated = entityTypeStatus === "DEPRECATED_TYPEDEF";
 
-    if (requestContext.deprecationOption || !entityTypeDeprecated) {
+    if (requestContext.deprecatedTypeOption || !entityTypeDeprecated) {
 
       /*
        * The entity is supposedly current and should be present in the Type Explorer.

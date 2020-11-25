@@ -45,7 +45,7 @@ export default function RelationshipEntitiesDisplay(props) {
     let endypeStatus = endDef.entityType.status;
     let endTypeDeprecated = endypeStatus === "DEPRECATED_TYPEDEF";
 
-    if (requestContext.deprecationOption || !endTypeDeprecated) {
+    if (requestContext.deprecatedTypeOption || !endTypeDeprecated) {
 
       /*
        * The entity is supposedly current and should be present in the Type Explorer.

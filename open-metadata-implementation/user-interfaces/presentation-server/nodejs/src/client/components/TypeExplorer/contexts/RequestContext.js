@@ -39,14 +39,23 @@ const RequestContextProvider = (props) => {
   }
 
 
-  const [deprecationOption, setDeprecationOption] = useState(false);
+  const [deprecatedTypeOption, setDeprecatedTypeOption] = useState(false);
 
- /*
-  * Handler for change to deprecation option checkbox
-  */
- const updateDeprecationOption = () => {
-   setDeprecationOption(!deprecationOption);
- }
+  /*
+   * Handler for change to deprecation option checkbox
+   */
+  const updateDeprecatedTypeOption = () => {
+    setDeprecatedTypeOption(!deprecatedTypeOption);
+  }
+
+  const [deprecatedAttributeOption, setDeprecatedAttributeOption] = useState(false);
+
+  /*
+   * Handler for change to deprecation option checkbox
+   */
+  const updateDeprecatedAttributeOption = () => {
+    setDeprecatedAttributeOption(!deprecatedAttributeOption);
+  }
 
   /*
    * Define the basic body parameters that are common to requests to the platform or server
@@ -235,8 +244,10 @@ const RequestContextProvider = (props) => {
         buildBaseBody,
         updateEnterpriseOption,
         enterpriseOption,
-        updateDeprecationOption,
-        deprecationOption
+        updateDeprecatedTypeOption,
+        deprecatedTypeOption,
+        updateDeprecatedAttributeOption,
+        deprecatedAttributeOption
       }}
     >      
     {props.children}

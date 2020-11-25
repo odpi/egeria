@@ -65,7 +65,7 @@ const TypesContextProvider = (props) => {
       { serverName        : serverName,
         platformName      : platformName,
         enterpriseOption  : requestContext.enterpriseOption,
-        deprecationOption : requestContext.deprecationOption,
+        deprecationOption : requestContext.deprecatedTypeOption,
       }, _loadTypeInfo);
   };
 
@@ -230,7 +230,7 @@ const TypesContextProvider = (props) => {
       if (platformName && serverName)
         loadTypeInfoForExisting();
     },
-    [requestContext.deprecationOption]
+    [requestContext.deprecatedTypeOption]
   )
 
 

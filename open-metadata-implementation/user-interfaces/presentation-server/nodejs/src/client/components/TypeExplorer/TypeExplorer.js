@@ -31,7 +31,9 @@ import ServerSelector                           from "./components/resource-sele
 
 import EnterpriseControl                        from "./components/resource-selection/EnterpriseControl";
 
-import DeprecationControl                        from "./components/resource-selection/DeprecationControl";
+import DeprecatedTypeControl                    from "./components/resource-selection/DeprecatedTypeControl";
+
+import DeprecatedAttributeControl               from "./components/resource-selection/DeprecatedAttributeControl";
 
 import FocusControls                            from "./components/focus-controls/FocusControls";
 
@@ -152,7 +154,9 @@ export default function TypeExplorer() {
 
                     <EnterpriseControl/>
 
-                    <DeprecationControl/>
+                    <DeprecatedTypeControl/>
+
+                    <DeprecatedAttributeControl/>
                  
                   </div>
 
