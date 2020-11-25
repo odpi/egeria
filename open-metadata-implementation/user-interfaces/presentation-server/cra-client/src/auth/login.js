@@ -16,7 +16,7 @@ import {
   Button
 } from 'carbon-components-react';
 
-const Login = (props) => {
+const Login = () => {
   const identificationContext = useContext(IdentificationContext);
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState("");
@@ -29,7 +29,7 @@ const Login = (props) => {
     const url = identificationContext.getBrowserURL('login') + "?" + new URLSearchParams({
       username: userId,
       password: password
-    });
+  });
     fetch(url, {
       method: "post",
       headers: {
@@ -44,8 +44,8 @@ const Login = (props) => {
           identificationContext.setUserId(userId);
           identificationContext.setUser(res.user);
           identificationContext.setAuthenticated(true);
-          // redirect user to page they were previously on if they refresh or enter an exact URL
-          const path = props.currentURL ? identificationContext.getBrowserURL(props.currentURL) : identificationContext.getBrowserURL(''); 
+          // TODO original url prop. 
+          const path = identificationContext.getBrowserURL(''); 
           history.push(path);
         } else {
           if (res.errno) {
@@ -65,6 +65,7 @@ const Login = (props) => {
     const value = event.target.value;
     sessionStorage.setItem("egeria-userId", value);
     setUserId(value);
+    console.log("handleOnChange :" + value);
   };
 
   const validateForm = () => {
@@ -82,9 +83,8 @@ const Login = (props) => {
             lg={{ span: 4, offset: 6 }}
           >
             <Form id="egeria-login-form">
-              <FormGroup legendText="">
+              <FormGroup>
                 <TextInput
-                  id="login-username"
                   type="text"
                   labelText="Username"
                   name="username"
@@ -94,7 +94,6 @@ const Login = (props) => {
                   required
                 />
                 <TextInput
-                  id="login-password"
                   type="password"
                   labelText="Password"
                   name="password"
@@ -102,7 +101,7 @@ const Login = (props) => {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Password"
                   required
-                />
+                  />
               </FormGroup>
               <Button
                 type="submit"

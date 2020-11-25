@@ -107,7 +107,7 @@ public class GlossaryTermStatusRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryRequestBody{" +
+        return "GlossaryTermStatusRequestBody{" +
                        "metadataCorrelationProperties=" + metadataCorrelationProperties +
                        ", glossaryTermStatus=" + glossaryTermStatus +
                        '}';

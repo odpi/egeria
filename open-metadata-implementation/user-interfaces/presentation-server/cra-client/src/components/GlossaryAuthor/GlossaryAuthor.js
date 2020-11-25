@@ -1,15 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
-import GlossaryAuthorContext from "./contexts/GlossaryAuthorContext";
+import React, { useState, useEffect, useContext } from "react";
 import { Accordion, AccordionItem } from "carbon-components-react";
+import GlossaryAuthorContext from "./contexts/GlossaryAuthorContext";
 import getNodeType from "./components/properties/NodeTypes.js";
-import Egeria_project_32 from "../../images/Egeria_project_32";
-import Egeria_glossary_32 from "../../images/Egeria_glossary_32";
-import MyNodeView from "./components/views/MyNodeView";
-import GlossaryAuthorNodes from "./components/GlossaryAuthorNodes";
+import { IdentificationContext } from "../../contexts/IdentificationContext";
+import { BrowserRouter } from "react-router-dom";
+import GlossaryAuthorRoutes from "./components/views/GlossaryAuthorRoutes";
+import GlossaryAuthorTaskRouting from "./components/GlossaryAuthorTaskRouting";
 
 export default function GlossaryAuthor() {
+  // const GlossaryAuthor = (match) => {
   const [connected, setConnected] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [exceptionUserAction, setExceptionUserAction] = useState();
@@ -17,10 +18,15 @@ export default function GlossaryAuthor() {
   const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
+  const [glossaryAuthorURL, setGlossaryAuthorURL] = useState();
+  const identificationContext = useContext(IdentificationContext);
 
   const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
+    setGlossaryAuthorURL(
+      identificationContext.getBrowserURL("glossary-author")
+    );
     issueConnect();
   }, []);
 
@@ -42,12 +48,12 @@ export default function GlossaryAuthor() {
         "/" +
         serverName +
         "/login";
-      if (window.history.pushState) {
+      if (history.pushState) {
         alert(
           "We have lost the session possibly due to a refresh of the web page. Please re-enter your credentials"
         );
-        window.history.pushState({}, null, loginUrl);
-        window.history.go();
+        history.pushState({}, null, loginUrl);
+        history.go();
       } else {
         alert(
           "The Browser does not support history. Please re-login here: " +
@@ -56,7 +62,7 @@ export default function GlossaryAuthor() {
       }
     } else {
       // get one page of glossaries
-      const fetchUrl = nodeType.url + "?offset=0&pageSize=1&searchCriteria=.*";
+      const fetchUrl = nodeType.url + "?pageSize=1&searchCriteria=.*";
       console.log("URL to be submitted is " + fetchUrl);
       setErrorMsg(undefined);
       setExceptionUserAction(undefined);
@@ -118,21 +124,18 @@ export default function GlossaryAuthor() {
   return (
     <div>
       {connected && (
-        <GlossaryAuthorContext>
-          <div className='my-container'>
-            <span className='my-item'>
-              Current Glossary
-              <Egeria_glossary_32 />
-              <MyNodeView typeKey="glossary" />
-            </span>
-            <span className='my-item'>
-              Current Project
-              <Egeria_project_32 />
-              <MyNodeView typeKey="project" />
-            </span>
-          </div>
-          <GlossaryAuthorNodes />
-        </GlossaryAuthorContext>
+        <div>
+          <GlossaryAuthorContext>
+            <BrowserRouter>
+              {/* this will cause the change in URL */}
+              <GlossaryAuthorTaskRouting glossaryAuthorURL={glossaryAuthorURL} />
+
+              {/* This will cause the view to be changed as a result of the url change */}
+              <GlossaryAuthorRoutes glossaryAuthorURL={glossaryAuthorURL} />
+              {/* <GlossaryAuthorRoutes /> */}
+            </BrowserRouter>
+          </GlossaryAuthorContext>
+        </div>
       )}
       {!connected && (
         <div>

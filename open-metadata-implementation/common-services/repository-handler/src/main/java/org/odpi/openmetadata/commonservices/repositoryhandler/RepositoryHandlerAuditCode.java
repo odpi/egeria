@@ -41,7 +41,20 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                                   "server {3}; message was {0}",
                           "The system is unable to process the request because of an internal error.",
                           "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
-            ;
+
+    UNABLE_TO_SET_ANCHORS("OMAG-REPOSITORY-HANDLER-0004",
+                          OMRSAuditLogRecordSeverity.ERROR,
+                          "The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type {1} during method {2}." +
+                                  " The resulting exception was {3} with error message {4}",
+                          "The server was attempting to add Anchors classifications to a collection of metadata instances that are " +
+                                  "logically part of the same object.  This classification is used to optimize the retrieval and " +
+                                  "maintenance of complex objects.  It is optional function.  The server continues to " +
+                                  "process the original request which will complete successfully unless something else goes wrong.",
+                          "No specific action is required.  This message is to highlight that the retrieval and management of metadata is not optimal" +
+                                  "because none of the repositories in the cohort support the Anchors classification.  To enable the " +
+                                  "optimization provided through the Anchors classification, add an Egeria native metadata server to the cohort.  " +
+                                  "This will provide the support for the Anchors classification."),
+    ;
 
     private String                     logMessageId;
     private OMRSAuditLogRecordSeverity severity;

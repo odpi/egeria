@@ -5,15 +5,17 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.LineageExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 
 /**
@@ -128,13 +130,13 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this process
-     * @param processExternalIdentifier unique identifier of the process in the external asset manager
-     * @param processExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param processExternalIdentifier unique identifier of the process in the external process manager
+     * @param processExternalIdentifierName name of property for the external identifier in the external process manager
+     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external process manager
      * @param processExternalIdentifierSource component that issuing this request.
-     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
+     * @param mappingProperties additional properties to help with the mapping of the elements in the external process manager and open metadata
      * @param processProperties properties about the process to store
      * @param initialStatus status value for the new process (default = ACTIVE)
      *
@@ -152,15 +154,43 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                 String              processExternalIdentifierName,
                                 String              processExternalIdentifierUsage,
                                 String              processExternalIdentifierSource,
-                                KeyPattern processExternalIdentifierKeyPattern,
+                                KeyPattern          processExternalIdentifierKeyPattern,
                                 Map<String, String> mappingProperties,
-                                ProcessProperties processProperties,
-                                ProcessStatus initialStatus) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                                ProcessProperties   processProperties,
+                                ProcessStatus       initialStatus) throws InvalidParameterException, 
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createProcess";
+        final String propertiesParameterName     = "processProperties";
+        final String qualifiedNameParameterName  = "processProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        ProcessRequestBody requestBody = new ProcessRequestBody();
+        requestBody.setElementProperties(processProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   processExternalIdentifier,
+                                                                                   processExternalIdentifierName,
+                                                                                   processExternalIdentifierUsage,
+                                                                                   processExternalIdentifierSource,
+                                                                                   processExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes?assetManagerIsHome={2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetManagerIsHome);
+
+        return restResult.getGUID();
     }
 
 
@@ -171,13 +201,13 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param processExternalIdentifier unique identifier of the process in the external asset manager
-     * @param processExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param processExternalIdentifier unique identifier of the process in the external process manager
+     * @param processExternalIdentifierName name of property for the external identifier in the external process manager
+     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external process manager
      * @param processExternalIdentifierSource component that issuing this request.
-     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
+     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     *                          external process manager and open metadata
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new process
@@ -200,8 +230,38 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createProcessFromTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+        requestBody.setElementProperties(templateProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   processExternalIdentifier,
+                                                                                   processExternalIdentifierName,
+                                                                                   processExternalIdentifierUsage,
+                                                                                   processExternalIdentifierSource,
+                                                                                   processExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/from-template/{2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -212,7 +272,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to update
-     * @param processExternalIdentifier unique identifier of the process in the external asset manager
+     * @param processExternalIdentifier unique identifier of the process in the external process manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param processProperties new properties for the metadata element
      *
@@ -230,7 +290,32 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        // todo
+        final String methodName                 = "updateProcess";
+        final String processGUIDParameterName   = "processGUID";
+        final String propertiesParameterName    = "processProperties";
+        final String qualifiedNameParameterName = "processProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        ProcessRequestBody requestBody = new ProcessRequestBody();
+        requestBody.setElementProperties(processProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   processExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        processGUID,
+                                        isMergeUpdate);
     }
 
 
@@ -241,7 +326,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the process to update
-     * @param processExternalIdentifier unique identifier of the process in the external asset manager
+     * @param processExternalIdentifier unique identifier of the process in the external process manager
      * @param processStatus new status for the process
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -257,7 +342,29 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        // todo
+        final String methodName              = "updateProcessStatus";
+        final String portGUIDParameterName   = "processGUID";
+        final String propertiesParameterName = "processStatus";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, portGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(processStatus, propertiesParameterName, methodName);
+
+        ProcessStatusRequestBody requestBody = new ProcessStatusRequestBody();
+        requestBody.setProcessStatus(processStatus);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   processExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/status";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        processGUID);
     }
 
 
@@ -267,9 +374,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
-     * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
-     * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
+     * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
      * @param containmentType describes the ownership of the sub-process
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -286,7 +393,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        // todo
+        final String methodName                     = "setupProcessParent";
+        final String parentProcessGUIDParameterName = "parentProcessGUID";
+        final String childProcessGUIDParameterName  = "childProcessGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentProcessGUID, parentProcessGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(childProcessGUID, childProcessGUIDParameterName, methodName);
+
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/child/{3}?assetManagerIsHome={4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        parentProcessGUID,
+                                        childProcessGUID,
+                                        assetManagerIsHome);
     }
 
 
@@ -296,8 +421,8 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
-     * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
+     * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
+     * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -311,16 +436,35 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        // todo
+        final String methodName                     = "clearProcessParent";
+        final String parentProcessGUIDParameterName = "parentProcessGUID";
+        final String childProcessGUIDParameterName  = "childProcessGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentProcessGUID, parentProcessGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(childProcessGUID, childProcessGUIDParameterName, methodName);
+
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/children/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        parentProcessGUID,
+                                        childProcessGUID);
     }
 
 
     /**
-     * Update the zones for the asset so that it becomes visible to consumers.
+     * Update the zones for the process so that it becomes visible to consumers.
      * (The zones are set to the list of zones in the publishedZones option configured for each
      * instance of the Asset Manager OMAS).
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to publish
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -328,20 +472,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void publishProcess(String userId,
+                               String assetManagerGUID,
+                               String assetManagerName,
                                String processGUID) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
+        final String methodName               = "publishProcess";
+        final String processGUIDParameterName = "processGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/publish";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        processGUID);
     }
 
 
     /**
-     * Update the zones for the asset so that it is no longer visible to consumers.
+     * Update the zones for the process so that it is no longer visible to consumers.
      * (The zones are set to the list of zones in the defaultZones option configured for each
-     * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
+     * instance of the Asset Manager OMAS.  This is the setting when the process is first created).
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to withdraw
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -349,11 +510,26 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void withdrawProcess(String userId,
+                                String assetManagerGUID,
+                                String assetManagerName,
                                 String processGUID) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
+        final String methodName               = "withdrawProcess";
+        final String processGUIDParameterName = "processGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/withdraw";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        processGUID);
     }
 
 
@@ -364,7 +540,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to remove
-     * @param processExternalIdentifier unique identifier of the process in the external asset manager
+     * @param processExternalIdentifier unique identifier of the process in the external process manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -378,7 +554,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        // todo
+        final String methodName               = "removeProcess";
+        final String processGUIDParameterName = "processGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      processExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        processGUID);
     }
 
 
@@ -408,13 +600,35 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                = "findProcesses";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-search-string?startFrom={2}&pageSize={3}";
+
+        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  requestBody,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
     /**
-     * Return the list of processes associated with the asset manager.
+     * Return the list of processes associated with the process manager.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
@@ -422,7 +636,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
-     * @return list of metadata elements describing the processes associated with the requested asset manager
+     * @return list of metadata elements describing the processes associated with the requested process manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -436,8 +650,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getProcessesForAssetManager";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-asset-manager?startFrom={2}&pageSize={3}";
+
+        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                        assetManagerName),
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -467,8 +696,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getProcessesByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-name?startFrom={2}&pageSize={3}";
+
+        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  requestBody,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -493,8 +745,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getProcessByGUID";
+        final String guidParameterName = "processGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/retrieve";
+
+        ProcessElementResponse restResult = restClient.callProcessPostRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                     assetManagerName),
+                                                                               serverName,
+                                                                               userId,
+                                                                               processGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -519,8 +786,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getProcessParent";
+        final String guidParameterName = "processGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/parent/retrieve";
+
+        ProcessElementResponse restResult = restClient.callProcessPostRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                     assetManagerName),
+                                                                               serverName,
+                                                                               userId,
+                                                                               processGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -549,8 +831,27 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getProcessesByName";
+        final String guidParameterName = "processGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/children?startFrom={2}&pageSize={3}";
+
+        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                        assetManagerName),
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -564,15 +865,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this port
+     * @param assetManagerIsHome ensure that only the process manager can update this port
      * @param processGUID unique identifier of the process where the port is located
-     * @param portExternalIdentifier unique identifier of the port in the external asset manager
-     * @param portExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param portExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
+     * @param portExternalIdentifier unique identifier of the port in the external process manager
+     * @param portExternalIdentifierName name of property for the external identifier in the external process manager
+     * @param portExternalIdentifierUsage optional usage description for the external identifier when calling the external process manager
      * @param portExternalIdentifierSource component that issuing this request.
-     * @param portExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
+     * @param portExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     *                          external process manager and open metadata
      * @param portProperties properties for the port
      *
      * @return unique identifier of the new metadata element for the port
@@ -596,8 +897,36 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createPort";
+        final String propertiesParameterName     = "portProperties";
+        final String qualifiedNameParameterName  = "portProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(portProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(portProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        PortRequestBody requestBody = new PortRequestBody();
+        requestBody.setElementProperties(portProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   portExternalIdentifier,
+                                                                                   portExternalIdentifierName,
+                                                                                   portExternalIdentifierUsage,
+                                                                                   portExternalIdentifierSource,
+                                                                                   portExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports?assetManagerIsHome={2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetManagerIsHome);
+
+        return restResult.getGUID();
     }
 
 
@@ -610,7 +939,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the port to update
      * @param portProperties new properties for the port
-     * @param portExternalIdentifier unique identifier of the port in the external asset manager
+     * @param portExternalIdentifier unique identifier of the port in the external process manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -625,7 +954,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        // todo
+        final String methodName                  = "updatePort";
+        final String portGUIDParameterName       = "portGUID";
+        final String propertiesParameterName     = "portProperties";
+        final String qualifiedNameParameterName  = "portProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(portProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(portProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        PortRequestBody requestBody = new PortRequestBody();
+        requestBody.setElementProperties(portProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   portExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        portGUID);
     }
 
 
@@ -635,7 +988,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
      *
@@ -652,7 +1005,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        // todo
+        final String methodName               = "setupProcessPort";
+        final String processGUIDParameterName = "processGUID";
+        final String portGUIDParameterName    = "portGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/{3}?assetManagerIsHome={4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        processGUID,
+                                        portGUID,
+                                        assetManagerIsHome);
     }
 
 
@@ -677,7 +1047,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        // todo
+        final String methodName               = "clearProcessPort";
+        final String processGUIDParameterName = "processGUID";
+        final String portGUIDParameterName    = "portGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        processGUID,
+                                        portGUID);
     }
 
 
@@ -688,7 +1074,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
      *
@@ -705,7 +1091,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        // todo
+        final String methodName               = "setupPortDelegation";
+        final String portOneGUIDParameterName = "portOneGUID";
+        final String portTwoGUIDParameterName = "portTwoGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portOneGUID, portOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(portTwoGUID, portTwoGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/{3}?assetManagerIsHome={4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        portOneGUID,
+                                        portTwoGUID,
+                                        assetManagerIsHome);
     }
 
 
@@ -730,7 +1133,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        // todo
+        final String methodName               = "clearPortDelegation";
+        final String portOneGUIDParameterName = "portOneGUID";
+        final String portTwoGUIDParameterName = "portTwoGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portOneGUID, portOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(portTwoGUID, portTwoGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        portOneGUID,
+                                        portTwoGUID);
     }
 
 
@@ -740,7 +1159,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
      *
@@ -757,7 +1176,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        // todo
+        final String methodName                  = "setupPortSchemaType";
+        final String portGUIDParameterName       = "portGUID";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/schemaType/{3}?assetManagerIsHome={4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        portGUID,
+                                        schemaTypeGUID,
+                                        assetManagerIsHome);
     }
 
 
@@ -782,7 +1218,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        // todo
+        final String methodName                  = "clearPortSchemaType";
+        final String portGUIDParameterName       = "portGUID";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/schemaType/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        portGUID,
+                                        schemaTypeGUID);
     }
 
 
@@ -793,7 +1245,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the metadata element to remove
-     * @param portExternalIdentifier unique identifier of the port in the external asset manager
+     * @param portExternalIdentifier unique identifier of the port in the external process manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -807,7 +1259,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        // todo
+        final String methodName            = "removePort";
+        final String portGUIDParameterName = "portGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      portExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        portGUID);
     }
 
 
@@ -837,8 +1305,30 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                = "findPorts";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-search-string?startFrom={2}&pageSize={3}";
+
+        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           requestBody,
+                                                                           serverName,
+                                                                           userId,
+                                                                           startFrom,
+                                                                           validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -867,8 +1357,26 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getPortsForProcess";
+        final String guidParameterName = "processGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/retrieve?startFrom={3}&pageSize={4}";
+
+        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                 assetManagerName),
+                                                                           serverName,
+                                                                           userId,
+                                                                           processGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -897,8 +1405,26 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getPortUse";
+        final String guidParameterName = "portGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/used-by/retrieve?startFrom={3}&pageSize={4}";
+
+        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                 assetManagerName),
+                                                                           serverName,
+                                                                           userId,
+                                                                           portGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -923,8 +1449,22 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getPortDelegation";
+        final String guidParameterName = "portGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/retrieve";
+
+        PortElementResponse restResult = restClient.callPortPostRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                         serverName,
+                                                                         userId,
+                                                                         portGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -954,8 +1494,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getPortsByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-name?startFrom={2}&pageSize={3}";
+
+        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           requestBody,
+                                                                           serverName,
+                                                                           userId,
+                                                                           startFrom,
+                                                                           validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -980,8 +1543,22 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getPortByGUID";
+        final String guidParameterName = "portGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/retrieve";
+
+        PortElementResponse restResult = restClient.callPortPostRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                         serverName,
+                                                                         userId,
+                                                                         portGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -991,13 +1568,13 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
 
     /**
-     * Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or process as "BusinessSignificant" (this may effect the way that lineage is displayed).
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
-     * @param elementExternalIdentifier unique identifier of the port in the external asset manager
+     * @param elementExternalIdentifier unique identifier of the port in the external process manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1011,7 +1588,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        // todo
+        final String methodName = "setBusinessSignificant";
+        final String elementGUIDParameterName = "elementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/is-business-significant";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      elementExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        elementGUID);
     }
 
 
@@ -1022,7 +1615,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
-     * @param elementExternalIdentifier unique identifier of the element in the external asset manager (can be null)
+     * @param elementExternalIdentifier unique identifier of the element in the external process manager (can be null)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1036,7 +1629,23 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        // todo
+        final String methodName = "clearBusinessSignificant";
+        final String elementGUIDParameterName = "elementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/is-business-significant/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      elementExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        elementGUID);
     }
 
 
@@ -1046,7 +1655,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param qualifiedName unique identifier for this relationship
@@ -1071,8 +1680,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                         UserNotAuthorizedException,
                                                         PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                    = "setupDataFlow";
+        final String dataSupplierGUIDParameterName = "dataSupplierGUID";
+        final String dataConsumerGUIDParameterName = "dataConsumerGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        DataFlowRequestBody requestBody = new DataFlowRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        DataFlowProperties properties = new DataFlowProperties();
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}?assetManagerIsHome={4}";
+
+        GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
+                                                               urlTemplate,
+                                                               requestBody,
+                                                               serverName,
+                                                               userId,
+                                                               dataSupplierGUID,
+                                                               dataConsumerGUID,
+                                                               assetManagerIsHome);
+
+        return results.getGUID();
     }
 
 
@@ -1082,6 +1720,8 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * the request.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param qualifiedName unique identifier for this relationship
@@ -1092,15 +1732,39 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFlowElement getDataFlow(String  userId,
-                                       String  dataSupplierGUID,
-                                       String  dataConsumerGUID,
-                                       String  qualifiedName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public DataFlowElement getDataFlow(String userId,
+                                       String assetManagerGUID,
+                                       String assetManagerName,
+                                       String dataSupplierGUID,
+                                       String dataConsumerGUID,
+                                       String qualifiedName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                    = "getDataFlow";
+        final String dataSupplierGUIDParameterName = "dataSupplierGUID";
+        final String dataConsumerGUIDParameterName = "dataConsumerGUID";
+        final String qualifiedNameParameterName    = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(qualifiedName);
+        requestBody.setNameParameterName(qualifiedNameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}/retrieve";
+
+        DataFlowElementResponse restResult = restClient.callDataFlowPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 requestBody,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 dataSupplierGUID,
+                                                                                 dataConsumerGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -1130,7 +1794,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                         UserNotAuthorizedException,
                                                         PropertyServerException
     {
-        // todo
+        final String methodName                    = "updateDataFlow";
+        final String dataFlowGUIDParameterName     = "dataFlowGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
+
+        DataFlowRequestBody requestBody = new DataFlowRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        DataFlowProperties properties = new DataFlowProperties();
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/{2}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        dataFlowGUID);
     }
 
 
@@ -1153,7 +1841,103 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        // todo
+        final String methodName                = "clearDataFlow";
+        final String dataFlowGUIDParameterName = "dataFlowGUID";
+
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        dataFlowGUID);
+    }
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param dataSupplierGUID unique identifier of the data supplier
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataFlowElement> getDataFlowConsumers(String userId,
+                                                      String assetManagerGUID,
+                                                      String assetManagerName,
+                                                      String dataSupplierGUID) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName                    = "getDataFlowConsumers";
+        final String dataSupplierGUIDParameterName = "dataSupplierGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/retrieve";
+
+        DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                         assetManagerName),
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   dataSupplierGUID);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param dataConsumerGUID unique identifier of the data consumer
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataFlowElement> getDataFlowSuppliers(String userId,
+                                                      String assetManagerGUID,
+                                                      String assetManagerName,
+                                                      String dataConsumerGUID) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName                    = "getDataFlowSuppliers";
+        final String dataConsumerGUIDParameterName = "dataConsumerGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/consumers/{2}/suppliers/retrieve";
+
+        DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                         assetManagerName),
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   dataConsumerGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -1163,7 +1947,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param qualifiedName unique identifier for this relationship
@@ -1188,8 +1972,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                   = "setupControlFlow";
+        final String currentStepGUIDParameterName = "currentStepGUID";
+        final String nextStepGUIDParameterName    = "nextStepGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
+
+        ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        ControlFlowProperties properties = new ControlFlowProperties();
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setGuard(guard);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}?assetManagerIsHome={4}";
+
+        GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
+                                                               urlTemplate,
+                                                               requestBody,
+                                                               serverName,
+                                                               userId,
+                                                               currentStepGUID,
+                                                               nextStepGUID,
+                                                               assetManagerIsHome);
+
+        return results.getGUID();
     }
 
 
@@ -1199,6 +2012,8 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * the request.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param qualifiedName unique identifier for this relationship
@@ -1210,14 +2025,38 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public ControlFlowElement getControlFlow(String userId,
+                                             String assetManagerGUID,
+                                             String assetManagerName,
                                              String currentStepGUID,
                                              String nextStepGUID,
                                              String qualifiedName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                   = "getControlFlow";
+        final String currentStepGUIDParameterName = "currentStepGUID";
+        final String nextStepGUIDParameterName    = "nextStepGUID";
+        final String qualifiedNameParameterName   = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(qualifiedName);
+        requestBody.setNameParameterName(qualifiedNameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}/retrieve";
+
+        ControlFlowElementResponse restResult = restClient.callControlFlowPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       currentStepGUID,
+                                                                                       nextStepGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -1246,7 +2085,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
-        // todo
+        final String methodName                   = "updateControlFlow";
+        final String controlFlowGUIDParameterName = "controlFlowGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
+
+        ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        ControlFlowProperties properties = new ControlFlowProperties();
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setGuard(guard);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/{2}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        controlFlowGUID);
     }
 
 
@@ -1269,7 +2132,102 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        // todo
+        final String methodName                   = "clearControlFlow";
+        final String controlFlowGUIDParameterName = "controlFlowGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        controlFlowGUID);
+    }
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param nextStepGUID unique identifier of the next step
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ControlFlowElement> getControlFlowNextSteps(String userId,
+                                                            String assetManagerGUID,
+                                                            String assetManagerName,
+                                                            String nextStepGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName                   = "getControlFlow";
+        final String nextStepGUIDParameterName    = "nextStepGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/next-steps/{2}/current-steps/retrieve";
+
+        ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                               assetManagerName),
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         nextStepGUID);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param currentStepGUID unique identifier of the previous step
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ControlFlowElement> getControlFlowPreviousSteps(String userId,
+                                                                String assetManagerGUID,
+                                                                String assetManagerName,
+                                                                String currentStepGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String methodName                   = "getControlFlow";
+        final String currentStepGUIDParameterName = "currentStepGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/retrieve";
+
+        ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                               assetManagerName),
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         currentStepGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -1279,7 +2237,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param qualifiedName unique identifier for this relationship
@@ -1304,17 +2262,48 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName              = "setupProcessCall";
+        final String callerGUIDParameterName = "callerGUID";
+        final String calledGUIDParameterName = "calledGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        ProcessCallProperties properties = new ProcessCallProperties();
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/{3}?assetManagerIsHome={4}";
+
+        GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
+                                                               urlTemplate,
+                                                               requestBody,
+                                                               serverName,
+                                                               userId,
+                                                               callerGUID,
+                                                               calledGUID,
+                                                               assetManagerIsHome);
+
+        return results.getGUID();
     }
 
 
     /**
      * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
      * is more than one process call relationships between these two elements since it is used to disambiguate
-     * the request.
+     * the request.  This is often used in conjunction with update.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param qualifiedName unique identifier for this relationship
@@ -1326,14 +2315,38 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public ProcessCallElement getProcessCall(String userId,
+                                             String assetManagerGUID,
+                                             String assetManagerName,
                                              String callerGUID,
                                              String calledGUID,
                                              String qualifiedName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                 = "getProcessCall";
+        final String callerGUIDParameterName    = "callerGUID";
+        final String calledGUIDParameterName    = "calledGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(qualifiedName);
+        requestBody.setNameParameterName(qualifiedNameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/{3}/retrieve";
+
+        ProcessCallElementResponse restResult = restClient.callProcessCallPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       callerGUID,
+                                                                                       calledGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -1362,7 +2375,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        // todo
+        final String methodName                   = "updateProcessCall";
+        final String processCallGUIDParameterName = "processCallGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
+
+        ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        ProcessCallProperties properties = new ProcessCallProperties();
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/{2}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        processCallGUID);
     }
 
 
@@ -1385,20 +2422,114 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        // todo
+        final String methodName                   = "clearProcessCall";
+        final String processCallGUIDParameterName = "processCallGUID";
+
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        processCallGUID);
+    }
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param callerGUID unique identifier of the element that is making the call
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessCallElement> getProcessCalled(String userId,
+                                                     String assetManagerGUID,
+                                                     String assetManagerName,
+                                                     String callerGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName                 = "getProcessCalled";
+        final String callerGUIDParameterName    = "callerGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/called/{2}/callers/retrieve";
+
+        ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                               assetManagerName),
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         callerGUID);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to its callers.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param calledGUID unique identifier of the element that is processing the call
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessCallElement> getProcessCallers(String userId,
+                                                      String assetManagerGUID,
+                                                      String assetManagerName,
+                                                      String calledGUID) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName                 = "getProcessCallers";
+        final String calledGUIDParameterName    = "calledGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/called/{2}/callers/retrieve";
+
+        ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                               assetManagerName),
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         calledGUID);
+
+        return restResult.getElementList();
     }
 
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships match the DataFlow relationships.
-     * However, they may occur at less granular process definitions that the detailed data and control flows
-     * that have been captured.
+     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * supported by different technologies.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
      *
@@ -1409,13 +2540,28 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
     public void setupLineageMapping(String  userId,
                                     String  assetManagerGUID,
                                     String  assetManagerName,
-                                    boolean assetManagerIsHome,
                                     String  sourceElementGUID,
                                     String  destinationElementGUID) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        // todo
+        final String methodName                          = "setupLineageMapping";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        sourceElementGUID,
+                                        destinationElementGUID);
     }
 
 
@@ -1427,7 +2573,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1440,6 +2586,98 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        // todo
+        final String methodName                          = "clearLineageMapping";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        sourceElementGUID,
+                                        destinationElementGUID);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param sourceElementGUID unique identifier of the source
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<LineageMappingElement> getDestinationLineageMappings(String userId,
+                                                                     String assetManagerGUID,
+                                                                     String assetManagerName,
+                                                                     String sourceElementGUID) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName                          = "getDestinationLineageMappings";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/retrieve";
+
+        LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                            serverName,
+                                                                                            userId,
+                                                                                            sourceElementGUID);
+
+        return results.getElementList();
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param destinationElementGUID unique identifier of the destination
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<LineageMappingElement> getSourceLineageMappings(String userId,
+                                                                String assetManagerGUID,
+                                                                String assetManagerName,
+                                                                String destinationElementGUID) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName                          = "getSourceLineageMappings";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/destinations/{2}/sources/retrieve";
+
+        LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                            serverName,
+                                                                                            userId,
+                                                                                            destinationElementGUID);
+
+        return results.getElementList();
     }
 }

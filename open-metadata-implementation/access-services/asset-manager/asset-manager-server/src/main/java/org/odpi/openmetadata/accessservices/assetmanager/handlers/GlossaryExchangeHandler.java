@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
-import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryConverter;
-import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalIdentifierConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryTermConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
@@ -23,21 +21,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.ArrayList;
 import java.util.List;
 
-public class GlossaryExchangeHandler
+/**
+ * GlossaryExchangeHandler is the server side handler for managing glossary content.
+ */
+public class GlossaryExchangeHandler extends ExchangeHandlerBase
 {
-    private InvalidParameterHandler                                             invalidParameterHandler;
     private GlossaryHandler<GlossaryElement>                                    glossaryHandler;
     private GlossaryCategoryHandler<GlossaryCategoryElement>                    glossaryCategoryHandler;
     private GlossaryTermHandler<GlossaryTermElement>                            glossaryTermHandler;
-    private ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
 
     private final static String glossaryGUIDParameterName          = "glossaryGUID";
     private final static String glossaryCategoryGUIDParameterName  = "glossaryCategoryGUID";
     private final static String glossaryTermGUIDParameterName      = "glossaryTermGUID";
 
-
     /**
-     * Construct the glossary manager handler with information needed to work with glossary related objects
+     * Construct the glossary exchange handler with information needed to work with glossary related objects
      * for Asset Manager OMAS.
      *
      * @param serviceName      name of this service
@@ -64,6 +62,18 @@ public class GlossaryExchangeHandler
                                    List<String>                       publishZones,
                                    AuditLog                           auditLog)
     {
+        super(serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper,
+              localServerUserId,
+              securityVerifier,
+              supportedZones,
+              defaultZones,
+              publishZones,
+              auditLog);
+
         glossaryHandler = new GlossaryHandler<>(new GlossaryConverter<>(repositoryHelper, serviceName, serverName),
                                                 GlossaryElement.class,
                                                 serviceName,
@@ -106,23 +116,6 @@ public class GlossaryExchangeHandler
                                                         publishZones,
                                                         auditLog);
 
-        externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
-                                                                    MetadataCorrelationHeader.class,
-                                                                    new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
-                                                                    ElementHeader.class,
-                                                                    serviceName,
-                                                                    serverName,
-                                                                    invalidParameterHandler,
-                                                                    repositoryHandler,
-                                                                    repositoryHelper,
-                                                                    localServerUserId,
-                                                                    securityVerifier,
-                                                                    supportedZones,
-                                                                    defaultZones,
-                                                                    publishZones,
-                                                                    auditLog);
-
-        this.invalidParameterHandler = invalidParameterHandler;
     }
 
 
@@ -130,155 +123,6 @@ public class GlossaryExchangeHandler
     /* ========================================================
      * Managing the externalIds and related correlation properties.
      */
-
-
-    /**
-     * Save the external identifier and related correlation properties.
-     *
-     * @param userId calling user
-     * @param elementGUID open metadata identifier of the element that is to be linked to the external identifier
-     * @param elementGUIDParameterName name of the open metadata identifier
-     * @param elementTypeName type name of the open metadata element
-     * @param correlationProperties properties to store in the external identifier
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem detected in the repository services
-     */
-    private void createExternalIdentifier(String                        userId,
-                                          String                        elementGUID,
-                                          String                        elementGUIDParameterName,
-                                          String                        elementTypeName,
-                                          MetadataCorrelationProperties correlationProperties,
-                                          String                        methodName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        final String guidParameterName             = "elementGUID";
-        final String typeNameParameterName         = "elementTypeName";
-        final String assetManagerGUIDParameterName = "correlationProperties.assetManagerGUID";
-        final String assetManagerNameParameterName = "correlationProperties.assetManagerName";
-        final String identifierParameterName       = "correlationProperties.externalIdentifier";
-
-        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(elementTypeName, typeNameParameterName, methodName);
-
-        if (correlationProperties != null)
-        {
-            if ((correlationProperties.getAssetManagerGUID() != null) && (correlationProperties.getExternalIdentifier() != null))
-            {
-                invalidParameterHandler.validateName(correlationProperties.getAssetManagerName(), assetManagerNameParameterName, methodName);
-
-
-                externalIdentifierHandler.setUpExternalIdentifier(userId,
-                                                                  elementGUID,
-                                                                  elementGUIDParameterName,
-                                                                  elementTypeName,
-                                                                  correlationProperties.getExternalIdentifier(),
-                                                                  identifierParameterName,
-                                                                  getKeyPattern(correlationProperties.getKeyPattern()),
-                                                                  correlationProperties.getExternalIdentifierName(),
-                                                                  correlationProperties.getExternalIdentifierUsage(),
-                                                                  correlationProperties.getExternalIdentifierSource(),
-                                                                  correlationProperties.getMappingProperties(),
-                                                                  correlationProperties.getAssetManagerGUID(),
-                                                                  assetManagerGUIDParameterName,
-                                                                  correlationProperties.getAssetManagerName(),
-                                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                  getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
-                                                                  correlationProperties.getSynchronizationDescription(),
-                                                                  methodName);
-            }
-        }
-    }
-
-
-    /**
-     * Retrieve the synchronization direction
-     *
-     * @param synchronizationDirection supplied direction
-     * @return open metadata type ordinal - defaulting to "BOTH_DIRECTIONS"
-     */
-    private int getPermittedSynchronization(SynchronizationDirection synchronizationDirection)
-    {
-        int permittedSynchronization = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
-
-        if (synchronizationDirection != null)
-        {
-            permittedSynchronization = synchronizationDirection.getOpenTypeOrdinal();
-        }
-
-        return permittedSynchronization;
-    }
-
-
-    /**
-     * Retrieve the key pattern ordinal
-     *
-     * @param keyPattern supplied value
-     * @return open metadata type ordinal - defaulting to "LOCAL_KEY"
-     */
-    private int getKeyPattern(KeyPattern keyPattern)
-    {
-        int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
-
-        if (keyPattern != null)
-        {
-            keyPatternOrdinal = keyPattern.getOpenTypeOrdinal();
-        }
-
-        return keyPatternOrdinal;
-    }
-
-
-    /**
-     * Retrieve the external identifier and check it is correct.
-     *
-     * @param userId calling user
-     * @param elementGUID open metadata identifier of the element that is to be linked to the external identifier
-     * @param elementGUIDParameterName name of the open metadata identifier
-     * @param elementTypeName type name of the open metadata element
-     * @param correlationProperties properties to store in the external identifier
-     * @param methodName calling method
-     * @return external identity (or null if none associated)
-     *
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem detected in the repository services
-     */
-    private EntityDetail validateExternalIdentifier(String                        userId,
-                                                    String                        elementGUID,
-                                                    String                        elementGUIDParameterName,
-                                                    String                        elementTypeName,
-                                                    MetadataCorrelationProperties correlationProperties,
-                                                    String                        methodName) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
-    {
-        final String externalIdentifierParameterName = "correlationProperties.getExternalIdentifier()";
-        final String scopeGUIDParameterName          = "correlationProperties.getAssetManagerGUID()";
-
-        if ((correlationProperties != null) &&
-                    (correlationProperties.getExternalIdentifier() != null) &&
-                    (correlationProperties.getAssetManagerGUID() != null) &&
-                    (correlationProperties.getAssetManagerName() != null))
-        {
-            return externalIdentifierHandler.confirmSynchronization(userId,
-                                                                    elementGUID,
-                                                                    elementGUIDParameterName,
-                                                                    elementTypeName,
-                                                                    correlationProperties.getExternalIdentifier(),
-                                                                    externalIdentifierParameterName,
-                                                                    correlationProperties.getAssetManagerGUID(),
-                                                                    scopeGUIDParameterName,
-                                                                    correlationProperties.getAssetManagerName(),
-                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                    methodName);
-        }
-
-        return null;
-    }
 
 
 
@@ -320,7 +164,6 @@ public class GlossaryExchangeHandler
             }
         }
     }
-
 
 
     /**
@@ -403,47 +246,6 @@ public class GlossaryExchangeHandler
             }
         }
     }
-
-
-    /**
-     * Retrieve the external identifier for the supplied asset manager to pass to the caller. It is OK if there is no
-     * external identifier since this is used for retrieve requests.
-     *
-     * @param userId calling user
-     * @param elementGUID open metadata identifier of the element that is to be linked to the external identifier
-     * @param elementGUIDParameterName name of the open metadata identifier
-     * @param elementTypeName type name of the open metadata element
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param methodName calling method
-     * @return list of correlation properties
-     *
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem detected in the repository services
-     */
-    private List<MetadataCorrelationHeader> getCorrelationProperties(String userId,
-                                                                     String elementGUID,
-                                                                     String elementGUIDParameterName,
-                                                                     String elementTypeName,
-                                                                     String assetManagerGUID,
-                                                                     String assetManagerName,
-                                                                     String methodName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
-    {
-        return externalIdentifierHandler.getExternalIdentifiersForScope(userId,
-                                                                        elementGUID,
-                                                                        elementGUIDParameterName,
-                                                                        elementTypeName,
-                                                                        assetManagerGUID,
-                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                        assetManagerName,
-                                                                        0,
-                                                                        invalidParameterHandler.getMaxPagingSize(),
-                                                                        methodName);
-    }
-
 
 
     /* ========================================================

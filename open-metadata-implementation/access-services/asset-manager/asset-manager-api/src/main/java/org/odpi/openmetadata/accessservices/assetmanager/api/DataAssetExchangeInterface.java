@@ -153,6 +153,8 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * instance of the Asset Manager OMAS).
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the metadata element to publish
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -160,6 +162,8 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void publishAsset(String userId,
+                      String assetManagerGUID,
+                      String assetManagerName,
                       String assetGUID) throws InvalidParameterException,
                                                UserNotAuthorizedException,
                                                PropertyServerException;
@@ -171,6 +175,8 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the metadata element to withdraw
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -178,6 +184,8 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void withdrawAsset(String userId,
+                       String assetManagerGUID,
+                       String assetManagerName,
                        String assetGUID) throws InvalidParameterException,
                                                 UserNotAuthorizedException,
                                                 PropertyServerException;
@@ -212,7 +220,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetGUID unique identifier of the metadata element to update
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -234,7 +242,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetGUID unique identifier of the metadata element to update
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
