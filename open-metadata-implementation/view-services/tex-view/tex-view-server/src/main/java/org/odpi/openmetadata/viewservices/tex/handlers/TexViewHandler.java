@@ -213,6 +213,7 @@ public class TexViewHandler
      * @param repositoryServerName The name of the repository server to interrogate
      * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
+     * @param deprecationOption only include deprecated types if this option is true
      * @param methodName The name of the method being invoked
      * @return response containing the TypeExplorer object.
      *
@@ -223,6 +224,7 @@ public class TexViewHandler
                                         String    repositoryServerName,
                                         String    platformName,
                                         boolean   enterpriseOption,
+                                        boolean   deprecationOption,
                                         String    methodName)
     throws
         TexViewServiceException
@@ -286,7 +288,7 @@ public class TexViewHandler
             }
 
             // All typeDefs processed, resolve linkages and return the TEX object
-            tex.resolve();
+            tex.resolve(deprecationOption);
             return tex;
 
         }

@@ -81,9 +81,9 @@ public enum TexViewErrorCode implements ExceptionMessageSet
 
     REPOSITORY_ERROR
             (400, "OMVS-TYPE-EXPLORER-400-009",
-             "The type explorer view service operation {0} encountered a problem connecting to the repository {1}",
-             "TODO The system reported that the user is not authorized to perform the requested action.",
-             "TODO Request that the name used to log in to the UI is given authority to perform the request."),
+             "The type explorer view service operation {0} encountered a problem with the repository, the message is {1}",
+             "The system could not complete a repository operation due to the error indicated.",
+             "Look at the error message and check the configuration and state of the repository server."),
 
     INVALID_PARAMETER
             (400, "OMVS-TYPE-EXPLORER-400-010",
