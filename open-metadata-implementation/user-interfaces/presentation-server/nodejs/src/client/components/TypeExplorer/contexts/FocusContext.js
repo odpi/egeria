@@ -7,6 +7,8 @@ import PropTypes                                                   from "prop-ty
 
 import { TypesContext }                                            from "./TypesContext";
 
+import { RequestContext }                                          from "./RequestContext";
+
 
 
 export const FocusContext = createContext();
@@ -18,7 +20,9 @@ export const FocusContextConsumer = FocusContext.Consumer;
 
 const FocusContextProvider = (props) => {
 
-  const typesContext = useContext(TypesContext);
+  const typesContext           = useContext(TypesContext);
+
+  const requestContext         = useContext(RequestContext);
 
   /*
    * The focus state tracks the user's focus on an entity type. The type name is stored. It is initially empty... 
@@ -66,16 +70,26 @@ const FocusContextProvider = (props) => {
     }
   };
 
+  const clearFocus = () => {
+    setFocus("");
+    setView({ typeName : "" , catgeory : ""});
+    setPrevView({ typeName : "" , catgeory : ""});
+  }
+
 
   useEffect(
     () => {
       /*
-       * If types have been reloaded we want to reset our focus and view selections.
+       * Following a reload 
+       * Check the focus is valid; focus is always an entity.
        */
-      setFocus("");
-      setView({ typeName : "" , catgeory : ""});
+      if (focus !== "" && !typesContext.getEntityType(focus)) {
+        /*
+         * Focus type is no longer present, clear the focus
+         */
+        clearFocus();
+      }
     },
-
     [typesContext.tex]
   )
 
@@ -84,6 +98,7 @@ const FocusContextProvider = (props) => {
       value={{
         focus,
         setFocus,
+        clearFocus,
         view,
         setView,
         prevView,

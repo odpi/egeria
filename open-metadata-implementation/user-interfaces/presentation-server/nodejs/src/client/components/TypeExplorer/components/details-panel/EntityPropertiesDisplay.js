@@ -9,6 +9,8 @@ import { TypesContext }          from "../../contexts/TypesContext";
 
 import { FocusContext }          from "../../contexts/FocusContext";
 
+import { RequestContext }        from "../../contexts/RequestContext";
+
 import "./details-panel.scss";
 
 
@@ -18,6 +20,8 @@ export default function EntityPropertiesDisplay(props) {
   const typesContext       = useContext(TypesContext);
 
   const focusContext       = useContext(FocusContext);
+
+  const requestContext     = useContext(RequestContext);
 
   const explorer           = props.expl;
 
@@ -37,6 +41,8 @@ export default function EntityPropertiesDisplay(props) {
         attributeEntries[inheritedProp.attributeName] = {};
         attributeEntries[inheritedProp.attributeName].inherited = true;
         attributeEntries[inheritedProp.attributeName].attributeTypeName = inheritedProp.attributeType.name;
+        attributeEntries[inheritedProp.attributeName].status = inheritedProp.attributeStatus;
+        attributeEntries[inheritedProp.attributeName].replacedBy = inheritedProp.replacedByAttribute;
     });
   }
 
@@ -50,6 +56,8 @@ export default function EntityPropertiesDisplay(props) {
       attributeEntries[localProp.attributeName] = {};
       attributeEntries[localProp.attributeName].inherited = false;
       attributeEntries[localProp.attributeName].attributeTypeName = localProp.attributeType.name;
+      attributeEntries[localProp.attributeName].status = localProp.attributeStatus;
+      attributeEntries[localProp.attributeName].replacedBy = localProp.replacedByAttribute;
     });
   }
 
@@ -60,12 +68,18 @@ export default function EntityPropertiesDisplay(props) {
     let formattedAttribute;
     const formattedAttributeName = formatAttributeName(attributeName, attribute);
     const formattedAttributeType = formatAttributeType(attributeName, attribute);
-    formattedAttribute = <div>{formattedAttributeName} : {formattedAttributeType}</div>;   
+    formattedAttribute = <div>{formattedAttributeName} : {formattedAttributeType}
+        {(attribute.status === "DEPRECATED_ATTRIBUTE") ? "  (use "+attribute.replacedBy+")" : ""}
+    </div>;
     return formattedAttribute
   };
 
   const formatAttributeName = (attributeName, attribute) => {
     let formattedAttributeName;
+
+    if (attribute.status === "DEPRECATED_ATTRIBUTE") {
+      attributeName = "["+attributeName+"]";
+    }
     if (attribute.inherited) {
       formattedAttributeName = <span className="italic">{attributeName}</span> ;      
     }
@@ -105,11 +119,15 @@ export default function EntityPropertiesDisplay(props) {
     const attributeNamesUnsorted = Object.keys(attributeEntries);
     const attributeNamesSorted = attributeNamesUnsorted.sort();
 
-    let attributeList = attributeNamesSorted.map( (propName) => 
-      <li className="details-sublist-item" key={propName}>
-        {formatAttribute(propName,attributeEntries[propName])}
-      </li>
-    );
+    const showDeprecatedAttributes = requestContext.deprecatedAttributeOption;
+
+    let attributeList = attributeNamesSorted
+        .filter( (propName) => (showDeprecatedAttributes || (attributeEntries[propName].status !== "DEPRECATED_ATTRIBUTE")))
+        .map( propName => (
+          <li className="details-sublist-item" key={propName}>
+          {formatAttribute(propName,attributeEntries[propName])}
+        </li>
+        ));
 
     return attributeList;
   };
