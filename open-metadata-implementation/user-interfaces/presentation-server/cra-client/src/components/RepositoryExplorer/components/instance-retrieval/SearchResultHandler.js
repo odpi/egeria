@@ -21,9 +21,12 @@ export default function SearchResultHandler(props) {
   const searchText            = props.searchText;
   const searchClassifications = props.searchClassifications; 
   const serverName            = props.serverName;  
+  const enterpriseOption      = props.enterpriseOption;
   const results               = props.results; 
   const selectCallback        = props.selectCallback;
   const setAllCallback        = props.setAllCallback;
+  const searchResultCount     = props.searchResultCount;
+  const searchResultLimit     = props.searchResultLimit;
  
   
 
@@ -65,7 +68,8 @@ export default function SearchResultHandler(props) {
       dialogDisplay = (
         <div  className="dialog-text">       
           <p  className="dialog-text">
-          {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
+            {enterpriseOption ? "Enterprise " : "Local "}
+            {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
           </p>
           <p  className="dialog-text">
           Type filter : 
@@ -94,6 +98,7 @@ export default function SearchResultHandler(props) {
        *  Operation complete...
        */
 
+
       if (results === undefined || results === null || results.length === 0) {
         
         /* 
@@ -103,6 +108,7 @@ export default function SearchResultHandler(props) {
         dialogDisplay = (
         <div  className="dialog-text">
           <p  className="dialog-text">
+          {enterpriseOption ? "Enterprise " : "Local "}
           {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
           </p>
           <p className="dialog-text">
@@ -145,9 +151,10 @@ export default function SearchResultHandler(props) {
               <div className="search-results-list">
                 {results.map(res => ( 
                  <div key={res.entityGUID}>
-                   <label className="search-result-label" key={res.entityGUID}> 
+                   <label className="search-result-label" key={res.entityGUID}>
                    <input type="checkbox" id={res.entityGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
-                     {res.label} ({res.entityGUID}) homed in repository {res.metadataCollectionName}          
+                     {res.label} ({res.entityGUID}) homed in metadataCollection {res.metadataCollectionName}
+                     { !enterpriseOption ? " ["+res.provenance+"]" : "" }
                    </label> 
                    <br/> 
                  </div>
@@ -166,11 +173,12 @@ export default function SearchResultHandler(props) {
               <b>Relationships</b>
               </p>
               <div className="search-results-list">
-                {results.map(res => ( 
-                  <div key={res.relationshipGUID}>
-                    <label  className="search-result-label" key={res.relationshipGUID}> 
-                    <input type="checkbox" id={res.relationshipGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
-                      {res.label} ({res.relationshipGUID}) homed in repository {res.metadataCollectionName}          
+                {results.map(res => (
+                  <div key={res.relationshipDigest.relationshipGUID}>
+                    <label  className="search-result-label" key={res.relationshipDigest.relationshipGUID}>
+                    <input type="checkbox" id={res.relationshipDigest.relationshipGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
+                      {res.relationshipDigest.label} ({res.relationshipDigest.relationshipGUID}) homed in metadataCollection {res.relationshipDigest.metadataCollectionName}
+                      { !enterpriseOption ? " ["+res.relationshipDigest.provenance+"]" : "" }
                     </label> 
                     <br/> 
                  </div>
@@ -184,6 +192,7 @@ export default function SearchResultHandler(props) {
         dialogDisplay = (
          <div  className="dialog-text">
            <p  className="dialog-text">
+           {enterpriseOption ? "Enterprise " : "Local "}
            {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
            </p>
            <p  className="dialog-text">
@@ -196,6 +205,17 @@ export default function SearchResultHandler(props) {
                ? searchClassifications.map(c => <li className="details-sublist-item" key={c}> {c}  </li>)
                : " none"}
            </p>
+
+           {
+             (searchResultCount > searchResultLimit) ?
+             <p  className="dialog-text">
+               Search found {searchResultCount} instances but was limited to {searchResultLimit}
+             </p>
+             :
+             <p  className="dialog-text">
+                Search returned {searchResultCount} instances
+             </p>
+           }
            <p  className="dialog-text">
            Please select instances to add to the graph.  
            </p>     
@@ -235,8 +255,10 @@ export default function SearchResultHandler(props) {
     }
     if (props.status === "cancelled") {
       /*
-       * NO OP
+       * This state can be reached because another component - such as an error handler in a REST callback
+       * has abandoned the operation. It is not only reached by the user pressing the cancel button.
        */
+      cancelCallback();
     }
     if (props.status === "complete") {
       triggerPortal();
@@ -260,10 +282,13 @@ SearchResultHandler.propTypes = {
   selectCallback        : PropTypes.func.isRequired, 
   setAllCallback        : PropTypes.func.isRequired,   
   results               : PropTypes.array,
+  searchResultCount     : PropTypes.number,
+  searchResultLimit     : PropTypes.number,
   searchCategory        : PropTypes.string,
   searchText            : PropTypes.string,
   searchClassifications : PropTypes.array,
   searchType            : PropTypes.string,
-  serverName            : PropTypes.string
+  serverName            : PropTypes.string,
+  enterpriseOption      : PropTypes.bool
 
 };

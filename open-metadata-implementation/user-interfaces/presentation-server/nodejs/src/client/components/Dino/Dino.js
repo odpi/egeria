@@ -35,7 +35,7 @@ import HelpHandler                              from "./HelpHandler";
 
 import QuestionMarkImage                        from "./question-mark-32.png";
 
-import HelpMarkdown                           from './HELP.md';
+import HelpMarkdown                             from './HELP.md';
 
 import "./dino.scss";
 

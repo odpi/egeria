@@ -54,7 +54,7 @@ public class DinoServerOverviewResponse extends DinoViewOMVSAPIResponse {
     /**
      * Set the serverOverview.
      *
-     * @param serverOverview
+     * @param serverOverview - the server overview object to set
      */
     public void setServerOverview(ServerOverview serverOverview)
     {
