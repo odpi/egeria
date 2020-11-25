@@ -10,8 +10,8 @@ import "./resource-selector.scss"
 
 
 /*
- * The EnterpriseControl provides a checkbox that the user can check if they want queryies to be 
- * issued at the Enterprise level - which means that results will be collected from across 
+ * The EnterpriseControl provides a checkbox that the user can check to issue queries 
+ * at the Enterprise level - which means that results will be collected from across 
  * the cohorts that the target server is a member of, rather than just locally.
  */
 

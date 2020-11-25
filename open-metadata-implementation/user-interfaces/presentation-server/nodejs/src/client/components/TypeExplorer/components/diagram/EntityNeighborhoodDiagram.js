@@ -347,8 +347,11 @@ export default function EntityNeighborhoodDiagram(props) {
     svg.selectAll("svg").remove();
 
     /*
-     * Clear the introductory text...
+     * Show just a message about no entity types being selected...
      */
+    while (displayDiv.lastChild) {
+      displayDiv.removeChild(displayDiv.lastChild);
+    }
     const textNode = document.createTextNode("No entity type has been selected as the focus");
     const paraNode = document.createElement("p");
     paraNode.appendChild(textNode);
@@ -849,9 +852,15 @@ const nhbdUpdate = (nhbd) => {
         }
         else {
           initialiseNeighborhoodDiagram();
-          let nhbd = createNeighborhood(focusContext.focus);
-          nhbd = renderNeighborhoodDiagram(nhbd);
-          nhbdUpdate(nhbd);
+          if (focusContext.focus != "" && focusContext.focus != "none") {
+            if (typesContext.getEntityType(focusContext.focus)) {
+              let nhbd = createNeighborhood(focusContext.focus);
+              nhbd = renderNeighborhoodDiagram(nhbd);
+              nhbdUpdate(nhbd);
+              return;
+            }
+          }
+          renderLackOfFocus();
         }
       }
     },

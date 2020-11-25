@@ -31,6 +31,8 @@ import ServerSelector                           from "./components/resource-sele
 
 import EnterpriseControl                        from "./components/resource-selection/EnterpriseControl";
 
+import DeprecationControl                        from "./components/resource-selection/DeprecationControl";
+
 import FocusControls                            from "./components/focus-controls/FocusControls";
 
 import DetailsPanel                             from "./components/details-panel/DetailsPanel";
@@ -149,6 +151,8 @@ export default function TypeExplorer() {
                                      onSubmit            = { submitHelpModal } />
 
                     <EnterpriseControl/>
+
+                    <DeprecationControl/>
                  
                   </div>
 

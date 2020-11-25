@@ -29,7 +29,7 @@ const RequestContextProvider = (props) => {
   
   const identificationContext = useContext(IdentificationContext);
 
-  const [enterpriseOption, setEnterpriseOption] = useState(false);  
+  const [enterpriseOption, setEnterpriseOption] = useState(false);
   
   /*
    * Handler for change to enterprise option checkbox
@@ -38,6 +38,15 @@ const RequestContextProvider = (props) => {
     setEnterpriseOption(!enterpriseOption);
   }
 
+
+  const [deprecationOption, setDeprecationOption] = useState(false);
+
+ /*
+  * Handler for change to deprecation option checkbox
+  */
+ const updateDeprecationOption = () => {
+   setDeprecationOption(!deprecationOption);
+ }
 
   /*
    * Define the basic body parameters that are common to requests to the platform or server
@@ -225,7 +234,9 @@ const RequestContextProvider = (props) => {
         callGET,
         buildBaseBody,
         updateEnterpriseOption,
-        enterpriseOption
+        enterpriseOption,
+        updateDeprecationOption,
+        deprecationOption
       }}
     >      
     {props.children}

@@ -118,7 +118,8 @@ export default function EntityInheritanceDiagram(props) {
         const typeName = entityTypes[entityTypeName].entityDef.name;
         treeDepth = 0;
         const tree = createInheritanceTree(typeName);
-        renderInheritanceTree(tree, typeName, treeDepth);
+        if (tree)
+          renderInheritanceTree(tree, typeName, treeDepth);
       }
     })
   }
@@ -135,9 +136,12 @@ export default function EntityInheritanceDiagram(props) {
      * Start at the type with typeName and follow subtype links to compose children
      */
     const entityType = typesContext.getEntityType(typeName);
-    const childNames = entityType.subTypeNames;
-    inheritanceTree = addSubTree(inheritanceTree, typeName, childNames, 1)
-    return inheritanceTree;
+    if (entityType) {
+      const childNames = entityType.subTypeNames;
+      inheritanceTree = addSubTree(inheritanceTree, typeName, childNames, 1)
+      return inheritanceTree;
+    }
+    return null;
   }
 
 
@@ -160,10 +164,12 @@ export default function EntityInheritanceDiagram(props) {
       const childNamesSorted = childNames.sort();
       childNamesSorted.forEach( childName => {
         const entityType = typesContext.getEntityType(childName);
-        const nodeChildNames = entityType.subTypeNames;
-        let subtree = {};
-        addSubTree(subtree, childName, nodeChildNames, level + 1);
-        tree.children.push(subtree);
+        if (entityType) {
+          const nodeChildNames = entityType.subTypeNames;
+          let subtree = {};
+          addSubTree(subtree, childName, nodeChildNames, level + 1);
+          tree.children.push(subtree);
+        }
       });
     }
     return tree;
@@ -248,9 +254,24 @@ export default function EntityInheritanceDiagram(props) {
 
     /*
      * Earliest opportunity to scroll accurately
+     *
+     * Protect the diagram from an underlying change of focus - which could be to a different valid
+     * type, to no type ("none"), or to an absent (e.g. deprecated) type. The diagram needs to check
+     * with the TypesContext that any type is still valid.
+     * 
+     * There is a deliberate case where this function will drop through without doing anything. That is 
+     * because it can afford to wait for the pending focus clearing by the focus context, which will then 
+     * cause a tree update this function will agan be called and adopt the 'fallback' of scrolling to the 
+     * root type.
      */
-    if (focusContext.focus !== undefined && focusContext.focus !== "") {
+
+    if (focusContext.focus !== "" && focusContext.focus !== "none") {
+      if (typesContext.getEntityType(focusContext.focus)) {
         scrollSelectedIntoView(focusContext.focus);
+      }
+    }
+    else {
+      scrollSelectedIntoView("OpenMetadataRoot");
     }
   }
 
@@ -266,7 +287,7 @@ export default function EntityInheritanceDiagram(props) {
      * top and lhs containers.
      */
     const topOffset =  230;
-    const leftOffset = 750;
+    const leftOffset = 500;
 
     if (scrolled === false) {
       scrolled = true;
@@ -282,8 +303,7 @@ export default function EntityInheritanceDiagram(props) {
          * The following is what we might *like* to do:
          * elem.scrollIntoView({behavior: "smooth", block:"center", inline:"center"});
          *
-         * Instead of scrollIntoView - use incremental scrolling which does work outside 
-         * of a web component...
+         * Instead of scrollIntoView - use incremental scrolling.
          */
         const brect = elem.getBoundingClientRect();
 
@@ -593,6 +613,7 @@ export default function EntityInheritanceDiagram(props) {
   useEffect(
     () => {
       if ( d3Container.current && typesContext.tex) {
+
         /* 
          * Initial rendering...
          * Get the entity types and create and render the trees (one per root)
@@ -620,7 +641,6 @@ export default function EntityInheritanceDiagram(props) {
 
   useEffect(
     () => {
-      console.log("TEX EntityInheritance Diagram resize - outerWidth is "+props.outerWidth);
       drgContainerDiv.current.style.width=""+props.outerWidth+"px";
       drgContainerDiv.current.style.height=""+props.outerHeight+"px";
     },
