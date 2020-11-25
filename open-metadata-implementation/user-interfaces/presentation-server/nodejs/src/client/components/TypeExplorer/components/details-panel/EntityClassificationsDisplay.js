@@ -32,7 +32,7 @@ export default function EntityClassificationsDisplay(props) {
   let classificationEntries = {};
     
   /* 
-   * Inherited attributes
+   * Inherited classifications
    */
   const inheritedClassificationNames = explorer.inheritedClassificationNames;
   if (inheritedClassificationNames !== undefined) {
