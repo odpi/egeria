@@ -299,6 +299,15 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                           "The view service has not been passed valid configuration.",
                           "Check whether the view service expects SolutionViewServiceConfiguration or IntegrationViewServiceConfiguration, correct the configuration and restart the server."),
 
+    RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED(400, "OMAG-ADMIN-400-043",
+                        "A retrieve all configurations has been attempted, but operation is not supported.",
+                        "The retrieve all server configurations operation is rejected.",
+                        "Check whether OMAG Server configuration connector supports retrieve all configurations."),
+    UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE(400, "OMAG-ADMIN-400-044",
+                                         "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server atored configurations but an error occurred.",
+                                         "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
+                                         "Check that the OMAG Server configuration connector has been specified correctly."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.  No change was made to the server's configuration document.",

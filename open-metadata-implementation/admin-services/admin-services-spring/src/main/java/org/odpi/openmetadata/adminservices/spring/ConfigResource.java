@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * configuration document is not found, a new one is created.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/users/{userId}")
 
 @Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -38,13 +39,25 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @GetMapping(path = "/configuration")
+    @GetMapping(path = "/servers/{serverName}/configuration")
     public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {
         return adminAPI.getStoredConfiguration(userId, serverName);
     }
-
+    /**
+     * Return the configuration documents stored on the platform
+     *
+     * @param userId  user that is issuing the request
+     * @return OMAGServerConfigs properties or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid parameter occurred while processing.
+     */
+    @GetMapping(path = "/configurations")
+    public OMAGServerConfigsResponse getStoredConfigurations(@PathVariable String userId)
+    {
+        return adminAPI.retrieveAllServerConfigs(userId);
+    }
 
     /**
      * Set up the configuration properties for an OMAG Server in a single command.
@@ -56,7 +69,7 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
-    @PostMapping(path = "/configuration")
+    @PostMapping(path = "/servers/{serverName}/configuration")
     public VoidResponse setOMAGServerConfig(@PathVariable String           userId,
                                             @PathVariable String           serverName,
                                             @RequestBody  OMAGServerConfig omagServerConfig)
@@ -74,7 +87,7 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
-    @DeleteMapping(path = "/configuration")
+    @DeleteMapping(path = "/servers/{serverName}/configuration")
     public VoidResponse clearOMAGServerConfig(@PathVariable String userId,
                                               @PathVariable String serverName)
     {
@@ -93,7 +106,7 @@ public class ConfigResource
      * OMAGConfigurationErrorException there is a problem using the supplied configuration or
      * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
      */
-    @PostMapping(path = "/configuration/deploy")
+    @PostMapping(path = "/servers/{serverName}/configuration/deploy")
     public VoidResponse deployOMAGServerConfig(@PathVariable String           userId,
                                                @PathVariable String           serverName,
                                                @RequestBody  URLRequestBody   destinationPlatform)

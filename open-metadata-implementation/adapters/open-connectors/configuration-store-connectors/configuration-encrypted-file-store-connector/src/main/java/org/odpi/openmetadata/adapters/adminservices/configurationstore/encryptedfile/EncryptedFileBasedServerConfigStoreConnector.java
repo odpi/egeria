@@ -7,6 +7,7 @@ import com.google.crypto.tink.*;
 import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
+import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.slf4j.Logger;
@@ -20,16 +21,22 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * EncryptedFileBasedServerConfigStoreConnector is the OCF connector for the encrypted file based server
  * configuration store.
  */
-public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase {
+public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase implements OMAGServerConfigStoreRetrieveAll {
 
     private static final String KEYSTORE_FOLDER_PREFIX = "keystore_";
     private static final String KEY_FILE_EXTENSION = ".key";
@@ -219,6 +226,27 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             }
         }
     }
+    @Override
+    public Set<OMAGServerConfig> retrieveAllServerConfigs() {
+        final String methodName = "retrieveAllServerConfigs";
+        Set<OMAGServerConfig> omagServerConfigSet = new HashSet<>();
+        try (Stream<Path> list = Files.list(Paths.get(".")))
+        {
+            Set<String> fileNames = list.map(x -> x.toString())
+                    .filter(f -> f.endsWith(".config")).collect(Collectors.toSet());
+            for (String fileName:fileNames) {
+                configStoreName=fileName;
+                OMAGServerConfig config = retrieveServerConfig();
+                omagServerConfigSet.add(config);
+            }
+        } catch (IOException e) {
+            // the below message does not put out the file it is currently a
+            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                                          this.getClass().getName(),
+                                          methodName, e);
+        }
+        return omagServerConfigSet;
+    }
 
     /**
      * {@inheritDoc}
@@ -254,6 +282,8 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     private File getConfigStoreFile() {
         return new File(getConfigStoreName());
     }
+
+
 
     /**
      * Retrieve the Authenticated Encryption with Associated Data handler.
