@@ -183,17 +183,15 @@ public class OpenMetadataAPIGenericBuilder
 
     /**
      * Set up the Anchors classification for this entity.  This is used when a new entity is being created and it is known to be
-     * connected to a specific anchor.  This method overrides an previously defined Anchors classification for this entity.
+     * connected to a specific anchor.
      *
      * @param userId calling user
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
      * @param methodName calling method
-     * @throws InvalidParameterException anchors is not supported in the local repository, or any repository
-     *                                   connected by an open metadata repository cohort
      */
     public void setAnchors(String userId,
                            String anchorGUID,
-                           String methodName) throws InvalidParameterException
+                           String methodName)
     {
         try
         {
@@ -211,7 +209,7 @@ public class OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
         }
     }
 

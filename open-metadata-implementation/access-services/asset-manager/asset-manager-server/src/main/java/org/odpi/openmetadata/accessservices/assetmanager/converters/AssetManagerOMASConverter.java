@@ -3,11 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataItemSortOrder;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementClassification;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerCategory;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -395,6 +392,33 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
 
 
     /**
+     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return OwnerType  enum value
+     */
+    OwnerCategory removeOwnerCategoryFromProperties(InstanceProperties   properties)
+    {
+        OwnerCategory ownerType = this.getOwnerCategoryFromProperties(properties);
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+            }
+
+            properties.setInstanceProperties(instancePropertiesMap);
+        }
+
+        return ownerType;
+    }
+
+
+
+    /**
      * Extract and delete the sortOrder property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -481,5 +505,35 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         }
 
         return SynchronizationDirection.BOTH_DIRECTIONS;
+    }
+
+
+    /**
+     * Extract and delete the portType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return SynchronizationDirection enum
+     */
+    PortType removePortType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removePortType";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (PortType portType : PortType.values())
+            {
+                if (portType.getOpenTypeOrdinal() == ordinal)
+                {
+                    return portType;
+                }
+            }
+        }
+
+        return PortType.OTHER;
     }
 }
