@@ -1,0 +1,320 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.assetmanager.handlers;
+
+import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalIdentifierConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.List;
+
+/**
+ * ExchangeHandlerBase is the server side handler for managing the external identifiers and related correlators
+ * as well as the supplementary properties for technical metadata elements.
+ */
+public class ExchangeHandlerBase
+{
+    InvalidParameterHandler                                             invalidParameterHandler;
+    ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
+
+    String               serviceName;
+    OMRSRepositoryHelper repositoryHelper;
+
+
+    /**
+     * Construct the base exchange handler with information needed to work with the external identifiers
+     * for Asset Manager OMAS.
+     *
+     * @param serviceName      name of this service
+     * @param serverName       name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler     manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve instances from.
+     * @param defaultZones list of zones that the access service should set in all new instances.
+     * @param publishZones list of zones that the access service sets up in published instances.
+     * @param auditLog destination for audit log events.
+     */
+    public ExchangeHandlerBase(String                             serviceName,
+                               String                             serverName,
+                               InvalidParameterHandler            invalidParameterHandler,
+                               RepositoryHandler                  repositoryHandler,
+                               OMRSRepositoryHelper               repositoryHelper,
+                               String                             localServerUserId,
+                               OpenMetadataServerSecurityVerifier securityVerifier,
+                               List<String>                       supportedZones,
+                               List<String>                       defaultZones,
+                               List<String>                       publishZones,
+                               AuditLog                           auditLog)
+    {
+        externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
+                                                                    MetadataCorrelationHeader.class,
+                                                                    new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
+                                                                    ElementHeader.class,
+                                                                    serviceName,
+                                                                    serverName,
+                                                                    invalidParameterHandler,
+                                                                    repositoryHandler,
+                                                                    repositoryHelper,
+                                                                    localServerUserId,
+                                                                    securityVerifier,
+                                                                    supportedZones,
+                                                                    defaultZones,
+                                                                    publishZones,
+                                                                    auditLog);
+
+        this.invalidParameterHandler = invalidParameterHandler;
+        this.serviceName = serviceName;
+        this.repositoryHelper = repositoryHelper;
+    }
+
+
+
+    /* ========================================================
+     * Managing the externalIds and related correlation properties.
+     */
+
+
+    /**
+     * Save the external identifier and related correlation properties.
+     *
+     * @param userId calling user
+     * @param elementGUID open metadata identifier of the element that is to be linked to the external identifier
+     * @param elementGUIDParameterName name of the open metadata identifier
+     * @param elementTypeName type name of the open metadata element
+     * @param correlationProperties properties to store in the external identifier
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    void createExternalIdentifier(String                        userId,
+                                  String                        elementGUID,
+                                  String                        elementGUIDParameterName,
+                                  String                        elementTypeName,
+                                  MetadataCorrelationProperties correlationProperties,
+                                  String                        methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String guidParameterName             = "elementGUID";
+        final String typeNameParameterName         = "elementTypeName";
+        final String assetManagerGUIDParameterName = "correlationProperties.assetManagerGUID";
+        final String assetManagerNameParameterName = "correlationProperties.assetManagerName";
+        final String identifierParameterName       = "correlationProperties.externalIdentifier";
+
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateName(elementTypeName, typeNameParameterName, methodName);
+
+        if (correlationProperties != null)
+        {
+            if ((correlationProperties.getAssetManagerGUID() != null) && (correlationProperties.getExternalIdentifier() != null))
+            {
+                invalidParameterHandler.validateName(correlationProperties.getAssetManagerName(), assetManagerNameParameterName, methodName);
+
+
+                externalIdentifierHandler.setUpExternalIdentifier(userId,
+                                                                  elementGUID,
+                                                                  elementGUIDParameterName,
+                                                                  elementTypeName,
+                                                                  correlationProperties.getExternalIdentifier(),
+                                                                  identifierParameterName,
+                                                                  getKeyPattern(correlationProperties.getKeyPattern()),
+                                                                  correlationProperties.getExternalIdentifierName(),
+                                                                  correlationProperties.getExternalIdentifierUsage(),
+                                                                  correlationProperties.getExternalIdentifierSource(),
+                                                                  correlationProperties.getMappingProperties(),
+                                                                  correlationProperties.getAssetManagerGUID(),
+                                                                  assetManagerGUIDParameterName,
+                                                                  correlationProperties.getAssetManagerName(),
+                                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                  getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
+                                                                  correlationProperties.getSynchronizationDescription(),
+                                                                  methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Retrieve the synchronization direction
+     *
+     * @param synchronizationDirection supplied direction
+     * @return open metadata type ordinal - defaulting to "BOTH_DIRECTIONS"
+     */
+    private int getPermittedSynchronization(SynchronizationDirection synchronizationDirection)
+    {
+        int permittedSynchronization = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+
+        if (synchronizationDirection != null)
+        {
+            permittedSynchronization = synchronizationDirection.getOpenTypeOrdinal();
+        }
+
+        return permittedSynchronization;
+    }
+
+
+    /**
+     * Retrieve the key pattern ordinal
+     *
+     * @param keyPattern supplied value
+     * @return open metadata type ordinal - defaulting to "LOCAL_KEY"
+     */
+    private int getKeyPattern(KeyPattern keyPattern)
+    {
+        int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+
+        if (keyPattern != null)
+        {
+            keyPatternOrdinal = keyPattern.getOpenTypeOrdinal();
+        }
+
+        return keyPatternOrdinal;
+    }
+
+
+    /**
+     * Retrieve the external identifier and check it is correct.
+     *
+     * @param userId calling user
+     * @param elementGUID open metadata identifier of the element that is to be linked to the external identifier
+     * @param elementGUIDParameterName name of the open metadata identifier
+     * @param elementTypeName type name of the open metadata element
+     * @param correlationProperties properties to store in the external identifier
+     * @param methodName calling method
+     * @return external identity (or null if none associated)
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    EntityDetail validateExternalIdentifier(String                        userId,
+                                            String                        elementGUID,
+                                            String                        elementGUIDParameterName,
+                                            String                        elementTypeName,
+                                            MetadataCorrelationProperties correlationProperties,
+                                            String                        methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String externalIdentifierParameterName = "correlationProperties.getExternalIdentifier()";
+        final String scopeGUIDParameterName          = "correlationProperties.getAssetManagerGUID()";
+
+        if ((correlationProperties != null) &&
+                    (correlationProperties.getExternalIdentifier() != null) &&
+                    (correlationProperties.getAssetManagerGUID() != null) &&
+                    (correlationProperties.getAssetManagerName() != null))
+        {
+            return externalIdentifierHandler.confirmSynchronization(userId,
+                                                                    elementGUID,
+                                                                    elementGUIDParameterName,
+                                                                    elementTypeName,
+                                                                    correlationProperties.getExternalIdentifier(),
+                                                                    externalIdentifierParameterName,
+                                                                    correlationProperties.getAssetManagerGUID(),
+                                                                    scopeGUIDParameterName,
+                                                                    correlationProperties.getAssetManagerName(),
+                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                    methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the external identifier for the supplied asset manager to pass to the caller. It is OK if there is no
+     * external identifier since this is used for retrieve requests.
+     *
+     * @param userId calling user
+     * @param elementGUID open metadata identifier of the element that is to be linked to the external identifier
+     * @param elementGUIDParameterName name of the open metadata identifier
+     * @param elementTypeName type name of the open metadata element
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param methodName calling method
+     * @return list of correlation properties
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    List<MetadataCorrelationHeader> getCorrelationProperties(String userId,
+                                                             String elementGUID,
+                                                             String elementGUIDParameterName,
+                                                             String elementTypeName,
+                                                             String assetManagerGUID,
+                                                             String assetManagerName,
+                                                             String methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return externalIdentifierHandler.getExternalIdentifiersForScope(userId,
+                                                                        elementGUID,
+                                                                        elementGUIDParameterName,
+                                                                        elementTypeName,
+                                                                        assetManagerGUID,
+                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                        assetManagerName,
+                                                                        0,
+                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                        methodName);
+    }
+
+
+    /* ========================================================
+     * Managing the supplementary properties for technical metadata (assets, software server capabilities etc).
+     */
+
+
+    /**
+     * Maintain the supplementary properties in a glossary term linked to the supplied element.
+     * The glossary term needs to be connected to the
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element connected to the supplementary properties
+     * @param elementQualifiedName unique name for the element connected to the supplementary properties
+     * @param supplementaryProperties properties to save
+     * @param methodName calling method
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    void maintainSupplementaryProperties(String                  userId,
+                                         String                  elementGUID,
+                                         String                  elementQualifiedName,
+                                         SupplementaryProperties supplementaryProperties,
+                                         boolean                 isMergeUpdate,
+                                         String                  methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        if (supplementaryProperties != null)
+        {
+            externalIdentifierHandler.maintainSupplementaryProperties(userId,
+                                                                      elementGUID,
+                                                                      elementQualifiedName,
+                                                                      supplementaryProperties.getDisplayName(),
+                                                                      supplementaryProperties.getSummary(),
+                                                                      supplementaryProperties.getDescription(),
+                                                                      supplementaryProperties.getAbbreviation(),
+                                                                      supplementaryProperties.getUsage(),
+                                                                      isMergeUpdate,
+                                                                      methodName);
+        }
+    }
+}

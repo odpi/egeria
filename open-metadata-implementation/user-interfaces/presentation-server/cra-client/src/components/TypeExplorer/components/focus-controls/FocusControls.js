@@ -151,7 +151,7 @@ export default function FocusControls() {
 
     <div className="filterControls">
 
-      <p>Select Type to display</p>
+      <p className="descriptive-text">Select Type to display</p>
                 
       <label htmlFor="entityTypeSelector">Entity Types:  </label>                                                                                                  
       <select className="typeSelector" id="entityTypeSelector" name="entityTypeSelector" onChange={entityChangeHandler}>
