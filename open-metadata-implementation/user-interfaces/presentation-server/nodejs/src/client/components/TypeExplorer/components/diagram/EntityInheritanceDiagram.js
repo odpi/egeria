@@ -258,10 +258,10 @@ export default function EntityInheritanceDiagram(props) {
      * Protect the diagram from an underlying change of focus - which could be to a different valid
      * type, to no type ("none"), or to an absent (e.g. deprecated) type. The diagram needs to check
      * with the TypesContext that any type is still valid.
-     * 
-     * There is a deliberate case where this function will drop through without doing anything. That is 
-     * because it can afford to wait for the pending focus clearing by the focus context, which will then 
-     * cause a tree update this function will agan be called and adopt the 'fallback' of scrolling to the 
+     *
+     * There is a deliberate case where this function will drop through without doing anything. That is
+     * because it can afford to wait for the pending focus clearing by the focus context, which will then
+     * cause a tree update this function will agan be called and adopt the 'fallback' of scrolling to the
      * root type.
      */
 
