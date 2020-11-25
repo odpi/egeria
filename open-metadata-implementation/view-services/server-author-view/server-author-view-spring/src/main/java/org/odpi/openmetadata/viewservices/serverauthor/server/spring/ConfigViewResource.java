@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
+import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorPlatformsResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.services.ServerAuthorViewRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * configuration document is not found, a new one is created.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverBeingConfiguredName}")
+@RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}")
 
 @Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -27,21 +28,37 @@ public class ConfigViewResource
     private ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
 
     /**
-     * Return the stored configuration document for the server.
+     * Return the known platforms
      *
      * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @param serverBeingConfiguredName name of the server to be retrieved for configuration.
+     * @param serverName local server name
      * @return OMAGServerConfig properties or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @GetMapping(path = "/configuration")
+    @GetMapping(path = "/platform/server-configurations")
+    public ServerAuthorPlatformsResponse getKnownPlatforms(@PathVariable String userId,
+                                                           @PathVariable String serverName)
+    {
+        return adminAPI.getKnownPlatforms(userId, serverName);
+    }
+
+    /**
+     * Return the stored configuration document for the server.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @param serverBeingRetrievedName name of the server to be retrieved for configuration.
+     * @return OMAGServerConfig properties or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @GetMapping(path = "/servers/{serverBeingRetrievedName}/configuration")
     public ServerAuthorConfigurationResponse getStoredConfiguration(@PathVariable String userId,
                                                                     @PathVariable String serverName,
-                                                                    @PathVariable String serverBeingConfiguredName)
+                                                                    @PathVariable String serverBeingRetrievedName)
     {
-        return adminAPI.getStoredConfiguration(userId, serverName, serverBeingConfiguredName);
+        return adminAPI.getStoredConfiguration(userId, serverName, serverBeingRetrievedName);
     }
 
 
@@ -56,7 +73,7 @@ public class ConfigViewResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
-    @PostMapping(path = "/configuration")
+    @PostMapping(path = "/servers/{serverBeingConfiguredName}/configuration")
     public ServerAuthorConfigurationResponse setOMAGServerConfig(@PathVariable String           userId,
                                             @PathVariable String           serverName,
                                             @PathVariable String           serverBeingConfiguredName,
@@ -77,7 +94,7 @@ public class ConfigViewResource
      * OMAGConfigurationErrorException there is a problem using the supplied configuration or
      * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
      */
-    @PostMapping(path = "/configuration/deploy")
+    @PostMapping(path = "/servers/{serverBeingConfiguredName}/configuration/deploy")
     public ServerAuthorConfigurationResponse deployOMAGServerConfig(@PathVariable String           userId,
                                                @PathVariable String           serverName,
                                                @PathVariable String           destinationPlatformName,
