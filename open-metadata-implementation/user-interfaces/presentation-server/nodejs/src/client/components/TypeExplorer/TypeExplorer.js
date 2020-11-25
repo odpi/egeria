@@ -31,6 +31,10 @@ import ServerSelector                           from "./components/resource-sele
 
 import EnterpriseControl                        from "./components/resource-selection/EnterpriseControl";
 
+import DeprecatedTypeControl                    from "./components/resource-selection/DeprecatedTypeControl";
+
+import DeprecatedAttributeControl               from "./components/resource-selection/DeprecatedAttributeControl";
+
 import FocusControls                            from "./components/focus-controls/FocusControls";
 
 import DetailsPanel                             from "./components/details-panel/DetailsPanel";
@@ -149,6 +153,10 @@ export default function TypeExplorer() {
                                      onSubmit            = { submitHelpModal } />
 
                     <EnterpriseControl/>
+
+                    <DeprecatedTypeControl/>
+
+                    <DeprecatedAttributeControl/>
                  
                   </div>
 
@@ -169,7 +177,7 @@ export default function TypeExplorer() {
                   </div>
 
                   <div className="tex-rhs">
-                    <DiagramManager height={workingHeight-270} width={workingWidth-500}/>
+                    <DiagramManager height={workingHeight-270} width={workingWidth-450}/>
                   </div>
 
                 </div>
