@@ -6,9 +6,9 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Set;
-import static org.testng.FileAssert.fail;
 
 public class TestOMAGServerAdminStoreServices {
     /**
