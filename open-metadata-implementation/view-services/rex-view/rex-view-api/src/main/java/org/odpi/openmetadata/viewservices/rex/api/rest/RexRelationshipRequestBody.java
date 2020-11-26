@@ -15,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RexRelationshipRequestBody {
 
-// TODO clean up gen
 
     /*
      * The RexRelationshipRequestBody class provides a body for REST requests to retrieve relationships by GUID
@@ -25,7 +24,6 @@ public class RexRelationshipRequestBody {
     private String                    platformName;                  // must be non-null
     private String                    relationshipGUID;              // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;
- //   private Integer                   gen;                           // indicator of the current gen of the traversal
 
 
     public RexRelationshipRequestBody() {
@@ -50,7 +48,6 @@ public class RexRelationshipRequestBody {
             return enterpriseOption;
     }
 
-    //public Integer getGen() { return gen; }
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }
@@ -60,9 +57,6 @@ public class RexRelationshipRequestBody {
     public void setRelationshipGUID(String relationshipGUID) { this.relationshipGUID = relationshipGUID; }
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
-
-    //public void setGen(Integer gen) { this.gen = gen; }
-
 
 
 
@@ -75,7 +69,6 @@ public class RexRelationshipRequestBody {
                 ", platformName=" + platformName +
                 ", relationshipGUID=" + relationshipGUID +
                 ", enterpriseOption=" + enterpriseOption +
-            //    ", gen=" + gen +
                 '}';
     }
 

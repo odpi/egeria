@@ -18,7 +18,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RexTraversalRequestBody {
 
-    // TODO clean up gen
 
     /*
      * The RexTraversalRequestBody class provides a body for REST requests to perform a rex-traversal
@@ -32,7 +31,6 @@ public class RexTraversalRequestBody {
     private List<String>              relationshipTypeGUIDs;         // a list of type guids or null
     private List<String>              classificationNames;           // a list of names or null
     private Integer                   depth;                         // the depth of traversal
-  //  private Integer                   gen;                           // indicator of the current gen of the traversal
 
 
     public RexTraversalRequestBody() {
@@ -68,8 +66,6 @@ public class RexTraversalRequestBody {
 
     public Integer getDepth() { return depth; }
 
-    //public Integer getGen() { return gen; }
-
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
@@ -91,9 +87,6 @@ public class RexTraversalRequestBody {
 
     public void setDepth(Integer depth) { this.depth = depth; }
 
-   // public void setGen(Integer gen) { this.gen = gen; }
-
-
 
 
 
@@ -109,7 +102,6 @@ public class RexTraversalRequestBody {
                 ", entityTypeGUIDs=" + entityTypeGUIDs +
                 ", relationshipTypeGUIDs=" + relationshipTypeGUIDs +
                 ", classificationNames=" + classificationNames +
-       //         ", gen=" + gen +
                 '}';
     }
 

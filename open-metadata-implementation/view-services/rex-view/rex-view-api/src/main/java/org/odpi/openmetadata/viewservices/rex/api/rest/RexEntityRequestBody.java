@@ -15,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RexEntityRequestBody {
 
-    // TODO - clean up gen
 
     /*
      * The RexTraversalRequestBody class provides a body for REST requests to perform a rex-traversal
@@ -25,7 +24,6 @@ public class RexEntityRequestBody {
     private String                    platformName;                  // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;              // if not set will default to false
-    //private Integer                   gen;                           // indicator of the current gen of the traversal
 
 
     public RexEntityRequestBody() {
@@ -49,7 +47,6 @@ public class RexEntityRequestBody {
             return enterpriseOption;
     }
 
-    //public Integer getGen() { return gen; }
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }
@@ -59,9 +56,6 @@ public class RexEntityRequestBody {
     public void setEntityGUID(String entityGUID) { this.entityGUID = entityGUID; }
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
-
-    //public void setGen(Integer gen) { this.gen = gen; }
-
 
 
 
@@ -74,7 +68,6 @@ public class RexEntityRequestBody {
                 ", platformName=" + platformName +
                 ", entityGUID=" + entityGUID +
                 ", enterpriseOption=" + enterpriseOption +
-              //  ", gen=" + gen +
                 '}';
     }
 
