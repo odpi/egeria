@@ -1286,7 +1286,7 @@ public class DinoViewHandler {
             /* If the server is not in a cohort, it may not have metadata highway services enabled. In this
              * case just return an empty result
              */
-            return null; // TODO check this is valid
+            return null;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e)
         {

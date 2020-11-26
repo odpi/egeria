@@ -22,8 +22,8 @@ public class TexTypesRequestBody {
 
     private String                    serverName;                    // must be non-null
     private String                    platformName;                  // must be non-null
-    private Boolean                   enterpriseOption;
-    private Boolean                   deprecationOption;
+    private Boolean                   enterpriseOption;              // if not set will default to false
+    private Boolean                   deprecationOption;             // if not set will default to false
 
 
     public TexTypesRequestBody() {
@@ -38,9 +38,20 @@ public class TexTypesRequestBody {
 
     public String getPlatformName() { return platformName; }
 
-    public Boolean getEnterpriseOption() { return enterpriseOption; }
+    public Boolean getEnterpriseOption()
+    {
+        if (enterpriseOption == null)
+            return false;
+        else
+            return enterpriseOption;
+    }
 
-    public Boolean getDeprecationOption() { return deprecationOption; }
+    public Boolean getDeprecationOption() {
+        if (deprecationOption == null)
+            return false;
+        else
+            return deprecationOption;
+    }
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }
