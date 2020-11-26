@@ -33,7 +33,7 @@ export default function TypeDisplay() {
     /* 
      * No entity type has been selected as the focus - display an 'empty' message
      */
-    return <p>Type information will appear here when a type is selected</p>    
+    return <p>No type selected</p>
 
   }
   else {

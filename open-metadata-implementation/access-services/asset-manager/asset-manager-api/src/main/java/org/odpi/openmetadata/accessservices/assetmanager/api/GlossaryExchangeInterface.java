@@ -131,29 +131,6 @@ public interface GlossaryExchangeInterface
 
 
     /**
-     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories
-     * and terms.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void removeGlossary(String userId,
-                        String assetManagerGUID,
-                        String assetManagerName,
-                        String glossaryGUID,
-                        String glossaryExternalIdentifier) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
-
-
-    /**
      * Classify the glossary to indicate that it can be used as a taxonomy.
      * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
      * with a single root category.
@@ -252,6 +229,29 @@ public interface GlossaryExchangeInterface
                                   String glossaryExternalIdentifier) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;
+
+
+    /**
+     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories
+     * and terms.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeGlossary(String userId,
+                        String assetManagerGUID,
+                        String assetManagerName,
+                        String glossaryGUID,
+                        String glossaryExternalIdentifier) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**

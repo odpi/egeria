@@ -328,8 +328,7 @@ public class GlossaryExchangeResource
                                                                    @PathVariable String                             userId,
                                                                    @RequestParam int                                startFrom,
                                                                    @RequestParam int                                pageSize,
-                                                                   @RequestBody(required = false)
-                                                                                 AssetManagerIdentifiersRequestBody requestBody)
+                                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossariesForAssetManager(serverName, userId, startFrom, pageSize, requestBody);
     }

@@ -32,7 +32,7 @@ export default function EntityClassificationsDisplay(props) {
   let classificationEntries = {};
     
   /* 
-   * Inherited attributes
+   * Inherited classifications
    */
   const inheritedClassificationNames = explorer.inheritedClassificationNames;
   if (inheritedClassificationNames !== undefined) {
@@ -58,12 +58,18 @@ export default function EntityClassificationsDisplay(props) {
 
   const formatClassification = (classificationName, classification) => {
     let formattedClassification;
+
+    let classificationTypeDisplayName = classificationName;
+    let deprecated = typesContext.isTypeDeprecated("Classification", classificationName);
+    if (deprecated) {
+      classificationTypeDisplayName = "["+ classificationName +"]";
+    }
     
     if (classification.inherited) {      
       
       formattedClassification = (
         <div>
-          <button className="collapsible" onClick={flipSection}> <span className="italic">{classificationName}</span> </button>
+          <button className="collapsible" onClick={flipSection}> <span className="italic">{classificationTypeDisplayName}</span> </button>
           <div className="content">
             Attributes: { !typesContext.getClassificationType(classificationName).classificationDef.propertiesDefinition ? "none" :
               <ClassificationPropertiesDisplay expl={typesContext.getClassificationType(classificationName)} />}
@@ -79,7 +85,7 @@ export default function EntityClassificationsDisplay(props) {
 
       formattedClassification = (
         <div>
-          <button className="collapsible" onClick={flipSection}> {classificationName} </button>
+          <button className="collapsible" onClick={flipSection}> {classificationTypeDisplayName} </button>
           <div className="content">
             Attributes: { !typesContext.getClassificationType(classificationName).classificationDef.propertiesDefinition ? "none" :
               <ClassificationPropertiesDisplay expl={typesContext.getClassificationType(classificationName)} />}
