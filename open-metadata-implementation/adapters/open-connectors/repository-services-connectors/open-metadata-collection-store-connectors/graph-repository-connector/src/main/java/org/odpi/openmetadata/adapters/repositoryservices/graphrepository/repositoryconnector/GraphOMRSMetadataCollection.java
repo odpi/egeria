@@ -341,7 +341,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
         }
         catch (RelationshipNotKnownException e) {
-            log.error("{} relationship with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
+            log.warn("{} relationship with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
             relationship = null;
         }
         return relationship;
@@ -620,7 +620,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (EntityProxyOnlyException e) {
-            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(methodName,
                                                                                                    this.getClass().getName(),
@@ -718,7 +718,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(methodName,
                                                                                                    this.getClass().getName(),
@@ -1733,7 +1733,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, repositoryName),
                     this.getClass().getName(),
@@ -1844,7 +1844,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, repositoryName),
                            this.getClass().getName(),
@@ -1959,7 +1959,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(methodName,
                                                                                                    this.getClass().getName(),
@@ -2141,14 +2141,23 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             repositoryValidator.validateEntityFromStore(repositoryName, obsoleteEntityGUID, entityDetail, methodName);
 
         }
-        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+        catch (EntityProxyOnlyException e) {
 
-            log.error("{} entity wth GUID {} not found or only a proxy", methodName, obsoleteEntityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, obsoleteEntityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(obsoleteEntityGUID, methodName, repositoryName),
                     this.getClass().getName(),
                     methodName,
                     e);
+        }
+        catch (EntityNotKnownException e) {
+
+            log.error("{} entity wth GUID {} not found", methodName, obsoleteEntityGUID);
+
+            throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(obsoleteEntityGUID, methodName, repositoryName),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              e);
         }
 
         repositoryValidator.validateTypeForInstanceDelete(repositoryName, typeDefGUID, typeDefName, entityDetail, methodName);
@@ -2237,7 +2246,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (EntityProxyOnlyException e) {
-            log.error("{} entity wth GUID {} only a proxy", methodName, deletedEntityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, deletedEntityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(deletedEntityGUID, methodName, repositoryName),
                     this.getClass().getName(),
@@ -2386,7 +2395,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         }
         catch (EntityProxyOnlyException e) {
-            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, repositoryName),
                     this.getClass().getName(),
@@ -2456,7 +2465,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (EntityProxyOnlyException e) {
-            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, repositoryName),
                     this.getClass().getName(),
@@ -2542,7 +2551,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     methodName);
         }
         catch (EntityProxyOnlyException e) {
-            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, repositoryName),
                     this.getClass().getName(),
@@ -2773,7 +2782,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             
         }
         catch (EntityProxyOnlyException e) {
-            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, repositoryName),
                     this.getClass().getName(),
@@ -2858,7 +2867,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             retrievedEntity = graphStore.getEntityDetailFromStore(entityGUID);
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.debug("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            log.debug("{} entity wth GUID {} not known or only a proxy", methodName, entityGUID);
         }
 
         List<Classification> homeClassifications = new ArrayList<>();
@@ -2925,7 +2934,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             entity = graphStore.getEntityDetailFromStore(entityGUID);
         }
         catch (EntityProxyOnlyException e) {
-            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} only a proxy", methodName, entityGUID);
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, repositoryName),
                     this.getClass().getName(),
@@ -2968,7 +2977,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             retrievedEntity = graphStore.getEntityDetailFromStore(entity.getGUID());
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.debug("{} entity wth GUID {} only a proxy", methodName, entity.getGUID());
+            log.debug("{} entity wth GUID {} not known or only a proxy", methodName, entity.getGUID());
         }
 
         if ((retrievedEntity == null) && (!metadataCollectionId.equals(entity.getMetadataCollectionId()))) {
@@ -3049,7 +3058,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             retrievedEntity = graphStore.getEntityDetailFromStore(entity.getGUID());
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.debug("{} entity wth GUID {} only a proxy", methodName, entity.getGUID());
+            log.debug("{} entity wth GUID {} not known or only a proxy", methodName, entity.getGUID());
         }
 
         if ((retrievedEntity == null) && (!metadataCollectionId.equals(entity.getMetadataCollectionId()))) {
