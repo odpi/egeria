@@ -12,7 +12,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndp
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorExceptionHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewErrorCode;
@@ -27,16 +26,21 @@ import java.util.*;
 
 /**
  * The ServerAuthorViewHandler is initialised with the server the call should be sent to.
- * The handler exposes methods for functionality for the type explorer view
+ * The handler exposes methods for functionality for the Server Author view allowing servers to authored and deployed
+ * onto a platform.
+ *
+ * The handler implements server authoring capabilies, OMAG server configurations are accumulated on the
+ * platform that is identified in the Server author View configuration. While authoring servers, the caller is
+ * not aware of where the server configurations are being accumulated.
+ *
+ * In addition to server authoring capabilities, this handler allows the known platforms, as defined in the view
+ * configuration to be queried to see what servers are configured on them. The call can then deploy a server that has
+ * been configured onto a particular platform.
+ *
  */
 public class ServerAuthorViewHandler {
 
     private static final String className = ServerAuthorViewHandler.class.getName();
-
-    /*
-     * Specify a constant for the (max) length to which labels will be truncated.
-     */
-    private static final int TRUNCATED_STRING_LENGTH = 24;
 
 
     /*
@@ -53,16 +57,6 @@ public class ServerAuthorViewHandler {
                     resourceCategory   : "Platform",
                     resourceName       : "Platform1",
                     resourceRootURL    : "https://localhost:8082"
-                },
-                {
-                    resourceCategory   : "Server",
-                    resourceName       : "Metadata_Server1",
-                    resourceRootURL    : "https://localhost:8082"
-                },
-                {
-                    resourceCategory   : "Server",
-                    resourceName       : "Metadata_Server2",
-                    resourceRootURL    : "https://localhost:9443"
                 }
             ]
     */
@@ -152,6 +146,7 @@ public class ServerAuthorViewHandler {
 
     /**
      * Get the server configurations associated with the platforms that this view service knows about.
+     *
      * @param userId     userId under which the request is performed
      * @param methodName The name of the method being invoked
      * @return the known platforms, which if active will contain their associated omag server configurations
@@ -203,9 +198,9 @@ public class ServerAuthorViewHandler {
      *
      * @param platformName
      * @return resolved platform URL Root
-     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
+     * @throws OMAGInvalidParameterException in valid platform name parameter
      */
-    private String resolvePlatformRootURL(String platformName, String methodName) throws InvalidParameterException {
+    private String resolvePlatformRootURL(String platformName, String methodName) throws ServerAuthorViewServiceException {
         String platformRootURL = null;
 
         if (platformName != null) {
@@ -215,10 +210,9 @@ public class ServerAuthorViewHandler {
             }
         }
         if (platformName == null || platformRootURL == null) {
-            throw new InvalidParameterException(ServerAuthorViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "platformName");
+            throw new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, "platformName"),
+                                                       className,
+                                                       methodName);
         }
 
         return platformRootURL;
@@ -328,7 +322,7 @@ public class ServerAuthorViewHandler {
     }
 
     /**
-     * Deploy an OMAG Server configuration onto a target platform
+     * Deploy an OMAG Server configuration onto a target platform.
      *
      * @param className               class Name for diagnostic purposes
      * @param methodName              current operation
@@ -338,10 +332,12 @@ public class ServerAuthorViewHandler {
      */
     public void deployOMAGServerConfig(String className, String methodName, String destinationPlatformName, String serverToBeDeployedName) throws ServerAuthorViewServiceException {
         try {
+            String destinationPlatformRootURL = resolvePlatformRootURL(destinationPlatformName, methodName);
             OMAGServerConfigurationClient adminServicesClient = new OMAGServerConfigurationClient(this.userId,
                                                                                                   serverToBeDeployedName,
                                                                                                   this.platformURL);
-            adminServicesClient.deployOMAGServerConfig(this.platformURL);
+            adminServicesClient.deployOMAGServerConfig(destinationPlatformRootURL);
+
         } catch (OMAGNotAuthorizedException error) {
             throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
         } catch (OMAGInvalidParameterException error) {
@@ -354,10 +350,10 @@ public class ServerAuthorViewHandler {
     /**
      * Set an OMAG Server's configuration
      *
-     * @param className        class Name for diagnostic purposes
-     * @param methodName       current operation
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
      * @param serverToBeConfiguredName name of the server to be configured
-     * @param omagServerConfig the server configuration we are setting
+     * @param omagServerConfig         the server configuration we are setting
      * @throws ServerAuthorViewServiceException server author exception
      */
     public void setOMAGServerConfig(String className, String methodName, String serverToBeConfiguredName, OMAGServerConfig omagServerConfig) throws ServerAuthorViewServiceException {
