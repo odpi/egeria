@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
         externalDocs=@ExternalDocumentation(description="Further information",
                 url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
 
+
 public class ConfigViewResource
 {
     private ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
@@ -97,8 +98,8 @@ public class ConfigViewResource
     @PostMapping(path = "/servers/{serverBeingDeployedName}/configuration/deploy")
     public ServerAuthorConfigurationResponse deployOMAGServerConfig(@PathVariable String           userId,
                                                @PathVariable String           serverName,
-                                               @PathVariable String           destinationPlatformName,
-                                               @PathVariable String           serverBeingDeployedName)
+                                               @PathVariable String           serverBeingDeployedName,
+                                               @RequestParam(value = "destinationPlatformName") String destinationPlatformName)
     {
         return adminAPI.deployOMAGServerConfig(userId, serverName, destinationPlatformName, serverBeingDeployedName);
     }
