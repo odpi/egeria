@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.viewservices.tex.server;
 
 
+import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexExceptionHandler;
+import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewErrorCode;
+import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewServiceException;
 import org.odpi.openmetadata.viewservices.tex.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -29,20 +32,21 @@ import java.util.Map;
 
 public class TexViewRESTServices {
 
-    protected static TexViewInstanceHandler instanceHandler       = new TexViewInstanceHandler();
+    protected static TexViewInstanceHandler instanceHandler = new TexViewInstanceHandler();
 
-    private static RESTExceptionHandler     restExceptionHandler  = new RESTExceptionHandler();
+    private static RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
-    private static RESTCallLogger           restCallLogger        = new RESTCallLogger(LoggerFactory.getLogger(TexViewRESTServices.class),
-                                                                                       instanceHandler.getServiceName());
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(TexViewRESTServices.class),
+                                                                      instanceHandler.getServiceName());
 
-    private static final Logger             log                   = LoggerFactory.getLogger(TexViewRESTServices.class);
+    private static final Logger log = LoggerFactory.getLogger(TexViewRESTServices.class);
 
 
     /**
      * Default constructor
      */
-    public TexViewRESTServices() {
+    public TexViewRESTServices()
+    {
 
     }
 
@@ -50,10 +54,9 @@ public class TexViewRESTServices {
     /**
      * Retrieve platform origin
      *
-     * @param serverName    name of the local view server.
-     * @param userId        userId under which the request is performed
+     * @param serverName name of the local view server.
+     * @param userId     userId under which the request is performed
      * @return response     the list of resource endpoints configured for the view service
-     *
      */
     public TexResourceEndpointListResponse getResourceEndpointList(String serverName, String userId)
     {
@@ -64,28 +67,38 @@ public class TexViewRESTServices {
 
         AuditLog auditLog = null;
 
-        try {
+        try
+        {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             TexViewHandler handler = instanceHandler.getTexViewHandler(userId, serverName, methodName);
 
-            Map<String, List<ResourceEndpoint>> lists =  handler.getResourceEndpoints(userId, methodName);
+            Map<String, List<ResourceEndpoint>> lists = handler.getResourceEndpoints(userId, methodName);
             List<ResourceEndpoint> platformList = null;
             List<ResourceEndpoint> serverList = null;
-            if (lists != null) {
+            if (lists != null)
+            {
                 platformList = lists.get("platformList");
                 serverList = lists.get("serverList");
             }
             response.setPlatformList(platformList);
             response.setServerList(serverList);
 
-        } catch (InvalidParameterException error) {
+        }
+        catch (InvalidParameterException error)
+        {
             restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
+        }
+        catch (PropertyServerException error)
+        {
             restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
+        }
+        catch (UserNotAuthorizedException error)
+        {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
@@ -96,18 +109,13 @@ public class TexViewRESTServices {
     }
 
 
-
     /**
      * Load types
      *
-     * @param serverName    name of the local view server.
-     * @param userId        userId under which the request is performed
-     * @param requestBody   request body
+     * @param serverName  name of the local view server.
+     * @param userId      userId under which the request is performed
+     * @param requestBody request body
      * @return response     the repository's type information or exception information
-     *
-     * <ul>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * </ul>
      */
 
     public TypeExplorerResponse getTypeExplorer(String serverName, String userId, TexTypesRequestBody requestBody)
@@ -119,33 +127,72 @@ public class TexViewRESTServices {
 
         TypeExplorerResponse response = new TypeExplorerResponse();
 
-        // The serverName parameter to the RequestSummary is the target server not the server running the VS
-        //RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
-        //response.setRequestSummary(request);
+        if (requestBody != null)
+        {
 
-        AuditLog auditLog = null;
+            AuditLog auditLog = null;
+            TexViewHandler handler = null;
 
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null) {
-                TexViewHandler handler = instanceHandler.getTexViewHandler(userId, serverName, methodName);
+                handler = instanceHandler.getTexViewHandler(userId, serverName, methodName);
+
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+
+            /*
+             * Attempt to retrieve the type information
+             */
+            try
+            {
 
                 response.setTypeExplorer(handler.getTypeExplorer(userId,
                                                                  requestBody.getServerName(),
                                                                  requestBody.getPlatformName(),
                                                                  requestBody.getEnterpriseOption(),
+                                                                 requestBody.getDeprecationOption(),
                                                                  methodName));
+
             }
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (TexViewServiceException error)
+            {
+                TexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
         }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            TexViewServiceException error = new TexViewServiceException(TexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                        this.getClass().getName(),
+                                                                        methodName);
+
+            TexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+        }
+
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -154,8 +201,6 @@ public class TexViewRESTServices {
         return response;
 
     }
-
-
 
 
 }

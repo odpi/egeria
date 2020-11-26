@@ -129,6 +129,8 @@ public interface SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -136,13 +138,15 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupSchemaTypeParent(String userId,
-                               String assetManagerGUID,
-                               String assetManagerName,
-                               String parentElementGUID,
-                               String parentElementTypeName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    void setupSchemaTypeParent(String  userId,
+                               String  assetManagerGUID,
+                               String  assetManagerName,
+                               boolean assetManagerIsHome,
+                               String  schemaTypeGUID,
+                               String  parentElementGUID,
+                               String  parentElementTypeName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
 
 
     /**
@@ -151,6 +155,7 @@ public interface SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -161,6 +166,7 @@ public interface SchemaExchangeInterface
     void clearSchemaTypeParent(String userId,
                                String assetManagerGUID,
                                String assetManagerName,
+                               String schemaTypeGUID,
                                String parentElementGUID,
                                String parentElementTypeName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -463,79 +469,6 @@ public interface SchemaExchangeInterface
 
 
     /**
-     * Link two schema elements together to show how a calculated value is derived.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
-     * @param query query issued to the target
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void setupSchemaQueryTarget(String userId,
-                                String assetManagerGUID,
-                                String assetManagerName,
-                                String schemaElementOneGUID,
-                                String schemaElementTwoGUID,
-                                String queryId,
-                                String query) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException;
-
-    /**
-     * Update the relationship properties for the query target.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
-     * @param query query issued to the target
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void updateSchemaQueryTarget(String userId,
-                                 String assetManagerGUID,
-                                 String assetManagerName,
-                                 String schemaElementOneGUID,
-                                 String schemaElementTwoGUID,
-                                 String queryId,
-                                 String query) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
-
-
-    /**
-     * Remove the relationship between two schema elements.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void clearSchemaQueryTarget(String userId,
-                                String assetManagerGUID,
-                                String assetManagerName,
-                                String schemaElementOneGUID,
-                                String schemaElementTwoGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
-
-
-    /**
      * Classify the column schema attribute to indicate that it describes a primary key.
      *
      * @param userId calling user
@@ -603,14 +536,14 @@ public interface SchemaExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void setupForeignKeyRelationship(String               userId,
-                         String               assetManagerGUID,
-                         String               assetManagerName,
-                         boolean              assetManagerIsHome,
-                         String               primaryKeyGUID,
-                         String               foreignKeyGUID,
-                         ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
+                                     String               assetManagerGUID,
+                                     String               assetManagerName,
+                                     boolean              assetManagerIsHome,
+                                     String               primaryKeyGUID,
+                                     String               foreignKeyGUID,
+                                     ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 
     /**
      * Update the relationship properties for the query target.

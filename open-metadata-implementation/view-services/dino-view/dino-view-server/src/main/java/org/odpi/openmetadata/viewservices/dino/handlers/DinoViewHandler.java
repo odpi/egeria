@@ -13,11 +13,10 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
-
-import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
 import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
 import org.odpi.openmetadata.repositoryservices.clients.AuditLogServicesClient;
@@ -25,7 +24,9 @@ import org.odpi.openmetadata.repositoryservices.clients.MetadataHighwayServicesC
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoExceptionHandler;
 import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException;
 import org.odpi.openmetadata.viewservices.dino.api.properties.DinoServerInstance;
 import org.odpi.openmetadata.viewservices.dino.api.properties.PlatformOverview;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
@@ -45,47 +46,65 @@ import java.util.Map;
  * The DinoViewHandler is initialised with the configured resource endpoints.
  * The handler exposes methods for functionality for the dino view
  */
-public class DinoViewHandler
-{
+public class DinoViewHandler {
     private static final Logger log = LoggerFactory.getLogger(DinoViewHandler.class);
 
     /*
      * viewServiceOptions should have been validated in the Admin layer.
      * The viewServiceOptions contains a list of resource endpoints that the
      * view service can connect to. It is formatted like this:
-     * "resourceEndpoints" : [
-                 {
-                     resourceCategory   : "Platform",
-                     resourceName       : "Platform2",
-                     resourceRootURL    : "https://localhost:9443"
-                 },
-                 {
-                     resourceCategory   : "Platform",
-                     resourceName       : "Platform1",
-                     resourceRootURL    : "https://localhost:8082"
-                 },
-                 {
-                     resourceCategory   : "Server",
-                     resourceName       : "Metadata_Server1",
-                     resourceRootURL    : "https://localhost:8082"
-                 },
-                 {
-                     resourceCategory   : "Server",
-                     resourceName       : "Metadata_Server2",
-                     resourceRootURL    : "https://localhost:9443"
-                 }
-             ]
+     *
+     *  "resourceEndpoints" : [
+     *            {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Platform",
+     *               "platformName"       : "Platform1",
+     *               "platformRootURL"    : "https://localhost:8082",
+     *               "description"        : "Egeria deployment on local development server"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Platform",
+     *               "platformName"       : "Platform2",
+     *               "platformRootURL"    : "https://localhost:9443",
+     *               "description"        : "Egeria deployment on local test server"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Server",
+     *               "serverName"         : "Metadata_Server",
+     *               "serverInstanceName" : "Metadata Server 1",
+     *               "platformName"       : "Platform1",
+     *               "description"        : "Metadata server for development testing"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Server",
+     *               "serverName"         : "Metadata_Server2",
+     *               "serverInstanceName" : "Metadata Server 2",
+     *               "platformName"       : "Platform2",
+     *               "description"        : "Metadata server used as home for test artefacts"
+     *           }
+     *       ]
      */
-    private Map<String, ResourceEndpoint>  configuredPlatforms = null;  // map is keyed using platformRootURL
-    private Map<String, ResourceEndpoint>  configuredServerInstances   = null;  // map is keyed using serverName+platformRootURL so each instance is unique
-
+    private Map<String, ResourceEndpoint> configuredPlatforms = null;  // map is keyed using platformRootURL
+    private Map<String, ResourceEndpoint> configuredServerInstances = null;  // map is keyed using serverName+platformRootURL so each instance is unique
 
     /**
-     * Constructor for the DinoViewHandler
-     * ~Store the configured endpoints
+     * Default constructor for DinoViewHandler
      */
-    public DinoViewHandler(List<ResourceEndpointConfig>  resourceEndpoints) {
+    public DinoViewHandler()
+    {
 
+    }
+
+    /**
+     * Constructor for DinoViewHandler with configured resourceEndpoints
+     *
+     * @param resourceEndpoints - list of resource endpoint configuration objects for this view service
+     */
+    public DinoViewHandler(List<ResourceEndpointConfig> resourceEndpoints)
+    {
 
         /*
          * Populate map of resources with their endpoints....
@@ -93,19 +112,21 @@ public class DinoViewHandler
 
         // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
 
-        configuredPlatforms         = new HashMap<>();
-        configuredServerInstances   = new HashMap<>();
+        configuredPlatforms = new HashMap<>();
+        configuredServerInstances = new HashMap<>();
 
-        if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
+        if (resourceEndpoints != null && !resourceEndpoints.isEmpty())
+        {
 
             resourceEndpoints.forEach(res -> {
 
-                String resCategory   = res.getResourceCategory();
+                String resCategory = res.getResourceCategory();
                 ResourceEndpoint rep = new ResourceEndpoint(res);
 
-                String resName = null;
+                String resName;
 
-                switch (resCategory) {
+                switch (resCategory)
+                {
                     case "Platform":
                         resName = res.getPlatformName();
                         configuredPlatforms.put(resName, rep);
@@ -128,10 +149,9 @@ public class DinoViewHandler
     /**
      * getResourceEndpoints - returns a list of the configured resource endpoints. Does not include discovered resource endpoints.
      *
-     * @param userId  userId under which the request is performed
+     * @param userId     userId under which the request is performed
      * @param methodName The name of the method being invoked
-     * This method will return the resource endpoints that have been configured for the view service
-     *
+     * @return The resource endpoints that have been configured for the view service
      */
     public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
 
@@ -139,7 +159,7 @@ public class DinoViewHandler
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
 
         List<ResourceEndpoint> platformList = null;
-        List<ResourceEndpoint> serverList   = null;
+        List<ResourceEndpoint> serverList = null;
 
         if (!configuredPlatforms.isEmpty())
         {
@@ -153,110 +173,147 @@ public class DinoViewHandler
             serverList.addAll(configuredServerInstances.values());
         }
 
-        returnMap.put("platformList",platformList);
-        returnMap.put("serverList",serverList);
+        returnMap.put("platformList", platformList);
+        returnMap.put("serverList", serverList);
 
         return returnMap;
     }
 
 
-
     /**
      * resolvePlatformRootURL
-     *
+     * <p>
      * This method will look up the configured root URL for the named platform.
      *
-     * @param platformName
+     * @param platformName - the name of the platform to resolve
+     * @param methodName   - the name of the calling method
      * @return resolved platform URL Root
-     * @throws InvalidParameterException
+     * <p>
+     * Exceptions
+     * @throws DinoViewServiceException an error was detected and details are reported in the exception
      */
-    private String resolvePlatformRootURL(String platformName, String methodName) throws InvalidParameterException
+    private String resolvePlatformRootURL(String platformName,
+                                          String methodName)
+    throws DinoViewServiceException
 
     {
         String platformRootURL = null;
 
-        if (platformName != null) {
+        if (platformName != null)
+        {
             ResourceEndpoint resource = configuredPlatforms.get(platformName);
-            if (resource != null) {
+            if (resource != null)
+            {
                 platformRootURL = resource.getResourceRootURL();
             }
         }
-        if (platformName == null || platformRootURL == null) {
-            throw new InvalidParameterException(DinoViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "platformName");
+        if (platformName == null || platformRootURL == null)
+        {
+            throw new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+                                               this.getClass().getName(),
+                                               methodName);
         }
 
         return platformRootURL;
     }
 
 
-
-
-
     /**
      * getPlatformServicesClient
-     *
+     * <p>
      * This method will get the above client object, which then provides access to all the methods of the
      * Platform Services interface.
      *
-     * @param platformName
-     * @param platformRootURL
-     * @throws InvalidParameterException
+     * @param platformName    - name of the platform to connect to
+     * @param platformRootURL - the root URL to connect to the platform
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
      */
     private PlatformServicesClient getPlatformServicesClient(String platformName,
-                                                             String platformRootURL) throws InvalidParameterException
+                                                             String platformRootURL)
+    throws DinoViewServiceException
 
     {
+        String methodName = "getOMAGServerConfigurationClient";
 
-        PlatformServicesClient client = new PlatformServicesClient(platformName, platformRootURL);
+        try
+        {
+            return new PlatformServicesClient(platformName, platformRootURL);
+        }
+        catch (InvalidParameterException e)
 
-        return client;
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
     }
 
     /**
-     * getMetadataServerConfigurationClient
-     *
+     * getOMAGServerConfigurationClient
+     * <p>
      * This method will get the above client object, which then provides access to all the methods of the
      * Platform Services interface.
      *
-     * @param serverName
-     * @param serverRootURL
-     * @throws OMAGInvalidParameterException
+     * @param userId        - name of the user performing the operation
+     * @param serverName    - name of the server to connect to
+     * @param serverRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
      */
     private OMAGServerConfigurationClient getOMAGServerConfigurationClient(String userId,
                                                                            String serverName,
-                                                                           String serverRootURL) throws OMAGInvalidParameterException
+                                                                           String serverRootURL)
+
+    throws DinoViewServiceException
 
     {
+        String methodName = "getOMAGServerConfigurationClient";
 
-        OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(userId, serverName, serverRootURL);
+        try
+        {
 
-        return client;
+            return new OMAGServerConfigurationClient(userId, serverName, serverRootURL);
+
+        }
+        catch (OMAGInvalidParameterException e)
+
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+
+
     }
 
     /**
      * getMetadataHighwayServicesClient
-     *
+     * <p>
      * This method will get the above client object, which then provides access to all the methods of the
      * Platform Services interface.
      *
-     * @param serverName
-     * @param platformRootURL
-     * @throws InvalidParameterException
+     * @param userId          - name of the user performing the operation
+     * @param serverName      - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
      */
     private MetadataHighwayServicesClient getMetadataHighwayServicesClient(String userId,
                                                                            String serverName,
-                                                                           String platformRootURL) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                                                                           String platformRootURL)
+
+    throws DinoViewServiceException
 
     {
+        String methodName = "getMetadataHighwayServicesClient";
 
-        String serverRootURL = platformRootURL + "/servers/" + serverName;
+        try
+        {
+            String serverRootURL = platformRootURL + "/servers/" + serverName;
 
-        MetadataHighwayServicesClient client = new MetadataHighwayServicesClient(serverName, serverRootURL);
+            return new MetadataHighwayServicesClient(serverName, serverRootURL);
 
-        return client;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e)
+
+        {
+            throw DinoExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+
     }
 
 
@@ -268,21 +325,36 @@ public class DinoViewHandler
      * This method will get the above client object, which then provides access to all the methods of the
      * Repository Services Audit Log Services interface.
      *
-     * @param serverName
-     * @param platformRootURL
-     * @throws InvalidParameterException
+     * @param userId - name of the user performing the operation
+     * @param serverName - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
      */
     private AuditLogServicesClient getAuditLogServicesClient(String userId,
                                                              String serverName,
-                                                             String platformRootURL) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                                                             String platformRootURL)
+
+    throws DinoViewServiceException
+
+
 
     {
 
-        String serverRootURL = platformRootURL + "/servers/" + serverName;
+        String methodName = "getAuditLogServicesClient";
 
-        AuditLogServicesClient client = new AuditLogServicesClient(serverName, serverRootURL);
+        try
+        {
 
-        return client;
+            String serverRootURL = platformRootURL + "/servers/" + serverName;
+
+            return new AuditLogServicesClient(serverName, serverRootURL);
+
+
+        }
+        catch(org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
     }
 
 
@@ -295,26 +367,32 @@ public class DinoViewHandler
      * @return the platform overview
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public PlatformOverview platformGetOverview(String    userId,
                                                 String    platformName,
-                                                String    methodName)     throws  InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                                String    methodName)
+    throws
+        DinoViewServiceException
+
     {
 
+        PlatformServicesClient platformServicesClient;
+
+        /*
+         * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+         */
         String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
-        try {
+        /*
+         *  Use platform services client. Internal method will only throw a DinoViewServiceException
+         */
+        platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
-            /*
-             *  Use platform services client
-             */
-            PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
+
+        try
+        {
 
             /*
              * Construct an overview with the configured aspects
@@ -325,28 +403,40 @@ public class DinoViewHandler
             platformOverview.setDescription(platformConfig.getResourceDescription());
             platformOverview.setPlatformRootURL(platformConfig.getResourceRootURL());
 
+            // All the following calls to the platformServicesClient can throw a number of OCF exceptions
+
             // Fetch the platformOrigin
             String platformOrigin = platformServicesClient.getPlatformOrigin(userId);
             platformOverview.setPlatformOrigin(platformOrigin);
 
             // Fetch the various types of registered services
-            // An RegisteredOMAGService contains serviceName, serviceURLMarker, serviceDescription, serviceWiki
+            // A RegisteredOMAGService contains serviceName, serviceURLMarker, serviceDescription, serviceWiki
             List<RegisteredOMAGService> accessServiceList = platformServicesClient.getAccessServices(userId);
             platformOverview.setAccessServices(accessServiceList);
+
             List<RegisteredOMAGService> commonServiceList = platformServicesClient.getCommonServices(userId);
             platformOverview.setCommonServices(commonServiceList);
+
             List<RegisteredOMAGService> governanceServiceList = platformServicesClient.getGovernanceServices(userId);
             platformOverview.setGovernanceServices(governanceServiceList);
+
             List<RegisteredOMAGService> viewServiceList = platformServicesClient.getViewServices(userId);
             platformOverview.setViewServices(viewServiceList);
 
             return platformOverview;
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -361,36 +451,45 @@ public class DinoViewHandler
      * @return the platform origin
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public String platformGetOrigin(String    userId,
                                     String    platformName,
-                                    String    methodName)     throws  InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
+                                    String    methodName)
+    throws
+    DinoViewServiceException
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+    {
 
         try {
 
             /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
              *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
              */
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
-            String string = platformServicesClient.getPlatformOrigin(userId);
+            return platformServicesClient.getPlatformOrigin(userId);
 
-            return string;
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -404,63 +503,86 @@ public class DinoViewHandler
      * @return response containing the DinoServerListResponse object.
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public List<DinoServerInstance> platformGetActiveServerList(String    userId,
                                                                 String    platformName,
-                                                                String    methodName)     throws  InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+                                                                String    methodName)
+    throws
+    DinoViewServiceException
+
     {
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+        try
+        {
 
-        try {
+            /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
              */
+
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
             /* Retrieve the server names */
             List<String> serverNames = platformServicesClient.getActiveServers(userId);
 
-            /*
-             * Construct the return list indicating that all servers it contains are active
-             */
-            List<DinoServerInstance> serverList = new ArrayList();
-            serverNames.forEach(serverName -> {
-                DinoServerInstance dinoServerInstance = new DinoServerInstance();
-                // Try to locate the serverName and plaformRootURL in the configured serverInstances. If found include the serverInstanceName,
-                // else ensure it is set to null.
-                String configuredInstanceName = null;
 
-                Iterator<ResourceEndpoint> configuredServerInstances = this.configuredServerInstances.values().iterator();
-                while (configuredServerInstances.hasNext()) {
-                    ResourceEndpoint csire = configuredServerInstances.next();
-                    if (   csire.getServerName().equals(serverName)
-                        && csire.getPlatformName().equals(platformName) ) {
-                        // This is our configuration entry...
-                        configuredInstanceName = csire.getServerInstanceName();
+            if (serverNames != null)
+            {
+                /*
+                 * Construct the return list indicating that all servers it contains are active
+                 */
+                List<DinoServerInstance> serverList = new ArrayList<>();
+
+                serverNames.forEach(serverName -> {
+                    DinoServerInstance dinoServerInstance = new DinoServerInstance();
+                    // Try to locate the serverName and plaformRootURL in the configured serverInstances. If found include the serverInstanceName,
+                    // else ensure it is set to null.
+                    String configuredInstanceName = null;
+
+                    Iterator<ResourceEndpoint> configuredServerInstances = this.configuredServerInstances.values().iterator();
+                    while (configuredServerInstances.hasNext())
+                    {
+                        ResourceEndpoint csire = configuredServerInstances.next();
+                        if (csire.getServerName().equals(serverName)
+                                && csire.getPlatformName().equals(platformName))
+                        {
+                            // This is our configuration entry...
+                            configuredInstanceName = csire.getServerInstanceName();
+                        }
                     }
-                }
-                dinoServerInstance.setServerInstanceName(configuredInstanceName);
-                dinoServerInstance.setIsActive(true);
-                dinoServerInstance.setServerName(serverName);
-                dinoServerInstance.setPlatformName(platformName);
-                serverList.add(dinoServerInstance);
-            });
+                    dinoServerInstance.setServerInstanceName(configuredInstanceName);
+                    dinoServerInstance.setIsActive(true);
+                    dinoServerInstance.setServerName(serverName);
+                    dinoServerInstance.setPlatformName(platformName);
+                    serverList.add(dinoServerInstance);
+                });
 
-            return serverList;
+                return serverList;
+            }
+            else
+            {
+                return null;
+            }
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -474,62 +596,77 @@ public class DinoViewHandler
      * @return the list of server names
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public List<DinoServerInstance> platformGetKnownServerList(String    userId,
                                                                String    platformName,
-                                                               String    methodName)     throws  InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                                               String    methodName)
+    throws
+    DinoViewServiceException
+
     {
 
-
-
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
-
-        try {
+        try
+        {
+            /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
              */
+
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
             List<String> serverNames = platformServicesClient.getKnownServers(userId);
 
+            if (serverNames != null)
+            {
+                /*
+                 * Construct the return list indicating which servers are active
+                 */
+                List<DinoServerInstance> serverList = new ArrayList<>();
 
-            /*
-             * Construct the return list indicating which servers are active
-             */
-            List<DinoServerInstance> serverList = new ArrayList();
+                /* Retrieve a list of names of the active servers */
+                List<String> activeServerNames = platformServicesClient.getActiveServers(userId);
+                serverNames.forEach(serverName -> {
+                    DinoServerInstance dinoServerInstance = new DinoServerInstance();
+                    dinoServerInstance.setServerName(serverName);
+                    dinoServerInstance.setPlatformName(platformName);
+                    if (activeServerNames != null && activeServerNames.contains(serverName))
+                    {
+                        dinoServerInstance.setIsActive(true);
+                    }
+                    else
+                    {
+                        dinoServerInstance.setIsActive(false);
+                    }
+                    serverList.add(dinoServerInstance);
+                });
 
-            /* Retrieve a list of names of the active servers */
-            List<String> activeServerNames = platformServicesClient.getActiveServers(userId);
-            Map<String, DinoServerInstance> serverMap = new HashMap<>();
-            serverNames.forEach(serverName -> {
-                DinoServerInstance dinoServerInstance = new DinoServerInstance();
-                dinoServerInstance.setServerName(serverName);
-                dinoServerInstance.setPlatformName(platformName);
-                if (activeServerNames.contains(serverName)) {
-                    dinoServerInstance.setIsActive(true);
-                }
-                else {
-                    dinoServerInstance.setIsActive(false);
-                }
-                serverList.add(dinoServerInstance);
-            });
+                return serverList;
 
-            return serverList;
-
-
+            }
+            else
+            {
+                return null;
+            }
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -542,38 +679,47 @@ public class DinoViewHandler
      * @return the list of services
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public List<RegisteredOMAGService> platformGetAccessServiceList(String    userId,
                                                                     String    platformName,
-                                                                    String    methodName)     throws  InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
+                                                                    String    methodName)
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+    throws
+    DinoViewServiceException
+
+    {
 
         try {
 
             /*
-             *  Use platform services client
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
              */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
+             */
+
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
-            List<RegisteredOMAGService> serviceList = new ArrayList<>();
+            return platformServicesClient.getAccessServices(userId);
 
-            serviceList = platformServicesClient.getAccessServices(userId);
-
-            return serviceList;
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -587,38 +733,45 @@ public class DinoViewHandler
      * @return the list of services
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public List<RegisteredOMAGService> platformGetViewServiceList(String    userId,
                                                                   String    platformName,
-                                                                  String    methodName)     throws  InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
-    {
+                                                                  String    methodName)
+    throws
+    DinoViewServiceException
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+    {
 
         try {
 
             /*
-             *  Use platform services client
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
              */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
+             */
+
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
-            List<RegisteredOMAGService> serviceList = new ArrayList<>();
-
-            serviceList = platformServicesClient.getViewServices(userId);
-
-            return serviceList;
+            return platformServicesClient.getViewServices(userId);
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -631,38 +784,45 @@ public class DinoViewHandler
      * @return the list of services
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public List<RegisteredOMAGService> platformGetGovernanceServiceList(String    userId,
                                                                         String    platformName,
-                                                                        String    methodName)     throws  InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+                                                                        String    methodName)
+    throws
+    DinoViewServiceException
+
     {
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
-
         try {
+            /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
              */
+
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
-            List<RegisteredOMAGService> serviceList = new ArrayList<>();
+            return platformServicesClient.getGovernanceServices(userId);
 
-            serviceList = platformServicesClient.getGovernanceServices(userId);
-
-            return serviceList;
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -675,38 +835,47 @@ public class DinoViewHandler
      * @return the list of services
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public List<RegisteredOMAGService> platformGetCommonServiceList(String    userId,
                                                                     String    platformName,
-                                                                    String    methodName)     throws  InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+                                                                    String    methodName)
+    throws
+    DinoViewServiceException
+
     {
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+        try
+        {
 
-        try {
+            /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
              */
+
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
-            List<RegisteredOMAGService> serviceList = new ArrayList<>();
+            return platformServicesClient.getCommonServices(userId);
 
-            serviceList = platformServicesClient.getCommonServices(userId);
-
-            return serviceList;
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -721,9 +890,7 @@ public class DinoViewHandler
      * @return the server overview
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public ServerOverview serverGetOverview(String    userId,
@@ -731,28 +898,32 @@ public class DinoViewHandler
                                             String    platformName,
                                             String    serverInstanceName,
                                             String    description,
-                                            String    methodName)     throws  InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException,
-                                                                                  RepositoryErrorException
-    {
+                                            String    methodName)
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+    throws
+    DinoViewServiceException
+
+    {
 
         try {
 
             /*
-             *  Use platform services client with platformName
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
              */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
+             */
+
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
             /*
              * Construct an overview with the configured aspects
              */
-            ServerOverview serverOverview = null;
-            ResourceEndpoint serverEndpoint = null;
 
-            serverOverview = new ServerOverview();
+            ServerOverview serverOverview = new ServerOverview();
             serverOverview.setServerName(serverName);
             serverOverview.setPlatformRootURL(platformRootURL);
             if (serverInstanceName != null)
@@ -764,29 +935,13 @@ public class DinoViewHandler
             String serverOrigin = platformServicesClient.getPlatformOrigin(userId);
             serverOverview.setServerOrigin(serverOrigin);
 
-            // Fetch the server classification
-            try {
-                ServerTypeClassificationSummary serverClassification = serverGetTypeClassification(userId, serverName, platformName, methodName);
-                serverOverview.setServerClassification(serverClassification);
-            }
-            catch (OMAGInvalidParameterException exc) {
+            // Fetch the server classification - internal method will only throw DinoViewServiceException
 
-                // Wrap the OMAG exception
-                throw new InvalidParameterException("Could not retrieve server type classification due to an invalid value for serverName parameter",
-                                                        exc,
-                                                        serverName);
-            }
-            catch (OMAGNotAuthorizedException exc) {
-                // Wrap the OMAG exception
-                throw new UserNotAuthorizedException(exc,
-                                                     serverName);
-            }
-            catch (OMAGConfigurationErrorException exc) {
-                // Wrap the OMAG exception
-                throw new PropertyServerException(exc);
-            }
+            ServerTypeClassificationSummary serverClassification = serverGetTypeClassification(userId, serverName, platformName, methodName);
+            serverOverview.setServerClassification(serverClassification);
 
-            // Fetch the various aspects of server status (including history)
+
+            // Fetch the various aspects of server status (including history) - can throw OCF exceptions
             ServerStatus serverStatus = platformServicesClient.getServerStatus(userId, serverName);
             serverOverview.setServerStatus(serverStatus);
 
@@ -798,6 +953,8 @@ public class DinoViewHandler
 
             /*
              * Fechez la vache
+             *
+             * This is an internal method that will already have mapped any exceptions to DinoViewServiceException
              */
             Map<String, ServerCohortDetails> cohortDetails = serverGetCohortDetails(userId, serverName, platformName, methodName);
             serverOverview.setCohortDetails(cohortDetails);
@@ -805,10 +962,18 @@ public class DinoViewHandler
             return serverOverview;
 
         }
-        catch ( UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -822,37 +987,46 @@ public class DinoViewHandler
      * @return the platform origin
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public String serverGetOrigin(String    userId,
                                   String    serverName,
                                   String    platformName,
-                                  String    methodName)     throws  InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
+                                  String    methodName)
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+    throws
+    DinoViewServiceException
+
+    {
 
         try {
 
             /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
              *  Use platform services client
+             *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
              */
             PlatformServicesClient platformServicesClient = this.getPlatformServicesClient(platformName, platformRootURL);
 
-            String string = platformServicesClient.getPlatformOrigin(userId);
-
-            return string;
+            return platformServicesClient.getPlatformOrigin(userId);
 
         }
-        catch (UserNotAuthorizedException |
-                PropertyServerException    |
-                InvalidParameterException  e) {
-            throw e;
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOCFInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOCFUserNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
         }
 
     }
@@ -865,35 +1039,44 @@ public class DinoViewHandler
      * @return the server type as a String
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public ServerTypeClassificationSummary serverGetTypeClassification(String    userId,
                                                                        String    serverName,
                                                                        String    platformName,
-                                                                       String    methodName)     throws  InvalidParameterException,
-                                                                                                         OMAGInvalidParameterException,
-                                                                                                         OMAGNotAuthorizedException,
-                                                                                                         OMAGConfigurationErrorException
-    {
+                                                                       String    methodName)
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+    throws
+    DinoViewServiceException
+
+    {
 
         try {
 
             /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
              *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classfiication method is in the abstract superclass.
+             *
+             *  *  Can throw a number of OCF exceptions - catch and map them to DinoViewServiceException
              */
             OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
-            ServerTypeClassificationSummary summary = adminServicesClient.getServerClassification();
-            return summary;
+            return adminServicesClient.getServerClassification();
 
         }
-        catch (OMAGInvalidParameterException | OMAGNotAuthorizedException | OMAGConfigurationErrorException e) {
-            throw e;
+        catch (OMAGInvalidParameterException e) {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e) {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e) {
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
         }
 
     }
@@ -906,60 +1089,56 @@ public class DinoViewHandler
      * @return the platform origin
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public OMAGServerConfig serverGetStoredConfiguration(String    userId,
-                                                   String    serverName,
-                                                   String    platformName,
-                                                   String    methodName)     throws  InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                                         String    serverName,
+                                                         String    platformName,
+                                                         String    methodName)
+
+    throws
+    DinoViewServiceException
+
     {
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+        try
+        {
 
-        try {
+            /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
-            // Nest try..catch blocks in order to wrap OMAG exceptions and throw the corresponding OCF exceptions
-            try {
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classfiication method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
 
-                /*
-                 *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classfiication method is in the abstract superclass.
-                 */
-                OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
+            OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
+            /*
+             * Get the configuration - can throw OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
+             *
+             */
+            return adminServicesClient.getOMAGServerConfig();
 
-                OMAGServerConfig config = adminServicesClient.getOMAGServerConfig();
-                return config;
-
-            }
-            catch (OMAGInvalidParameterException exc) {
-
-                // Wrap the OMAG exception
-                throw new InvalidParameterException("Could not retrieve server type classification due to an invalid value for serverName parameter",
-                                                    exc,
-                                                    serverName);
-            }
-            catch (OMAGNotAuthorizedException exc) {
-
-                // Wrap the OMAG exception
-                throw new UserNotAuthorizedException(exc,
-                                                    userId);
-            }
-            catch (OMAGConfigurationErrorException exc) {
-
-                // Wrap the OMAG exception
-                throw new PropertyServerException(exc);
-            }
         }
-        catch ( UserNotAuthorizedException |
-                PropertyServerException |
-                InvalidParameterException e) {
-            throw e;
+
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
         }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
 
     }
 
@@ -971,62 +1150,73 @@ public class DinoViewHandler
      * @return the platform origin
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public OMAGServerConfig serverGetInstanceConfiguration(String    userId,
                                                    String    serverName,
                                                    String    platformName,
-                                                   String    methodName)     throws  InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                                   String    methodName)
+
+    throws
+    DinoViewServiceException
+
     {
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
-
-        try {
-
-            // Nest try..catch blocks in order to wrap OMAG exceptions and throw the corresponding OCF exceptions
-            try {
-
-                /*
-                 *  Use admin services client.
-                 */
-                OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
+        try
+        {
+            /*
+             * Resolve the platformURL - can throw a DinoViewServiceException - no need to catch
+             */
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
 
-                OMAGServerConfig config = adminServicesClient.getOMAGServerInstanceConfig();
-                return config;
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classfiication method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
-            }
-            catch (OMAGInvalidParameterException exc) {
+            /*
+             * Get the configuration - can throw OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
+             *
+             */
+            return adminServicesClient.getOMAGServerInstanceConfig();
 
-                // Wrap the OMAG exception
-                throw new InvalidParameterException("Could not retrieve server type classification due to an invalid value for serverName parameter",
-                                                    exc,
-                                                    serverName);
-            }
-            catch (OMAGNotAuthorizedException exc) {
-
-                // Wrap the OMAG exception
-                throw new UserNotAuthorizedException(exc,
-                                                     userId);
-            }
-            catch (OMAGConfigurationErrorException exc) {
-
-                // Wrap the OMAG exception
-                throw new PropertyServerException(exc);
-            }
         }
-        catch ( UserNotAuthorizedException |
-                PropertyServerException |
-                InvalidParameterException e) {
-            throw e;
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
         }
 
     }
+
 
 
 
@@ -1039,77 +1229,72 @@ public class DinoViewHandler
      * @return the server type as a String
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     *
+     * @throws DinoViewServiceException   an error was detected and reported
      */
     public Map<String, ServerCohortDetails> serverGetCohortDetails(String    userId,
                                                                    String    serverName,
                                                                    String    platformName,
-                                                                   String    methodName) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException
+                                                                   String    methodName)
+
+    throws
+    DinoViewServiceException
 
     {
 
         Map<String, ServerCohortDetails> returnMap = new HashMap<>();
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+        try
+        {
 
-        try {
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
-            // Nest try..catch blocks in order to wrap OMAG exceptions and throw the corresponding OCF exceptions
-            try {
+            /*
+             *  Use metadata highway services client - this is an internal function and will only throw a DinoViewServiceException
+             */
+            MetadataHighwayServicesClient metadataHighwayServicesClient = this.getMetadataHighwayServicesClient(userId, serverName, platformRootURL);
 
-                /*
-                 *  Use metadata highway services client.
-                 */
-                MetadataHighwayServicesClient metadataHighwayServicesClient = this.getMetadataHighwayServicesClient(userId, serverName, platformRootURL);
+            /*
+             * metadataHighwayServicesClient can throw OMRS exceptions for InvalidParameter, UserNotAuthorized or RepositoryError
+             */
 
-                List<CohortDescription> cohortDescriptions = metadataHighwayServicesClient.getCohortDescriptions(userId);
+            List<CohortDescription> cohortDescriptions = metadataHighwayServicesClient.getCohortDescriptions(userId);
 
-                // For each cohort construct and populate a ServerCohortDetails object and add it to the map
-                for (CohortDescription cohortDescription : cohortDescriptions) {
-                    String cohortName = cohortDescription.getCohortName();
-                    ServerCohortDetails serverCohortDetails = new ServerCohortDetails();
-                    serverCohortDetails.setCohortDescription(cohortDescription);
+            // For each cohort construct and populate a ServerCohortDetails object and add it to the map
+            for (CohortDescription cohortDescription : cohortDescriptions)
+            {
+                String cohortName = cohortDescription.getCohortName();
+                ServerCohortDetails serverCohortDetails = new ServerCohortDetails();
+                serverCohortDetails.setCohortDescription(cohortDescription);
 
-                    // Get the local registration and add that to the SCD
-                    MemberRegistration localRegistration = metadataHighwayServicesClient.getLocalRegistration(serverName, userId, cohortName);
-                    serverCohortDetails.setLocalRegistration(localRegistration);
+                // Get the local registration and add that to the SCD
+                MemberRegistration localRegistration = metadataHighwayServicesClient.getLocalRegistration(serverName, userId, cohortName);
+                serverCohortDetails.setLocalRegistration(localRegistration);
 
-                    // Get the remote registrations and add them to the SCD
-                    List<MemberRegistration> remoteRegistrations = metadataHighwayServicesClient.getRemoteRegistrations(serverName, userId, cohortName);
-                    serverCohortDetails.setRemoteRegistrations(remoteRegistrations);
+                // Get the remote registrations and add them to the SCD
+                List<MemberRegistration> remoteRegistrations = metadataHighwayServicesClient.getRemoteRegistrations(serverName, userId, cohortName);
+                serverCohortDetails.setRemoteRegistrations(remoteRegistrations);
 
-                    returnMap.put(cohortName, serverCohortDetails);
-
-                }
-                return returnMap;
+                returnMap.put(cohortName, serverCohortDetails);
 
             }
-            catch (RepositoryErrorException exc) {
-                /* If the server is not in a cohort, it may not have metadata highway services enabled. In this
-                 * case just return an empty result
-                 */
-                return null;
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException exc) {
+            return returnMap;
 
-                // Wrap the OMAG exception
-                throw new InvalidParameterException("Could not retrieve cohort descriptions due to an invalid value for serverName parameter",
-                                                    exc,
-                                                    serverName);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException exc) {
+        }
 
-                // Wrap the OMAG exception
-                throw new UserNotAuthorizedException(exc,
-                                                     userId);
-            }
-
-        } catch (UserNotAuthorizedException |
-                InvalidParameterException e) {
-            throw e;
+        catch (RepositoryErrorException e)
+        {
+            /* If the server is not in a cohort, it may not have metadata highway services enabled. In this
+             * case just return an empty result
+             */
+            return null;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(), methodName, e);
         }
 
     }
@@ -1123,31 +1308,31 @@ public class DinoViewHandler
      * @return the server type as a String
      *
      * Exceptions returned by the server
-     * @throws InvalidParameterException   one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException  user is not authorized to perform the requested operation
-     * @throws PropertyServerException     there is a problem reported in the open metadata server(s)
+     * @throws DinoViewServiceException    an error was detected and reported
      *
      */
     public OMRSAuditLogReport serverGetAuditLog(String    userId,
                                     String    serverName,
                                     String    platformName,
-                                    String    methodName) throws
-                                                              UserNotAuthorizedException,
-                                                              InvalidParameterException
+                                    String    methodName)
+
+    throws
+    DinoViewServiceException
+
 
     {
 
-        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
-
         try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
             /*
              *  Use repository services audit log services client.
+             *  Internal method will only throw DinoViewServiceException
              */
             AuditLogServicesClient auditLogServicesClient = this.getAuditLogServicesClient(userId, serverName, platformRootURL);
 
-            OMRSAuditLogReport report = auditLogServicesClient.getAuditLog(userId);
-            return report;
+            return auditLogServicesClient.getAuditLog(userId);
 
         }
         catch (RepositoryErrorException exc) {
@@ -1156,18 +1341,13 @@ public class DinoViewHandler
              */
             return null;
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException exc) {
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
+            throw DinoExceptionHandler.mapOMRSInvalidParameterException(this.getClass().getName(), methodName, e);
 
-            // Wrap the OMAG exception
-            throw new InvalidParameterException("Could not retrieve cohort descriptions due to an invalid value for serverName parameter",
-                                                exc,
-                                                serverName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException exc) {
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            throw DinoExceptionHandler.mapOMRSUserNotAuthorizedException(this.getClass().getName(), methodName, e);
 
-            // Wrap the OMAG exception
-            throw new UserNotAuthorizedException(exc,
-                                                 userId);
         }
 
     }

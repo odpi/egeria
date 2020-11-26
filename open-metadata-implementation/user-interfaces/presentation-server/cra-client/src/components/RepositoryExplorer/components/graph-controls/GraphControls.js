@@ -9,6 +9,8 @@ import { InstancesContext }                      from "../../contexts/InstancesC
 
 import { RepositoryServerContext }               from "../../contexts/RepositoryServerContext";
 
+import { InteractionContext }                    from "../../contexts/InteractionContext";
+
 import TraversalResultHandler                    from "./TraversalResultHandler";
 
 import HistoryResultHandler                      from "./HistoryResultHandler";
@@ -21,6 +23,8 @@ export default function GraphControls(props) {
   const instancesContext        = useContext(InstancesContext);
   
   const repositoryServerContext = useContext(RepositoryServerContext);
+
+  const interactionContext      = useContext(InteractionContext);
 
   
   /*
@@ -81,7 +85,7 @@ export default function GraphControls(props) {
      * Save the traversal parameters into the traversal spec....
      */
     let traversalSpec = {};    
-    traversalSpec.serverName = repositoryServerContext.repositoryServerName;
+    traversalSpec.serverName = repositoryServerContext.repositoryServer.serverName;
     traversalSpec.entityGUID = entityGUID;
     traversalSpec.entityLabel = entityLabel;
     traversalSpec.depth = 1;
@@ -90,7 +94,7 @@ export default function GraphControls(props) {
     /*
      * No filtering is applied to the pre-traversal...
      */
-    repositoryServerContext.repositoryPOST("instances/pre-traversal", 
+    repositoryServerContext.repositoryPOST("instances/pre-traversal",
       { entityGUID : entityGUID,
         depth      : 1            },  // depth is always limited to 1
         _preTraversal); 
@@ -113,88 +117,17 @@ export default function GraphControls(props) {
            */
           let rexPreTraversal = json.rexPreTraversal;
           if (rexPreTraversal !== null) {
-            /*
-             * Display traversal filters. On the submit handler launch the real (filtered) traversal
-             * and push the result up to the InstancesContext.
-             *
-             * Unpack the RexPreTraversal fields
-             *    private String                    entityGUID;                    --  must be non-null
-             *    private Map<String,RexTypeStats>  entityInstanceCounts;          --  a list of type guids or null
-             *    private Map<String,RexTypeStats>  relationshipInstanceCounts;    --  a list of type guids or null
-             *    private Map<String,RexTypeStats>  classificationInstanceCounts;  --  a list of names or null
-             *    private Integer                   depth;
-             */
-                   
-
-            let localPreTraversalResults = {};
-
-            /*
-             * Process the entity instance stats...
-             */
-            localPreTraversalResults.entityTypes = [];
-            const entityInstanceCounts = rexPreTraversal.entityInstanceCounts;
-            if (entityInstanceCounts != null) {
-              const typeNames = Object.keys(entityInstanceCounts);
-              typeNames.forEach(typeName => {
-                const count = entityInstanceCounts[typeName].count;
-                const typeGUID = entityInstanceCounts[typeName].typeGUID;
-                /*
-                 * Stash the typeName, typeGUID (and count) in this.preTraversal for later access
-                 */
-                localPreTraversalResults.entityTypes.push( { 'name' : typeName  , 'guid' : typeGUID , 'count' : count , 'checked' : false });
-              });
-              localPreTraversalResults.entityTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
-            }
-
-            /*
-             * Process the relationship instance stats...
-             */
-            localPreTraversalResults.relationshipTypes = [];
-            const relationshipInstanceCounts = rexPreTraversal.relationshipInstanceCounts;
-            if (relationshipInstanceCounts != null) {
-              const typeNames = Object.keys(relationshipInstanceCounts);
-              typeNames.forEach(typeName => {
-                const count = relationshipInstanceCounts[typeName].count;
-                const typeGUID = relationshipInstanceCounts[typeName].typeGUID;
-                /*
-                 * Stash the typeName, typeGUID (and count) in this.preTraversal for later access
-                 */
-                localPreTraversalResults.relationshipTypes.push( { 'name' : typeName, 'guid' : typeGUID  , 'count' : count , 'checked' : false });
-              });
-              localPreTraversalResults.relationshipTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
-            }
-
-            /*
-             * Process the classification instance stats...
-             */
-            localPreTraversalResults.classificationTypes = [];
-            const classificationInstanceCounts = rexPreTraversal.classificationInstanceCounts;
-            if (classificationInstanceCounts != null) {
-              const typeNames = Object.keys(classificationInstanceCounts);
-              typeNames.forEach(typeName => {
-                const count = classificationInstanceCounts[typeName].count;               
-                /*
-                 * Stash the typeName (and count) in this.preTraversal for later access
-                 * typeGUID is not used for classifications
-                 */
-                localPreTraversalResults.classificationTypes.push( { 'name' : typeName, 'guid' : null  , 'count' : count , 'checked' : false });
-              });
-              localPreTraversalResults.classificationTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
-            }
-
-            setPreTraversalEntityTypes(localPreTraversalResults.entityTypes);
-            setPreTraversalRelationshipTypes(localPreTraversalResults.relationshipTypes);
-            setPreTraversalClassificationTypes(localPreTraversalResults.classificationTypes);      
+            processPreTraversalResponse(rexPreTraversal);
           }
-        }
-        else {
-          /*
-           * Request failed
-           */      
-          alert("Traversal request to repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
+          setStatus("complete");
+          return;
         }
       }
-      setStatus("complete");
+      /*
+       * On failure ...
+       */
+      interactionContext.reportFailedOperation("prepare for traversal",json);
+      setStatus("cancelled");
     }
     else {
       setStatus("idle");
@@ -202,6 +135,80 @@ export default function GraphControls(props) {
   };
   
  
+  const processPreTraversalResponse = (rexPreTraversal) => {
+    /*
+     * Display traversal filters. On the submit handler launch the real (filtered) traversal
+     * and push the result up to the InstancesContext.
+     *
+     * Unpack the RexPreTraversal fields
+     *    private String                    entityGUID;                    --  must be non-null
+     *    private Map<String,RexTypeStats>  entityInstanceCounts;          --  a list of type guids or null
+     *    private Map<String,RexTypeStats>  relationshipInstanceCounts;    --  a list of type guids or null
+     *    private Map<String,RexTypeStats>  classificationInstanceCounts;  --  a list of names or null
+     *    private Integer                   depth;
+     */
+
+    let localPreTraversalResults = {};
+
+    /*
+     * Process the entity instance stats...
+     */
+    localPreTraversalResults.entityTypes = [];
+    const entityInstanceCounts = rexPreTraversal.entityInstanceCounts;
+    if (entityInstanceCounts != null) {
+      const typeNames = Object.keys(entityInstanceCounts);
+      typeNames.forEach(typeName => {
+        const count = entityInstanceCounts[typeName].count;
+        const typeGUID = entityInstanceCounts[typeName].typeGUID;
+        /*
+         * Stash the typeName, typeGUID (and count) in this.preTraversal for later access
+         */
+        localPreTraversalResults.entityTypes.push( { 'name' : typeName  , 'guid' : typeGUID , 'count' : count , 'checked' : false });
+      });
+      localPreTraversalResults.entityTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    }
+
+    /*
+     * Process the relationship instance stats...
+     */
+    localPreTraversalResults.relationshipTypes = [];
+    const relationshipInstanceCounts = rexPreTraversal.relationshipInstanceCounts;
+    if (relationshipInstanceCounts != null) {
+      const typeNames = Object.keys(relationshipInstanceCounts);
+      typeNames.forEach(typeName => {
+        const count = relationshipInstanceCounts[typeName].count;
+        const typeGUID = relationshipInstanceCounts[typeName].typeGUID;
+        /*
+         * Stash the typeName, typeGUID (and count) in this.preTraversal for later access
+         */
+        localPreTraversalResults.relationshipTypes.push( { 'name' : typeName, 'guid' : typeGUID  , 'count' : count , 'checked' : false });
+      });
+      localPreTraversalResults.relationshipTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    }
+
+    /*
+     * Process the classification instance stats...
+     */
+    localPreTraversalResults.classificationTypes = [];
+    const classificationInstanceCounts = rexPreTraversal.classificationInstanceCounts;
+    if (classificationInstanceCounts != null) {
+      const typeNames = Object.keys(classificationInstanceCounts);
+      typeNames.forEach(typeName => {
+        const count = classificationInstanceCounts[typeName].count;
+        /*
+         * Stash the typeName (and count) in this.preTraversal for later access
+         * typeGUID is not used for classifications
+         */
+        localPreTraversalResults.classificationTypes.push( { 'name' : typeName, 'guid' : null  , 'count' : count , 'checked' : false });
+      });
+      localPreTraversalResults.classificationTypes.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    }
+
+    setPreTraversalEntityTypes(localPreTraversalResults.entityTypes);
+    setPreTraversalRelationshipTypes(localPreTraversalResults.relationshipTypes);
+    setPreTraversalClassificationTypes(localPreTraversalResults.classificationTypes);
+
+  };
 
 
 
@@ -269,7 +276,6 @@ export default function GraphControls(props) {
     else {
       setStatus("cancelled");
     }
-    
   }
 
 

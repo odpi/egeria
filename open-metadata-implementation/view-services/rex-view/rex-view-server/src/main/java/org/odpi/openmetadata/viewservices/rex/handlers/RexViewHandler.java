@@ -185,7 +185,6 @@ public class RexViewHandler
     public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
 
     {
-
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
 
         List<ResourceEndpoint> platformList = null;
@@ -216,7 +215,7 @@ public class RexViewHandler
      *
      * This method will look up the configured root URL for the named platform.
      *
-     * @param platformName
+     * @param platformName - the name if the platform to be resolved (to a URL)
      * @return resolved platform URL Root
      *
      * Exceptions

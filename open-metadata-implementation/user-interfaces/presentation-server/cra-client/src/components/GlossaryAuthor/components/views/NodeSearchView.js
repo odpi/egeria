@@ -1,10 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect, useContext } from "react";
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
-// import useDebounce from "./useDebounce";
-// import Delete16 from "../../images/Egeria_delete_16";
-// import Edit16 from "../../images/Egeria_edit_16";
+import React, { useState, useContext } from "react";
+import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import {
   Accordion,
   AccordionItem,
@@ -20,17 +17,24 @@ import {
   TableHeader,
   TableBody,
 } from "carbon-components-react";
+/**
+ * The view part of searching for nodes. 
+ * <ul>
+ * <li>It displays the search input box into which the user types the search criteria.</li>
+ * <li>the search criteria is passed back in a callback to the caller, who debounces the search</li>
+ * <li>the caller then communicates the search results using props.</li>
+ * <li>Additional columns can be specified.</li>
+ * <li>The search has pagination the options of which are passed in props.</li>
+ * <li>Pagination events result in callbacks to the caller props.onPagination</li>
+ * <li>The search results can be selected.</li>
+ * </ul>
+ * @param {*} props
+ 
+ */
 
-// Responsible for issuing search requests on a node and displaying the results.
-// - the search is issue with debounce
-// - additional columns can be specified.
-// - the search has pagination
-// - the search results can be selected.
-// @param {*} props
-//
 const NodeSearchView = (props) => {
   console.log("NodeSearchView " + props.refresh);
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
 
   // properties that will be displayed be default for a node
   const mainProperties = [
@@ -74,18 +78,15 @@ const NodeSearchView = (props) => {
       selectedAdditionalProperties &&
       selectedAdditionalProperties.length > 0
     ) {
-      console.log("selectedAdditionalProperties.selectedItems 1");
-      console.log(selectedAdditionalProperties);
       allProperties = mainProperties.concat(selectedAdditionalProperties);
     }
-    console.log("allProperties 1");
     console.log(allProperties);
     setHeaderData(allProperties);
   }
 
   const onSearchCriteria = (e) => {
     props.onSearchCriteria(e.target.value);
-  }
+  };
   // Additional attributes can be selected so more columns can be shown
   // the additional attriniutes are in selectedAdditionalProperties
   const onAdditionalAttributesChanged = (items) => {
@@ -105,7 +106,7 @@ const NodeSearchView = (props) => {
   // calculate the columns from the main attributes and the additional attributes.
   function calculateAdditionalProperties() {
     let items = [];
-    glossaryAuthorContext.currentNodeType.attributes.map(function (attribute) {
+    glossaryAuthorCRUDContext.currentNodeType.attributes.map(function (attribute) {
       if (
         attribute.key != "name" &&
         attribute.key != "qualifiedName" &&
@@ -119,7 +120,7 @@ const NodeSearchView = (props) => {
     });
     return items;
   }
-  
+
   const onClickExactMatch = () => {
     console.log("onClickExactMatch");
     const checkBox = document.getElementById("exactMatch");
@@ -129,7 +130,7 @@ const NodeSearchView = (props) => {
     console.log("onSelectRow");
     props.onSelectRow(row);
   };
- 
+
   return (
     <div className="top-search-container">
       <div className="top-search-item">
@@ -183,8 +184,8 @@ const NodeSearchView = (props) => {
               </button>
             </div>
           </div>
-          {glossaryAuthorContext.currentNodeType &&
-            glossaryAuthorContext.currentNodeType.attributes.length > 3 && (
+          {glossaryAuthorCRUDContext.currentNodeType &&
+            glossaryAuthorCRUDContext.currentNodeType.attributes.length > 3 && (
               <div className="search-item">
                 <Accordion>
                   <AccordionItem title="Search options">
@@ -195,8 +196,10 @@ const NodeSearchView = (props) => {
                       onClick={onClickExactMatch}
                     />
                     <div className="bx--form-item">
+                      <label forHtml="multiselect">Show more properties </label>
                       <div style={{ width: 150 }}>
                         <MultiSelect
+                          id="multiselect"
                           onChange={onAdditionalAttributesChanged}
                           items={additionalProperties}
                           itemToString={(item) => (item ? item.text : "")}
@@ -222,7 +225,7 @@ const NodeSearchView = (props) => {
                 getRowProps,
               }) => (
                 <TableContainer
-                  title={glossaryAuthorContext.currentNodeType.typeName}
+                  title={glossaryAuthorCRUDContext.currentNodeType.typeName}
                 >
                   <Table>
                     <TableHead>

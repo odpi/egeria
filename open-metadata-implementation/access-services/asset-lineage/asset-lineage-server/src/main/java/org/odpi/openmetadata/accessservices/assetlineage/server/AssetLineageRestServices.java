@@ -20,11 +20,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
@@ -54,6 +55,7 @@ public class AssetLineageRestServices {
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param entityType the type of the entity to search for
+     *
      * @return a list of unique identifiers (guids) of the available entityType as a response
      */
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType) {
@@ -66,7 +68,7 @@ public class AssetLineageRestServices {
             if (CollectionUtils.isEmpty(entitiesByTypeName)) {
                 return response;
             }
-            log.debug("Asset Lineage OMAS found {} entities with type {}", entitiesByTypeName.size(), entityType);
+            log.info("Asset Lineage OMAS found {} entities with type {}", entitiesByTypeName.size(), entityType);
 
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
             if (publisher == null) {
@@ -76,6 +78,7 @@ public class AssetLineageRestServices {
             }
 
             List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher);
+            log.info("Asset Lineage OMAS finished publishing the entity context for {} entities with type {}", entitiesByTypeName.size(), entityType);
             response.setGUIDs(publishedEntitiesContext);
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
@@ -88,30 +91,71 @@ public class AssetLineageRestServices {
         return response;
     }
 
+
+    public GUIDListResponse publishEntity(String serverName, String userId, String entityType, String guid) {
+        GUIDListResponse response = new GUIDListResponse();
+
+        String methodName = "publishEntity";
+        try {
+            AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
+            EntityDetail entityByTypeAndGuid = assetContextHandler.getEntityByTypeAndGuid(userId, guid, entityType);
+            if (entityByTypeAndGuid == null) {
+                return response;
+            }
+            log.info("Asset Lineage OMAS found the entity with guid {} and type {}", guid, entityType);
+
+            AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
+            if (publisher == null) {
+                log.debug("Asset Lineage Publisher is not available. " +
+                        "The context event for {} could not be published on the Asset Lineage OMAS Out Topic.", entityType);
+                return response;
+            }
+            String publishedEntitiesContext = publishEntityContext(publisher, entityByTypeAndGuid);
+            log.info("Asset Lineage OMAS finished publishing the entity context for guid {} with type {}", guid, entityType);
+            response.setGUIDs(Collections.singletonList(publishedEntitiesContext));
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+        return response;
+    }
+
     /**
      * Returns the list of entity GUIDs that were published on the Out Topic
      *
      * @param entitiesByType list of found entities for the requested type
      * @param publisher      Asset Lineage publisher
+     *
      * @return the list of entity GUIDs published on the Asset Lineage Out Topic
      */
     private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType,
                                                 AssetLineagePublisher publisher) {
-        List<String> publishedGUIDs = new ArrayList<>();
-        log.debug("Asset Lineage OMAS is publishing entities context");
-
-        for (EntityDetail entityDetail : entitiesByType) {
-            try {
-                publishedGUIDs.add(publishEntityContext(entityDetail, publisher));
-            }catch (JsonProcessingException | OCFCheckedExceptionBase e){
-                log.error("Failed to publish context for entity of type " + entityDetail.getType() + " and guid "
-                + entityDetail.getGUID());
-            }
-        }
-
-        log.debug("Asset Lineage OMAS published entities context");
+        List<String> publishedGUIDs = entitiesByType.parallelStream().map(entityDetail ->
+                        publishEntityContext(publisher, entityDetail)).collect(Collectors.toList());
         CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
         return publishedGUIDs;
+    }
+
+    /**
+     * Returns GUID that was published on the Out Topic
+     *
+     * @param entityDetail  the entity for which the event is published
+     * @param publisher      Asset Lineage publisher
+     *
+     * @return the GUID published on the Asset Lineage Out Topic
+     */
+    private String publishEntityContext(AssetLineagePublisher publisher, EntityDetail entityDetail) {
+        try {
+            log.info("Asset Lineage OMAS published the context for entity with guid {}", entityDetail.getGUID());
+            return publishContext(entityDetail, publisher);
+        } catch (JsonProcessingException | OCFCheckedExceptionBase e) {
+            log.error("Failed to publish context for entity of type " + entityDetail.getType() + " and guid "
+                    + entityDetail.getGUID());
+        }
+        return null;
     }
 
     /**
@@ -119,15 +163,16 @@ public class AssetLineageRestServices {
      *
      * @param entityDetail - the entity based on which we want to build the context
      * @param publisher    Asset Lineage publisher
+     *
      * @return the entity GUID if the context is not empty
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    private String publishEntityContext(EntityDetail entityDetail,
-                                        AssetLineagePublisher publisher) throws OCFCheckedExceptionBase, JsonProcessingException {
+    private String publishContext(EntityDetail entityDetail,
+                                  AssetLineagePublisher publisher) throws OCFCheckedExceptionBase, JsonProcessingException {
         String typeName = entityDetail.getType().getTypeDefName();
         Map<String, Set<GraphContext>> context = new HashMap<>();
-
         switch (typeName) {
             case GLOSSARY_TERM: {
                 context = publisher.publishGlossaryContext(entityDetail);

@@ -175,7 +175,7 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
      * Errors when running requests
      */
     UNKNOWN_INTEGRATION_SERVICE(400, "INTEGRATION-DAEMON-SERVICES-400-030",
-                             "Integration service with URL marker {0} is not running in the integration daemon {1}",
+                             "Integration service with URL marker {0} is not registered in the integration daemon {1}",
                              "The integration service specified on a request is not known to the integration daemon.",
                              "This may be a configuration error in the integration daemon or an error in the caller.  " +
                                      "The supported integration services are listed in the integration daemon's configuration.  " +

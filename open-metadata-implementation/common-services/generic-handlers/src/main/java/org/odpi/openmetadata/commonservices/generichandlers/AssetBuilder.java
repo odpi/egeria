@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
@@ -18,8 +15,8 @@ import java.util.Map;
  */
 public class AssetBuilder extends ReferenceableBuilder
 {
-    private String displayName = null;
-    private String description = null;
+    private String technicalName        = null;
+    private String technicalDescription = null;
 
 
     /**
@@ -42,22 +39,45 @@ public class AssetBuilder extends ReferenceableBuilder
 
 
     /**
+     * Subtype constructor used when working with classifications
+     *
+     * @param typeGUID unique identifier for the type of this asset
+     * @param typeName unique name for the type of this asset
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    AssetBuilder(String               typeGUID,
+                 String               typeName,
+                 OMRSRepositoryHelper repositoryHelper,
+                 String               serviceName,
+                 String               serverName)
+    {
+        super(typeGUID,
+              typeName,
+              repositoryHelper,
+              serviceName,
+              serverName);
+    }
+
+
+    /**
      * Constructor supporting all entity properties. (Classifications are added separately.)
      *
      * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param description new description for the asset.
+     * @param technicalName new value for the name
+     * @param technicalDescription new description for the asset
      * @param additionalProperties additional properties
      * @param typeGUID unique identifier for the type of this asset
      * @param typeName unique name for the type of this asset
-     * @param extendedProperties  properties from the subtype.
+     * @param extendedProperties  properties from the subtype
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     AssetBuilder(String               qualifiedName,
-                 String               displayName,
-                 String               description,
+                 String               technicalName,
+                 String               technicalDescription,
                  Map<String, String>  additionalProperties,
                  String               typeGUID,
                  String               typeName,
@@ -75,8 +95,50 @@ public class AssetBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
-        this.displayName = displayName;
-        this.description = description;
+        this.technicalName = technicalName;
+        this.technicalDescription = technicalDescription;
+    }
+
+
+    /**
+     * Constructor supporting all entity properties. (Classifications are added separately.)
+     *
+     * @param qualifiedName unique name
+     * @param technicalName new value for the name
+     * @param technicalDescription new description for the asset
+     * @param additionalProperties additional properties
+     * @param typeGUID unique identifier for the type of this asset
+     * @param typeName unique name for the type of this asset
+     * @param extendedProperties  properties from the subtype
+     * @param initialStatus status used to create the asset
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    AssetBuilder(String               qualifiedName,
+                 String               technicalName,
+                 String               technicalDescription,
+                 Map<String, String>  additionalProperties,
+                 String               typeGUID,
+                 String               typeName,
+                 Map<String, Object>  extendedProperties,
+                 InstanceStatus       initialStatus,
+                 OMRSRepositoryHelper repositoryHelper,
+                 String               serviceName,
+                 String               serverName)
+    {
+        super(qualifiedName,
+              additionalProperties,
+              typeGUID,
+              typeName,
+              extendedProperties,
+              initialStatus,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.technicalName = technicalName;
+        this.technicalDescription = technicalDescription;
     }
 
 
@@ -386,21 +448,21 @@ public class AssetBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
+        if (technicalName != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
-                                                                      displayName,
+                                                                      technicalName,
                                                                       methodName);
         }
 
-        if (description != null)
+        if (technicalDescription != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
+                                                                      technicalDescription,
                                                                       methodName);
         }
 

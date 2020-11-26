@@ -5,11 +5,9 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.GlossaryExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -314,49 +312,6 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                         serverName,
                                         userId,
                                         glossaryGUID);
-
-    }
-
-
-    /**
-     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories
-     * and terms.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeGlossary(String userId,
-                               String assetManagerGUID,
-                               String assetManagerName,
-                               String glossaryGUID,
-                               String glossaryExternalIdentifier) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        final String methodName                  = "removeGlossary";
-        final String glossaryGUIDParameterName   = "glossaryGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/remove";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryExternalIdentifier,
-                                                                      methodName),
-                                        serverName,
-                                        userId,
-                                        glossaryGUID);
     }
 
 
@@ -532,6 +487,49 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-canonical/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      glossaryExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        glossaryGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories
+     * and terms.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGlossary(String userId,
+                               String assetManagerGUID,
+                               String assetManagerName,
+                               String glossaryGUID,
+                               String glossaryExternalIdentifier) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String methodName                  = "removeGlossary";
+        final String glossaryGUIDParameterName   = "glossaryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -968,8 +966,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                              assetManagerName),
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
                                         glossaryParentCategoryGUID,
@@ -1635,7 +1632,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        final String methodName                  = "updateGlossaryTerm";
+        final String methodName                  = "updateGlossaryTermStatus";
         final String glossaryGUIDParameterName   = "glossaryTermGUID";
         final String propertiesParameterName     = "glossaryTermStatus";
 

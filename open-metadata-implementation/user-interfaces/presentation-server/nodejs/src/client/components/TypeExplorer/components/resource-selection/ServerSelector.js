@@ -8,6 +8,8 @@ import { RequestContext }                                 from "../../contexts/R
 
 import { TypesContext }                                   from "../../contexts/TypesContext";
 
+import { InteractionContext }                             from "../../contexts/InteractionContext";
+
 import "./resource-selector.scss"
 
 
@@ -22,6 +24,7 @@ import "./resource-selector.scss"
  */
 export default function ServerSelector() {
   
+  const interactionContext                = useContext(InteractionContext);
   
   const requestContext                    = useContext(RequestContext);
 
@@ -65,10 +68,11 @@ export default function ServerSelector() {
       }
     }
     /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
+     * On failure ...
      */
-    reportFailedOperation("getServers",json);
+    interactionContext.reportFailedOperation("get servers",json);
   }
+
 
 
   /*
@@ -121,7 +125,7 @@ export default function ServerSelector() {
     let platformName   = serverInstance.platformName;
 
     /*
-     *  ...this operation initiates the load of type information from the specified repository server
+     * This operation initiates the load of type information from the specified repository server
      */
     typesContext.loadTypeInfo(serverName, platformName);
   }

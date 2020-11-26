@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 
-import React, { createContext, useContext, useState }   from "react";
+import React, { createContext, useContext, useState, useEffect }   from "react";
 
-import PropTypes                                        from "prop-types";
+import PropTypes                                                   from "prop-types";
 
-import { RequestContext }                               from "./RequestContext";
+import { RequestContext }                                          from "./RequestContext";
+
+import { InteractionContext }                                      from "./InteractionContext";
 
 
 
@@ -18,7 +20,9 @@ export const TypesContextConsumer = TypesContext.Consumer;
 
 const TypesContextProvider = (props) => {
 
-  const requestContext    = useContext(RequestContext);
+  const requestContext         = useContext(RequestContext);
+
+  const interactionContext     = useContext(InteractionContext);
 
 
 
@@ -27,16 +31,42 @@ const TypesContextProvider = (props) => {
    */
   const [tex, setTex]              = useState({});    
 
-
+  const [platformName, setPlatformName] = useState("");
+  const [serverName,   setServerName]   = useState("");
 
   /*
    * loadTypeInfo function is an asynchronous function that triggers loading of types and (in _loadTypeInfo) sets the state for tex,
    * which can then be accessed by getter functions below
    */
+
+  /* Without parameters, the function will use the incumbent platform and server (from RequestContext)
+   * This version of the function is intended for anything that requires a reload and is not initiated
+   * by the user selecting a server in the ServerSelector.
+   */
+  const loadTypeInfoForExisting = () => {
+    if (platformName !== "" && serverName !== "") {
+      loadTypeInfo(serverName, platformName);
+    }
+    else {
+      alert("No server has been selected yet");
+    }
+  };
+
+  /*
+   * This version of the function is called directly from ServerSelector and accepts a (potentially new)
+   * platform and server name. These are remembered.
+   */
   const loadTypeInfo = (serverName,platformName ) => {
 
+    setPlatformName(platformName);
+    setServerName(serverName);
+
     requestContext.callPOST("server", serverName,  "types", 
-    { serverName : serverName, platformName : platformName, enterpriseOption : requestContext.enterpriseOption }, _loadTypeInfo);
+      { serverName        : serverName,
+        platformName      : platformName,
+        enterpriseOption  : requestContext.enterpriseOption,
+        deprecationOption : requestContext.deprecatedTypeOption,
+      }, _loadTypeInfo);
   };
 
   const _loadTypeInfo = (json) => {
@@ -53,26 +83,9 @@ const TypesContextProvider = (props) => {
     /*
      * On failure ...     
      */
-    reportFailedOperation("loadTypeInfo",json);
+    interactionContext.reportFailedOperation("get types for server",json);
   }
-  
-        
-  /* 
-   * Always accept the operation name because operation name is needed even in the case where json is null
-   */
-  const reportFailedOperation = (operation, json) => {
-    if (json !== null) {      
-      const relatedHTTPCode = json.relatedHTTPCode;
-      const exceptionMessage = json.exceptionErrorMessage;
-      /*
-       * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-       */
-      alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
-    }
-    else {
-      alert("Operation "+operation+" did not get a response from the view server");
-    }
-  }
+
 
 
   /*
@@ -80,9 +93,9 @@ const TypesContextProvider = (props) => {
    */
   const getEntityTypes = () => {
     if (tex !== undefined && tex.entities !== undefined) {
-      return tex.entities;
+        return tex.entities;
     }
-    else {      
+    else {
       return null;
     }
   }
@@ -150,6 +163,77 @@ const TypesContextProvider = (props) => {
     }
   }
 
+
+  /*
+   * Function to verify whether a type has deprecated status.
+   * This function should ONLY be used for a type that is present in the explorer,
+   * i.e. it is OK to invoke it from a diagram or from the type category's own
+   * details display module. But it should NOT be used for associated type
+   * validation - e.g. for a relationship type display to validate the status of an
+   * entity type used at one end of the relationship - if the entity has been
+   * deprecated it will not be in the explorer at all. In this example, the
+   * relationship should use the entityType included in the relationshipEndDef.
+   * A similar approach applies to classificationDef - it should use the status
+   * in the TypeDefLink of the validEntityDefs entry for the entity type.
+   * If this function is called and the type is not present in thge explorer it
+   * will throw an exception.
+   */
+  const isTypeDeprecated = (cat, typeName) => {
+    if (cat === "Entity") {
+      if (tex && tex.entities) {
+        let entityType = tex.entities[typeName];
+        if (!entityType) {
+           throw new Error("Entity Type "+typeName+" was not found!");
+        }
+        else {
+          let entityDef = entityType.entityDef;
+          let deprecated = entityDef.status === "DEPRECATED_TYPEDEF";
+          return deprecated;
+        }
+     }
+    }
+    else if (cat === "Relationship") {
+      if (tex && tex.relatiosnhips) {
+        let relationshipType = tex.relationships[typeName];
+        if (!relationshipType) {
+          throw new Error("Relationship Type "+typeName+" was not found!");
+        }
+        let relationshipDef = relationshipType.relationshipDef;
+        let deprecated = relationshipDef.status === "DEPRECATED_TYPEDEF";
+        return deprecated;
+     }
+    }
+    else if (cat === "Classification") {
+      if (tex && tex.classifications) {
+        let classificationType = tex.classifications[typeName];
+        if (!classificationType) {
+          throw new Error("Classification Type "+typeName+" was not found!");
+        }
+        let classificationDef = classificationType.classificationDef;
+        let deprecated = classificationDef.status === "DEPRECATED_TYPEDEF";
+        return deprecated;
+      }
+     }
+     else {
+      console.log("Type Explorer TypesContext detected unknown type category "+cat+ "for tyoe "+typeName);
+      return false;
+    }
+  }
+
+
+  /*
+   * Detect when the deprecation option has changed state and trigger a reload
+   * of the type information from the server
+   */
+  useEffect(
+    () => {
+      if (platformName && serverName)
+        loadTypeInfoForExisting();
+    },
+    [requestContext.deprecatedTypeOption]
+  )
+
+
   return (
     <TypesContext.Provider
       value={{
@@ -163,7 +247,8 @@ const TypesContextProvider = (props) => {
         getEntityType,
         getRelationshipType,
         getClassificationType,
-        getEnumType
+        getEnumType,
+        isTypeDeprecated
       }}
     >
      {props.children}

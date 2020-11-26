@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
@@ -28,26 +29,16 @@ public class StoringServices {
      * Delegates the call for the creation of entities and relationships to the connector
      */
     public void addEntity(LineageEvent lineageEvent) {
-
-        Set<GraphContext> verticesToBeAdded = new HashSet<>();
-        lineageEvent.getAssetContext().forEach((key, value) -> {
-            if (value.size() > 1) {
-                verticesToBeAdded.addAll(value);
-            } else {
-                verticesToBeAdded.add(value.stream().findFirst().get());
-            }
-        });
-
-        lineageGraph.storeToGraph(verticesToBeAdded);
+        lineageGraph.storeToGraph(lineageEvent.getAssetContext());
     }
 
     /**
      * Delegates the call for the update of an entity to the connector
      *
      */
-    public void updateEntity(LineageEvent lineageEvent) {
-        log.debug("Open Lineage Services is processing a UpdateEntity event which contains the following entity with guid : {}", lineageEvent.getLineageEntity().getGuid());
-        lineageGraph.updateEntity(lineageEvent.getLineageEntity());
+    public void updateEntity(LineageEntityEvent lineageEntityEvent) {
+        log.debug("Open Lineage Services is processing a UpdateEntity event which contains the following entity with guid : {}", lineageEntityEvent.getLineageEntity().getGuid());
+        lineageGraph.updateEntity(lineageEntityEvent.getLineageEntity());
     }
 
     /**
@@ -55,7 +46,8 @@ public class StoringServices {
      *
      */
     public void updateRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
-        log.debug("Open Lineage Services is processing a UpdateRelationshipEvent event which contains the following relantionhsip with guid: {}", lineageRelationshipEvent.getLineageRelationship().getGuid());
+        log.debug("Open Lineage Services is processing a UpdateRelationshipEvent event which contains the following relationship with guid: {}",
+                lineageRelationshipEvent.getLineageRelationship().getGuid());
         lineageGraph.updateRelationship(lineageRelationshipEvent.getLineageRelationship());
     }
 
@@ -70,9 +62,9 @@ public class StoringServices {
     /**
      * Delegates the call for the deletion of an entity to the connector
      */
-    public void deleteEntity(LineageEvent lineageEvent) {
+    public void deleteEntity(LineageEntityEvent lineageEntityEvent) {
 
-        lineageGraph.deleteEntity(lineageEvent.getLineageEntity().getGuid(), lineageEvent.getLineageEntity().getVersion());
+        lineageGraph.deleteEntity(lineageEntityEvent.getLineageEntity().getGuid(), lineageEntityEvent.getLineageEntity().getVersion());
     }
 
     public void deleteRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
@@ -93,9 +85,7 @@ public class StoringServices {
      */
     public void deleteClassification(LineageEvent lineageEvent){
         log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
-        Map<String, Set<GraphContext>> empty = new HashMap<>();
 
-        lineageGraph.deleteClassification(lineageEvent.getLineageEntity().getGuid(),
-                lineageEvent.getAssetContext() == null ? empty : lineageEvent.getAssetContext() );
+        lineageGraph.deleteClassification(lineageEvent.getAssetContext());
     }
 }
