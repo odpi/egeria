@@ -37,7 +37,12 @@ public class RexTypesRequestBody {
 
     public String getPlatformName() { return platformName; }
 
-    public Boolean getEnterpriseOption() { return enterpriseOption; }
+    public Boolean getEnterpriseOption() {
+        if (enterpriseOption == null)
+            return false;
+        else
+            return enterpriseOption;
+    }
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }

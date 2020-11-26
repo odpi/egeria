@@ -17,6 +17,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RexSearchBody {
 
+    // TODO clean up gen
 
     /*
      * The RexTraversalRequestBody class provides a body for REST requests to perform a rex-traversal
@@ -28,7 +29,7 @@ public class RexSearchBody {
     private Boolean                   enterpriseOption;
     private String                    typeName;                      // filter by type, or null
     private List<String>              classificationNames;           // Limit results of entity searches to instances with at least one of these classifications
-    private Integer                   gen;                           // indicator of the current gen of the traversal
+  //  private Integer                   gen;                           // indicator of the current gen of the traversal
 
 
     public RexSearchBody() {
@@ -49,9 +50,14 @@ public class RexSearchBody {
 
     public List<String> getClassificationNames() { return classificationNames; }
 
-    public Boolean getEnterpriseOption() { return enterpriseOption; }
+    public Boolean getEnterpriseOption() {
+        if (enterpriseOption == null)
+            return false;
+        else
+            return enterpriseOption;
+    }
 
-    public Integer getGen() { return gen; }
+    //public Integer getGen() { return gen; }
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }
@@ -66,7 +72,7 @@ public class RexSearchBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
-    public void setGen(Integer gen) { this.gen = gen; }
+   // public void setGen(Integer gen) { this.gen = gen; }
 
 
 
@@ -81,7 +87,7 @@ public class RexSearchBody {
                 ", searchText=" + searchText +
                 ", enterpriseOption=" + enterpriseOption +
                 ", typeName=" + typeName +
-                ", gen=" + gen +
+       //         ", gen=" + gen +
                 '}';
     }
 
