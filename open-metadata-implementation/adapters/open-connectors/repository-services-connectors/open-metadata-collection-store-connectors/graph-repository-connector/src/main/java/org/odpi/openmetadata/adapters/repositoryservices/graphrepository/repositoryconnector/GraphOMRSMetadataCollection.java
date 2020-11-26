@@ -341,7 +341,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
         }
         catch (RelationshipNotKnownException e) {
-            log.error("{} relationship with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
+            log.warn("{} relationship with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
             relationship = null;
         }
         return relationship;
