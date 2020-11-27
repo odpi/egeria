@@ -149,12 +149,15 @@ public class AssetLineageRestServices {
      */
     private String publishEntityContext(AssetLineagePublisher publisher, EntityDetail entityDetail) {
         try {
-            log.info("Asset Lineage OMAS published the context for entity with guid {}", entityDetail.getGUID());
+            log.info("Asset Lineage OMAS started building the context for entity with guid {}", entityDetail.getGUID());
+
             return publishContext(entityDetail, publisher);
-        } catch (JsonProcessingException | OCFCheckedExceptionBase e) {
-            log.error("Failed to publish context for entity of type " + entityDetail.getType() + " and guid "
-                    + entityDetail.getGUID());
+        } catch (Exception e) {
+            log.error("Exception while trying to publish context for entity of type " + entityDetail.getType() + " and guid "
+                    + entityDetail.getGUID(), e);
         }
+
+        log.info("Asset Lineage OMAS published the context for entity with guid {}", entityDetail.getGUID());
         return null;
     }
 
