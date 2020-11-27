@@ -265,7 +265,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     }
 
     /**
-     * Check whether the file name is an OMAG Server coniguration name by checking it against the template.
+     * Check whether the file name is an OMAG Server configuration name by checking it against the template.
      * @param fileNameToCheck filename to check
      * @param templateString
      * @return true if the supplied file name is a valid configuration file name
