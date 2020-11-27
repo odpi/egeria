@@ -15,18 +15,12 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
-Properties properties = new Properties()
-File propertiesFile = new File('src/test/resources/application.properties')
-propertiesFile.withInputStream {
-    properties.load(it)
-}
-
-user = properties."user" ?: "demo"
-baseURL = properties."baseURL" ?: "https://localhost:8080"
-serverMem = properties."server.in-memory-graph.name" ?: "servermem"
-serverGraph = properties."server.local-graph.name" ?: "servergraph"
-maxRetries = Integer.parseInt(properties."retries" as String) ?: 12
-delay = Integer.parseInt(properties."delay" as String) ?: 10
+user = properties["user"]
+baseURL = properties["baseURL"] + properties["serverPort"]
+serverMem = properties["serverInMemory"]
+serverGraph = properties["serverLocalGraph"]
+maxRetries = Integer.parseInt(properties["retries"] as String)
+delay = Integer.parseInt(properties["delay"] as String)
 
 // SSL setup to avoid self-signed errors for testing
 TrustManager[] trustAllCerts = new TrustManager[] {
