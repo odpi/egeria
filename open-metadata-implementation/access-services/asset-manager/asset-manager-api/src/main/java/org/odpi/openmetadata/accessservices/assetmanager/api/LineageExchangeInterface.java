@@ -1096,7 +1096,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param nextStepGUID unique identifier of the next step
+     * @param currentStepGUID unique identifier of the current step
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1107,9 +1107,9 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     List<ControlFlowElement> getControlFlowNextSteps(String userId,
                                                      String assetManagerGUID,
                                                      String assetManagerName,
-                                                     String nextStepGUID) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
+                                                     String currentStepGUID) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -1118,7 +1118,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param currentStepGUID unique identifier of the previous step
+     * @param currentStepGUID unique identifier of the current step
      *
      * @return unique identifier and properties of the relationship
      *

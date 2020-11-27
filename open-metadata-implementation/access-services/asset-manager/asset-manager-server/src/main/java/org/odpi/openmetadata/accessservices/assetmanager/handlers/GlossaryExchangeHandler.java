@@ -1642,7 +1642,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                      getInstanceStatus(glossaryTermStatus),
                                                      glossaryTermStatusParameterName,
                                                      methodName);
-
     }
 
 
