@@ -166,9 +166,13 @@
                         <configuration>
                             <defaults>
                                 <name>Egeria chassis</name>
-                                <baseURL>https://localhost:${fvt.serverport}</baseURL>
-                                <server>${server.in-memory-graph.name}</server>
+                                <baseURL>${base.url}</baseURL>
+                                <serverPort>${server.port}</serverPort>
+                                <serverInMemory>${server.in-memory-graph.name}</serverInMemory>
+                                <serverLocalGraph>${server.local-graph.name}</serverLocalGraph>
                                 <user>${user}</user>
+                                <retries>${retries}</retries>
+                                <delay>${delay}</delay>
                             </defaults>
                                 <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
                         </configuration>
