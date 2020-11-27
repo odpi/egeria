@@ -18,14 +18,17 @@ public class TestOMAGServerAdminStoreServices {
     public void testgetOMAGServerConfigStoreRetrieveAll()
     {
         OMAGServerAdminStoreServices omagServerAdminStoreServices = new OMAGServerAdminStoreServices();
-        OMAGServerConfigStoreRetrieveAll newStore = new OMAGServerConfigStoreRetrieveAll() {
+        OMAGServerConfigStoreRetrieveAll newStore = new OMAGServerConfigStoreRetrieveAll()
+        {
             @Override
-            public Set<OMAGServerConfig> retrieveAllServerConfigs() {
+            public Set<OMAGServerConfig> retrieveAllServerConfigs()
+            {
                 return null;
             }
 
             @Override
-            public void setServerName(String serverName) {
+            public void setServerName(String serverName)
+            {
 
             }
 
@@ -44,24 +47,29 @@ public class TestOMAGServerAdminStoreServices {
 
             }
         };
-        OMAGServerConfigStore oldStore =new OMAGServerConfigStore() {
+        OMAGServerConfigStore oldStore =new OMAGServerConfigStore()
+        {
             @Override
-            public void setServerName(String serverName) {
+            public void setServerName(String serverName)
+            {
 
             }
 
             @Override
-            public void saveServerConfig(OMAGServerConfig configuration) {
+            public void saveServerConfig(OMAGServerConfig configuration)
+            {
 
             }
 
             @Override
-            public OMAGServerConfig retrieveServerConfig() {
+            public OMAGServerConfig retrieveServerConfig()
+            {
                 return null;
             }
 
             @Override
-            public void removeServerConfig() {
+            public void removeServerConfig()
+            {
 
             }
         };

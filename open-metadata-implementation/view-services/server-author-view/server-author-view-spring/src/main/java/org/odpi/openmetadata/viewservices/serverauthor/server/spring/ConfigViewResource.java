@@ -37,7 +37,7 @@ public class ConfigViewResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @GetMapping(path = "/platform/server-configurations")
+    @GetMapping(path = "/platforms")
     public ServerAuthorPlatformsResponse getKnownPlatforms(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {

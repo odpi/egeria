@@ -270,9 +270,9 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    OMAGServerConfigsResponse callOMAGServerConfigsGetRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object... params) throws OMAGInvalidParameterException,
+    OMAGServerConfigsResponse callGetAllServerConfigurationsRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object... params) throws OMAGInvalidParameterException,
                                                                                       OMAGNotAuthorizedException,
                                                                                       OMAGConfigurationErrorException
     {

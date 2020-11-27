@@ -25,6 +25,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.text.MessageFormat;
+import java.text.ParseException;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Objects;
@@ -70,14 +72,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
         final String methodName = "start";
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
-        String configStoreTemplateName = null;
-        if (endpoint != null) {
-            configStoreTemplateName = endpoint.getAddress();
-        }
-        if (configStoreTemplateName == null) {
-            configStoreTemplateName = DEFAULT_FILENAME_TEMPLATE;
-        }
+        String configStoreTemplateName = getStoreTemplateName();
 
         configStoreName = super.getStoreName(configStoreTemplateName, serverName);
 
@@ -89,6 +84,23 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                                                 methodName, e);
         }
 
+    }
+
+    /**
+     * Get the store template name
+     * @return the store template name
+     */
+    private String getStoreTemplateName()
+    {
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        String configStoreTemplateName = null;
+        if (endpoint != null) {
+            configStoreTemplateName = endpoint.getAddress();
+        }
+        if (configStoreTemplateName == null) {
+            configStoreTemplateName = DEFAULT_FILENAME_TEMPLATE;
+        }
+        return configStoreTemplateName;
     }
 
     /**
@@ -232,8 +244,12 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         Set<OMAGServerConfig> omagServerConfigSet = new HashSet<>();
         try (Stream<Path> list = Files.list(Paths.get(".")))
         {
-            Set<String> fileNames = list.map(x -> x.toString())
-                    .filter(f -> f.endsWith(".config")).collect(Collectors.toSet());
+            // we need to use the configStoreTemplateName to pick up any files that match this shape.
+            // this template might have inserts in
+
+            String templateString = getStoreTemplateName();;
+              Set<String> fileNames = list.map(x -> x.toString())
+                    .filter(f -> isFileNameAConfig(f, templateString)).collect(Collectors.toSet());
             for (String fileName:fileNames) {
                 configStoreName=fileName;
                 OMAGServerConfig config = retrieveServerConfig();
@@ -241,11 +257,34 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             }
         } catch (IOException e) {
             // the below message does not put out the file it is currently a
-            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage(), configStoreName),
                                           this.getClass().getName(),
                                           methodName, e);
         }
         return omagServerConfigSet;
+    }
+
+    /**
+     * Check whether the file name is an OMAG Server coniguration name by checking it against the template.
+     * @param fileNameToCheck filename to check
+     * @param templateString
+     * @return true if the supplied file name is a valid configuration file name
+     */
+    static boolean isFileNameAConfig(String fileNameToCheck, String templateString) {
+        boolean isConfig= false;
+        // the file name comes through starting ./ on Mac. Remove this, so the compare to the template will work.
+        if (fileNameToCheck.startsWith("./") && fileNameToCheck.length() >2 ) {
+            fileNameToCheck = fileNameToCheck.substring(2);
+        }
+
+        MessageFormat mf = new MessageFormat(templateString);
+        try {
+            mf.parse(fileNameToCheck);
+            isConfig = true;
+        } catch (ParseException e) {
+            // the template did not successfully parse the file name, so is not a config file.
+        }
+        return isConfig;
     }
 
     /**

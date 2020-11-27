@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * configuration document is not found, a new one is created.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 
 @Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -39,29 +38,13 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @GetMapping(path = "/servers/{serverName}/configuration")
+    @GetMapping(path = "/configuration")
     public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {
         return adminAPI.getStoredConfiguration(userId, serverName);
     }
-    /**
-     * Return the server configuration documents stored on the platform
-     *
-     * @param userId  user that is issuing the request
-     * @return OMAGServerConfigs properties or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid parameter occurred while processing.
-     */
-    @GetMapping(path = "/platform/server-configurations")
-    public OMAGServerConfigsResponse getStoredConfigurations(@PathVariable String userId)
-    {
-        // this REST API is in the admin module rather than platform services module so the code can access the retrieve server config functionality.
-        // It might be that in time, we want to move this API to the platform services where it more naturally sits. This would require
-        // a refactor to the admin service and platform service to access the same server config retrieval code. In the mean time the Rest API is
-        // exposed named as a platform service would be - with the leading segment of /platform.
-        return adminAPI.retrieveAllServerConfigs(userId);
-    }
+
 
     /**
      * Set up the configuration properties for an OMAG Server in a single command.
@@ -73,7 +56,7 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
-    @PostMapping(path = "/servers/{serverName}/configuration")
+    @PostMapping(path = "/configuration")
     public VoidResponse setOMAGServerConfig(@PathVariable String           userId,
                                             @PathVariable String           serverName,
                                             @RequestBody  OMAGServerConfig omagServerConfig)
@@ -91,7 +74,7 @@ public class ConfigResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
-    @DeleteMapping(path = "/servers/{serverName}/configuration")
+    @DeleteMapping(path = "/configuration")
     public VoidResponse clearOMAGServerConfig(@PathVariable String userId,
                                               @PathVariable String serverName)
     {
@@ -110,7 +93,7 @@ public class ConfigResource
      * OMAGConfigurationErrorException there is a problem using the supplied configuration or
      * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
      */
-    @PostMapping(path = "/servers/{serverName}/configuration/deploy")
+    @PostMapping(path = "/configuration/deploy")
     public VoidResponse deployOMAGServerConfig(@PathVariable String           userId,
                                                @PathVariable String           serverName,
                                                @RequestBody  URLRequestBody   destinationPlatform)

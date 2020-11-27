@@ -79,7 +79,7 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
             "The system was unable to delete the encrypted configuration file.",
             "Review the full stack trace in the logs to troubleshoot further. Then retry the request."),
     CONFIG_RETRIEVE_ALL_ERROR(400, "ENCRYPTED-DOC-STORE-400-014 ",
-                        "Unable to retrieve the encrypted configuration files; exception was {0} with message {1}.",
+                        "Unable to retrieve the encrypted configuration files; exception was {0} with message {1}, while attempting access file {2}",
                         "The system was unable to retrieve the encrypted configuration files.",
                         "Review the full stack trace in the logs to troubleshoot further. Then retry the request."),
     UNHANDLED_ERROR(500, "ENCRYPTED-DOC-STORE-500-001 ",

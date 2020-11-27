@@ -163,7 +163,7 @@ public class ServerAuthorViewHandler {
                 Set<OMAGServerConfig> omagServerConfigSet = null;
                 try {
                     omagServerConfigSet = new OMAGServerPlatformConfigurationClient(userId, resourceEndpoint.getResourceRootURL())
-                            .getPlatformServerConfigs();
+                            .getAllServerConfigurations();
                     platform.setPlatformStatus(PlatformStatus.ACTIVE);
 
                     // populate the platform with summaries of each server.

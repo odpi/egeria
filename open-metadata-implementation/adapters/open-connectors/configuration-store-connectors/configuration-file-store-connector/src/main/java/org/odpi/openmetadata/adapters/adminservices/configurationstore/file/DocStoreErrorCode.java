@@ -26,9 +26,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum DocStoreErrorCode implements ExceptionMessageSet
 {
-    CONFIG_RETRIEVE_ALL_ERROR(400, "UNENCRYPTED-DOC-STORE-400-001 ",
-                        "Unable to retrieve the configuration files; exception was {0} with message {1}.",
-                        "The system was unable to retrieve the encrypted configuration files.",
+    CONFIG_RETRIEVE_ALL_ERROR(400, "FILE-DOC-STORE-400-001 ",
+                        "Unable to retrieve the configuration files; exception was {0} with message {1}, while attempting access file {2}.",
+                        "The system was unable to retrieve the configuration files.",
                         "Review the full stack trace in the logs to troubleshoot further. Then retry the request.")
        ;
 

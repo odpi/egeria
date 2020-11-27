@@ -265,15 +265,16 @@ public class OMAGServerPlatformConfigurationClient
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public Set<OMAGServerConfig> getPlatformServerConfigs() throws OMAGNotAuthorizedException,
+    public Set<OMAGServerConfig> getAllServerConfigurations() throws OMAGNotAuthorizedException,
                                                                    OMAGConfigurationErrorException,
-                                                                   OMAGInvalidParameterException {
+                                                                   OMAGInvalidParameterException
+    {
         final String methodName  = "getPlatformServerConfigs";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/platform/server-configurations";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/configurations";
 
-        OMAGServerConfigsResponse restResult = restClient.callOMAGServerConfigsGetRESTCall(methodName,
-                                                                                    serverPlatformRootURL + urlTemplate,
-                                                                                    adminUserId);
+        OMAGServerConfigsResponse restResult = restClient.callGetAllServerConfigurationsRESTCall(methodName,
+                                                                                                 serverPlatformRootURL + urlTemplate,
+                                                                                                 adminUserId);
 
         return restResult.getOMAGServerConfigs();
     }

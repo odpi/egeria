@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,21 +62,28 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     {
         super.start();
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
-
-        String configStoreTemplateName = null;
-        if (endpoint != null)
-        {
-            configStoreTemplateName = endpoint.getAddress();
-        }
-
-        if (configStoreTemplateName == null)
-        {
-            configStoreTemplateName = defaultFilenameTemplate;
-        }
+        String configStoreTemplateName = getStoreTemplateName();
 
         configStoreName = super.getStoreName(configStoreTemplateName, serverName);
     }
+
+    /**
+     * Get the store template name
+     * @return the store template name
+     */
+    private String getStoreTemplateName()
+    {
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        String configStoreTemplateName = null;
+        if (endpoint != null) {
+            configStoreTemplateName = endpoint.getAddress();
+        }
+        if (configStoreTemplateName == null) {
+            configStoreTemplateName = defaultFilenameTemplate;
+        }
+        return configStoreTemplateName;
+    }
+
 
 
     /**
@@ -159,22 +168,42 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         Set<OMAGServerConfig> omagServerConfigSet = new HashSet<>();
         try (Stream<Path> list = Files.list(Paths.get(".")))
         {
+            // we need to use the configStoreTemplateName to pick up any files that match this shape.
+            // this template might have inserts in
+
+            String templateString = getStoreTemplateName();;
             Set<String> fileNames = list.map(x -> x.toString())
-                    .filter(f -> f.endsWith(".config")).collect(Collectors.toSet());
+                    .filter(f -> isFileNameAConfig(f, templateString)).collect(Collectors.toSet());
             for (String fileName:fileNames) {
                 configStoreName=fileName;
                 OMAGServerConfig config = retrieveServerConfig();
                 omagServerConfigSet.add(config);
             }
         } catch (IOException e) {
-            // the below message does not put out the file it is currently a
-            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage(), configStoreName),
                                           this.getClass().getName(),
                                           methodName, e);
         }
         return omagServerConfigSet;
     }
 
+    /**
+     * Check whether the file name is an OMAG Server coniguration name by checking it against the template.
+     * @param textToCheck filename to check
+     * @param templateString
+     * @return true if the supplied file name is a valid configuration file name
+     */
+    static boolean isFileNameAConfig(String textToCheck, String templateString) {
+        boolean isConfig= false;
+        MessageFormat mf = new MessageFormat(templateString);
+        try {
+            mf.parse(textToCheck);
+            isConfig = true;
+        } catch (ParseException e) {
+            // the template did not successfully parse the file name, so is not a config file.
+        }
+        return isConfig;
+    }
     /**
      * Close the config file
      */
