@@ -23,6 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The class is used in the DataEngineFVT in order to generate a job process containing stages, port implementations with
+ * their schemas and attributes. It creates virtual assets fora CSV file with 4 columns and a database table with the same
+ * number of columns. The process contains 3 stages which read from the CSV, rename the columns, then write the values into a
+ * database table.
+ * The class also helps the setup with creating an external data engine using a SoftwareServerCapability object.
+ */
 public class ProcessSetupService {
     private static final String DISPLAY_NAME_SUFFIX = "displayName";
     private static final String SEPARATOR = "_";
@@ -79,10 +86,25 @@ public class ProcessSetupService {
                 getLineageMappingAttributesForColumn(headerAttribute)));
     }
 
+    /** retrieves the list of qualified names for the attributes that are linked in lineage mappings, in the order they can be
+     * traversed from the CSV column to the DB column. This list is retrieved for each of the columns. This is the order in
+     * which the process was constructed and intended to be and is used by the FVT to check the result of all the creation calls.
+     * @return a list of lineage mapping attribute names in order for each CSV column
+     */
     public Map<String, List<String>> getJobProcessLineageMappingsProxiesByCsvColumn() {
         return jobProcessLineageMappingsProxies;
     }
 
+    /**
+     * Registers an external data engine source.
+     * @param userId the user which creates the data engine
+     * @param dataEngineOMASClient the data engine client that is used to create the external data engine
+     * @return the software server capability used to create the external data source that is needed for checks inside the FVT
+     * @throws InvalidParameterException
+     * @throws UserNotAuthorizedException
+     * @throws PropertyServerException
+     * @throws ConnectorCheckedException
+     */
     public SoftwareServerCapability createExternalDataEngine(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
         SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
         softwareServerCapability.setDisplayName(DATA_ENGINE_DISPLAY_NAME);
@@ -96,6 +118,14 @@ public class ProcessSetupService {
         return softwareServerCapability;
     }
 
+    /** Creates the job process containing all the stage processes, port implementations, schemas, attributes and virtual assets
+     * @param userId the user which created the job process
+     * @param dataEngineOMASClient the data engine client that is used to create the job process
+     * @throws InvalidParameterException
+     * @throws PropertyServerException
+     * @throws UserNotAuthorizedException
+     * @throws ConnectorCheckedException
+     */
     public void createJobProcessWithContent(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         createVirtualAssets(userId, dataEngineOMASClient);
 

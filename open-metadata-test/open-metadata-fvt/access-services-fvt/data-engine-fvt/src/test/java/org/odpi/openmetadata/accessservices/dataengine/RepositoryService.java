@@ -35,6 +35,11 @@ import java.util.stream.Collectors;
 
 import static org.apache.http.ssl.SSLContexts.custom;
 
+/**
+ * This class aims to offer support for the FVT in regards to calling the platform servers that are started on the machine.
+ * It contains REST calls to various endpoints that retrieve the proxies names from lineage mappings, that find relationships based on
+ * GUID, that find GUIDs based on qualified names or software sever capabilities also based on qualified names.
+ */
 public class RepositoryService {
 
     private static final String QUALIFIED_NAME = "qualifiedName";
@@ -59,6 +64,13 @@ public class RepositoryService {
         ignoreCertificateForRestTemplate();
     }
 
+
+    /** Given a list of relationships for the given attribute, the method calculates a list of qualified names indicating
+     * the other proxies involved only in lineage mapping relationships.
+     * @param relationships the relationships correlated to the given attribute
+     * @param currentAttribute the attribute for which the lineage mapping proxies are calculated
+     * @return a list of qualified names indicating the other proxies in the lineage mappings
+     */
     public List<String> getLineageMappingsProxiesQualifiedNames(List<Relationship> relationships, String currentAttribute) {
         return relationships
                 .stream()
@@ -73,6 +85,11 @@ public class RepositoryService {
                 .collect(Collectors.toList());
     }
 
+    /** Given the GUID of an entity the method retrieves the relationships in which the entity is involved via a REST
+     * call.
+     * @param entityGUID the GUID of the entity
+     * @return the list of relationships in which the entity is involved
+     */
     public List<Relationship> findRelationshipsByGUID(String entityGUID) {
         String urlTemplate = String.format(URL_TEMPLATE_GET_RELATIONSHIPS_BY_GUID, serverPlatformRootURL, serverName, userId, entityGUID);
         TypeLimitedFindRequest findRequestParameters = new TypeLimitedFindRequest();
@@ -85,6 +102,11 @@ public class RepositoryService {
         return relationships;
     }
 
+    /** Based on a searchCriteria the method searches for an entity GUID which has the qualified name equal to the search
+     * criteria. The search is done through a REST call.
+     * @param entityValue the search criteria used to search for a qualified name
+     * @return the GUID of the first found object
+     */
     public String findEntityGUIDByQualifiedName(String entityValue) {
         InstanceProperties matchProperties = new InstanceProperties();
 
@@ -117,6 +139,10 @@ public class RepositoryService {
         return entityDetails.get(0).getGUID();
     }
 
+    /** Find a software server capability by using the search criteria given as parameter in a specific REST call
+     * @param searchCriteria the property value used to search and identify the software server capability
+     * @return and Optional result that may contain the found software server capability as an EntityDetail
+     */
     public Optional<EntityDetail> findSoftwareServerCapabilityByPropertyValue(String searchCriteria) {
         String urlTemplate = String.format(URL_TEMPLATE_GET_SOFTWARE_SERVER_CAPABILITY_BY_SEARCH_CRITERIA,
                 serverPlatformRootURL, serverName, userId, searchCriteria);
