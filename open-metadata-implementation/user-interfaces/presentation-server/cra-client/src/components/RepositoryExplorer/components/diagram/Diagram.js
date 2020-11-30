@@ -308,7 +308,8 @@ export default function Diagram(props) {
     if (!d3.event.active)
       loc_force.alphaTarget(0.0005);
     if (!pinningRef.current) {
-      d.fx = null, d.fy = null;
+      d.fx = null;
+      d.fy = null;
     }
   }
 
