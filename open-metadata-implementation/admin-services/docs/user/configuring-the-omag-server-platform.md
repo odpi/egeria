@@ -38,8 +38,8 @@ its **application.properties** file found in the **resources** subdirectory.
 * Defining the port that the OMAG Server Platform will listen on for
   REST API calls.
   
-* Controlling the level of developer logging that the platform
-  produces when it is running.
+* Controlling the level of technical logging that the platform
+  produces when it is running. See [Configuring logging options](omag-server-platform-logging.md) for more details.
   
 * Defining where the connector implementations should be loaded from.
 
