@@ -28,13 +28,13 @@ export default function UpdateNode(props) {
   console.log("UpdateNode");
   const url = getUrl();
   let history = useHistory();
+  const { guidtoedit } = useParams();
 
   const initialGet = () => {
     issueRestGet(url, onSuccessfulGet, onErrorGet);
     return "Getting details";
   };
   function getUrl() {
-    const { guidtoedit } = useParams();
     return props.currentNodeType.url + "/" + guidtoedit;
   }
 

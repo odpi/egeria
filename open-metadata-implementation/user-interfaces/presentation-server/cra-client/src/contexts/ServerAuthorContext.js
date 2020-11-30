@@ -315,7 +315,7 @@ const ServerAuthorContextProvider = props => {
           timeout: 30000,
         });
         if (configureRepositoryEventMapperConnectorURLResponse.data.relatedHTTPCode != 200) {
-          throw new Error(configureRepositoryProxyConnectorURLResponse.data.exceptionErrorMessage);
+          throw new Error(configureRepositoryEventMapperConnectorURLResponse.data.exceptionErrorMessage);
         }
       } catch(error) {
         if (error.code && error.code == 'ECONNABORTED') {

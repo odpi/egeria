@@ -333,7 +333,6 @@ const NodeController = (props) => {
     const url = glossaryAuthorCRUDContext.currentNodeType.url + "/" + currentNodeGuid;
     issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
   }
-  <div style={{ color: "red" }}>{errorMsg}</div>;
 
   if (glossaryAuthorCRUDContext.currentNodeType === undefined) {
     return null;
@@ -404,6 +403,7 @@ const NodeController = (props) => {
             )}
           </div>
         </div>
+
       </div>
     );
   }

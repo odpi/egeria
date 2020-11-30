@@ -48,12 +48,12 @@ export default function GlossaryAuthor() {
         "/" +
         serverName +
         "/login";
-      if (history.pushState) {
+      if (window.history.pushState) {
         alert(
           "We have lost the session possibly due to a refresh of the web page. Please re-enter your credentials"
         );
-        history.pushState({}, null, loginUrl);
-        history.go();
+        window.history.pushState({}, null, loginUrl);
+        window.history.go();
       } else {
         alert(
           "The Browser does not support history. Please re-login here: " +
