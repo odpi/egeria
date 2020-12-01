@@ -179,7 +179,7 @@
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <spring.version>5.3.0</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
-        <spring-data.version>2.4.0</spring-data.version>
+        <spring-data.version>2.4.1</spring-data.version>
         <servo-core.version>0.13.0</servo-core.version>
         <netflix-zuul.version>2.2.5.RELEASE</netflix-zuul.version>
         <tomcat.version>9.0.39</tomcat.version>
