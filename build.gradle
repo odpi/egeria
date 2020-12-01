@@ -196,7 +196,7 @@ allprojects {
             testImplementation("org.mockito:mockito-junit-jupiter:3.6.0")
             testImplementation("org.slf4j:slf4j-simple:1.7.30")
             testImplementation("org.testng:testng:7.3.0")
-            testImplementation("org.springframework.boot:spring-boot-starter-test:2.3.3.RELEASE")
+            testImplementation("org.springframework.boot:spring-boot-starter-test:2.4.0")
 
         }
     }
