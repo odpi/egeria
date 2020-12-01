@@ -166,7 +166,7 @@ allprojects {
             implementation("org.springframework:spring-context:5.3.0")
             implementation("org.springframework:spring-core:5.3.0")
             implementation("org.springframework:spring-expression:5.3.0")
-            implementation("org.springframework:spring-jdbc:5.3.0")
+            implementation("org.springframework:spring-jdbc:5.3.1")
             implementation("org.springframework:spring-test:5.3.0")
             implementation("org.springframework:spring-tx:5.3.0")
             implementation("org.springframework:spring-web:5.3.0")
