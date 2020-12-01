@@ -119,7 +119,7 @@ allprojects {
             implementation("org.apache.httpcomponents:httpcore:4.4.13")
             implementation("org.apache.jena:jena-core:3.16.0")
             implementation("org.apache.kafka:kafka-clients:2.6.0")
-            implementation("org.apache.lucene:lucene-analyzers-common:8.6.3")
+            implementation("org.apache.lucene:lucene-analyzers-common:8.7.0")
             implementation("org.apache.lucene:lucene-core:8.6.3")
             implementation("org.apache.lucene:lucene-queryparser:8.6.3")
             implementation("org.apache.lucene:lucene-spatial:8.4.1")
