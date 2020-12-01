@@ -98,7 +98,7 @@ allprojects {
             implementation("io.github.classgraph:classgraph:4.8.90")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation("io.micrometer:micrometer-registry-prometheus:1.6.0")
-            implementation("io.netty:netty-all:4.1.53.Final")
+            implementation("io.netty:netty-all:4.1.54.Final")
             implementation("io.netty:netty-buffer:4.1.53.Final")
             implementation("io.netty:netty-codec:4.1.53.Final")
             implementation("io.netty:netty-common:4.1.53.Final")
