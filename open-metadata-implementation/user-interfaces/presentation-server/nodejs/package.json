@@ -22,7 +22,7 @@
     "@carbon/icons-react": "^10.13.0",
     "@carbon/layout": "^10.11.0",
     "@carbon/themes": "^10.22.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.0",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.19.0",
     "carbon-components": "^10.23.2",
