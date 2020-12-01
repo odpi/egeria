@@ -4,26 +4,24 @@
 
 package org.odpi.openmetadata.viewservices.serverauthor.api.rest;
 
-import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEndpoint;
+import org.odpi.openmetadata.viewservices.serverauthor.api.properties.Platform;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 /**
- * Server Author's list of Resource endpoints, which contains the list of platforms.
+ * A Server Author response containing the known platforms
  */
-public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOMVSAPIResponse {
-
-
+public class ServerAuthorPlatformsResponse extends ServerAuthorViewOMVSAPIResponse {
     /**
-     * Platform list
+     * Associated platform
      */
-    private List<ResourceEndpoint> platformList = null;
+    Set<Platform> platforms = null;
 
     /**
      * Default constructor
      */
-    public ServerAuthorResourceEndpointListResponse()
+    public ServerAuthorPlatformsResponse()
     {
         super();
     }
@@ -34,36 +32,30 @@ public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOM
      *
      * @param template object to copy
      */
-    public ServerAuthorResourceEndpointListResponse(ServerAuthorResourceEndpointListResponse template)
+    public ServerAuthorPlatformsResponse(ServerAuthorPlatformsResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.platformList = template.getPlatformList();
+            this.platforms = template.getPlatforms();
         }
     }
 
-
     /**
-     * Return the platformList.
-     *
-     * @return bean
+     * Get the platforms
+     * @return the platforms
      */
-    public List<ResourceEndpoint> getPlatformList()
-    {
-        return platformList;
+    public Set<Platform> getPlatforms() {
+        return platforms;
     }
 
-
     /**
-     * Set the resourceEndpointList.
-     *
-     * @param platformList - bean
+     * set the platforms
+     * @param platforms the platforms
      */
-    public void setPlatformList(List<ResourceEndpoint> platformList)
-    {
-        this.platformList = platformList;
+    public void setPlatforms(Set<Platform> platforms) {
+        this.platforms = platforms;
     }
 
     /**
@@ -74,8 +66,8 @@ public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOM
     @Override
     public String toString()
     {
-        return "ServerAuthorResourceEndpointListResponse{" +
-                "platformList='" + platformList + '\'' +
+        return "ServerAuthorResponse{" +
+                "platform=" + platforms +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -88,9 +80,5 @@ public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOM
                 ", exceptionProperties=" + getExceptionProperties() +
                 '}';
     }
-
-
-
-
 
 }

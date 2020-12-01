@@ -6,10 +6,12 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
+import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -22,6 +24,9 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurit
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * OMAGServerAdminStoreServices provides the capability to store and retrieve configuration documents.
  *
@@ -33,6 +38,7 @@ import org.slf4j.LoggerFactory;
 public class OMAGServerAdminStoreServices
 {
     private static Connection  configurationStoreConnection = null;
+    private String className = OMAGServerAdminStoreServices.class.getName();
 
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
                                                                       CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
@@ -176,6 +182,27 @@ public class OMAGServerAdminStoreServices
         }
     }
 
+    /**
+     * Retrieve the connection for the configuration document store.  If a connection has been provided by an
+     * external party then return that - otherwise extract the file connector for the server.
+     *
+     * @return Connection object
+     */
+    private synchronized Connection getConnectionForRetrieveAll()
+    {
+        if (configurationStoreConnection == null)
+        {
+            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+            return connectorConfigurationFactory.getServerConfigConnectionForRetrieveAll();
+        }
+        else
+        {
+            return configurationStoreConnection;
+        }
+    }
+
+
 
     /**
      * Retrieve the connection to the config file.
@@ -214,6 +241,58 @@ public class OMAGServerAdminStoreServices
                                                     methodName,
                                                     error);
         }
+    }
+    /**
+     * Retrieve the connection to the config files.
+     *
+     * @param methodName  method requesting the server details
+     * @return configuration connector file
+     * @throws OMAGConfigurationErrorException A connection error occurred while attempting to access the server config store.
+     */
+    private OMAGServerConfigStoreRetrieveAll getServerConfigStoreForRetrieveAll(
+                                                       String   methodName) throws OMAGConfigurationErrorException
+    {
+        Connection   connection = this.getConnectionForRetrieveAll();
+
+        try
+        {
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+
+            Connector connector = connectorBroker.getConnector(connection);
+
+            OMAGServerConfigStore serverConfigStore = (OMAGServerConfigStore) connector;
+
+            connector.start();
+            return getOMAGServerConfigStoreRetrieveAll(serverConfigStore, methodName);
+        }
+        catch (Throwable   error)
+        {
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE.getMessageDefinition(methodName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            error.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    error);
+        }
+    }
+
+    /**
+     * Get hte OMAG Server Config store for retrieving all the server configurations associated with this platform
+     * @param serverConfigStore the server config store- note this may not support this operations
+     * @param methodName current operation
+     * @return the store to use for the retrieve all server configurations
+     * @throws OMAGConfigurationErrorException the store does not support the retrieve all configured servers for this platform operation
+     */
+    OMAGServerConfigStoreRetrieveAll getOMAGServerConfigStoreRetrieveAll(OMAGServerConfigStore serverConfigStore, String  methodName) throws OMAGConfigurationErrorException {
+        OMAGServerConfigStoreRetrieveAll omagServerConfigStoreRetrieveAll;
+        if (serverConfigStore instanceof  OMAGServerConfigStoreRetrieveAll) {
+            omagServerConfigStoreRetrieveAll = (OMAGServerConfigStoreRetrieveAll) serverConfigStore;
+        } else {
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED.getMessageDefinition(),
+                                                      this.getClass().getName(),
+                                                      methodName);
+        }
+        return omagServerConfigStoreRetrieveAll;
     }
 
 
@@ -343,6 +422,22 @@ public class OMAGServerAdminStoreServices
             }
         }
     }
+
+    /**
+     * Retrieve all the saved OMAG Server configurations for this platform.
+     *
+     * @param userId calling user
+     * @param methodName  method requesting the servers details
+     * @return  a set of OMAG Server configurations
+     * @throws OMAGConfigurationErrorException the OMAG Server configuration connector defined in configuration does not support retrieve all servers call.
+     */
+    Set<OMAGServerConfig> retrieveAllServerConfigs(String   userId,
+                                              String   methodName) throws OMAGConfigurationErrorException, OMAGInvalidParameterException {
+
+        OMAGServerConfigStoreRetrieveAll serverConfigStore = getServerConfigStoreForRetrieveAll(methodName);
+        return serverConfigStore.retrieveAllServerConfigs();
+    }
+
 
 
     /**
