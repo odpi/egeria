@@ -116,7 +116,7 @@ allprojects {
             implementation("org.apache.derby:derby:10.8.3.1")
             implementation("org.apache.hadoop:hadoop-common:2.9.2")
             implementation("org.apache.httpcomponents:httpclient:4.5.13")
-            implementation("org.apache.httpcomponents:httpcore:4.4.13")
+            implementation("org.apache.httpcomponents:httpcore:4.4.14")
             implementation("org.apache.jena:jena-core:3.16.0")
             implementation("org.apache.kafka:kafka-clients:2.6.0")
             implementation("org.apache.lucene:lucene-analyzers-common:8.6.3")
