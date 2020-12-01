@@ -163,7 +163,7 @@ allprojects {
             implementation("org.springframework.security:spring-security-web:5.4.1")
             implementation("org.springframework:spring-aop:5.3.0")
             implementation("org.springframework:spring-beans:5.3.0")
-            implementation("org.springframework:spring-context:5.3.0")
+            implementation("org.springframework:spring-context:5.3.1")
             implementation("org.springframework:spring-core:5.3.0")
             implementation("org.springframework:spring-expression:5.3.0")
             implementation("org.springframework:spring-jdbc:5.3.0")
