@@ -216,7 +216,7 @@
         <joda.version>2.10.8</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
-        <snappy.version>1.1.8</snappy.version>
+        <snappy.version>1.1.8.2</snappy.version>
         <snakeyaml.version>1.27</snakeyaml.version>
         <springdoc.version>1.4.6</springdoc.version>
         <classgraph.version>4.8.90</classgraph.version>
