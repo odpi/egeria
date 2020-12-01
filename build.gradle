@@ -121,7 +121,7 @@ allprojects {
             implementation("org.apache.kafka:kafka-clients:2.6.0")
             implementation("org.apache.lucene:lucene-analyzers-common:8.6.3")
             implementation("org.apache.lucene:lucene-core:8.6.3")
-            implementation("org.apache.lucene:lucene-queryparser:8.6.3")
+            implementation("org.apache.lucene:lucene-queryparser:8.7.0")
             implementation("org.apache.lucene:lucene-spatial:8.4.1")
             implementation("org.apache.lucene:lucene-spatial-extras:8.6.3")
             implementation("org.apache.ranger:ranger-plugins-common:1.2.0")
