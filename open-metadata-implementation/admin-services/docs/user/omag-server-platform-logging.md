@@ -1,8 +1,9 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# Configuring logging options for OMAG server platform
+# Configuring developer logging options for OMAG server platform
 
-
-## Options for technical logging system using Spring Boot server chassis
+## Options for logging system using Spring Boot server chassis
 
 The default java application server chassis for OMAG server is Spring Boot. As such it comes with support of variety technical logging options.
 You can always check the options in the official guidelines [here](https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto-logging). 
