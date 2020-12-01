@@ -152,7 +152,7 @@ allprojects {
             implementation("org.springframework.boot:spring-boot-starter-actuator:2.3.3.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.3.3.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-security:2.3.3.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-validation:2.3.3.RELEASE")
+            implementation("org.springframework.boot:spring-boot-starter-validation:2.4.0")
             implementation("org.springframework.boot:spring-boot-starter-web:2.3.3.RELEASE")
             implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.5.RELEASE")
             implementation("org.springframework.data:spring-data-commons:2.4.0")
