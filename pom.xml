@@ -218,7 +218,7 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8</snappy.version>
         <snakeyaml.version>1.27</snakeyaml.version>
-        <springdoc.version>1.4.6</springdoc.version>
+        <springdoc.version>1.5.0</springdoc.version>
         <classgraph.version>4.8.90</classgraph.version>
         <swagger.version>2.1.5</swagger.version>
         <groovy.version>3.0.6</groovy.version>
