@@ -887,6 +887,7 @@ const ResourcesContextProvider = (props) => {
     server.cohortDetails         = serverOverview.cohortDetails;
     server.serverStatus          = serverOverview.serverStatus;
     server.serverServicesList    = serverOverview.serverServicesList;
+    server.integrationServices   = serverOverview.integrationServices;
 
     /*
      * Find out if the server already exists - and if so augment the platform list if the platform is not present.
@@ -1394,6 +1395,333 @@ const ResourcesContextProvider = (props) => {
 
   };
 
+  // =========================+++++++++++++++++++++++++++++
+
+  /*
+   * This function will load the specified service by asking the VS to retrieve the service's
+   * configuration.
+   * 
+   * Although Dino already knows of the existence of the service (from the service list associated
+   * with the server) this only provides the name and no details - we only retrieve the details
+   * of a service when the user expresses an interest in the service).
+   * 
+   * The service will be loaded into a gen so that the service exists in its own right. It also 
+   * creates an edge from the specified server to the service. 
+   */
+  const loadService2 = (serverName, serviceName) => {    // TODO rename
+
+    /*
+     * If the server is not found the operation will fail.
+     */
+  
+    let serverGUID = genServerGUID(serverName);
+
+    /*
+     * Find the server entry in the gens
+     */
+    let serverGenId = guidToGenId[serverGUID];
+    if (serverGenId === undefined) {
+      /*
+       * Operation cannot proceed - we do not have the specified server.
+       */
+      alert("Cannot add service for unknown server "+serverName);
+      return;
+    }
+
+    /*
+     * Check that the server is the focus resource
+     */
+    if (focus.category !== "server") {
+      return;
+    }
+
+    let guid  = focus.guid;
+    let genId = guidToGenId[guid];
+    let gen   = gens[genId-1];
+    if (gen) {
+      let existingServer = gen.resources[guid];
+      if (existingServer) {
+        let serverName   = existingServer.serverName;
+        let platformList = existingServer.platforms;
+        if (!platformList || platformList.length === 0) {
+          alert("There are no platforms listed for the server "+serverName+" so details cannot be retrieved.");
+          return;
+        }
+        else {
+          /* Select the platform we are querying... */
+          let platformName = platformList[0];
+
+          /* Retrieve BOTH the stored and running instance configuration for the server */
+          requestContext.callPOST("server", serverName,  "server/"+serverName+"/service-details",  
+                                        { platformName : platformName ,
+                                          serviceName  : serviceName   }, 
+                                        _loadService2);
+        }
+      }
+    }
+  }
+
+  const _loadService2 = (json) => { // TODO rename
+  
+    if (json) {
+      if (json.relatedHTTPCode === 200 ) {
+
+        /*
+         * For known (stopped) servers you won't get an active config.
+         */
+        if (json.serviceDetails) { 
+
+          processRetrievedServiceDetails(json.serviceDetails);
+          
+          return;
+
+        }
+      }
+    }
+    /*
+     * On failure ...
+     */
+    interactionContext.reportFailedOperation("load service details",json);
+  }
+
+
+  const processRetrievedServiceDetails = (serviceDetails) => {
+
+    console.log("put a breakpoint here");
+
+
+    // TODO all the code below here needs an update....
+
+    /*
+     * Create a service object
+     */
+    let serviceGUID = genServiceGUID(serviceName);
+
+    let service                   = {};
+    service.category              = "service";
+    service.serviceName           = serviceName;    
+    service.guid                  = serviceGUID;
+
+    /*
+     * Create a relationship from the specified server to the cohort - if we do not already have one
+     * The relationship will need a guid, a source and target and a gen (which is assigned when the 
+     * gen is created)
+     */
+
+    let serverServiceName                         = serviceName+"@"+serverName;
+    let serverServiceGUID                         = "SERVER_SERVICE"+serverServiceName;
+
+    let serverServiceRelationship                 = {};
+    serverServiceRelationship.category            = "server-service";
+    serverServiceRelationship.serverCohortName    = serverServiceName;
+    serverServiceRelationship.guid                = serverServiceGUID;
+    serverServiceRelationship.serverName          = serverName;
+    serverServiceRelationship.cohortName          = serviceName;
+    /* 
+     * Server-Service relationships are always active - this is driven from the active server list.
+     */
+    serverServiceRelationship.active              = true;
+
+    /*
+     * Include graph navigation ids.
+     */
+    serverServiceRelationship.source              = serverGUID;
+    serverServiceRelationship.target              = serviceGUID;
+
+  
+    /*
+     * Create a map of the objects to be updated.
+     */
+    let update_objects                               = {};
+    update_objects.resources                         = {};
+    update_objects.relationships                     = {};
+    update_objects.resources[serviceGUID]            = service;
+    update_objects.relationships[serverServiceGUID]  = serverServiceRelationship; 
+
+    /*
+     * Include a request summary - since this was a local operation there is no request information 
+     * to be returned from the VS
+     */
+    let requestSummary             = {};
+    requestSummary.serverName      = serverName;
+    requestSummary.operation       = "Expansion of service "+serviceName;
+    requestSummary.platformName    = null;
+      
+    updateGens(update_objects, requestSummary);
+  
+    /*
+     * Although we're adding a cohort, leave the focus as it was... so there is no need
+     * to setFocus (since there is no change) nor to setOperationState (since there was no
+     * remote operation)
+     */ 
+  }
+
+
+
+ // =========================+++++++++++++++++++++++++++++
+
+  /* TODO - update comment
+   * This function will load the specified service by asking the VS to retrieve the service's
+   * configuration.
+   * 
+   * Although Dino already knows of the existence of the service (from the service list associated
+   * with the server) this only provides the name and no details - we only retrieve the details
+   * of a service when the user expresses an interest in the service).
+   * 
+   * The service will be loaded into a gen so that the service exists in its own right. It also 
+   * creates an edge from the specified server to the service. 
+   */
+  const loadIntegrationServices = (serverName) => {
+
+    /*
+     * If the server is not found the operation will fail.
+     */
+  
+    let serverGUID = genServerGUID(serverName);
+
+    /*
+     * Find the server entry in the gens
+     */
+    let serverGenId = guidToGenId[serverGUID];
+    if (serverGenId === undefined) {
+      /*
+       * Operation cannot proceed - we do not have the specified server.
+       */
+      alert("Cannot add service for unknown server "+serverName);
+      return;
+    }
+
+    /*
+     * Check that the server is the focus resource
+     */
+    if (focus.category !== "server") {
+      return;
+    }
+
+    let guid  = focus.guid;
+    let genId = guidToGenId[guid];
+    let gen   = gens[genId-1];
+    if (gen) {
+      let existingServer = gen.resources[guid];
+      if (existingServer) {
+        let serverName   = existingServer.serverName;
+        let platformList = existingServer.platforms;
+        if (!platformList || platformList.length === 0) {
+          alert("There are no platforms listed for the server "+serverName+" so details cannot be retrieved.");
+          return;
+        }
+        else {
+          /* Select the platform we are querying... */
+          let platformName = platformList[0];
+
+          /* Retrieve a list of the integration services configured on the server */
+          requestContext.callPOST("server", serverName,  "server/"+serverName+"/integration-services",  
+                                        { platformName : platformName  }, 
+                                        _loadIntegrationServices);
+        }
+      }
+    }
+  }
+
+  const _loadIntegrationServices = (json) => {
+  
+    if (json) {
+      if (json.relatedHTTPCode === 200 ) {
+
+        /*
+         * For known (stopped) servers you won't get an active config.
+         */
+        if (json.serviceList) { 
+
+          processRetrievedIntegrationServiceList(json.serviceList);
+          
+          return;
+
+        }
+      }
+    }
+    /*
+     * On failure ...
+     */
+    interactionContext.reportFailedOperation("list integration services",json);
+  }
+
+
+  const processRetrievedIntegrationServiceList = (serviceList) => {
+
+    console.log("integration service list breakpoint here");
+
+
+
+
+    /*
+     * Create a list of service objects
+     */
+    let serviceGUID = genServiceGUID(serviceName);
+
+    let service                   = {};
+    service.category              = "service";
+    service.serviceName           = serviceName;    
+    service.guid                  = serviceGUID;
+
+    /*
+     * Create a relationship from the specified server to the cohort - if we do not already have one
+     * The relationship will need a guid, a source and target and a gen (which is assigned when the 
+     * gen is created)
+     */
+
+    let serverServiceName                         = serviceName+"@"+serverName;
+    let serverServiceGUID                         = "SERVER_SERVICE"+serverServiceName;
+
+    let serverServiceRelationship                 = {};
+    serverServiceRelationship.category            = "server-service";
+    serverServiceRelationship.serverCohortName    = serverServiceName;
+    serverServiceRelationship.guid                = serverServiceGUID;
+    serverServiceRelationship.serverName          = serverName;
+    serverServiceRelationship.cohortName          = serviceName;
+    /* 
+     * Server-Service relationships are always active - this is driven from the active server list.
+     */
+    serverServiceRelationship.active              = true;
+
+    /*
+     * Include graph navigation ids.
+     */
+    serverServiceRelationship.source              = serverGUID;
+    serverServiceRelationship.target              = serviceGUID;
+
+  
+    /*
+     * Create a map of the objects to be updated.
+     */
+    let update_objects                               = {};
+    update_objects.resources                         = {};
+    update_objects.relationships                     = {};
+    update_objects.resources[serviceGUID]            = service;
+    update_objects.relationships[serverServiceGUID]  = serverServiceRelationship; 
+
+    /*
+     * Include a request summary - since this was a local operation there is no request information 
+     * to be returned from the VS
+     */
+    let requestSummary             = {};
+    requestSummary.serverName      = serverName;
+    requestSummary.operation       = "Expansion of service "+serviceName;
+    requestSummary.platformName    = null;
+      
+    updateGens(update_objects, requestSummary);
+  
+    /*
+     * Although we're adding a cohort, leave the focus as it was... so there is no need
+     * to setFocus (since there is no change) nor to setOperationState (since there was no
+     * remote operation)
+     */ 
+  }
+
+
+
+  // ======================++++++++++++++++++++++++
+
   /*
    * Clear the state of the session - this includes the gens, the focus and the guidToGenId map.
    */
@@ -1509,6 +1837,8 @@ const ResourcesContextProvider = (props) => {
         loadCohort,
         loadCohortFromServer,
         loadService,
+        loadIntegrationServices,
+        loadService2,
         loadConfiguredCohort,
         clear,
         removeGen,

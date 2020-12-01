@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 
 import java.util.List;
@@ -32,8 +33,15 @@ public class ServerOverview {
     private ServerTypeClassificationSummary serverClassification;
     private boolean                         isActive;
     private Map<String,ServerCohortDetails> cohortDetails;
-    private ServerStatus serverStatus;
-    private List<String>                    serverServicesList;
+    private ServerStatus                    serverStatus;
+    private List<String>                    serverServicesList;  // TODO - remove me
+    private List<RegisteredOMAGService>     integrationServices;
+    //private List<RegisteredOMAGService>     accessServices;
+    //private List<RegisteredOMAGService>     commonServices;
+    //private List<RegisteredOMAGService>     governanceServices;
+    //private List<RegisteredOMAGService>     viewServices;
+    //private List<RegisteredOMAGService>     engineServices;
+
 
 
 
@@ -57,7 +65,14 @@ public class ServerOverview {
                           boolean                         isActive,
                           Map<String,ServerCohortDetails> cohortDetails,
                           ServerStatus                    serverStatus,
-                          List<String>                    serverServicesList) {
+                          List<String>                    serverServicesList,  // TODO remove
+                          List<RegisteredOMAGService>     integrationServices
+                          //List<RegisteredOMAGService>     accessServices,
+                          //List<RegisteredOMAGService>     commonServices,
+                          //List<RegisteredOMAGService>     governanceServices,
+                          //List<RegisteredOMAGService>     viewServices,
+                          //List<RegisteredOMAGService>     engineServices
+                          ) {
 
         this.serverInstanceName          = serverInstanceName;
         this.serverName                  = serverName;
@@ -68,7 +83,14 @@ public class ServerOverview {
         this.isActive                    = isActive;
         this.cohortDetails               = cohortDetails;
         this.serverStatus                = serverStatus;
-        this.serverServicesList          = serverServicesList;
+        this.serverServicesList          = serverServicesList;  // TODO remove me
+        this.integrationServices         = integrationServices;
+        //this.accessServices              = accessServices;
+        //this.commonServices              = commonServices;
+        //this.governanceServices          = governanceServices;
+        //this.viewServices                = viewServices;
+        //this.engineServices              = engineServices;
+
     }
 
 
@@ -161,6 +183,14 @@ public class ServerOverview {
     public void setServerServicesList(List<String> serverServicesList) {
         this.serverServicesList = serverServicesList;
     }
+    public List<RegisteredOMAGService> getIntegrationServices() {
+        return integrationServices;
+    }
+
+    public void setIntegrationServices(List<RegisteredOMAGService> integrationServices) {
+        this.integrationServices = integrationServices;
+    }
+
 
     /**
      * Standard toString method.
@@ -181,6 +211,7 @@ public class ServerOverview {
                 ", cohortDetails=" + cohortDetails +'\'' +
                 ", serverStatus=" + serverStatus +'\'' +
                 ", serverServicesList=" + serverServicesList +'\'' +
+                ", integrationServices=" + integrationServices +'\'' +
                 '}';
     }
 

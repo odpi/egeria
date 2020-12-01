@@ -14,7 +14,9 @@ import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerListResponse;
 import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerOverviewResponse;
 import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerRequestBody;
 import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerTypeResponse;
+import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServiceDetailsResponse;
 import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServiceListResponse;
+import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServiceRequestBody;
 import org.odpi.openmetadata.viewservices.dino.api.rest.DinoStringResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -253,7 +255,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the repository's type information or exception information TODO
      */
 
     @PostMapping("/server/{serverName}/origin")
@@ -273,7 +275,7 @@ public class DinoViewRESTResource {
      * @param userId       user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the server type information (as a String) or exception information
+     * @return response object containing the server type information (as a String) or exception information TODO
      */
 
     @PostMapping("/server/{serverName}/server-type-classification")
@@ -293,7 +295,7 @@ public class DinoViewRESTResource {
      * @param userId       user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the repository's type information or exception information TODO
      */
 
     @PostMapping("/server/{serverName}/configuration")
@@ -314,7 +316,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the repository's type information or exception information TODO
      */
 
     @PostMapping("/server/{serverName}/instance/configuration")
@@ -334,7 +336,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the repository's type information or exception information TODO
      */
 
     @PostMapping("/server/{serverName}/stored-and-active-configuration")
@@ -354,7 +356,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the repository's type information or exception information TODO
      */
 
     @PostMapping("/server/{serverName}/audit-log")
@@ -363,6 +365,46 @@ public class DinoViewRESTResource {
                                                         @PathVariable String                           serverName,
                                                         @RequestBody DinoServerRequestBody             requestBody  ) {
         return restAPI.serverGetAuditLog(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get a list of the integration services on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the list of integration services or exception information
+     */
+
+    @PostMapping("/server/{serverName}/integration-services")
+    public DinoServiceListResponse getServerIntegrationServices(@PathVariable String                      viewServerName,
+                                                                @PathVariable String                      userId,
+                                                                @PathVariable String                      serverName,
+                                                                @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetIntegrationServices(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get the details of a service running on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the repository's type information or exception information TODO
+     */
+
+    @PostMapping("/server/{serverName}/service-details")  // TODO probably rename to integration-service[-details]
+    public DinoServiceDetailsResponse getServerServiceDetails(@PathVariable String                      viewServerName,
+                                                              @PathVariable String                      userId,
+                                                              @PathVariable String                      serverName,
+                                                              @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetServiceDetails(viewServerName, userId, requestBody);
 
     }
 }
