@@ -182,7 +182,7 @@
         <spring-data.version>2.4.0</spring-data.version>
         <servo-core.version>0.13.0</servo-core.version>
         <netflix-zuul.version>2.2.5.RELEASE</netflix-zuul.version>
-        <tomcat.version>9.0.39</tomcat.version>
+        <tomcat.version>9.0.40</tomcat.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.16.0</jena.version>
