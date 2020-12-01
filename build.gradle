@@ -95,7 +95,7 @@ allprojects {
             implementation("commons-codec:commons-codec:1.15")
             implementation("commons-io:commons-io:2.8.0")
             implementation("commons-logging:commons-logging:1.2")
-            implementation("io.github.classgraph:classgraph:4.8.90")
+            implementation("io.github.classgraph:classgraph:4.8.92")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation("io.micrometer:micrometer-registry-prometheus:1.6.0")
             implementation("io.netty:netty-all:4.1.53.Final")
