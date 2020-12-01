@@ -128,7 +128,7 @@ allprojects {
             implementation("org.apache.tinkerpop:gremlin-core:3.4.8")
             implementation("org.apache.tinkerpop:gremlin-driver:3.4.8")
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.8")
-            implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.39") //TODO May need to exclude tomcat-annotations-api
+            implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.40") //TODO May need to exclude tomcat-annotations-api
             implementation("org.codehaus.groovy:groovy:3.0.6")
             implementation("org.codehaus.groovy:groovy-cli-picocli:3.0.6")
             implementation("org.codehaus.groovy:groovy-console:3.0.6")
