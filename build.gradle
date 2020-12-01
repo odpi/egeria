@@ -191,7 +191,7 @@ allprojects {
             testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
             testImplementation("org.junit.jupiter:junit-platform-runner:1.7.0")
             testImplementation("org.junit.jupiter:junit-platform-suite-api:1.7.0")
-            testImplementation("org.mockito:mockito-core:3.6.0")
+            testImplementation("org.mockito:mockito-core:3.6.28")
             testImplementation("org.mockito:mockito-inline:3.6.0")
             testImplementation("org.mockito:mockito-junit-jupiter:3.6.0")
             testImplementation("org.slf4j:slf4j-simple:1.7.30")
