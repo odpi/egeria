@@ -5,7 +5,7 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation 'org.springframework:spring-web:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-web:5.3.1'
     implementation project(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-api')
     implementation project(':open-metadata-implementation:governance-servers:stewardship-engine-services:stewardship-engine-services-api')
     implementation project(':open-metadata-implementation:governance-servers:stewardship-engine-services:stewardship-engine-services-server')
