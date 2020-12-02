@@ -1104,6 +1104,10 @@ public class OpenMetadataAPIMapper
     public static final String SET_SCHEMA_TYPE_TYPE_NAME                = "SetSchemaType";
     /* BoundedSchemaType */
 
+    public static final String PORT_SCHEMA_RELATIONSHIP_TYPE_GUID       = "B216fA00-8281-F9CC-9911-Ae6377f2b457"; /* from Area 5 */
+    public static final String PORT_SCHEMA_RELATIONSHIP_TYPE_NAME       = "PortSchema";
+    /* End1 = Port; End 2 = SchemaType */
+
     public static final String TABULAR_SCHEMA_TYPE_TYPE_GUID            = "248975ec-8019-4b8a-9caf-084c8b724233";   /* from Area 5 */
     public static final String TABULAR_SCHEMA_TYPE_TYPE_NAME            = "TabularSchemaType";
     /* ComplexSchemaType */

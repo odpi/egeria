@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

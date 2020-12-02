@@ -276,7 +276,7 @@ public class OMAGServerAdminForIntegrationServices
             /*
              * Get the configuration information for this integration service.
              */
-            IntegrationServiceConfig serviceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(serviceURLMarker, methodName);
+            IntegrationServiceConfig serviceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(serviceURLMarker, serverName, methodName);
             serviceConfig.setIntegrationServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
 
             if (requestBody != null)

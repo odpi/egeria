@@ -47,6 +47,7 @@ export default function EnumTypeDisplay(props) {
       <hr/>
       <div className="type-details-item-bold">Enum Type : {typeName}</div>
       <div className="type-details-item">{enumExpl.description}</div>
+      <div className="type-details-item">Type Status : {enumExpl.enumDef.status}</div>
       <div className="type-details-item">Possible Values : { !enumExpl.elementDefs ? "none" :
         expandValues( enumExpl.elementDefs ) }
       </div>

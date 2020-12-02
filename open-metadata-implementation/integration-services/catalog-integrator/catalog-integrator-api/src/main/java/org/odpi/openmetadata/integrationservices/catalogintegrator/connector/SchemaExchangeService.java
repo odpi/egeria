@@ -228,6 +228,8 @@ public class SchemaExchangeService
     /**
      * Connect a schema type to a data asset, process or port.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -235,16 +237,24 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaTypeParent(String parentElementGUID,
-                                      String parentElementTypeName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void setupSchemaTypeParent(boolean assetManagerIsHome,
+                                      String  schemaTypeGUID,
+                                      String  parentElementGUID,
+                                      String  parentElementTypeName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName = "setupSchemaTypeParent";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.setupSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+            schemaExchangeClient.setupSchemaTypeParent(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       assetManagerIsHome,
+                                                       schemaTypeGUID,
+                                                       parentElementGUID,
+                                                       parentElementTypeName);
         }
         else
         {
@@ -262,6 +272,7 @@ public class SchemaExchangeService
     /**
      * Remove the relationship between a schema type and its parent data asset, process or port.
      *
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -269,7 +280,8 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaTypeParent(String parentElementGUID,
+    public void clearSchemaTypeParent(String schemaTypeGUID,
+                                      String parentElementGUID,
                                       String parentElementTypeName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -278,7 +290,12 @@ public class SchemaExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.clearSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+            schemaExchangeClient.clearSchemaTypeParent(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       schemaTypeGUID,
+                                                       parentElementGUID,
+                                                       parentElementTypeName);
         }
         else
         {

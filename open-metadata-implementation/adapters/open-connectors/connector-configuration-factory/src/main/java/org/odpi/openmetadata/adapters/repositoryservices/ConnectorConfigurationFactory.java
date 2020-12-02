@@ -80,6 +80,18 @@ public class ConnectorConfigurationFactory
     }
 
     /**
+     * Returns the connection for the open metadata server configuration retrieve all.
+     *
+     * @return Connection object
+     */
+    public Connection getServerConfigConnectionForRetrieveAll()
+    {
+        Connection connection = new Connection();
+        connection.setConnectorType(getConnectorType(EncryptedFileBasedServerConfigStoreProvider.class.getName()));
+        return connection;
+    }
+
+    /**
      * Return the connection for the default audit log.
      * By default, the Audit Log written to stdout.
      *

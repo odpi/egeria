@@ -17,8 +17,8 @@ export default function GlossaryQuickTerms(props) {
   const [restCallInProgress, setRestCallInProgress] = useState(false);
   let history = useHistory();
   const url = getUrl();
+  const { glossaryguid } = useParams();
   function getUrl() {
-    const { glossaryguid } = useParams();
     return glossaryNodeType.url + "/" + glossaryguid + "/terms";
   }
   const validateForm = () => {

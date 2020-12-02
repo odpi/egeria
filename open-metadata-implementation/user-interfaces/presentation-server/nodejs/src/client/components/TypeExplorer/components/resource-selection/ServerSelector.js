@@ -10,7 +10,6 @@ import { TypesContext }                                   from "../../contexts/T
 
 import { InteractionContext }                             from "../../contexts/InteractionContext";
 
-
 import "./resource-selector.scss"
 
 
@@ -126,7 +125,7 @@ export default function ServerSelector() {
     let platformName   = serverInstance.platformName;
 
     /*
-     *  ...this operation initiates the load of type information from the specified repository server
+     * This operation initiates the load of type information from the specified repository server
      */
     typesContext.loadTypeInfo(serverName, platformName);
   }

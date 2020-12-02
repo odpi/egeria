@@ -16,7 +16,7 @@ function NodeChildren(props) {
    * This is required when the back button is pressed returning from a child component.
    */
   useEffect(() => {
-    const arrayOfURLSegments = location.pathname.split("/");
+    const arrayOfURLSegments = window.location.pathname.split("/");
     const lastSegment = arrayOfURLSegments[arrayOfURLSegments.length - 1];
     let index = 0;
     if (lastSegment == "terms") {
@@ -24,7 +24,7 @@ function NodeChildren(props) {
     }
     console.log(
       "NodeChildren useEffect url=" +
-        location.pathname +
+        window.location.pathname +
         " ,lastSegment=" +
         lastSegment +
         " ,index=" +

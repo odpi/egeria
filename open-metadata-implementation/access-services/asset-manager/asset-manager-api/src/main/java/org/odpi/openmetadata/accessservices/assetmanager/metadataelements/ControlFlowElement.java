@@ -24,8 +24,10 @@ public class ControlFlowElement implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader         elementHeader         = null;
+    private ElementHeader         controlFlowHeader     = null;
     private ControlFlowProperties controlFlowProperties = null;
+    private ElementHeader         currentStep           = null;
+    private ElementHeader         nextStep              = null;
 
     /**
      * Default constructor
@@ -45,31 +47,33 @@ public class ControlFlowElement implements Serializable
     {
         if (template != null)
         {
-            elementHeader      = template.getElementHeader();
+            controlFlowHeader = template.getControlFlowHeader();
             controlFlowProperties = template.getControlFlowProperties();
+            currentStep = template.getCurrentStep();
+            nextStep = template.getNextStep();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Return the element header associated with the relationship.
      *
      * @return element header object
      */
-    public ElementHeader getElementHeader()
+    public ElementHeader getControlFlowHeader()
     {
-        return elementHeader;
+        return controlFlowHeader;
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the element header associated with the relationship.
      *
-     * @param elementHeader element header object
+     * @param controlFlowHeader element header object
      */
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setControlFlowHeader(ElementHeader controlFlowHeader)
     {
-        this.elementHeader = elementHeader;
+        this.controlFlowHeader = controlFlowHeader;
     }
 
 
@@ -96,6 +100,51 @@ public class ControlFlowElement implements Serializable
 
 
     /**
+     * Return the element header associated with end 1 of the relationship.
+     *
+     * @return element header object
+     */
+    public ElementHeader getCurrentStep()
+    {
+        return currentStep;
+    }
+
+
+    /**
+     * Set up the element header associated with end 1 of the relationship.
+     *
+     * @param currentStep element header object
+     */
+    public void setCurrentStep(ElementHeader currentStep)
+    {
+        this.currentStep = currentStep;
+    }
+
+
+
+    /**
+     * Return the element header associated with end 2 of the relationship.
+     *
+     * @return element header object
+     */
+    public ElementHeader getNextStep()
+    {
+        return nextStep;
+    }
+
+
+    /**
+     * Set up the element header associated with end 2 of the relationship.
+     *
+     * @param nextStep element header object
+     */
+    public void setNextStep(ElementHeader nextStep)
+    {
+        this.nextStep = nextStep;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -104,8 +153,10 @@ public class ControlFlowElement implements Serializable
     public String toString()
     {
         return "ControlFlowElement{" +
-                       "elementHeader=" + elementHeader +
+                       "controlFlowHeader=" + controlFlowHeader +
                        ", controlFlowProperties=" + controlFlowProperties +
+                       ", currentStep=" + currentStep +
+                       ", nextStep=" + nextStep +
                        '}';
     }
 
@@ -127,13 +178,11 @@ public class ControlFlowElement implements Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         ControlFlowElement that = (ControlFlowElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(controlFlowProperties, that.controlFlowProperties);
+        return Objects.equals(getControlFlowHeader(), that.getControlFlowHeader()) &&
+                       Objects.equals(getControlFlowProperties(), that.getControlFlowProperties()) &&
+                       Objects.equals(getCurrentStep(), that.getCurrentStep()) &&
+                       Objects.equals(getNextStep(), that.getNextStep());
     }
 
 
@@ -145,6 +194,6 @@ public class ControlFlowElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, controlFlowProperties);
+        return Objects.hash(super.hashCode(), controlFlowHeader, controlFlowProperties, currentStep, nextStep);
     }
 }
