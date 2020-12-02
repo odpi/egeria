@@ -152,6 +152,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param qualifiedName unique name for this asset
      * @param technicalName the stored display name property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param formula the formula that characterize the processing behavior of the process
+     * @param implementationLanguage the implementation language used to create the process
      * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
      * @param owner identifier of the owner
      * @param ownerType is the owner identifier a user id, personal profile or team profile
@@ -308,6 +310,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param qualifiedName unique name for this asset
      * @param technicalName the stored display name property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param formula the formula that characterize the processing behavior of the process
+     * @param implementationLanguage the implementation language used to create the process
      * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
      * @param owner identifier of the owner
      * @param ownerType is the owner identifier a user id, personal profile or team profile
@@ -1060,6 +1064,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      *
      * @param userId calling user
      * @param searchString string to find in the properties
+     * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -1643,7 +1648,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
+     * @param callerGUIDParameterName parameter supplying callerGUID
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param calledGUIDParameterName parameter supplying calledGUID
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
@@ -1824,6 +1831,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
+     * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1875,6 +1883,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param methodName calling method
      *
+     * @return list of lineage mapping relationships
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1898,6 +1908,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
      * @param methodName calling method
      *
+     * @return list of lineage mapping relationships
+     * 
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)

@@ -557,6 +557,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param searchString string to find in the properties
+     * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
