@@ -2619,6 +2619,8 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      *
+     * @return list of lineage mapping relationships
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -2656,6 +2658,8 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param destinationElementGUID unique identifier of the destination
+     *
+     * @return list of lineage mapping relationships
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

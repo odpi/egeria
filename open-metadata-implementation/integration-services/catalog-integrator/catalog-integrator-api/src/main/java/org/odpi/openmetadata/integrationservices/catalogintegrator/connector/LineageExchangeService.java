@@ -1309,10 +1309,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFlowElement> getDataFlowSuppliers(String userId,
-                                                      String assetManagerGUID,
-                                                      String assetManagerName,
-                                                      String dataConsumerGUID) throws InvalidParameterException,
+    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
@@ -1795,6 +1792,8 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param sourceElementGUID unique identifier of the source
      *
+     * @return list of lineage mapping relationships
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1811,6 +1810,8 @@ public class LineageExchangeService extends SchemaExchangeService
      * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
      *
      * @param destinationElementGUID unique identifier of the destination
+     *
+     * @return list of lineage mapping relationships
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
