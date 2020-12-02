@@ -254,11 +254,15 @@ public class IntegrationServiceHandler
     {
         final String actionDescription = "Server shutdown";
 
-        for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
-        {
-            if (connectorHandler != null)
-            {
-                connectorHandler.shutdown(actionDescription);
+        /*
+        if a integration has encountered a problem when starting
+        then the connectorHandlers can be null
+         */
+        if( connectorHandlers != null ) {
+            for (IntegrationConnectorHandler connectorHandler : connectorHandlers) {
+                if (connectorHandler != null) {
+                    connectorHandler.shutdown(actionDescription);
+                }
             }
         }
     }
