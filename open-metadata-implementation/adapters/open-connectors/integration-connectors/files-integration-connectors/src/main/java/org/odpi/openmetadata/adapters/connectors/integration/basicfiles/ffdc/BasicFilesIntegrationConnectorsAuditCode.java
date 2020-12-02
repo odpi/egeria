@@ -29,27 +29,27 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                   "If allowCatalogDelete is set to true, it will delete catalog entries for files that are deleted from the file system, " +
                                   "otherwise the catalog entries are marked as archived so they remain available to act as tombstones in the lineage graphs.  " +
                                   "If the templateQualifiedName is set, it identifies a template entity to use ",
-                          "No specific action is required.  This message is to confirm the configuration for the connector."),
+                          "No specific action is required.  This message is to confirm the configuration for the integration connector."),
 
     BAD_CONFIGURATION("BASIC-FILES-INTEGRATION-CONNECTORS-0002",
                           OMRSAuditLogRecordSeverity.EXCEPTION,
-                          "The {0} integration connector encountered an {1} exception when opening directory {2} during the {3} method.  The exception message is {4}",
+                          "The {0} integration connector encountered an {1} exception when opening directory {2} during the {3} method.  The exception message included was {4}",
                           "The exception is passed back to the Files Integrator OMIS in the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
-                                  "error handling that was performed.",
+                                  "error handling that was performed.  These can help to determine how to recover from this error",
                           "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                  "connector once the original cause of the error has been corrected."),
+                                  "connector in the integration daemon once the original cause of the error has been corrected."),
 
     BAD_FOLDER_ELEMENT("BASIC-FILES-INTEGRATION-CONNECTORS-0003",
                        OMRSAuditLogRecordSeverity.ERROR,
                        "The {0} integration connector retrieved an incomplete FileFolder asset for directory {1}: {2}",
                        "The metadata element for the directory that was retrieved from the open metadata repositories has missing " +
                                "information.  This is likely to be a logic error in the Files Integrator OMIS or Data Manager OMAS.",
-                       "Look for errors in the audit logs for the integration daemon where the connector and Files Integrator OMIS are" +
+                       "Look for errors in the audit logs for the integration daemon where the connector and Files Integrator OMIS are " +
                                "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
-                               "ask the Egeria community for help."),
+                               "ask the Egeria community for help to determine why the FileFolder asset is incomplete."),
 
     UNEXPECTED_EXC_RETRIEVING_FOLDER("BASIC-FILES-INTEGRATION-CONNECTORS-0004",
                             OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -57,20 +57,20 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
                                      "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
                                      "Use the message in the nested exception to determine the root cause of the error. Once this is " +
-                                             "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
+                                             "resolved, follow the instructions in the messages produced by the integration daemon to restart this connector."),
 
     DIRECTORY_MONITORING_STARTING("BASIC-FILES-INTEGRATION-CONNECTORS-0005",
                               OMRSAuditLogRecordSeverity.INFO,
                               "The {0} integration connector is initiating the monitoring of file directory {1}",
-                              "The connector is calling the monitoring library from Apache Commons.  " +
+                              "The connector is calling the monitoring library from Apache Commons. " +
                                       "This will start a background thread to monitor the file directory.  Any changes to the files in the " +
-                                      "directory will be reported to the connector.",
-                              "No action is required unless there are errors that follow indicating that the monitoring failed to start."),
+                                      "directory will be reported to this integration connector.",
+                              "No action is required unless there are errors that follow indicating that the monitoring of the directory failed to start."),
 
     UNEXPECTED_EXC_MONITOR_START("BASIC-FILES-INTEGRATION-CONNECTORS-0006",
                                      OMRSAuditLogRecordSeverity.EXCEPTION,
                                      "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
-                                             "FileAlterationMonitor for directory {2}.  The error message was {3}",
+                                             "FileAlterationMonitor for directory {2} while it was starting the monitoring service.  The error message was {3}",
                                      "The exception is logged and the integration connector continues to synchronize metadata " +
                                              "through the refresh process.",
                                      "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
@@ -88,7 +88,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
     UNEXPECTED_EXC_MONITOR_STOP("BASIC-FILES-INTEGRATION-CONNECTORS-0008",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,
                                  "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
-                                         "FileAlterationMonitor for directory {2}.  The error message was {3}",
+                                         "FileAlterationMonitor for directory {2} while it stopping the monitoring service.  The error message was {3}",
                                  "The exception is logged and the integration connector continues to synchronize metadata " +
                                          "through the refresh process.",
                                  "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
@@ -117,16 +117,17 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                 "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
                                         "DataFolder {2} in the metadata repositories for directory {3}.  The error message was {4}",
                                 "The exception is logged and the integration connector continues to synchronize metadata.",
-                                "Use the message in the unexpected exception to determine the root cause of the error."),
+                                "Use the message in the unexpected exception to determine the root cause of the error and restart " +
+                                        "the connector once it is resolved."),
 
     BAD_FILE_ELEMENT("BASIC-FILES-INTEGRATION-CONNECTORS-0013",
                        OMRSAuditLogRecordSeverity.ERROR,
                        "The {0} integration connector retrieved an incomplete DataFile asset: {1}",
                        "The metadata element for the file that was retrieved from the open metadata repositories has missing " +
                                "information.  This is likely to be a logic error in the Files Integrator OMIS or Data Manager OMAS.",
-                       "Look for errors in the audit logs for the integration daemon where the connector and Files Integrator OMIS are" +
+                       "Look for errors in the audit logs for the integration daemon where the connector and Files Integrator OMIS are " +
                                "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
-                               "ask the Egeria community for help to determine why the element is incomplete."),
+                               "ask the Egeria community for help to determine why the DataFile element is incomplete."),
 
     UNEXPECTED_EXC_DATA_FILE_UPDATE("BASIC-FILES-INTEGRATION-CONNECTORS-0014",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,
