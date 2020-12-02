@@ -119,7 +119,7 @@ public class AssetLineageRestServices {
                 return response;
             }
 
-            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITY_FOUND", entityType, guid));
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("ENTITY_FOUND", entityType, guid));
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
             if (publisher == null) {
                 auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISHER_NOT_AVAILABLE_ERROR.getMessageDefinition());
@@ -175,20 +175,13 @@ public class AssetLineageRestServices {
         String methodName="publishEntityContext";
 
         try {
-
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("ABOUT_TO_PUBLISH", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("BUILDING_CONTEXT", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
             String result =  publishContext(entityDetail, publisher);
             auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("PUBLISHED", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
-
             return result;
-
         } catch (Exception e) {
-
-            if(auditLog!=null) {
-                auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("FAILED_TO_PUBLISH", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
-                auditLog.logException(methodName, AssetLineageAuditCode.ENTITY_ERROR.getMessageDefinition(entityDetail.getType().getTypeDefName(),entityDetail.getGUID()), e);
-            }
-
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("FAILED_TO_PUBLISH", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            auditLog.logException(methodName, AssetLineageAuditCode.ENTITY_ERROR.getMessageDefinition(entityDetail.getType().getTypeDefName(),entityDetail.getGUID()), e);
         }
         return null;
     }
