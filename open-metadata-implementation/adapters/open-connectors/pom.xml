@@ -36,6 +36,7 @@
         <module>event-bus-connectors</module>
         <module>repository-services-connectors</module>
         <module>data-store-connectors</module>
+        <module>integration-connectors</module>
         <module>governance-daemon-connectors</module>
         <module>discovery-service-connectors</module>
         <module>governance-action-connectors</module>
