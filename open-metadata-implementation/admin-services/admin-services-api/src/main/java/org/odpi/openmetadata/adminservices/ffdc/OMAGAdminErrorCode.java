@@ -96,9 +96,9 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     NULL_REPOSITORY_CONFIG(400, "OMAG-ADMIN-400-010",
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
-            "The system is unable to initialize the local server instance because all servers need at least and audit log which is supported by the" +
-                                   " repository services.",
-            "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server" +
+            "The system is unable to initialize the local server instance because all servers need at least and audit log which is supported by the " +
+                                   "repository services.",
+            "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server " +
                                    "is to be a cohort member, then there are choices to also configure the local repository, enterprise repository " +
                                    "services and the cohort services."),
 
@@ -298,6 +298,15 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                           "The {0} Open Metadata View Service (OMVS) has been passed an invalid configuration of {1} in the {2} property.",
                           "The view service has not been passed valid configuration.",
                           "Check whether the view service expects SolutionViewServiceConfiguration or IntegrationViewServiceConfiguration, correct the configuration and restart the server."),
+
+    RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED(400, "OMAG-ADMIN-400-043",
+                        "A retrieve all configurations has been attempted, but operation is not supported.",
+                        "The retrieve all server configurations operation is rejected.",
+                        "Check whether OMAG Server configuration connector supports retrieve all configurations."),
+    UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE(400, "OMAG-ADMIN-400-044",
+                                         "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server atored configurations but an error occurred.",
+                                         "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
+                                         "Check that the OMAG Server configuration connector has been specified correctly."),
 
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",

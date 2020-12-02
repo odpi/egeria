@@ -24,13 +24,15 @@ public class RexRelationshipAndEntitiesDigest {
     // are then used to populate the RexSearchResponse.
 
 
-  // TODO comment out of date
+
     // Maps of instance digests.
     // An instance summary is much smaller than the full instance.
     // The entities map is keyed by entityGUID and each digest part consists of
-    //    { entityGUID, label, gen }   // TODO update comment for mdcName, id and provenance
+    // entityGUID, label, gen, (home) metadataCollectionName, (home) metadataCollectionId, provenance
+    //
     // The relationships map is keyed by relationshipGUID and each digest consists of
-    //    { relationshipGUID, end1GUID, end2GUID, idx, label, gen }  // TODO update comment for mdcName, id and provenance
+    // relationshipGUID, label, end1GUID, end2GUID, idx, gen, (home) metadataCollectionName, (home) metadataCollectionId, provenance
+    //
     // The above value types are described by the RexEntityDigest and RexRelationshipDigest Java classes.
 
     private RexRelationshipDigest   relationshipDigest;

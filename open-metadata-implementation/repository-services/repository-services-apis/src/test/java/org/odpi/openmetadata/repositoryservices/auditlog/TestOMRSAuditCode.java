@@ -19,7 +19,7 @@ public class TestOMRSAuditCode extends AuditLogMessageSetTest
     /**
      * Validated the values of the enum.
      */
-    @Test(enabled=false) public void testAllAuditCodeValues()
+    @Test public void testAllAuditCodeValues()
     {
         for (OMRSAuditCode auditCode : OMRSAuditCode.values())
         {

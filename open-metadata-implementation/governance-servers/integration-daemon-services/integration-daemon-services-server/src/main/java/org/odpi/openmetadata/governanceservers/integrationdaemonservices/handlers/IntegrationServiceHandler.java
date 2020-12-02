@@ -255,12 +255,15 @@ public class IntegrationServiceHandler
         final String actionDescription = "Server shutdown";
 
         /*
-        if a integration has encountered a problem when starting
-        then the connectorHandlers can be null
+        if the server hosting  integration daemon has encountered a problem
+        when starting then the connectorHandlers can be null
          */
-        if( connectorHandlers != null ) {
-            for (IntegrationConnectorHandler connectorHandler : connectorHandlers) {
-                if (connectorHandler != null) {
+        if( connectorHandlers != null )
+        {
+            for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
+            {
+                if (connectorHandler != null)
+                {
                     connectorHandler.shutdown(actionDescription);
                 }
             }

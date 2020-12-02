@@ -17,6 +17,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorExce
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewServiceException;
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
+import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorPlatformsResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorResourceEndpointListResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.handlers.ServerAuthorViewHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.initialization.ServerAuthorViewInstanceHandler;
@@ -66,7 +67,7 @@ public class ServerAuthorViewRESTServices {
 
         try {
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            Map<String, List<ResourceEndpoint>> lists = handler.getResourceEndpoints(userId, methodName);
+            Map<String, List<ResourceEndpoint>> lists = handler.getResourceEndpoints();
             List<ResourceEndpoint> platformList = null;
             if (lists != null) {
                 platformList = lists.get("platformList");
@@ -802,6 +803,39 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         }
+        return response;
+    }
+
+    /**
+     * Get the server configurations associated with the platforms that this view service knows about.
+     * @param userId                  user that is issuing the request
+     * @param serverName              local server name
+     * @return the known platforms, which if active will include he servers that are configured or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or
+     * ServerAuthorViewServiceException The Server Author has detected an error.
+     */
+    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId,String serverName) {
+        String methodName = "getKnownPlatforms";
+
+        ServerAuthorPlatformsResponse response = new ServerAuthorPlatformsResponse();
+
+        try {
+            // get the defined platforms from the config
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            response.setPlatforms(handler.getKnownPlatforms(userId, methodName));
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 }
