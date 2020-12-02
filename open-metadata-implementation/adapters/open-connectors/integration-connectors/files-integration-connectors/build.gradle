@@ -7,6 +7,9 @@
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-api')
+    implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-api')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.slf4j:slf4j-api'
     implementation 'commons-io:commons-io'
     testImplementation project(':open-metadata-test:open-metadata-ut')
