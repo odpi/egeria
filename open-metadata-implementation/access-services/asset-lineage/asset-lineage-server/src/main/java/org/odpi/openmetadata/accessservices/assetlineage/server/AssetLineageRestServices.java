@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
@@ -149,12 +150,17 @@ public class AssetLineageRestServices {
     private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType,
                                                 AssetLineagePublisher publisher, AuditLog auditLog) {
 
-        //TODO: Use custom ForkJoin thread pool
-        List<String> publishedGUIDs = entitiesByType.parallelStream().map(entityDetail ->
-                        publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList());
+        AtomicReference<List<String>> publishedGUIDs = new AtomicReference<>();
+        ForkJoinPool publishEntitiesPool = new ForkJoinPool();
+        publishEntitiesPool.submit(
+                () ->
+                    publishedGUIDs.set(entitiesByType.parallelStream()
+                            .map(entityDetail -> publishEntityContext(publisher, entityDetail, auditLog))
+                            .collect(Collectors.toList())));
 
-        CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
-        return publishedGUIDs;
+        CollectionUtils.filter(publishedGUIDs.get(), PredicateUtils.notNullPredicate());
+
+        return publishedGUIDs.get();
     }
 
     /**
