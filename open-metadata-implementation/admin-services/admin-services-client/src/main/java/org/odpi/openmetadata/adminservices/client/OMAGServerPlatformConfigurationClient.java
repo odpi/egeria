@@ -3,14 +3,18 @@
 
 package org.odpi.openmetadata.adminservices.client;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+
+import java.util.Set;
 
 
 /**
@@ -251,5 +255,27 @@ public class OMAGServerPlatformConfigurationClient
                                                                                    adminUserId);
 
         return restResult.getConnection();
+    }
+
+    /**
+     * Return all the the OMAG Server configurations that are stored on this platform
+     *
+     * @return the OMAG Server configurations that are stored on this platform
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public Set<OMAGServerConfig> getAllServerConfigurations() throws OMAGNotAuthorizedException,
+                                                                   OMAGConfigurationErrorException,
+                                                                   OMAGInvalidParameterException
+    {
+        final String methodName  = "getPlatformServerConfigs";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/configurations";
+
+        OMAGServerConfigsResponse restResult = restClient.callGetAllServerConfigurationsRESTCall(methodName,
+                                                                                                 serverPlatformRootURL + urlTemplate,
+                                                                                                 adminUserId);
+
+        return restResult.getOMAGServerConfigs();
     }
 }
