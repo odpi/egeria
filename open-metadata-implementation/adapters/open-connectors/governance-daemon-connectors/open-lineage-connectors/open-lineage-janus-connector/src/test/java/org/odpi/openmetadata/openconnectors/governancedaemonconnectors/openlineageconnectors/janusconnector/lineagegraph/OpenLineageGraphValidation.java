@@ -8,9 +8,10 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraphFactory;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +30,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_QUALIFIED_NAME;
@@ -99,7 +104,7 @@ public class OpenLineageGraphValidation {
         REQUIRED_JSON_FIELDS.add("columns");
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void verifyInputFolderAndJsonFiles(){
         File inputFolder = new File(Objects.requireNonNull(
                 OpenLineageGraphValidation.class.getClassLoader().getResource(INPUT_FOLDER)).getFile());
@@ -157,6 +162,10 @@ public class OpenLineageGraphValidation {
         return jsonObject;
     }
 
+    private static Stream<Arguments> getInputFiles(){
+        return INPUT_FILES.stream().map(Arguments::of).collect(Collectors.toList()).stream();
+    }
+
     private final List<String> processes = new ArrayList<>();
     private final List<String> inTables = new ArrayList<>();
     private final List<String> outTables = new ArrayList<>();
@@ -164,22 +173,15 @@ public class OpenLineageGraphValidation {
 
     private GraphTraversalSource g;
 
-    @Ignore
-    @Test
-    public void validateGraph() throws Exception{
+    public void before(File inputFile) throws Exception{
+        JsonObject jsonObject = readJsonObjectFromFile(inputFile);
+        fillTargets(jsonObject);
+        initGraph(jsonObject.getString("graphConfigFile"));
+    }
 
-        for(File file : INPUT_FILES){
-            JsonObject jsonObject = readJsonObjectFromFile(file);
-
-            fillTargets(jsonObject);
-
-            initGraph(jsonObject.getString("graphConfigFile"));
-            validate();
-            closeGraph();
-
-            emptyTargets();
-        }
-
+    public void after() throws Exception{
+        closeGraph();
+        emptyTargets();
     }
 
     private void fillTargets(JsonObject jsonObject) {
@@ -224,7 +226,11 @@ public class OpenLineageGraphValidation {
         g.getGraph().close();
     }
 
-    private void validate(){
+    @ParameterizedTest
+    @MethodSource("getInputFiles")
+    public void validate(File inputFile) throws Exception {
+        before(inputFile);
+
         processes.forEach(this::validateProcess);
         log.info("Validated " + processes.size() + " processes");
 
@@ -236,13 +242,15 @@ public class OpenLineageGraphValidation {
 
         columns.forEach(this::validateColumns);
         log.info("Validated " + columns.size() + " in-columns");
+
+        after();
     }
 
     private void validateProcess(String processQualifiedName){
         GraphTraversal<Vertex, Vertex> processTraversal = g.V().has(VERTEX_QUALIFIED_NAME, processQualifiedName)
                 .has(PROPERTY_KEY_LABEL, PROCESS);
 
-        assertTrue("Process not found by qualified name " + processQualifiedName, processTraversal.hasNext());
+        assertTrue(processTraversal.hasNext(), "Process not found by qualified name " + processQualifiedName);
         Vertex processAsVertex = processTraversal.next();
 
         boolean processIsOutput = g.V(processAsVertex.id()).in(TABLE_DATA_FLOW)
@@ -253,8 +261,8 @@ public class OpenLineageGraphValidation {
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE),
                     __.has(PROPERTY_KEY_LABEL, DATA_FILE)).hasNext();
 
-        assertTrue( "Missing connection: " + (processIsOutput? "" : "(process is not output) " )
-                + (processIsInput? "" : "(process is not input)" ), processIsInput && processIsOutput) ;
+        assertAll(() -> assertThat("Missing connection: " + (processIsOutput? "" : "(process is not output) " ) +
+                        (processIsInput? "" : "(process is not input)" ), processIsInput && processIsOutput));
 
         log.debug("Validated process with qualifiedName " + processQualifiedName);
     }
@@ -264,21 +272,23 @@ public class OpenLineageGraphValidation {
                 .or(__.has(PROPERTY_KEY_LABEL, DATA_FILE),
                     __.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE));
 
-        assertTrue("Table not found by qualifiedName " + tableQualifiedName, tableTraversal.hasNext() );
+        assertTrue(tableTraversal.hasNext(), "Table not found by qualifiedName " + tableQualifiedName);
         Vertex tableAsVertex = tableTraversal.next();
 
         boolean tableIsInput = g.V(tableAsVertex.id()).out(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
         boolean tableIsOutput = g.V(tableAsVertex.id()).in(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
 
         if( tableIsInput && !tableIsOutput ){
-            assertTrue("Table is not input for process. Required to be only input", processHasOutput(tableAsVertex.id()));
+            assertAll(() -> assertThat("Table is not input for process. Required to be only input",
+                    processHasOutput(tableAsVertex.id())));
         }
         if( !tableIsInput && tableIsOutput ){
-            assertTrue("Table is not output for process. Required to be only output", processHasInput(tableAsVertex.id()));
+            assertAll(() -> assertThat("Table is not output for process. Required to be only output",
+                    processHasInput(tableAsVertex.id())));
         }
         if(tableIsInput && tableIsOutput){
-            assertTrue("Table is not input and output for processes. Required to be both",
-                    processHasOutput(tableAsVertex.id()) && processHasInput(tableAsVertex.id()));
+            assertAll(() -> assertThat("Table is not input and output for processes. Required to be both",
+                    processHasOutput(tableAsVertex.id()) && processHasInput(tableAsVertex.id())));
         }
 
         log.debug("Validated table with qualifiedName " + tableQualifiedName);
@@ -297,50 +307,57 @@ public class OpenLineageGraphValidation {
     }
 
     private void validateColumns(String inputColumnQualifiedName, List<String> outputColumnsQualifiedNames) {
-        BiFunction<GraphTraversalSource, Vertex, Boolean> inputColumn =
+        BiFunction<GraphTraversalSource, Vertex, Boolean> isInputColumn =
                 (g, v) -> g.V(v.id()).out(COLUMN_DATA_FLOW).hasLabel("subProcess").hasNext();
-        validateColumn(inputColumnQualifiedName, inputColumn);
+        validateColumn(inputColumnQualifiedName, isInputColumn);
 
-        BiFunction<GraphTraversalSource, Vertex, Boolean> outputColumn =
+        BiFunction<GraphTraversalSource, Vertex, Boolean> isOutputColumn =
                 (g, v) -> g.V(v.id()).in(COLUMN_DATA_FLOW).hasLabel("subProcess").hasNext();
         outputColumnsQualifiedNames.forEach(
                 qn -> {
-                    this.validateColumn(qn, outputColumn);
+                    this.validateColumn(qn, isOutputColumn);
                     this.validateSubprocess(inputColumnQualifiedName, qn);
                 });
     }
 
     private void validateSubprocess(String inputColumnQualifiedName, String outputColumnQualifiedName){
-        GraphTraversal<Vertex, Vertex> subprocessTraversal = g.V().has(VERTEX_QUALIFIED_NAME, outputColumnQualifiedName).in(COLUMN_DATA_FLOW);
+        GraphTraversal<Vertex, Vertex> subprocessTraversal =
+                g.V().has(VERTEX_QUALIFIED_NAME, outputColumnQualifiedName).in(COLUMN_DATA_FLOW);
 
-        assertTrue("Subprocess not found of output column with qualified name " + outputColumnQualifiedName, subprocessTraversal.hasNext());
-        Vertex subprocess = subprocessTraversal.next();
+        assertTrue(subprocessTraversal.hasNext(),
+                "Subprocess not found of output column with qualified name " + outputColumnQualifiedName);
+        Vertex subprocessAsVertex = subprocessTraversal.next();
 
-        boolean subprocessIsOutput = g.V(subprocess.id()).in(COLUMN_DATA_FLOW)
+        boolean subprocessIsOutput = g.V(subprocessAsVertex.id()).in(COLUMN_DATA_FLOW)
                             .or(__.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN),
                                 __.has(PROPERTY_KEY_LABEL, RELATIONAL_COLUMN)).hasNext();
-        boolean subprocessIsInput = g.V(subprocess.id()).out(COLUMN_DATA_FLOW)
+        boolean subprocessIsInput = g.V(subprocessAsVertex.id()).out(COLUMN_DATA_FLOW)
                             .or(__.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN),
                                 __.has(PROPERTY_KEY_LABEL, RELATIONAL_COLUMN)).hasNext();
 
-        assertTrue( "Missing connection: " + (subprocessIsOutput? "" : "(subprocess is not output) " )
-        + (subprocessIsInput? "" : "(subprocess is not input)"), subprocessIsInput && subprocessIsOutput);
+        assertAll(() -> assertThat(
+                "Missing connection: " + (subprocessIsOutput ? "" : "(subprocess is not output) " ) +
+                        (subprocessIsInput? "" : "(subprocess is not input)"),
+                subprocessIsInput && subprocessIsOutput) );
     }
 
-    private void validateColumn(String columnQualifiedName, BiFunction<GraphTraversalSource, Vertex, Boolean> isInputOrOutputFunction){
+    private void validateColumn(String columnQualifiedName,
+                                BiFunction<GraphTraversalSource, Vertex, Boolean> isInputOrOutputColumnFunction){
         GraphTraversal<Vertex, Vertex> columnTraversal = g.V().has(VERTEX_QUALIFIED_NAME, columnQualifiedName)
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_COLUMN),
                         __.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN));
 
-        assertTrue("Column not found by qualifiedName " + columnQualifiedName, columnTraversal.hasNext());
-        Vertex inColumnAsVertex= columnTraversal.next();
+        assertTrue(columnTraversal.hasNext(), "Column not found by qualifiedName " + columnQualifiedName);
+        Vertex columnAsVertex= columnTraversal.next();
 
-        if( !g.V(inColumnAsVertex.id()).has(PROPERTY_KEY_LABEL, TABULAR_COLUMN).in(ATTRIBUTE_FOR_SCHEMA)
+        if( !g.V(columnAsVertex.id()).has(PROPERTY_KEY_LABEL, TABULAR_COLUMN).in(ATTRIBUTE_FOR_SCHEMA)
                 .in("AssetSchemaType").hasLabel(DATA_FILE).hasNext() ){
             // tabular columns that do not reach a DataFile are not eligible for validation
             return;
         }
-        assertTrue("Provided column must be input or output, although required",isInputOrOutputFunction.apply(g, inColumnAsVertex));
+
+        assertAll(() ->  assertThat("Provided column must be input or output",
+                isInputOrOutputColumnFunction.apply(g, columnAsVertex)));
 
         log.debug("Validated column with qualifiedName " + columnQualifiedName);
     }

@@ -163,6 +163,7 @@
         <!-- Versions of dependent libraries -->
         <junit.platform.version>1.7.0</junit.platform.version>
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.1</junit.version>
         <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
         <mockito.version>3.6.28</mockito.version>
@@ -661,6 +662,13 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-transport</artifactId>
                 <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
