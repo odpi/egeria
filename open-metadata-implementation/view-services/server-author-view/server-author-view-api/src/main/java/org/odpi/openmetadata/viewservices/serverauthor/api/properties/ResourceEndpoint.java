@@ -8,12 +8,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+/**
+ * Resource endpoint defines a resource for the Server author.
+ */
 public class ResourceEndpoint {
 
     private static final long    serialVersionUID = 1L;
@@ -165,5 +170,46 @@ public class ResourceEndpoint {
     public void setServerInstanceName(String serverInstanceName) {
         this.serverInstanceName = serverInstanceName;
     }
+    @Override
+    public String toString() {
+        return toString(new StringBuilder()).toString();
+    }
 
+    public StringBuilder toString(StringBuilder sb) {
+        if (sb == null) {
+            sb = new StringBuilder();
+        }
+        sb.append("resourceEndPoint=");
+        sb.append("{");
+        sb.append("resourceCategory=").append(this.resourceCategory).append(",");
+        sb.append("resourceDescription=").append(this.resourceDescription).append(",");
+        sb.append("resourceRootURL=").append(this.resourceRootURL).append(",");
+        sb.append("serverName=").append(this.serverName).append(",");
+        sb.append("platformName=").append(this.platformName).append(",");
+        sb.append("serverInstanceName=").append(this.serverInstanceName).append(",");
+        sb.append('}');
+        return sb;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ResourceEndpoint resourceEndPoint = (ResourceEndpoint) o;
+
+        return Objects.equals(resourceCategory, resourceEndPoint.resourceCategory) &&
+                Objects.equals(resourceDescription, resourceEndPoint.resourceDescription) &&
+                Objects.equals(resourceRootURL, resourceEndPoint.resourceRootURL) &&
+                Objects.equals(serverName, resourceEndPoint.serverName) &&
+                Objects.equals(platformName, resourceEndPoint.platformName) &&
+                Objects.equals(serverName, resourceEndPoint.resourceRootURL) &&
+                Objects.equals(serverInstanceName, resourceEndPoint.serverInstanceName)
+                ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(),resourceCategory, resourceDescription, resourceRootURL, platformName, serverName, serverInstanceName );
+    }
 }
