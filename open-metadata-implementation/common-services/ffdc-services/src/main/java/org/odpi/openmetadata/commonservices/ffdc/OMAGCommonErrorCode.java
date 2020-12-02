@@ -168,11 +168,10 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                        "error in the way that the anchor GUID was set up in the element.  If this is the case, it is necessary to trace " +
                        "back to find how the element was created and then look at where the error was introduced."),
 
-    NOT_ANCHOR_ELEMENT(400, "OMAG-COMMON-400-026",
+    NOT_ANCHOR_ELEMENT(400, "OMAG-COMMON-400-027",
                     "The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} is unable to proceed",
                     "The system is unable to process the request because the requested object is not an anchor entity.",
-                    "Correct the code in the caller to issue the request against this element's anchor object, such as its an asset or " +
-                            "."),
+                    "Correct the code in the caller to issue the request against this element's anchor object and retry."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
