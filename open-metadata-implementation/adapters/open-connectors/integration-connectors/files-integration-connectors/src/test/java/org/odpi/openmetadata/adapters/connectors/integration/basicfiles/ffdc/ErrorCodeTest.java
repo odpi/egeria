@@ -1,8 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc;
+package org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc;
 
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.test.unittest.utilities.ExceptionMessageSetTest;
 import org.testng.annotations.Test;
 

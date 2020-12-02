@@ -74,7 +74,8 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                      "The exception is logged and the integration connector continues to synchronize metadata " +
                                              "through the refresh process.",
                                      "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
-                                             "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
+                                             "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector. " +
+                                             "Then validate that the monitoring starts successfully."),
 
     DIRECTORY_MONITORING_STOPPING("BASIC-FILES-INTEGRATION-CONNECTORS-0007",
                                   OMRSAuditLogRecordSeverity.INFO,
@@ -257,7 +258,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
     @Override
     public String toString()
     {
-        return "GenericHandlersAuditCode{" +
+        return "BasicFilesIntegrationConnectorsAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

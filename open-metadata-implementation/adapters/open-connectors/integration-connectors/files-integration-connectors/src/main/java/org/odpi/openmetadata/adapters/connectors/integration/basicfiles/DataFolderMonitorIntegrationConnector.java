@@ -119,10 +119,10 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
                     else
                     {
                         auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DIRECTORY_MONITORING_STOPPING.getMessageDefinition(connectorName,
-                                                                                                                                        fileFolderQualifiedName,
-                                                                                                                                        modifiedTime.toString(),
-                                                                                                                                        fileChanged.getAbsolutePath()));
+                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(connectorName,
+                                                                                                                                       fileFolderQualifiedName,
+                                                                                                                                       modifiedTime.toString(),
+                                                                                                                                       fileChanged.getAbsolutePath()));
                     }
                 }
             }
