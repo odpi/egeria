@@ -2686,7 +2686,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Archive a DataFile asset description.  This adds the ArchivedElement classification to the DataFile entity
+     * Archive a DataFile asset description.  This adds the Memento classification to the DataFile entity
      * and removes the attached connection (if any).
      *
      * @param userId calling user (assumed to be the owner)
@@ -2726,7 +2726,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                             dataFileGUID,
                                             dataFileGUIDParameterName,
                                             OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                            builder.getArchivedElementProperties(archiveDate,
+                                            builder.getMementoProperties(archiveDate,
                                                                                  userId,
                                                                                  archiveProcess,
                                                                                  archiveProperties,
@@ -2764,7 +2764,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Archive a DataFolder asset description.  This adds the ArchivedElement classification to the DataFolder entity
+     * Archive a DataFolder asset description.  This adds the Memento classification to the DataFolder entity
      * and removes the attached connection (if any).
      *
      * @param userId calling user (assumed to be the owner)
@@ -2804,7 +2804,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                             dataFolderGUID,
                                             dataFolderGUIDParameterName,
                                             OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
-                                            builder.getArchivedElementProperties(archiveDate,
+                                            builder.getMementoProperties(archiveDate,
                                                                                  userId,
                                                                                  archiveProcess,
                                                                                  archiveProperties,

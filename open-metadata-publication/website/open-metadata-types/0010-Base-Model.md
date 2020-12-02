@@ -48,7 +48,7 @@ Currently there is support for objects uniquely "owned" an asset to store the gu
 for a schema element to point to the schema type at the root of the schema object and a comment
 to store the guid at the start of a comment thread.
 
-Finally, the **ArchivedElement** classification identifies that the Referenceable
+Finally, the **Memento** classification identifies that the Referenceable
 refers to a real-world asset/artifact that has either been deleted or archived offline.  The metadata
 element has been retained to show its role in the lineage of other
 assets/artifacts.  The properties in this classification identifies

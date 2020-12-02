@@ -156,7 +156,7 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
-        update0010ManagingArchiving();
+        update0010ManagingMemento();
     }
 
 
@@ -165,17 +165,17 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * 0010 Add the ArchivedElement classification
+     * 0010 Add the Memento classification
      */
-    private void update0010ManagingArchiving()
+    private void update0010ManagingMemento()
     {
-        this.archiveBuilder.addClassificationDef(addArchivedElementClassification());
+        this.archiveBuilder.addClassificationDef(addMementoClassification());
     }
 
-    private ClassificationDef addArchivedElementClassification()
+    private ClassificationDef addMementoClassification()
     {
         final String guid            = "ecdcd472-6701-4303-8dec-267bcb54feb9";
-        final String name            = "ArchivedElement";
+        final String name            = "Memento";
         final String description     = "An element whose real-world counterpart has been deleted or moved to offline archived.";
         final String descriptionGUID = null;
 

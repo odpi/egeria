@@ -104,7 +104,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                        OMRSAuditLogRecordSeverity.INFO,
                        "The {0} integration connector has updated the last updated time in the DataFolder {1} to {2}",
                        "The connector updated the DataFolder as part of its refresh processing.",
-                       "No action is required.  This message is to record the reason for the update."),
+                       "No action is required.  This message is to record the reason for the update to the DataFolder."),
 
     DATA_FOLDER_UPDATED_FOR_FILE("BASIC-FILES-INTEGRATION-CONNECTORS-0011",
                         OMRSAuditLogRecordSeverity.INFO,

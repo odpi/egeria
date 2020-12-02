@@ -329,7 +329,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
 
     /**
-     * Set up the ArchivedElement classification.
+     * Set up the Memento classification.
      *
      * @param userId calling user
      * @param archiveDate timestamp that the archive either occurred or was detected
@@ -339,12 +339,12 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName calling method
      * @throws InvalidParameterException Template classification not available in the repositories
      */
-    public void setArchivedElement(String              userId,
-                                   Date                archiveDate,
-                                   String              archiveUser,
-                                   String              archiveProcess,
-                                   Map<String, String> archiveProperties,
-                                   String              methodName) throws InvalidParameterException
+    public void setMemento(String              userId,
+                           Date                archiveDate,
+                           String              archiveUser,
+                           String              archiveProcess,
+                           Map<String, String> archiveProperties,
+                           String              methodName) throws InvalidParameterException
     {
         try
         {
@@ -353,11 +353,11 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.ARCHIVED_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
-                                                                                  getArchivedElementProperties(archiveDate,
+                                                                                  getMementoProperties(archiveDate,
                                                                                                                archiveUser,
                                                                                                                archiveProcess,
                                                                                                                archiveProperties,
@@ -366,7 +366,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ARCHIVED_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME);
         }
     }
 
@@ -381,13 +381,13 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    InstanceProperties getArchivedElementProperties(Date                archiveDate,
-                                                    String              archiveUser,
-                                                    String              archiveProcess,
-                                                    Map<String, String> archiveProperties,
-                                                    String              methodName)
+    InstanceProperties getMementoProperties(Date                archiveDate,
+                                            String              archiveUser,
+                                            String              archiveProcess,
+                                            Map<String, String> archiveProperties,
+                                            String              methodName)
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
         if (archiveDate != null)
         {

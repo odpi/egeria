@@ -4371,14 +4371,14 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Classify as an ArchivedElement any entity if it is anchored to the anchor entity.
+     * Classify as an Memento any entity if it is anchored to the anchor entity.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param anchorEntity entity anchor to match against
      * @param potentialAnchoredEntity entity to validate
-     * @param classificationOriginGUID original entity that the ArchivedElement classification  was attached to
+     * @param classificationOriginGUID original entity that the Memento classification  was attached to
      * @param classificationProperties properties for the classification
      * @param methodName calling method
      * @throws InvalidParameterException problem with the parameters
@@ -4537,7 +4537,7 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
         {
-            final String actionDescriptionTemplate = "Classifying as ArchivedElement %s %s";
+            final String actionDescriptionTemplate = "Classifying as Memento %s %s";
 
             String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
             int    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL;
@@ -4545,7 +4545,7 @@ public class OpenMetadataAPIGenericHandler<B>
             this.addLatestChangeToAnchor(anchorEntity,
                                          latestChangeTarget,
                                          OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                         OpenMetadataAPIMapper.ARCHIVED_CLASSIFICATION_TYPE_NAME,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
                                          entityGUID,
                                          entityTypeName,
                                          null,
@@ -4631,8 +4631,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                          null,
                                          null,
                                          entityGUID,
-                                         OpenMetadataAPIMapper.ARCHIVED_CLASSIFICATION_TYPE_GUID,
-                                         OpenMetadataAPIMapper.ARCHIVED_CLASSIFICATION_TYPE_NAME,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_GUID,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
                                          classificationOrigin,
                                          classificationOriginGUID,
                                          classificationProperties,

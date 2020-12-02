@@ -89,12 +89,12 @@ public class OpenMetadataAPIMapper
     public static final String TEMPLATE_DESCRIPTION_PROPERTY_NAME                = "description";
     public static final String TEMPLATE_ADDITIONAL_PROPERTIES_PROPERTY_NAME      = "additionalProperties";
 
-    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_GUID  = "87b7371e-e311-460f-8849-08646d0d6ad3";   /* from Area 0 */
-    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_NAME  = "SourcedFrom";
+    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_GUID               = "87b7371e-e311-460f-8849-08646d0d6ad3";   /* from Area 0 */
+    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_NAME               = "SourcedFrom";
     /* End1 = NewEntity; End 2 = Template */
 
-    public static final String ARCHIVED_CLASSIFICATION_TYPE_GUID                 = "ecdcd472-6701-4303-8dec-267bcb54feb9";
-    public static final String ARCHIVED_CLASSIFICATION_TYPE_NAME                 = "ArchivedElement";
+    public static final String MEMENTO_CLASSIFICATION_TYPE_GUID                  = "ecdcd472-6701-4303-8dec-267bcb54feb9";
+    public static final String MEMENTO_CLASSIFICATION_TYPE_NAME                  = "Memento";
     public static final String ARCHIVE_DATE_PROPERTY_NAME                        = "archivedDate";
     public static final String ARCHIVE_USER_PROPERTY_NAME                        = "archivedUser";
     public static final String ARCHIVE_PROCESS_PROPERTY_NAME                     = "archivedProcess";
