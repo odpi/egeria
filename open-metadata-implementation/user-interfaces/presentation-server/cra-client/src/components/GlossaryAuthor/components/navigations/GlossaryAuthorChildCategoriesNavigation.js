@@ -1,55 +1,48 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
-import Add32 from "../../../images/Egeria_add_32";
-import Delete32 from "../../../images/Egeria_delete_32";
-import Edit32 from "../../../images/Egeria_edit_32";
-import Term32 from "../../../images/Egeria_term_32";
-import ParentChild32 from "../../../images/Egeria_parent_child_32";
-import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
+import { IdentificationContext } from "../../../../contexts/IdentificationContext";
+
+import Add32 from "../../../../images/Egeria_add_32";
+import Delete32 from "../../../../images/Egeria_delete_32";
+import Edit32 from "../../../../images/Egeria_edit_32";
+import Term32 from "../../../../images/Egeria_term_32";
+import ParentChild32 from "../../../../images/Egeria_parent_child_32";
+import { LocalNodeCard, NodeCardSection } from "../NodeCard/NodeCard";
 import { withRouter } from "react-router-dom";
 import { Pagination, Toggle } from "carbon-components-react";
-import NodeTableView from "./views/NodeTableView";
+import NodeTableView from "../views/NodeTableView";
 
 //import GlossaryImage from "../../../images/Egeria_glossary_32";
-import getNodeType from "./properties/NodeTypes.js";
-import { issueRestGet, issueRestDelete } from "./RestCaller";
+import getNodeType from "../properties/NodeTypes.js";
+import { issueRestGet, issueRestDelete } from "../RestCaller";
 
 import { Link } from "react-router-dom";
 
-const GlossaryAuthorCategoriesNavigation = (props) => {
+const GlossaryAuthorChildCategoriesNavigation = (props) => {
+  const identificationContext = useContext(IdentificationContext);
   const [nodes, setNodes] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
   const [selectedNodeGuid, setSelectedNodeGuid] = useState();
-  const [onlyTop, setOnlyTop] = useState(false);
   const [completeResults, setCompleteResults] = useState([]);
   const [isCardView, setIsCardView] = useState(true);
   const [total, setTotal] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  console.log("GlossaryAuthorCategoriesNavigation " + props);
+  console.log("GlossaryAuthorChildCategoriesNavigation " + props);
 
-  const nodeType = getNodeType("category");
+  const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), "category");
   useEffect(() => {
     getChildren();
-  }, [selectedNodeGuid, onlyTop]);
+  }, [selectedNodeGuid]);
 
   const getChildren = () => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(props.getCategoriesURL  + "?onlyTop="+onlyTop);
-    issueRestGet(url, onSuccessfulGetChildren, onErrorGetChildren);
+    issueRestGet(encodeURI(props.getCategoriesURL), onSuccessfulGetChildren, onErrorGetChildren);
   };
 
-  const onToggleTop = () => {
-    console.log("onToggleTop");
-    if (onlyTop) {
-      setOnlyTop(false);
-    } else {
-      setOnlyTop(true);
-    }
-  };
   const paginationProps = () => ({
     disabled: false,
     page: pageNumber,
@@ -98,10 +91,11 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
       );
       slicedResults.map(function (row) {
         row.id = row.systemAttributes.guid;
-        if (selectedNodeGuid && selectedNodeGuid == row.id) {
+        if (selectedNodeGuid && selectedNodeGuid === row.id) {
           row.isSelected = true;
           selectedInResults = true;
         }
+        return row;
       });
       setNodes(slicedResults);
     } else {
@@ -133,7 +127,7 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
    * @param {*} glossary
    */
   const deleteIfSelected = (glossary) => {
-    if (glossary.systemAttributes.guid == selectedNodeGuid) {
+    if (glossary.systemAttributes.guid === selectedNodeGuid) {
       const guid = selectedNodeGuid;
       const url = nodeType.url + "/" + guid;
       issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
@@ -172,7 +166,7 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
     return props.match.url + "/categories/edit-category/" + selectedNodeGuid;
   }
   const isSelected = (nodeGuid) => {
-    return nodeGuid == selectedNodeGuid;
+    return nodeGuid === selectedNodeGuid;
   };
   const setSelected = (nodeGuid) => {
     setSelectedNodeGuid(nodeGuid);
@@ -200,14 +194,6 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
             </div>
           </article>
         </NodeCardSection>
-        <Toggle
-          aria-label="topCategoryToggle"
-          defaultToggled
-          labelA="All Categories"
-          labelB="Top Categories"
-          id="category-filter-toggle"
-          onToggle={onToggleTop}
-        />
         <NodeCardSection className="landing-page__r3">
           <Toggle
             aria-label="nodeCardTableToggle"
@@ -244,7 +230,7 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
             setSelected={setSelected}
           />
         )}
-        {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}
+        {nodes.length === 0 && <div>No {nodeType.plural} found!</div>}
         {nodes.length > 0 && (
           <div className="search-item">
             <Pagination {...paginationProps()} />
@@ -254,4 +240,4 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
     </div>
   );
 };
-export default withRouter(GlossaryAuthorCategoriesNavigation);
+export default withRouter(GlossaryAuthorChildCategoriesNavigation);

@@ -1,30 +1,32 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   ProgressIndicator,
   ProgressStep,
   Button,
 } from "carbon-components-react";
-import StartingNodeNavigation from "./StartingNodeNavigation";
-import CreateNode from "./CreateNode";
-import getNodeType from "./properties/NodeTypes.js";
+import StartingNodeNavigation from "../navigations/StartingNodeNavigation";
+import CreateNode from "../create/CreateNode";
+import getNodeType from "../properties/NodeTypes.js";
+import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 
 export default function CreateNodeWizard(props) {
+  const identificationContext = useContext(IdentificationContext);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [glossaryGuid, setGlossaryGuid] = useState();
   const [nodeCreated, setNodeCreated] = useState();
   console.log("CreateNodeWizard");
-  const nodeType = getNodeType(props.nodeTypeName);
+  const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), props.nodeTypeName);
   const handleChoseGlossaryOnClick = (e) => {
     e.preventDefault();
-    if (currentStepIndex == 0) {
+    if (currentStepIndex === 0) {
       setCurrentStepIndex(1);
     }
   };
   const handleReChooseGlossaryOnClick = (e) => {
     e.preventDefault();
-    if (currentStepIndex == 1) {
+    if (currentStepIndex === 1) {
       setCurrentStepIndex(0);
     }
   };
@@ -75,7 +77,7 @@ export default function CreateNodeWizard(props) {
         />
       </ProgressIndicator>
       <div>
-        {currentStepIndex == 0 && (
+        {currentStepIndex === 0 && (
           <Button
             kind="secondary"
             onClick={handleChoseGlossaryOnClick}
@@ -84,17 +86,17 @@ export default function CreateNodeWizard(props) {
             Next
           </Button>
         )}
-        {currentStepIndex == 0 && !nodeCreated && (
+        {currentStepIndex  ===  0 && !nodeCreated && (
           <h3 className="create-wizard-page-title">{step1Title()}</h3>
         )}
-        {currentStepIndex == 0 && (
+        {currentStepIndex === 0 && (
           <StartingNodeNavigation
             match={props.match}
             nodeTypeName="glossary"
             onSelectCallback={onGlossarySelect}
           />
         )}
-        {currentStepIndex == 1 && !nodeCreated && (
+        {currentStepIndex === 1 && !nodeCreated && (
           <div>
             <Button kind="secondary" onClick={handleReChooseGlossaryOnClick}>
               Previous
@@ -102,7 +104,7 @@ export default function CreateNodeWizard(props) {
              <h3 className="create-wizard-page-title">{step2Title()}</h3>
           </div>
         )}
-        {currentStepIndex == 1 && (
+        {currentStepIndex === 1 && (
           <div>
             <CreateNode
               currentNodeType={nodeType}

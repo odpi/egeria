@@ -6,7 +6,7 @@ import Notification20 from "@carbon/icons-react/lib/notification/20";
 import AppSwitcher20 from "@carbon/icons-react/lib/app-switcher/20";
 import HeaderContainer from "carbon-components-react/lib/components/UIShell/HeaderContainer";
 import { Content } from "carbon-components-react/lib/components/UIShell";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import Egeriawhite110 from "./images/Egeria_logo_white_110";
 import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";

@@ -17,7 +17,7 @@ import {
   TableBody,
 } from "carbon-components-react";
 import Info16 from "@carbon/icons-react/lib/information/16";
-import { issueRestCreate } from "./RestCaller";
+import { issueRestCreate } from "../RestCaller";
 import { useHistory } from "react-router-dom";
 
 export default function CreateNode(props) {
@@ -59,7 +59,7 @@ export default function CreateNode(props) {
   const onSuccessfulCreate = (json) => {
     setRestCallInProgress(false);
     console.log("onSuccessfulCreate");
-    if (json.result.length == 1) {
+    if (json.result.length === 1) {
       const node = json.result[0];
       setCreatedNode(node);
       if (props.onCreateCallback) {
@@ -118,20 +118,20 @@ export default function CreateNode(props) {
 
     for (var prop in createdNode) {
       if (
-        prop != "systemAttributes" &&
-        prop != "glossary" &&
-        prop != "classifications" &&
-        prop != "class"
+        prop !== "systemAttributes" &&
+        prop !== "glossary" &&
+        prop !== "classifications" &&
+        prop !== "class"
       ) {
         let row = {};
         row.id = prop;
         row.attrName = prop;
         // if we know about the attribute then use the label.
-        if (prop == "nodeType") {
+        if (prop === "nodeType") {
           row.attrName = "Node Type";
         } else {
           for (var i = 0; i < attributes.length; i++) {
-            if (attributes[i].key == prop) {
+            if (attributes[i].key === prop) {
               row.attrName = attributes[i].label;
             }
           }
@@ -181,7 +181,7 @@ export default function CreateNode(props) {
           withOverlay={true}
         />
       )}
-      {!restCallInProgress && createdNode != undefined && (
+      {!restCallInProgress && createdNode !== undefined && (
         <div>
           <DataTable
             isSortable
@@ -285,7 +285,7 @@ export default function CreateNode(props) {
         </div>
       )}
 
-      {!restCallInProgress && createdNode == undefined && (
+      {!restCallInProgress && createdNode === undefined && (
         <div>
           <form>
             <div>
@@ -297,7 +297,7 @@ export default function CreateNode(props) {
             </div>
 
             {props.currentNodeType &&
-              createdNode == undefined &&
+              createdNode === undefined &&
               props.currentNodeType.attributes.map((item) => {
                 return (
                   <div className="bx--form-item" key={item.key}>

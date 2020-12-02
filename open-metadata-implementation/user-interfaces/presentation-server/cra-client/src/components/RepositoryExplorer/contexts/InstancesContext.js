@@ -531,7 +531,6 @@ const InstancesContextProvider = (props) => {
         const genId            = guidToGenId[entityGUID];
         const gen              = gens[genId-1];
         const entityDigest     = gen.entities[entityGUID];
-        const home             = entityDigest.metadataCollectionName;
         const provenance       = entityDigest.provenance;
         const serverName       = gen.serverName;
         const platformName     = gen.platformName;
@@ -635,7 +634,6 @@ const InstancesContextProvider = (props) => {
         const genId              = guidToGenId[relationshipGUID];
         const gen                = gens[genId-1];
         const relationshipDigest = gen.relationships[relationshipGUID];
-        const home               = relationshipDigest.metadataCollectionName;
         const provenance         = relationshipDigest.provenance;
         const serverName         = gen.serverName;
         const platformName       = gen.platformName;
@@ -1120,7 +1118,7 @@ const InstancesContextProvider = (props) => {
              */
             querySummary        = querySummary.concat(" Entity Type Filters: ");
             var entityTypeNames = genContent.entityTypeNames;
-            if (entityTypeNames != undefined && entityTypeNames != null) {
+            if (entityTypeNames !== undefined && entityTypeNames !== null) {
               let first = true;
               entityTypeNames.forEach(function(etn){
                 if (first) {
@@ -1141,7 +1139,7 @@ const InstancesContextProvider = (props) => {
            */
           querySummary = querySummary.concat(" Relationship Type Filters: ");
           var relationshipTypeNames = genContent.relationshipTypeNames;
-          if (relationshipTypeNames != undefined && relationshipTypeNames != null) {
+          if (relationshipTypeNames !== undefined && relationshipTypeNames !== null) {
             let first = true;
             relationshipTypeNames.forEach(function(rtn){
               if (first) {
@@ -1161,7 +1159,7 @@ const InstancesContextProvider = (props) => {
            */
           querySummary = querySummary.concat(" Classification Filters: ");
           var ClassificationNames = genContent.ClassificationNames;
-          if (ClassificationNames != undefined && ClassificationNames != null) {
+          if (ClassificationNames !== undefined && ClassificationNames !== null) {
             let first = true;
             ClassificationNames.forEach(function(rtn){
               if (first) {

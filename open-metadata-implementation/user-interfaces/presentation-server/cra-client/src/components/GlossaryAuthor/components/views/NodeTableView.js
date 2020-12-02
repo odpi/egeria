@@ -87,9 +87,9 @@ export default function NodeTableView({nodeType, nodes, setSelected}) {
     let items = [];
     nodeType.attributes.map(function (attribute) {
       if (
-        attribute.key != "name" &&
-        attribute.key != "qualifiedName" &&
-        attribute.key != "description"
+        attribute.key !== "name" &&
+        attribute.key !== "qualifiedName" &&
+        attribute.key !== "description"
       ) {
         let item = {};
         item.id = attribute.key;

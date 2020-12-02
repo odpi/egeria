@@ -1,19 +1,22 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+
+import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 
 import { Pagination, Toggle } from "carbon-components-react";
-import Add32 from "../../../images/Egeria_add_32";
-import Delete32 from "../../../images/Egeria_delete_32";
-import Edit32 from "../../../images/Egeria_edit_32";
-import Term32 from "../../../images/Egeria_term_32";
-import ParentChild32 from "../../../images/Egeria_parent_child_32";
-import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
-import GlossaryImage from "../../../images/Egeria_glossary_32";
-import { issueRestGet, issueRestDelete } from "./RestCaller";
-import useDebounce from "./useDebounce";
-import NodeTableView from "./views/NodeTableView";
-import getNodeType from "./properties/NodeTypes.js";
+import Add32 from "../../../../images/Egeria_add_32";
+import Delete32 from "../../../../images/Egeria_delete_32";
+import Edit32 from "../../../../images/Egeria_edit_32";
+import Term32 from "../../../../images/Egeria_term_32";
+import ParentChild32 from "../../../../images/Egeria_parent_child_32";
+import GlossaryImage from "../../../../images/Egeria_glossary_32";
+
+import { LocalNodeCard, NodeCardSection } from "../NodeCard/NodeCard";
+import { issueRestGet, issueRestDelete } from "../RestCaller";
+import useDebounce from "../useDebounce";
+import NodeTableView from "../views/NodeTableView";
+import getNodeType from "../properties/NodeTypes.js";
 
 import { Link } from "react-router-dom";
 
@@ -22,6 +25,7 @@ export default function StartingNodeNavigation({
   nodeTypeName,
   onSelectCallback,
 }) {
+  const identificationContext = useContext(IdentificationContext);
   const [nodes, setNodes] = useState([]);
   const [completeResults, setCompleteResults] = useState([]);
   const [isCardView, setIsCardView] = useState(true);
@@ -42,7 +46,7 @@ export default function StartingNodeNavigation({
   const [errorMsg, setErrorMsg] = useState();
   const [selectedNodeGuid, setSelectedNodeGuid] = useState();
 
-  const nodeType = getNodeType(nodeTypeName);
+  const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), nodeTypeName);
   // Here's where the API call happens
   // We use useEffect since this is an asynchronous action
   useEffect(
@@ -104,7 +108,7 @@ export default function StartingNodeNavigation({
       );
       slicedResults.map(function (row) {
         row.id = row.systemAttributes.guid;
-        if (selectedNodeGuid && selectedNodeGuid == row.id) {
+        if (selectedNodeGuid && selectedNodeGuid === row.id) {
           row.isSelected = true;
           selectedInResults = true;
         }
@@ -152,7 +156,7 @@ export default function StartingNodeNavigation({
    * @param {*} node
    */
   const deleteIfSelected = (node) => {
-    if (node.systemAttributes.guid == selectedNodeGuid) {
+    if (node.systemAttributes.guid === selectedNodeGuid) {
       const guid = selectedNodeGuid;
       const url = nodeType.url + "/" + guid;
       issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
@@ -230,7 +234,7 @@ export default function StartingNodeNavigation({
     setFilterCriteria(e.target.value);
   };
   const isSelected = (nodeGuid) => {
-    return nodeGuid == selectedNodeGuid;
+    return nodeGuid === selectedNodeGuid;
   };
   const setSelected = (nodeGuid) => {
     setSelectedNodeGuid(nodeGuid);
@@ -273,19 +277,19 @@ export default function StartingNodeNavigation({
               )}
               {selectedNodeGuid &&
                 !onSelectCallback &&
-                nodeTypeName == "glossary" && (
+                nodeTypeName === "glossary" && (
                   <Link to={getGlossaryQuickTermsUrl}>
                     <Term32 kind="primary" />
                   </Link>
                 )}
               {selectedNodeGuid &&
                 !onSelectCallback &&
-                nodeTypeName == "category" && (
+                nodeTypeName === "category" && (
                   <Link to={getCategoryQuickTermsUrl}>
                     <Term32 kind="primary" />
                   </Link>
                 )}
-              {selectedNodeGuid && !onSelectCallback && nodeTypeName != "term" && (
+              {selectedNodeGuid && !onSelectCallback && nodeTypeName !== "term" && (
                 <Link to={getNodeChildrenUrl}>
                   <ParentChild32 kind="primary" />
                 </Link>
@@ -339,7 +343,7 @@ export default function StartingNodeNavigation({
             setSelected={setSelected}
           />
         )}
-        {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}
+        {nodes.length === 0 && <div>No {nodeType.plural} found!</div>}
         {nodes.length > 0 && (
           <div className="search-item">
             <Pagination {...paginationProps()} />

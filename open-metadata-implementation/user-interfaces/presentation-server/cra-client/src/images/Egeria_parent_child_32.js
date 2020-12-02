@@ -5,6 +5,6 @@ import icon from '../../src/imagesHolder/parent-child.svg';
 
 export default function Egeria_parent_child_32(props) {
   return (
-    <img src={icon} height="32" width="32" onClick={props.onClick} />
+    <img src={icon} height="32" width="32" onClick={props.onClick} alt="Work with the children nodes."/>
   );
 }

@@ -5,6 +5,6 @@ import icon from '../../src/imagesHolder/add.svg';
 
 export default function Egeria_add_32(props) {
   return (
-    <img src={icon} height="32" width="32" onClick={props.onClick} />
+    <img src={icon} height="32" width="32" onClick={props.onClick} alt="Add node"/>
   );
 }

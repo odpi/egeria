@@ -18,10 +18,10 @@ function GlossaryAuthorNavigation(props) {
     const arrayOfURLSegments = window.location.pathname.split("/");
     const lastSegment = arrayOfURLSegments[arrayOfURLSegments.length - 1];
     let index = 0;
-    if (lastSegment == "categories") {
+    if (lastSegment === "categories") {
       index = 1;
     }
-    if (lastSegment == "terms") {
+    if (lastSegment === "terms") {
       index = 2;
     }
     console.log(
@@ -50,7 +50,7 @@ function GlossaryAuthorNavigation(props) {
       if (keepAppending && currentSegment.length > 0) {
         workingUrl = workingUrl + "/" + currentSegment;
       }
-      if (currentSegment == "glossary-author") {
+      if (currentSegment === "glossary-author") {
         keepAppending = false;
       }
     }
@@ -62,9 +62,9 @@ function GlossaryAuthorNavigation(props) {
     history.replace(url);
 
     let index = 0;
-    if (chosenContent == "categories") {
+    if (chosenContent === "categories") {
       index = 1;
-    } else if (chosenContent == "terms") {
+    } else if (chosenContent === "terms") {
       index = 2;
     }
     setSelectedContentIndex(index);
@@ -77,13 +77,13 @@ function GlossaryAuthorNavigation(props) {
         <Switch name="categories" text="Categories" />
         <Switch name="terms" text="Terms" />
       </ContentSwitcher>
-      {selectedContentIndex == 0 && (
+      {selectedContentIndex === 0 && (
         <StartingGlossaryNavigation match={props.match} />
       )}
-      {selectedContentIndex == 1 && (
+      {selectedContentIndex === 1 && (
         <StartingCategoryNavigation match={props.match} />
       )}
-      {selectedContentIndex == 2 && (
+      {selectedContentIndex === 2 && (
         <StartingTermNavigation match={props.match} />
       )}
     </div>

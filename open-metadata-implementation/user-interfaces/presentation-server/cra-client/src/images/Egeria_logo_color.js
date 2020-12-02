@@ -5,8 +5,8 @@ import icon from '../imagesHolder/egeria-color.svg';
 
 export default function Egeria_logo_color(props) {
   return (
-    <a href="https://egeria.odpi.org/" target="_blank">
-         <img src={icon} />
+    <a href="https://egeria.odpi.org/" target="_blank" rel="noopener noreferrer">
+         <img src={icon} alt="Egeria color logo" />
     </a>
   );
 }

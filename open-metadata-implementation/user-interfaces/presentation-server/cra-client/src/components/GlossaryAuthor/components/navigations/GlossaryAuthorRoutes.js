@@ -3,36 +3,35 @@
 import React from "react";
 // import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 import { Route, Switch, Redirect } from "react-router-dom";
-import GlossaryAuthorCRUD from "../GlossaryAuthorCRUD";
 // navigation components
-import GlossaryAuthorNavigation from "../GlossaryAuthorNavigation";
-import TermAuthorNavigation from "../GlossaryAuthorNavigation";
-import CategoryAuthorNavigation from "../GlossaryAuthorNavigation";
-import GlossaryAuthorCategoriesNavigation from "../GlossaryAuthorCategoriesNavigation";
-import GlossaryAuthorChildCategoriesNavigation from "../GlossaryAuthorChildCategoriesNavigation";
-import GlossaryAuthorTermsNavigation from "../GlossaryAuthorTermsNavigation";
+import GlossaryAuthorNavigation from "./GlossaryAuthorNavigation";
+import TermAuthorNavigation from "./GlossaryAuthorNavigation";
+import CategoryAuthorNavigation from "./GlossaryAuthorNavigation";
+import GlossaryAuthorCategoriesNavigation from "./GlossaryAuthorCategoriesNavigation";
+import GlossaryAuthorChildCategoriesNavigation from "./GlossaryAuthorChildCategoriesNavigation";
+import GlossaryAuthorTermsNavigation from "./GlossaryAuthorTermsNavigation";
 // children components
 import GlossaryChildren from "../GlossaryChildren";
 import CategoryChildren from "../CategoryChildren";
 // create glossary 
-import CreateGlossary from "../CreateGlossary";
+import CreateGlossary from "../create/CreateGlossary";
 // update glossary
-import UpdateGlossary from "../UpdateGlossary";
+import UpdateGlossary from "../update/UpdateGlossary";
 // create Terms components 
-import CreateTerm from "../CreateTerm";
-import CreateTermWizard from "../CreateTermWizard";
-import CreateCategorizedTerm from "../CreateCategorizedTerm";
+import CreateTerm from "../create/CreateTerm";
+import CreateTermWizard from "../wizards/CreateTermWizard";
+import CreateCategorizedTerm from "../create/CreateCategorizedTerm";
 // update Term
-import UpdateTerm from "../UpdateTerm";
+import UpdateTerm from "../update/UpdateTerm";
 // create category components
-import CreateCategory from "../CreateCategory";
-import CreateCategoryWizard from "../CreateCategoryWizard";
-import CreateChildCategory from "../CreateChildCategory";
+import CreateCategory from "../create/CreateCategory";
+import CreateCategoryWizard from "../wizards/CreateCategoryWizard";
+import CreateChildCategory from "../create/CreateChildCategory";
 // Quick terms
 import GlossaryQuickTerms from "../GlossaryQuickTerms";
-import CreateCategorizedQuickTerms from "../CreateCategorizedQuickTerms";
+import CreateCategorizedQuickTerms from "../create/CreateCategorizedQuickTerms";
 // update Category
-import UpdateCategory from "../UpdateCategory";
+import UpdateCategory from "../update/UpdateCategory";
 
 export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
   console.log("glossaryAuthorURL=" + glossaryAuthorURL);
@@ -42,7 +41,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     let path;
     const currentLocationArray = glossaryAuthorURL.split("/");
     const lastSegment = currentLocationArray[currentLocationArray.length - 1];
-    if (lastSegment == "glossaries") {
+    if (lastSegment === "glossaries") {
       // if we are navigated to via the task drop down we get a url ending with glossaries
       path = glossaryAuthorURL;
     } else {
@@ -56,7 +55,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     let path;
     const currentLocationArray = glossaryAuthorURL.split("/");
     const lastSegment = currentLocationArray[currentLocationArray.length - 1];
-    if (lastSegment == "terms") {
+    if (lastSegment === "terms") {
       // if we are navigated to via the task drop down we get a url ending with terms
       path = glossaryAuthorURL;
     } else {
@@ -70,7 +69,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     let path;
     const currentLocationArray = glossaryAuthorURL.split("/");
     const lastSegment = currentLocationArray[currentLocationArray.length - 1];
-    if (lastSegment == "categories") {
+    if (lastSegment === "categories") {
       // if we are navigated to via the task drop down we get a url ending with terms
       path = glossaryAuthorURL;
     } else {
@@ -197,12 +196,6 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
       return path;
     }
 
-  function getCrudPath() {
-    const path = glossaryAuthorURL + "/crud";
-    console.log("getCrudPath " + path);
-    return path;
-  }
-
   return (
     <Switch>
       <Route path={getGlossariesAddPath()} component={CreateGlossary}></Route>
@@ -266,7 +259,6 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
       ></Route>
-      <Route path={getCrudPath()} component={GlossaryAuthorCRUD}></Route>
       <Route
         path={glossaryAuthorURL}
         exact

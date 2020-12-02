@@ -5,6 +5,6 @@ import icon from '../imagesHolder/logo--github.svg';
 
 export default function GitHub_Logo_32(props) {
   return (
-    <img src={icon} height="32" width="32"/>
+    <img src={icon} height="32" width="32" alt="Github logo"/>
   );
 }

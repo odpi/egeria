@@ -1,14 +1,17 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+
+import { IdentificationContext } from "../../../contexts/IdentificationContext";
 import { ContentSwitcher, Switch } from "carbon-components-react";
-import GlossaryAuthorTermsNavigation from "./GlossaryAuthorTermsNavigation";
-import GlossaryAuthorCategoriesNavigation from "./GlossaryAuthorCategoriesNavigation";
-import GlossaryAuthorChildCategoriesNavigation from "./GlossaryAuthorChildCategoriesNavigation";
+import GlossaryAuthorTermsNavigation from "./navigations/GlossaryAuthorTermsNavigation";
+import GlossaryAuthorCategoriesNavigation from "./navigations/GlossaryAuthorCategoriesNavigation";
+import GlossaryAuthorChildCategoriesNavigation from "./navigations/GlossaryAuthorChildCategoriesNavigation";
 import getNodeType from "./properties/NodeTypes";
 import { useHistory, withRouter } from "react-router-dom";
 
 function NodeChildren(props) {
+  const identificationContext = useContext(IdentificationContext);
   console.log("NodeChildren(props) " + props);
   const [selectedContentIndex, setSelectedContentIndex] = useState(0);
   /**
@@ -19,7 +22,7 @@ function NodeChildren(props) {
     const arrayOfURLSegments = window.location.pathname.split("/");
     const lastSegment = arrayOfURLSegments[arrayOfURLSegments.length - 1];
     let index = 0;
-    if (lastSegment == "terms") {
+    if (lastSegment === "terms") {
       index = 1;
     }
     console.log(
@@ -43,7 +46,7 @@ function NodeChildren(props) {
     // Use replace rather than push so the content switcher changes are not navigated through the back button, which would be uninituitive.
     history.replace(url);
 
-    if (chosenContent == "terms") {
+    if (chosenContent === "terms") {
       setSelectedContentIndex(1);
     } else {
       setSelectedContentIndex(0);
@@ -51,16 +54,16 @@ function NodeChildren(props) {
   };
   const getChildrenURL = () => {
     let childName;
-    if (selectedContentIndex == 1) {
+    if (selectedContentIndex === 1) {
       childName = "terms";
-    } else if (props.parentNodeTypeName == "glossary") {
+    } else if (props.parentNodeTypeName === "glossary") {
       childName = "categories";
-    } else if (props.parentNodeTypeName == "category") {
+    } else if (props.parentNodeTypeName === "category") {
       childName = "child-categories";
     }
     console.log("getChildrenURL guid " + guid);
     const url =
-      getNodeType(props.parentNodeTypeName).url + "/" + guid + "/" + childName;
+      getNodeType(identificationContext.getRestURL("glossary-author"), props.parentNodeTypeName).url + "/" + guid + "/" + childName;
     console.log("getChildrenURL url " + url);
     return url;
   };
@@ -72,17 +75,17 @@ function NodeChildren(props) {
         <Switch name="terms" text="Terms" />
       </ContentSwitcher>
 
-      {selectedContentIndex == 0 &&  (props.parentNodeTypeName == "glossary") && (
+      {selectedContentIndex === 0 &&  (props.parentNodeTypeName === "glossary") && (
         <GlossaryAuthorCategoriesNavigation
           getCategoriesURL={getChildrenURL()}
         />
       )}
-          {selectedContentIndex == 0 &&  (props.parentNodeTypeName == "category") && (
+          {selectedContentIndex === 0 &&  (props.parentNodeTypeName === "category") && (
         <GlossaryAuthorChildCategoriesNavigation
           getCategoriesURL={getChildrenURL()}
         />
       )}
-      {selectedContentIndex == 1 && (
+      {selectedContentIndex === 1 && (
         <GlossaryAuthorTermsNavigation getTermsURL={getChildrenURL()} />
       )}
     </div>

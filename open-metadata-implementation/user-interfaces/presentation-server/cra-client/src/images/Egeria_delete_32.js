@@ -5,6 +5,6 @@ import icon from '../../src/imagesHolder/trash-can.svg';
 
 export default function Egeria_delete_32(props) {
   return (
-    <img src={icon} height="32" width="32" onClick={props.onClick} />
+    <img src={icon} height="32" width="32" onClick={props.onClick} alt="Delete Node"/>
   );
 }

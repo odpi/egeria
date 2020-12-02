@@ -1,25 +1,25 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 
-import Add32 from "../../../images/Egeria_add_32";
-import Delete32 from "../../../images/Egeria_delete_32";
-import Edit32 from "../../../images/Egeria_edit_32";
-import Term32 from "../../../images/Egeria_term_32";
-import ParentChild32 from "../../../images/Egeria_parent_child_32";
-import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
+import Add32 from "../../../../images/Egeria_add_32";
+import Delete32 from "../../../../images/Egeria_delete_32";
+import Edit32 from "../../../../images/Egeria_edit_32";
+import Term32 from "../../../../images/Egeria_term_32";
+import { LocalNodeCard, NodeCardSection } from "../NodeCard/NodeCard";
 import { withRouter } from "react-router-dom";
+import getNodeType from "../properties/NodeTypes.js";
+import { issueRestGet, issueRestDelete } from "../RestCaller";
 import { Pagination, Toggle } from "carbon-components-react";
-import NodeTableView from "./views/NodeTableView";
-
-//import GlossaryImage from "../../../images/Egeria_glossary_32";
-import getNodeType from "./properties/NodeTypes.js";
-import { issueRestGet, issueRestDelete } from "./RestCaller";
+import NodeTableView from "../views/NodeTableView";
 
 import { Link } from "react-router-dom";
 
-const GlossaryAuthorChildCategoriesNavigation = (props) => {
+const GlossaryAuthorTermsNavigation = (props) => {
+  const identificationContext = useContext(IdentificationContext);
   const [nodes, setNodes] = useState([]);
+  const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), "term");
   const [errorMsg, setErrorMsg] = useState();
   const [selectedNodeGuid, setSelectedNodeGuid] = useState();
   const [completeResults, setCompleteResults] = useState([]);
@@ -28,18 +28,15 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  console.log("GlossaryAuthorChildCategoriesNavigation " + props);
-
-  const nodeType = getNodeType("category");
   useEffect(() => {
     getChildren();
   }, [selectedNodeGuid]);
 
   const getChildren = () => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    issueRestGet(encodeURI(props.getCategoriesURL), onSuccessfulGetChildren, onErrorGetChildren);
+    const url = encodeURI(props.getTermsURL);
+    issueRestGet(url, onSuccessfulGetChildren, onErrorGetChildren);
   };
-
   const paginationProps = () => ({
     disabled: false,
     page: pageNumber,
@@ -88,10 +85,11 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
       );
       slicedResults.map(function (row) {
         row.id = row.systemAttributes.guid;
-        if (selectedNodeGuid && selectedNodeGuid == row.id) {
+        if (selectedNodeGuid && selectedNodeGuid === row.id) {
           row.isSelected = true;
           selectedInResults = true;
         }
+        return row;
       });
       setNodes(slicedResults);
     } else {
@@ -123,8 +121,10 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
    * @param {*} glossary
    */
   const deleteIfSelected = (glossary) => {
-    if (glossary.systemAttributes.guid == selectedNodeGuid) {
+    if (glossary.systemAttributes.guid === selectedNodeGuid) {
       const guid = selectedNodeGuid;
+
+      // TODO change URL
       const url = nodeType.url + "/" + guid;
       issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
     }
@@ -154,15 +154,14 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
     setNodes([]);
   };
 
-  function getAddCategoryUrl() {
-    console.log("getAddCategoryUrl " + props);
-    return props.match.url + "/categories/add-category";
+  function getAddNodeUrl() {
+    return props.match.url + "/terms/add-term";
   }
   function getEditNodeUrl() {
-    return props.match.url + "/categories/edit-category/" + selectedNodeGuid;
+    return props.match.url + "/terms/edit-term/" + selectedNodeGuid;
   }
   const isSelected = (nodeGuid) => {
-    return nodeGuid == selectedNodeGuid;
+    return nodeGuid === selectedNodeGuid;
   };
   const setSelected = (nodeGuid) => {
     setSelectedNodeGuid(nodeGuid);
@@ -173,14 +172,9 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
         <NodeCardSection>
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-3 bx--col-xlg-3 bx--col-max-2">
             <div className="bx--row">
-              <Link to={getAddCategoryUrl}>
+              <Link to={getAddNodeUrl}>
                 <Add32 kind="primary" />
               </Link>
-              {selectedNodeGuid && (
-                <Link to={props.getCategoriesURL}>
-                  <ParentChild32 kind="primary" />
-                </Link>
-              )}
               {selectedNodeGuid && (
                 <Link to={getEditNodeUrl()}>
                   <Edit32 kind="primary" />
@@ -218,15 +212,15 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
             ))}
           </NodeCardSection>
         )}
-
-        {!isCardView && (
+         {!isCardView && (
           <NodeTableView
+            // tableKey={getNextTableKey()}
             nodeType={nodeType}
             nodes={nodes}
             setSelected={setSelected}
           />
         )}
-        {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}
+        {nodes.length === 0 && <div>No {nodeType.plural} found!</div>}
         {nodes.length > 0 && (
           <div className="search-item">
             <Pagination {...paginationProps()} />
@@ -236,4 +230,4 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
     </div>
   );
 };
-export default withRouter(GlossaryAuthorChildCategoriesNavigation);
+export default withRouter(GlossaryAuthorTermsNavigation);

@@ -18,7 +18,7 @@ import {
 } from "carbon-components-react";
 import { useParams } from "react-router-dom";
 import Info16 from "@carbon/icons-react/lib/information/16";
-import { issueRestUpdate, issueRestGet } from "./RestCaller";
+import { issueRestUpdate, issueRestGet } from "../RestCaller";
 import { useHistory } from "react-router-dom";
 
 export default function UpdateNode(props) {
@@ -51,7 +51,7 @@ export default function UpdateNode(props) {
   };
   const onSuccessfulGet = (json) => {
     console.log("onSuccessfulGet");
-    if (json.result.length == 1) {
+    if (json.result.length === 1) {
       const node = json.result[0];
       setCurrentNode(node);
     } else {
@@ -65,7 +65,7 @@ export default function UpdateNode(props) {
   };
   const onSuccessfulUpdate = (json) => {
     console.log("onSuccessfulUpdate");
-    if (json.result.length == 1) {
+    if (json.result.length === 1) {
       const node = json.result[0];
       setCurrentNode(node);
     } else {
@@ -77,13 +77,8 @@ export default function UpdateNode(props) {
     setErrorMsg(msg);
     setCurrentNode(undefined);
   };
-  const validateForm = () => {
-    //TODO consider marking name as manditory in the nodetype definition
-    //return updateBody.name && updateBody.name.length > 0;
 
-    return true;
-  };
-  const updateLabelId = (labelKey) => {
+  function updateLabelId(labelKey) {
     return "text-input-update"+props.currentNodeType.name +"-"+ labelKey;
   };
   const setAttribute = (item, value) => {
@@ -103,44 +98,6 @@ export default function UpdateNode(props) {
     },
   ];
 
-  const getUpdatedTableTitle = () => {
-    return "Successfully updated " + currentNode.name;
-  };
-
-  const getUpdatedTableAttrRowData = () => {
-    let rowData = [];
-    const attributes = props.currentNodeType.attributes;
-
-    for (var prop in currentNode) {
-      if (
-        prop != "systemAttributes" &&
-        prop != "glossary" &&
-        prop != "classifications" &&
-        prop != "class"
-      ) {
-        let row = {};
-        row.id = prop;
-        row.attrName = prop;
-        // if we know about the attribute then use the label.
-        if (prop == "nodeType") {
-          row.attrName = "Node Type";
-        } else {
-          for (var i = 0; i < attributes.length; i++) {
-            if (attributes[i].key == prop) {
-              row.attrName = attributes[i].label;
-            }
-          }
-        }
-
-        let value = currentNode[prop];
-        // TODO deal with the other types (and null? and arrays?) properly
-        value = JSON.stringify(value);
-        row.value = value;
-        rowData.push(row);
-      }
-    }
-    return rowData;
-  };
   const getSystemDataRowData = () => {
     let rowData = [];
     const systemAttributes = currentNode.systemAttributes;
@@ -158,9 +115,6 @@ export default function UpdateNode(props) {
     return rowData;
   };
 
-  const updateAnother = () => {
-    setCurrentNode(undefined);
-  };
   const onClickBack = () => {
     console.log("Back clicked");
     // use history, as there is another window history object in scope in the event listener
@@ -170,8 +124,8 @@ export default function UpdateNode(props) {
   };
   return (
     <div>
-      {currentNode == undefined && initialGet()}
-      {currentNode != undefined &&
+      {currentNode === undefined && initialGet()}
+      {currentNode !== undefined &&
         props.currentNodeType.attributes.map((item) => {
           return (
             <div className="bx--form-item" key={item.key}>
@@ -190,7 +144,7 @@ export default function UpdateNode(props) {
             </div>
           );
         })}
-      {currentNode != undefined && (
+      {currentNode !== undefined && (
         <Accordion>
           <AccordionItem title="Advanced options">
             <DatePicker dateFormat="m/d/Y" datePickerType="range">
@@ -210,7 +164,7 @@ export default function UpdateNode(props) {
           </AccordionItem>
         </Accordion>
       )}
-      {currentNode != undefined && (
+      {currentNode !== undefined && (
         <Accordion>
           <AccordionItem title="System Attributes">
             <div className="bx--form-item">

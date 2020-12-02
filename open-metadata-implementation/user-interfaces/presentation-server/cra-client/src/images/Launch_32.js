@@ -14,7 +14,7 @@ function createTarget(props) {
 export default function Launch_32(props) {
   return (
     <a href={props.link} target={createTarget(props)}>
-         <img src={icon} height="32" width="32" />
+         <img src={icon} height="32" width="32" alt="Launch"/>
     </a>
   );
 }

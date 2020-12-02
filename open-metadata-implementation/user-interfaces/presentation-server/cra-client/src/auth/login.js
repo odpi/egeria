@@ -39,7 +39,7 @@ const Login = () => {
     })
       .then(res => res.json())
       .then(res => {
-        if (res.status == "success") {
+        if (res.status === "success") {
           console.log("login worked " + JSON.stringify(res));
           identificationContext.setUserId(userId);
           identificationContext.setUser(res.user);

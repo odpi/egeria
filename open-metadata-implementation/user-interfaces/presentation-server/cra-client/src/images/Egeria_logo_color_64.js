@@ -5,6 +5,6 @@ import icon from '../imagesHolder/egeria-color.svg';
 
 export default function Egeria_logo_color_64(props) {
   return (
-    <img src={icon} height="64" width="64"/>
+    <img src={icon} height="64" width="64" alt="Egeria color logo"/>
   );
 }

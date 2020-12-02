@@ -5,6 +5,6 @@ import icon from '../imagesHolder/Egeria_glossary_author.svg';
 
 export default function Egeria_glossary_author_32(props) {
   return (
-    <img src={icon} height="32" width="32"/>
+    <img src={icon} height="32" width="32" alt="Glossary author UI capability"/>
   );
 }
