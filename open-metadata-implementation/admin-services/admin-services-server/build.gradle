@@ -31,6 +31,8 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:stewardship-engine-services:stewardship-engine-services-server')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
 description = 'Administration Services Server-side'
@@ -38,3 +40,17 @@ description = 'Administration Services Server-side'
 java {
     withJavadocJar()
 }
+
+test {
+    // Enable JUnit 5 (Gradle 4.6+).
+    useJUnitPlatform()
+
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
