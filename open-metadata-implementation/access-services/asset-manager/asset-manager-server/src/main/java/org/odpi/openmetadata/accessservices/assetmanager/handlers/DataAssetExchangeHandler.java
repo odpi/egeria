@@ -358,6 +358,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                  OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                  assetProperties.getExtendedProperties(),
+                                 isMergeUpdate,
                                  methodName);
 
         this.maintainSupplementaryProperties(userId,
