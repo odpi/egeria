@@ -64,6 +64,10 @@ POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{s
 { supported severities }
 ```
 
+When configuring slf4j as destination you also need to specify auditlog logger category via the application properties.
+This is described in [Connecting the OMAG Audit Log Framework](omag-server-platform-logging.md#connecting-the-omag-audit-log-framework) section of the developer logging guide.
+
+
 The next command adds an audit log destination that creates log records as JSON files in a shared directory.
 
 ```
