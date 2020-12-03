@@ -53,6 +53,14 @@ public class ServerAuthorExceptionHandler {
     /*
      * Mapping functions for OMAG (back-end) admin services exceptions
      */
+
+    /**
+     * Map an OMAGNotAuthorizedException to a ServerAuthorViewServiceException which is more consumable / meaningful to the UI
+     * @param className the name of the calling class
+     * @param methodName the name of the operation being requested
+     * @param omagException supplied OMAGNotAuthorizedException
+     * @return mapped Server author View Exception
+     */
     public static ServerAuthorViewServiceException mapOMAGUserNotAuthorizedException(String            className,
                                                                                      String                     methodName,
                                                                                      OMAGNotAuthorizedException omagException)
@@ -62,6 +70,13 @@ public class ServerAuthorExceptionHandler {
                                            methodName);
     }
 
+    /**
+     * Map an OMAGInvalidParameterException to a ServerAuthorViewServiceException which is more consumable / meaningful to the UI
+     * @param className the name of the calling class
+     * @param methodName the name of the operation being requested
+     * @param omagException supplied OMAGInvalidParameterException
+     * @return mapped Server author View Exception
+     */
     public static ServerAuthorViewServiceException mapOMAGInvalidParameterException(String className, String methodName, OMAGInvalidParameterException omagException)
     {
         String parameterName = omagException.getReportedErrorMessageParameters()[0];

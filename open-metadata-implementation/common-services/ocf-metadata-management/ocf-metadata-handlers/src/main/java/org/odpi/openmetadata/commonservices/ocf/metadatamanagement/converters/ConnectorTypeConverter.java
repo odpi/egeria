@@ -22,6 +22,7 @@ public class ConnectorTypeConverter extends ReferenceableConverter
      * @param endpointEntity properties to convert
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public ConnectorTypeConverter(EntityDetail             endpointEntity,
                                   OMRSRepositoryHelper     repositoryHelper,

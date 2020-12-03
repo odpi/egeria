@@ -280,8 +280,8 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
-        assetExtendedProperties.put(OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
         assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME, encodingType);
         assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
         assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
@@ -494,8 +494,8 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
-        assetExtendedProperties.put(OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
         assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME, encodingType);
         assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
         assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
@@ -779,7 +779,7 @@ public class RelationalDataHandler<DATABASE,
         return databaseHandler.getAttachedElements(userId,
                                                    databaseManagerGUID,
                                                    databaseManagerGUIDParameterName,
-                                                   OpenMetadataAPIMapper.DATABASE_MANAGER_CLASSIFICATION_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_NAME,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                    OpenMetadataAPIMapper.DATABASE_TYPE_NAME,

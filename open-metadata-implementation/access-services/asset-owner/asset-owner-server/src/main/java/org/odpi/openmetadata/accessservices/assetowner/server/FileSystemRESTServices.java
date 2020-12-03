@@ -231,7 +231,6 @@ public class FileSystemRESTServices
                                                                          null,
                                                                          null,
                                                                          null,
-                                                                         null,
                                                                          requestBody.getFullPath(),
                                                                          methodName));
             }
@@ -440,8 +439,6 @@ public class FileSystemRESTServices
                 response.setGUIDs(handler.addDataFileAssetToCatalog(userId,
                                                                     null,
                                                                     null,
-                                                                    null,
-                                                                    null,
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
                                                                     requestBody.getFullPath(),
@@ -511,15 +508,12 @@ public class FileSystemRESTServices
                         FolderElement,
                         FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-
                 response.setGUIDs(handler.addDataFolderAssetToCatalog(userId,
                                                                       null,
                                                                       null,
-                                                                      null,
-                                                                      null,
+                                                                      requestBody.getFullPath(),
                                                                       requestBody.getDisplayName(),
                                                                       requestBody.getDescription(),
-                                                                      requestBody.getFullPath(),
                                                                       methodName));
             }
         }
@@ -1310,8 +1304,6 @@ public class FileSystemRESTServices
                 response.setGUIDs(handler.addAvroFileToCatalog(userId,
                                                                null,
                                                                null,
-                                                               null,
-                                                               null,
                                                                requestBody.getDisplayName(),
                                                                requestBody.getDescription(),
                                                                requestBody.getFullPath(),
@@ -1381,8 +1373,6 @@ public class FileSystemRESTServices
                         FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 response.setGUIDs(handler.addCSVFileToCatalog(userId,
-                                                              null,
-                                                              null,
                                                               null,
                                                               null,
                                                               requestBody.getDisplayName(),

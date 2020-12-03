@@ -15,7 +15,7 @@ function GlossaryAuthorNavigation(props) {
    * This is required when the back button is pressed returning from a child component.
    */
   useEffect(() => {
-    const arrayOfURLSegments = location.pathname.split("/");
+    const arrayOfURLSegments = window.location.pathname.split("/");
     const lastSegment = arrayOfURLSegments[arrayOfURLSegments.length - 1];
     let index = 0;
     if (lastSegment == "categories") {
@@ -26,7 +26,7 @@ function GlossaryAuthorNavigation(props) {
     }
     console.log(
       "glossaryAuthorNavigation useEffect url=" +
-        location.pathname +
+        window.location.pathname +
         " ,lastSegment=" +
         lastSegment +
         " ,index=" +
