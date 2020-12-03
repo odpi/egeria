@@ -21,7 +21,7 @@ export default function GlossaryQuickTerms(props) {
   let history = useHistory();
   const { glossaryguid } = useParams();
   const url = getUrl();
-  
+
   function getUrl() {
     return glossaryNodeType.url + "/" + glossaryguid + "/terms";
   }
@@ -59,7 +59,7 @@ export default function GlossaryQuickTerms(props) {
       let workingTermWithStatus = terms[i];
       if (terms[i].name.trim() === "") {
         workingTermWithStatus.status = "Error - blank name";
-      } else if (json.result[i].relatedHTTPCode === "200") {
+      } else if (json.result[i].relatedHTTPCode == "200") {
         workingTermWithStatus = json.result[i].result[0];
         workingTermWithStatus.status = "Success";
       } else {
