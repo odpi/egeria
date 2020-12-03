@@ -358,7 +358,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-
+        // todo
     }
 
 
@@ -377,6 +377,8 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeQualifiedName unique name of the scope
      * @param scopeTypeName specific type name of the software server capability that represents the third party metadata source
      * @param methodName calling method
+     *
+     * @return the identifier's entity
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

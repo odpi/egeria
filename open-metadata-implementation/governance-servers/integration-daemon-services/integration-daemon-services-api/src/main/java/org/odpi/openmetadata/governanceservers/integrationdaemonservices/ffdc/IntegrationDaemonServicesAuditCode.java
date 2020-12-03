@@ -193,7 +193,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
 
     CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0031",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                     "The integration connector {0} method {1} has returned with a {2} exception containing message {4}",
+                     "The integration connector {0} method {1} has returned with a {2} exception containing message {3}",
                               "The server will change the integration connector's status to failed.",
                               "Use the message from the exception and knowledge of the integration connector's behavior to " +
                             "track down and resolve the cause of the error and then restart the connector."),

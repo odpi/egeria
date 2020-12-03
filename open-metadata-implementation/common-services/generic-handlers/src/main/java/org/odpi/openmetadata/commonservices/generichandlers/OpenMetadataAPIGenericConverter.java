@@ -1202,23 +1202,23 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the createTime property from the supplied instance properties.
+     * Extract and delete the sourceCreateTime property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return date or null
      */
-    protected Date removeCreateTime(InstanceProperties  instanceProperties)
+    protected Date removeSourceCreateTime(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeCreateTime";
+        final String methodName = "removeSourceCreateTime";
 
         if (instanceProperties != null)
         {
             Date createTime1 = repositoryHelper.removeDateProperty(serviceName,
-                                                                   OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME,
+                                                                   OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME,
                                                                    instanceProperties,
                                                                    methodName);
             Date createTime2 = repositoryHelper.removeDateProperty(serviceName,
-                                                                   OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME_DEP,
+                                                                   OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME_DEP,
                                                                    instanceProperties,
                                                                    methodName);
             return createTime1 == null ? createTime2 : createTime1;
@@ -1229,23 +1229,77 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the modifiedTime property from the supplied instance properties.
+     * Extract and delete the sourceUpdateTime property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return date or null
      */
-    protected Date removeModifiedTime(InstanceProperties  instanceProperties)
+    protected Date removeSourceUpdateTime(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeModifiedTime";
+        final String methodName = "removeSourceUpdateTime";
 
         if (instanceProperties != null)
         {
             Date modifiedTime1 = repositoryHelper.removeDateProperty(serviceName,
-                                                                     OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME,
+                                                                     OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
             Date modifiedTime2 = repositoryHelper.removeDateProperty(serviceName,
-                                                                     OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME_DEP,
+                                                                     OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME_DEP,
+                                                                     instanceProperties,
+                                                                     methodName);
+            return modifiedTime1 == null ? modifiedTime2 : modifiedTime1;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the sourceCreateTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date or null
+     */
+    protected Date removeStoreCreateTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeStoreCreateTime";
+
+        if (instanceProperties != null)
+        {
+            Date createTime1 = repositoryHelper.removeDateProperty(serviceName,
+                                                                   OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME,
+                                                                   instanceProperties,
+                                                                   methodName);
+            Date createTime2 = repositoryHelper.removeDateProperty(serviceName,
+                                                                   OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME_DEP,
+                                                                   instanceProperties,
+                                                                   methodName);
+            return createTime1 == null ? createTime2 : createTime1;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the storeUpdateTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date or null
+     */
+    protected Date removeStoreUpdateTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeStoreUpdateTime";
+
+        if (instanceProperties != null)
+        {
+            Date modifiedTime1 = repositoryHelper.removeDateProperty(serviceName,
+                                                                     OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+            Date modifiedTime2 = repositoryHelper.removeDateProperty(serviceName,
+                                                                     OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME_DEP,
                                                                      instanceProperties,
                                                                      methodName);
             return modifiedTime1 == null ? modifiedTime2 : modifiedTime1;

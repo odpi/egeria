@@ -66,6 +66,7 @@
                 <include>org.odpi.egeria:csv-file-connector:*</include>
                 <include>org.odpi.egeria:data-folder-connector:*</include>
                 <include>org.odpi.egeria:discovery-service-connectors:*</include>
+                <include>org.odpi.egeria:files-integration-connectors:*</include>
                 <!--include>org.odpi.egeria:gaian-connector:*</include-->
                 <include>org.odpi.egeria:graph-repository-connector:*</include>
                 <include>org.odpi.egeria:inmemory-open-metadata-topic-connector:*</include>

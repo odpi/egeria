@@ -621,6 +621,7 @@ public class SchemaExchangeService
      *
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param schemaElementExternalIdentifier unique identifier of the schema element in the external asset manager
+     * @param formula description of how the value is calculated
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

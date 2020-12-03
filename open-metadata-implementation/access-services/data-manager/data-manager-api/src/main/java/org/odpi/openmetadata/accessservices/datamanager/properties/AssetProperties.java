@@ -268,6 +268,7 @@ public class AssetProperties extends ReferenceableProperties
         this.otherOriginValues = otherOriginValues;
     }
 
+
     /**
      * Standard toString method.
      *
