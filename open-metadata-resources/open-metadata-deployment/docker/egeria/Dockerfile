@@ -4,7 +4,7 @@
 # Based on RedHat UBI image.
 # https://catalog.redhat.com/software/containers/ubi8/openjdk-11/5dd6a4b45a13461646f677f4?container-tabs=gti&gti-tabs=unauthenticated
 FROM registry.access.redhat.com/ubi8/openjdk-11
-ARG version=2.5-SNAPSHOT
+ARG version=2.6-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown

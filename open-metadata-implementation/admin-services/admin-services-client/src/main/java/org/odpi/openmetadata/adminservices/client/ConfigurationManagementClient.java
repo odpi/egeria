@@ -87,7 +87,6 @@ public class ConfigurationManagementClient
         }
     }
 
-
     /**
      * Set up the configuration properties for an OMAG Server in a single command.
      *

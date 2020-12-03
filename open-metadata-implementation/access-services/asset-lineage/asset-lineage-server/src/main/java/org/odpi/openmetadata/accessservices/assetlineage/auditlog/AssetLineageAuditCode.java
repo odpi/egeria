@@ -35,11 +35,36 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
-    EVENT_PROCESSING_ERROR("OMAS-ASSET-LINEAGE-0005",
+    EVENT_PROCESSING_EXCEPTION("OMAS-ASSET-LINEAGE-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "An exception occurred while processing incoming event {0}",
             "The event could not be processed",
-            "Review the exception to determine the source of the error and correct it.");
+            "Review the exception to determine the source of the error and correct it."),
+
+    PUBLISH_PROCESS_INFO("OMAS-ASSET-LINEAGE-0006",
+            OMRSAuditLogRecordSeverity.INFO,
+            "{0} Processing sequence entity type {1} items {2}",
+            "The Asset Lineage OMAS records information about processing sequence.",
+            "No action is required."),
+
+    ENTITY_INFO("OMAS-ASSET-LINEAGE-0007",
+            OMRSAuditLogRecordSeverity.INFO,
+            "{0} Entity type {1} guid {2}",
+            "The Asset Lineage OMAS records information about entity.",
+            "No action is required."),
+
+    ENTITY_ERROR("OMAS-ASSET-LINEAGE-0008",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Error processing entity type {0} guid {1}",
+            "The Asset Lineage OMAS records error while processing entity.",
+            "Review the error message and check the entity in question to determine the cause of the problem."),
+
+    PUBLISHER_NOT_AVAILABLE_ERROR("OMAS-ASSET-LINEAGE-0009",
+                                  OMRSAuditLogRecordSeverity.ERROR,
+            "AssetLineagePublisher instance not available.",
+                                          "The Asset Lineage OMAS will not publish entity.",
+                                          "Possible configuration error; Contact the server administrator to check accessServiceOutTopic connection configuration before tying again.");
+
 
     private AuditLogMessageDefinition messageDefinition;
 

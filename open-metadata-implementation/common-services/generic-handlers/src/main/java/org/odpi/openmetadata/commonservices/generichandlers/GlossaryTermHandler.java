@@ -1123,6 +1123,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
