@@ -519,6 +519,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Remove the metadata element representing a port.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the metadata element to remove
      * @param portGUIDParameterName parameter supplying portGUID
      * @param methodName calling method
@@ -528,6 +530,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removePort(String userId,
+                           String externalSourceGUID,
+                           String externalSourceName,
                            String portGUID,
                            String portGUIDParameterName,
                            String methodName) throws InvalidParameterException,
@@ -535,8 +539,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      PropertyServerException
     {
         this.deleteBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     portGUID,
                                     portGUIDParameterName,
                                     OpenMetadataAPIMapper.PORT_TYPE_GUID,
@@ -553,6 +557,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param searchString string to find in the properties
+     * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
