@@ -26,6 +26,7 @@ public class AssetConverter extends ReferenceableConverter
      * @param connectionToAssetRelationship properties to convert
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public AssetConverter(EntityDetail         assetEntity,
                           Relationship         connectionToAssetRelationship,
