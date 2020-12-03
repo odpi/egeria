@@ -9,6 +9,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraphFactory;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -226,6 +227,8 @@ public class OpenLineageGraphValidation {
         g.getGraph().close();
     }
 
+    // Not meant to be run as a regular test, but on demand on target graph
+    @Disabled
     @ParameterizedTest
     @MethodSource("getInputFiles")
     public void validate(File inputFile) throws Exception {
