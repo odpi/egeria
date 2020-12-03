@@ -240,14 +240,22 @@ public class HandlerHelper {
     }
 
     private void enhanceGraphContext(Relationship relationship, AssetContext graph, LineageEntity startVertex, LineageEntity endVertex) {
-        GraphContext graphContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
-        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))
-                || !graph.getNeighbors().containsKey(graphContext.getRelationshipGuid())) {
-            graph.addVertex(startVertex);
-            graph.addVertex(endVertex);
-            graph.addGraphContext(graphContext);
+        GraphContext relationshipContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
+
+        if (graph.getNeighbors().containsKey(relationshipContext.getRelationshipGuid())) {
+            return;
         }
+        for (GraphContext context : graph.getGraphContexts()) {
+            if (relationshipContext.getRelationshipGuid().equals(context.getRelationshipGuid())) {
+                return;
+            }
+        }
+
+        graph.addVertex(startVertex);
+        graph.addVertex(endVertex);
+        graph.addGraphContext(relationshipContext);
+
     }
 
     /**
