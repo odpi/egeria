@@ -332,8 +332,8 @@ public class GraphOMRSGraphFactory {
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATED_BY,              PROPERTY_KEY_ENTITY_CREATED_BY);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATED_BY,              PROPERTY_KEY_ENTITY_UPDATED_BY);
 
-            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,              PROPERTY_KEY_ENTITY_CREATE_TIME);  // TODO - for relationships too!!
-            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,              PROPERTY_KEY_ENTITY_UPDATE_TIME);  // TODO - for relationships too!!
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,              PROPERTY_KEY_ENTITY_CREATE_TIME);
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,              PROPERTY_KEY_ENTITY_UPDATE_TIME);
 
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_MAINTAINED_BY,           PROPERTY_KEY_ENTITY_MAINTAINED_BY);              // maintainedBy is a serialized list so use Text mapping
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
@@ -347,8 +347,8 @@ public class GraphOMRSGraphFactory {
              */
 
             // A Relationship edge has the following properties and indexes:
-            // guid                                -   composite
-            // typeName                            -   composite
+            // guid                                -   composite unique
+            // typeName                            -   composite non-unique
             // createdBy                           -   mixed (default)
             // updatedBy                           -   mixed (default)
             // createTime                          -   none - mixed may be useful when matchProperties allows date predicate (e.g. greaterThan/since)
@@ -365,11 +365,15 @@ public class GraphOMRSGraphFactory {
             // InstanceProperties entityProperties -   mixed on each primitive property
 
 
-            createCompositeIndexForEdgeProperty(PROPERTY_NAME_GUID,                    PROPERTY_KEY_RELATIONSHIP_GUID);
-            createCompositeIndexForEdgeProperty(PROPERTY_NAME_TYPE_NAME,               PROPERTY_KEY_RELATIONSHIP_TYPE_NAME);
+            createCompositeIndexForEdgeProperty(PROPERTY_NAME_GUID,                    PROPERTY_KEY_RELATIONSHIP_GUID,        true);
+            createCompositeIndexForEdgeProperty(PROPERTY_NAME_TYPE_NAME,               PROPERTY_KEY_RELATIONSHIP_TYPE_NAME,   false);
 
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_CREATED_BY,              PROPERTY_KEY_RELATIONSHIP_CREATED_BY);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_UPDATED_BY,              PROPERTY_KEY_RELATIONSHIP_UPDATED_BY);
+
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,           PROPERTY_KEY_RELATIONSHIP_CREATE_TIME);
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,           PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME);
+
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_MAINTAINED_BY,           PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_INSTANCE_URL,            PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL);
@@ -723,7 +727,7 @@ public class GraphOMRSGraphFactory {
 
     }
 
-    private void createCompositeIndexForEdgeProperty(String propertyName, String propertyKeyName) {
+    private void createCompositeIndexForEdgeProperty(String propertyName, String propertyKeyName, boolean unique) {
 
         final String methodName = "createCompositeIndexForEdgeProperty";
 
@@ -772,7 +776,13 @@ public class GraphOMRSGraphFactory {
             }
 
             JanusGraphManagement.IndexBuilder indexBuilder = management.buildIndex(indexName, Edge.class).addKey(propertyKey);
+            if (unique) {
+                indexBuilder.unique();
+            }
             JanusGraphIndex index = indexBuilder.buildCompositeIndex();
+            if (unique) {
+                management.setConsistency(index, ConsistencyModifier.LOCK);
+            }
             management.commit();
 
             // If we are reusing a key creating in an earlier management transaction - e.g. "guid" - we need to reindex

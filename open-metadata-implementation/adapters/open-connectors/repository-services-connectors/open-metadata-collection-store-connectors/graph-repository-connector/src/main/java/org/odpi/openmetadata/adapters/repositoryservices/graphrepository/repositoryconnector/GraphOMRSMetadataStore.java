@@ -4154,7 +4154,6 @@ class GraphOMRSMetadataStore {
                             "matchProperties");
                 }
             }
-
         }
         else if (typeDefinedPropertyNames.contains(propName))
         {
