@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
@@ -150,17 +148,12 @@ public class AssetLineageRestServices {
     private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType,
                                                 AssetLineagePublisher publisher, AuditLog auditLog) {
 
-        AtomicReference<List<String>> publishedGUIDs = new AtomicReference<>();
-        ForkJoinPool publishEntitiesPool = new ForkJoinPool();
-        publishEntitiesPool.submit(
-                () ->
-                    publishedGUIDs.set(entitiesByType.parallelStream()
-                            .map(entityDetail -> publishEntityContext(publisher, entityDetail, auditLog))
-                            .collect(Collectors.toList())));
+        List<String> publishedGUIDs = entitiesByType.parallelStream().map(entityDetail ->
+                publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList());
 
-        CollectionUtils.filter(publishedGUIDs.get(), PredicateUtils.notNullPredicate());
+        CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
 
-        return publishedGUIDs.get();
+        return publishedGUIDs;
     }
 
     /**
@@ -175,7 +168,7 @@ public class AssetLineageRestServices {
         String methodName="publishEntityContext";
 
         try {
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("BUILDING_CONTEXT", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("BUILDING_CONTEXT_STARTED", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
             String result =  publishContext(entityDetail, publisher);
             auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("PUBLISHED", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
             return result;
