@@ -53,7 +53,8 @@ public class GraphOMRSGraphFactory {
     public enum MixedIndexMapping {
         Default,
         Text,
-        String
+        String,
+        Date
     }
 
     public JanusGraph open(String              metadataCollectionId,
@@ -308,8 +309,8 @@ public class GraphOMRSGraphFactory {
             // typeName                            -   composite
             // createdBy                           -   mixed (String)
             // updatedBy                           -   mixed (String)
-            // createTime                          -   none - mixed may be useful when matchProperties allows date predicate (e.g. greaterThan/since)
-            // updateTime                          -   none - mixed may be useful when matchProperties allows date predicate (e.g. greaterThan/since)
+            // createTime                          -   mixed (Date)
+            // updateTime                          -   mixed (Date)
             // maintainedBy                        -   mixed (Text)
             // instanceProvenanceType (ordinal)    -   none
             // instanceLicense                     -   mixed (String)
@@ -330,6 +331,10 @@ public class GraphOMRSGraphFactory {
 
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATED_BY,              PROPERTY_KEY_ENTITY_CREATED_BY);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATED_BY,              PROPERTY_KEY_ENTITY_UPDATED_BY);
+
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,              PROPERTY_KEY_ENTITY_CREATE_TIME);  // TODO - for relationships too!!
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,              PROPERTY_KEY_ENTITY_UPDATE_TIME);  // TODO - for relationships too!!
+
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_MAINTAINED_BY,           PROPERTY_KEY_ENTITY_MAINTAINED_BY);              // maintainedBy is a serialized list so use Text mapping
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_INSTANCE_URL,            PROPERTY_KEY_ENTITY_INSTANCE_URL);
@@ -411,6 +416,10 @@ public class GraphOMRSGraphFactory {
 
         put(PROPERTY_KEY_ENTITY_CREATED_BY,                        MixedIndexMapping.String);
         put(PROPERTY_KEY_ENTITY_UPDATED_BY,                        MixedIndexMapping.String);
+
+        put(PROPERTY_KEY_ENTITY_CREATE_TIME,                       MixedIndexMapping.Date);  // TODO repeat for rels and classifications
+        put(PROPERTY_KEY_ENTITY_UPDATE_TIME,                       MixedIndexMapping.Date);  // TODO repeat for rels and classifications
+
         put(PROPERTY_KEY_ENTITY_MAINTAINED_BY,                     MixedIndexMapping.Text  );    // maintainedBy is stored as a serialized list so uses Text mapping
         put(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME,           MixedIndexMapping.String);
         put(PROPERTY_KEY_ENTITY_INSTANCE_URL,                      MixedIndexMapping.String);
