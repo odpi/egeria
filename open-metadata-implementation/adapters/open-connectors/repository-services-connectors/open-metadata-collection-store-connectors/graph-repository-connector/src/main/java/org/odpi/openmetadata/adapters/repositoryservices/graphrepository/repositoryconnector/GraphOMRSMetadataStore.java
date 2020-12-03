@@ -98,7 +98,7 @@ class GraphOMRSMetadataStore {
 
     private String repositoryName;
     private String metadataCollectionId;
-    private String metadataCollectionName = null;
+
     private OMRSRepositoryHelper repositoryHelper;
 
     // The instance graph is used to store entities (vertices) and relationships (edges).
@@ -126,8 +126,8 @@ class GraphOMRSMetadataStore {
                            OMRSRepositoryHelper repositoryHelper,
                            AuditLog auditLog,
                            Map<String, Object> storageProperties)
-    throws
-    RepositoryErrorException
+
+    throws RepositoryErrorException
     {
 
         final String methodName = "GraphOMRSMetadataStore";
@@ -165,9 +165,9 @@ class GraphOMRSMetadataStore {
     // Therefore if we get a GUID clash here we throw an exception.
     //
     synchronized EntityDetail createEntityInStore(EntityDetail entity)
-    throws
-    RepositoryErrorException,
-    InvalidParameterException
+
+    throws RepositoryErrorException,
+           InvalidParameterException
     {
         final String methodName = "createEntityInStore";
 
@@ -252,7 +252,7 @@ class GraphOMRSMetadataStore {
                     log.debug("{} add classification: {} ", methodName, classification.getName());
                     Vertex classificationVertex = g.addV("Classification").next();
                     classificationMapper.mapClassificationToVertex(classification, classificationVertex);
-                    Edge classifierEdge = vertex.addEdge("Classifier", classificationVertex);
+                    vertex.addEdge("Classifier", classificationVertex);
                 }
             }
 
@@ -282,9 +282,9 @@ class GraphOMRSMetadataStore {
     // So - if we do find that there is a GUID clash then throw exception.
     //
     synchronized void createEntityProxyInStore(EntityProxy entityProxy)
-    throws
-    RepositoryErrorException,
-    InvalidParameterException
+
+    throws RepositoryErrorException,
+           InvalidParameterException
     {
         final String methodName = "createEntityProxyInStore";
 
@@ -319,7 +319,7 @@ class GraphOMRSMetadataStore {
                     log.debug("{} add classification {}", methodName, classification.getName());
                     Vertex classificationVertex = g.addV("Classification").next();
                     classificationMapper.mapClassificationToVertex(classification, classificationVertex);
-                    Edge classifierEdge = vertex.addEdge("Classifier", classificationVertex);
+                    vertex.addEdge("Classifier", classificationVertex);
                 }
             }
 
@@ -378,9 +378,9 @@ class GraphOMRSMetadataStore {
      *             error
      */
     synchronized void saveEntityReferenceCopyToStore(EntityDetail entity)
-    throws
-    InvalidParameterException,
-    RepositoryErrorException
+
+    throws InvalidParameterException,
+           RepositoryErrorException
 
     {
 
@@ -454,7 +454,7 @@ class GraphOMRSMetadataStore {
                     log.debug("{} add classification: {} ", methodName, classification.getName());
                     Vertex classificationVertex = g.addV("Classification").next();
                     classificationMapper.mapClassificationToVertex(classification, classificationVertex);
-                    Edge classifierEdge = vertex.addEdge("Classifier", classificationVertex);
+                    vertex.addEdge("Classifier", classificationVertex);
                 }
             }
 
@@ -477,10 +477,10 @@ class GraphOMRSMetadataStore {
 
 
     synchronized EntityDetail getEntityDetailFromStore(String guid)
-    throws
-    EntityNotKnownException,
-    EntityProxyOnlyException,
-    RepositoryErrorException
+
+    throws EntityNotKnownException,
+           EntityProxyOnlyException,
+           RepositoryErrorException
     {
 
         String methodName = "getEntityDetailFromStore";
@@ -568,9 +568,9 @@ class GraphOMRSMetadataStore {
     }
 
     synchronized EntitySummary getEntitySummaryFromStore(String guid)
-    throws
-    EntityNotKnownException,
-    RepositoryErrorException
+
+    throws EntityNotKnownException,
+           RepositoryErrorException
     {
 
         String methodName = "getEntitySummaryFromStore";
@@ -634,8 +634,9 @@ class GraphOMRSMetadataStore {
 
 
     synchronized EntityProxy getEntityProxyFromStore(String guid)
-    throws
-    RepositoryErrorException
+
+    throws RepositoryErrorException
+
     {
         String methodName = "getEntityProxyFromStore";
 
@@ -691,9 +692,9 @@ class GraphOMRSMetadataStore {
     // If either of these fails then throw exception
     //
     synchronized void createRelationshipInStore(Relationship relationship)
-    throws
-    RepositoryErrorException,
-    InvalidParameterException
+
+    throws RepositoryErrorException,
+           InvalidParameterException
 
     {
         String methodName = "createRelationshipInStore";
@@ -827,9 +828,9 @@ class GraphOMRSMetadataStore {
      *             update existing edge by mapping relationship
      */
     synchronized void saveRelationshipReferenceCopyToStore(Relationship relationship)
-    throws
-    InvalidParameterException,
-    RepositoryErrorException
+
+    throws InvalidParameterException,
+           RepositoryErrorException
 
     {
 
@@ -1003,7 +1004,9 @@ class GraphOMRSMetadataStore {
 
 
     synchronized Relationship getRelationshipFromStore(String guid)
+
     throws RepositoryErrorException
+
     {
         String methodName = "getRelationshipFromStore";
 
@@ -1074,8 +1077,9 @@ class GraphOMRSMetadataStore {
 
 
     synchronized void updateEntityInStore(EntityDetail entity)
-    throws
-    RepositoryErrorException
+
+    throws RepositoryErrorException
+
     {
 
         String methodName = "updateEntityInStore";
@@ -1127,69 +1131,13 @@ class GraphOMRSMetadataStore {
 
     }
 
-    synchronized void updateEntityProxyInStore(EntityProxy entityProxy)
-    throws
-    RepositoryErrorException
-    {
-
-        String methodName = "updateEntityProxyInStore";
-
-        log.debug("{}", methodName);
-
-        // Look in the graph
-        String guid = entityProxy.getGUID();
-        GraphTraversalSource g = instanceGraph.traversal();
-
-        GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, guid);
-
-        // Only looking for proxy entities:
-        gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, true);
-
-        if (gt.hasNext())
-        {
-
-            Vertex vertex = gt.next();
-
-            log.debug("{} found entity vertex {}", methodName, vertex);
-
-            try
-            {
-
-                // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
-                Boolean isProxy = entityMapper.isProxy(vertex);
-                if (isProxy)
-                {
-
-                    entityMapper.mapEntityProxyToVertex(entityProxy, vertex);
-
-                    updateEntityClassifications(entityProxy, vertex, g);
-                }
-
-            }
-            catch (Exception e)
-            {
-                log.error("{} caught exception {}", methodName, e.getMessage());
-                g.tx().rollback();
-
-                throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_NOT_UPDATED.getMessageDefinition(entityProxy.getGUID(),
-                                                                                                              methodName,
-                                                                                                              this.getClass().getName(),
-                                                                                                              repositoryName),
-                                                   this.getClass().getName(),
-                                                   methodName, e);
-            }
-        }
-
-        log.debug("{} commit entity proxy update tx: ", methodName);
-        g.tx().commit();
-
-    }
 
 
     // updateEntityClassifications
     private void updateEntityClassifications(EntitySummary entity, Vertex vertex, GraphTraversalSource g)
-    throws
-    RepositoryErrorException
+
+    throws RepositoryErrorException
+
     {
 
         final String methodName = "updateEntityClassifications";
@@ -1279,8 +1227,9 @@ class GraphOMRSMetadataStore {
 
     // updateRelationshipInStore
     synchronized void updateRelationshipInStore(Relationship relationship)
-    throws
-    RepositoryErrorException
+
+    throws RepositoryErrorException
+
     {
 
         String methodName = "updateRelationshipInStore";
@@ -1326,7 +1275,6 @@ class GraphOMRSMetadataStore {
         final String methodName = "removeEntityFromStore";
 
         // Look in the graph
-        String guid = entityGUID;
         GraphTraversalSource g = instanceGraph.traversal();
 
         GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID);
@@ -1458,9 +1406,9 @@ class GraphOMRSMetadataStore {
     // getRelationshipsForEntity
     synchronized List<Relationship> getRelationshipsForEntity(String entityGUID)
 
-    throws
-    TypeErrorException,
-    RepositoryErrorException
+    throws TypeErrorException,
+           RepositoryErrorException
+
     {
         final String methodName = "getRelationshipsForEntity";
 
@@ -1541,9 +1489,9 @@ class GraphOMRSMetadataStore {
                                               InstanceProperties matchProperties,
                                               MatchCriteria matchCriteria,
                                               Boolean fullMatch)
-    throws
-    RepositoryErrorException,
-    InvalidParameterException
+
+    throws RepositoryErrorException,
+           InvalidParameterException
 
     {
 
@@ -1808,7 +1756,7 @@ class GraphOMRSMetadataStore {
                         /*
                          * Skip this property but process the rest
                          */
-                        continue;
+                        // continue; //
                     }
 
                 }
@@ -2165,9 +2113,9 @@ class GraphOMRSMetadataStore {
                                                    InstanceProperties matchProperties,
                                                    MatchCriteria matchCriteria,
                                                    Boolean fullMatch)
-    throws
-    RepositoryErrorException,
-    InvalidParameterException
+
+    throws RepositoryErrorException,
+           InvalidParameterException
 
     {
 
@@ -2666,7 +2614,7 @@ class GraphOMRSMetadataStore {
                             {
                                 PrimitivePropertyValue ppv = new PrimitivePropertyValue();
                                 ppv.setPrimitiveDefCategory(primDefCat);
-                                ppv.setPrimitiveValue((Object) searchCriteria);
+                                ppv.setPrimitiveValue(searchCriteria);
                                 log.debug("{} include search property {} value {}", methodName, propertyName, ppv);
                                 stringMatchProperties.setProperty(propertyName, ppv);
                             }
@@ -2887,9 +2835,8 @@ class GraphOMRSMetadataStore {
                                                            InstanceProperties classificationProperties,
                                                            MatchCriteria matchCriteria,
                                                            String entityTypeName)
-    throws
-    InvalidParameterException,
-    RepositoryErrorException
+    throws InvalidParameterException,
+           RepositoryErrorException
     {
 
         final String methodName = "findEntitiesByClassification";
@@ -2906,8 +2853,6 @@ class GraphOMRSMetadataStore {
         {
             gt = gt.has(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME, classificationName);
         }
-
-
 
         /*
          * For details of property namespace and how names are qualified please refer to comment in findEntitiesByProperty(). A
@@ -3039,7 +2984,7 @@ class GraphOMRSMetadataStore {
             catch (Exception e)
             {
                 log.error("{} caught exception from entity mapper - entity will be ignored, {}", methodName, e.getMessage());
-                continue; // process the next vertex
+                // continue; // process the next vertex
             }
         }
 
@@ -3056,9 +3001,8 @@ class GraphOMRSMetadataStore {
                               List<InstanceStatus> limitResultsByStatus,
                               List<String> limitResultsByClassification,
                               int level)
-    throws
-    TypeErrorException,
-    EntityNotKnownException
+    throws TypeErrorException,
+           EntityNotKnownException
     {
 
         final String methodName = "getSubGraph";
@@ -3218,28 +3162,27 @@ class GraphOMRSMetadataStore {
 
         try
         {
-
-            Vertex rootVertex = null;
+            Vertex rootVertex;
             GraphTraversal<Vertex, Vertex> t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID);
 
             if (!t.hasNext())
             {
-
                 log.error("{} could not retrieve start entity with GUID {}", methodName, entityGUID);
                 g.tx().rollback();
 
-                throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(entityGUID, methodName,
-                                                                                                           this.getClass().getName(),
-                                                                                                           repositoryName),
-                                                  this.getClass().getName(),
-                                                  methodName);
-
+                throw new EntityNotKnownException(
+                        GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                                entityGUID, methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName);
             }
             else
             {
 
                 // Find the root vertex
-                rootVertex = (Vertex) t.next();
+                rootVertex = t.next();
                 log.debug("{} found root entity vertex {}", methodName, rootVertex);
 
                 try
@@ -3252,17 +3195,16 @@ class GraphOMRSMetadataStore {
                 }
                 catch (EntityProxyOnlyException | RepositoryErrorException e)
                 {
-
-
                     log.error("{} caught exception whilst trying to map entity with GUID {}, exception {}", methodName, entityGUID, e.getMessage());
                     g.tx().rollback();
 
-                    throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(entityGUID, methodName,
-                                                                                                               this.getClass().getName(),
-                                                                                                               repositoryName),
-                                                      this.getClass().getName(),
-                                                      methodName, e);
-
+                    throw new EntityNotKnownException(
+                            GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                                    entityGUID, methodName,
+                                    this.getClass().getName(),
+                                    repositoryName),
+                            this.getClass().getName(),
+                            methodName, e);
                 }
 
                 if (level != 0)
@@ -3292,7 +3234,7 @@ class GraphOMRSMetadataStore {
                     }
 
                     // Project the relationships and move on to the inVertex for each relationship...
-                    GraphTraversal<Vertex, Vertex> vertexTraversal = (DefaultGraphTraversal) edgesTraversal.as("r").otherV();
+                    GraphTraversal<Vertex, Vertex> vertexTraversal = edgesTraversal.as("r").otherV();
 
                     // Optionally filter entities by status
                     if (statusWithin)
@@ -3462,9 +3404,8 @@ class GraphOMRSMetadataStore {
                                   int maxPaths,
                                   int maxDepth)
 
-    throws
-    TypeErrorException,
-    EntityNotKnownException
+    throws TypeErrorException,
+           EntityNotKnownException
     {
 
         final String methodName = "getPaths";
@@ -3789,8 +3730,8 @@ class GraphOMRSMetadataStore {
     List<EntityDetail> findEntities(String              typeDefName,
                                     SearchProperties    searchProperties,
                                     boolean             fullMatch)
-    throws
-    InvalidParameterException
+
+    throws InvalidParameterException
 
     {
 
@@ -4076,7 +4017,9 @@ class GraphOMRSMetadataStore {
      * OR
      *   nestedConditions is set and the others are null
      */
-    private boolean validatePropertyCondition(PropertyCondition condition) throws InvalidParameterException
+    private boolean validatePropertyCondition(PropertyCondition condition)
+
+    throws InvalidParameterException
     {
         final String methodName = "validatePropertyCondition";
         boolean localCondition;
