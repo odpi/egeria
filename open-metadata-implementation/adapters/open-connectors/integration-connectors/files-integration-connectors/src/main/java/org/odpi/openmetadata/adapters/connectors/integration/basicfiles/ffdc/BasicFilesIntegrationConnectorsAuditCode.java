@@ -89,8 +89,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                  OMRSAuditLogRecordSeverity.EXCEPTION,
                                  "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
                                          "FileAlterationMonitor for directory {2} while it stopping the monitoring service.  The error message was {3}",
-                                 "The exception is logged and the integration connector continues to synchronize metadata " +
-                                         "through the refresh process.",
+                                 "The exception is logged and the integration connector continues to shutdown.",
                                  "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
                                          "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
 
@@ -148,10 +147,10 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                              "operation on the integration daemon."),
 
     DATA_FILE_CREATED("BASIC-FILES-INTEGRATION-CONNECTORS-0016",
-                                 OMRSAuditLogRecordSeverity.INFO,
-                                 "The {0} integration connector created the DataFile {1} ({2}) for a new real-world file",
-                                 "The connector created the DataFile as part of its monitoring of the files in the file directory.",
-                                 "No action is required.  This message is to record the reason why the DataFolder was created."),
+                      OMRSAuditLogRecordSeverity.INFO,
+                     "The {0} integration connector created the DataFile {1} ({2}) for a new real-world file",
+                     "The connector created the DataFile as part of its monitoring of the files in the file directory.",
+                     "No action is required.  This message is to record the reason why the DataFolder was created."),
 
     DATA_FILE_CREATED_FROM_TEMPLATE("BASIC-FILES-INTEGRATION-CONNECTORS-0017",
                       OMRSAuditLogRecordSeverity.INFO,
