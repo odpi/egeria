@@ -31,12 +31,14 @@ public class IntegrationServiceRegistry
      * integration connectors to be added.
      *
      * @param serviceURLMarker URL marker to identify the service
+     * @param serverName and of server being configured
      * @param methodName calling method
      * @return partially filled configuration for the names integration service
      * @throws InvalidParameterException the service URL marker is not recognized
      */
-    public static IntegrationServiceConfig getIntegrationServiceConfig(String  serviceURLMarker,
-                                                                       String  methodName) throws InvalidParameterException
+    public static IntegrationServiceConfig getIntegrationServiceConfig(String serviceURLMarker,
+                                                                       String serverName,
+                                                                       String methodName) throws InvalidParameterException
     {
         IntegrationServiceDescription serviceDescription = serviceDescriptions.get(serviceURLMarker);
         String                        contextManagerClass = serviceContextManagers.get(serviceURLMarker);
@@ -52,6 +54,7 @@ public class IntegrationServiceRegistry
             config.setIntegrationServiceDescription(serviceDescription.getIntegrationServiceDescription());
             config.setIntegrationServiceWiki(serviceDescription.getIntegrationServiceWiki());
             config.setIntegrationServicePartnerOMAS(serviceDescription.getIntegrationServicePartnerOMAS());
+            config.setDefaultPermittedSynchronization(serviceDescription.getDefaultPermittedSynchronization());
 
             config.setIntegrationServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
             config.setIntegrationServiceContextManagerClass(contextManagerClass);
@@ -62,7 +65,8 @@ public class IntegrationServiceRegistry
         {
             final String actionDescription = "getIntegrationServiceConfig";
 
-            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_SERVICE.getMessageDefinition(serviceURLMarker),
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_SERVICE.getMessageDefinition(serviceURLMarker,
+                                                                                                                                    serverName),
                                                 IntegrationServiceRegistry.class.getName(),
                                                 actionDescription,
                                                 methodName);

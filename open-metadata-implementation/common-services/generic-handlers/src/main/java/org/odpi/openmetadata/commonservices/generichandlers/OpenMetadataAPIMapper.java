@@ -12,6 +12,9 @@ public class OpenMetadataAPIMapper
     /* Area 0 - Basic definitions and Infrastructure                                                                               */
     /* ============================================================================================================================*/
 
+    public static final String OPEN_METADATA_ROOT_TYPE_GUID              = "4e7761e8-3969-4627-8f40-bfe3cde85a1d";
+    public static final String OPEN_METADATA_ROOT_TYPE_NAME              = "OpenMetadataRoot";        /* from Area 0 */
+
     public static final String REFERENCEABLE_TYPE_GUID                   = "a32316b8-dc8c-48c5-b12b-71c1b2a080bf";
     public static final String REFERENCEABLE_TYPE_NAME                   = "Referenceable";          /* from Area 0 */
 
@@ -22,12 +25,16 @@ public class OpenMetadataAPIMapper
     public static final String ASSET_TYPE_NAME                           = "Asset";
     /* Referenceable */
 
+    public static final String PROCESS_TYPE_GUID                         = "d8f33bd7-afa9-4a11-a8c7-07dcec83c050";
+    public static final String PROCESS_TYPE_NAME                         = "Process";
+    /* Referenceable */
 
     public static final String DATA_SET_TYPE_GUID                        = "1449911c-4f44-4c22-abc0-7540154feefb";  /* from Area 0 */
     public static final String DATA_SET_TYPE_NAME                        = "DataSet";
     /* Asset */
 
-    public static final String NAME_PROPERTY_NAME = "name";                                 /* from Asset entity */
+    public static final String NAME_PROPERTY_NAME                        = "name";                                 /* from Asset entity */
+    public static final String FORMULA_PROPERTY_NAME                     = "formula";                              /* from Process entity */
 
     public static final String LOCATION_TYPE_GUID            = "3e09cb2b-5f15-4fd2-b004-fe0146ad8628";
     public static final String LOCATION_TYPE_NAME            = "Location";
@@ -40,8 +47,6 @@ public class OpenMetadataAPIMapper
     public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";   /* from feedback relationships - Area 1 */
     public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";         /* from many entities */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from Asset entity */
-
-
 
     public static final String ANCHORS_CLASSIFICATION_TYPE_GUID                  = "aa44f302-2e43-4669-a1e7-edaae414fc6e";
     public static final String ANCHORS_CLASSIFICATION_TYPE_NAME                  = "Anchors";
@@ -84,9 +89,18 @@ public class OpenMetadataAPIMapper
     public static final String TEMPLATE_DESCRIPTION_PROPERTY_NAME                = "description";
     public static final String TEMPLATE_ADDITIONAL_PROPERTIES_PROPERTY_NAME      = "additionalProperties";
 
-    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_GUID  = "87b7371e-e311-460f-8849-08646d0d6ad3";   /* from Area 0 */
-    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_NAME  = "SourcedFrom";
+    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_GUID               = "87b7371e-e311-460f-8849-08646d0d6ad3";   /* from Area 0 */
+    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_NAME               = "SourcedFrom";
     /* End1 = NewEntity; End 2 = Template */
+
+    public static final String MEMENTO_CLASSIFICATION_TYPE_GUID                  = "ecdcd472-6701-4303-8dec-267bcb54feb9";
+    public static final String MEMENTO_CLASSIFICATION_TYPE_NAME                  = "Memento";
+    public static final String ARCHIVE_DATE_PROPERTY_NAME                        = "archivedDate";
+    public static final String ARCHIVE_USER_PROPERTY_NAME                        = "archivedUser";
+    public static final String ARCHIVE_PROCESS_PROPERTY_NAME                     = "archivedProcess";
+    public static final String ARCHIVE_SERVICE_PROPERTY_NAME                     = "archivedService";
+    public static final String ARCHIVE_METHOD_PROPERTY_NAME                      = "archivedMethod";
+    public static final String ARCHIVE_PROPERTIES_PROPERTY_NAME                  = "archiveProperties";
 
 
     public static final String REFERENCEABLE_TO_MORE_INFO_TYPE_GUID              = "1cbf059e-2c11-4e0c-8aae-1da42c1ee73f";
@@ -110,8 +124,10 @@ public class OpenMetadataAPIMapper
     public static final String EXTERNAL_IDENTIFIER_TYPE_GUID             = "7c8f8c2c-cc48-429e-8a21-a1f1851ccdb0";
     public static final String EXTERNAL_IDENTIFIER_TYPE_NAME             = "ExternalId";              /* from Area 0 */
 
-    public static final String IDENTIFIER_PROPERTY_NAME                  = "identifier";              /* from ExternalId entity */
-    public static final String KEY_PATTERN_PROPERTY_NAME                 = "keyPattern";              /* from External entity */
+    public static final String IDENTIFIER_PROPERTY_NAME         = "identifier";             /* from ExternalId entity */
+    public static final String MAPPING_PROPERTIES_PROPERTY_NAME = "mappingProperties";      /* from ExternalId entity */
+    public static final String LAST_SYNCHRONIZED_PROPERTY_NAME  = "lastSynchronized";       /* from ExternalId entity */
+    public static final String KEY_PATTERN_PROPERTY_NAME        = "keyPattern";             /* from ExternalId entity */
     /* Enum type KeyPattern */
 
     public static final String KEY_PATTERN_ENUM_TYPE_GUID  = "8904df8f-1aca-4de8-9abd-1ef2aadba300";
@@ -125,9 +141,11 @@ public class OpenMetadataAPIMapper
     public static final String EXTERNAL_ID_SCOPE_TYPE_NAME               = "ExternalIdScope";
     /* End1 = Referenceable; End 2 = ExternalId */
 
-    public static final String EXTERNAL_ID_DESCRIPTION_PROPERTY_NAME     = "description"; /* from ExternalIdLink and ExternalIdScope relationships */
-    public static final String EXTERNAL_ID_USAGE_PROPERTY_NAME           = "usage";                    /* from ExternalIdLink relationship */
-    public static final String EXTERNAL_ID_SOURCE_PROPERTY_NAME          = "source";                   /* from ExternalIdLink relationship */
+    public static final String PERMITTED_SYNC_PROPERTY_NAME              = "permittedSynchronization";             /* from ExternalId entity */
+    /* Enum type PermittedSynchronization */
+
+    public static final String PERMITTED_SYNC_ENUM_TYPE_GUID  = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
+    public static final String PERMITTED_SYNC_ENUM_TYPE_NAME  = "PermittedSynchronization";
 
     public static final String REFERENCEABLE_TO_EXT_REF_TYPE_GUID                = "7d818a67-ab45-481c-bc28-f6b1caf12f06";
     public static final String REFERENCEABLE_TO_EXT_REF_TYPE_NAME                = "ExternalReferenceLink";
@@ -138,7 +156,7 @@ public class OpenMetadataAPIMapper
     /* Referenceable */
 
     public static final String URL_PROPERTY_NAME                         = "url";                 /* from ExternalReference entity */
-    public static final String VERSION_PROPERTY_NAME                     = "referenceVersion";             /* from ExternalReference entity */
+    public static final String VERSION_PROPERTY_NAME                     = "version";             /* from ExternalReference entity */
     public static final String ORGANIZATION_PROPERTY_NAME                = "organization";        /* from ExternalReference entity */
 
     public static final String REFERENCE_ID_PROPERTY_NAME                = "referenceId";          /* from ExternalReferenceLink relationship */
@@ -189,6 +207,9 @@ public class OpenMetadataAPIMapper
     public static final String NETWORK_ADDRESS_PROPERTY_NAME             = "networkAddress";                       /* from Endpoint entity */
     public static final String PROTOCOL_PROPERTY_NAME                    = "protocol";                             /* from Endpoint entity */
     public static final String ENCRYPTION_METHOD_PROPERTY_NAME           = "encryptionMethod";                     /* from Endpoint entity */
+
+    public static final String ASSET_MANAGER_TYPE_GUID = "03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c";
+    public static final String ASSET_MANAGER_TYPE_NAME = "AssetManager";
 
     public static final String SOFTWARE_SERVICE_TYPE_GUID = "f3f69251-adb1-4042-9d95-70082f95a028";
     public static final String SOFTWARE_SERVICE_TYPE_NAME = "SoftwareService";
@@ -444,15 +465,14 @@ public class OpenMetadataAPIMapper
 
     public static final String ASSET_SUMMARY_PROPERTY_NAME               = "assetSummary";          /* from ConnectionToAsset relationship */
 
-
     public static final String DATA_STORE_TYPE_GUID                      = "10752b4a-4b5d-4519-9eae-fdd6d162122f";  /* from Area 2 */
     public static final String DATA_STORE_TYPE_NAME                      = "DataStore";
     /* Asset */
 
-    public static final String CREATE_TIME_PROPERTY_NAME                 = "storeCreateTime";                       /* from DataStore entity */
-    public static final String CREATE_TIME_PROPERTY_NAME_DEP             = "createTime";                            /* from DataStore entity */
-    public static final String MODIFIED_TIME_PROPERTY_NAME               = "storeUpdateTime";                       /* from DataStore entity */
-    public static final String MODIFIED_TIME_PROPERTY_NAME_DEP           = "modifiedTime";                          /* from DataStore entity */
+    public static final String STORE_CREATE_TIME_PROPERTY_NAME           = "storeCreateTime";                       /* from DataStore entity */
+    public static final String STORE_CREATE_TIME_PROPERTY_NAME_DEP       = "createTime";                            /* from DataStore entity */
+    public static final String STORE_UPDATE_TIME_PROPERTY_NAME           = "storeUpdateTime";                       /* from DataStore entity */
+    public static final String STORE_UPDATE_TIME_PROPERTY_NAME_DEP       = "updateTime";                            /* from DataStore entity */
 
     public static final String DATA_STORE_ENCODING_CLASSIFICATION_GUID   = "f08e48b5-6b66-40f5-8ff6-c2bfe527330b";
     public static final String DATA_STORE_ENCODING_CLASSIFICATION_NAME   = "DataStoreEncoding";
@@ -512,6 +532,7 @@ public class OpenMetadataAPIMapper
     public static final String LINKED_MEDIA_TYPE_GUID                    = "cee3a190-fc8d-4e53-908a-f1b9689581e0";  /* from Area 2 */
     public static final String LINKED_MEDIA_TYPE_NAME                    = "LinkedMedia";
     /* End1 = MediaFile; End 2 = MediaFile */
+
     public static final String GROUPED_MEDIA_TYPE_GUID                   = "7d881574-461d-475c-ab44-077451528cb8";  /* from Area 2 */
     public static final String GROUPED_MEDIA_TYPE_NAME                   = "GroupedMedia";
     /* End1 = MediaCollection; End 2 = MediaFile */
@@ -542,10 +563,9 @@ public class OpenMetadataAPIMapper
     public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME       = "DataContentForDataSet";
     /* End1 = Asset; End 2 = DataSet */
 
-    public static final String DATABASE_MANAGER_CLASSIFICATION_TYPE_GUID = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
-    public static final String DATABASE_MANAGER_CLASSIFICATION_TYPE_NAME = "DatabaseManager";
+    public static final String DATABASE_MANAGER_TYPE_GUID                = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
+    public static final String DATABASE_MANAGER_TYPE_NAME                = "DatabaseManager";
     /* SoftwareServerCapability */
-
 
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_GUID = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_NAME = "FileSystem";
@@ -585,7 +605,7 @@ public class OpenMetadataAPIMapper
     public static final String LOG_FILE_TYPE_GUID                        = "ff4c8484-9127-464a-97fc-99579d5bc429";  /* from Area 2 */
     public static final String LOG_FILE_TYPE_NAME                        = "LogFile";
     /* DataFile */
-    public static final String LOG_FILE_TYPE_PROPERTY_NAME               = "deployedImplementationType";                                  /* from LogFile entity */
+    public static final String LOG_FILE_TYPE_PROPERTY_NAME               = "deployedImplementationType";            /* from LogFile entity */
 
     public static final String TOPIC_TYPE_GUID                           = "29100f49-338e-4361-b05d-7e4e8e818325";  /* from Area 2 */
     public static final String TOPIC_TYPE_NAME                           = "Topic";
@@ -599,27 +619,148 @@ public class OpenMetadataAPIMapper
     public static final String TOPIC_SUBSCRIBERS_TYPE_NAME               = "TopicSubscribers";
     /* End1 = SubscriberList; End 2 = Topic */
 
+    public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID     = "486af62c-dcfd-4859-ab24-eab2e380ecfd";  /* from Area 2 */
+    public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME     = "DeployedSoftwareComponent";
+    /* Process */
+    public static final String IMPLEMENTATION_LANGUAGE_PROPERTY_NAME     = "implementationLanguage";                /* from Topic entity */
+
+    public static final String PROCESS_HIERARCHY_TYPE_GUID               = "70dbbda3-903f-49f7-9782-32b503c43e0e";  /* from Area 2 */
+    public static final String PROCESS_HIERARCHY_TYPE_NAME               = "ProcessHierarchy";
+    /* End1 = Process - parent; End 2 = Process - child */
+
+    public static final String PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID   = "1bb4b908-7983-4802-a2b5-91b095552ee9";
+    public static final String PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME   = "ProcessContainmentType";                /* from Area 2 */
+
+    public static final String CONTAINMENT_TYPE_PROPERTY_NAME            = "containmentType";               /* from ProcessHierarchy relationship */
+
+    public static final String PORT_TYPE_GUID                            = "e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C";  /* from Area 2 */
+    public static final String PORT_TYPE_NAME                            = "Port";
+    /* Referenceable */
+
+    public static final String PORT_TYPE_ENUM_TYPE_GUID                  = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
+    public static final String PORT_TYPE_ENUM_TYPE_NAME                  = "PortType";                              /* from Area 2 */
+
+    public static final String PORT_TYPE_PROPERTY_NAME                   = "portType";                              /* from Port entity */
+
+    public static final String PORT_ALIAS_TYPE_GUID                      = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";  /* from Area 2 */
+    public static final String PORT_ALIAS_TYPE_NAME                      = "PortAlias";
+    /* Port */
+
+    public static final String PORT_IMPLEMENTATION_TYPE_GUID             = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";  /* from Area 2 */
+    public static final String PORT_IMPLEMENTATION_TYPE_NAME             = "PortImplementation";
+    /* Port */
+
+    public static final String PROCESS_PORT_TYPE_GUID                    = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";  /* from Area 2 */
+    public static final String PROCESS_PORT_TYPE_NAME                    = "ProcessPort";
+    /* End1 = Process; End 2 = Port */
+
+    public static final String PORT_DELEGATION_TYPE_GUID                 = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";  /* from Area 2 */
+    public static final String PORT_DELEGATION_TYPE_NAME                 = "PortDelegation";
+    /* End1 = Port delegating from; End 2 = Port delegating to */
+
 
     /* ============================================================================================================================*/
     /* Area 3 - Glossary                                                                                                           */
     /* ============================================================================================================================*/
 
-    public static final String GLOSSARY_TYPE_GUID                       = "36f66863-9726-4b41-97ee-714fd0dc6fe4";
-    public static final String GLOSSARY_TYPE_NAME                       = "Glossary";               /* from Area 3 */
+    public static final String GLOSSARY_TYPE_GUID                                = "36f66863-9726-4b41-97ee-714fd0dc6fe4";
+    public static final String GLOSSARY_TYPE_NAME                                = "Glossary";               /* from Area 3 */
     /* Referenceable */
 
-    public static final String GLOSSARY_CATEGORY_TYPE_GUID              = "e507485b-9b5a-44c9-8a28-6967f7ff3672";
-    public static final String GLOSSARY_CATEGORY_TYPE_NAME              = "GlossaryCategory";       /* from Area 3 */
+    public static final String LANGUAGE_PROPERTY_NAME                            = "language";      /* from Glossary entity*/
+    public static final String USAGE_PROPERTY_NAME                               = "usage";         /* from Glossary entity*/
+
+    public static final String TAXONOMY_CLASSIFICATION_TYPE_GUID                 = "37116c51-e6c9-4c37-942e-35d48c8c69a0";
+    public static final String TAXONOMY_CLASSIFICATION_TYPE_NAME                 = "Taxonomy";               /* from Area 3 */
+
+    public static final String ORGANIZING_PRINCIPLE_PROPERTY_NAME                = "organizingPrinciple";  /* from Taxonomy classification */
+
+    public static final String CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID          = "33ad3da2-0910-47be-83f1-daee018a4c05";
+    public static final String CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME          = "CanonicalVocabulary";               /* from Area 3 */
+
+    public static final String SCOPE_PROPERTY_NAME                               = "scope";  /* from CanonicalVocabulary classification */
+
+    public static final String EXTERNAL_GLOSSARY_LINK_TYPE_GUID                  = "183d2935-a950-4d74-b246-eac3664b5a9d";
+    public static final String EXTERNAL_GLOSSARY_LINK_TYPE_NAME                  = "ExternalGlossaryLink";               /* from Area 3 */
+    /* ExternalReference */
+
+    public static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_GUID             = "7786a39c-436b-4538-acc7-d595b5856add";
+    public static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME             = "ExternallySourcedGlossary";     /* from Area 3 */
+
+    public static final String GLOSSARY_CATEGORY_TYPE_GUID                       = "e507485b-9b5a-44c9-8a28-6967f7ff3672";
+    public static final String GLOSSARY_CATEGORY_TYPE_NAME                       = "GlossaryCategory";       /* from Area 3 */
     /* Referenceable */
 
-    public static final String GLOSSARY_TERM_TYPE_GUID                  = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
-    public static final String GLOSSARY_TERM_TYPE_NAME                  = "GlossaryTerm";           /* from Area 3 */
+    public static final String CATEGORY_ANCHOR_TYPE_GUID                         = "c628938e-815e-47db-8d1c-59bb2e84e028";
+    public static final String CATEGORY_ANCHOR_TYPE_NAME                         = "CategoryAnchor";     /* from Area 3 */
+
+    public static final String CATEGORY_HIERARCHY_TYPE_GUID                      = "71e4b6fb-3412-4193-aff3-a16eccd87e8e";
+    public static final String CATEGORY_HIERARCHY_TYPE_NAME                      = "CategoryHierarchyLink";     /* from Area 3 */
+
+    public static final String LIBRARY_CATEGORY_REFERENCE_TYPE_GUID              = "3da21cc9-3cdc-4d87-89b5-c501740f00b2e";
+    public static final String LIBRARY_CATEGORY_REFERENCE_TYPE_NAME              = "LibraryCategoryReference";     /* from Area 3 */
+
+    public static final String GLOSSARY_TERM_TYPE_GUID                           = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
+    public static final String GLOSSARY_TERM_TYPE_NAME                           = "GlossaryTerm";           /* from Area 3 */
     /* Referenceable */
 
-    public static final String TERM_SUMMARY_PROPERTY_NAME               = "summary";                 /* from GlossaryTerm entity */
-    public static final String TERM_EXAMPLES_PROPERTY_NAME              = "examples";                /* from GlossaryTerm entity */
-    public static final String TERM_ABBREVIATION_PROPERTY_NAME          = "abbreviation";            /* from GlossaryTerm entity */
-    public static final String TERM_USAGE_PROPERTY_NAME                 = "usage";                   /* from GlossaryTerm entity */
+    public static final String CONTROLLED_GLOSSARY_TERM_TYPE_GUID                = "c04e29b2-2d66-48fc-a20d-e59895de6040";
+    public static final String CONTROLLED_GLOSSARY_TERM_TYPE_NAME                = "ControlledGlossaryTerm";           /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String SUMMARY_PROPERTY_NAME                             = "summary";       /* from GlossaryTerm and GovernanceDefinition entity */
+    public static final String EXAMPLES_PROPERTY_NAME                            = "examples";      /* from GlossaryTerm entity */
+    public static final String ABBREVIATION_PROPERTY_NAME                        = "abbreviation";  /* from GlossaryTerm entity */
+
+    public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_GUID           = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
+    public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME           = "TermRelationshipStatus";     /* from Area 3 */
+
+    public static final String TERM_ANCHOR_TYPE_GUID                             = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
+    public static final String TERM_ANCHOR_TYPE_NAME                             = "TermAnchor";     /* from Area 3 */
+
+    public static final String TERM_CATEGORIZATION_TYPE_GUID                     = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
+    public static final String TERM_CATEGORIZATION_TYPE_NAME                     = "TermCategorization";     /* from Area 3 */
+
+    public static final String LIBRARY_TERM_REFERENCE_TYPE_GUID                  = "38c346e4-ddd2-42ef-b4aa-55d53c078d22";
+    public static final String LIBRARY_TERM_REFERENCE_TYPE_NAME                  = "LibraryTermReference";   /* from Area 3 */
+
+    public static final String ACTIVITY_TYPE_ENUM_TYPE_GUID                      = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
+    public static final String ACTIVITY_TYPE_ENUM_TYPE_NAME                      = "ActivityType";   /* from Area 3 */
+
+    public static final String ACTIVITY_TYPE_PROPERTY_NAME                       = "activityType";   /* from Area 3 */
+
+    public static final String ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID            = "317f0e52-1548-41e6-b90c-6ae5e6c53fed";
+    public static final String ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME            = "ActivityDescription";   /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID         = "9d725a07-4abf-4939-a268-419d200b69c2";
+    public static final String ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME         = "AbstractConcept";   /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String DATA_VALUE_CLASSIFICATION_TYPE_GUID               = "ab253e31-3d8a-45a7-8592-24329a189b9e";
+    public static final String DATA_VALUE_CLASSIFICATION_TYPE_NAME               = "DataValue";   /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID       = "54f9f41a-3871-4650-825d-59a41de01330e";
+    public static final String CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME       = "ContextDefinition";   /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String SPINE_OBJECT_CLASSIFICATION_TYPE_GUID             = "a41ee152-de1e-4533-8535-2f8b37897cac";
+    public static final String SPINE_OBJECT_CLASSIFICATION_TYPE_NAME             = "SpineObject";   /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID          = "ccb749ba-34ec-4f71-8755-4d8b383c34c3";
+    public static final String SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME          = "SpineAttribute";   /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID        = "3d1e4389-27de-44fa-8df4-d57bfaf809ea";
+    public static final String OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME        = "ObjectIdentifier";   /* from Area 3 */
+    /* GlossaryTerm */
+
+    public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_GUID         = "43be51a9-2d19-4044-b399-3ba36af10929";
+    public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_NAME         = "GlossaryProject";   /* from Area 3 */
+    /* Project */
+
 
     public static final String REFERENCEABLE_TO_MEANING_TYPE_GUID                = "e6670973-645f-441a-bec7-6f5570345b92";
     public static final String REFERENCEABLE_TO_MEANING_TYPE_NAME                = "SemanticAssignment";
@@ -628,13 +769,23 @@ public class OpenMetadataAPIMapper
     public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_GUID             = "c8fe36ac-369f-4799-af75-46b9c1343ab3";
     public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME             = "TermAssignmentStatus";
 
-    public static final String SEMANTIC_ASSIGNMENT_DESCRIPTION_PROPERTY_NAME     = "description";
-    public static final String SEMANTIC_ASSIGNMENT_EXPRESSION_PROPERTY_NAME      = "expression";
-    public static final String SEMANTIC_ASSIGNMENT_STATUS_PROPERTY_NAME          = "status";
-    public static final String SEMANTIC_ASSIGNMENT_CONFIDENCE_PROPERTY_NAME      = "confidence";
-    public static final String SEMANTIC_ASSIGNMENT_STEWARD_PROPERTY_NAME         = "steward";
-    public static final String SEMANTIC_ASSIGNMENT_SOURCE_PROPERTY_NAME          = "source";
-    public static final String SEMANTIC_ASSIGNMENT_CREATED_BY_PROPERTY_NAME      = "createdBy";
+    public static final String SEMANTIC_ASSIGNMENT_DESCRIPTION_PROPERTY_NAME = "description";
+    public static final String SEMANTIC_ASSIGNMENT_EXPRESSION_PROPERTY_NAME  = "expression";
+    public static final String STATUS_PROPERTY_NAME                          = "status";
+    public static final String SEMANTIC_ASSIGNMENT_CONFIDENCE_PROPERTY_NAME  = "confidence";
+    public static final String SEMANTIC_ASSIGNMENT_STEWARD_PROPERTY_NAME     = "steward";
+    public static final String SEMANTIC_ASSIGNMENT_SOURCE_PROPERTY_NAME      = "source";
+    public static final String SEMANTIC_ASSIGNMENT_CREATED_BY_PROPERTY_NAME  = "createdBy";
+
+
+    public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_GUID       = "58520015-ce6e-47b7-a1fd-864030544819";
+    public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME       = "ElementSupplement";   /* from Area 3 */
+    /* Project */
+
+    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_GUID                = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
+    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_NAME                = "SupplementaryProperties";
+    /* End1 = Referenceable; End 2 = GlossaryTerm */
+
 
     /* ============================================================================================================================*/
     /* Area 4 - Governance                                                                                                         */
@@ -694,10 +845,8 @@ public class OpenMetadataAPIMapper
     public static final String DOMAIN_PROPERTY_NAME                      = "domain";                    /* from many governance entities */
     public static final String DOMAIN_IDENTIFIER_PROPERTY_NAME           = "domainIdentifier";          /* from many governance entities */
     public static final String CRITERIA_PROPERTY_NAME                    = "criteria";                  /* from many governance entities */
-    public static final String SCOPE_PROPERTY_NAME                       = "scope";                     /* from many governance entities */
 
     public static final String TITLE_PROPERTY_NAME                       = "title";                     /* from GovernanceDefinition entity */
-    public static final String SUMMARY_PROPERTY_NAME                     = "summary";                   /* from GovernanceDefinition entity */
     public static final String PRIORITY_PROPERTY_NAME                    = "priority";                  /* from GovernanceDefinition entity */
     public static final String IMPLICATIONS_PROPERTY_NAME                = "implications";              /* from GovernanceDefinition entity */
     public static final String OUTCOMES_PROPERTY_NAME                    = "outcomes";                  /* from GovernanceDefinition entity */
@@ -706,6 +855,11 @@ public class OpenMetadataAPIMapper
 
     public static final String ZONE_TYPE_GUID                           = "290a192b-42a7-449a-935a-269ca62cfdac";
     public static final String ZONE_TYPE_NAME                           = "GovernanceZone";
+    /* Referenceable */
+
+
+    public static final String SUBJECT_AREA_CLASSIFICATION_TYPE_GUID    = "480e6993-35c5-433a-b50b-0f5c4063fb5d";
+    public static final String SUBJECT_AREA_CLASSIFICATION_TYPE_NAME    = "SubjectArea";
     /* Referenceable */
     
     public static final String REFERENCEABLE_TO_CERTIFICATION_TYPE_GUID          = "390559eb-6a0c-4dd7-bc95-b9074caffa7f";
@@ -958,6 +1112,10 @@ public class OpenMetadataAPIMapper
     public static final String SET_SCHEMA_TYPE_TYPE_NAME                = "SetSchemaType";
     /* BoundedSchemaType */
 
+    public static final String PORT_SCHEMA_RELATIONSHIP_TYPE_GUID       = "B216fA00-8281-F9CC-9911-Ae6377f2b457"; /* from Area 5 */
+    public static final String PORT_SCHEMA_RELATIONSHIP_TYPE_NAME       = "PortSchema";
+    /* End1 = Port; End 2 = SchemaType */
+
     public static final String TABULAR_SCHEMA_TYPE_TYPE_GUID            = "248975ec-8019-4b8a-9caf-084c8b724233";   /* from Area 5 */
     public static final String TABULAR_SCHEMA_TYPE_TYPE_NAME            = "TabularSchemaType";
     /* ComplexSchemaType */
@@ -1030,7 +1188,6 @@ public class OpenMetadataAPIMapper
     public static final String CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID = "4814bec8-482d-463d-8376-160b0358e139";
     public static final String CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME = "CalculatedValue";
     /* Linked to SchemaType */
-    public static final String FORMULA_PROPERTY_NAME                     = "formula";          /* from CalculatedValue classification */
 
     public static final String RELATIONAL_COLUMN_TYPE_GUID              = "aa8d5470-6dbc-4648-9e2f-045e5df9d2f9";   /* from Area 5 */
     public static final String RELATIONAL_COLUMN_TYPE_NAME              = "RelationalColumn";
@@ -1094,7 +1251,6 @@ public class OpenMetadataAPIMapper
 
     public static final String VALID_VALUE_DISPLAY_NAME_PROPERTY_NAME  = "name";                 /* from ValidValueDefinition entity */
     public static final String VALID_VALUE_DESCRIPTION_PROPERTY_NAME   = "description";          /* from ValidValueDefinition entity */
-    public static final String USAGE_PROPERTY_NAME                     = "usage";                /* from ValidValueDefinition entity */
     public static final String VALID_VALUE_SCOPE_PROPERTY_NAME         = "scope";                /* from ValidValueDefinition entity */
     public static final String PREFERRED_VALUE_PROPERTY_NAME           = "preferredValue";       /* from ValidValueDefinition entity */
 
@@ -1414,8 +1570,11 @@ public class OpenMetadataAPIMapper
     public static final String DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME         = "DataSourcePhysicalStatusAnnotation";
     /* plus DataSourceMeasurementAnnotation */
 
-    public static final String DS_PHYSICAL_CREATE_TIME_PROPERTY_NAME    = "sourceCreateTime";      /* from DataSourcePhysicalStatusAnnotation entity */
-    public static final String DS_PHYSICAL_MODIFIED_TIME_PROPERTY_NAME  = "sourceUpdateTime";    /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_CREATE_TIME_PROPERTY_NAME          = "sourceCreateTime";   /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_CREATE_TIME_PROPERTY_NAME_DEP      = "createTime";         /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_UPDATE_TIME_PROPERTY_NAME          = "sourceUpdateTime";   /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_UPDATE_TIME_PROPERTY_NAME_DEP      = "updateTime";        /* from DataSourcePhysicalStatusAnnotation entity */
+
     public static final String DS_PHYSICAL_SIZE_PROPERTY_NAME           = "size";            /* from DataSourcePhysicalStatusAnnotation entity */
     public static final String DS_PHYSICAL_ENCODING_PROPERTY_NAME       = "encoding";        /* from DataSourcePhysicalStatusAnnotation entity */
 
@@ -1433,10 +1592,29 @@ public class OpenMetadataAPIMapper
     public static final String DISCOVERY_ACTIVITY_TYPE_NAME    = "DiscoveryActivity";
     /* End1 = RequestForActionAnnotation; End 2 = RequestForAction */
 
-    public static final String DISCOVERY_ACTIVITY_DESCRIPTION_PROPERTY_NAME     = "description";        /* from DiscoveryActivity relationship */
-
     /* ============================================================================================================================*/
     /* Area 7 - Lineage                                                                                                            */
     /* ============================================================================================================================*/
 
+    public static final String DATA_FLOW_TYPE_GUID                  = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
+    public static final String DATA_FLOW_TYPE_NAME                  = "DataFlow";
+    /* End1 = Referenceable - supplier; End 2 = Referenceable - consumer */
+
+    public static final String CONTROL_FLOW_TYPE_GUID               = "35450726-1c32-4d41-b928-22db6d1ae2f4";
+    public static final String CONTROL_FLOW_TYPE_NAME               = "ControlFlow";
+    /* End1 = Referenceable - currentStep; End 2 = Referenceable - nextStep */
+
+    public static final String GUARD_PROPERTY_NAME                  = "guard";
+
+    public static final String PROCESS_CALL_TYPE_GUID               = "af904501-6347-4f52-8378-da50e8d74828";
+    public static final String PROCESS_CALL_TYPE_NAME               = "ProcessCall";
+    /* End1 = Referenceable - calls; End 2 = Referenceable - calledBy */
+
+    public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID = "085febdd-f129-4f4b-99aa-01f3e6294e9f";
+    public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME = "BusinessSignificance";
+    /* Linked to Referenceable */
+
+    public static final String LINEAGE_MAPPING_TYPE_GUID            = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
+    public static final String LINEAGE_MAPPING_TYPE_NAME            = "LineageMapping";
+    /* End1 = Referenceable - sourceElement; End 2 = Referenceable - targetElement */
 }

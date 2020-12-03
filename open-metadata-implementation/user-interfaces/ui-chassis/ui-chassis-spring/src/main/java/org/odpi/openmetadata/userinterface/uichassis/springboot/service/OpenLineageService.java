@@ -7,10 +7,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +22,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +31,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * This class responsibility is to interact with Open Lineage Services(OLS), process the returned response and return it in a format understood by view
+ * This class responsibility is to interact with Open Lineage Services(OLS),
+ * process the returned response and return it in a format understood by view
  */
 @Service
 public class OpenLineageService {
@@ -55,15 +56,18 @@ public class OpenLineageService {
         this.openLineageClient = openLineageClient;
     }
 
+    @Autowired
+    private LineageGraphDisplayRulesService lineageGraphDisplayRulesService;
+
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
      * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
-    public Map<String, List> getUltimateSource(String userId,
-                                               String guid,
-                                               boolean includeProcesses) {
+    public Graph getUltimateSource(String userId,
+                                   String guid,
+                                   boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
             return processResponse(response,guid);
@@ -80,9 +84,9 @@ public class OpenLineageService {
      * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the end to end flow
      */
-    public Map<String, List> getEndToEndLineage(String userId,
-                                                String guid,
-                                                boolean includeProcesses) {
+    public Graph getEndToEndLineage(String userId,
+                                    String guid,
+                                    boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
             return processResponse(response,guid);
@@ -98,9 +102,9 @@ public class OpenLineageService {
      * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
-    public Map<String, List> getUltimateDestination(String userId,
-                                                    String guid,
-                                                    boolean includeProcesses) {
+    public Graph getUltimateDestination(String userId,
+                                        String guid,
+                                        boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
                     includeProcesses);
@@ -118,9 +122,9 @@ public class OpenLineageService {
      * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
-    public Map<String, List> getVerticalLineage(String userId,
-                                                String guid,
-                                                boolean includeProcesses) {
+    public Graph getVerticalLineage(String userId,
+                                    String guid,
+                                    boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.VERTICAL, guid, "", includeProcesses);
             return processResponse(response,guid);
@@ -137,9 +141,9 @@ public class OpenLineageService {
      * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
-    public Map<String, List> getSourceAndDestination(String userId,
-                                                     String guid,
-                                                     boolean includeProcesses) {
+    public Graph getSourceAndDestination(String userId,
+                                         String guid,
+                                         boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
                     includeProcesses);
@@ -155,22 +159,20 @@ public class OpenLineageService {
      * @param response string returned from Open Lineage Services to be processed
      * @return map of nodes and edges describing the end to end flow
      */
-    private Map<String, List> processResponse(LineageVerticesAndEdges response, String guid) {
-        Map<String, List> graphData = new HashMap<>();
+    private Graph processResponse(LineageVerticesAndEdges response, String guid) {
         List<Edge> edges = new ArrayList<>();
         List<Node> nodes = new ArrayList<>();
 
         LOG.debug("Received response from open lineage service: {}", response);
         if (response == null || CollectionUtils.isEmpty(response.getLineageVertices())) {
-            graphData.put(EDGES_LABEL, edges);
-            graphData.put(NODES_LABEL, nodes);
+            return new Graph(nodes, edges);
+
         }
 
         edges = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageEdges)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .map(e -> new Edge(e.getSourceNodeID(),
-                        e.getDestinationNodeID()))
+                .map(this::createEdge)
                 .collect(Collectors.toList());
 
         nodes = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageVertices)
@@ -190,14 +192,14 @@ public class OpenLineageService {
         if (isQueriedNodeTabularColumn(guid, nodes)) {
             adjustGraphForTabularColumn(edges, nodes);
         }
-
+        Graph graph = new Graph(nodes, edges);
+        lineageGraphDisplayRulesService.applyRules(graph);
         nodes.stream().filter(node -> SUB_PROCESS.equals(node.getGroup())).forEach(this::extractTransformationProjectFromQualifiedName);
 
-        graphData.put(EDGES_LABEL, edges);
-        graphData.put(NODES_LABEL, nodes);
-
-        return graphData;
+        return graph;
     }
+
+
 
     private void extractTransformationProjectFromQualifiedName(Node node) {
         String qualifiedName = node.getProperties().get(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
@@ -260,6 +262,17 @@ public class OpenLineageService {
         if(newStartNodes.size() > 0 && listEdges.size() > 0){
             setNodesLevel(newStartNodes , listNodes, listEdges );
         }
+    }
+
+    /**
+     * This method will create a new edge in a ui specific format based on the edge being processed
+     *
+     * @param currentEdge current edge to be processed
+     * @return the edge in the format to be understand by the ui
+     */
+    private Edge createEdge(LineageEdge currentEdge) {
+        return new Edge(currentEdge.getSourceNodeID(),
+                currentEdge.getDestinationNodeID(), currentEdge.getEdgeType());
     }
 
     /**

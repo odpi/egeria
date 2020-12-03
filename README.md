@@ -5,9 +5,10 @@
 
 [![GitHub](https://img.shields.io/github/license/odpi/egeria)](LICENSE)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3044/badge)](https://bestpractices.coreinfrastructure.org/projects/3044)
-[![Azure](https://dev.azure.com/odpi/egeria/_apis/build/status/odpi.egeria)](https://dev.azure.com/odpi/Egeria/_build)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=odpi_egeria&metric=alert_status)](https://sonarcloud.io/dashboard?id=odpi_egeria)
 [![Maven Central](https://img.shields.io/maven-central/v/org.odpi.egeria/egeria)](https://mvnrepository.com/artifact/org.odpi.egeria)
+
+<!-- [![Azure](https://dev.azure.com/odpi/egeria/_apis/build/status/odpi.egeria)](https://dev.azure.com/odpi/Egeria/_build) -->
+<!-- [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=odpi_egeria&metric=alert_status)](https://sonarcloud.io/dashboard?id=odpi_egeria) -->
 
 
 # Egeria - Open Metadata and Governance
@@ -40,7 +41,7 @@ The governance of the project is described in more detail in the
 
 ## Call schedule
 
-The Egeria team run two calls every Thursday and all are welcome
+The Egeria team run three types of calls and all are welcome
 
 * **Developers call** - one hour - 
   Discussion on code development - not minuted -
@@ -52,12 +53,18 @@ The Egeria team run two calls every Thursday and all are welcome
 * **Community call** - one hour - 
   Demos, meet-ups and other activities going on in the Egeria community
   
-  2pm (UK); 3pm (Amsterdam/CET); 4pm (Bucharest)
+  8am (EST); 1pm (UK/GMT); 2pm (Amsterdam/CET); 3pm (Bucharest)
   
   Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
  
-  Meeting Agenda and Minutes are here [https://github.com/odpi/data-governance/wiki](https://github.com/odpi/data-governance/wiki)
+  Meeting Agenda and Minutes are here [https://wiki.lfaidata.foundation/display/EG/Community+Meetings](https://wiki.lfaidata.foundation/display/EG/Community+Meetings)
   
+* **Technical Steering Committee (TSC)** - one hour -
+  Discussion on the management of the community
+  
+  Activities and call schedule
+  are here [https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home](https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home)
+
 
 ## Monthly maintainers face-to-face meetings
 
@@ -65,8 +72,10 @@ The Egeria team run two calls every Thursday and all are welcome
 
 The Egeria face-to-face meetings are currently suspended
 to protect the health and welfare of the Egeria community.
+The TSC will arrange virtual maintainers meetings as needed.  Details are on the
+TSC Wiki detailed above.
 
-Minutes of past meetings can be found on the
+Minutes of past maintainers meetings can be found on the
 [Egeria GitHub wiki](https://github.com/odpi/egeria/wiki).
 
 ## Monthly community webinars

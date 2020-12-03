@@ -477,7 +477,7 @@ class GraphOMRSMetadataStore {
                     }
                     else {
                         // We know this is a proxy - throw the appropriate exception
-                        log.error("{} found entity but it is only a proxy, guid {}", methodName, guid);
+                        log.warn("{} found entity but it is only a proxy, guid {}", methodName, guid);
                         g.tx().rollback();
 
                         throw new EntityProxyOnlyException(GraphOMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(guid, methodName,

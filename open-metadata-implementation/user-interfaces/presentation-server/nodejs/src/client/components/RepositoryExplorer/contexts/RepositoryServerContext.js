@@ -25,7 +25,7 @@ const RepositoryServerContextProvider = (props) => {
   
   const [repositoryServer, setRepositoryServer]  = useState( { serverName : "", platformName : "" } );
 
-  const [enterpriseOption, setEnterpriseOption]  = useState(false);
+  const [enterpriseOption, setEnterpriseOption]  = useState(true);
 
 
 
@@ -102,9 +102,46 @@ const RepositoryServerContextProvider = (props) => {
       headers    : { Accept: "application/json", "Content-Type": "application/json" },
       body       : JSON.stringify(body)
     })    
-    .then(res => res.json())
-    .then(res => callback(res))
-    
+
+    /*
+     * The response from fetch() should always:
+     * either:
+     *  - be ok and comtain a JSON body, which is retrieved using json(),
+     * or:
+     *  - be !ok and contain status, statusText and a text body, which is retrieved using text().
+     * In either case, this function will call the callback with a JSON object.
+     *
+     * The relatedHTTPCode (200, 400, etc.) should be checked in the callback,
+     * where there is contextual information about the operation that was performed
+     * and where more specific error context can be supplied in the message to the
+     * user.
+     */
+
+    .then(response => {
+      if (response.ok) {
+        response.json()
+        .then(json => {
+          /*
+           * No need to check status code here - leave it to the callback which knows the operation context.
+           */
+          callback(json)
+        });
+      }
+      else {
+        /*
+         * response was not 'ok'. Parse the status fields and body text and contruct
+         * a json response to pass to the callback...
+         */
+        let json = {};
+        json.relatedHTTPCode = response.status;
+        json.requestURL      = response.url;
+        response.text() // returns a promise...
+        .then(text => {
+          json.exceptionErrorMessage = text;
+          callback(json);
+        })
+      }
+    })
   };
   
 
@@ -147,9 +184,46 @@ const RepositoryServerContextProvider = (props) => {
       headers    : { Accept: "application/json", "Content-Type": "application/json" },
       body       : JSON.stringify(body)
     })    
-    .then(res => res.json())
-    .then(res => callback(res))
-    
+
+    /*
+     * The response from fetch() should always:
+     * either:
+     *  - be ok and comtain a JSON body, which is retrieved using json(),
+     * or:
+     *  - be !ok and contain status, statusText and a text body, which is retrieved using text().
+     * In either case, this function will call the callback with a JSON object.
+     *
+     * The relatedHTTPCode (200, 400, etc.) should be checked in the callback,
+     * where there is contextual information about the operation that was performed
+     * and where more specific error context can be supplied in the message to the
+     * user.
+     */
+
+    .then(response => {
+      if (response.ok) {
+        response.json()
+        .then(json => {
+          /*
+           * No need to check status code here - leave it to the callback which knows the operation context.
+           */
+          callback(json)
+        });
+      }
+      else {
+        /*
+         * response was not 'ok'. Parse the status fields and body text and contruct
+         * a json response to pass to the callback...
+         */
+        let json = {};
+        json.relatedHTTPCode = response.status;
+        json.requestURL      = response.url;
+        response.text() // returns a promise...
+        .then(text => {
+          json.exceptionErrorMessage = text;
+          callback(json);
+        })
+      }
+    })
   };
 
   /*
@@ -157,8 +231,14 @@ const RepositoryServerContextProvider = (props) => {
    * It should be called with the tail portion of the URI. This is only used for a light-weight 
    * GET operations and there are no operation-specific body parameters. These could be added if
    * needed.
-   * 
+   *
    * The caller must specify an operation-specific callback function.
+   *
+   * All promises are fully resolved in this context, so the callback code (if invoked) is
+   * fully synchronous and will always be passed a json object.
+   *
+   * In the event of ECONNREFUSED the PS server will forward the response with status code 400.
+   *
    */
 
   const callGET = (uri, callback) => {
@@ -178,28 +258,42 @@ const RepositoryServerContextProvider = (props) => {
       method     : "GET",
       headers    : { Accept: "application/json", "Content-Type": "application/json" },
     })
+
+    /*
+     * The response from fetch() should always:
+     * either:
+     *  - be ok and comtain a JSON body, which is retrieved using json(),
+     * or:
+     *  - be !ok and contain status, statusText and a text body, which is retrieved using text().
+     * In either case, this function will call the callback with a JSON object.
+     *
+     * The relatedHTTPCode (200, 400, etc.) should be checked in the callback,
+     * where there is contextual information about the operation that was performed
+     * and where more specific error context can be supplied in the message to the
+     * user.
+     */
+
     .then(response => {
       if (response.ok) {
         response.json()
         .then(json => {
           /*
-           * The relatedHTTPCode check (for 200, 400, etc.) is performed in the callback
-           * where there is contextual information about the operation that was performed.
+           * No need to check status code here - leave it to the callback which knows the operation context.
            */
           callback(json)
         });
       }
       else {
-        let status = response.status;
-        let statusText = response.statusText;
+        /*
+         * response was not 'ok'. Parse the status fields and body text and contruct
+         * a json response to pass to the callback...
+         */
+        let json = {};
+        json.relatedHTTPCode = response.status;
+        json.requestURL      = response.url;
         response.text() // returns a promise...
         .then(text => {
-          return "error detected: statusText "+statusText+" bodyText "+text;
-        })
-        .then(message => {
-          let json = {};
-          json.relatedHTTPCode = status;
-          json.exceptionErrorMessage = message;
+          json.exceptionErrorMessage = text;
           callback(json);
         })
       }

@@ -47,8 +47,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
-    private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning relationship {}: ";
-    private static final String PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning entity {}: ";
+    private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning relationship {} ";
+    private static final String PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning entity {} ";
 
     private AssetLineagePublisher publisher;
     private AuditLog auditLog;
@@ -93,7 +93,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processRegistryEvent(OMRSRegistryEvent event) {
-        log.debug("Ignoring registry event: " + event.toString());
+        log.trace("Ignoring registry event: " + event.toString());
     }
 
     /**
@@ -102,7 +102,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        log.debug("Ignoring type event: " + event.toString());
+        log.trace("Ignoring type event: " + event.toString());
     }
 
     /**
@@ -178,6 +178,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         if (isProcessStatusChangedToActive(entityDetail, originalEntity)) {
             publisher.publishProcessContext(entityDetail);
+
+            log.info("Asset Lineage OMAS published the context for process with guid {}", entityDetail.getGUID());
         } else {
             publishEntityEvent(entityDetail, AssetLineageEventType.UPDATE_ENTITY_EVENT);
         }
@@ -415,7 +417,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         String actionDescription = "Asset Lineage OMAS is unable to process an OMRSTopic event.";
 
         auditLog.logException(actionDescription,
-                AssetLineageAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(e.getMessage(), serverName), instanceEvent.toString(), e);
+                AssetLineageAuditCode.EVENT_PROCESSING_EXCEPTION.getMessageDefinition(e.getMessage(), serverName), instanceEvent.toString(), e);
     }
 
 }

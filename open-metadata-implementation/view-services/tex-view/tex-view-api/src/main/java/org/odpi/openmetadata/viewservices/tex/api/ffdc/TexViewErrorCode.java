@@ -31,31 +31,71 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum TexViewErrorCode implements ExceptionMessageSet
 {
-    SERVICE_NOT_INITIALIZED(404, "OMVS-TYPE-EXPLORER-400-001",
-                           "The Type Explorer Open Metadata View Service (OMVS) has not been initialized.",
-                           "The system is unable to perform the request because the service has not been initialized.",
-                           "Initialize the view service retry the request."),
+    SERVICE_NOT_INITIALIZED
+            (404, "OMVS-TYPE-EXPLORER-400-001",
+             "The Type Explorer Open Metadata View Service (OMVS) has not been initialized.",
+             "The system is unable to perform the request because the service has not been initialized.",
+             "Initialize the view service retry the request."),
 
-    INVALID_CONFIG_PROPERTY(404, "OMVS-TYPE-EXPLORER-400-002",
-                            "The Type Explorer Open Metadata View Service (OMVS) configuration has an invalid or missing property, property name {0}.",
-                            "The service is unable to initialize because the configuration is not valid or complete.",
-                            "Correct the view service configuration and restart the view server."),
+    INVALID_CONFIG_PROPERTY
+            (404, "OMVS-TYPE-EXPLORER-400-002",
+             "The Type Explorer Open Metadata View Service (OMVS) configuration has an invalid or missing property, property name {0}.",
+             "The service is unable to initialize because the configuration is not valid or complete.",
+             "Correct the view service configuration and restart the view server."),
 
-    VIEW_SERVICE_NULL_PLATFORM_NAME(400, "OMVS-TYPE-EXPLORER-400-003",
-                                            "The Type Explorer Open Metadata View Service (OMVS) has been called with a null platform name",
-                                            "The system is unable to resolve the platform to query without knowing what it is called.",
-                                            "The platform name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
+    VIEW_SERVICE_NULL_PLATFORM_NAME
+            (400, "OMVS-TYPE-EXPLORER-400-003",
+             "The Type Explorer Open Metadata View Service (OMVS) has been called with a null platform name",
+             "The system is unable to resolve the platform to query without knowing what it is called.",
+             "The platform name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
 
-    VIEW_SERVICE_NULL_SERVER_NAME(400, "OMVS-TYPE-EXPLORER-400-004",
-                                          "The Type Explorer Open Metadata View Service (OMVS) has been called with a null server name",
-                                          "The system is unable to resolve the server to query without knowing what it is called.",
-                                          "The server name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
+    VIEW_SERVICE_NULL_SERVER_NAME
+            (400, "OMVS-TYPE-EXPLORER-400-004",
+             "The Type Explorer Open Metadata View Service (OMVS) has been called with a null server name",
+             "The system is unable to resolve the server to query without knowing what it is called.",
+             "The server name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
 
-    VIEW_SERVICE_UNKNOWN_SERVER_NAME(400, "OMVS-TYPE-EXPLORER-400-005",
-                                             "The Type Explorer Open Metadata View Service (OMVS)'s {0} method has been called with an unknown " +
-                                                     "server name of {1}",
-                                             "The system is unable to resolve the server name.",
-                                             "The server name is supplied by the caller to the OMAG view service. Please ensure a known server name is passed and retry the call to the view service."),
+    VIEW_SERVICE_UNKNOWN_SERVER_NAME
+            (400, "OMVS-TYPE-EXPLORER-400-005",
+             "The Type Explorer Open Metadata View Service (OMVS)'s {0} method has been called with an unknown server name of {1}",
+             "The system is unable to resolve the server name.",
+             "The server name is supplied by the caller to the OMAG view service. Please ensure a known server name is passed and retry the call to the view service."),
+
+    USER_NOT_AUTHORIZED
+            (400, "OMVS-TYPE-EXPLORER-400-006",
+             "The type explorer view service could not perform the requested operation {0} on behalf of user {1}",
+             "The system reported that the user is not authorized to perform the requested action.",
+             "Request that the name used to log in to the UI is given authority to perform the request."),
+
+    REPOSITORY_NOT_AVAILABLE
+            (400, "OMVS-TYPE-EXPLORER-400-007",
+             "The type explorer view service operation {0} found that server {1} is not available",
+             "The system reported that the server is not available to perform the requested action.",
+             "Retry the request when the server is available."),
+
+    PLATFORM_NOT_AVAILABLE
+            (400, "OMVS-TYPE-EXPLORER-400-008",
+             "The type explorer view service operation {0} found that the platform for server {1} is not available",
+             "The system reported that the platform is not reachable using the provided URL.",
+             "Check the platform is running and check the type explorer resource endpoint configuration for the server and its platform."),
+
+    REPOSITORY_ERROR
+            (400, "OMVS-TYPE-EXPLORER-400-009",
+             "The type explorer view service operation {0} encountered a problem with the repository, the message is {1}",
+             "The system could not complete a repository operation due to the error indicated.",
+             "Look at the error message and check the configuration and state of the repository server."),
+
+    INVALID_PARAMETER
+            (400, "OMVS-TYPE-EXPLORER-400-010",
+             "The type explorer view service operation {0} could not proceed with the setting of parameter {1}",
+             "The system detected that the parameter was not set to a valid value and could not perform the requested action.",
+             "Check the parameter setting and retry the operation."),
+
+    VIEW_SERVICE_REQUEST_BODY_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-011",
+             "The type explorer view service could not perform the requested operation {0} because te requestBody was missing",
+             "The system could not perform the requested action.",
+             "Check the calling code to make sure that a requestBody is passed to the view service API.")
             ;
 
     private ExceptionMessageDefinition messageDefinition;

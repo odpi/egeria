@@ -9,6 +9,8 @@ import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.LineageGraphDisplayRulesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +31,7 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
 @Configuration
+@EnableConfigurationProperties({ComponentService.class, LineageGraphDisplayRulesService.class})
 public class EgeriaUIPlatform {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIPlatform.class);

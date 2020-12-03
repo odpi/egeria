@@ -138,6 +138,22 @@ export default function ServerDisplay() {
     }
   };
 
+  /*
+   * Ensure the config section is visible, without issuing a request
+   */
+  const makeVisibleConfigSection = () => {
+
+    /*
+     * Find the section using its DOM id
+     */
+    const element = document.getElementById("configSection");
+    const content = element.nextElementSibling;
+    if (content.style.display !== "block") {
+      content.style.display = "block";
+      element.classList.toggle("active");
+    }
+  };
+
 
   /*
    * Handler for change to includeAuditTrail checkbox
@@ -146,22 +162,7 @@ export default function ServerDisplay() {
     setIncAuditTrailOption(!incAuditTrailOption);
   }
 
-  /* 
-   * Always accept the operation name because operation name is needed even in the case where json is null
-   */
-  const reportFailedOperation = (operation, json) => {
-    if (json !== null) {      
-      const relatedHTTPCode = json.relatedHTTPCode;
-      const exceptionMessage = json.exceptionErrorMessage;
-      /*
-       * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-       */
-      alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
-    }
-    else {
-      alert("Operation "+operation+" did not get a response from the view server");
-    }
-  }
+
 
   const getServerAuditLog = () => {
     let server = resourcesContext.getFocusServer();
@@ -188,7 +189,7 @@ export default function ServerDisplay() {
         requestContext.callPOST("server", serverName,  "server/"+serverName+"/audit-log", 
             { serverName : serverName, platformName : platformName }, _getServerAuditLog);
         setAuditLogStatus("pending");
-        
+
       }
       else {
         /*
@@ -202,10 +203,12 @@ export default function ServerDisplay() {
   const _getServerAuditLog = (json) => {
     if (json !== null) {
       if (json.relatedHTTPCode === 200 ) {
-        let auditLog = json.auditLog;
-        setAuditLog(auditLog);
-        setAuditLogStatus("complete");
-        return;
+        if (auditLog) {
+          let auditLog = json.auditLog;
+          setAuditLog(auditLog);
+          setAuditLogStatus("complete");
+          return;
+        }
       }
     }
     /*
@@ -213,6 +216,28 @@ export default function ServerDisplay() {
      */
     reportFailedOperation("getServerAuditLog",json);
   }
+
+  /*
+   * Always accept the operation name because operation name is needed even in the case where json is null
+   */
+  const reportFailedOperation = (operation, json) => {
+    if (json !== null) {
+      const relatedHTTPCode = json.relatedHTTPCode;
+      const exceptionMessage = json.exceptionErrorMessage;
+      /*
+       * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
+       */
+      alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
+    }
+    else {
+      alert("Operation "+operation+" did not get a response from the view server");
+    }
+  }
+
+
+
+
+
 
   const cancelAuditLogModal = () => {
     setAuditLogStatus("idle");
@@ -297,6 +322,15 @@ export default function ServerDisplay() {
     matchingConfigs = true;
     differences = null;
   }
+  if (loading === "loading") {
+    /*
+     * A request has been been made to load the configuration - this
+     * might have come from the twistie and flipConfigSection or it
+     * might have come from the diagram (a right-click menu item).
+     * In either case, make sure the config section is visible.
+     */
+    makeVisibleConfigSection();
+  }
  
   
   /*
@@ -359,7 +393,7 @@ export default function ServerDisplay() {
 
 
       <div>
-      <button className="collapsible" onClick={flipConfigSection}> Server Configuration: </button>
+      <button className="collapsible" id="configSection" onClick={flipConfigSection}> Server Configuration: </button>
         <div className="content">
           <div>
            { (loading === "loading") && <div>Loading...</div>}

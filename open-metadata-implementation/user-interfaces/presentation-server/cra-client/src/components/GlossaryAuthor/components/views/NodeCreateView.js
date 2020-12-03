@@ -21,26 +21,16 @@ import {
   TableBody,
 } from "carbon-components-react";
 
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
 
 function NodeCreateView(props) {
   console.log("NodeCreateView");
 
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  console.log("NodeCreateView glossaryAuthorContext", glossaryAuthorContext);
-
-  // const [errorMsg, setErrorMsg] = useState();
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
+  console.log("NodeCreateView glossaryAuthorCRUDContext", glossaryAuthorCRUDContext);
   const [createBody, setCreateBody] = useState({});
-  // const [createdNode, setcreatedNode] = useState(undefined);
 
-  // useEffect(() => {
-    // Update the document title using the browser API
-    // if (
-    //   glossaryAuthorContext.authoringOperation == 1 
-    // )
-      // setcreatedNode(undefined);
-  // });
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
    * @param {*} e end anomation event
@@ -53,7 +43,7 @@ function NodeCreateView(props) {
     console.log("handleClick(()");
     e.preventDefault();
     let body = createBody;
-    const nodeType = glossaryAuthorContext.currentNodeType;
+    const nodeType = glossaryAuthorCRUDContext.currentNodeType;
     if (nodeType.typeForCreate) {
       body.nodeType = nodeType.nodeTypeForCreate;
     } else {
@@ -61,7 +51,7 @@ function NodeCreateView(props) {
     }
     if (nodeType.hasGlossary) {
       let glossary = {};
-      glossary.guid = glossaryAuthorContext.myGlossary.systemAttributes.guid;
+      glossary.guid = glossaryAuthorCRUDContext.myGlossary.systemAttributes.guid;
       body.glossary = glossary;
     }
     props.issueCreate(body);
@@ -98,7 +88,7 @@ function NodeCreateView(props) {
 
   const getCreatedTableAttrRowData = () => {
     let rowData = [];
-    const attributes = glossaryAuthorContext.currentNodeType.attributes;
+    const attributes = glossaryAuthorCRUDContext.currentNodeType.attributes;
 
     for (var prop in props.createdNode) {
       if (
@@ -157,7 +147,7 @@ function NodeCreateView(props) {
 
   return (
     <div>
-      {glossaryAuthorContext.currentNodeType && props.createdNode != undefined  && (
+      {glossaryAuthorCRUDContext.currentNodeType && props.createdNode != undefined  && (
         <div>
           <DataTable
             isSortable
@@ -229,22 +219,22 @@ function NodeCreateView(props) {
         </div>
       )}
 
-      {glossaryAuthorContext.currentNodeType && props.createdNode == undefined && (
+      {glossaryAuthorCRUDContext.currentNodeType && props.createdNode == undefined && (
         <div>
           <form>
             <div>
               <h4>
                 Create{" "}
-                {glossaryAuthorContext.currentNodeType
-                  ? glossaryAuthorContext.currentNodeType.typeName
+                {glossaryAuthorCRUDContext.currentNodeType
+                  ? glossaryAuthorCRUDContext.currentNodeType.typeName
                   : ""}
                 <Info16 />
               </h4>
             </div>
 
-            {glossaryAuthorContext.currentNodeType &&
+            {glossaryAuthorCRUDContext.currentNodeType &&
               props.createdNode == undefined &&
-              glossaryAuthorContext.currentNodeType.attributes.map((item) => {
+              glossaryAuthorCRUDContext.currentNodeType.attributes.map((item) => {
                 return (
                   <div className="bx--form-item" key={item.key}>
                     <label htmlFor={createLabelId(item.key)} className="bx--label">

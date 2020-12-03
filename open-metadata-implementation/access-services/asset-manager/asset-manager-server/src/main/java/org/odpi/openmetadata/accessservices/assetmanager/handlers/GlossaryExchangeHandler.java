@@ -1,0 +1,3040 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.assetmanager.handlers;
+
+import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryTermConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * GlossaryExchangeHandler is the server side handler for managing glossary content.
+ */
+public class GlossaryExchangeHandler extends ExchangeHandlerBase
+{
+    private GlossaryHandler<GlossaryElement>                                    glossaryHandler;
+    private GlossaryCategoryHandler<GlossaryCategoryElement>                    glossaryCategoryHandler;
+    private GlossaryTermHandler<GlossaryTermElement>                            glossaryTermHandler;
+
+    private final static String glossaryGUIDParameterName          = "glossaryGUID";
+    private final static String glossaryCategoryGUIDParameterName  = "glossaryCategoryGUID";
+    private final static String glossaryTermGUIDParameterName      = "glossaryTermGUID";
+
+    /**
+     * Construct the glossary exchange handler with information needed to work with glossary related objects
+     * for Asset Manager OMAS.
+     *
+     * @param serviceName      name of this service
+     * @param serverName       name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler     manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve instances from.
+     * @param defaultZones list of zones that the access service should set in all new instances.
+     * @param publishZones list of zones that the access service sets up in published instances.
+     * @param auditLog destination for audit log events.
+     */
+    public GlossaryExchangeHandler(String                             serviceName,
+                                   String                             serverName,
+                                   InvalidParameterHandler            invalidParameterHandler,
+                                   RepositoryHandler                  repositoryHandler,
+                                   OMRSRepositoryHelper               repositoryHelper,
+                                   String                             localServerUserId,
+                                   OpenMetadataServerSecurityVerifier securityVerifier,
+                                   List<String>                       supportedZones,
+                                   List<String>                       defaultZones,
+                                   List<String>                       publishZones,
+                                   AuditLog                           auditLog)
+    {
+        super(serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper,
+              localServerUserId,
+              securityVerifier,
+              supportedZones,
+              defaultZones,
+              publishZones,
+              auditLog);
+
+        glossaryHandler = new GlossaryHandler<>(new GlossaryConverter<>(repositoryHelper, serviceName, serverName),
+                                                GlossaryElement.class,
+                                                serviceName,
+                                                serverName,
+                                                invalidParameterHandler,
+                                                repositoryHandler,
+                                                repositoryHelper,
+                                                localServerUserId,
+                                                securityVerifier,
+                                                supportedZones,
+                                                defaultZones,
+                                                publishZones,
+                                                auditLog);
+
+        glossaryCategoryHandler = new GlossaryCategoryHandler<>(new GlossaryConverter<>(repositoryHelper, serviceName, serverName),
+                                                                GlossaryCategoryElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
+
+        glossaryTermHandler = new GlossaryTermHandler<>(new GlossaryTermConverter<>(repositoryHelper, serviceName, serverName),
+                                                        GlossaryTermElement.class,
+                                                        serviceName,
+                                                        serverName,
+                                                        invalidParameterHandler,
+                                                        repositoryHandler,
+                                                        repositoryHelper,
+                                                        localServerUserId,
+                                                        securityVerifier,
+                                                        supportedZones,
+                                                        defaultZones,
+                                                        publishZones,
+                                                        auditLog);
+
+    }
+
+
+
+    /* ========================================================
+     * Managing the externalIds and related correlation properties.
+     */
+
+
+
+    /**
+     * Update each returned element with details of the correlation properties for the supplied asset manager.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param results list of elements
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private void addCorrelationPropertiesToGlossaries(String                userId,
+                                                      String                assetManagerGUID,
+                                                      String                assetManagerName,
+                                                      List<GlossaryElement> results,
+                                                      String                methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        if ((results != null) && (assetManagerGUID != null))
+        {
+            for (MetadataElement glossary : results)
+            {
+                if ((glossary != null) && (glossary.getElementHeader() != null) && (glossary.getElementHeader().getGUID() != null))
+                {
+                    glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                 glossary.getElementHeader().getGUID(),
+                                                                                 glossaryGUIDParameterName,
+                                                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                                 assetManagerGUID,
+                                                                                 assetManagerName,
+                                                                                 methodName));
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Update each returned element with details of the correlation properties for the supplied asset manager.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param results list of elements
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private void addCorrelationPropertiesToGlossaryCategories(String                        userId,
+                                                              String                        assetManagerGUID,
+                                                              String                        assetManagerName,
+                                                              List<GlossaryCategoryElement> results,
+                                                              String                        methodName) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
+    {
+        if ((results != null) && (assetManagerGUID != null))
+        {
+            for (MetadataElement glossaryCategory : results)
+            {
+                if ((glossaryCategory != null) && (glossaryCategory.getElementHeader() != null) && (glossaryCategory.getElementHeader().getGUID() != null))
+                {
+                    glossaryCategory.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                         glossaryCategory.getElementHeader().getGUID(),
+                                                                                         glossaryCategoryGUIDParameterName,
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                         assetManagerGUID,
+                                                                                         assetManagerName,
+                                                                                         methodName));
+                }
+            }
+        }
+    }
+
+
+
+
+    /**
+     * Update each returned element with details of the correlation properties for the supplied asset manager.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param results list of elements
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private void addCorrelationPropertiesToGlossaryTerms(String                    userId,
+                                                         String                    assetManagerGUID,
+                                                         String                    assetManagerName,
+                                                         List<GlossaryTermElement> results,
+                                                         String                    methodName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        if ((results != null) && (assetManagerGUID != null))
+        {
+            for (MetadataElement glossaryTerm : results)
+            {
+                if ((glossaryTerm != null) && (glossaryTerm.getElementHeader() != null) && (glossaryTerm.getElementHeader().getGUID() != null))
+                {
+                    glossaryTerm.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                         glossaryTerm.getElementHeader().getGUID(),
+                                                                                         glossaryTermGUIDParameterName,
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                         assetManagerGUID,
+                                                                                         assetManagerName,
+                                                                                         methodName));
+                }
+            }
+        }
+    }
+
+
+    /* ========================================================
+     * The Glossary entity is the top level element in a glossary.
+     */
+
+
+    /**
+     * Create a new metadata element to represent the root of a glossary.  All categories and terms are linked
+     * to a single glossary.  They are owned by this glossary and if the glossary is deleted, any linked terms and
+     * categories are deleted as well.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryProperties properties to store
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createGlossary(String                        userId,
+                                 MetadataCorrelationProperties correlationProperties,
+                                 GlossaryProperties            glossaryProperties,
+                                 String                        methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String propertiesParameterName    = "glossaryProperties";
+        final String qualifiedNameParameterName = "glossaryProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        invalidParameterHandler.validateObject(glossaryProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String glossaryGUID = glossaryHandler.createGlossary(userId,
+                                                             glossaryProperties.getQualifiedName(),
+                                                             glossaryProperties.getDisplayName(),
+                                                             glossaryProperties.getDescription(),
+                                                             glossaryProperties.getLanguage(),
+                                                             glossaryProperties.getUsage(),
+                                                             glossaryProperties.getAdditionalProperties(),
+                                                             glossaryProperties.getTypeName(),
+                                                             glossaryProperties.getExtendedProperties(),
+                                                             methodName);
+
+        if (glossaryGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryGUID,
+                                          glossaryGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryGUID;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a glossary using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new glossary.
+     *
+     * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
+     * glossary is deleted, any linked terms and categories are deleted as well.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createGlossaryFromTemplate(String                        userId,
+                                             MetadataCorrelationProperties correlationProperties,
+                                             String                        templateGUID,
+                                             TemplateProperties            templateProperties,
+                                             String                        methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        String glossaryGUID = glossaryHandler.createGlossaryFromTemplate(userId,
+                                                                         templateGUID,
+                                                                         templateProperties.getQualifiedName(),
+                                                                         templateProperties.getDisplayName(),
+                                                                         templateProperties.getDescription(),
+                                                                         methodName);
+        if (glossaryGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryGUID,
+                                          glossaryGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryGUID;
+    }
+
+
+    /**
+     * Update the metadata element representing a glossary.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to update
+     * @param glossaryProperties new properties for this element
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateGlossary(String                        userId,
+                               MetadataCorrelationProperties correlationProperties,
+                               String                        glossaryGUID,
+                               GlossaryProperties            glossaryProperties,
+                               String                        methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String propertiesParameterName    = "glossaryProperties";
+        final String qualifiedNameParameterName = "glossaryProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryHandler.updateGlossary(userId,
+                                       glossaryGUID,
+                                       glossaryGUIDParameterName,
+                                       glossaryProperties.getQualifiedName(),
+                                       glossaryProperties.getDisplayName(),
+                                       glossaryProperties.getDescription(),
+                                       glossaryProperties.getLanguage(),
+                                       glossaryProperties.getUsage(),
+                                       glossaryProperties.getAdditionalProperties(),
+                                       glossaryProperties.getTypeName(),
+                                       glossaryProperties.getExtendedProperties(),
+                                       methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories and terms because
+     * the Anchors classifications are set up in these elements.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGlossary(String                        userId,
+                               MetadataCorrelationProperties correlationProperties,
+                               String                        glossaryGUID,
+                               String                        methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryHandler.removeGlossary(userId, glossaryGUID, glossaryGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Classify the glossary to indicate that it can be used as a taxonomy.
+     * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
+     * with a single root category.
+     *
+     * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
+     * are linked to the assets etc and as such they are logically categorized by the linked category.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param organizingPrinciple description of how the glossary is organized
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setGlossaryAsTaxonomy(String                        userId,
+                                      MetadataCorrelationProperties correlationProperties,
+                                      String                        glossaryGUID,
+                                      String                        organizingPrinciple,
+                                      String                        methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryHandler.addTaxonomyClassificationToGlossary(userId, glossaryGUID, glossaryGUIDParameterName, organizingPrinciple, methodName);
+    }
+
+
+    /**
+     * Remove the taxonomy designation from the glossary.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearGlossaryAsTaxonomy(String userId,
+                                        MetadataCorrelationProperties correlationProperties,
+                                        String glossaryGUID,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryHandler.removeTaxonomyClassificationFromGlossary(userId, glossaryGUID, glossaryGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Classify a glossary to declare that it has no two GlossaryTerm definitions with
+     * the same name.  This means there is only one definition for each term.  Typically the terms are also of a similar
+     * level of granularity and are limited to a specific scope of use.
+     *
+     * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param scope description of the situations where this glossary is relevant.
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setGlossaryAsCanonical(String                        userId,
+                                       MetadataCorrelationProperties correlationProperties,
+                                       String                        glossaryGUID,
+                                       String                        scope,
+                                       String                        methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryHandler.addCanonicalVocabClassificationToGlossary(userId, glossaryGUID, glossaryGUIDParameterName, scope, methodName);
+
+    }
+
+
+    /**
+     * Remove the canonical designation from the glossary.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearGlossaryAsCanonical(String                        userId,
+                                         MetadataCorrelationProperties correlationProperties,
+                                         String                        glossaryGUID,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryHandler.removeCanonicalVocabClassificationFromGlossary(userId, glossaryGUID, glossaryGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Retrieve the list of glossary metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryElement> findGlossaries(String userId,
+                                                String assetManagerGUID,
+                                                String assetManagerName,
+                                                String searchString,
+                                                String searchStringParameterName,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        List<GlossaryElement> results = glossaryHandler.findGlossaries(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName);
+
+        addCorrelationPropertiesToGlossaries(userId, assetManagerGUID, assetManagerName, results , methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the list of glossary metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param name name to search for
+     * @param nameParameterName name of parameter supplying name value
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryElement>   getGlossariesByName(String userId,
+                                                       String assetManagerGUID,
+                                                       String assetManagerName,
+                                                       String name,
+                                                       String nameParameterName,
+                                                       int    startFrom,
+                                                       int    pageSize,
+                                                       String methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        List<GlossaryElement> results = glossaryHandler.getGlossariesByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+
+        addCorrelationPropertiesToGlossaries(userId, assetManagerGUID, assetManagerName, results, methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the list of glossaries created by this caller.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryElement>   getGlossariesForAssetManager(String userId,
+                                                                String assetManagerGUID,
+                                                                String assetManagerName,
+                                                                int    startFrom,
+                                                                int    pageSize,
+                                                                String methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String assetManagerGUIDParameterName = "assetManagerGUID";
+        final String glossaryEntityParameterName = "glossaryEntity";
+        final String glossaryGUIDParameterName = "glossaryEntity.getGUID()";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+
+        List<GlossaryElement> results = new ArrayList<>();
+
+        List<EntityDetail> glossaryEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
+                                                                                                   assetManagerGUID,
+                                                                                                   assetManagerGUIDParameterName,
+                                                                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                                                   startFrom,
+                                                                                                   pageSize,
+                                                                                                   methodName);
+
+        if (glossaryEntities != null)
+        {
+            for (EntityDetail glossaryEntity : glossaryEntities)
+            {
+                if (glossaryEntity != null)
+                {
+                    GlossaryElement glossaryElement = glossaryHandler.getBeanFromEntity(userId,
+                                                                                        glossaryEntity,
+                                                                                        glossaryEntityParameterName,
+                                                                                        methodName);
+
+                    if (glossaryElement != null)
+                    {
+                        glossaryElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                            glossaryEntity.getGUID(),
+                                                                                            glossaryGUIDParameterName,
+                                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                                            assetManagerGUID,
+                                                                                            assetManagerName,
+                                                                                            methodName));
+
+                        results.add(glossaryElement);
+                    }
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataGUID unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryElement getGlossaryByGUID(String userId,
+                                             String assetManagerGUID,
+                                             String assetManagerName,
+                                             String openMetadataGUID,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String guidParameterName  = "openMetadataGUID";
+
+        GlossaryElement glossary = glossaryHandler.getGlossaryByGUID(userId, openMetadataGUID, guidParameterName, methodName);
+
+        if (glossary != null)
+        {
+            glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                         openMetadataGUID,
+                                                                         guidParameterName,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                         assetManagerGUID,
+                                                                         assetManagerName,
+                                                                         methodName));
+        }
+
+        return glossary;
+    }
+
+
+
+    /* =====================================================================================================================
+     * A glossary may host one or more glossary categories depending on its capability
+     */
+
+    /**
+     * Create a new metadata element to represent a glossary category.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the glossary where the category is located
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryCategoryProperties properties about the glossary category to store
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new glossary category
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createGlossaryCategory(String                        userId,
+                                         String                        glossaryGUID,
+                                         MetadataCorrelationProperties correlationProperties,
+                                         GlossaryCategoryProperties    glossaryCategoryProperties,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String propertiesParameterName           = "glossaryCategoryProperties";
+        final String qualifiedNameParameterName        = "glossaryCategoryProperties.qualifiedName";
+
+        invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String glossaryCategoryGUID = glossaryCategoryHandler.createGlossaryCategory(userId,
+                                                                                     glossaryGUID,
+                                                                                     glossaryGUIDParameterName,
+                                                                                     glossaryCategoryProperties.getQualifiedName(),
+                                                                                     glossaryCategoryProperties.getDisplayName(),
+                                                                                     glossaryCategoryProperties.getDescription(),
+                                                                                     glossaryCategoryProperties.getAdditionalProperties(),
+                                                                                     glossaryCategoryProperties.getTypeName(),
+                                                                                     glossaryCategoryProperties.getExtendedProperties(),
+                                                                                     methodName);
+
+        if (glossaryCategoryGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryCategoryGUID,
+                                          glossaryCategoryGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryCategoryGUID;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a glossary category using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new glossary category
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createGlossaryCategoryFromTemplate(String                        userId,
+                                                     MetadataCorrelationProperties correlationProperties,
+                                                     String                        templateGUID,
+                                                     TemplateProperties            templateProperties,
+                                                     String                        methodName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String templateGUIDParameterName         = "templateGUID";
+        final String propertiesParameterName           = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        String glossaryCategoryGUID = glossaryCategoryHandler.createGlossaryCategoryFromTemplate(userId,
+                                                                                                 templateGUID,
+                                                                                                 templateProperties.getQualifiedName(),
+                                                                                                 templateProperties.getDisplayName(),
+                                                                                                 templateProperties.getDescription(),
+                                                                                                 methodName);
+        if (glossaryCategoryGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryCategoryGUID,
+                                          glossaryCategoryGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryCategoryGUID;
+    }
+
+
+    /**
+     * Update the metadata element representing a glossary category.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryCategoryGUID unique identifier of the metadata element to update
+     * @param glossaryCategoryProperties new properties for the metadata element
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateGlossaryCategory(String                        userId,
+                                       MetadataCorrelationProperties correlationProperties,
+                                       String                        glossaryCategoryGUID,
+                                       GlossaryCategoryProperties    glossaryCategoryProperties,
+                                       String                        methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String propertiesParameterName    = "glossaryCategoryProperties";
+        final String qualifiedNameParameterName = "glossaryCategoryProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryCategoryGUID,
+                                        glossaryCategoryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryCategoryHandler.updateGlossaryCategory(userId,
+                                                       glossaryCategoryGUID,
+                                                       glossaryCategoryGUIDParameterName,
+                                                       glossaryCategoryProperties.getQualifiedName(),
+                                                       glossaryCategoryProperties.getDisplayName(),
+                                                       glossaryCategoryProperties.getDescription(),
+                                                       glossaryCategoryProperties.getAdditionalProperties(),
+                                                       glossaryCategoryProperties.getTypeName(),
+                                                       glossaryCategoryProperties.getExtendedProperties(),
+                                                       methodName);
+    }
+
+
+    /**
+     * Create a parent-child relationship between two categories.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
+     * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupCategoryParent(String userId,
+                                    String assetManagerGUID,
+                                    String assetManagerName,
+                                    String glossaryParentCategoryGUID,
+                                    String glossaryChildCategoryGUID,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        final String glossaryParentCategoryGUIDParameterName = "glossaryParentCategoryGUID";
+        final String glossaryChildCategoryGUIDParameterName = "glossaryChildCategoryGUID";
+
+        glossaryCategoryHandler.setupCategoryParent(userId,
+                                                    glossaryParentCategoryGUID,
+                                                    glossaryParentCategoryGUIDParameterName,
+                                                    glossaryChildCategoryGUID,
+                                                    glossaryChildCategoryGUIDParameterName,
+                                                    methodName);
+
+        externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
+                                                          assetManagerName,
+                                                          OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                          glossaryParentCategoryGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                          glossaryChildCategoryGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                          methodName);
+    }
+
+
+    /**
+     * Remove a parent-child relationship between two categories.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
+     * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearCategoryParent(String userId,
+                                    String assetManagerGUID,
+                                    String assetManagerName,
+                                    String glossaryParentCategoryGUID,
+                                    String glossaryChildCategoryGUID,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        final String glossaryParentCategoryGUIDParameterName = "glossaryParentCategoryGUID";
+        final String glossaryChildCategoryGUIDParameterName = "glossaryChildCategoryGUID";
+
+        glossaryCategoryHandler.clearCategoryParent(userId,
+                                                    glossaryParentCategoryGUID,
+                                                    glossaryParentCategoryGUIDParameterName,
+                                                    glossaryChildCategoryGUID,
+                                                    glossaryChildCategoryGUIDParameterName,
+                                                    methodName);
+
+        externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
+                                                         assetManagerName,
+                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                         glossaryParentCategoryGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                         glossaryChildCategoryGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                         methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a glossary category.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryCategoryGUID unique identifier of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGlossaryCategory(String                        userId,
+                                       MetadataCorrelationProperties correlationProperties,
+                                       String                        glossaryCategoryGUID,
+                                       String                        methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        this.validateExternalIdentifier(userId,
+                                        glossaryCategoryGUID,
+                                        glossaryCategoryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryCategoryHandler.removeGlossaryCategory(userId, glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Retrieve the list of glossary category metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement>   findGlossaryCategories(String userId,
+                                                                  String assetManagerGUID,
+                                                                  String assetManagerName,
+                                                                  String searchString,
+                                                                  String searchStringParameterName,
+                                                                  int    startFrom,
+                                                                  int    pageSize,
+                                                                  String methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.findGlossaryCategories(userId,
+                                                                                               searchString,
+                                                                                               searchStringParameterName,
+                                                                                               startFrom,
+                                                                                               pageSize,
+                                                                                               methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Return the list of categories associated with a glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of metadata elements describing the categories associated with the requested glossary
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement>   getCategoriesForGlossary(String userId,
+                                                                    String assetManagerGUID,
+                                                                    String assetManagerName,
+                                                                    String glossaryGUID,
+                                                                    int    startFrom,
+                                                                    int    pageSize,
+                                                                    String methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.getCategoriesForGlossary(userId,
+                                                                                                 glossaryGUID,
+                                                                                                 glossaryGUIDParameterName,
+                                                                                                 startFrom,
+                                                                                                 pageSize,
+                                                                                                 methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the list of glossary category metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param name name to search for
+     * @param nameParameterName parameter name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String userId,
+                                                                       String assetManagerGUID,
+                                                                       String assetManagerName,
+                                                                       String name,
+                                                                       String nameParameterName,
+                                                                       int    startFrom,
+                                                                       int    pageSize,
+                                                                       String methodName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.getGlossaryCategoriesByName(userId,
+                                                                                                    name,
+                                                                                                    nameParameterName,
+                                                                                                    startFrom,
+                                                                                                    pageSize,
+                                                                                                    methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the glossary category metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return parent glossary category element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryCategoryElement getGlossaryCategoryParent(String userId,
+                                                             String assetManagerGUID,
+                                                             String assetManagerName,
+                                                             String glossaryCategoryGUID,
+                                                             String methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        GlossaryCategoryElement glossaryCategory = glossaryCategoryHandler.getGlossaryCategoryParent(userId,
+                                                                                                     glossaryCategoryGUID,
+                                                                                                     glossaryCategoryGUIDParameterName,
+                                                                                                     methodName);
+
+        if (glossaryCategory != null)
+        {
+            glossaryCategory.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                 glossaryCategoryGUID,
+                                                                                 glossaryCategoryGUIDParameterName,
+                                                                                 OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                 assetManagerGUID,
+                                                                                 assetManagerName,
+                                                                                 methodName));
+        }
+
+        return glossaryCategory;
+    }
+
+
+    /**
+     * Retrieve the glossary category metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of glossary category element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement> getGlossarySubCategories(String userId,
+                                                                  String assetManagerGUID,
+                                                                  String assetManagerName,
+                                                                  String glossaryCategoryGUID,
+                                                                  int    startFrom,
+                                                                  int    pageSize,
+                                                                  String methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.getGlossarySubCategories(userId,
+                                                                                                 glossaryCategoryGUID,
+                                                                                                 glossaryCategoryGUIDParameterName,
+                                                                                                 startFrom,
+                                                                                                 pageSize,
+                                                                                                 methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the glossary category metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataGUID unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryCategoryElement getGlossaryCategoryByGUID(String userId,
+                                                             String assetManagerGUID,
+                                                             String assetManagerName,
+                                                             String openMetadataGUID,
+                                                             String methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String guidParameterName  = "openMetadataGUID";
+
+        GlossaryCategoryElement glossaryCategory = glossaryCategoryHandler.getGlossaryCategoryByGUID(userId,
+                                                                                                     openMetadataGUID,
+                                                                                                     guidParameterName,
+                                                                                                     methodName);
+
+        if (glossaryCategory != null)
+        {
+            glossaryCategory.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                             openMetadataGUID,
+                                                                             guidParameterName,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                             assetManagerGUID,
+                                                                             assetManagerName,
+                                                                             methodName));
+        }
+
+        return glossaryCategory;
+    }
+
+
+    /* ===============================================================================
+     * A glossary typically contains many glossary terms, linked with relationships.
+     */
+
+    /**
+     * Create a new metadata element to represent a glossary term.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the glossary where the term is located
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermProperties properties for the glossary term
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the glossary term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createGlossaryTerm(String                        userId,
+                                     String                        glossaryGUID,
+                                     MetadataCorrelationProperties correlationProperties,
+                                     GlossaryTermProperties        glossaryTermProperties,
+                                     String                        methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String propertiesParameterName     = "glossaryTermProperties";
+        final String qualifiedNameParameterName  = "glossaryTermProperties.qualifiedName";
+
+        invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String glossaryTermGUID = glossaryTermHandler.createGlossaryTerm(userId,
+                                                                         glossaryGUID,
+                                                                         glossaryGUIDParameterName,
+                                                                         glossaryTermProperties.getQualifiedName(),
+                                                                         glossaryTermProperties.getDisplayName(),
+                                                                         glossaryTermProperties.getSummary(),
+                                                                         glossaryTermProperties.getDescription(),
+                                                                         glossaryTermProperties.getExamples(),
+                                                                         glossaryTermProperties.getAbbreviation(),
+                                                                         glossaryTermProperties.getUsage(),
+                                                                         glossaryTermProperties.getAdditionalProperties(),
+                                                                         glossaryTermProperties.getTypeName(),
+                                                                         glossaryTermProperties.getExtendedProperties(),
+                                                                         InstanceStatus.ACTIVE,
+                                                                         methodName);
+
+        if (glossaryTermGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryTermGUID,
+                                          glossaryTermGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryTermGUID;
+    }
+
+
+    /**
+     * Convert the GlossaryTermStatus to an InstanceStatus understood by the repository services.
+     *
+     * @param status status from caller
+     * @return instance status
+     */
+    private InstanceStatus getInstanceStatus(GlossaryTermStatus status)
+    {
+        if (status != null)
+        {
+            switch (status)
+            {
+                case DRAFT:
+                    return InstanceStatus.DRAFT;
+
+                case APPROVED:
+                    return InstanceStatus.APPROVED;
+
+                case PROPOSED:
+                    return InstanceStatus.PROPOSED;
+
+                case ACTIVE:
+                    return InstanceStatus.ACTIVE;
+            }
+        }
+
+        return InstanceStatus.UNKNOWN;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a glossary term whose lifecycle is managed through a controlled workflow.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the glossary where the term is located
+     * @param glossaryTermProperties properties for the glossary term
+     * @param initialStatus glossary term status to use when the object is created
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the glossary term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createControlledGlossaryTerm(String                        userId,
+                                               String                        glossaryGUID,
+                                               MetadataCorrelationProperties correlationProperties,
+                                               GlossaryTermProperties        glossaryTermProperties,
+                                               GlossaryTermStatus            initialStatus,
+                                               String                        methodName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        final String propertiesParameterName     = "glossaryTermProperties";
+        final String qualifiedNameParameterName  = "glossaryTermProperties.qualifiedName";
+        final String initialStatusParameterName  = "initialStatus";
+
+        invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateObject(initialStatus, initialStatusParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.CONTROLLED_GLOSSARY_TERM_TYPE_NAME;
+
+        if (glossaryTermProperties.getTypeName() != null)
+        {
+            typeName = glossaryTermProperties.getTypeName();
+        }
+
+        String glossaryTermGUID = glossaryTermHandler.createGlossaryTerm(userId,
+                                                                         glossaryGUID,
+                                                                         glossaryGUIDParameterName,
+                                                                         glossaryTermProperties.getQualifiedName(),
+                                                                         glossaryTermProperties.getDisplayName(),
+                                                                         glossaryTermProperties.getSummary(),
+                                                                         glossaryTermProperties.getDescription(),
+                                                                         glossaryTermProperties.getExamples(),
+                                                                         glossaryTermProperties.getAbbreviation(),
+                                                                         glossaryTermProperties.getUsage(),
+                                                                         glossaryTermProperties.getAdditionalProperties(),
+                                                                         typeName,
+                                                                         glossaryTermProperties.getExtendedProperties(),
+                                                                         getInstanceStatus(initialStatus),
+                                                                         methodName);
+
+        if (glossaryTermGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryTermGUID,
+                                          glossaryTermGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryTermGUID;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a glossary term using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the glossary term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createGlossaryTermFromTemplate(String                        userId,
+                                                 MetadataCorrelationProperties correlationProperties,
+                                                 String                        templateGUID,
+                                                 TemplateProperties            templateProperties,
+                                                 String                        methodName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        final String templateGUIDParameterName         = "templateGUID";
+        final String propertiesParameterName           = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+
+        String glossaryTermGUID = glossaryTermHandler.createGlossaryTermFromTemplate(userId,
+                                                                                     templateGUID,
+                                                                                     templateProperties.getQualifiedName(),
+                                                                                     templateProperties.getDisplayName(),
+                                                                                     templateProperties.getDescription(),
+                                                                                     methodName);
+        if (glossaryTermGUID != null)
+        {
+            this.createExternalIdentifier(userId,
+                                          glossaryTermGUID,
+                                          glossaryTermGUIDParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          correlationProperties,
+                                          methodName);
+        }
+
+        return glossaryTermGUID;
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param glossaryTermProperties new properties for the glossary term
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateGlossaryTerm(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   GlossaryTermProperties        glossaryTermProperties,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String propertiesParameterName    = "glossaryTermProperties";
+        final String qualifiedNameParameterName = "glossaryTermProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.updateGlossaryTerm(userId,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               glossaryTermProperties.getQualifiedName(),
+                                               glossaryTermProperties.getDisplayName(),
+                                               glossaryTermProperties.getSummary(),
+                                               glossaryTermProperties.getDescription(),
+                                               glossaryTermProperties.getExamples(),
+                                               glossaryTermProperties.getAbbreviation(),
+                                               glossaryTermProperties.getUsage(),
+                                               glossaryTermProperties.getAdditionalProperties(),
+                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                               glossaryTermProperties.getExtendedProperties(),
+                                               methodName);
+    }
+
+
+    /**
+     * Update the status of the metadata element representing a glossary term.  This is only valid on
+     * a controlled glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param glossaryTermStatus new properties for the glossary term
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateGlossaryTermStatus(String                        userId,
+                                         MetadataCorrelationProperties correlationProperties,
+                                         String                        glossaryTermGUID,
+                                         GlossaryTermStatus            glossaryTermStatus,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String glossaryTermStatusParameterName  = "glossaryTermStatus";
+
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryTermStatus, glossaryTermStatusParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.updateGlossaryTermStatus(userId,
+                                                     glossaryTermGUID,
+                                                     glossaryTermGUIDParameterName,
+                                                     getInstanceStatus(glossaryTermStatus),
+                                                     glossaryTermStatusParameterName,
+                                                     methodName);
+    }
+
+
+    /**
+     * Return the ordinal for the relationship status - handling null values
+     *
+     * @param status supplied status
+     * @return resulting ordinal
+     */
+    private int getTermRelationshipStatus(GlossaryTermRelationshipStatus status)
+    {
+        if (status != null)
+        {
+            return status.getOpenTypeOrdinal();
+        }
+
+        return GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal();
+    }
+
+
+    /**
+     * Link a term to a category.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the glossary category
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param categorizationProperties properties for the categorization relationship
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupTermCategory(String                     userId,
+                                  String                     assetManagerGUID,
+                                  String                     assetManagerName,
+                                  String                     glossaryCategoryGUID,
+                                  String                     glossaryTermGUID,
+                                  GlossaryTermCategorization categorizationProperties,
+                                  String                     methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
+
+        if (categorizationProperties != null)
+        {
+            glossaryTermHandler.setupTermCategory(userId,
+                                                  glossaryCategoryGUID,
+                                                  glossaryCategoryGUIDParameterName,
+                                                  glossaryTermGUID,
+                                                  glossaryTermGUIDParameterName,
+                                                  categorizationProperties.getDescription(),
+                                                  this.getTermRelationshipStatus(categorizationProperties.getStatus()),
+                                                  methodName);
+        }
+        else
+        {
+            glossaryTermHandler.setupTermCategory(userId,
+                                                  glossaryCategoryGUID,
+                                                  glossaryCategoryGUIDParameterName,
+                                                  glossaryTermGUID,
+                                                  glossaryTermGUIDParameterName,
+                                                  null,
+                                                  GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                  methodName);
+        }
+
+        externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
+                                                          assetManagerName,
+                                                          OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                          glossaryCategoryGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                          glossaryTermGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                          methodName);
+    }
+
+
+    /**
+     * Unlink a term from a category.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the glossary category
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermCategory(String userId,
+                                  String assetManagerGUID,
+                                  String assetManagerName,
+                                  String glossaryCategoryGUID,
+                                  String glossaryTermGUID,
+                                  String methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
+
+        glossaryTermHandler.clearTermCategory(userId,
+                                              glossaryCategoryGUID,
+                                              glossaryCategoryGUIDParameterName,
+                                              glossaryTermGUID,
+                                              glossaryTermGUIDParameterName,
+                                              methodName);
+
+        externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
+                                                             assetManagerName,
+                                                             OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                             glossaryCategoryGUID,
+                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                             glossaryTermGUID,
+                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                             methodName);
+    }
+
+
+    /**
+     * Link two terms together using a specialist relationship.  If there are no relationship properties
+     * then the status is set to ACTIVE and other properties are null.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
+     * @param relationshipTypeName name of the type of relationship to create
+     * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param relationshipsProperties properties for the categorization relationship
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupTermRelationship(String                   userId,
+                                      String                   assetManagerGUID,
+                                      String                   assetManagerName,
+                                      String                   glossaryTermOneGUID,
+                                      String                   relationshipTypeName,
+                                      String                   glossaryTermTwoGUID,
+                                      GlossaryTermRelationship relationshipsProperties,
+                                      String                   methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String glossaryTermOneGUIDParameterName = "glossaryTermOneGUID";
+        final String glossaryTermTwoGUIDParameterName = "glossaryTermTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        if (relationshipsProperties != null)
+        {
+            glossaryTermHandler.setupTermRelationship(userId,
+                                                      glossaryTermOneGUID,
+                                                      glossaryTermOneGUIDParameterName,
+                                                      relationshipTypeName,
+                                                      relationshipTypeNameParameterName,
+                                                      glossaryTermTwoGUID,
+                                                      glossaryTermTwoGUIDParameterName,
+                                                      relationshipsProperties.getExpression(),
+                                                      relationshipsProperties.getDescription(),
+                                                      this.getTermRelationshipStatus(relationshipsProperties.getStatus()),
+                                                      relationshipsProperties.getSteward(),
+                                                      relationshipsProperties.getSource(),
+                                                      methodName);
+        }
+        else
+        {
+            glossaryTermHandler.setupTermRelationship(userId,
+                                                      glossaryTermOneGUID,
+                                                      glossaryTermOneGUIDParameterName,
+                                                      relationshipTypeName,
+                                                      relationshipTypeNameParameterName,
+                                                      glossaryTermTwoGUID,
+                                                      glossaryTermTwoGUIDParameterName,
+                                                      null,
+                                                      null,
+                                                      GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                      null,
+                                                      null,
+                                                      methodName);
+        }
+
+        externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
+                                                          assetManagerName,
+                                                          relationshipTypeName,
+                                                          glossaryTermOneGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                          glossaryTermTwoGUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                          methodName);
+    }
+
+
+    /**
+     * Update the relationship properties for the two terms.
+     *
+     * @param userId calling user
+     * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
+     * @param relationshipTypeName name of the type of relationship to create
+     * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param relationshipsProperties properties for the categorization relationship
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateTermRelationship(String                   userId,
+                                       String                   glossaryTermOneGUID,
+                                       String                   relationshipTypeName,
+                                       String                   glossaryTermTwoGUID,
+                                       GlossaryTermRelationship relationshipsProperties,
+                                       String                   methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String glossaryTermOneGUIDParameterName = "glossaryTermOneGUID";
+        final String glossaryTermTwoGUIDParameterName = "glossaryTermTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        if (relationshipsProperties != null)
+        {
+            glossaryTermHandler.updateTermRelationship(userId,
+                                                       glossaryTermOneGUID,
+                                                       glossaryTermOneGUIDParameterName,
+                                                       relationshipTypeName,
+                                                       relationshipTypeNameParameterName,
+                                                       glossaryTermTwoGUID,
+                                                       glossaryTermTwoGUIDParameterName,
+                                                       relationshipsProperties.getExpression(),
+                                                       relationshipsProperties.getDescription(),
+                                                       this.getTermRelationshipStatus(relationshipsProperties.getStatus()),
+                                                       relationshipsProperties.getSteward(),
+                                                       relationshipsProperties.getSource(),
+                                                       methodName);
+        }
+        else
+        {
+            glossaryTermHandler.updateTermRelationship(userId,
+                                                       glossaryTermOneGUID,
+                                                       glossaryTermOneGUIDParameterName,
+                                                       relationshipTypeName,
+                                                       relationshipTypeNameParameterName,
+                                                       glossaryTermTwoGUID,
+                                                       glossaryTermTwoGUIDParameterName,
+                                                       null,
+                                                       null,
+                                                       GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                       null,
+                                                       null,
+                                                       methodName);
+        }
+    }
+
+
+    /**
+     * Remove the relationship between two terms.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
+     * @param relationshipTypeName name of the type of relationship to create
+     * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermRelationship(String userId,
+                                      String assetManagerGUID,
+                                      String assetManagerName,
+                                      String glossaryTermOneGUID,
+                                      String relationshipTypeName,
+                                      String glossaryTermTwoGUID,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        final String glossaryTermOneGUIDParameterName = "glossaryTermOneGUID";
+        final String glossaryTermTwoGUIDParameterName = "glossaryTermTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        glossaryTermHandler.clearTermRelationship(userId,
+                                                  glossaryTermOneGUID,
+                                                  glossaryTermOneGUIDParameterName,
+                                                  relationshipTypeName,
+                                                  relationshipTypeNameParameterName,
+                                                  glossaryTermTwoGUID,
+                                                  glossaryTermTwoGUIDParameterName,
+                                                  methodName);
+
+        externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
+                                                         assetManagerName,
+                                                         relationshipTypeName,
+                                                         glossaryTermOneGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                         glossaryTermTwoGUID,
+                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                         methodName);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes an abstract concept.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsAbstractConcept(String                        userId,
+                                         MetadataCorrelationProperties correlationProperties,
+                                         String                        glossaryTermGUID,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsAbstractConcept(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the abstract concept designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsAbstractConcept(String                        userId,
+                                           MetadataCorrelationProperties correlationProperties,
+                                           String                        glossaryTermGUID,
+                                           String                        methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsAbstractConcept(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a data value.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsDataValue(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsDataValue(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the data value designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsDataValue(String                        userId,
+                                     MetadataCorrelationProperties correlationProperties,
+                                     String                        glossaryTermGUID,
+                                     String                        methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsDataValue(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Return the open metadata type ordinal (handling the null condition).
+     *
+     * @param activityType activity type enum
+     * @return open type ordinal
+     */
+    private int getActivityType(GlossaryTermActivityType activityType)
+    {
+        if (activityType != null)
+        {
+            return activityType.getOpenTypeOrdinal();
+        }
+
+        return GlossaryTermActivityType.ACTION.getOpenTypeOrdinal();
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a data value.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param activityType type of activity
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsActivity(String                        userId,
+                                  MetadataCorrelationProperties correlationProperties,
+                                  String                        glossaryTermGUID,
+                                  GlossaryTermActivityType      activityType,
+                                  String                        methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsActivity(userId,
+                                              glossaryTermGUID,
+                                              glossaryTermGUIDParameterName,
+                                              this.getActivityType(activityType),
+                                              methodName);
+    }
+
+
+    /**
+     * Remove the activity designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsActivity(String                        userId,
+                                    MetadataCorrelationProperties correlationProperties,
+                                    String                        glossaryTermGUID,
+                                    String                        methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsActivity(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a context.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param contextDefinition more details of the context
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsContext(String                        userId,
+                                 MetadataCorrelationProperties correlationProperties,
+                                 String                        glossaryTermGUID,
+                                 GlossaryTermContextDefinition contextDefinition,
+                                 String                        methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        if (contextDefinition != null)
+        {
+            glossaryTermHandler.setTermAsContext(userId,
+                                                 glossaryTermGUID,
+                                                 glossaryTermGUIDParameterName,
+                                                 contextDefinition.getDescription(),
+                                                 contextDefinition.getScope(),
+                                                 methodName);
+        }
+        else
+        {
+            glossaryTermHandler.setTermAsContext(userId,
+                                                 glossaryTermGUID,
+                                                 glossaryTermGUIDParameterName,
+                                                 null,
+                                                 null,
+                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Remove the context definition designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsContext(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsContext(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a spine object.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsSpineObject(String                        userId,
+                                     MetadataCorrelationProperties correlationProperties,
+                                     String                        glossaryTermGUID,
+                                     String                        methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsSpineObject(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the spine object designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsSpineObject(String                        userId,
+                                       MetadataCorrelationProperties correlationProperties,
+                                       String                        glossaryTermGUID,
+                                       String                        methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsSpineObject(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a spine attribute.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsSpineAttribute(String                        userId,
+                                        MetadataCorrelationProperties correlationProperties,
+                                        String                        glossaryTermGUID,
+                                        String                        methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsSpineAttribute(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the spine attribute designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsSpineAttribute(String                        userId,
+                                          MetadataCorrelationProperties correlationProperties,
+                                          String                        glossaryTermGUID,
+                                          String                        methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsSpineAttribute(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes an object identifier.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsObjectIdentifier(String                        userId,
+                                          MetadataCorrelationProperties correlationProperties,
+                                          String                        glossaryTermGUID,
+                                          String                        methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.setTermAsObjectIdentifier(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the object identifier designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsObjectIdentifier(String                        userId,
+                                            MetadataCorrelationProperties correlationProperties,
+                                            String                        glossaryTermGUID,
+                                            String                        methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.clearTermAsObjectIdentifier(userId, glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGlossaryTerm(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        methodName);
+
+        glossaryTermHandler.removeGlossaryTerm(userId,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               methodName);
+    }
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName parameter supplying search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>   findGlossaryTerms(String userId,
+                                                         String assetManagerGUID,
+                                                         String assetManagerName,
+                                                         String searchString,
+                                                         String searchStringParameterName,
+                                                         int    startFrom,
+                                                         int    pageSize,
+                                                         String methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        List<GlossaryTermElement> results = glossaryTermHandler.findTerms(userId,
+                                                                          searchString,
+                                                                          searchStringParameterName,
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the list of glossary terms associated with a glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>    getTermsForGlossary(String userId,
+                                                            String assetManagerGUID,
+                                                            String assetManagerName,
+                                                            String glossaryGUID,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            String methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        List<GlossaryTermElement> results = glossaryTermHandler.getTermsForGlossary(userId,
+                                                                                    glossaryGUID,
+                                                                                    glossaryGUIDParameterName,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
+    }
+
+
+
+
+    /**
+     * Retrieve the list of glossary terms associated with a glossary category.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the glossary category of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String userId,
+                                                                    String assetManagerGUID,
+                                                                    String assetManagerName,
+                                                                    String glossaryCategoryGUID,
+                                                                    int    startFrom,
+                                                                    int    pageSize,
+                                                                    String methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        List<GlossaryTermElement> results = glossaryTermHandler.getTermsForGlossaryCategory(userId,
+                                                                                            glossaryCategoryGUID,
+                                                                                            glossaryCategoryGUIDParameterName,
+                                                                                            startFrom,
+                                                                                            pageSize,
+                                                                                            methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param name name to search for
+     * @param nameParameterName prarmeter supplying the name property
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>   getGlossaryTermsByName(String userId,
+                                                              String assetManagerGUID,
+                                                              String assetManagerName,
+                                                              String name,
+                                                              String nameParameterName,
+                                                              int    startFrom,
+                                                              int    pageSize,
+                                                              String methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        List<GlossaryTermElement> results = glossaryTermHandler.getTermsByName(userId,
+                                                                               name,
+                                                                               nameParameterName,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the glossary term metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param guid unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryTermElement getGlossaryTermByGUID(String userId,
+                                                     String assetManagerGUID,
+                                                     String assetManagerName,
+                                                     String guid,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String guidParameterName  = "guid";
+
+        GlossaryTermElement glossaryTerm = glossaryTermHandler.getTerm(userId, guid, guidParameterName, methodName);
+
+        if (glossaryTerm != null)
+        {
+            glossaryTerm.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                         guid,
+                                                                         guidParameterName,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         assetManagerGUID,
+                                                                         assetManagerName,
+                                                                         methodName));
+        }
+
+        return glossaryTerm;
+    }
+
+
+    /* =========================================================================================
+     * Support for linkage to external glossary resources.  These glossary resources are not
+     * stored as metadata - they could be web pages, ontologies or some other format.
+     * It is possible that the external glossary resource may have been generated by the metadata
+     * representation or vice versa.
+     */
+
+
+    /**
+     * Create a link to an external glossary resource.  This is associated with a glossary to show that they have equivalent content.
+     * It is possible that this resource was generated from the glossary content or was the source for it.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param linkProperties properties of the link
+     * @param methodName calling method
+     *
+     * @return unique identifier of the external reference
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createExternalGlossaryLink(String                         userId,
+                                             String                         assetManagerGUID,
+                                             String                         assetManagerName,
+                                             ExternalGlossaryLinkProperties linkProperties,
+                                             String                         methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Update the properties of a reference to an external glossary resource.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param linkProperties properties of the link
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateExternalGlossaryLink(String                         userId,
+                                           String                         assetManagerGUID,
+                                           String                         assetManagerName,
+                                           String                         externalLinkGUID,
+                                           ExternalGlossaryLinkProperties linkProperties,
+                                           String                         methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Remove information about a link to an external glossary resource (and the relationships that attached it to the glossaries).
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeExternalGlossaryLink(String userId,
+                                           String assetManagerGUID,
+                                           String assetManagerName,
+                                           String externalLinkGUID,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Connect a glossary to a reference to an external glossary resource.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param glossaryGUID unique identifier of the metadata element to attach
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void attachExternalLinkToGlossary(String userId,
+                                             String assetManagerGUID,
+                                             String assetManagerName,
+                                             String glossaryGUID,
+                                             String externalLinkGUID,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Disconnect a glossary from a reference to an external glossary resource.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void detachExternalLinkFromGlossary(String userId,
+                                               String assetManagerGUID,
+                                               String assetManagerName,
+                                               String glossaryGUID,
+                                               String externalLinkGUID,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Retrieve the list of links to external glossary resources attached to a glossary.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element for the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of attached links to external glossary resources
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ExternalGlossaryLinkElement> getExternalLinksForGlossary(String userId,
+                                                                         String glossaryGUID,
+                                                                         int    startFrom,
+                                                                         int    pageSize,
+                                                                         String methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Return the glossaries connected to an external glossary source.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of glossaries
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryElement> getGlossariesForExternalLink(String userId,
+                                                              String assetManagerGUID,
+                                                              String assetManagerName,
+                                                              String externalLinkGUID,
+                                                              int    startFrom,
+                                                              int    pageSize,
+                                                              String methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Create a link to an external glossary category resource.  This is associated with a category to show that they have equivalent content.
+     * It is possible that this resource was generated from the glossary content or was the source for it.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param linkProperties properties of the link
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void attachExternalCategoryLink(String                                userId,
+                                           String                                assetManagerGUID,
+                                           String                                assetManagerName,
+                                           String                                glossaryCategoryGUID,
+                                           String                                externalLinkGUID,
+                                           ExternalGlossaryElementLinkProperties linkProperties,
+                                           String                                methodName) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Remove the link to an external glossary category resource.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void detachExternalCategoryLink(String userId,
+                                           String assetManagerGUID,
+                                           String assetManagerName,
+                                           String glossaryCategoryGUID,
+                                           String externalLinkGUID,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Create a link to an external glossary term resource.  This is associated with a term to show that they have equivalent content.
+     * It is possible that this resource was generated from the glossary content or was the source for it.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param linkProperties properties of the link
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void attachExternalTermLink(String                                userId,
+                                       String                                assetManagerGUID,
+                                       String                                assetManagerName,
+                                       String                                glossaryTermGUID,
+                                       String                                externalLinkGUID,
+                                       ExternalGlossaryElementLinkProperties linkProperties,
+                                       String                                methodName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Remove the link to an external glossary term resource.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalLinkGUID unique identifier of the external reference
+     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void detachExternalTermLink(String userId,
+                                       String assetManagerGUID,
+                                       String assetManagerName,
+                                       String glossaryTermGUID,
+                                       String externalLinkGUID,
+                                       String methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        // todo
+    }
+}

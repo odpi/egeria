@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerExcept
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -406,6 +407,72 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
                                                                                             serviceOperationName);
 
         return instance.getPublishZones();
+    }
+
+
+
+    /**
+     * Return the connection used in the client to create a connector to access events from the out topic.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param callerId unique identifier of the caller
+     * @return connection object for client
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public Connection getInTopicConnection(String userId,
+                                           String serverName,
+                                           String serviceOperationName,
+                                           String callerId) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        OMASServiceInstance instance = (OMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                           serverName,
+                                                                                           serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getInTopicClientConnection(callerId);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the connection used in the client to create a connector to access events from the out topic.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param callerId unique identifier of the caller
+     * @return connection object for client
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public Connection getOutTopicConnection(String userId,
+                                            String serverName,
+                                            String serviceOperationName,
+                                            String callerId) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        OMASServiceInstance instance = (OMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                           serverName,
+                                                                                           serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getOutTopicClientConnection(callerId);
+        }
+
+        return null;
     }
 
 

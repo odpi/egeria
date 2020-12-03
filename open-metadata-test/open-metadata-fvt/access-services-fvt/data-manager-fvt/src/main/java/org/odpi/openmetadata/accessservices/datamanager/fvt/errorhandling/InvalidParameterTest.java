@@ -796,6 +796,7 @@ public class InvalidParameterTest
         try
         {
             testCreateNestedFoldersNoUserId(client);
+            testCreateNestedFoldersNoParentGUID(client, userId);
             testCreateNestedFoldersNoPathName(client, userId);
             testCreateNestedFoldersNoExternalSourceGUID(client, userId);
             testCreateNestedFoldersNoExternalSourceName(client, userId);
@@ -817,11 +818,41 @@ public class InvalidParameterTest
     {
         final String activityName = "testCreateNestedFoldersNoUserId";
 
+        String parentGUID = "xxxx";
         String pathName = "top-folder/folder2";
 
         try
         {
-            client.createNestedFolders(null, externalSourceGUID, externalSourceName, pathName);
+            client.createNestedFolders(null, externalSourceGUID, externalSourceName, parentGUID, pathName);
+            throw new FVTUnexpectedCondition(testCaseName, activityName);
+        }
+        catch (InvalidParameterException expectedException)
+        {
+            // ignore
+        }
+        catch (Throwable unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Test null properties passed to createNestedFolders.
+     *
+     * @param client client to call
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void testCreateNestedFoldersNoParentGUID(FilesAndFoldersClient client,
+                                                     String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "testCreateNestedFoldersNoPathName";
+        String pathName = "top-folder/folder2";
+
+        try
+        {
+            client.createNestedFolders(userId, externalSourceGUID, externalSourceName, null, pathName);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
@@ -846,10 +877,11 @@ public class InvalidParameterTest
                                                    String                userId) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateNestedFoldersNoPathName";
+        String parentGUID = "xxxx";
 
         try
         {
-            client.createNestedFolders(userId, externalSourceGUID, externalSourceName, null);
+            client.createNestedFolders(userId, externalSourceGUID, externalSourceName, parentGUID, null);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
@@ -876,15 +908,15 @@ public class InvalidParameterTest
         final String activityName = "testCreateNestedFoldersNoExternalSourceGUID";
 
         String pathName = "top-folder/folder2";
+        String parentGUID = "xxxx";
 
         try
         {
-            client.createNestedFolders(userId, null, externalSourceName, pathName);
-            throw new FVTUnexpectedCondition(testCaseName, activityName);
+            client.createNestedFolders(userId, null, externalSourceName, parentGUID, pathName);
         }
-        catch (InvalidParameterException expectedException)
+        catch (InvalidParameterException expectedError)
         {
-            // ignore
+            // all ok
         }
         catch (Throwable unexpectedError)
         {
@@ -906,15 +938,15 @@ public class InvalidParameterTest
         final String activityName = "testCreateNestedFoldersNoExternalSourceGUID";
 
         String pathName = "top-folder/folder2";
+        String parentGUID = "xxxx";
 
         try
         {
-            client.createNestedFolders(userId, externalSourceGUID, null, pathName);
-            throw new FVTUnexpectedCondition(testCaseName, activityName);
+            client.createNestedFolders(userId, externalSourceGUID, null, parentGUID, pathName);
         }
-        catch (InvalidParameterException expectedException)
+        catch (InvalidParameterException expectedError)
         {
-            // ignore
+            // all ok
         }
         catch (Throwable unexpectedError)
         {
@@ -942,7 +974,7 @@ public class InvalidParameterTest
         try
         {
             DataManagerRESTClient  restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
-            DataManagerEventClient client     = new DataManagerEventClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            DataManagerEventClient client     = new DataManagerEventClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog, "");
 
             testRegisterListener(userId, client);
         }

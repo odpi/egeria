@@ -12,8 +12,13 @@ The feedback model captures comments and ratings from subject matter experts.
 Comments and ratings are a key mechanism for providing
 feedback on the metadata definitions by any user.  
 
-Note that comments can be tagged, rated and commented on.
+**Note:** that because comments inherit from [Referenceable](0010-Base-Model.md) they can be tagged, rated and commented on.
 
+## More Information
+
+* [More details on the different types of feedback](../../../open-metadata-implementation/access-services/docs/concepts/feedback)
+
+----
 
 Return to [Area 1](Area-1-models.md).
 

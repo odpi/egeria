@@ -24,6 +24,7 @@ public class ReferenceableConverter extends ElementHeaderConverter
      * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public ReferenceableConverter(EntityDetail         entity,
                                   OMRSRepositoryHelper repositoryHelper,
@@ -41,6 +42,7 @@ public class ReferenceableConverter extends ElementHeaderConverter
      * @param relationship properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public ReferenceableConverter(EntityDetail         entity,
                                   Relationship         relationship,

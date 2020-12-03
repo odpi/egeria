@@ -124,6 +124,8 @@ export default function TraversalResultHandler(props) {
             </div>              
           </div>        
         );
+
+        interactionContext.showPortal(dialogDisplay);
       }
     
       else {
@@ -209,9 +211,10 @@ export default function TraversalResultHandler(props) {
           </div>
         );
       }
+
+      interactionContext.showPortal(dialogDisplay);
     }
- 
-    interactionContext.showPortal(dialogDisplay);
+
   };
 
 
@@ -230,8 +233,10 @@ export default function TraversalResultHandler(props) {
     }
     if (props.status === "cancelled") {
       /*
-       * NO OP
+       * This state can be reached because another component - such as an error handler in a REST callback
+       * has abandoned the operation. It is not only reached by the user pressing the cancel button.
        */
+      cancelCallback();
     }
     if (props.status === "complete") {     
       triggerPortal();

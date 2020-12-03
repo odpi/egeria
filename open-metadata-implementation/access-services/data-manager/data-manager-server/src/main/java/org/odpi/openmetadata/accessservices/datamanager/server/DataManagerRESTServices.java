@@ -47,6 +47,7 @@ public class DataManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId identifier of calling user.
+     * @param callerId unique identifier of the caller
      *
      * @return connection object for the out topic or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -54,7 +55,8 @@ public class DataManagerRESTServices
      * PropertyServerException problem retrieving the discovery engine definition.
      */
     public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId)
+                                                    String userId,
+                                                    String callerId)
     {
         final String methodName = "getOutTopicConnection";
 
@@ -66,7 +68,7 @@ public class DataManagerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName));
+            response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName, callerId));
         }
         catch (InvalidParameterException error)
         {
@@ -273,9 +275,9 @@ public class DataManagerRESTServices
             response.setGUID(handler.createSoftwareServerCapability(userId,
                                                                     requestBody.getExternalSourceGUID(),
                                                                     requestBody.getExternalSourceName(),
-                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.DATABASE_MANAGER_CLASSIFICATION_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_NAME,
+                                                                    null,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),

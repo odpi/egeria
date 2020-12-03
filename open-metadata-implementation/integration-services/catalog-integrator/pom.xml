@@ -10,7 +10,7 @@
     <parent>
         <artifactId>integration-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.5-SNAPSHOT</version>
+        <version>2.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -33,9 +33,5 @@
         <module>catalog-integrator-api</module>
         <module>catalog-integrator-server</module>
     </modules>
-
-    <dependencies>
-
-    </dependencies>
 
 </project>

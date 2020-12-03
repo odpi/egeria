@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.5-SNAPSHOT</version>
+        <version>2.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>asset-consumer-fvt</module>
+        <module>asset-manager-fvt</module>
         <module>asset-owner-fvt</module>
         <module>data-manager-fvt</module>
         <module>digital-architecture-fvt</module>

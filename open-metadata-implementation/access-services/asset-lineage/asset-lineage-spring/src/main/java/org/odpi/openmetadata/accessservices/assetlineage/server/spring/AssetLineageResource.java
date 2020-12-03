@@ -37,4 +37,21 @@ public class AssetLineageResource {
                                             @PathVariable String entityType) {
         return restAPI.publishEntities(serverName, userId, entityType);
     }
+
+    /**
+     * Find the entity by guid and publish the context for it
+     *
+     * @param serverName name of server instance to call
+     * @param userId     the name of the calling user
+     * @param guid       the guid of the entity to build context
+     * @param entityType the name of the relationship type
+     * @return a list of unique identifiers (guids) of the available entity with the given type provided as a response
+     */
+    @GetMapping(path = "/publish-entity/{entityType}/{guid}")
+    public GUIDListResponse publishEntitiesTest(@PathVariable String serverName,
+                                            @PathVariable String userId,
+                                            @PathVariable String guid,
+                                            @PathVariable String entityType) {
+        return restAPI.publishEntity(serverName, userId, entityType, guid);
+    }
 }

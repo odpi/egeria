@@ -3,6 +3,10 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
 
 dependencies {
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
@@ -18,4 +22,9 @@ description = 'Subject Area OMAS Samples'
 
 java {
     withJavadocJar()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.accessservices.subjectarea.samples.definition.SubjectAreaDefinitionSample'
+    archiveClassifier = 'jar-with-dependencies'
 }

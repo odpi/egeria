@@ -1,0 +1,802 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.commonservices.generichandlers;
+
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Manages the maintenance of port entities.
+ *
+ * @param <B> class of bean for returning the port attributes
+ */
+public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
+{
+    /**
+     * Construct the handler information needed to interact with the repository services
+     *
+     * @param converter specific converter for this bean class
+     * @param beanClass name of bean class that is represented by the generic class B
+     * @param serviceName      name of this service
+     * @param serverName       name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler     manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
+     * @param defaultZones list of zones that the access service should set in all new Asset instances.
+     * @param publishZones list of zones that the access service sets up in published Asset instances.
+     * @param auditLog destination for audit log events.
+     */
+    public PortHandler(OpenMetadataAPIGenericConverter<B> converter,
+                       Class<B>                           beanClass,
+                       String                             serviceName,
+                       String                             serverName,
+                       InvalidParameterHandler            invalidParameterHandler,
+                       RepositoryHandler                  repositoryHandler,
+                       OMRSRepositoryHelper               repositoryHelper,
+                       String                             localServerUserId,
+                       OpenMetadataServerSecurityVerifier securityVerifier,
+                       List<String>                       supportedZones,
+                       List<String>                       defaultZones,
+                       List<String>                       publishZones,
+                       AuditLog                           auditLog)
+
+    {
+        super(converter,
+              beanClass,
+              serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper,
+              localServerUserId,
+              securityVerifier,
+              supportedZones,
+              defaultZones,
+              publishZones,
+              auditLog);
+    }
+
+
+
+    /**
+     * Create a new metadata element to represent a port.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param processGUID unique identifier of the process where the port is located
+     * @param processGUIDParameterName parameter supplying processGUID
+     * @param qualifiedName unique name for the port - used in other configuration
+     * @param displayName short display name for the port
+     * @param portType description of the port
+     * @param additionalProperties additional properties for a port
+     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
+     * @param extendedProperties  properties for a port subtype
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the port
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createPort(String              userId,
+                             String              externalSourceGUID,
+                             String              externalSourceName,
+                             String              processGUID,
+                             String              processGUIDParameterName,
+                             String              qualifiedName,
+                             String              displayName,
+                             int                 portType,
+                             Map<String, String> additionalProperties,
+                             String              suppliedTypeName,
+                             Map<String, Object> extendedProperties,
+                             String              methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.PORT_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        PortBuilder builder = new PortBuilder(qualifiedName,
+                                              displayName,
+                                              portType,
+                                              additionalProperties,
+                                              typeGUID,
+                                              typeName,
+                                              extendedProperties,
+                                              repositoryHelper,
+                                              serviceName,
+                                              serverName);
+
+        builder.setAnchors(userId, processGUID, methodName);
+
+        String portGUID = this.createBeanInRepository(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      typeGUID,
+                                                      typeName,
+                                                      qualifiedName,
+                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                      builder,
+                                                      methodName);
+
+        if (portGUID != null)
+        {
+            /*
+             * Link the category to its glossary.
+             */
+            final String portGUIDParameterName = "portGUID";
+
+            this.linkElementToElement(userId,
+                                      null,
+                                      null,
+                                      processGUID,
+                                      processGUIDParameterName,
+                                      OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                      portGUID,
+                                      portGUIDParameterName,
+                                      OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                      null,
+                                      methodName);
+        }
+
+        return portGUID;
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a port.  This call replaces
+     * all existing properties with the supplied properties.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param portGUID unique identifier of the port to update
+     * @param portGUIDParameterName parameter supplying portGUID
+     * @param qualifiedName unique name for the port - used in other configuration
+     * @param displayName short display name for the port
+     * @param portType description of the port
+     * @param additionalProperties additional properties for a port
+     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
+     * @param extendedProperties  properties for a port subtype
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updatePort(String              userId,
+                           String              externalSourceGUID,
+                           String              externalSourceName,
+                           String              portGUID,
+                           String              portGUIDParameterName,
+                           String              qualifiedName,
+                           String              displayName,
+                           int                 portType,
+                           Map<String, String> additionalProperties,
+                           String              suppliedTypeName,
+                           Map<String, Object> extendedProperties,
+                           String              methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.PORT_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+        
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        PortBuilder builder = new PortBuilder(qualifiedName,
+                                              displayName,
+                                              portType,
+                                              additionalProperties,
+                                              typeGUID,
+                                              typeName,
+                                              extendedProperties,
+                                              repositoryHelper,
+                                              serviceName,
+                                              serverName);
+
+        this.updateBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    portGUID,
+                                    portGUIDParameterName,
+                                    typeGUID,
+                                    typeName,
+                                    builder.getInstanceProperties(methodName),
+                                    false,
+                                    methodName);
+    }
+
+
+    /**
+     * Link a port to a process.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param processGUID unique identifier of the process
+     * @param processGUIDParameterName parameter supplying processGUID
+     * @param portGUID unique identifier of the port
+     * @param portGUIDParameterName parameter supplying portGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupProcessPort(String userId,
+                                 String externalSourceGUID,
+                                 String externalSourceName,
+                                 String processGUID,
+                                 String processGUIDParameterName,
+                                 String portGUID,
+                                 String portGUIDParameterName,
+                                 String methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  processGUID,
+                                  processGUIDParameterName,
+                                  OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                  portGUID,
+                                  portGUIDParameterName,
+                                  OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                  OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
+                                  OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                  null,
+                                  methodName);
+    }
+
+
+    /**
+     * Unlink a port from a process.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param processGUID unique identifier of the process
+     * @param processGUIDParameterName parameter supplying processGUID
+     * @param portGUID unique identifier of the port
+     * @param portGUIDParameterName parameter supplying portGUID
+     * @param methodName calling method
+     *                 
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearProcessPort(String userId,
+                                 String externalSourceGUID,
+                                 String externalSourceName,
+                                 String processGUID,
+                                 String processGUIDParameterName,
+                                 String portGUID,
+                                 String portGUIDParameterName,
+                                 String methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      processGUID,
+                                      processGUIDParameterName,
+                                      OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                      portGUID,
+                                      portGUIDParameterName,
+                                      OpenMetadataAPIMapper.PORT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                      methodName);
+    }
+
+
+    /**
+     * Link two ports together to show that portTwo is an implementation of portOne. (That is, portOne delegates to
+     * portTwo.)
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param portOneGUID unique identifier of the port at end 1
+     * @param portOneGUIDParameterName parameter supplying portOneGUID
+     * @param portTwoGUID unique identifier of the port at end 2
+     * @param portTwoGUIDParameterName parameter supplying portTwoGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupPortDelegation(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String portOneGUID,
+                                    String portOneGUIDParameterName,
+                                    String portTwoGUID,
+                                    String portTwoGUIDParameterName,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  portOneGUID,
+                                  portOneGUIDParameterName,
+                                  OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                  portTwoGUID,
+                                  portTwoGUIDParameterName,
+                                  OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                  OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
+                                  OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
+                                  null,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove the port delegation relationship between two ports.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param portOneGUID unique identifier of the port at end 1
+     * @param portOneGUIDParameterName parameter supplying portOneGUID
+     * @param portTwoGUID unique identifier of the port at end 2
+     * @param portTwoGUIDParameterName parameter supplying portTwoGUID
+     * @param methodName calling method
+     *                    
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearPortDelegation(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String portOneGUID,
+                                    String portOneGUIDParameterName,
+                                    String portTwoGUID,
+                                    String portTwoGUIDParameterName,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      portOneGUID,
+                                      portOneGUIDParameterName,
+                                      OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      portTwoGUID,
+                                      portTwoGUIDParameterName,
+                                      OpenMetadataAPIMapper.PORT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
+                                      methodName);
+    }
+
+
+    /**
+     * Link a schema type to a port to show the structure of data it accepts.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param portGUID unique identifier of the port
+     * @param portGUIDParameterName parameter supplying portGUID
+     * @param schemaTypeGUID unique identifier of the schemaType
+     * @param schemaTypeGUIDParameterName parameter supplying schemaTypeGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupPortSchemaType(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String portGUID,
+                                    String portGUIDParameterName,
+                                    String schemaTypeGUID,
+                                    String schemaTypeGUIDParameterName,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  portGUID,
+                                  portGUIDParameterName,
+                                  OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                  schemaTypeGUID,
+                                  schemaTypeGUIDParameterName,
+                                  OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                  OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                  null,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove the schema type from a port.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param portGUID unique identifier of the port
+     * @param portGUIDParameterName parameter supplying portGUID
+     * @param schemaTypeGUID unique identifier of the schemaType
+     * @param schemaTypeGUIDParameterName parameter supplying schemaTypeGUID
+     * @param methodName calling method
+     *                       
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearPortSchemaType(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String portGUID,
+                                    String portGUIDParameterName,
+                                    String schemaTypeGUID,
+                                    String schemaTypeGUIDParameterName,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      portGUID,
+                                      portGUIDParameterName,
+                                      OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      schemaTypeGUID,
+                                      schemaTypeGUIDParameterName,
+                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                      methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a port.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param portGUID unique identifier of the metadata element to remove
+     * @param portGUIDParameterName parameter supplying portGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removePort(String userId,
+                           String externalSourceGUID,
+                           String externalSourceName,
+                           String portGUID,
+                           String portGUIDParameterName,
+                           String methodName) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException
+    {
+        this.deleteBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    portGUID,
+                                    portGUIDParameterName,
+                                    OpenMetadataAPIMapper.PORT_TYPE_GUID,
+                                    OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                    null,
+                                    null,
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the list of port metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName parameter supplying searchString
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findPorts(String userId,
+                             String searchString,
+                             String searchStringParameterName,
+                             int    startFrom,
+                             int    pageSize,
+                             String methodName) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException
+    {
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameterName,
+                              OpenMetadataAPIMapper.PORT_TYPE_GUID,
+                              OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                              startFrom,
+                              pageSize,
+                              methodName);
+    }
+
+
+    /**
+     * Retrieve the list of ports associated with a process.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the process of interest
+     * @param processGUIDParameterName parameter passing processGUID
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getPortsForProcess(String userId,
+                                      String processGUID,
+                                      String processGUIDParameterName,
+                                      int    startFrom,
+                                      int    pageSize,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        processGUID,
+                                        processGUIDParameterName,
+                                        OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
+                                        OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        startFrom,
+                                        pageSize,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the list of ports that delegate to this port.
+     *
+     * @param userId calling user
+     * @param portGUID unique identifier of the starting port
+     * @param portGUIDParameterName parameter passing portGUID
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>  getPortUse(String userId,
+                               String portGUID,
+                               String portGUIDParameterName,
+                               int    startFrom,
+                               int    pageSize,
+                               String methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        portGUID,
+                                        portGUIDParameterName,
+                                        OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
+                                        OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        startFrom,
+                                        pageSize,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the port that this port delegates to.
+     *
+     * @param userId calling user
+     * @param portGUID unique identifier of the starting port alias
+     * @param portGUIDParameterName parameter passing portGUID
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getPortDelegation(String userId,
+                               String portGUID,
+                               String portGUIDParameterName,
+                               String methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        List<B> results = this.getAttachedElements(userId,
+                                                   portGUID,
+                                                   portGUIDParameterName,
+                                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                   null,
+                                                   null,
+                                                   2,
+                                                   0,
+                                                   invalidParameterHandler.getMaxPagingSize(),
+                                                   methodName);
+
+        if ((results == null) || (results.isEmpty()))
+        {
+            return null;
+        }
+        else if (results.size() == 1)
+        {
+            return results.get(0);
+        }
+        else
+        {
+            throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_BEANS_FOUND.getMessageDefinition(OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                                                                                 methodName,
+                                                                                                                 results.toString(),
+                                                                                                                 portGUID,
+                                                                                                                 serviceName,
+                                                                                                                 serverName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
+     * Retrieve the list of port metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param nameParameterName parameter supplying name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getPortsByName(String userId,
+                                  String name,
+                                  String nameParameterName,
+                                  int    startFrom,
+                                  int    pageSize,
+                                  String methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.PORT_TYPE_GUID,
+                                    OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the port metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param portGUID unique identifier of the requested metadata element
+     * @param portGUIDParameterName parameter passing portGUID
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getPortByGUID(String userId,
+                           String portGUID,
+                           String portGUIDParameterName,
+                           String methodName) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException
+    {
+        return this.getBeanFromRepository(userId,
+                                          portGUID,
+                                          portGUIDParameterName,
+                                          OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                          methodName);
+    }
+}

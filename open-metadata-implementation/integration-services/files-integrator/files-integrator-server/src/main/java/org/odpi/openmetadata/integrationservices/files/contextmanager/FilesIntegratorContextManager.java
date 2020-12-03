@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersCl
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.FileSystemProperties;
+import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -18,6 +19,8 @@ import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegrator
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorContext;
 import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorErrorCode;
 
+import java.util.Map;
+
 /**
  * FilesIntegratorContextManager provides the bridge between the integration daemon services and
  * the specific implementation of the Files Integrator integration service.
@@ -25,9 +28,9 @@ import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorError
 public class FilesIntegratorContextManager extends IntegrationContextManager
 {
     private FilesAndFoldersClient  filesAndFoldersClient  = null;
-    private DataManagerEventClient dataManagerEventClient = null;
     private MetadataSourceClient   metadataSourceClient   = null;
 
+    private DataManagerRESTClient restClient     = null;
     private String   metadataSourceQualifiedName = null;
     private String   metadataSourceGUID          = null;
 
@@ -46,8 +49,6 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
      */
     public void createClients() throws InvalidParameterException
     {
-        DataManagerRESTClient restClient;
-
         if (localServerPassword == null)
         {
             restClient = new DataManagerRESTClient(partnerOMASServerName,
@@ -68,12 +69,6 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                           restClient,
                                                           maxPageSize,
                                                           auditLog);
-
-        dataManagerEventClient = new DataManagerEventClient(partnerOMASServerName,
-                                                            partnerOMASPlatformRootURL,
-                                                            restClient,
-                                                            maxPageSize,
-                                                            auditLog);
 
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
@@ -100,23 +95,20 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
         if (metadataSourceQualifiedName != null)
         {
             this.metadataSourceQualifiedName = metadataSourceQualifiedName;
-        }
-        else
-        {
-            this.metadataSourceQualifiedName = IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName();
-        }
 
-        this.metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
-        if (this.metadataSourceGUID == null)
-        {
-            FileSystemProperties properties = new FileSystemProperties();
+            this.metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
-            properties.setQualifiedName(metadataSourceQualifiedName);
-            properties.setDisplayName(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName());
-            properties.setDescription(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceDescription());
+            if (this.metadataSourceGUID == null)
+            {
+                FileSystemProperties properties = new FileSystemProperties();
 
-            this.metadataSourceGUID = metadataSourceClient.createFileSystem(localServerUserId, null, null, properties);
+                properties.setQualifiedName(metadataSourceQualifiedName);
+                properties.setDisplayName(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName());
+                properties.setDescription(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceDescription());
+
+                this.metadataSourceGUID = metadataSourceClient.createFileSystem(localServerUserId, null, null, properties);
+            }
         }
     }
 
@@ -124,23 +116,38 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
     /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
      *
-     * @param connectorName name of the connector
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
+     * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     * @param serviceOptions options from the integration service's configuration
+     *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void setContext(String               connectorName,
-                           String               metadataSourceQualifiedName,
-                           IntegrationConnector integrationConnector) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void setContext(String                   connectorId,
+                           String                   connectorName,
+                           String                   metadataSourceQualifiedName,
+                           IntegrationConnector     integrationConnector,
+                           PermittedSynchronization permittedSynchronization,
+                           Map<String, Object>      serviceOptions) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         if (integrationConnector instanceof FilesIntegratorConnector)
         {
             FilesIntegratorConnector serviceSpecificConnector = (FilesIntegratorConnector)integrationConnector;
 
             this.setUpMetadataSource(metadataSourceQualifiedName);
+
+            DataManagerEventClient dataManagerEventClient = new DataManagerEventClient(partnerOMASServerName,
+                                                                                       partnerOMASPlatformRootURL,
+                                                                                       restClient,
+                                                                                       maxPageSize,
+                                                                                       auditLog,
+                                                                                       connectorId);
 
             serviceSpecificConnector.setContext(new FilesIntegratorContext(filesAndFoldersClient,
                                                                            dataManagerEventClient,

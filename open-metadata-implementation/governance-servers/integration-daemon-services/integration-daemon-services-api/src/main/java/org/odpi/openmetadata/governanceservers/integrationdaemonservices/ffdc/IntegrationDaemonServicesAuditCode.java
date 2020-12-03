@@ -81,7 +81,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
 
     INTEGRATION_CONNECTOR_INITIALIZING("INTEGRATION-DAEMON-SERVICES-0008",
                       OMRSAuditLogRecordSeverity.STARTUP,
-                      "A new integration connector named {0} is initializing in integration service {1} running in integration daemon {2}",
+                      "A new integration connector named {0} is initializing in integration service {1} running in integration daemon {2}, permitted synchronization is: {3}",
                       "The integration service is initializing an integration connector using the information in the configured " +
                                                "connection.",
                       "Verify that this connector is successfully initialized."),
@@ -126,6 +126,13 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                        "The integration daemon services has completed initialization.",
                        "Verify that all of the configured integration services, and their connectors within have successfully started and" +
                                "are able to connect both to their third party technology and their partner OMAS."),
+
+    NO_PERMITTED_SYNCHRONIZATION("INTEGRATION-DAEMON-SERVICES-0014",
+                       OMRSAuditLogRecordSeverity.STARTUP,
+                       "The integration service {0} does not have a default permitted synchronization value set.",
+                       "The integration daemon is not able to initialize one of the configured integration because its defaultPermittedSynchronization value is null.  " +
+                               "The integration daemon shuts down and this error is reported to the caller as a configuration exception.",
+                       "Update the configuration for the integration service to include a value for the default permitted synchronization."),
 
     SERVER_SHUTTING_DOWN("INTEGRATION-DAEMON-SERVICES-0020",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
@@ -186,7 +193,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
 
     CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0031",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                     "The integration connector {0} method {1} has returned with a {2} exception containing message {4}",
+                     "The integration connector {0} method {1} has returned with a {2} exception containing message {3}",
                               "The server will change the integration connector's status to failed.",
                               "Use the message from the exception and knowledge of the integration connector's behavior to " +
                             "track down and resolve the cause of the error and then restart the connector."),

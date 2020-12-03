@@ -173,7 +173,7 @@ these external identifiers to the Asset.
 
 #### Usage
 
-Knowinthe names of an asset means that the asset catalog can support searches for assets using the
+Knowing the names of an asset means that the asset catalog can support searches for assets using the
 name that specific communities of people know.
 
 It also helps automated process that are operating on the physical asset through a tool or API can

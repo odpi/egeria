@@ -32,7 +32,6 @@ public class RexViewAdmin extends ViewServiceAdmin {
 
     protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
 
-    //private ViewServiceConfig       viewServiceConfig = null;
     private AuditLog                auditLog          = null;
     private String                  serverUserName    = null;
     private RexViewServicesInstance instance          = null;
@@ -180,41 +179,35 @@ public class RexViewAdmin extends ViewServiceAdmin {
                                                                     AuditLog                     auditLog)             throws OMAGConfigurationErrorException
     {
         final String methodName = "extractResourceEndpoints";
-
         final String parameterName = "resourceEndpoints";
 
-        try {
 
-            /*
-             * Rex cannot operate without any endpoints.
-             * Check if resourceEndpoints is null and if so throw am exception, which will be caught and logged by logBadConfigProperties, which will throw OMAGConfigurationErrorException...
-             */
-            if (resourceEndpoints == null) {
+        /*
+         * Rex cannot operate without any endpoints.
+         * Check if resourceEndpoints is null and if so call logBadConfigProperties, which will
+         * log the error and throw an OMAGConfigurationErrorException
+         */
+        if (resourceEndpoints == null || resourceEndpoints.isEmpty())
+        {
 
-                throw new InvalidParameterException(RexViewErrorCode.INVALID_CONFIG_PROPERTY.getMessageDefinition(parameterName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-
-            } else {
-
-                @SuppressWarnings("unchecked")
-                List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
-                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-                return endpointList;
-            }
-
-        } catch (Throwable error) {
-
-            logBadConfigProperties(viewServiceFullName,
-                                   resourceEndpointsPropertyName,
-                                   resourceEndpoints.toString(),
-                                   auditLog,
-                                   methodName,
-                                   error);
+            logBadConfiguration(viewServiceFullName,
+                                resourceEndpointsPropertyName,
+                                resourceEndpoints == null ? "null" : resourceEndpoints.toString(),
+                                auditLog,
+                                methodName);
 
             // unreachable
             return null;
+
+        }
+        else
+        {
+
+            @SuppressWarnings("unchecked")
+            List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
+            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
+            return endpointList;
         }
     }
 }
+

@@ -66,8 +66,10 @@ There are 2 types of capabilities exposed in the Presentation Server.
  * There is ongoing work to allow developers to do be able to make changes and hot swap them into a running server.
  * The ongoing work is being tracked in issue [Git issue 3543](https://github.com/odpi/egeria/issues/3543)
  * The work involves using Create React App. This will be done iteratively.
- * The current latest client code is in the client folder.
- * The new work is being developed in the cra-client directory and may contain out of date Presentation Server source code. 
+ * The new work is being developed in the cra-client directory and cra-server directory, and may contain out of date Presentation Server source code. 
+ * To start the new client in development mode: navigate to the `cra-client` and `cra-server` directories. Run `npm install` inside each. Then, navigate into `cra-server` and run `npm start`.
+ * To start the new client in production mode: navigate into `cra-client`, then run `npm run build`. Then, navigate into `cra-server` and run `npm run prod`.
+ * PLEASE NOTE: this should NOT be considered the main build yet. This is still in development.
 
 ## There is ongoing work to enable easy running of the new Presentation Server and view services in a demo environment
  * The Coco Pharmaceuticals 'lab' tutorial environment will now configure the view services, and allow a user to experiment with the Presentation Server

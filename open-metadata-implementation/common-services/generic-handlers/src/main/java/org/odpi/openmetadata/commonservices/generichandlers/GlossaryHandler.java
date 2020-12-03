@@ -1,0 +1,550 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.commonservices.generichandlers;
+
+
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * GlossaryHandler provides the exchange of metadata about glossaries between the repository and the OMAS.
+ * Note glossaries are governance metadata and are always defined with LOCAL-COHORT provenance.
+ *
+ * @param <B> class that represents the glossary
+ */
+public class GlossaryHandler<B> extends ReferenceableHandler<B>
+{
+    /**
+     * Construct the asset handler with information needed to work with B objects.
+     *
+     * @param converter specific converter for this bean class
+     * @param beanClass name of bean class that is represented by the generic class B
+     * @param serviceName name of this service
+     * @param serverName name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve B instances from
+     * @param defaultZones list of zones that the access service should set in all new B instances
+     * @param publishZones list of zones that the access service sets up in published B instances
+     * @param auditLog destination for audit log events
+     */
+    public GlossaryHandler(OpenMetadataAPIGenericConverter<B> converter,
+                           Class<B>                           beanClass,
+                           String                             serviceName,
+                           String                             serverName,
+                           InvalidParameterHandler            invalidParameterHandler,
+                           RepositoryHandler                  repositoryHandler,
+                           OMRSRepositoryHelper               repositoryHelper,
+                           String                             localServerUserId,
+                           OpenMetadataServerSecurityVerifier securityVerifier,
+                           List<String>                       supportedZones,
+                           List<String>                       defaultZones,
+                           List<String>                       publishZones,
+                           AuditLog                           auditLog)
+    {
+        super(converter,
+              beanClass,
+              serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper,
+              localServerUserId,
+              securityVerifier,
+              supportedZones,
+              defaultZones,
+              publishZones,
+              auditLog);
+    }
+
+
+    /**
+     * Create the anchor object that all elements in a glossary (terms and categories) are linked to.
+     *
+     * @param userId calling user
+     * @param qualifiedName unique name for the glossary - used in other configuration
+     * @param displayName short display name for the glossary
+     * @param description description of the governance glossary
+     * @param language the language used in the glossary definitions
+     * @param usage intended usage of the glossary
+     * @param additionalProperties additional properties for a glossary
+     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
+     * @param extendedProperties  properties for a governance glossary subtype
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new glossary object
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String createGlossary(String              userId,
+                                 String              qualifiedName,
+                                 String              displayName,
+                                 String              description,
+                                 String              language,
+                                 String              usage,
+                                 Map<String, String> additionalProperties,
+                                 String              suppliedTypeName,
+                                 Map<String, Object> extendedProperties,
+                                 String              methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        GlossaryBuilder glossaryBuilder = new GlossaryBuilder(qualifiedName,
+                                                              displayName,
+                                                              description,
+                                                              language,
+                                                              usage,
+                                                              additionalProperties,
+                                                              extendedProperties,
+                                                              repositoryHelper,
+                                                              serviceName,
+                                                              serverName);
+
+        return this.createBeanInRepository(userId,
+                                           null,
+                                           null,
+                                           typeGUID,
+                                           typeName,
+                                           qualifiedName,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           glossaryBuilder,
+                                           methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a glossary using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new glossary.
+     *
+     * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
+     * glossary is deleted, any linked terms and categories are deleted as well.
+     *
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param qualifiedName unique name for the glossary - used in other configuration
+     * @param displayName short display name for the glossary
+     * @param description description of the governance glossary
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createGlossaryFromTemplate(String userId,
+                                             String templateGUID,
+                                             String qualifiedName,
+                                             String displayName,
+                                             String description,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String templateGUIDParameterName   = "templateGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        GlossaryBuilder glossaryBuilder = new GlossaryBuilder(qualifiedName,
+                                                              displayName,
+                                                              description,
+                                                              repositoryHelper,
+                                                              serviceName,
+                                                              serverName);
+
+        return this.createBeanFromTemplate(userId,
+                                           null,
+                                           null,
+                                           templateGUID,
+                                           templateGUIDParameterName,
+                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                           qualifiedName,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           glossaryBuilder,
+                                           methodName);
+    }
+
+    /**
+     * Create the anchor object that all elements in a glossary (terms and categories) are linked to.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the glossary to update
+     * @param glossaryGUIDParameterName parameter passing the glossaryGUID
+     * @param qualifiedName unique name for the glossary - used in other configuration
+     * @param displayName short display name for the glossary
+     * @param description description of the governance glossary
+     * @param language the language used in the glossary definitions
+     * @param usage intended usage of the glossary
+     * @param additionalProperties additional properties for a governance glossary
+     * @param typeName type of glossary
+     * @param extendedProperties  properties for a governance glossary subtype
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void   updateGlossary(String              userId,
+                                 String              glossaryGUID,
+                                 String              glossaryGUIDParameterName,
+                                 String              qualifiedName,
+                                 String              displayName,
+                                 String              description,
+                                 String              language,
+                                 String              usage,
+                                 Map<String, String> additionalProperties,
+                                 String              typeName,
+                                 Map<String, Object> extendedProperties,
+                                 String              methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        GlossaryBuilder glossaryBuilder = new GlossaryBuilder(qualifiedName,
+                                                              displayName,
+                                                              description,
+                                                              language,
+                                                              usage,
+                                                              additionalProperties,
+                                                              extendedProperties,
+                                                              repositoryHelper,
+                                                              serviceName,
+                                                              serverName);
+
+        this.updateBeanInRepository(userId,
+                                    null,
+                                    null,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    typeGUID,
+                                    typeName,
+                                    glossaryBuilder.getInstanceProperties(methodName),
+                                    false,
+                                    methodName);
+    }
+
+
+    /**
+     * Mark the glossary as a taxonomy.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of asset
+     * @param glossaryGUIDParameterName parameter name supplying glossaryGUID
+     * @param organizingPrinciple how the category hierarchy is organized
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addTaxonomyClassificationToGlossary(String                userId,
+                                                     String                glossaryGUID,
+                                                     String                glossaryGUIDParameterName,
+                                                     String                organizingPrinciple,
+                                                     String                methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        GlossaryBuilder builder = new GlossaryBuilder(repositoryHelper, serviceName, serverName);
+
+        this.setClassificationInRepository(userId,
+                                           glossaryGUID,
+                                           glossaryGUIDParameterName,
+                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                           OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME,
+                                           builder.getTaxonomyProperties(organizingPrinciple, methodName),
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the taxonomy designation from a glossary.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of asset
+     * @param glossaryGUIDParameterName parameter name supplying glossaryGUID
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeTaxonomyClassificationFromGlossary(String userId,
+                                                          String glossaryGUID,
+                                                          String glossaryGUIDParameterName,
+                                                          String methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.removeClassificationFromRepository(userId,
+                                                glossaryGUID,
+                                                glossaryGUIDParameterName,
+                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
+                                                methodName);
+    }
+
+
+    /**
+     * Mark the glossary as a canonical vocabulary.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of asset
+     * @param glossaryGUIDParameterName parameter name supplying glossaryGUID
+     * @param scope how the category hierarchy is organized
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addCanonicalVocabClassificationToGlossary(String userId,
+                                                           String glossaryGUID,
+                                                           String glossaryGUIDParameterName,
+                                                           String scope,
+                                                           String methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        GlossaryBuilder builder = new GlossaryBuilder(repositoryHelper, serviceName, serverName);
+
+        this.setClassificationInRepository(userId,
+                                           glossaryGUID,
+                                           glossaryGUIDParameterName,
+                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                           OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+                                           builder.getCanonicalVocabularyProperties(scope, methodName),
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the taxonomy designation from a glossary.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of asset
+     * @param glossaryGUIDParameterName parameter name supplying glossaryGUID
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeCanonicalVocabClassificationFromGlossary(String userId,
+                                                                String glossaryGUID,
+                                                                String glossaryGUIDParameterName,
+                                                                String methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                glossaryGUID,
+                                                glossaryGUIDParameterName,
+                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+                                                methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories and terms because
+     * the Anchors classifications are set up in these elements.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryGUIDParameterName parameter supplying the glossaryGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGlossary(String userId,
+                               String glossaryGUID,
+                               String glossaryGUIDParameterName,
+                               String methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        this.deleteBeanInRepository(userId,
+                                    null,
+                                    null,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                    null,
+                                    null,
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the list of glossary metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying hte search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findGlossaries(String userId,
+                                  String searchString,
+                                  String searchStringParameterName,
+                                  int    startFrom,
+                                  int    pageSize,
+                                  String methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameterName,
+                              OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                              OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                              startFrom,
+                              pageSize,
+                              methodName);
+    }
+
+
+    /**
+     * Retrieve the list of glossary metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param nameParameterName parameter supplying name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>   getGlossariesByName(String userId,
+                                         String name,
+                                         String nameParameterName,
+                                         int    startFrom,
+                                         int    pageSize,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param guidParameterName parameter name of guid
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getGlossaryByGUID(String userId,
+                               String guid,
+                               String guidParameterName,
+                               String methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        return this.getBeanFromRepository(userId,
+                                          guid,
+                                          guidParameterName,
+                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                          methodName);
+
+    }
+}

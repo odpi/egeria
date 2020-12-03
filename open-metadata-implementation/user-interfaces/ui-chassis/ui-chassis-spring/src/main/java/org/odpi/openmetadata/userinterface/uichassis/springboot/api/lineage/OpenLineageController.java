@@ -5,6 +5,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.lineage;
 
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * This controller serves all requests for retrieving lineage details, both vertical and horizontal
@@ -34,11 +32,11 @@ public class OpenLineageController {
      *
      * @param guid unique identifier of the asset
      * @param includeProcesses if true Process nodes will be included
-     * @return map of nodes and edges describing the ultimate sources of the asset
+     * @return graph of nodes and edges describing the ultimate sources of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-source")
-    public Map<String, List> ultimateSourceGraph(@PathVariable("guid") String guid , @RequestParam boolean includeProcesses){
-        Map<String, List> exportedGraph;
+    public Graph ultimateSourceGraph(@PathVariable("guid") String guid , @RequestParam boolean includeProcesses){
+        Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateSource(userId, guid, includeProcesses);
         return exportedGraph;
@@ -48,12 +46,12 @@ public class OpenLineageController {
      *
      * @param guid unique identifier of the asset
      * @param includeProcesses if true Process nodes will be included
-     * @return map of nodes and edges describing the end to end flow
+     * @return graph of nodes and edges describing the end to end flow
      */
     @GetMapping( value = "/entities/{guid}/end2end")
     @ResponseBody
-    public Map<String, List> endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
-        Map<String, List> exportedGraph;
+    public Graph endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+        Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getEndToEndLineage(userId, guid, includeProcesses);
         return exportedGraph;
@@ -63,11 +61,11 @@ public class OpenLineageController {
      *
      * @param guid unique identifier of the asset
      * @param includeProcesses if true Process nodes will be included
-     * @return map of nodes and edges describing the ultimate destination of the asset
+     * @return graph of nodes and edges describing the ultimate destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-destination")
-    public Map<String, List> ultimateDestination(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
-        Map<String, List> exportedGraph;
+    public Graph ultimateDestination(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+        Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateDestination(userId, guid, includeProcesses);
         return exportedGraph;
@@ -78,11 +76,11 @@ public class OpenLineageController {
      *
      * @param guid unique identifier of the glossary term
      * @param includeProcesses if true Process nodes will be included
-     * @return map of nodes and edges describing the assets linked to the glossary term
+     * @return graph of nodes and edges describing the assets linked to the glossary term
      */
     @GetMapping( value = "/entities/{guid}/vertical-lineage")
-    public Map<String, List> verticalLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
-        Map<String, List> exportedGraph;
+    public Graph verticalLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+        Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getVerticalLineage(userId, guid, includeProcesses);
         return exportedGraph;
@@ -92,11 +90,11 @@ public class OpenLineageController {
      *
      * @param guid unique identifier of the asset
      * @param includeProcesses if true Process nodes will be included
-     * @return map of nodes and edges describing the ultimate source and destination of the asset
+     * @return graph of nodes and edges describing the ultimate source and destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/source-and-destination")
-    public Map<String, List> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
-        Map<String, List> exportedGraph;
+    public Graph sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+        Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getSourceAndDestination(userId, guid, includeProcesses);
         return exportedGraph;

@@ -21,6 +21,10 @@ import java.util.*;
 
 /**
  * FilesAndFoldersHandler provides the support for managing catalog entries about files and folders.
+ *
+ * @param <FILESYSTEM> the class representing a file system
+ * @param <FOLDER> the class representing a folder in the file system
+ * @param <FILE> the class representing a file in the file system
  */
 public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 {
@@ -733,46 +737,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Creates a new folder asset for each element in the pathName.
-     * For example, a pathName of "one/two/three" creates 3 new folder assets, one called "one", the next called
-     * "one/two" and the last one called "one/two/three".  The software server capability that the folders are
-     * connected to is derived (and if necessary, created) from the extracted file system name.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name - null to use pathname
-     * @param fileSystemName unique name of the software server capability that represents the root of the path name - null to use pathname
-     * @param pathName pathname of the folder (or folders)
-     * @param methodName calling method
-     *
-     * @return list of GUIDs from the top level to the leaf of the supplied pathname
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public  List<String> createFolderStructureInCatalog(String   userId,
-                                                        String   externalSourceGUID,
-                                                        String   externalSourceName,
-                                                        String   fileSystemGUID,
-                                                        String   fileSystemName,
-                                                        String   pathName,
-                                                        String   methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        return createFolderStructureInCatalog(userId,
-                                              externalSourceGUID,
-                                              externalSourceName,
-                                              fileSystemGUID,
-                                              fileSystemName,
-                                              this.getFolderNames(pathName),
-                                              methodName);
-    }
-
-
-    /**
      * Links a folder to a file system. The folder is not changed.
      *
      * @param userId calling user
@@ -1111,8 +1075,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fileSystemGUID guid of the software server capability entity that represented the file system or file manager
-     * @param fileSystemName name of the software server capability entity that represented the file system or file manager
      * @param fileAssetGUID unique identifier of file asset
      * @param fileAssetParameterName parameter providing the fileAssetGUID
      * @param pathName pathname of the file
@@ -1128,8 +1090,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     private List<String> addFileAssetPath(String userId,
                                           String externalSourceGUID,
                                           String externalSourceName,
-                                          String fileSystemGUID,
-                                          String fileSystemName,
                                           String fileAssetGUID,
                                           String fileAssetParameterName,
                                           String pathName,
@@ -1139,6 +1099,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                       PropertyServerException
     {
         List<String> assetGUIDList = new ArrayList<>();
+
+        String fileSystemGUID = null;
+        String fileSystemName = this.getFileSystemName(pathName);
 
         if (fileSystemName != null)
         {
@@ -1282,8 +1245,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fileSystemGUID guid of the software server capability entity that represented the file system or file manager
-     * @param fileSystemName name of the software server capability entity that represented the file system or file manager
      * @param displayName display name for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param pathName pathname of the file
@@ -1298,8 +1259,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String> addDataFileAssetToCatalog(String   userId,
                                                   String   externalSourceGUID,
                                                   String   externalSourceName,
-                                                  String   fileSystemGUID,
-                                                  String   fileSystemName,
                                                   String   displayName,
                                                   String   description,
                                                   String   pathName,
@@ -1337,10 +1296,196 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
                                      externalSourceName,
-                                     fileSystemGUID,
-                                     fileSystemName,
                                      fileAssetGUID,
                                      fileAssetParameterName,
+                                     pathName,
+                                     pathParameterName,
+                                     methodName);
+    }
+
+
+
+    /**
+     * Set up the extended properties found in the basic data file.
+     *
+     * @param createTime the time that the file was created
+     * @param modifiedTime the time of the latest change to the file
+     * @param encodingType the type of encoding used on the file
+     * @param encodingLanguage the language used within the file
+     * @param encodingDescription the description of the file
+     * @param encodingProperties the properties used to drive the encoding
+     * @param fileType the type of file override (default is to use the file extension)
+     * @param extendedProperties extended properties supplied by the caller
+     * @return filled out map or null
+     */
+    private Map<String, Object> getExtendedProperties(Date                createTime,
+                                                      Date                modifiedTime,
+                                                      String              encodingType,
+                                                      String              encodingLanguage,
+                                                      String              encodingDescription,
+                                                      Map<String, String> encodingProperties,
+                                                      String              fileType,
+                                                      Map<String, Object> extendedProperties)
+    {
+        Map<String, Object> assetExtendedProperties = extendedProperties;
+
+        if (assetExtendedProperties == null)
+        {
+            assetExtendedProperties = new HashMap<>();
+        }
+
+        if (createTime != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
+        }
+
+        if (modifiedTime != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
+        }
+
+        if (encodingType != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME, encodingType);
+        }
+
+        if (encodingLanguage != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
+        }
+
+        if (encodingDescription != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
+        }
+
+        if (encodingProperties != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_PROPERTIES_PROPERTY_NAME, encodingProperties);
+        }
+
+        if (fileType != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME, fileType);
+        }
+
+        if (assetExtendedProperties.isEmpty())
+        {
+            return null;
+        }
+
+        return assetExtendedProperties;
+    }
+
+
+    /**
+     * Creates a new folder asset that is identified as a data asset.  This means the files and sub-folders within
+     * it collectively make up the contents of the data asset.  As with other types of file-based asset, links
+     * are made to the folder structure implied in the path name.  If the folder
+     * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyDataFolder" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a DataFolder asset called
+     * "one/two/three/MyDataFolder".
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param pathName pathname of the file
+     * @param displayName display name for the folder in the catalog
+     * @param description description of the folder in the catalog
+     * @param createTime time that the folder was created
+     * @param modifiedTime the time of the latest change to the file
+     * @param encodingType the type of encoding used on the file
+     * @param encodingLanguage the language used within the file
+     * @param encodingDescription the description of the file
+     * @param encodingProperties the properties used to drive the encoding
+     * @param additionalProperties additional properties for the data folder
+     * @param connectorClassName name of the class for the connector's provider
+     * @param typeName type name of folder
+     * @param extendedProperties extended properties supplied by the caller
+     * @param methodName calling method
+     *
+     * @return list of GUIDs from the top level to the root of the pathname
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String> addDataFolderAssetToCatalog(String              userId,
+                                                    String              externalSourceGUID,
+                                                    String              externalSourceName,
+                                                    String              pathName,
+                                                    String              displayName,
+                                                    String              description,
+                                                    Date                createTime,
+                                                    Date                modifiedTime,
+                                                    String              encodingType,
+                                                    String              encodingLanguage,
+                                                    String              encodingDescription,
+                                                    Map<String, String> encodingProperties,
+                                                    Map<String, String> additionalProperties,
+                                                    String              connectorClassName,
+                                                    String              typeName,
+                                                    Map<String, Object> extendedProperties,
+                                                    String              methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String pathParameterName = "pathName";
+        final String folderAssetParameterName = "folderAssetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(pathName, pathParameterName, methodName);
+
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+                                                                                 modifiedTime,
+                                                                                 encodingType,
+                                                                                 encodingLanguage,
+                                                                                 encodingDescription,
+                                                                                 encodingProperties,
+                                                                                 null,
+                                                                                 extendedProperties);
+
+
+        String folderAssetTypeName = typeName;
+        String folderAssetTypeGUID = invalidParameterHandler.validateTypeName(folderAssetTypeName,
+                                                                              OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                                                              serviceName,
+                                                                              methodName,
+                                                                              repositoryHelper);
+
+        String folderAssetGUID = fileHandler.createAssetInRepository(userId,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     pathName,
+                                                                     displayName,
+                                                                     description,
+                                                                     null,
+                                                                     null,
+                                                                     0,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     additionalProperties,
+                                                                     folderAssetTypeGUID,
+                                                                     folderAssetTypeName,
+                                                                     assetExtendedProperties,
+                                                                     methodName);
+
+        this.addDataFolderConnection(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     folderAssetGUID,
+                                     folderAssetParameterName,
+                                     pathName,
+                                     connectorClassName,
+                                     methodName);
+
+        return this.addFileAssetPath(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     folderAssetGUID,
+                                     folderAssetParameterName,
                                      pathName,
                                      pathParameterName,
                                      methodName);
@@ -1359,8 +1504,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fileSystemGUID guid of the software server capability entity that represented the file system or file manager
-     * @param fileSystemName name of the software server capability entity that represented the file system or file manager
      * @param displayName display name for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param pathName pathname of the file
@@ -1372,17 +1515,15 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<String> addDataFolderAssetToCatalog(String   userId,
-                                                    String   externalSourceGUID,
-                                                    String   externalSourceName,
-                                                    String   fileSystemGUID,
-                                                    String   fileSystemName,
-                                                    String   displayName,
-                                                    String   description,
-                                                    String   pathName,
-                                                    String   methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<String> addDataFolderAssetToCatalog(String              userId,
+                                                    String              externalSourceGUID,
+                                                    String              externalSourceName,
+                                                    String              pathName,
+                                                    String              displayName,
+                                                    String              description,
+                                                    String              methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         final String pathParameterName = "pathName";
         final String folderAssetParameterName = "folderAssetGUID";
@@ -1405,13 +1546,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      folderAssetGUID,
                                      folderAssetParameterName,
                                      pathName,
+                                     dataFolderProvider.getClass().getName(),
                                      methodName);
 
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
                                      externalSourceName,
-                                     fileSystemGUID,
-                                     fileSystemName,
                                      folderAssetGUID,
                                      folderAssetParameterName,
                                      pathName,
@@ -1426,11 +1566,16 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fileSystemGUID guid of the software server capability entity that represented the file system or file manager
-     * @param fileSystemName name of the software server capability entity that represented the file system or file manager
      * @param fullPath unique path and file name for file
      * @param displayName short display name for file (defaults to the file name without the path)
      * @param description description of the file
+     * @param createTime the time that the file was created
+     * @param modifiedTime the time of the latest change to the file
+     * @param encodingType the type of encoding used on the file
+     * @param encodingLanguage the language used within the file
+     * @param encodingDescription the description of the file
+     * @param encodingProperties the properties used to drive the encoding
+     * @param suppliedFileType the type of file override (default is to use the file extension)
      * @param additionalProperties additional properties from the user
      * @param connectorClassName qualified class name for the connector provider for this type of file
      * @param typeName name of the type (default is File)
@@ -1446,11 +1591,16 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String>  addFileToCatalog(String              userId,
                                           String              externalSourceGUID,
                                           String              externalSourceName,
-                                          String              fileSystemGUID,
-                                          String              fileSystemName,
                                           String              fullPath,
                                           String              displayName,
                                           String              description,
+                                          Date                createTime,
+                                          Date                modifiedTime,
+                                          String              encodingType,
+                                          String              encodingLanguage,
+                                          String              encodingDescription,
+                                          Map<String, String> encodingProperties,
+                                          String              suppliedFileType,
                                           Map<String, String> additionalProperties,
                                           String              connectorClassName,
                                           String              typeName,
@@ -1465,17 +1615,21 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
 
-        Map<String, Object> assetExtendedProperties = extendedProperties;
-        String fileType = this.getFileType(fullPath);
+        String fileType = suppliedFileType;
+
         if (fileType != null)
         {
-            if (assetExtendedProperties == null)
-            {
-                assetExtendedProperties = new HashMap<>();
-            }
-
-            assetExtendedProperties.put(OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME, fileType);
+            this.getFileType(fullPath);
         }
+
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+                                                                                 modifiedTime,
+                                                                                 encodingType,
+                                                                                 encodingLanguage,
+                                                                                 encodingDescription,
+                                                                                 encodingProperties,
+                                                                                 fileType,
+                                                                                 extendedProperties);
 
         String fileAssetTypeName = typeName;
         if (fileAssetTypeName == null)
@@ -1518,27 +1672,160 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    assetExtendedProperties,
                                                                    methodName);
 
-        this.addConnectionForFile(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  fileAssetGUID,
-                                  fileAssetParameterName,
-                                  fileType,
-                                  fullPath,
-                                  connectorClassName,
-                                  methodName);
+        if (fileAssetGUID != null)
+        {
+            this.addConnectionForFile(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      fileAssetGUID,
+                                      fileAssetParameterName,
+                                      fileType,
+                                      fullPath,
+                                      connectorClassName,
+                                      methodName);
 
 
-        return this.addFileAssetPath(userId,
-                                     externalSourceGUID,
-                                     externalSourceName,
-                                     fileSystemGUID,
-                                     fileSystemName,
-                                     fileAssetGUID,
-                                     fileAssetParameterName,
-                                     fullPath,
-                                     pathParameterName,
-                                     methodName);
+            return this.addFileAssetPath(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         fileAssetGUID,
+                                         fileAssetParameterName,
+                                         fullPath,
+                                         pathParameterName,
+                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a new file asset based on an existing asset but with the supplied path name, display name and description.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param templateGUID unique identifier of the asset description to copy
+     * @param fullPath unique path and file name for file
+     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param description description of the file
+     * @param methodName calling method
+     * @return list of GUIDs from the top level to the root of the pathname
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String>  addFileToCatalogFromTemplate(String userId,
+                                                      String externalSourceGUID,
+                                                      String externalSourceName,
+                                                      String templateGUID,
+                                                      String fullPath,
+                                                      String displayName,
+                                                      String description,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String templateGUIDParameterName  = "templateGUID";
+        final String qualifiedNameParameterName = "fullPath";
+        final String fileAssetParameterName     = "fileAssetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(fullPath, qualifiedNameParameterName, methodName);
+
+        String fileAssetGUID = fileHandler.addAssetFromTemplate(userId,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
+                                                                templateGUID,
+                                                                templateGUIDParameterName,
+                                                                OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                                fullPath,
+                                                                qualifiedNameParameterName,
+                                                                displayName,
+                                                                description,
+                                                                methodName);
+
+        if (fileAssetGUID != null)
+        {
+            return this.addFileAssetPath(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         fileAssetGUID,
+                                         fileAssetParameterName,
+                                         fullPath,
+                                         qualifiedNameParameterName,
+                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a new file asset based on an existing asset but with the supplied path name, display name and description.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param templateGUID unique identifier of the asset description to copy
+     * @param pathName unique path and file name for file
+     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param description description of the file
+     * @param methodName calling method
+     * @return list of GUIDs from the top level to the root of the pathname
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String>  addFolderToCatalogFromTemplate(String userId,
+                                                        String externalSourceGUID,
+                                                        String externalSourceName,
+                                                        String templateGUID,
+                                                        String pathName,
+                                                        String displayName,
+                                                        String description,
+                                                        String methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String templateGUIDParameterName  = "templateGUID";
+        final String qualifiedNameParameterName = "pathName";
+        final String fileAssetParameterName     = "folderAssetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(pathName, qualifiedNameParameterName, methodName);
+
+        String folderAssetGUID = fileHandler.addAssetFromTemplate(userId,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  templateGUID,
+                                                                  templateGUIDParameterName,
+                                                                  OpenMetadataAPIMapper.DATA_FOLDER_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                                                  pathName,
+                                                                  qualifiedNameParameterName,
+                                                                  displayName,
+                                                                  description,
+                                                                  methodName);
+
+        if (folderAssetGUID != null)
+        {
+            return this.addFileAssetPath(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         folderAssetGUID,
+                                         fileAssetParameterName,
+                                         pathName,
+                                         qualifiedNameParameterName,
+                                         methodName);
+        }
+
+        return null;
     }
 
 
@@ -1548,8 +1835,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fileSystemGUID guid of the software server capability entity that represented the file system or file manager
-     * @param fileSystemName name of the software server capability entity that represented the file system or file manager
      * @param displayName display name for the file in the catalog
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
@@ -1564,8 +1849,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String>  addAvroFileToCatalog(String userId,
                                               String externalSourceGUID,
                                               String externalSourceName,
-                                              String fileSystemGUID,
-                                              String fileSystemName,
                                               String displayName,
                                               String description,
                                               String fullPath,
@@ -1608,8 +1891,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
                                      externalSourceName,
-                                     fileSystemGUID,
-                                     fileSystemName,
                                      fileAssetGUID,
                                      fileAssetParameterName,
                                      fullPath,
@@ -1624,8 +1905,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fileSystemGUID guid of the software server capability entity that represented the file system or file manager
-     * @param fileSystemName name of the software server capability entity that represented the file system or file manager
      * @param displayName display name for the file in the catalog
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
@@ -1643,8 +1922,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String>  addCSVFileToCatalog(String       userId,
                                              String       externalSourceGUID,
                                              String       externalSourceName,
-                                             String       fileSystemGUID,
-                                             String       fileSystemName,
                                              String       displayName,
                                              String       description,
                                              String       fullPath,
@@ -1784,8 +2061,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
                                      externalSourceName,
-                                     fileSystemGUID,
-                                     fileSystemName,
                                      fileAssetGUID,
                                      fileAssetGUIDParameterName,
                                      fullPath,
@@ -2037,6 +2312,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param assetGUID         unique identifier of the asset
      * @param assetGUIDParameterName parameter name supplying the asset guid
      * @param folderName name of the file to connect to
+     * @param connectorProviderName name of the connector provider for the connection
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -2049,6 +2325,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            String assetGUID,
                                            String assetGUIDParameterName,
                                            String folderName,
+                                           String connectorProviderName,
                                            String methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -2064,7 +2341,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 folderName,
                                 connectionName,
                                 null,
-                                dataFolderProvider.getClass().getName(),
+                                connectorProviderName,
                                 endpointName,
                                 methodName);
     }
@@ -2246,6 +2523,402 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                         null,
                                                         null,
                                                         methodName);
+    }
+
+
+    /**
+     * Update the properties of a DataFile asset description.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param dataFileGUID guid of the file asset
+     * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
+     * @param fullPath unique path and file name for file
+     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param description description of the file
+     * @param createTime the time that the file was created
+     * @param modifiedTime the time of the latest change to the file
+     * @param encodingType the type of encoding used on the file
+     * @param encodingLanguage the language used within the file
+     * @param encodingDescription the description of the file
+     * @param encodingProperties the properties used to drive the encoding
+     * @param suppliedFileType the type of file override (default is to use the file extension)
+     * @param additionalProperties additional properties from the user
+     * @param extendedProperties any additional properties for the file type
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateFileInCatalog(String              userId,
+                                    String              externalSourceGUID,
+                                    String              externalSourceName,
+                                    String              dataFileGUID,
+                                    boolean             isMergeUpdate,
+                                    String              fullPath,
+                                    String              displayName,
+                                    String              description,
+                                    Date                createTime,
+                                    Date                modifiedTime,
+                                    String              encodingType,
+                                    String              encodingLanguage,
+                                    String              encodingDescription,
+                                    Map<String, String> encodingProperties,
+                                    String              suppliedFileType,
+                                    Map<String, String> additionalProperties,
+                                    Map<String, Object> extendedProperties,
+                                    String              methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String dataFileGUIDParameterName = "dataFileGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
+
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+                                                                                 modifiedTime,
+                                                                                 encodingType,
+                                                                                 encodingLanguage,
+                                                                                 encodingDescription,
+                                                                                 encodingProperties,
+                                                                                 suppliedFileType,
+                                                                                 extendedProperties);
+
+
+        fileHandler.updateAsset(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                dataFileGUID,
+                                dataFileGUIDParameterName,
+                                fullPath,
+                                displayName,
+                                description,
+                                additionalProperties,
+                                OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
+                                OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                assetExtendedProperties,
+                                isMergeUpdate,
+                                methodName);
+    }
+
+
+
+    /**
+     * Update the properties of a DataFile asset description.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param dataFileGUID guid of the file asset
+     * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
+     * @param fullPath unique path and file name for file
+     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param description description of the file
+     * @param createTime the time that the file was created
+     * @param modifiedTime the time of the latest change to the file
+     * @param encodingType the type of encoding used on the file
+     * @param encodingLanguage the language used within the file
+     * @param encodingDescription the description of the file
+     * @param encodingProperties the properties used to drive the encoding
+     * @param additionalProperties additional properties from the user
+     * @param extendedProperties any additional properties for the file type
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateFolderInCatalog(String              userId,
+                                      String              externalSourceGUID,
+                                      String              externalSourceName,
+                                      String              dataFileGUID,
+                                      boolean             isMergeUpdate,
+                                      String              fullPath,
+                                      String              displayName,
+                                      String              description,
+                                      Date                createTime,
+                                      Date                modifiedTime,
+                                      String              encodingType,
+                                      String              encodingLanguage,
+                                      String              encodingDescription,
+                                      Map<String, String> encodingProperties,
+                                      Map<String, String> additionalProperties,
+                                      Map<String, Object> extendedProperties,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String dataFolderGUIDParameterName = "dataFolderGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFileGUID, dataFolderGUIDParameterName, methodName);
+
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+                                                                                 modifiedTime,
+                                                                                 encodingType,
+                                                                                 encodingLanguage,
+                                                                                 encodingDescription,
+                                                                                 encodingProperties,
+                                                                                 null,
+                                                                                 extendedProperties);
+
+
+        fileHandler.updateAsset(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                dataFileGUID,
+                                dataFolderGUIDParameterName,
+                                fullPath,
+                                displayName,
+                                description,
+                                additionalProperties,
+                                OpenMetadataAPIMapper.DATA_FOLDER_TYPE_GUID,
+                                OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                assetExtendedProperties,
+                                isMergeUpdate,
+                                methodName);
+    }
+
+
+
+
+    /**
+     * Archive a DataFile asset description.  This adds the Memento classification to the DataFile entity
+     * and removes the attached connection (if any).
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param dataFileGUID guid of the file asset
+     * @param dataFileGUIDParameterName parameter name supplying dataFileGUID
+     * @param archiveDate date that the file was archived or discovered to have been archived.  Null means now.
+     * @param archiveProcess name of archiving process
+     * @param archiveProperties properties to help locate the archive copy
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void archiveFileInCatalog(String              userId,
+                                     String              externalSourceGUID,
+                                     String              externalSourceName,
+                                     String              dataFileGUID,
+                                     String              dataFileGUIDParameterName,
+                                     Date                archiveDate,
+                                     String              archiveProcess,
+                                     Map<String, String> archiveProperties,
+                                     String              methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
+
+        ReferenceableBuilder builder = new ReferenceableBuilder(repositoryHelper, serviceName, serverName);
+
+        fileHandler.archiveBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            dataFileGUID,
+                                            dataFileGUIDParameterName,
+                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                            builder.getMementoProperties(archiveDate,
+                                                                                 userId,
+                                                                                 archiveProcess,
+                                                                                 archiveProperties,
+                                                                                 methodName),
+                                            methodName);
+
+        String connectionGUID = fileHandler.getAttachedElementGUID(userId,
+                                                                   dataFileGUID,
+                                                                   dataFileGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                   0,
+                                                                   methodName);
+
+        if (connectionGUID != null)
+        {
+            final String connectionGUIDParameterName = "connectionGUID";
+
+            connectionHandler.deleteBeanInRepository(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     connectionGUID,
+                                                     connectionGUIDParameterName,
+                                                     OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                     null,
+                                                     null,
+                                                     methodName);
+        }
+    }
+
+
+
+
+    /**
+     * Archive a DataFolder asset description.  This adds the Memento classification to the DataFolder entity
+     * and removes the attached connection (if any).
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param dataFolderGUID guid of the file asset
+     * @param dataFolderGUIDParameterName parameter name supplying dataFolderGUID
+     * @param archiveDate date that the file was archived or discovered to have been archived.  Null means now.
+     * @param archiveProcess name of archiving process
+     * @param archiveProperties properties to help locate the archive copy
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void archiveFolderInCatalog(String              userId,
+                                       String              externalSourceGUID,
+                                       String              externalSourceName,
+                                       String              dataFolderGUID,
+                                       String              dataFolderGUIDParameterName,
+                                       Date                archiveDate,
+                                       String              archiveProcess,
+                                       Map<String, String> archiveProperties,
+                                       String              methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFolderGUID, dataFolderGUIDParameterName, methodName);
+
+        ReferenceableBuilder builder = new ReferenceableBuilder(repositoryHelper, serviceName, serverName);
+
+        fileHandler.archiveBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            dataFolderGUID,
+                                            dataFolderGUIDParameterName,
+                                            OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                            builder.getMementoProperties(archiveDate,
+                                                                                 userId,
+                                                                                 archiveProcess,
+                                                                                 archiveProperties,
+                                                                                 methodName),
+                                            methodName);
+
+        String connectionGUID = fileHandler.getAttachedElementGUID(userId,
+                                                                   dataFolderGUID,
+                                                                   dataFolderGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                   0,
+                                                                   methodName);
+
+        if (connectionGUID != null)
+        {
+            final String connectionGUIDParameterName = "connectionGUID";
+
+            connectionHandler.deleteBeanInRepository(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     connectionGUID,
+                                                     connectionGUIDParameterName,
+                                                     OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                     null,
+                                                     null,
+                                                     methodName);
+        }
+    }
+
+
+    /**
+     * Remove a DataFile asset description.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param dataFileGUID guid of the file asset
+     * @param fullPathname unique path and file name for file
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void deleteFileFromCatalog(String              userId,
+                                      String              externalSourceGUID,
+                                      String              externalSourceName,
+                                      String              dataFileGUID,
+                                      String              fullPathname,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String dataFileGUIDParameterName = "dataFileGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
+
+        fileHandler.deleteBeanInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           dataFileGUID,
+                                           dataFileGUIDParameterName,
+                                           OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
+                                           OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           fullPathname,
+                                           methodName);
+    }
+
+
+
+    /**
+     * Remove a DataFolder asset description.
+     *
+     * @param userId calling user (assumed to be the owner)
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param dataFolderGUID guid of the file asset
+     * @param fullPathname unique path and file name for file
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void deleteFolderFromCatalog(String              userId,
+                                        String              externalSourceGUID,
+                                        String              externalSourceName,
+                                        String              dataFolderGUID,
+                                        String              fullPathname,
+                                        String              methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String dataFolderGUIDParameterName = "dataFolderGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFolderGUID, dataFolderGUIDParameterName, methodName);
+
+        fileHandler.deleteBeanInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           dataFolderGUID,
+                                           dataFolderGUIDParameterName,
+                                           OpenMetadataAPIMapper.DATA_FOLDER_TYPE_GUID,
+                                           OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           fullPathname,
+                                           methodName);
     }
 
 
@@ -2441,14 +3114,14 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws UserNotAuthorizedException security access problem
      */
     public List<FOLDER> findFolderByPathName(String  userId,
-                                            String  pathName,
-                                            String  methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                             String  pathName,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String  nameName = "pathName";
 
-        return folderHandler.findBeansByQualifiedName(pathName,
+        return folderHandler.findBeansByQualifiedName(userId,
                                                       OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
                                                       OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                       pathName,
@@ -2495,7 +3168,44 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * Return the list of folders nested inside a folder.
      *
      * @param userId calling user
-     * @param parentFolderGUID unique identifier of the anchor folder or file system
+     * @param fileSystemGUID unique identifier of the file system
+     * @param fileSystemParameterName name of parameter providing fileSystemGUID
+     * @param startingFrom starting point in the list
+     * @param pageSize maximum number of results
+     * @param methodName calling method
+     *
+     * @return list of folder unique identifiers (null means no nested folders)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String>  getTopLevelFolders(String  userId,
+                                            String  fileSystemGUID,
+                                            String  fileSystemParameterName,
+                                            int     startingFrom,
+                                            int     pageSize,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return folderHandler.getAttachedElementGUIDs(userId,
+                                                     fileSystemGUID,
+                                                     fileSystemParameterName,
+                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                     startingFrom,
+                                                     pageSize,
+                                                     methodName);
+    }
+
+    /**
+     * Return the list of folders nested inside a folder.
+     *
+     * @param userId calling user
+     * @param parentFolderGUID unique identifier of the parent folder
      * @param parentFolderParameterName name of parameter providing parentFolderGUID
      * @param startingFrom starting point in the list
      * @param pageSize maximum number of results
@@ -2628,7 +3338,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
     /**
      * Retrieve a data file by its fully qualified path name.  In theory there should be none or one asset returned.
-     * However in complex environments, duplicates are possible
+     * However in complex environments, duplicates are possible.
      *
      * @param userId calling user
      * @param pathName path name
@@ -2685,8 +3395,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           int     startingFrom,
                                           int     pageSize,
                                           String  methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         return fileHandler.findAssetsByName(userId,
                                             OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,

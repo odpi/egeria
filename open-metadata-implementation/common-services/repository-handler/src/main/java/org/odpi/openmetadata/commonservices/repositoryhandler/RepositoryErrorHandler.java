@@ -426,7 +426,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if the supplied userId is not authorized to perform a request
+     * Throw an exception if the supplied type name is not supported i nthe metadta
      *
      * @param error  caught exception
      * @param methodName  name of the method making the call
@@ -449,6 +449,24 @@ public class RepositoryErrorHandler
                                             typeName);
     }
 
+
+    /**
+     * Throw an exception if the supplied userId is not authorized to perform a request
+     *
+     * @param error  caught exception
+     * @param methodName  name of the method making the call
+     * @param typeName  name of the property in error
+     */
+    public void handleUnsupportedAnchorsType(Throwable  error,
+                                             String     methodName,
+                                             String     typeName)
+    {
+        auditLog.logMessage(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                              typeName,
+                                                                                                              methodName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              error.getMessage()));
+    }
 
 
     /**
@@ -675,6 +693,7 @@ public class RepositoryErrorHandler
                                           this.getClass().getName(),
                                           methodName);
     }
+
 
     /**
      * Throw an exception if no relationships are returned when not expected.

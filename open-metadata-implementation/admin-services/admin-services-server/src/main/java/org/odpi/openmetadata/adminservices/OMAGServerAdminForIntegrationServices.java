@@ -73,24 +73,23 @@ public class OMAGServerAdminForIntegrationServices
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             /*
-             * Get the list of Integration Services configured in this server.
+             * Get the list of View Services configured in this server.
              */
-            List<IntegrationServiceConfig> integrationServiceConfigList = serverConfig.getIntegrationServicesConfig();
+            List<IntegrationServiceConfig> integrationServiceConfigs = serverConfig.getIntegrationServicesConfig();
 
             /*
-             * Set up the available integration services.
+             * Set up the available view services.
              */
-            if ((integrationServiceConfigList != null) && (! integrationServiceConfigList.isEmpty()))
+            if ((integrationServiceConfigs != null) && (!integrationServiceConfigs.isEmpty()))
             {
                 List<RegisteredOMAGService> services = new ArrayList<>();
-                for (IntegrationServiceConfig integrationServiceConfig : integrationServiceConfigList)
+                for (IntegrationServiceConfig integrationServiceConfig : integrationServiceConfigs)
                 {
                     if (integrationServiceConfig != null)
                     {
                         if (integrationServiceConfig.getIntegrationServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
-
                             service.setServiceName(integrationServiceConfig.getIntegrationServiceFullName());
                             service.setServiceDescription(integrationServiceConfig.getIntegrationServiceDescription());
                             service.setServiceURLMarker(integrationServiceConfig.getIntegrationServiceURLMarker());
@@ -99,11 +98,11 @@ public class OMAGServerAdminForIntegrationServices
                         }
                     }
                 }
+
                 if (!services.isEmpty())
                 {
                     response.setServices(services);
                 }
-
             }
         }
         catch (OMAGInvalidParameterException error)
@@ -114,7 +113,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Throwable error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -277,7 +276,7 @@ public class OMAGServerAdminForIntegrationServices
             /*
              * Get the configuration information for this integration service.
              */
-            IntegrationServiceConfig serviceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(serviceURLMarker, methodName);
+            IntegrationServiceConfig serviceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(serviceURLMarker, serverName, methodName);
             serviceConfig.setIntegrationServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
 
             if (requestBody != null)
