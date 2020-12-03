@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
-import org.apache.tinkerpop.gremlin.process.traversal.P;
+
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.DefaultGraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -53,10 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.Compare.eq;
-import static org.apache.tinkerpop.gremlin.process.traversal.Compare.gte;
-import static org.apache.tinkerpop.gremlin.process.traversal.Compare.lt;
-import static org.apache.tinkerpop.gremlin.process.traversal.Compare.lte;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.eq;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.gt;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.gte;
@@ -64,7 +60,7 @@ import static org.apache.tinkerpop.gremlin.process.traversal.P.lt;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.lte;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.neq;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.within;
-import static org.apache.tinkerpop.gremlin.process.traversal.P.without;
+
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.out;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
@@ -1616,7 +1612,7 @@ class GraphOMRSMetadataStore {
         if (matchProperties != null)
         {
 
-            List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
+            List<GraphTraversal<Vertex, Vertex>> propCriteria = new ArrayList<>();
 
             Iterator<String> propNames = matchProperties.getPropertyNames();
 
@@ -1653,6 +1649,7 @@ class GraphOMRSMetadataStore {
                     /*
                      *  Validate the type - so that a more meaningful error message can be delivered to the user, instead of a mid-traversal complaint about an anonymous key.
                      */
+
                     String javaTypeForMatchProperty = null;
                     PrimitiveDefCategory mpCat;
                     InstancePropertyValue mpv = matchProperties.getPropertyValue(propName);
@@ -1675,7 +1672,6 @@ class GraphOMRSMetadataStore {
 
                     if (javaTypeForCoreProperty != null && javaTypeForMatchProperty != null)
                     {
-
                         /*
                          * If the types are the same we are good to go. There is also one case where they may differ
                          * but we should proceed: The core properties for createTime and updateTime are stored using type java.lang.Date
@@ -1695,7 +1691,6 @@ class GraphOMRSMetadataStore {
                         }
                         else
                         {
-
                             throw new InvalidParameterException(
                                     GraphOMRSErrorCode.INVALID_MATCH_PROPERTY.getMessageDefinition(
                                             propName,
@@ -1754,7 +1749,7 @@ class GraphOMRSMetadataStore {
                                 pdCat = pdef.getPrimitiveDefCategory();
                             }
 
-                            if (mpCat != OM_PRIMITIVE_TYPE_UNKNOWN && pdCat != OM_PRIMITIVE_TYPE_UNKNOWN && mpCat == pdCat)
+                            if (mpCat == pdCat && mpCat != OM_PRIMITIVE_TYPE_UNKNOWN)
                             {
                                 /*
                                  * Types match
@@ -1832,41 +1827,39 @@ class GraphOMRSMetadataStore {
                         PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
                         Object primValue = ppv.getPrimitiveValue();
                         log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
-                        DefaultGraphTraversal t = new DefaultGraphTraversal();
-                        switch (pCat)
+                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+
+                        if (pCat == OM_PRIMITIVE_TYPE_STRING)
                         {
+                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
 
-                            case OM_PRIMITIVE_TYPE_STRING:
+                            String searchString = convertSearchStringToJanusRegex((String) primValue);
+                            log.debug("{} primitive match property search string {}", methodName, searchString);
 
-                                // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
-
-                                String searchString = convertSearchStringToJanusRegex((String) primValue);
-                                log.debug("{} primitive match property search string {}", methodName, searchString);
-
-                                // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
-                                if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
+                            // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
+                            if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
+                            {
+                                t = t.has(propNameToSearch, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                            }
+                            else
+                            {
+                                if (!fullMatch)
                                 {
-                                    t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                                    // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+                                    String ANYCHARS = ".*";
+                                    t = t.has(propNameToSearch, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
                                 }
                                 else
                                 {
-                                    if (!fullMatch)
-                                    {
-                                        // A partial match is sufficient...i.e. a value containing the search value as a substring will match
-                                        String ANYCHARS = ".*";
-                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
-                                    }
-                                    else
-                                    {
-                                        // Must be a full match...
-                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(searchString));
-                                    }
+                                    // Must be a full match...
+                                    t = t.has(propNameToSearch, Text.textRegex(searchString));
                                 }
-                                break;
+                            }
+                        }
+                        else // Not a String
+                        {
 
-                            default:
-                                t = (DefaultGraphTraversal) t.has(propNameToSearch, primValue);
-                                break;
+                            t = t.has(propNameToSearch, primValue);
 
                         }
                         log.debug("{} primitive match property has property criterion {}", methodName, t);
@@ -1900,7 +1893,7 @@ class GraphOMRSMetadataStore {
                     }
                     else
                     {
-                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     }
                     break;
@@ -1912,13 +1905,13 @@ class GraphOMRSMetadataStore {
                     }
                     else
                     {
-                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     }
                     break;
                 case NONE:
-                    DefaultGraphTraversal t = new DefaultGraphTraversal();
-                    t = (DefaultGraphTraversal) t.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
                     gt = gt.not(t);
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
@@ -1982,7 +1975,7 @@ class GraphOMRSMetadataStore {
         if (str.startsWith("(?i)"))
         {
             caseInsensitive = true;
-            str = str.substring(4, str.length());
+            str = str.substring(4);
         }
 
         boolean prefixed = false;
@@ -2240,7 +2233,7 @@ class GraphOMRSMetadataStore {
         if (matchProperties != null)
         {
 
-            List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
+            List<GraphTraversal<Vertex, Vertex>> propCriteria = new ArrayList<>();
 
             Iterator<String> propNames = matchProperties.getPropertyNames();
 
@@ -2370,7 +2363,7 @@ class GraphOMRSMetadataStore {
                                 pdCat = pdef.getPrimitiveDefCategory();
                             }
 
-                            if (mpCat != OM_PRIMITIVE_TYPE_UNKNOWN && pdCat != OM_PRIMITIVE_TYPE_UNKNOWN && mpCat == pdCat)
+                            if (mpCat == pdCat && mpCat != OM_PRIMITIVE_TYPE_UNKNOWN)
                             {
                                 /*
                                  * Types match
@@ -2394,7 +2387,6 @@ class GraphOMRSMetadataStore {
                      * If (!propertyFound) the match property is not a supported, known type-defined property - drop into the catch all below.
                      */
 
-
                 }
 
                 if (propNameToSearch == null)
@@ -2415,7 +2407,7 @@ class GraphOMRSMetadataStore {
                         /*
                          * Skip this property but process the rest
                          */
-                        continue;
+                        // continue //
                     }
 
                 }
@@ -2434,42 +2426,37 @@ class GraphOMRSMetadataStore {
                         PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
                         Object primValue = ppv.getPrimitiveValue();
                         log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
-                        DefaultGraphTraversal t = new DefaultGraphTraversal();
-                        switch (pCat)
+                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                        if (pCat == OM_PRIMITIVE_TYPE_STRING)
                         {
+                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
 
-                            case OM_PRIMITIVE_TYPE_STRING:
+                            String searchString = convertSearchStringToJanusRegex((String) primValue);
+                            log.debug("{} primitive match property search string {}", methodName, searchString);
 
-                                // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
-
-                                String searchString = convertSearchStringToJanusRegex((String) primValue);
-                                log.debug("{} primitive match property search string {}", methodName, searchString);
-
-                                // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
-                                if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
+                            // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
+                            if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
+                            {
+                                t = t.has(propNameToSearch, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                            }
+                            else
+                            {
+                                if (!fullMatch)
                                 {
-                                    t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                                    // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+                                    String ANYCHARS = ".*";
+                                    t = t.has(propNameToSearch, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
                                 }
                                 else
                                 {
-                                    if (!fullMatch)
-                                    {
-                                        // A partial match is sufficient...i.e. a value containing the search value as a substring will match
-                                        String ANYCHARS = ".*";
-                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
-                                    }
-                                    else
-                                    {
-                                        // Must be a full match...
-                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(searchString));
-                                    }
+                                    // Must be a full match...
+                                    t = t.has(propNameToSearch, Text.textRegex(searchString));
                                 }
-                                break;
-
-                            default:
-                                t = (DefaultGraphTraversal) t.has(propNameToSearch, primValue);
-                                break;
-
+                            }
+                        }
+                        else
+                        {
+                            t = t.has(propNameToSearch, primValue);
                         }
                         log.debug("{} primitive match property has property criterion {}", methodName, t);
                         propCriteria.add(t);
@@ -2501,10 +2488,11 @@ class GraphOMRSMetadataStore {
                     }
                     else
                     {
-                        gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     }
                     break;
+
                 case ANY:
                     if (propCriteria.isEmpty())
                     {
@@ -2513,27 +2501,30 @@ class GraphOMRSMetadataStore {
                     }
                     else
                     {
-                        gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                        gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     }
                     break;
+
                 case NONE:
-                    DefaultGraphTraversal t = new DefaultGraphTraversal();
-                    t = (DefaultGraphTraversal) t.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
                     gt = gt.not(t);
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
+
                 default:
                     g.tx().rollback();
 
                     final String parameterName = "matchCriteria";
-                    throw new InvalidParameterException(GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(methodName,
-                                                                                                                       this.getClass().getName(),
-                                                                                                                       repositoryName),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        parameterName);
-
+                    throw new InvalidParameterException(
+                            GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                    methodName,
+                                    this.getClass().getName(),
+                                    repositoryName),
+                            this.getClass().getName(),
+                            methodName,
+                            parameterName);
             }
         }
 
@@ -2605,7 +2596,7 @@ class GraphOMRSMetadataStore {
         // will be prefixed in the finder method that actually looks for matching elements in the graph.
 
         // Only include the core properties for the type category
-        Set<String> relevantCoreProperties = new HashSet();
+        Set<String> relevantCoreProperties = new HashSet<>();
 
         switch (typeDef.getCategory())
         {
@@ -2621,21 +2612,20 @@ class GraphOMRSMetadataStore {
         }
 
         Iterator<String> relevantCorePropertiesIterator = relevantCoreProperties.iterator();
-        if (relevantCorePropertiesIterator != null)
+
+        while (relevantCorePropertiesIterator.hasNext())
         {
-            while (relevantCorePropertiesIterator.hasNext())
+            String corePropName = relevantCorePropertiesIterator.next();
+            if (corePropertyTypes.get(corePropName).equals("java.lang.String") && !corePropName.equals(PROPERTY_NAME_TYPE_NAME))
             {
-                String corePropName = relevantCorePropertiesIterator.next();
-                if (corePropertyTypes.get(corePropName).equals("java.lang.String") && !corePropName.equals(PROPERTY_NAME_TYPE_NAME))
-                {
-                    PrimitivePropertyValue ppv = new PrimitivePropertyValue();
-                    ppv.setPrimitiveDefCategory(OM_PRIMITIVE_TYPE_STRING);
-                    ppv.setPrimitiveValue(searchCriteria);
-                    log.debug("{} include string type core property {} value {}", methodName, corePropName, ppv);
-                    stringMatchProperties.setProperty(corePropName, ppv);
-                }
+                PrimitivePropertyValue ppv = new PrimitivePropertyValue();
+                ppv.setPrimitiveDefCategory(OM_PRIMITIVE_TYPE_STRING);
+                ppv.setPrimitiveValue(searchCriteria);
+                log.debug("{} include string type core property {} value {}", methodName, corePropName, ppv);
+                stringMatchProperties.setProperty(corePropName, ppv);
             }
         }
+
 
         // Include string-based type-defined properties
 
@@ -2663,8 +2653,7 @@ class GraphOMRSMetadataStore {
                      * that property was included in stringMatchProperties or is of another (non-string) type.
                      */
 
-                    if (propertyName != null &&
-                            (relevantCoreProperties == null || !relevantCoreProperties.contains(propertyName)))
+                    if (propertyName != null &&  !relevantCoreProperties.contains(propertyName))
                     {
 
                         AttributeTypeDef atd = typeDefAttribute.getAttributeType();
@@ -2933,7 +2922,7 @@ class GraphOMRSMetadataStore {
         // This relies on the graph to enforce property validity - it does not pre-check that classification match properties are valid for requested type.
         if (classificationProperties != null)
         {
-            List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
+            List<GraphTraversal<Vertex, Vertex>> propCriteria = new ArrayList<>();
             Iterator<String> propNames = classificationProperties.getPropertyNames();
             while (propNames.hasNext())
             {
@@ -2961,29 +2950,31 @@ class GraphOMRSMetadataStore {
                     PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
                     Object primValue = ppv.getPrimitiveValue();
                     log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
-                    DefaultGraphTraversal t = new DefaultGraphTraversal();
-                    switch (pCat)
+                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                    if (pCat == OM_PRIMITIVE_TYPE_STRING)
                     {
-                        case OM_PRIMITIVE_TYPE_STRING:
-                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
-                            String searchString = convertSearchStringToJanusRegex((String) primValue);
-                            log.debug("{} primitive match property search string {}", methodName, searchString);
 
-                            // NB This is using a JG specific approach to text predicates - see the static import above.
-                            // From TP 3.4.0 try to use the TP text predicates.
-                            if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
-                            {
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
-                            }
-                            else
-                            {
-                                // Pattern given for classification name is assumed to be a full match
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString));         // for a field indexed using String mapping use textRegex
-                            }
-                            break;
-                        default:
-                            t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, primValue);
-                            break;
+                        // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+                        String searchString = convertSearchStringToJanusRegex((String) primValue);
+                        log.debug("{} primitive match property search string {}", methodName, searchString);
+
+                        // NB This is using a JG specific approach to text predicates - see the static import above.
+                        // From TP 3.4.0 try to use the TP text predicates.
+                        if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
+                        {
+                            t = t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                        }
+                        else
+                        {
+                            // Pattern given for classification name is assumed to be a full match
+                            t = t.has(qualifiedPropertyName, Text.textRegex(searchString));         // for a field indexed using String mapping use textRegex
+                        }
+                    }
+                    else // Not a String
+                    {
+
+                        t = t.has(qualifiedPropertyName, primValue);
+
                     }
                     log.debug("{} primitive match property has property criterion {}", methodName, t);
                     propCriteria.add(t);
@@ -2997,16 +2988,16 @@ class GraphOMRSMetadataStore {
             switch (matchCriteria)
             {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
                 case NONE:
-                    DefaultGraphTraversal t = new DefaultGraphTraversal();
-                    t = (DefaultGraphTraversal) t.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
+                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
                     gt = gt.not(t);
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
@@ -3192,10 +3183,7 @@ class GraphOMRSMetadataStore {
         if (limitResultsByClassification != null)
         {
             classificationWithin = true;
-            for (String cName : limitResultsByClassification)
-            {
-                classificationNames.add(cName);
-            }
+            classificationNames.addAll(limitResultsByClassification);
         }
 
 
@@ -3232,7 +3220,7 @@ class GraphOMRSMetadataStore {
         {
 
             Vertex rootVertex = null;
-            GraphTraversal t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID);
+            GraphTraversal<Vertex, Vertex> t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID);
 
             if (!t.hasNext())
             {
@@ -3284,37 +3272,37 @@ class GraphOMRSMetadataStore {
 
                     g = instanceGraph.traversal();
 
-                    DefaultGraphTraversal repeatTraversal = new DefaultGraphTraversal<>();
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.bothE("Relationship");
+                    GraphTraversal<Vertex, Edge> edgesTraversal = new DefaultGraphTraversal<>();
+                    edgesTraversal = edgesTraversal.bothE("Relationship");
 
                     // Optionally filter relationships by status
                     if (statusWithin)
                     {
-                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
+                        edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
                     }
-                    else
-                    {
-                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
-                    }
+                    //else
+                    //{
+                    //    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
+                    //}
 
                     // Optionally filter by relationship type
                     if (relationshipsWithin)
                     {
-                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, within(relationshipTypeNames));
+                        edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, within(relationshipTypeNames));
                     }
 
                     // Project the relationships and move on to the inVertex for each relationship...
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("r").otherV();
+                    GraphTraversal<Vertex, Vertex> vertexTraversal = (DefaultGraphTraversal) edgesTraversal.as("r").otherV();
 
                     // Optionally filter entities by status
                     if (statusWithin)
                     {
-                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
+                        vertexTraversal = vertexTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
                     }
-                    else
-                    {
-                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
-                    }
+                    //else
+                    //{
+                    //    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
+                    //}
 
                     // Exclude EntityProxy vertices... or not... for now the traversal will traverse a proxy but only include it
                     // in the relationship reported, not in the entities list.
@@ -3323,41 +3311,39 @@ class GraphOMRSMetadataStore {
                     // Optionally filter by entity type
                     if (entitiesWithin)
                     {
-                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_TYPE_NAME, within(entityTypeNames));
+                        vertexTraversal = vertexTraversal.has(PROPERTY_KEY_ENTITY_TYPE_NAME, within(entityTypeNames));
                     }
 
                     // Optionally filter (entities) by classification
                     if (classificationWithin)
                     {
                         //  where(out("Classifier").has("vcclassificationName",within("MobileAsset","Confidentiality"))).
-                        repeatTraversal = (DefaultGraphTraversal) repeatTraversal.where(out("Classifier").has(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME, within(classificationNames)));
+                        vertexTraversal = vertexTraversal.where(out("Classifier").has(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME, within(classificationNames)));
 
                     }
 
                     // Project the traversed TO entities (only, not the entities we have traversed FROM)...
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("e");
+                    vertexTraversal = vertexTraversal.as("e");
 
                     // Include simplePath to avoid back-tracking
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.simplePath();
+                    vertexTraversal = vertexTraversal.simplePath();
 
                     // Construct the overall traversal
 
+                    GraphTraversal<Vertex, Map<String,Element>> overallTraversal;
                     if (limited)
                     {
-
-                        t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID).repeat(repeatTraversal).times(level).emit().select("r", "e");
-
+                        overallTraversal = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID).repeat(vertexTraversal).times(level).emit().select("r", "e");
                     }
                     else
                     {
-
-                        t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID).repeat(repeatTraversal).emit().select("r", "e");
+                        overallTraversal = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityGUID).repeat(vertexTraversal).emit().select("r", "e");
                     }
 
-                    while (t.hasNext())
+                    while (overallTraversal.hasNext())
                     {
 
-                        Map<String, Element> resTuple = (Map<String, Element>) t.next();
+                        Map<String, Element> resTuple = overallTraversal.next();
                         Edge edge = (Edge) resTuple.get("r");
                         Vertex vertex = (Vertex) resTuple.get("e");
 
@@ -3447,7 +3433,6 @@ class GraphOMRSMetadataStore {
                 }
             }
 
-
             // Construct the InstanceGraph from entities and relationships
             subGraph.setEntities(entities);
             subGraph.setRelationships(relationships);
@@ -3504,7 +3489,6 @@ class GraphOMRSMetadataStore {
         InstanceGraph subGraph = new InstanceGraph();
 
 
-
         /*  The optional status filter specifies which status values are permissible.
          *  If no filter is specified, the default is that DELETED elements are not traversed.
          *  If a status filter is specified, it is taken literally - i.e. all and only the specified
@@ -3554,36 +3538,35 @@ class GraphOMRSMetadataStore {
          * THe various filters are optional and are implemented using has(<property>,within(<filter-collection>))
          */
 
-
         GraphTraversalSource g = instanceGraph.traversal();
-
 
         try
         {
-
             // Although not strictly needed for this traversal, it is important that the start entity exists - otherwise throw entity not found exception
             // represented by an EntityDetail.
 
-            Vertex rootVertex = null;
-            GraphTraversal t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, startEntityGUID);
+            Vertex rootVertex;
+            GraphTraversal<Vertex, Vertex> t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, startEntityGUID);
             if (!t.hasNext())
             {
 
                 log.error("{} could not retrieve start entity with GUID {}", methodName, startEntityGUID);
                 g.tx().rollback();
 
-                throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(startEntityGUID, methodName,
-                                                                                                           this.getClass().getName(),
-                                                                                                           repositoryName),
-                                                  this.getClass().getName(),
-                                                  methodName);
+                throw new EntityNotKnownException(
+                        GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                                startEntityGUID, methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName);
             }
             else
             {
 
                 // Since we have access to it now, we might as well map the rootVertex to produce helpful debug information
 
-                rootVertex = (Vertex) t.next();
+                rootVertex = t.next();
                 log.debug("{} found root entity vertex {}", methodName, rootVertex);
 
                 try
@@ -3611,11 +3594,13 @@ class GraphOMRSMetadataStore {
                     log.error("{} caught exception whilst trying to map entity with GUID {}, exception {}", methodName, startEntityGUID, e.getMessage());
                     g.tx().rollback();
 
-                    throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(startEntityGUID, methodName,
-                                                                                                               this.getClass().getName(),
-                                                                                                               repositoryName),
-                                                      this.getClass().getName(),
-                                                      methodName, e);
+                    throw new EntityNotKnownException(
+                            GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                                    startEntityGUID, methodName,
+                                    this.getClass().getName(),
+                                    repositoryName),
+                            this.getClass().getName(),
+                            methodName, e);
                 }
 
 
@@ -3623,49 +3608,48 @@ class GraphOMRSMetadataStore {
 
                 g = instanceGraph.traversal();
 
-                DefaultGraphTraversal repeatTraversal = new DefaultGraphTraversal<>();
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.bothE("Relationship");
+                GraphTraversal<Vertex, Edge> edgesTraversal = new DefaultGraphTraversal<>();
+                edgesTraversal = edgesTraversal.bothE("Relationship");
 
                 // Optionally filter relationships by status
                 if (statusWithin)
                 {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
+                    edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
                 }
-                else
-                {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
-                }
+                //else
+                //{
+                //    edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
+                //}
 
                 // Move on to the inVertex for each relationship...
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.otherV();
+                GraphTraversal<Vertex, Vertex> vertexTraversal = edgesTraversal.otherV();
 
                 // Optionally filter entities by status
                 if (statusWithin)
                 {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
+                    vertexTraversal = vertexTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
                 }
-                else
-                {
-                    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
-                }
+                //else
+                //{
+                //   vertexTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
+                //}
 
 
                 // Include simplePath to avoid back-tracking
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.simplePath();
+                vertexTraversal = vertexTraversal.simplePath();
 
                 // Repeat terminator traversal...
-                DefaultGraphTraversal untilTraversal = new DefaultGraphTraversal<>();
-                untilTraversal = (DefaultGraphTraversal) untilTraversal.has(PROPERTY_KEY_ENTITY_GUID, endEntityGUID).or().loops().is(gte(maxDepth));
+                GraphTraversal<Vertex, Integer> untilTraversal = new DefaultGraphTraversal<>();
+                untilTraversal = untilTraversal.has(PROPERTY_KEY_ENTITY_GUID, endEntityGUID).or().loops().is(gte(maxDepth));
 
                 // Construct the overall traversal
-
-                t = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, startEntityGUID).repeat(repeatTraversal).until(untilTraversal).
+                GraphTraversal<Vertex, List<Object>> overallTraversal = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, startEntityGUID).repeat(vertexTraversal).until(untilTraversal).
                         has(PROPERTY_KEY_ENTITY_GUID, endEntityGUID).path().limit(maxPaths).unfold().dedup().fold();
 
-                while (t.hasNext())
+                while (overallTraversal.hasNext())
                 {
 
-                    List<Object> resList = (List<Object>) t.next();
+                    List<Object> resList = overallTraversal.next();
 
                     if (!resList.isEmpty())
                     {
@@ -3675,111 +3659,101 @@ class GraphOMRSMetadataStore {
 
                         for (Object object : resList)
                         {
-
                             if (object instanceof Vertex)
                             {
-
                                 vertex = (Vertex) object;
+                                log.debug("{} subgraph has vertex {}", methodName, vertex);
 
-                                if (vertex != null)
+                                if (!entityMapper.isProxy(vertex))
                                 {
-                                    log.debug("{} subgraph has vertex {}", methodName, vertex);
-
-                                    if (!entityMapper.isProxy(vertex))
+                                    try
                                     {
-                                        try
-                                        {
-                                            EntityDetail entityDetail = new EntityDetail();
-                                            entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
-                                            log.debug("{} entityDetail {}", methodName, entityDetail);
-                                            entities.add(entityDetail);
-                                        }
-                                        catch (RepositoryErrorException | EntityProxyOnlyException e)
-                                        {
-                                            log.error("{} could not map vertex returned in path expression, entity GUID {}, exception {}", methodName, entityMapper.getEntityGUID(vertex), e.getMessage());
-                                            g.tx().rollback();
-                                            ;
+                                        EntityDetail entityDetail = new EntityDetail();
+                                        entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
+                                        log.debug("{} entityDetail {}", methodName, entityDetail);
+                                        entities.add(entityDetail);
+                                    }
+                                    catch (RepositoryErrorException | EntityProxyOnlyException e)
+                                    {
+                                        log.error("{} could not map vertex returned in path expression, entity GUID {}, exception {}", methodName, entityMapper.getEntityGUID(vertex), e.getMessage());
+                                        g.tx().rollback();
 
-
-                                            throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(startEntityGUID, methodName,
-                                                                                                                                       this.getClass().getName(),
-                                                                                                                                       repositoryName),
-                                                                              this.getClass().getName(),
-                                                                              methodName);
-                                        }
+                                        throw new EntityNotKnownException(
+                                                GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                                                        startEntityGUID, methodName,
+                                                        this.getClass().getName(),
+                                                        repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
                                     }
                                 }
-
                             }
                             else if (object instanceof Edge)
                             {
 
                                 edge = (Edge) object;
 
-                                if (edge != null)
+
+                                log.debug("{} subgraph has edge {} ", methodName, edge);
+
+                                Relationship relationship = new Relationship();
+                                relationshipMapper.mapEdgeToRelationship(edge, relationship);
+                                relationships.add(relationship);
+
+                                // Get the end entities and add them to the relationship as proxies.
+
+                                vertex = null;
+
+                                try
                                 {
-                                    log.debug("{} subgraph has edge {} ", methodName, edge);
+                                    /* Map the discovered entities - need a proxy for each end of the relationship,
+                                     * plus, if the entity is an EntityDetail then you need to add that to
+                                     * entities list in the InstanceGraph too.
+                                     */
 
-                                    Relationship relationship = new Relationship();
-                                    relationshipMapper.mapEdgeToRelationship(edge, relationship);
-                                    relationships.add(relationship);
+                                    // Start with the outVertex
+                                    vertex = edge.outVertex();
 
-                                    // Get the end entities and add them to the relationship as proxies.
-
-                                    vertex = null;
-
-                                    try
+                                    if (vertex != null)
                                     {
-
-                                        /* Map the discovered entities - need a proxy for each end of the relationship,
-                                         * plus, if the entity is an EntityDetail then you need to add that to
-                                         * entities list in the InstanceGraph too.
-                                         */
-
-                                        // Start with the outVertex
-                                        vertex = edge.outVertex();
-
-                                        if (vertex != null)
-                                        {
-                                            log.debug("{} end 1 entity vertex {}", methodName, vertex);
-                                            EntityProxy entityOneProxy = new EntityProxy();
-                                            entityMapper.mapVertexToEntityProxy(vertex, entityOneProxy);
-                                            log.debug("{} entityOneProxy {}", methodName, entityOneProxy);
-                                            relationship.setEntityOneProxy(entityOneProxy);
-
-                                        }
-
-                                        // Move to the inVertex
-                                        vertex = edge.inVertex();
-
-                                        if (vertex != null)
-                                        {
-                                            log.debug("{} end 2 entity vertex {}", methodName, vertex);
-                                            EntityProxy entityTwoProxy = new EntityProxy();
-                                            entityMapper.mapVertexToEntityProxy(vertex, entityTwoProxy);
-                                            log.debug("{} entityTwoProxy {}", methodName, entityTwoProxy);
-                                            relationship.setEntityTwoProxy(entityTwoProxy);
-
-                                        }
+                                        log.debug("{} end 1 entity vertex {}", methodName, vertex);
+                                        EntityProxy entityOneProxy = new EntityProxy();
+                                        entityMapper.mapVertexToEntityProxy(vertex, entityOneProxy);
+                                        log.debug("{} entityOneProxy {}", methodName, entityOneProxy);
+                                        relationship.setEntityOneProxy(entityOneProxy);
 
                                     }
-                                    catch (RepositoryErrorException e)
+
+                                    // Move to the inVertex
+                                    vertex = edge.inVertex();
+
+                                    if (vertex != null)
                                     {
-
-                                        /* This catch block abandons the whole traversal and neighbourhood search.
-                                         * This may be a little draconian but presumably better to know that something
-                                         * is wrong rather than plough on in ignorance.
-                                         */
-                                        log.error("{} caught exception whilst trying to map entity, exception {}", methodName, e.getMessage());
-                                        g.tx().rollback();
-
-                                        throw new EntityNotKnownException(GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(entityMapper.getEntityGUID(vertex), methodName,
-                                                                                                                                   this.getClass().getName(),
-                                                                                                                                   repositoryName),
-                                                                          this.getClass().getName(),
-                                                                          methodName, e);
+                                        log.debug("{} end 2 entity vertex {}", methodName, vertex);
+                                        EntityProxy entityTwoProxy = new EntityProxy();
+                                        entityMapper.mapVertexToEntityProxy(vertex, entityTwoProxy);
+                                        log.debug("{} entityTwoProxy {}", methodName, entityTwoProxy);
+                                        relationship.setEntityTwoProxy(entityTwoProxy);
                                     }
                                 }
+                                catch (RepositoryErrorException e)
+                                {
+                                    /* This catch block abandons the whole traversal and neighbourhood search.
+                                     * This may be a little draconian but presumably better to know that something
+                                     * is wrong rather than plough on in ignorance.
+                                     */
+                                    log.error("{} caught exception whilst trying to map entity, exception {}", methodName, e.getMessage());
+                                    g.tx().rollback();
+
+                                    throw new EntityNotKnownException(
+                                            GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                                                    entityMapper.getEntityGUID(vertex), methodName,
+                                                    this.getClass().getName(),
+                                                    repositoryName),
+                                            this.getClass().getName(),
+                                            methodName, e);
+                                }
+
                             }
                             else
                             {
@@ -3930,7 +3904,7 @@ class GraphOMRSMetadataStore {
                         if (!propCriteria.isEmpty())
                         {
                             GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                            t = (GraphTraversal<Vertex, Vertex>) t.or(propCriteria.toArray(new GraphTraversal[0]));
+                            t = t.or(propCriteria.toArray(new GraphTraversal[0]));
                             gt = gt.not(t);
                         }
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
@@ -3981,7 +3955,7 @@ class GraphOMRSMetadataStore {
             catch (Exception e)
             {
                 log.error("{} caught exception from entity mapper, entity being ignored, {}", methodName, e.getMessage());
-                continue;
+                // continue; //
             }
         }
 
@@ -4332,7 +4306,7 @@ class GraphOMRSMetadataStore {
                 PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
                 Object primValue = ppv.getPrimitiveValue();
                 log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
-                GraphTraversal<Vertex, Vertex> t = null;
+                GraphTraversal<Vertex, Vertex> t;
 
                 switch (pCat)
                 {
@@ -4387,7 +4361,6 @@ class GraphOMRSMetadataStore {
 
     {
         String methodName = "applyOperatorToString";
-        String stringValue = (String) primValue;
 
         GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
 
@@ -4436,7 +4409,6 @@ class GraphOMRSMetadataStore {
                                                                 String                                  shortPropName,
                                                                 PrimitiveDefCategory                    pCat)
     {
-        String methodName = "applyOperatorToDate";
 
         GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
 
@@ -4448,10 +4420,11 @@ class GraphOMRSMetadataStore {
          */
 
         Set<String> corePropertyNames = corePropertyTypes.keySet();
+        String javaTypeForMatchProperty = pCat.getJavaClassName();
         if (corePropertyNames.contains(shortPropName))
         {
             /* This is a core property and is stored as Date */
-            String javaTypeForMatchProperty = pCat.getJavaClassName();
+
             if (javaTypeForMatchProperty.equals("java.lang.Long"))
             {
                 /* Need to convert Long to Date */
@@ -4467,7 +4440,6 @@ class GraphOMRSMetadataStore {
         else
         {
             /* This is a type-defined attribute and is stored as Long */
-            String javaTypeForMatchProperty = pCat.getJavaClassName();
             if (javaTypeForMatchProperty.equals("java.lang.Long"))
             {
                 Long longValue = (Long) primValue;
@@ -4483,7 +4455,6 @@ class GraphOMRSMetadataStore {
                                                                   PropertyComparisonOperator              operator,
                                                                   Object                                  primValue)
     {
-        String methodName = "applyOperatorToObject";
 
         GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
 
