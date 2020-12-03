@@ -7,7 +7,7 @@ import AppSwitcher20 from "@carbon/icons-react/lib/app-switcher/20";
 import HeaderContainer from "carbon-components-react/lib/components/UIShell/HeaderContainer";
 import { Content } from "carbon-components-react/lib/components/UIShell";
 import { Link, Route } from "react-router-dom";
-import Egeriawhite110 from "./images/Egeria_logo_white_110";
+import Egeriawhite110 from "./images/odpi/Egeria_logo_white_110";
 import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
 import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";

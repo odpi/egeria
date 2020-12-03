@@ -3,7 +3,7 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
-import Egeriacolor from "../images/Egeria_logo_color";
+import Egeriacolor from "../images/odpi/Egeria_logo_color";
 import { IdentificationContext } from "../contexts/IdentificationContext";
 
 import {

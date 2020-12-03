@@ -3,7 +3,7 @@
 import React, { useState, useContext } from "react";
 
 import { IdentificationContext } from "../../../contexts/IdentificationContext";
-import Add32 from "../../../images/Egeria_add_32";
+import Add32 from "../../../images/carbon/Egeria_add_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { Button, Form, FormGroup, TextInput, Loading } from "carbon-components-react";
 
@@ -19,8 +19,9 @@ export default function GlossaryQuickTerms(props) {
   const [errorMsg, setErrorMsg] = useState();
   const [restCallInProgress, setRestCallInProgress] = useState(false);
   let history = useHistory();
-  const url = getUrl();
   const { glossaryguid } = useParams();
+  const url = getUrl();
+  
   function getUrl() {
     return glossaryNodeType.url + "/" + glossaryguid + "/terms";
   }

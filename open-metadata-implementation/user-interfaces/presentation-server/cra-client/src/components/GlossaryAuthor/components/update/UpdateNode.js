@@ -26,9 +26,9 @@ export default function UpdateNode(props) {
   const [currentNode, setCurrentNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
   console.log("UpdateNode");
+  const { guidtoedit } = useParams();
   const url = getUrl();
   let history = useHistory();
-  const { guidtoedit } = useParams();
 
   const initialGet = () => {
     issueRestGet(url, onSuccessfulGet, onErrorGet);

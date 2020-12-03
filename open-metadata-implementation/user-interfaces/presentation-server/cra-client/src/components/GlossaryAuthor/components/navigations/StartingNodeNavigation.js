@@ -5,12 +5,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 
 import { Pagination, Toggle } from "carbon-components-react";
-import Add32 from "../../../../images/Egeria_add_32";
-import Delete32 from "../../../../images/Egeria_delete_32";
-import Edit32 from "../../../../images/Egeria_edit_32";
-import Term32 from "../../../../images/Egeria_term_32";
-import ParentChild32 from "../../../../images/Egeria_parent_child_32";
-import GlossaryImage from "../../../../images/Egeria_glossary_32";
+import Add32 from "../../../../images/carbon/Egeria_add_32";
+import Delete32 from "../../../../images/carbon/Egeria_delete_32";
+import Edit32 from "../../../../images/carbon/Egeria_edit_32";
+import Term32 from "../../../../images/odpi/Egeria_term_32";
+import ParentChild32 from "../../../../images/carbon/Egeria_parent_child_32";
+import GlossaryImage from "../../../../images/odpi/Egeria_glossary_32";
 
 import { LocalNodeCard, NodeCardSection } from "../NodeCard/NodeCard";
 import { issueRestGet, issueRestDelete } from "../RestCaller";
