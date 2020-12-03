@@ -160,10 +160,18 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                         "situations is true in this case.  Use the values in this message to determine the type of API " +
                         "and metadata collection values necessary to make the request successful."),
 
-    BAD_ANCHOR_GUID(400, "OMAG-COMMON-400-026",
-               "The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}",
-               "The system is unable to process the request because the requested object is anchored to a different element.",
-               "Correct the code in the caller to provide either the correct identifier of the object or the correct anchor identifier."),
+    WRONG_ANCHOR_GUID(400, "OMAG-COMMON-400-026",
+               "The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} is unable to proceed",
+               "The system is unable to process the request because the requested object is not anchored to the expected element.",
+               "Check the code in the caller to verify it is providing either the correct identifier of the object or the correct" +
+                       "anchor identifier since this is the most likely cause of the error.  However, it is possible that there is an " +
+                       "error in the way that the anchor GUID was set up in the element.  If this is the case, it is necessary to trace " +
+                       "back to find how the element was created and then look at where the error was introduced."),
+
+    NOT_ANCHOR_ELEMENT(400, "OMAG-COMMON-400-027",
+                    "The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} is unable to proceed",
+                    "The system is unable to process the request because the requested object is not an anchor entity.",
+                    "Correct the code in the caller to issue the request against this element's anchor object and retry."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",

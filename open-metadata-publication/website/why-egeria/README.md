@@ -28,6 +28,22 @@ The water theme seemed to fit with the data lake origin and since
 the Egeria technology shares knowledge between communities that
 use different tools, the notion of a "counselor" seemed to fit as well.
 
+The new Egeria project needed a foundation to host the repositories
+and provide the open governance support to ensure that people can
+use and work on the project irrespective of their organizational affiliation.
+
+The Linux's Foundation's ODPi foundation offered a home for Egeria and the
+project thrived under its guidance.
+
+In October 2020, the ODPi and another foundation from the Linux Foundation
+called the LF AI agreed to merge into a new foundation called the
+[LF AI and Data](https://lfaidata.foundation/).  This foundation has
+brought together a valuable collection of projects that spans data management
+and a wide range of analytics capability.
+
+Follow this link to see
+[Egeria's status](https://landscape.lfai.foundation/format=card-mode&project=graduated&selected=egeria).
+
 ----
 * Return to the [Home Page](../../../index.md).
 * Read more detail about Egeria's [Goals and Capability](..)

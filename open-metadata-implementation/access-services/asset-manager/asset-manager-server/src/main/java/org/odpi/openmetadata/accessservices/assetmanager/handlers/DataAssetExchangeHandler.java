@@ -358,6 +358,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                  OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                  assetProperties.getExtendedProperties(),
+                                 isMergeUpdate,
                                  methodName);
 
         this.maintainSupplementaryProperties(userId,
@@ -487,11 +488,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setAssetAsReferenceData(String                        userId,
-                                        String                        assetGUID,
-                                        String                        methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public void setAssetAsReferenceData(String userId,
+                                        String assetGUID,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
         
@@ -725,12 +726,12 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         if (asset != null)
         {
             asset.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                         openMetadataGUID,
-                                                                         guidParameterName,
-                                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                         assetManagerGUID,
-                                                                         assetManagerName,
-                                                                         methodName));
+                                                                      openMetadataGUID,
+                                                                      guidParameterName,
+                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      methodName));
         }
 
         return asset;
