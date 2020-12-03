@@ -14,7 +14,7 @@ configuration properties for each of its desired capabilities.
 
 Figure 1 provides more details.
 
-![Figure 1](configuration-document-structure.png)
+![Figure 1](configuration-document-structure.png#pagewidth)
 > **Figure 1:** Structure of the configuration document
 
 
