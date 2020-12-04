@@ -29,6 +29,7 @@ public class SchemaTypeConverter extends ReferenceableConverter
      * @param schemaAttributeCount number of attributes nested inside this schema type
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public SchemaTypeConverter(String                   typeName,
                                InstanceProperties       properties,
@@ -52,6 +53,7 @@ public class SchemaTypeConverter extends ReferenceableConverter
      * @param schemaAttributeCount number of attributes nested inside this schema type
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public SchemaTypeConverter(EntityDetail             entity,
                                int                      schemaAttributeCount,

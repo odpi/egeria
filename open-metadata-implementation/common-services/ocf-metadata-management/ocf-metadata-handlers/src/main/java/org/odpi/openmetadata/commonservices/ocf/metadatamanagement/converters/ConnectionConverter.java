@@ -33,6 +33,7 @@ public class ConnectionConverter extends ReferenceableConverter
      * @param embeddedConnections list of embedded connections (optional)
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public ConnectionConverter(EntityDetail             connectionEntity,
                                Endpoint                 endpoint,

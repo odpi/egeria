@@ -113,6 +113,7 @@ public class OperationalServicesViewResource
 
 
     /*
+    /*deploy
      * =============================================================
      * Operational status and control
      */
