@@ -10,10 +10,12 @@ export default function TaskDropDown({ onChange }) {
       border-bottom-width="3px"
       onChange={onChange}
     >
-      <option value="search">Search</option>
-      <option value="crud">CRUD</option>
-      <option selected value="glossaries">
-        Glossary Authoring
+
+      <option selected value="nodes">
+        Node Authoring
+      </option>
+      <option value="lines">
+        Line Authoring
       </option>
     </select>
   );

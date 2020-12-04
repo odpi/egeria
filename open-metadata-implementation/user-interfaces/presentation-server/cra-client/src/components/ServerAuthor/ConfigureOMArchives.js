@@ -20,7 +20,7 @@ export default function ConfigureOMArchives() {
   const handleAddOMArchive = e => {
     const archiveName = document.getElementById("new-server-archive-file-name").value;
     console.log("handleAddOMArchive() called", { archiveName });
-    if (archiveName.length == 0) return;
+    if (archiveName.length === 0) return;
     setNewServerOMArchives(newServerOMArchives.concat(archiveName));
     document.getElementById("new-server-archive-file-name").value = "";
   }

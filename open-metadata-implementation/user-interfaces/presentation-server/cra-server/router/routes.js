@@ -55,17 +55,6 @@ router.get("/logout", function (req, res) {
   });
 });
 
-const staticJoinedPath = path.join(__dirname, "../../dist");
-router.use(express.static(staticJoinedPath, { index: false }));
-const joinedPath = path.join(__dirname, "../../dist", "index.html");
-/**
- * Process login url,
- */
-router.get("/login", (req, res) => {
-  console.log("/login called " + joinedPath);
-  res.sendFile(joinedPath);
-});
-
 router.post("/servers/*", (req, res) => {
   const incomingUrl = req.url;
   console.log("/servers/* post called " + incomingUrl);
@@ -172,10 +161,6 @@ router.get("/servers/*", (req, res) => {
     instance
       .get()
       .then(function (response) {
-        // console.log("response");
-        // console.log(response);
-        // console.log("response.data");
-        // console.log(response.data);
         const resBody = response.data;
         res.setHeader("Content-Type", "application/json");
         res.json(resBody);
