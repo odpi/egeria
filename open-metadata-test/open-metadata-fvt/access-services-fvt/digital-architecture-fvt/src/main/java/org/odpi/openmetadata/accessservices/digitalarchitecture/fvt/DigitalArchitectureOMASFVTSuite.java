@@ -8,4 +8,5 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt;
  */
 public class DigitalArchitectureOMASFVTSuite
 {
+
 }

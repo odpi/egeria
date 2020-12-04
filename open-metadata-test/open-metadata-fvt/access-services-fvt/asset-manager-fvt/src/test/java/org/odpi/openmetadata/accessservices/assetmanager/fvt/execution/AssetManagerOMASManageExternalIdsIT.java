@@ -3,12 +3,14 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.execution;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers.ManageExternalIdsTest;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,6 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class AssetManagerOMASManageExternalIdsIT
 {
+    @BeforeAll
+    public static void disableStrictSSL(){
+        HttpHelper.noStrictSSL();
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
     public void testInvalidParameters(String serverName)
