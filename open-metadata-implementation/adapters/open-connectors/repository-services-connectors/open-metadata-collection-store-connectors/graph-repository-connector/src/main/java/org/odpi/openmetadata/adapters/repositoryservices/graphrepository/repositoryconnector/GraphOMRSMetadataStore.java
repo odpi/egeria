@@ -60,6 +60,7 @@ import static org.apache.tinkerpop.gremlin.process.traversal.P.lt;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.lte;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.neq;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.within;
+import static org.apache.tinkerpop.gremlin.process.traversal.P.without;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.out;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME;
@@ -3222,10 +3223,10 @@ class GraphOMRSMetadataStore {
                     {
                         edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
                     }
-                    //else
-                    //{
-                    //    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
-                    //}
+                    else
+                    {
+                        edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
+                    }
 
                     // Optionally filter by relationship type
                     if (relationshipsWithin)
@@ -3241,10 +3242,10 @@ class GraphOMRSMetadataStore {
                     {
                         vertexTraversal = vertexTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
                     }
-                    //else
-                    //{
-                    //    repeatTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
-                    //}
+                    else
+                    {
+                        vertexTraversal = vertexTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
+                    }
 
                     // Exclude EntityProxy vertices... or not... for now the traversal will traverse a proxy but only include it
                     // in the relationship reported, not in the entities list.
@@ -3557,10 +3558,10 @@ class GraphOMRSMetadataStore {
                 {
                     edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, within(statusOrdinals));
                 }
-                //else
-                //{
-                //    edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
-                //}
+                else
+                {
+                    edgesTraversal = edgesTraversal.has(PROPERTY_KEY_RELATIONSHIP_STATUS, without(statusOrdinals));
+                }
 
                 // Move on to the inVertex for each relationship...
                 GraphTraversal<Vertex, Vertex> vertexTraversal = edgesTraversal.otherV();
@@ -3570,10 +3571,10 @@ class GraphOMRSMetadataStore {
                 {
                     vertexTraversal = vertexTraversal.has(PROPERTY_KEY_ENTITY_STATUS, within(statusOrdinals));
                 }
-                //else
-                //{
-                //   vertexTraversal = (DefaultGraphTraversal) repeatTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
-                //}
+                else
+                {
+                    vertexTraversal = vertexTraversal.has(PROPERTY_KEY_ENTITY_STATUS, without(statusOrdinals));
+                }
 
 
                 // Include simplePath to avoid back-tracking
