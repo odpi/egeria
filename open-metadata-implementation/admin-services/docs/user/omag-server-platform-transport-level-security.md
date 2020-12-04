@@ -70,6 +70,10 @@ to be set:
 * `server.ssl.trust-store`              Used by tomcat/spring boot to understand what clients it can trust (2 way SSL)
 * `server.ssl.trust-store-password`     Used by tomcat/spring boot  for the password of the truststore (2 way SSL)
 
+In addition an additional parameter is provided which causes ssl verification to be skipped:
+
+* `strict.ssl`                          true / false : If set to true skips checks on certificate
+
 For further details on these & other less common configuration options, refer to the Spring Docs
 
 Since the Egeria Server Chassis is also a network client the settings in the next section for 
@@ -77,25 +81,27 @@ clients are also required.
 
 ## Egeria Java Clients
 
-Standard java properties  need to be set:
+Standard java properties  need to be set within the JVM being used for the Egeria client code:
 
-`javax.net.ssl.keyStore`                keyStore for client to use (2 way SSL needs this)
-`javax.net.ssl.keyStorePassword`        password for the keystore  (2 way SSL needs this)
-`javax.net.ssl.trustStore`              trustStore for the client to use (always needs setting as egeria makes client calls)
-`javax.net.ssl.trustStorePassword`      password for the truststore (always - as above)
+* `javax.net.ssl.keyStore`                keyStore for client to use (2 way SSL needs this)
+* `javax.net.ssl.keyStorePassword`        password for the keystore  (2 way SSL needs this)
+* `javax.net.ssl.trustStore`              trustStore for the client to use (always needs setting as egeria makes client calls)
+* `javax.net.ssl.trustStorePassword`      password for the truststore (always - as above)
+
+In addition, for any executable jars provided by egeria - such as samples, an additional
+parameter will cause ssl verification to be skipped. This is only recommended for test
+and development
+
+* `strict.ssl`                            true / false : If set to true skips checks on certificate
+
+Note that in the case of Java Clients, these are system properties, and do
+not use spring conventions. 
 
 ## Other clients
 
 Similar principles to those documented for java should apply. If you need further assistance please
 contact the team on our slack channel at slack.odpi.org . A Pull Request (or issue) with contributed documentation
 is very welcome !
-
-## Caveat on SSL verification
-
-From Release 2.0, and continuing through at least 2.3 all client connections made within the egeria
-clients AND server bypass strict ssl checking for a transition period. See [#3869](https://github.com/odpi/egeria/issues/3869)
-
-When addressed an additional configuration option will be available which may aid in development scenarios.
 
 ## Example script to launch Egeria
 
