@@ -17,7 +17,7 @@ function processErrorJson(operationName, json, response) {
       msg = "Http error code " + relatedHTTPCode + ".";
     }
   } else if (response.errno) {
-    if (response.errno == "ECONNREFUSED") {
+    if (response.errno === "ECONNREFUSED") {
       msg = "Connection refused to the view server.";
     } else {
       // TODO create nice messages for all the http codes we think are relevant
@@ -46,7 +46,7 @@ export async function issueRestGet(url, onSuccessful, onError) {
     console.log("issueRestGet complete");
     let msg;
 
-    if (json.relatedHTTPCode == 200 && json.result) {
+    if (json.relatedHTTPCode === 200 && json.result) {
       if (json.result) {
         onSuccessful(json);
       } else {
@@ -79,7 +79,7 @@ export async function issueRestCreate(url, body, onSuccessful, onError) {
     const json = await response.json();
     const relatedHTTPCode = json.relatedHTTPCode;
     let msg;
-    if (relatedHTTPCode == 200 && json.result) {
+    if (relatedHTTPCode === 200 && json.result) {
       if (json.result) {
         onSuccessful(json);
       } else {
@@ -128,7 +128,7 @@ export async function issueRestUpdate(url, body, onSuccessful, onError) {
     const json = await response.json();
     let msg;
     const relatedHTTPCode = json.relatedHTTPCode;
-    if (relatedHTTPCode == 200 && json.result) {
+    if (relatedHTTPCode === 200 && json.result) {
       if (json.result) {
         onSuccessful(json);
       } else {

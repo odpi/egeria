@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
-import Launch32 from "../../images/Launch_32";
+import Launch32 from "../../images/carbon/Launch_32";
 
 const InfoSection = props => (
   <div>

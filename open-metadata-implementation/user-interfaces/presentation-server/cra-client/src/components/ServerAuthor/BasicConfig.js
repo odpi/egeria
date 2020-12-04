@@ -38,7 +38,7 @@ export default function BasicConfig() {
           value={newServerName}
           onChange={e => setNewServerName(e.target.value)}
           placeholder="cocoMDS1"
-          invalid={newServerName == ""}
+          invalid={newServerName  ===  ""}
           style={{marginBottom: "16px", width: "100%"}}
           ref={basicConfigFormStartRef}
           autoComplete="off"
@@ -52,7 +52,7 @@ export default function BasicConfig() {
           value={newServerLocalURLRoot}
           onChange={e => setNewServerLocalURLRoot(e.target.value)}
           placeholder="https://localhost:9443"
-          invalid={newServerLocalURLRoot == ""}
+          invalid={newServerLocalURLRoot  ===  ""}
           style={{marginBottom: "16px"}}
         />
 
@@ -64,7 +64,7 @@ export default function BasicConfig() {
           value={newServerLocalUserId}
           onChange={e => setNewServerLocalUserId(e.target.value)}
           placeholder="myMetadataServerUserId"
-          invalid={newServerLocalUserId == ""}
+          invalid={newServerLocalUserId === ""}
           style={{marginBottom: "16px"}}
           autoComplete="off"
         />
@@ -76,7 +76,7 @@ export default function BasicConfig() {
           value={newServerLocalPassword}
           onChange={e => setNewServerLocalPassword(e.target.value)}
           placeholder="myMetadataServerPassword"
-          invalid={newServerLocalPassword == ""}
+          invalid={newServerLocalPassword === ""}
           style={{marginBottom: "16px"}}
           autoComplete="new-password"
         />
@@ -89,7 +89,7 @@ export default function BasicConfig() {
           value={newServerMaxPageSize}
           onChange={e => setNewServerMaxPageSize(e.target.value)}
           placeholder="1000"
-          invalid={newServerMaxPageSize == ""}
+          invalid={newServerMaxPageSize === ""}
           style={{marginBottom: "16px"}}
         />
 
@@ -109,7 +109,7 @@ export default function BasicConfig() {
 
       {
         // If server type is Metadata Server, show local repository tiles
-        (newServerLocalServerType == "Metadata Server") &&
+        (newServerLocalServerType === "Metadata Server") &&
         <fieldset className="bx--fieldset" style={{ marginBottom: "32px" }}>
           <legend className="bx--label" style={{ textAlign: "left" }}>Server repository type</legend>
           <TileGroup
