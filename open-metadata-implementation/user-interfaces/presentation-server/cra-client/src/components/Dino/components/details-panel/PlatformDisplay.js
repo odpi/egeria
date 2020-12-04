@@ -7,8 +7,6 @@ import { ResourcesContext }       from "../../contexts/ResourcesContext";
 
 import PlatformServicesDisplay    from "./PlatformServicesDisplay";
 
-import PropTypes                  from "prop-types";
-
 import "./details-panel.scss";
 
 

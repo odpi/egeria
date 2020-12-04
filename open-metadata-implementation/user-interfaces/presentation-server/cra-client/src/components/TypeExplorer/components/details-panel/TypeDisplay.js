@@ -45,19 +45,15 @@ export default function TypeDisplay() {
 
       case "Entity":
         return <EntityTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
 
       case "Relationship":
         return <RelationshipTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
 
       case "Classification":
         return <ClassificationTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
 
       case "Enum":
         return <EnumTypeDisplay typeName={focusContext.view.typeName} />
-        break;
 
     }
   }

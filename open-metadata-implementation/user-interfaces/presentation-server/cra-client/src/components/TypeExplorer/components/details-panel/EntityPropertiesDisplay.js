@@ -114,7 +114,7 @@ export default function EntityPropertiesDisplay(props) {
     return attributeList;
   };
 
-  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length == 0) {
+  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length === 0) {
     properties = (
       <div>
         list is empty
