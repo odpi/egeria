@@ -33,7 +33,9 @@ app.set('cert', cert);
 
 const servers = getServerInfoFromEnv();
 app.set('servers', servers);
-
+if (env === 'production') {
+  app.use(express.static(path.join(__dirname, '../cra-client/build')));
+}
 // This middleware method takes off the first segment which is the serverName and puts it into a query parameter
 app.use((req, res, next) => serverNameMiddleWare(req, res, next));
 
@@ -54,7 +56,7 @@ app.set('passport', passport)
 app.use('/', router);
 
 if (env === 'production') {
-  app.use(express.static(path.join(__dirname, '../cra-client/build')));
+  // app.use(express.static(path.join(__dirname, '../cra-client/build')));
   app.all('*', (req, res, next) => res.sendFile(path.join(__dirname, '../cra-client/build/index.html')));
 }
 
