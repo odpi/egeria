@@ -38,6 +38,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -83,6 +84,7 @@ import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.getPropertyKeyEntity;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.getPropertyKeyRelationship;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSGraphFactory.corePropertyMixedIndexMappings;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IN;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LIKE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
@@ -3733,7 +3735,8 @@ class GraphOMRSMetadataStore {
                                     boolean             fullMatch)
 
     throws InvalidParameterException,
-           RepositoryErrorException
+           RepositoryErrorException,
+           FunctionNotSupportedException
 
     {
 
@@ -3924,7 +3927,8 @@ class GraphOMRSMetadataStore {
                                          boolean             fullMatch)
 
     throws InvalidParameterException,
-           RepositoryErrorException
+           RepositoryErrorException,
+           FunctionNotSupportedException
 
     {
 
@@ -4133,7 +4137,8 @@ class GraphOMRSMetadataStore {
                                                                                SearchProperties                 searchProperties,
                                                                                boolean                          fullMatch)
 
-    throws InvalidParameterException
+    throws InvalidParameterException,
+           FunctionNotSupportedException
     {
 
         final String methodName = "processEntitySearchProperties";
@@ -4236,7 +4241,8 @@ class GraphOMRSMetadataStore {
                                                                                  SearchProperties                 searchProperties,
                                                                                  boolean                          fullMatch)
 
-    throws InvalidParameterException
+    throws InvalidParameterException,
+           FunctionNotSupportedException
     {
 
         final String methodName = "processRelationshipSearchProperties";
@@ -4382,10 +4388,26 @@ class GraphOMRSMetadataStore {
                                                                                    InstancePropertyValue       value,
                                                                                    boolean                     fullMatch)
 
-    throws InvalidParameterException
+    throws InvalidParameterException,
+           FunctionNotSupportedException
     {
 
         String methodName = "parsePropertyConditionToCriterion";
+
+        /*
+         * For now the graph repository does not support the IN operator
+         */
+        if (operator == IN)
+        {
+            throw new FunctionNotSupportedException(
+                    GraphOMRSErrorCode.UNSUPPORTED_SEARCH_PROPERTY_OPERATOR.getMessageDefinition(
+                            operator.toString(),
+                            methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName);
+        }
 
         GraphTraversal<Vertex, Vertex> propertyCriterion = null;
 
@@ -4621,10 +4643,27 @@ class GraphOMRSMetadataStore {
                                                                                      InstancePropertyValue       value,
                                                                                      boolean                     fullMatch)
 
-    throws InvalidParameterException
+    throws InvalidParameterException,
+           FunctionNotSupportedException
     {
 
         String methodName = "parsePropertyConditionToCriterion";
+
+        /*
+         * For now the graph repository does not support the IN operator
+         */
+        if (operator == IN)
+        {
+            throw new FunctionNotSupportedException(
+                    GraphOMRSErrorCode.UNSUPPORTED_SEARCH_PROPERTY_OPERATOR.getMessageDefinition(
+                            operator.toString(),
+                            methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName);
+        }
+
 
         GraphTraversal<Edge, Edge> propertyCriterion = null;
 

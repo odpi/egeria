@@ -126,6 +126,11 @@ public enum GraphOMRSErrorCode implements ExceptionMessageSet
             "The search properties contains an invalid combination of property conditions - reported by the {0} method of class {1} to open metadata repository {2}",
             "The system is unable to perform the request because the search properties is incorrect.",
             "Correct the caller's code and retry the request."),
+    UNSUPPORTED_SEARCH_PROPERTY_OPERATOR(
+            400, "OMRS-GRAPH-REPOSITORY-400-026",
+            "The search properties contains a property condition with unsupported operator {0} - reported by the {1} method of class {2} to open metadata repository {3}",
+            "The system is unable to perform the request because the search properties operator is not supported.",
+            "Please use a different operator or raise an issue."),
 
 
     ;
