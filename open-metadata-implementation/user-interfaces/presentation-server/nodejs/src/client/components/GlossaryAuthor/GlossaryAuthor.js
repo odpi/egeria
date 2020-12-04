@@ -21,7 +21,7 @@ export default function GlossaryAuthor() {
   const [glossaryAuthorURL, setGlossaryAuthorURL] = useState();
   const identificationContext = useContext(IdentificationContext);
 
-  const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), "glossary");
+  const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
     setGlossaryAuthorURL(
