@@ -1754,7 +1754,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
     {
 
-        final String methodName = "findEntitiesByProperty";
+        final String methodName = "findEntities";
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
 
@@ -1904,6 +1904,222 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             }
 
             return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        }
+
+
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize)
+
+    throws InvalidParameterException,
+           TypeErrorException,
+           RepositoryErrorException,
+           PropertyErrorException,
+           PagingErrorException,
+           FunctionNotSupportedException,
+           UserNotAuthorizedException
+    {
+
+        final String methodName = "findRelationships";
+        final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
+
+
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+
+        /*
+         * Perform operation
+         */
+
+        if (asOfTime != null)
+        {
+            log.error("{} does not support asOfTime searches", methodName);
+
+            super.reportUnsupportedOptionalFunction(methodName);
+        }
+
+
+        /*
+         * Perform operation
+         */
+
+        ArrayList<Relationship> returnRelationships = null;
+
+
+        String specifiedTypeName = null;
+        if (relationshipTypeGUID != null)
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, relationshipTypeGUIDParameterName, relationshipTypeGUID, methodName);
+            specifiedTypeName = typeDef.getName();
+        }
+
+        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
+        List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
+
+        for (TypeDef typeDef : allTypeDefs)
+        {
+            if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)
+            {
+
+                String actualTypeName = typeDef.getName();
+
+                /*
+                 * If relationshipTypeGUID parameter is not null there is an expected type, so check whether the
+                 * current type matches the expected type or is one of its sub-types.
+                 */
+                if (specifiedTypeName != null)
+                {
+
+                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
+                    if (!typeMatch)
+                    {
+                        /*
+                         * Established that the caller wants type filtering but this (actual) type is neither the
+                         * specified type nor one of its subtypes. It will be skipped.
+                         */
+                        continue;
+                    }
+                    else
+                    {
+                        /*
+                         * Established that the caller wants type filtering and that this (actual) type is either the
+                         * specified type or one of its subtypes. If there is also a list of subtype GUIDs, need to
+                         * check that if the typeDef is a subtype (ONLY - not the specified type) that it is
+                         * in the relationshipSubtypeGUIDs list. If it is present, it will be searched. If it is not present it
+                         * will not be searched.
+                         */
+                        if (relationshipSubtypeGUIDs != null)
+                        {
+                            String actualTypeGUID = typeDef.getGUID();
+                            /*
+                             * Although the repository helper provides a method to get the subtypes it is based on type
+                             * names so rather than convert back and forth between GUIDs and names, it is more straightforward
+                             * to decide if the type is strictly a subtype by comparing the typeGUID against the specified
+                             * type's GUID.
+                             */
+                            if (!actualTypeGUID.equals(relationshipTypeGUID))
+                            {
+                                /*
+                                 * The actual type is a strict subtype of the specified type. Check it is in the list,
+                                 * otherwise skip it.
+                                 */
+                                if (!relationshipSubtypeGUIDs.contains(actualTypeGUID))
+                                {
+                                    /*
+                                     * This subtype is not in the list, skip it
+                                     */
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * Invoke a type specific search. The search will expect the regexp to match fully to the value.
+                 */
+                List<Relationship> relationshipsForCurrentType = graphStore.findRelationships(actualTypeName, matchProperties, true);
+
+                if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty())
+                {
+                    if (returnRelationships == null)
+                    {
+                        returnRelationships = new ArrayList<>();
+                    }
+                    log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
+                    returnRelationships.addAll(relationshipsForCurrentType);
+                }
+                else
+                {
+                    log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
+                }
+
+            }
+        }
+
+        /*
+         * Eliminate soft deleted relationships and apply status filtering if any was requested
+         */
+        if (returnRelationships == null)
+        {
+            return null;
+        }
+        else
+        {
+            List<Relationship> retainedRelationships = new ArrayList<>();
+            for (Relationship relationship : returnRelationships)
+            {
+                if (relationship != null)
+                {
+                    if ( (relationship.getStatus() != InstanceStatus.DELETED)
+                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))
+                            )
+                    {
+                        retainedRelationships.add(relationship);
+                    }
+                }
+            }
+
+            return repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
         }
 
 

@@ -3731,7 +3731,8 @@ class GraphOMRSMetadataStore {
                                     SearchProperties    searchProperties,
                                     boolean             fullMatch)
 
-    throws InvalidParameterException
+    throws InvalidParameterException,
+           RepositoryErrorException
 
     {
 
@@ -3809,7 +3810,7 @@ class GraphOMRSMetadataStore {
 
             try
             {
-                List<GraphTraversal<Vertex, Vertex>> propCriteria = processSearchProperties(typeDefName, searchProperties, fullMatch);
+                List<GraphTraversal<Vertex, Vertex>> propCriteria = processEntitySearchProperties(typeDefName, searchProperties, fullMatch);
 
                 /*
                  * Use the MatchCriteria to combine the properCriteria into the overall graph traversal.
@@ -3895,8 +3896,16 @@ class GraphOMRSMetadataStore {
             }
             catch (Exception e)
             {
-                log.error("{} caught exception from entity mapper, entity being ignored, {}", methodName, e.getMessage());
-                // continue; //
+                log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
+                g.tx().rollback();
+
+                throw new RepositoryErrorException(
+                        GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(
+                                entityDetail.getGUID(), methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName, e);
             }
         }
 
@@ -3906,18 +3915,227 @@ class GraphOMRSMetadataStore {
 
     }
 
+
+
+    // findRelationships
+    List<Relationship> findRelationships(String              typeDefName,
+                                         SearchProperties    searchProperties,
+                                         boolean             fullMatch)
+
+    throws InvalidParameterException,
+           RepositoryErrorException
+
+    {
+
+        final String methodName = "findRelationships";
+
+        List<Relationship> relationships = new ArrayList<>();
+
+
+        /*
+         *
+         * There are two origins of properties stored on an instance vertex in the graph -
+         *   1. core properties from the audit header
+         *   2. type-defined attributes from the typedef (including inheritance in the case of entities, but not relationships or classifications)
+         *
+         * The core property names are known (they are listed in the keys of GraphOMRSConstants.corePropertyTypes). Core properties are stored in the
+         * graph (as vertex and edge properties) under their prefixed name - where the prefix depends on the type and purpose of the graph
+         * element (e.g. vertex-entity, edge-relationship or vertex-classification). These are shortened to 've', 'er' and 'vc' as defined in the constants.
+         * For example, for an entity the core 'createdBy' property from InstanceAuditHeader is stored under the key vecreatedBy.
+         *
+         * The type-defined attribute names are known from the typedef. The properties are stored in the graph (as vertex and edge properties) under their
+         * prefixed and qualified name. For example, for a Referenceable (or subtype) entity the type-defined attribute 'qualifiedName' property is stored under
+         * the key 'veReferenceablexqualfiiedName'.
+         *
+         * There is only one namespace of properties - so a type0defined attribute should never clash with a core property. If there is a name clash between a
+         * core property and a type-defined attribute it is an error in the type system (and should be fixed by an issue). This method cannot police such name
+         * clashes, and tolerates them by giving precedence to the core property with the specified name.
+         *
+         * Match or search properties are specified using short (unqualified) names. Properties are stored in the graph with qualified property names - so we
+         * need to map to those in order to hit the indexes and vertex/edge properties. The short names of type-defined attributes do not need to be unique -
+         * i.e. different types that both define a type-defined attribute with the same (short) name. This is why the graph and indexes use the
+         * qualifiedPropertyNames.
+         * The calling code supports wildcard searches (across many types) so the type identified by typeDefName may have different type defined attributes
+         * to the attributes in searchProperties. Even if they match by name there is no guarantee that they are equivalent. They must be checked for both
+         * property name and type. In the case that a searchProperties contains a short-named property intended for a type other than the one being searched -
+         * this method checks the types match before issuing the graph traversal. This protects against type violations in the traversal. If the types do
+         * not match the method reacts depending on how matchCriteria is set. If mc is ALL then no traversal is performed; if mc is ANY then a traversal is
+         * performed WITHOUT the mismatched property; if mc is NONE a traversal is performed WITHOUT the mismatched property.
+         *
+         *
+         * For the type of the entity or relationship, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
+         */
+
+
+        /*
+         * Even if there are no search properties specified, the method performs a traversal.
+         */
+
+        GraphTraversalSource g = instanceGraph.traversal();
+
+        GraphTraversal<Edge, Edge> gt = g.E().hasLabel("Relationship");
+        if (typeDefName != null)
+        {
+            gt = gt.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, typeDefName);
+        }
+
+
+        if (searchProperties != null)
+        {
+
+            /*
+             * searchProperties is a SearchProperties object which contains MatchCriteria and a list of
+             * PropertyCondition objects, which in turn may contain nestedConditions. The rules around
+             * searchProperties is that a PropertyCondition EITHER specifies a property value, condition
+             * and operator OR it specifies none of them and instead provides a nested SearchProperties.
+             *
+             * Extract the conditions and construct the necessary graph traversals.
+             *
+             * Start at the top of the searchProperties and iterate over the list of PropertyConditions.
+             * For each PropertyCondition, either process it (property, value, operator) or recursively
+             * visit the nested SearchProperties it contains. At each stage in the iteration and recursion
+             * add each discovered condition to the graph traversal.
+             */
+
+            try
+            {
+                List<GraphTraversal<Edge, Edge>> propCriteria = processRelationshipSearchProperties(typeDefName, searchProperties, fullMatch);
+
+                /*
+                 * Use the MatchCriteria to combine the properCriteria into the overall graph traversal.
+                 *
+                 * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+                 * between the match properties and the properties defined on the type (core or type defined). So
+                 * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+                 * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+                 * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+                 * be satisfied. For matchCriteria NONE we need to retrieve the edge from the graph (to construct the
+                 * relationship) so let that case continue.
+                 */
+
+                switch (searchProperties.getMatchCriteria())
+                {
+                    case ALL:
+                        if (!propCriteria.isEmpty())
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                        }
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+
+                    case ANY:
+                        if (!propCriteria.isEmpty())
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                        }
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+
+                    case NONE:
+                        if (!propCriteria.isEmpty())
+                        {
+                            GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+                            t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                            gt = gt.not(t);
+                        }
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+
+                    default:
+                        /*
+                         * Invalid match criteria. Throw InvalidParameterException.
+                         * The calling method will handle transaction rollback (and surface the error).
+                         */
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                "searchProperties");
+                }
+            }
+            catch (Exception e)
+            {
+                /*
+                 * If anything went wrong (e.g. invalid match criteria or invalid parameter) catch the
+                 * exception and perform a rollback. Then rethrow for error reporting.
+                 */
+                g.tx().rollback();
+                throw e;
+            }
+        }
+
+
+        while (gt.hasNext())
+        {
+            Edge edge = gt.next();
+            log.debug("{} found edge {}", methodName, edge);
+            Relationship relationship = new Relationship();
+            try
+            {
+                relationshipMapper.mapEdgeToRelationship(edge, relationship);
+
+                // Set the relationship ends...
+
+                Vertex vertexOne = edge.outVertex();
+                Vertex vertexTwo = edge.inVertex();
+
+                // Doesn't matter whether vertices represent proxy entities or full entities - retrieve the entities as proxies
+                if (vertexOne != null)
+                {
+                    log.debug("{} entity vertex {}", methodName, vertexOne);
+                    EntityProxy entityOneProxy = new EntityProxy();
+                    entityMapper.mapVertexToEntityProxy(vertexOne, entityOneProxy);
+                    log.debug("{} entityOneProxy {}", methodName, entityOneProxy);
+                    relationship.setEntityOneProxy(entityOneProxy);
+                }
+                if (vertexTwo != null)
+                {
+                    log.debug("{} entity vertex {}", methodName, vertexTwo);
+                    EntityProxy entityTwoProxy = new EntityProxy();
+                    entityMapper.mapVertexToEntityProxy(vertexTwo, entityTwoProxy);
+                    log.debug("{} entityTwoProxy {}", methodName, entityTwoProxy);
+                    relationship.setEntityTwoProxy(entityTwoProxy);
+                }
+
+            }
+            catch (Exception e)
+            {
+                log.error("{} Caught exception from relationship or entity mapper {}", methodName, e.getMessage());
+                g.tx().rollback();
+
+                throw new RepositoryErrorException(
+                        GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(
+                                relationship.getGUID(), methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName, e);
+            }
+
+            relationships.add(relationship);
+        }
+
+        g.tx().commit();
+
+        return relationships;
+
+    }
+
     /*
      * Parse the conditions in the search properties into a list of propCriteria. Do not combine them
      * in this method, that is done by the caller.
      */
-    private List<GraphTraversal<Vertex, Vertex>> processSearchProperties(String                           typeDefName,
-                                                                         SearchProperties                 searchProperties,
-                                                                         boolean                          fullMatch)
+    private List<GraphTraversal<Vertex, Vertex>> processEntitySearchProperties(String                           typeDefName,
+                                                                               SearchProperties                 searchProperties,
+                                                                               boolean                          fullMatch)
 
     throws InvalidParameterException
     {
 
-        final String methodName = "processSearchProperties";
+        final String methodName = "processEntitySearchProperties";
 
         List<GraphTraversal<Vertex, Vertex>> propCriteria = new ArrayList<>();
 
@@ -3939,7 +4157,7 @@ class GraphOMRSMetadataStore {
                 PropertyComparisonOperator operator = condition.getOperator();
                 InstancePropertyValue value = condition.getValue();
 
-                GraphTraversal<Vertex, Vertex> propertyCriterion = parsePropertyConditionToCriterion(typeDefName, propertyName, operator, value, fullMatch);
+                GraphTraversal<Vertex, Vertex> propertyCriterion = parseEntityPropertyConditionToCriterion(typeDefName, propertyName, operator, value, fullMatch);
 
                 if (propertyCriterion != null)
                 {
@@ -3954,7 +4172,7 @@ class GraphOMRSMetadataStore {
                  */
                 SearchProperties nestedConditions = condition.getNestedConditions();
 
-                List<GraphTraversal<Vertex, Vertex>> subCriteria = processSearchProperties(typeDefName, nestedConditions, fullMatch);
+                List<GraphTraversal<Vertex, Vertex>> subCriteria = processEntitySearchProperties(typeDefName, nestedConditions, fullMatch);
 
                 GraphTraversal<Vertex, Vertex> propertyCriterion = new DefaultGraphTraversal<>();
 
@@ -4009,6 +4227,108 @@ class GraphOMRSMetadataStore {
     }
 
 
+    /*
+     * Parse the conditions in the search properties into a list of propCriteria. Do not combine them
+     * in this method, that is done by the caller.
+     */
+    private List<GraphTraversal<Edge, Edge>> processRelationshipSearchProperties(String                           typeDefName,
+                                                                                 SearchProperties                 searchProperties,
+                                                                                 boolean                          fullMatch)
+
+    throws InvalidParameterException
+    {
+
+        final String methodName = "processRelationshipSearchProperties";
+
+        List<GraphTraversal<Edge, Edge>> propCriteria = new ArrayList<>();
+
+        List<PropertyCondition> conditions = searchProperties.getConditions();
+        for (PropertyCondition condition : conditions)
+        {
+            boolean localCondition = validatePropertyCondition(condition);
+
+            /*
+             * Condition is valid, and localCondition indicates whether to process property, value, operator or to
+             * recurse into nestedConditions.
+             */
+
+            if (localCondition)
+            {
+
+                /* Construct a traversal for the property name, operator and value */
+                String propertyName = condition.getProperty();
+                PropertyComparisonOperator operator = condition.getOperator();
+                InstancePropertyValue value = condition.getValue();
+
+                GraphTraversal<Edge, Edge> propertyCriterion =  parseRelationshipPropertyConditionToCriterion(typeDefName, propertyName, operator, value, fullMatch);
+
+                if (propertyCriterion != null)
+                {
+                    propCriteria.add(propertyCriterion);
+                }
+
+            }
+            else
+            {
+                /*
+                 * Need to process nested conditions....
+                 */
+                SearchProperties nestedConditions = condition.getNestedConditions();
+
+                List<GraphTraversal<Edge, Edge>> subCriteria = processRelationshipSearchProperties(typeDefName, nestedConditions, fullMatch);
+
+                GraphTraversal<Edge, Edge> propertyCriterion = new DefaultGraphTraversal<>();
+
+                switch (nestedConditions.getMatchCriteria())
+                {
+                    case ALL:
+                        if (!subCriteria.isEmpty())
+                        {
+                            propertyCriterion =  propertyCriterion.and(subCriteria.toArray(new GraphTraversal[0]));
+                        }
+                        break;
+
+                    case ANY:
+                        if (!subCriteria.isEmpty())
+                        {
+                            propertyCriterion =  propertyCriterion.or(subCriteria.toArray(new GraphTraversal[0]));
+                        }
+                        break;
+
+                    case NONE:
+                        if (!subCriteria.isEmpty())
+                        {
+                            GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+                            t = t.or(subCriteria.toArray(new GraphTraversal[0]));
+                            propertyCriterion = propertyCriterion.not(t);
+                        }
+                        break;
+
+                    default:
+                        /*
+                         * Invalid combination of conditions. Throw InvalidParameterException
+                         * The calling method will handle transaction rollback (and surface the error).
+                         */
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                "searchProperties");
+
+                }
+
+                if (propertyCriterion != null)
+                {
+                    propCriteria.add(propertyCriterion);
+                }
+            }
+        }
+        return propCriteria;
+    }
+
 
 
     /*
@@ -4055,11 +4375,11 @@ class GraphOMRSMetadataStore {
     }
 
 
-    private GraphTraversal<Vertex, Vertex> parsePropertyConditionToCriterion(String                      typeDefName,
-                                                                             String                      propName,
-                                                                             PropertyComparisonOperator  operator,
-                                                                             InstancePropertyValue       value,
-                                                                             boolean                     fullMatch)
+    private GraphTraversal<Vertex, Vertex> parseEntityPropertyConditionToCriterion(String                      typeDefName,
+                                                                                   String                      propName,
+                                                                                   PropertyComparisonOperator  operator,
+                                                                                   InstancePropertyValue       value,
+                                                                                   boolean                     fullMatch)
 
     throws InvalidParameterException
     {
@@ -4253,15 +4573,15 @@ class GraphOMRSMetadataStore {
                 switch (pCat)
                 {
                     case OM_PRIMITIVE_TYPE_STRING:
-                        t = applyOperatorToString(propNameInGraph, operator, primValue, mapping, fullMatch);
+                        t = vertexApplyOperatorToString(propNameInGraph, operator, primValue, mapping, fullMatch);
                         break;
 
                     case OM_PRIMITIVE_TYPE_DATE:
-                        t = applyOperatorToDate(propNameInGraph, operator, primValue, propName, pCat);
+                        t = vertexApplyOperatorToDate(propNameInGraph, operator, primValue, propName, pCat);
                         break;
 
                     default:
-                        t = applyOperatorToObject(propNameInGraph, operator, primValue);
+                        t = vertexApplyOperatorToObject(propNameInGraph, operator, primValue);
                         break;
                 }
                 log.debug("{} primitive search property has property criterion {}", methodName, t);
@@ -4294,12 +4614,250 @@ class GraphOMRSMetadataStore {
 
 
 
+    private GraphTraversal<Edge, Edge> parseRelationshipPropertyConditionToCriterion(String                      typeDefName,
+                                                                                     String                      propName,
+                                                                                     PropertyComparisonOperator  operator,
+                                                                                     InstancePropertyValue       value,
+                                                                                     boolean                     fullMatch)
+
+    throws InvalidParameterException
+    {
+
+        String methodName = "parsePropertyConditionToCriterion";
+
+        GraphTraversal<Edge, Edge> propertyCriterion = null;
+
+        /*
+         * Check the match properties' names against two sets - first is the core properties, second is the type-defined attributes (including inherited attributes)
+         */
+        Set<String> corePropertyNames = corePropertyTypes.keySet();
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
+
+
+        String propNameInGraph = null;
+
+        /*
+         * Mapping is String for all properties (core or type-specific) except for the subset of core properties that use Full-Text
+         */
+        GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+
+        /*
+         * Check if this is a core property (from InstanceAuditHeader)
+         * Core properties take precedence over TDAs (in the event of a name clash)
+         */
+
+        if (corePropertyNames.contains(propName))
+        {
+
+            /*
+             * Treat the match property as a reference to a core property
+             *
+             * For a core property to be held in a matchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+             * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
+             * primitive def category of string.
+             *
+             * Validate the type - so that a more meaningful error message can be delivered to the user, instead of a mid-traversal complaint about an anonymous key.
+             * The type of the supplied property needs to be compared to the type of the core property.
+             */
+            String javaTypeForMatchProperty = null;
+            PrimitiveDefCategory mpCat;
+            InstancePropertyCategory mpvCat = value.getInstancePropertyCategory();
+            if (mpvCat == InstancePropertyCategory.PRIMITIVE)
+            {
+                PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
+                mpCat = ppv.getPrimitiveDefCategory();
+                javaTypeForMatchProperty = mpCat.getJavaClassName();
+            }
+            else
+            {
+                log.debug("{} non-primitive match property {} ignored", methodName, propName);
+            }
+
+            String javaTypeForCoreProperty = corePropertyTypes.get(propName);
+
+            if (javaTypeForCoreProperty != null && javaTypeForMatchProperty != null)
+            {
+                /*
+                 * If the types are the same, then this is good to go. There is also one case where they may differ
+                 * but we should proceed: The core properties for createTime and updateTime are stored using type java.lang.Date
+                 * whereas a Date match property is a;most certainly going to be specified as a java.lang.Long.
+                 * This should be OK - we can accept the type difference, provided we convert the match property
+                 * to a Date before using it in the traversal (which is in the switch statement further on)
+                 */
+
+                if ((javaTypeForCoreProperty.equals(javaTypeForMatchProperty)) ||
+                        (javaTypeForCoreProperty.equals("java.lang.Date") && javaTypeForMatchProperty.equals("java.lang.Long")))
+                {
+                    /*
+                     * Types match, OK to include the property
+                     */
+                    propNameInGraph = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
+                    mapping = corePropertyMixedIndexMappings.get(propNameInGraph);
+                }
+                else
+                {
+
+                    throw new InvalidParameterException(
+                            GraphOMRSErrorCode.INVALID_MATCH_PROPERTY.getMessageDefinition(
+                                    propName,
+                                    javaTypeForMatchProperty,
+                                    javaTypeForCoreProperty,
+                                    methodName,
+                                    this.getClass().getName(),
+                                    repositoryName),
+                            this.getClass().getName(),
+                            methodName,
+                            "matchProperties");
+                }
+            }
+        }
+        else if (typeDefinedPropertyNames.contains(propName))
+        {
+            /*
+             * Treat the match property as a reference to a type-defined property. Check that it's type matches the TDA.
+             */
+
+            List<TypeDefAttribute> propertiesDef = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
+
+            for (TypeDefAttribute propertyDef : propertiesDef)
+            {
+                String definedPropertyName = propertyDef.getAttributeName();
+                if (definedPropertyName.equals(propName))
+                {
+
+                    /*
+                     * The match property name matches the name of a type-defined attribute
+                     *
+                     * Check types match - i.e. that the match property instance property has the same type as the type-defined attribute
+                     */
+
+                    PrimitiveDefCategory mpCat = OM_PRIMITIVE_TYPE_UNKNOWN;
+                    InstancePropertyCategory mpvCat = value.getInstancePropertyCategory();
+                    if (mpvCat == InstancePropertyCategory.PRIMITIVE)
+                    {
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
+                        mpCat = ppv.getPrimitiveDefCategory();
+                    }
+                    else
+                    {
+                        log.debug("{} non-primitive match property {} ignored", methodName, propName);
+                    }
+
+                    PrimitiveDefCategory pdCat = OM_PRIMITIVE_TYPE_UNKNOWN;
+                    AttributeTypeDef atd = propertyDef.getAttributeType();
+                    AttributeTypeDefCategory atdCat = atd.getCategory();
+                    if (atdCat == PRIMITIVE)
+                    {
+                        PrimitiveDef pdef = (PrimitiveDef) atd;
+                        pdCat = pdef.getPrimitiveDefCategory();
+                    }
+
+                    if (mpCat == pdCat && mpCat != OM_PRIMITIVE_TYPE_UNKNOWN)
+                    {
+                        /*
+                         * Types match
+                         */
+                        /*
+                         * Sort out the qualification and prefixing of the property name ready for graph search
+                         */
+                        String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+                        propNameInGraph = PROPERTY_KEY_PREFIX_RELATIONSHIP + qualifiedPropertyName;
+                        mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+
+                    }
+                    else
+                    {
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_PROPERTY.getMessageDefinition(
+                                        propName,
+                                        mpCat.toString(),
+                                        pdCat.toString(),
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                "searchProperties");
+                    }
+                    /*
+                     * If types matched the code above will have set propNameInGraph. If the types did not match we should give up on this property - there should not be
+                     * another property defined with the same name. In either case break out of the property for loop and drop through to catch all below
+                     */
+                    break;
+                }
+            }
+            /*
+             * if (!propertyFound) - The match property is not a supported, known type-defined property or does not have correct type - drop into the catch all below.
+             */
+        }
+
+        if (propNameInGraph != null)
+        {
+            /*
+             * Incorporate the property (propNameInGraph) into a propCriterion for the traversal...
+             */
+
+            InstancePropertyCategory ipvCat = value.getInstancePropertyCategory();
+            if (ipvCat == InstancePropertyCategory.PRIMITIVE)
+            {
+                PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
+                PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
+                Object primValue = ppv.getPrimitiveValue();
+                log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
+                GraphTraversal<Edge, Edge> t;
+
+                switch (pCat)
+                {
+                    case OM_PRIMITIVE_TYPE_STRING:
+                        t = edgeApplyOperatorToString(propNameInGraph, operator, primValue, mapping, fullMatch);
+                        break;
+
+                    case OM_PRIMITIVE_TYPE_DATE:
+                        t = edgeApplyOperatorToDate(propNameInGraph, operator, primValue, propName, pCat);
+                        break;
+
+                    default:
+                        t = edgeApplyOperatorToObject(propNameInGraph, operator, primValue);
+                        break;
+                }
+                log.debug("{} primitive search property has property criterion {}", methodName, t);
+                propertyCriterion = t;
+            }
+            else
+            {
+                log.debug("{} non-primitive match property {} ignored", methodName, propName);
+            }
+        }
+        else
+        {
+            /*
+             * The property name is neither known as a core property or type-defined property.
+             * The traversal should fail if MatchCriteria is ALL. Use a simple has() step to
+             * assert that the property should exist, which will fail.
+             * This cannot use the qualified name because there is no property that corresponds
+             * to the 'short' name provided by the caller. Therefore must fabricate a non-existent
+             * name - hence INVALID_PROPERTY_<propName>. This is safer than just using the propName
+             * as supplied, in the unlikely event it happens to make a property key prefixed name.
+             */
+            String nonExistentProperty = "INVALID_PROPERTY_"+propName;
+            GraphTraversal<Edge, Edge>  t = new DefaultGraphTraversal<>();
+            t = t.has(nonExistentProperty);
+            propertyCriterion = t;
+
+        }
+        return propertyCriterion;
+    }
+
+
     // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
-    private  GraphTraversal<Vertex, Vertex> applyOperatorToString(String                                   propNameInGraph,
-                                                                  PropertyComparisonOperator               operator,
-                                                                  Object                                   primValue,
-                                                                  GraphOMRSGraphFactory.MixedIndexMapping  mapping,
-                                                                  boolean                                  fullMatch)
+    private  GraphTraversal<Vertex, Vertex> vertexApplyOperatorToString(String                                   propNameInGraph,
+                                                                        PropertyComparisonOperator               operator,
+                                                                        Object                                   primValue,
+                                                                        GraphOMRSGraphFactory.MixedIndexMapping  mapping,
+                                                                        boolean                                  fullMatch)
 
     {
         String methodName = "applyOperatorToString";
@@ -4339,17 +4897,19 @@ class GraphOMRSMetadataStore {
             /*
              * For any other operators just treat the string the same as any other object
              */
-            t = applyOperatorToObject(propNameInGraph, operator, primValue);
+            t = vertexApplyOperatorToObject(propNameInGraph, operator, primValue);
         }
 
         return t;
     }
 
-    private  GraphTraversal<Vertex, Vertex> applyOperatorToDate(String                                  propNameInGraph,
-                                                                PropertyComparisonOperator              operator,
-                                                                Object                                  primValue,
-                                                                String                                  shortPropName,
-                                                                PrimitiveDefCategory                    pCat)
+
+
+    private  GraphTraversal<Vertex, Vertex> vertexApplyOperatorToDate(String                                  propNameInGraph,
+                                                                      PropertyComparisonOperator              operator,
+                                                                      Object                                  primValue,
+                                                                      String                                  shortPropName,
+                                                                      PrimitiveDefCategory                    pCat)
     {
 
         GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
@@ -4371,12 +4931,12 @@ class GraphOMRSMetadataStore {
             {
                 /* Need to convert Long to Date */
                 Date dateValue = new Date((Long) primValue);
-                t = applyOperatorToObject(propNameInGraph, operator, dateValue);
+                t = vertexApplyOperatorToObject(propNameInGraph, operator, dateValue);
             }
             else
             {
                 /* Otherwise just go for it... The types were matched above */
-                t = applyOperatorToObject(propNameInGraph, operator, primValue);
+                t = vertexApplyOperatorToObject(propNameInGraph, operator, primValue);
             }
         }
         else
@@ -4385,7 +4945,7 @@ class GraphOMRSMetadataStore {
             if (javaTypeForMatchProperty.equals("java.lang.Long"))
             {
                 Long longValue = (Long) primValue;
-                t = applyOperatorToObject(propNameInGraph, operator, longValue);
+                t = vertexApplyOperatorToObject(propNameInGraph, operator, longValue);
             }
             /* Otherwise (i.e. if not Long) this will already have failed above and thrown an InvalidParameterException */
         }
@@ -4393,9 +4953,9 @@ class GraphOMRSMetadataStore {
         return t;
     }
 
-    private  GraphTraversal<Vertex, Vertex> applyOperatorToObject(String                                  propNameInGraph,
-                                                                  PropertyComparisonOperator              operator,
-                                                                  Object                                  primValue)
+    private  GraphTraversal<Vertex, Vertex> vertexApplyOperatorToObject(String                                  propNameInGraph,
+                                                                        PropertyComparisonOperator              operator,
+                                                                        Object                                  primValue)
     {
 
         GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
@@ -4425,11 +4985,11 @@ class GraphOMRSMetadataStore {
                 break;
             case IS_NULL:
                 /* The property can either be not present or can be present and have a null value */
-                GraphTraversal<Vertex, Vertex> nonExistent = new DefaultGraphTraversal<>();
-                GraphTraversal<Vertex, Vertex> existentNull = new DefaultGraphTraversal<>();
+                GraphTraversal<? extends Element, ? extends Element> nonExistent = new DefaultGraphTraversal<>();
+                GraphTraversal<? extends Element, ? extends Element> existentNull = new DefaultGraphTraversal<>();
                 nonExistent = nonExistent.hasNot(propNameInGraph);
                 existentNull = existentNull.has(propNameInGraph, eq(null));
-                List<GraphTraversal<Vertex, Vertex>> subCriteria = new ArrayList<>();
+                List<GraphTraversal<? extends Element, ? extends Element>> subCriteria = new ArrayList<>();
                 subCriteria.add(nonExistent);
                 subCriteria.add(existentNull);
                 t =  t.or(subCriteria.toArray(new GraphTraversal[0]));
@@ -4441,4 +5001,153 @@ class GraphOMRSMetadataStore {
         return t;
     }
 
+
+    // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+    private  GraphTraversal<Edge, Edge> edgeApplyOperatorToString(String                                   propNameInGraph,
+                                                                  PropertyComparisonOperator               operator,
+                                                                  Object                                   primValue,
+                                                                  GraphOMRSGraphFactory.MixedIndexMapping  mapping,
+                                                                  boolean                                  fullMatch)
+
+    {
+        String methodName = "applyOperatorToString";
+
+        GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+
+        /*
+         * The LIKE operator is only valid for strings and requires special processing to cater for the index mapping
+         * and fullMatch option.
+         */
+        if (operator == LIKE)
+        {
+            String searchString = convertSearchStringToJanusRegex((String) primValue);
+            log.debug("{} primitive match property search string {}", methodName, searchString);
+
+            // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
+            if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
+            {
+                t = t.has(propNameInGraph, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+            }
+            else
+            {
+                if (!fullMatch)
+                {
+                    // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+                    String ANYCHARS = ".*";
+                    t = t.has(propNameInGraph, Text.textRegex(ANYCHARS + searchString + ANYCHARS));   // for a field indexed using String mapping use textRegex
+                }
+                else // Must be a full match...
+                {
+                    t = t.has(propNameInGraph, Text.textRegex(searchString));
+                }
+            }
+        }
+        else
+        {
+            /*
+             * For any other operators just treat the string the same as any other object
+             */
+            t = edgeApplyOperatorToObject(propNameInGraph, operator, primValue);
+        }
+
+        return t;
+    }
+
+
+
+    private  GraphTraversal<Edge, Edge> edgeApplyOperatorToDate(String                                  propNameInGraph,
+                                                                PropertyComparisonOperator              operator,
+                                                                Object                                  primValue,
+                                                                String                                  shortPropName,
+                                                                PrimitiveDefCategory                    pCat)
+    {
+
+        GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+
+        /*
+         * Condition the supplied value.
+         * If the property to be matched is a core property then it is actually stored as a java.lang.Date.
+         * If it is a type-defined attribute then it is stored as a java.lang.Long.
+         * Match up the types and values appropriately.
+         */
+
+        Set<String> corePropertyNames = corePropertyTypes.keySet();
+        String javaTypeForMatchProperty = pCat.getJavaClassName();
+        if (corePropertyNames.contains(shortPropName))
+        {
+            /* This is a core property and is stored as Date */
+
+            if (javaTypeForMatchProperty.equals("java.lang.Long"))
+            {
+                /* Need to convert Long to Date */
+                Date dateValue = new Date((Long) primValue);
+                t = edgeApplyOperatorToObject(propNameInGraph, operator, dateValue);
+            }
+            else
+            {
+                /* Otherwise just go for it... The types were matched above */
+                t = edgeApplyOperatorToObject(propNameInGraph, operator, primValue);
+            }
+        }
+        else
+        {
+            /* This is a type-defined attribute and is stored as Long */
+            if (javaTypeForMatchProperty.equals("java.lang.Long"))
+            {
+                Long longValue = (Long) primValue;
+                t = edgeApplyOperatorToObject(propNameInGraph, operator, longValue);
+            }
+            /* Otherwise (i.e. if not Long) this will already have failed above and thrown an InvalidParameterException */
+        }
+
+        return t;
+    }
+
+    private  GraphTraversal<Edge, Edge> edgeApplyOperatorToObject(String                                  propNameInGraph,
+                                                                        PropertyComparisonOperator              operator,
+                                                                        Object                                  primValue)
+    {
+
+        GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+
+        switch (operator)
+        {
+            case EQ:
+                t =  t.has(propNameInGraph, eq(primValue));
+                break;
+            case NEQ:
+                t =  t.has(propNameInGraph, neq(primValue));
+                break;
+            case LT:
+                t =  t.has(propNameInGraph, lt(primValue));
+                break;
+            case LTE:
+                t =  t.has(propNameInGraph, lte(primValue));
+                break;
+            case GT:
+                t =  t.has(propNameInGraph, gt(primValue));
+                break;
+            case GTE:
+                t =  t.has(propNameInGraph, gte(primValue));
+                break;
+            case IN:
+                t =  t.has(propNameInGraph, within(primValue));
+                break;
+            case IS_NULL:
+                /* The property can either be not present or can be present and have a null value */
+                GraphTraversal<? extends Element, ? extends Element> nonExistent = new DefaultGraphTraversal<>();
+                GraphTraversal<? extends Element, ? extends Element> existentNull = new DefaultGraphTraversal<>();
+                nonExistent = nonExistent.hasNot(propNameInGraph);
+                existentNull = existentNull.has(propNameInGraph, eq(null));
+                List<GraphTraversal<? extends Element, ? extends Element>> subCriteria = new ArrayList<>();
+                subCriteria.add(nonExistent);
+                subCriteria.add(existentNull);
+                t =  t.or(subCriteria.toArray(new GraphTraversal[0]));
+                break;
+            case NOT_NULL:
+                t =  t.has(propNameInGraph, neq(null));
+                break;
+        }
+        return t;
+    }
 }
