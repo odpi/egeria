@@ -1,7 +1,6 @@
 {
   "name": "presentation-server-client",
   "version": "0.1.0",
-  "homepage": ".",
   "private": true,
   "dependencies": {
     "@carbon/elements": "^10.15.0",
