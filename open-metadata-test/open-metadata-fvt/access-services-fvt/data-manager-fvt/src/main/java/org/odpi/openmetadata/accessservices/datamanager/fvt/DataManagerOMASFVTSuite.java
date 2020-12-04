@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.Invali
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +36,8 @@ public class DataManagerOMASFVTSuite extends FVTSuiteBase
                              String   serverPlatformRootURL,
                              String   userId)
     {
+        HttpHelper.noStrictSSL();
+
         int returnCode = 0;
 
         FVTResults results;

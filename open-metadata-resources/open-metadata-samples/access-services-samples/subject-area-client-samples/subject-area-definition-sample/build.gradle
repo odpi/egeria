@@ -15,7 +15,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'ch.qos.logback:logback-classic'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
+    implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 }
 
 description = 'Subject Area OMAS Samples'
