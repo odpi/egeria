@@ -34,6 +34,9 @@ governance issues detected in the metadata ecosystem.
 servers that monitor activity or synchronize metadata and configuration
 asynchronously between different tools.
 
+* **[integration-connectors](integration-connectors)** contains governance actions for assessing and acting on
+governance issues detected in the metadata ecosystem.
+
 * **[repository-services-connectors](repository-services-connectors)** contains connector implementations for
 each type of connector supported by the Open Metadata Repository Services (OMRS).
 These connectors enable the OMRS to be adapted to many different platforms.

@@ -19,7 +19,7 @@ export default function GlossaryAuthorTaskRouting({ glossaryAuthorURL }) {
    */
 
   const onChange = (e) => {
-    const url = glossaryAuthorURL + "/" +`${e.target.value}`;
+    const url = `${glossaryAuthorURL}/${e.target.value}`;
     history.push(url);
   };
   return <TaskDropDown onChange={onChange} />;

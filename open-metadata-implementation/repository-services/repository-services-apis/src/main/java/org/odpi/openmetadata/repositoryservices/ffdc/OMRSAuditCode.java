@@ -267,12 +267,12 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                       OMRSAuditLogRecordSeverity.STARTUP,
                       "The {0} event manager is sending out the {1} type definition events that were generated and buffered during server initialization",
                       "The event manager is fully initialized and distributing buffered events that describe type definitions",
-                      "Look for evidence that events are flowing to the topic on the event bus."),
+                      "Look for evidence that TypeDef events are flowing to the topic on the event bus."),
 
     DRAINING_INSTANCE_EVENT_BUFFER("OMRS-AUDIT-0033",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The {0} event manager is sending out the {1} instance events that were generated and buffered during server initialization",
-                      "The event manager is fully initialized and distributing buffered events that describe type definitions",
+                      "The event manager is fully initialized and distributing buffered events that describe instance definitions",
                       "Look for evidence that events are flowing to the topic on the event bus."),
 
     BAD_REAL_LOCAL_REPOSITORY_CONNECTOR("OMRS-AUDIT-0034",

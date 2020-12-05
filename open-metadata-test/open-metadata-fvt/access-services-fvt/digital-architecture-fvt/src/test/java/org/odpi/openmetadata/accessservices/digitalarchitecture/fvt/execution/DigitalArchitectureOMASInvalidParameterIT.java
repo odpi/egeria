@@ -3,12 +3,14 @@
 
 package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.execution;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTTestFailureException;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -17,6 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  */
 public class DigitalArchitectureOMASInvalidParameterIT
 {
+    @BeforeAll
+    public static void disableStrictSSL(){
+        HttpHelper.noStrictSSL();
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem","servergraph"})
     public void testInvalidParameters(String server)

@@ -95,23 +95,20 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
         if (metadataSourceQualifiedName != null)
         {
             this.metadataSourceQualifiedName = metadataSourceQualifiedName;
-        }
-        else
-        {
-            this.metadataSourceQualifiedName = IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName();
-        }
 
-        this.metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
-        if (this.metadataSourceGUID == null)
-        {
-            FileSystemProperties properties = new FileSystemProperties();
+            this.metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
-            properties.setQualifiedName(metadataSourceQualifiedName);
-            properties.setDisplayName(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName());
-            properties.setDescription(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceDescription());
+            if (this.metadataSourceGUID == null)
+            {
+                FileSystemProperties properties = new FileSystemProperties();
 
-            this.metadataSourceGUID = metadataSourceClient.createFileSystem(localServerUserId, null, null, properties);
+                properties.setQualifiedName(metadataSourceQualifiedName);
+                properties.setDisplayName(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName());
+                properties.setDescription(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceDescription());
+
+                this.metadataSourceGUID = metadataSourceClient.createFileSystem(localServerUserId, null, null, properties);
+            }
         }
     }
 
