@@ -175,11 +175,12 @@
         <gremlin.version>3.4.8</gremlin.version>
         <netty.version>4.1.54.Final</netty.version>
 
-        <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <spring.version>5.3.1</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
         <spring-data.version>2.4.1</spring-data.version>
-        <springdoc.version>1.4.8</springdoc.version>
+        <springdoc.version>1.4.6</springdoc.version>
+        <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <servo-core.version>0.13.0</servo-core.version>
         <netflix-zuul.version>2.2.6.RELEASE</netflix-zuul.version>
         <tomcat.version>9.0.40</tomcat.version>
@@ -259,7 +260,6 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
-        <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <git-commit-plugin.version>4.0.3</git-commit-plugin.version>
