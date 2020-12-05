@@ -142,6 +142,7 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample').shadowJar }
                 fileMode = 0755
             }
             into('user-interface') {

@@ -44,14 +44,14 @@ export default function KnownServers() {
           },
           timeout: 30000,
         });
-        if (startServerResponse.data.relatedHTTPCode != 200) {
+        if (startServerResponse.data.relatedHTTPCode !== 200) {
           console.error(startServerResponse.data);
           throw new Error(startServerResponse.data.exceptionErrorMessage);
         }
       } catch(error) {
         console.error("Error starting server", { error });
         setNotificationType("error");
-        if (error.code && error.code == "ECONNABORTED") {
+        if (error.code && error.code === "ECONNABORTED") {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
         } else {
@@ -90,14 +90,14 @@ export default function KnownServers() {
           },
           timeout: 30000,
         });
-        if (stopServerResponse.data.relatedHTTPCode != 200) {
+        if (stopServerResponse.data.relatedHTTPCode !== 200) {
           console.error("Error occurred, response:", stopServerResponse.data);
           throw new Error(stopServerResponse.data.exceptionErrorMessage);
         }
       } catch(error) {
         console.error("Error stopping server", { error });
         setNotificationType("error");
-        if (error.code && error.code == "ECONNABORTED") {
+        if (error.code && error.code === "ECONNABORTED") {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
         } else {

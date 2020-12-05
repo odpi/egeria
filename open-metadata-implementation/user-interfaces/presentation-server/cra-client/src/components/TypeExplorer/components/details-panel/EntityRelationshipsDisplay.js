@@ -134,7 +134,7 @@ export default function EntityRelationshipsDisplay(props) {
     return attributeList;
   };
 
-  if (relationshipEntries === undefined || relationshipEntries === null || Object.keys(relationshipEntries).length == 0) {
+  if (relationshipEntries === undefined || relationshipEntries === null || Object.keys(relationshipEntries).length === 0) {
     relationships = (
       <div>
         list is empty

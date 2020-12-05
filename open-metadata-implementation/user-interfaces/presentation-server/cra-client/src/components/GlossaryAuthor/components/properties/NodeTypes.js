@@ -1,10 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import  { useContext } from "react";
-import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 
-const getNodeType = (key) => {
-  const identificationContext = useContext(IdentificationContext);
+const getNodeType = (GlossaryAuthorURL, key) => {
 
   const nodeTypes = {
     project: {
@@ -171,7 +168,7 @@ const getNodeType = (key) => {
   let nodeType = nodeTypes[key];
   if (nodeType) {
     nodeType.url =
-      identificationContext.getRestURL("glossary-author") +
+     GlossaryAuthorURL +
       "/" +
       nodeType.plural;
   } else {

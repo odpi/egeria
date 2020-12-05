@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.samples.createcsvfile;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
+import org.odpi.openmetadata.http.HttpHelper;
 
 /**
  * CreateCSVFileAssetSample creates a simple asset definition in the open metadata repositories for
@@ -100,6 +101,8 @@ public class CreateCSVFileAssetSample
         System.out.println("Using userId: " + clientUserId);
         System.out.println("Creating file: " + fileName);
         System.out.println();
+
+        HttpHelper.noStrictSSLIfConfigured();
 
         try
         {
