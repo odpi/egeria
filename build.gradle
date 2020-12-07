@@ -106,7 +106,7 @@ allprojects {
             implementation("io.netty:netty-resolver:4.1.54.Final")
             implementation("io.netty:netty-transport:4.1.54.Final")
             implementation("io.swagger.core.v3:swagger-annotations:2.1.5")
-            implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
+            implementation("jakarta.annotation:jakarta.annotation-api:2.0.0")
             implementation("jakarta.persistence:jakarta.persistence-api:2.2.3")
             implementation("javax.validation:validation-api:2.0.1.Final")
             implementation("javax.xml.bind:jaxb-api:2.3.1")
