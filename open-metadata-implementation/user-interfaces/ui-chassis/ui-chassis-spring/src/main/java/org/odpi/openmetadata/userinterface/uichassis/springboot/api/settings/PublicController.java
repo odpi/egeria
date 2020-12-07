@@ -22,6 +22,7 @@ public class PublicController {
 
     /**
      *
+     * @param request the http servlet request
      * @return an AppBean that contains the app build information
      */
     @GetMapping( path = "/app/info")
