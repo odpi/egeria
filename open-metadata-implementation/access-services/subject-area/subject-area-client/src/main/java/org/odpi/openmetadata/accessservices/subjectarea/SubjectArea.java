@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfig;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
@@ -26,6 +27,13 @@ public interface SubjectArea {
      * @return subject area graph API class
      */
     SubjectAreaGraph subjectAreaGraph();
+
+    /**
+     * Get the subject area config API class - use this class to issue config calls.
+     *
+     * @return subject area graph API class
+     */
+    SubjectAreaConfig subjectAreaConfig();
 
 
     /**
