@@ -4429,17 +4429,17 @@ class GraphOMRSMetadataStore {
         if (operator == IN)
         {
             /* TODO - WHEN JG 0.6.0 IS AVAILABLE UNCOMMENT THE FOLLOWING LINE... (and remove the throw clause below) */
-            return parseEntityInOperatorToCriterion(typeDefName, propName, value);
+            //return parseEntityInOperatorToCriterion(typeDefName, propName, value);
 
             /* UNTIL THEN THROW A FunctionNotSupportedException */
-            //throw new FunctionNotSupportedException(
-            //        GraphOMRSErrorCode.UNSUPPORTED_SEARCH_PROPERTY_OPERATOR.getMessageDefinition(
-            //                operator.toString(),
-            //                methodName,
-            //                this.getClass().getName(),
-            //                repositoryName),
-            //        this.getClass().getName(),
-            //        methodName);
+            throw new FunctionNotSupportedException(
+                    GraphOMRSErrorCode.UNSUPPORTED_SEARCH_PROPERTY_OPERATOR.getMessageDefinition(
+                            operator.toString(),
+                            methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName);
         }
 
         /**************************** PLEASE NOTE *****************************/
