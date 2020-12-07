@@ -15,6 +15,7 @@ import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.attribute.Text;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -45,7 +46,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,6 +91,7 @@ import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IN;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LIKE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
 
@@ -4395,19 +4400,51 @@ class GraphOMRSMetadataStore {
         String methodName = "parsePropertyConditionToCriterion";
 
         /*
-         * For now the graph repository does not support the IN operator
+         * Use a separate method to handle the IN operator
          */
+
+
+
+        /**************************** PLEASE NOTE *****************************/
+        /**************************** PLEASE NOTE *****************************/
+        /**************************** PLEASE NOTE *****************************/
+
+        /*
+         * When JanusGraph 0.6.0 is available and Egeria updates to that version,
+         * it will be possible to support the IN operator. Until then there is a
+         * JanusGraph issue (#2188) which will prevent any use of containment predicates
+         * when nested or wrapped under an AND or OR (and probably a NONE) step. Since
+         * the SearchProperties will always introduce this nesting or wrapping, we need to
+         * wait for 0.6.0.
+         * In the meantime, Egeria has been tested with a modified traversal that emulates
+         * the processing of the IN operator (in this case for a set of dates expressed
+         * as Longs) and tested against a type-defined attribute (i.e. the property is stored
+         * as a Long).
+         *   Long[] longArray = {123456789L ,  987654321L};
+         *   gt = gt.has("veToDoxdueTime", within(longArray));
+         * The success of this test suggests that the contains predicates will support the
+         * IN operator once JG is at 0.6.0.
+         */
+
         if (operator == IN)
         {
-            throw new FunctionNotSupportedException(
-                    GraphOMRSErrorCode.UNSUPPORTED_SEARCH_PROPERTY_OPERATOR.getMessageDefinition(
-                            operator.toString(),
-                            methodName,
-                            this.getClass().getName(),
-                            repositoryName),
-                    this.getClass().getName(),
-                    methodName);
+            /* TODO - WHEN JG 0.6.0 IS AVAILABLE UNCOMMENT THE FOLLOWING LINE... (and remove the throw clause below) */
+            return parseEntityInOperatorToCriterion(typeDefName, propName, value);
+
+            /* UNTIL THEN THROW A FunctionNotSupportedException */
+            //throw new FunctionNotSupportedException(
+            //        GraphOMRSErrorCode.UNSUPPORTED_SEARCH_PROPERTY_OPERATOR.getMessageDefinition(
+            //                operator.toString(),
+            //                methodName,
+            //                this.getClass().getName(),
+            //                repositoryName),
+            //        this.getClass().getName(),
+            //        methodName);
         }
+
+        /**************************** PLEASE NOTE *****************************/
+        /**************************** PLEASE NOTE *****************************/
+        /**************************** PLEASE NOTE *****************************/
 
         GraphTraversal<Vertex, Vertex> propertyCriterion = null;
 
@@ -4635,6 +4672,490 @@ class GraphOMRSMetadataStore {
         return propertyCriterion;
     }
 
+
+    /*
+     * The entity search contains a PropertyCondition that uses the 'IN' operator, which is for testing a property
+     * against an array of acceptable values.
+     */
+    private  GraphTraversal<Vertex, Vertex>  parseEntityInOperatorToCriterion(String                      typeDefName,
+                                                                              String                      propName,
+                                                                              InstancePropertyValue       value)
+
+    throws InvalidParameterException
+    {
+
+        String methodName = "parseEntityInOperatorToCriterion";
+
+        /*
+         * The strategy is to:
+         *
+         * a) check the supplied value is an Array and that it contains primitive elements that are all of the same primitive category
+         *
+         * b) determine whether the specified property is a core or type-defined attribute and check that it is a primitive and has
+         *    the same primitive category as the elements in the array.
+         *
+         * c) construct the graph traversal, using a within step.
+         */
+
+
+        /*
+         * a) Validate the supplied match value is an array property and has elements that are primitive
+         *    and all of the same primitive category. Remember the primitive category.
+         *
+         *    If any condition fails, throw InvalidParameterException naming the property.
+         *
+         * For the IN operator the caller must supply an ARRAY of values against which to
+         * compare the named primitive property.
+         *
+         * Before going much further, validate that the parameter is an array and that it has
+         * only primitive elements and they are all of the same primitive category.
+         */
+
+        ArrayPropertyValue apv = (ArrayPropertyValue)value;
+        /*
+         * Check the array is non-trivial - e.g. empty
+         */
+        if (apv.getArrayCount() <= 0)
+        {
+            /* Empty array - not supported */
+            throw new InvalidParameterException(
+                    GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_VALUE.getMessageDefinition(
+                            propName,
+                            methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName,
+                    "value");
+        }
+
+        InstanceProperties arrayValues = apv.getArrayValues();
+        Map<String, InstancePropertyValue> arrayElementProperties = arrayValues.getInstanceProperties();
+        Collection<InstancePropertyValue> arrayPropValues = arrayElementProperties.values();
+
+        PrimitiveDefCategory allElementsPrimCat = null;
+        for (InstancePropertyValue elementValue : arrayPropValues)
+        {
+            /* Check the array element value is primitive and has the same primitive cat
+             * as the first element.
+             */
+            InstancePropertyCategory elementCategory = elementValue.getInstancePropertyCategory();
+            if (elementCategory == InstancePropertyCategory.PRIMITIVE)
+            {
+                /* Remember the prim cat of the first element */
+                PrimitivePropertyValue primElementValue = (PrimitivePropertyValue) elementValue;
+                PrimitiveDefCategory thisElementPrimCat = primElementValue.getPrimitiveDefCategory();
+                if (allElementsPrimCat == null)
+                {
+                    /* All elements will have to same primitive category as this one... */
+                    allElementsPrimCat = thisElementPrimCat;
+                }
+                else
+                {
+                    /* Check prim cat against other elements */
+                    if (thisElementPrimCat != allElementsPrimCat)
+                    {
+                        /* Mixed array - not supported */
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_VALUE.getMessageDefinition(
+                                        propName,
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                "value");
+                    }
+                }
+            }
+            else
+            {
+                /*
+                 * No support for array elements that are not primitive
+                 */
+                throw new InvalidParameterException(
+                        GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_VALUE.getMessageDefinition(
+                                propName,
+                                methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName,
+                        "value");
+            }
+        }
+        if (allElementsPrimCat == null)
+        {
+            /*
+             * Failed to establish prim def cat for array elements
+             */
+            throw new InvalidParameterException(
+                    GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_VALUE.getMessageDefinition(
+                            propName,
+                            methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName,
+                    "value");
+        }
+
+        /*
+         * It has been established that all array elements are primitive and of the same (known) primitive category
+         */
+
+        /*
+         * b) determine whether the specified property is a core or type-defined attribute, check that it is a primitive and has
+         *    the same primitive category as the elements in the array.
+         */
+
+        /*
+         * Check if this is a core property (from InstanceAuditHeader)
+         * Core properties take precedence over TDAs (in the event of a name clash)
+         *
+         * Check the match properties' names against two sets - first is the core properties, second is the type-defined
+         * attributes (including inherited attributes)
+         */
+
+        Set<String> corePropertyNames = corePropertyTypes.keySet();
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+        Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
+
+        boolean isCoreProperty;
+
+        if (corePropertyNames.contains(propName))
+        {
+            isCoreProperty = true;
+        }
+        else if (typeDefinedPropertyNames.contains(propName))
+        {
+            isCoreProperty = false;
+        }
+        else
+        {
+            /*
+             * Property not found - The match property is not a supported, known type-defined property.
+             */
+            throw new InvalidParameterException(
+                    GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_NAME.getMessageDefinition(
+                            propName,
+                            methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName,
+                    "propName");
+        }
+
+
+        /*
+         * Check that the core property or type-defined attribute is a primitive. The graph repo only
+         * supports containment checks of primitives to arrays of primitives.
+         * Also check that the primitive category is the same as that of the elements in the supplied array.
+         * THe result of this should be to set propNameInGraph and mapping to appropriate values.
+         */
+
+
+        /*
+         * Mapping is String for all properties (core or type-specific) except for the subset of core properties that use Full-Text
+         */
+        GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+        String propNameInGraph = null;
+
+        if (isCoreProperty)
+        {
+            /*
+             * The match property is a reference to a core property.
+             * It is known that core properties are primitive.
+             * The type (primitive category) of the supplied array elements needs to be compared to that of the core property.
+             *
+             * For a core property to be held in a matchProperties (InstanceProperties) object, the caller will need to have converted from InstanceAuditHeader
+             * type declaration to an appropriate 'soft' type. For example a java.lang.String field such as createdBy must have been converted to a primitive with
+             * primitive def category of string. Therefore this method validates the actual (java) type - so that a more meaningful error message can be
+             * delivered to the user, instead of a mid-traversal complaint referring to an anonymous key.
+             */
+
+            /*
+             * It has already been established that the array contains one or more elements of prim cat allElementsPrimCat
+             */
+
+            String javaTypeForMatchProperty = allElementsPrimCat.getJavaClassName();;
+
+            String javaTypeForCoreProperty = corePropertyTypes.get(propName);
+
+            if (javaTypeForCoreProperty != null && javaTypeForMatchProperty != null)
+            {
+                /*
+                 * If the types are the same, then this is good to go. There is also one case where they may differ
+                 * but we should proceed: The core properties for createTime and updateTime are stored using type java.lang.Date
+                 * whereas a Date match property is a;most certainly going to be specified as a java.lang.Long.
+                 * This should be OK - we can accept the type difference, provided we convert the match property
+                 * to a Date before using it in the traversal (which is in the switch statement further on)
+                 */
+
+                if ((javaTypeForCoreProperty.equals(javaTypeForMatchProperty)) ||
+                        (javaTypeForCoreProperty.equals("java.lang.Date") && javaTypeForMatchProperty.equals("java.lang.Long")))
+                {
+                    /*
+                     * Types match, OK to include the property
+                     */
+                    propNameInGraph = PROPERTY_KEY_PREFIX_ENTITY + propName;
+                    mapping = corePropertyMixedIndexMappings.get(propNameInGraph);
+                }
+                else
+                {
+                    /* Type of array elements is not a match for the property type */
+                    throw new InvalidParameterException(
+                            GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_TYPE.getMessageDefinition(
+                                    propName,
+                                    methodName,
+                                    this.getClass().getName(),
+                                    repositoryName),
+                            this.getClass().getName(),
+                            methodName,
+                            "value");
+                }
+            }
+            else
+            {
+                throw new InvalidParameterException(
+                        GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_TYPE.getMessageDefinition(
+                                propName,
+                                javaTypeForMatchProperty,
+                                javaTypeForCoreProperty,
+                                methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName,
+                        "value");
+            }
+        }
+
+
+        else // type-define attribute
+        {
+            /*
+             * Treat the match property as a reference to a type-defined property. Check that it is primitive and has the
+             * same prim cat as the array elements.
+             */
+
+            List<TypeDefAttribute> propertiesDef = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
+
+            for (TypeDefAttribute propertyDef : propertiesDef)
+            {
+                String definedPropertyName = propertyDef.getAttributeName();
+                if (definedPropertyName.equals(propName))
+                {
+
+                    /*
+                     * The match property name matches the name of a type-defined attribute
+                     *
+                     * Check types match - i.e. that the match property instance property has the same type as the type-defined attribute
+                     */
+
+                    AttributeTypeDef atd = propertyDef.getAttributeType();
+                    AttributeTypeDefCategory atdCat = atd.getCategory();
+
+                    if (atdCat == PRIMITIVE)
+                    {
+                        PrimitiveDef pdef = (PrimitiveDef) atd;
+                        PrimitiveDefCategory pdCat = pdef.getPrimitiveDefCategory();
+                        if (pdCat == allElementsPrimCat)
+                        {
+                            /*
+                             * Types match
+                             *
+                             * Sort out the qualification and prefixing of the property name ready for graph search
+                             */
+                            String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+                            propNameInGraph = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
+                            mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+                            // Found the property, no point continuing to inspect further propertyDefs...
+                            break;
+                        }
+                        else
+                        {
+                            /* Attribute is a primitive but not of the same category as in the array */
+                            throw new InvalidParameterException(
+                                    GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_TYPE.getMessageDefinition(
+                                            propName,
+                                            methodName,
+                                            this.getClass().getName(),
+                                            repositoryName),
+                                    this.getClass().getName(),
+                                    methodName,
+                                    "value");
+                        }
+
+                    }
+                    else
+                    {
+                        /* Attribute is not a primitive */
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_TYPE.getMessageDefinition(
+                                        propName,
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                "value");
+                    }
+                }
+            }
+        }
+
+        /*
+         * Should have now established propNameInGraph and mapping. If proprNameInGraph is not set then we failed to find an attribute,
+         * in either core properties or type-defined attributes.
+         *
+         * Construct the graph traversal for this condition.
+         */
+
+        if (propNameInGraph != null)
+        {
+            /*
+             * Incorporate the property (propNameInGraph) into a propCriterion for the traversal...
+             */
+
+            GraphTraversal<Vertex, Vertex> propertyCriterion = null;
+
+            /*
+             * It has been established that the property is primitive and has a pimr cat that matches every
+             * element in the supplied array of values.
+             * If a string   --> Test the property value against the array elements as literals (not regexes)
+             * If a date     --> Create a within step where the array elements are either Dates or Longs depending on core/type-defined
+             * Anything else --> Create a within step passing the array elements as an array of object literals
+             */
+
+            InstancePropertyCategory ipvCat = value.getInstancePropertyCategory();
+
+
+            int arrayLength = apv.getArrayCount();
+
+            /* Build a collection of type appropriate to the prim cat.. */
+            switch (allElementsPrimCat)
+            {
+
+                /*
+                 *  OM_PRIMITIVE_TYPE_BOOLEAN   (1,  "boolean",    "java.lang.Boolean",     "3863f010-611c-41fe-aaae-5d4d427f863b"),
+                 *  OM_PRIMITIVE_TYPE_BYTE      (2,  "byte",       "java.lang.Byte",        "6b7d410a-2e8a-4d12-981a-a806449f9bdb"),
+                 *  OM_PRIMITIVE_TYPE_CHAR      (3,  "char",       "java.lang.Character",   "b0abebe5-cf85-4065-86ad-f3c6360ed9c7"),
+                 *  OM_PRIMITIVE_TYPE_SHORT     (4,  "short",      "java.lang.Short",       "8e95b966-ab60-46d4-a03f-40c5a1ba6c2a"),
+                 *  OM_PRIMITIVE_TYPE_INT       (5,  "int",        "java.lang.Integer",     "7fc49104-fd3a-46c8-b6bf-f16b6074cd35"),
+                 *  OM_PRIMITIVE_TYPE_LONG      (6,  "long",       "java.lang.Long",        "33a91510-92ee-4825-9f49-facd7a6f9db6"),
+                 *  OM_PRIMITIVE_TYPE_FLOAT     (7,  "float",      "java.lang.Float",       "52aeb769-37b7-4b30-b949-ddc7dcebcfa2"),
+                 *  OM_PRIMITIVE_TYPE_DOUBLE    (8,  "double",     "java.lang.Double",      "e13572e8-25c3-4994-acb6-2ea66c95812e"),
+                 *  OM_PRIMITIVE_TYPE_BIGINTEGER(9,  "biginteger", "java.math.BigInteger",  "8aa56e52-1076-4e0d-9b66-3873a1ed7392"),
+                 *  OM_PRIMITIVE_TYPE_BIGDECIMAL(10, "bigdecimal", "java.math.BigDecimal",  "d5c8ad9f-8fee-4a64-80b3-63ce1e47f6bb"),
+                 *  OM_PRIMITIVE_TYPE_STRING    (11, "string",     "java.lang.String",      "b34a64b9-554a-42b1-8f8a-7d5c2339f9c4"),
+                 *  OM_PRIMITIVE_TYPE_DATE      (12, "date",       "java.lang.Long",        "1bef35ca-d4f9-48db-87c2-afce4649362d");
+                 */
+
+                case OM_PRIMITIVE_TYPE_BOOLEAN:
+                    Boolean[] booleanArray = marshallValuesAsBooleans(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, booleanArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_BYTE:
+                    Byte[] byteArray = marshallValuesAsBytes(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, byteArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_CHAR:
+                    Character[] characterArray = marshallValuesAsCharacters(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, characterArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_SHORT:
+                    Short[] shortArray = marshallValuesAsShorts(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, shortArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_INT:
+                    Integer[] integerArray = marshallValuesAsIntegers(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, integerArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_LONG:
+                    Long[] longArray = marshallValuesAsLongs(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, longArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_FLOAT:
+                    Float[] floatArray = marshallValuesAsFloats(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, floatArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_DOUBLE:
+                    Double[] doubleArray = marshallValuesAsDoubles(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, doubleArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                    BigInteger[] bigIntegerArray = marshallValuesAsBigIntegers(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, bigIntegerArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+                    BigDecimal[] bigDecimalArray = marshallValuesAsBigDecimals(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, bigDecimalArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_STRING:
+                    String[] stringArray = marshallValuesAsStrings(apv);
+                    propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, stringArray);
+                    break;
+
+                case OM_PRIMITIVE_TYPE_DATE:
+                    /*
+                     * Supplied array will contain Longs
+                     *
+                     * Condition the type according to whether core (hard) or type-defined (soft)
+                     */
+                    if (isCoreProperty)
+                    {
+                        Date[] dateArray = marshallValuesAsDates(apv);
+                        propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, dateArray);
+                    }
+                    else // type-defined attribute
+                    {
+                        Long[] timestampArray = marshallValuesAsLongs(apv);
+                        propertyCriterion = vertexApplyOperatorToObject(propNameInGraph, PropertyComparisonOperator.IN, timestampArray);
+                    }
+                    break;
+
+
+            }
+
+            log.debug("{} primitive search property has property criterion {}", methodName, propertyCriterion);
+
+            return propertyCriterion;
+
+        }
+        else
+        {
+            /*
+             * Belt and braces error handling - in case property was not found.
+             */
+            throw new InvalidParameterException(
+                    GraphOMRSErrorCode.INVALID_SEARCH_PROPERTY_NAME.getMessageDefinition(
+                            propName,
+                            methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName,
+                    "value");
+        }
+    }
+
+
+
+// TODO - need to repeat IN processing for relationships
 
 
     private GraphTraversal<Edge, Edge> parseRelationshipPropertyConditionToCriterion(String                      typeDefName,
@@ -5190,4 +5711,223 @@ class GraphOMRSMetadataStore {
         }
         return t;
     }
+
+
+
+    private Collection<InstancePropertyValue> getArrayElementValues(ArrayPropertyValue apv)
+    {
+        InstanceProperties arrayValues = apv.getArrayValues();
+        Map<String, InstancePropertyValue> arrayElementProperties = arrayValues.getInstanceProperties();
+        return arrayElementProperties.values();
+    }
+
+    /*
+    OM_PRIMITIVE_TYPE_UNKNOWN   (0,  "object",     "java.lang.Object",      "1c4b21f4-0b67-41a7-a6ed-2af185eb9b3b"),
+    OM_PRIMITIVE_TYPE_BOOLEAN   (1,  "boolean",    "java.lang.Boolean",     "3863f010-611c-41fe-aaae-5d4d427f863b"),
+    OM_PRIMITIVE_TYPE_BYTE      (2,  "byte",       "java.lang.Byte",        "6b7d410a-2e8a-4d12-981a-a806449f9bdb"),
+    OM_PRIMITIVE_TYPE_CHAR      (3,  "char",       "java.lang.Character",   "b0abebe5-cf85-4065-86ad-f3c6360ed9c7"),
+    OM_PRIMITIVE_TYPE_SHORT     (4,  "short",      "java.lang.Short",       "8e95b966-ab60-46d4-a03f-40c5a1ba6c2a"),
+    OM_PRIMITIVE_TYPE_INT       (5,  "int",        "java.lang.Integer",     "7fc49104-fd3a-46c8-b6bf-f16b6074cd35"),
+    OM_PRIMITIVE_TYPE_LONG      (6,  "long",       "java.lang.Long",        "33a91510-92ee-4825-9f49-facd7a6f9db6"),
+    OM_PRIMITIVE_TYPE_FLOAT     (7,  "float",      "java.lang.Float",       "52aeb769-37b7-4b30-b949-ddc7dcebcfa2"),
+    OM_PRIMITIVE_TYPE_DOUBLE    (8,  "double",     "java.lang.Double",      "e13572e8-25c3-4994-acb6-2ea66c95812e"),
+    OM_PRIMITIVE_TYPE_BIGINTEGER(9,  "biginteger", "java.math.BigInteger",  "8aa56e52-1076-4e0d-9b66-3873a1ed7392"),
+    OM_PRIMITIVE_TYPE_BIGDECIMAL(10, "bigdecimal", "java.math.BigDecimal",  "d5c8ad9f-8fee-4a64-80b3-63ce1e47f6bb"),
+    OM_PRIMITIVE_TYPE_STRING    (11, "string",     "java.lang.String",      "b34a64b9-554a-42b1-8f8a-7d5c2339f9c4"),
+    OM_PRIMITIVE_TYPE_DATE      (12, "date",       "java.lang.Long",        "1bef35ca-d4f9-48db-87c2-afce4649362d");
+    */
+
+    private Boolean[] marshallValuesAsBooleans(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Boolean[] booleanArray = new Boolean[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            booleanArray[index++] = (Boolean)primValue;
+        }
+        return booleanArray;
+    }
+
+    private Byte[] marshallValuesAsBytes(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Byte[] byteArray = new Byte[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            byteArray[index++] = (Byte)primValue;
+        }
+        return byteArray;
+    }
+
+    private Character[] marshallValuesAsCharacters(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Character[] characterArray = new Character[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            characterArray[index++] = (Character)primValue;
+        }
+        return characterArray;
+    }
+
+    private Short[] marshallValuesAsShorts(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Short[] shortArray = new Short[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            shortArray[index++] = (Short)primValue;
+        }
+        return shortArray;
+    }
+
+    private Integer[] marshallValuesAsIntegers(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Integer[] integerArray = new Integer[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            integerArray[index++] = (Integer)primValue;
+        }
+        return integerArray;
+    }
+
+    private Long[] marshallValuesAsLongs(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Long[] longArray = new Long[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            longArray[index++] = (Long)primValue;
+        }
+        return longArray;
+    }
+
+
+    private Float[] marshallValuesAsFloats(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Float[] floatArray = new Float[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            floatArray[index++] = (Float)primValue;
+        }
+        return floatArray;
+    }
+
+    private Double[] marshallValuesAsDoubles(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Double[] doubleArray = new Double[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            doubleArray[index++] = (Double)primValue;
+        }
+        return doubleArray;
+    }
+
+    private BigInteger[] marshallValuesAsBigIntegers(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        BigInteger[] bigIntegerArray = new BigInteger[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            bigIntegerArray[index++] = (BigInteger)primValue;
+        }
+        return bigIntegerArray;
+    }
+
+    private BigDecimal[] marshallValuesAsBigDecimals(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        BigDecimal[] bigDecimalArray = new BigDecimal[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            bigDecimalArray[index++] = (BigDecimal)primValue;
+        }
+        return bigDecimalArray;
+    }
+
+    private String[] marshallValuesAsStrings(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        String[] stringArray = new String[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            stringArray[index++] = (String)primValue;
+        }
+        return stringArray;
+    }
+
+    private Date[] marshallValuesAsDates(ArrayPropertyValue arrayPropertyValue)
+    {
+        int arrayLength = arrayPropertyValue.getArrayCount();
+        Collection<InstancePropertyValue> arrayElementValues = getArrayElementValues(arrayPropertyValue);
+
+        Date[] dateArray = new Date[arrayLength];
+        int index = 0;
+        for (InstancePropertyValue ipv : arrayElementValues)
+        {
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            dateArray[index++] = new Date((Long) primValue);
+        }
+        return dateArray;
+    }
+
 }
