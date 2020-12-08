@@ -26,7 +26,7 @@ const ServerAuthorContextProvider = props => {
   const [newServerName, setNewServerName] = useState("");
   const [newServerLocalURLRoot, setNewServerLocalURLRoot] = useState("https://localhost:9443");
   const [newServerLocalServerType, setNewServerLocalServerType] = useState(serverTypes[0].label);
-  const [newServerOrganizationName, setNewServerOrganizationName] = useState(user.organizationName);
+  const [newServerOrganizationName, setNewServerOrganizationName] = useState(user ? user.organizationName || "" : "");
   const [newServerLocalUserId, setNewServerLocalUserId] = useState("");
   const [newServerLocalPassword, setNewServerLocalPassword] = useState("");
   const [newServerSecurityConnector, setNewServerSecurityConnector] = useState("");

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Search20 from "@carbon/icons-react/lib/search/20";
 import Notification20 from "@carbon/icons-react/lib/notification/20";
 import AppSwitcher20 from "@carbon/icons-react/lib/app-switcher/20";
@@ -8,6 +8,7 @@ import HeaderContainer from "carbon-components-react/lib/components/UIShell/Head
 import { Content } from "carbon-components-react/lib/components/UIShell";
 import { Link, Route, Switch } from "react-router-dom";
 import Egeriawhite110 from "./images/Egeria_logo_white_110";
+import Login from "./auth"
 import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
 import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";
@@ -31,17 +32,39 @@ import {
 } from "carbon-components-react/lib/components/UIShell";
 
 export default function Frame() {
-  const identificationContext = useContext(IdentificationContext);
-  console.log("Frame context", { identificationContext });
-  const rootUrl = identificationContext.getBrowserURL("");
-  const homeUrl = identificationContext.getBrowserURL("home");
-  const glossaryAuthorUrl = identificationContext.getBrowserURL(
-    "glossary-author"
-  );
-  const rexUrl = identificationContext.getBrowserURL("repository-explorer");
-  const typeUrl = identificationContext.getBrowserURL("type-explorer");
-  const serverUrl = identificationContext.getBrowserURL("server-author");
-  const dinoUrl = identificationContext.getBrowserURL("dino");
+  const { getBrowserURL, getUser, userId } = useContext(IdentificationContext);
+  const rootUrl = getBrowserURL("");
+  const homeUrl = getBrowserURL("home");
+  const glossaryAuthorUrl = getBrowserURL("glossary-author");
+  const rexUrl = getBrowserURL("repository-explorer");
+  const typeUrl = getBrowserURL("type-explorer");
+  const serverUrl = getBrowserURL("server-author");
+  const dinoUrl = getBrowserURL("dino");
+
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    console.log("fetching user");
+    async function fetchUser() {
+      await getUser();
+      setLoading(false);
+    }
+    if (!userId) {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, [getUser, userId]);
+
+  console.log({isLoading});
+
+  if (isLoading) return (<div className="frame"></div>);
+
+  if (!userId) {
+    const currentURL = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
+    return (<Login currentURL={currentURL} />)
+  }
 
   return (
     <div className="container">

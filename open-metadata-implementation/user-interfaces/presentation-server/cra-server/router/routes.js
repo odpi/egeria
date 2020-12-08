@@ -10,7 +10,6 @@ const getAxiosInstance = require('../functions/getAxiosInstance');
 const validateURL = require('../validations/validateURL');
 const validateAdminURL = require('../validations/validateAdminURL');
 
-
 /**
  * Middleware to handle post requests that start with /login i.e. the login request. The tenant segment has been removed by previous middleware. 
  * The login is performed using passport' local authentication (http://www.passportjs.org/docs/authenticate/). 
@@ -53,6 +52,16 @@ router.get("/logout", function (req, res) {
     console.log("re direct to /loggedOut");
     res.redirect("/" + req.query.serverName + "/login");
   });
+});
+
+router.get("/user", (req, res) => {
+  console.log('/user');
+  console.log(req.user);
+  if (req.user) {
+    res.json({ user: req.user });
+  } else {
+    res.json({ user: null });
+  }
 });
 
 const staticJoinedPath = path.join(__dirname, "../../dist");
