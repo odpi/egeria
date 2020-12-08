@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfig;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
@@ -22,19 +24,11 @@ public interface SubjectArea {
     SubjectAreaRelationshipClients relationshipClients();
 
     /**
-     * Get the subject area graph API class - use this class to issue graph calls.
-     *
-     * @return subject area graph API class
-     */
-    SubjectAreaGraph subjectAreaGraph();
-
-    /**
      * Get the subject area config API class - use this class to issue config calls.
      *
      * @return subject area graph API class
      */
-    SubjectAreaConfig subjectAreaConfig();
-
+    SubjectAreaConfigClient subjectAreaConfigClient();
 
     /**
      * Server Name under which this request is performed, this is used in multi tenanting to identify the tenant

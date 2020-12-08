@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.client;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfig;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.DefaultSubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
@@ -27,7 +28,7 @@ public class SubjectAreaImpl implements SubjectArea {
     private final SubjectAreaNodeClients nodeClients;
     private final SubjectAreaRelationshipClients relationshipAPI;
     private final SubjectAreaGraph graphAPI;
-    private final SubjectAreaConfig configAPI;
+    private final SubjectAreaConfigClient configAPI;
     private final String serverName;
     private final String omasServerUrl;
 
@@ -47,7 +48,7 @@ public class SubjectAreaImpl implements SubjectArea {
             DefaultSubjectAreaNodeClients subjectAreaNode = new DefaultSubjectAreaNodeClients(client);
             SubjectAreaLine subjectAreaLine = new SubjectAreaLine(client);
             SubjectAreaGraph subjectAreaGraph = new SubjectAreaGraphClient(client);
-            SubjectAreaConfig subjectAreaConfig = new SubjectAreaConfigClient(client);
+            SubjectAreaConfigClient subjectAreaConfig = new SubjectAreaConfigClient(client);
 
             this.nodeClients = subjectAreaNode;
             this.relationshipAPI = subjectAreaLine;
@@ -90,15 +91,7 @@ public class SubjectAreaImpl implements SubjectArea {
         return this.relationshipAPI;
     }
 
-    /**
-     * Get the subject area graph API class - use this class to issue graph calls.
-     *
-     * @return subject area graph API class
-     */
-    @Override
-    public SubjectAreaGraph subjectAreaGraph() {
-        return this.graphAPI;
-    }
+
 
     /**
      * Get the subject area graph API class - use this class to issue config calls.
@@ -106,7 +99,7 @@ public class SubjectAreaImpl implements SubjectArea {
      * @return subject area config API class
      */
     @Override
-    public SubjectAreaConfig subjectAreaConfig() {
+    public SubjectAreaConfigClient subjectAreaConfigClient() {
         return this.configAPI;
     }
 
