@@ -175,10 +175,13 @@
         <gremlin.version>3.4.8</gremlin.version>
         <netty.version>4.1.54.Final</netty.version>
 
-        <spring-boot.version>2.4.0</spring-boot.version>
+        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+        <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
         <spring.version>5.3.1</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
         <spring-data.version>2.4.1</spring-data.version>
+        <springdoc.version>1.4.6</springdoc.version>
+        <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <servo-core.version>0.13.0</servo-core.version>
         <netflix-zuul.version>2.2.6.RELEASE</netflix-zuul.version>
         <tomcat.version>9.0.40</tomcat.version>
@@ -217,7 +220,6 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.2</snappy.version>
         <snakeyaml.version>1.27</snakeyaml.version>
-        <springdoc.version>1.5.0</springdoc.version>
         <classgraph.version>4.8.93</classgraph.version>
         <swagger.version>2.1.5</swagger.version>
         <groovy.version>3.0.6</groovy.version>
@@ -259,7 +261,6 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
-        <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <git-commit-plugin.version>4.0.3</git-commit-plugin.version>
@@ -2537,6 +2538,18 @@
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
@@ -2593,6 +2606,12 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
                 <version>${spring-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.ldap</groupId>
+                <artifactId>spring-ldap-core</artifactId>
+                <version>${spring.ldap.core}</version>
             </dependency>
 
             <dependency>
