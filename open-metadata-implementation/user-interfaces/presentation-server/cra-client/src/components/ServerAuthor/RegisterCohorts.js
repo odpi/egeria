@@ -20,7 +20,7 @@ export default function RegisterCohorts() {
   const handleAddCohort = e => {
     const cohortName = document.getElementById("new-server-cohort-name").value;
     console.log("handleAddCohort() called", { cohortName });
-    if (cohortName.length == 0) return;
+    if (cohortName.length === 0) return;
     setNewServerCohorts(newServerCohorts.concat(cohortName));
     document.getElementById("new-server-cohort-name").value = "";
   }

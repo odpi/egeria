@@ -103,7 +103,7 @@ export default function ServerAuthor() {
 
   const showPreviousStep = () => {
     const steps = serverConfigurationSteps(newServerLocalServerType);
-    if (progressIndicatorIndex == 0) {
+    if (progressIndicatorIndex ===  0) {
       return null;
     }
     const previous = steps[progressIndicatorIndex - 1];
@@ -113,7 +113,7 @@ export default function ServerAuthor() {
 
   const showNextStep = () => {
     const steps = serverConfigurationSteps(newServerLocalServerType);
-    if (progressIndicatorIndex == steps.length) {
+    if (progressIndicatorIndex ===  steps.length) {
       return null;
     }
     const next = steps[progressIndicatorIndex + 1];
@@ -122,10 +122,13 @@ export default function ServerAuthor() {
     switch (next) {
       case "Basic configuration":
         basicConfigFormStartRef.current.focus();
+        break;
       case "Configure the discovery engine services":
         discoveryEnginesFormStartRef.current.focus();
+        break;
       case "Configure the stewardship engine services":
         stewardshipEnginesFormStartRef.current.focus();
+        break;
     }
   }
 
@@ -177,7 +180,7 @@ export default function ServerAuthor() {
         },
         timeout: 30000,
       });
-      if (setServerConfigResponse.data.relatedHTTPCode == 200) {
+      if (setServerConfigResponse.data.relatedHTTPCode ===  200) {
         setNewServerConfig(serverConfig);
         console.log("Finished updating config preview");
       } else {
@@ -188,7 +191,7 @@ export default function ServerAuthor() {
       console.error("Error sending config to platform", { error });
       setNewServerConfig(null);
       setNotificationType("error");
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code ===  'ECONNABORTED') {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
@@ -201,7 +204,7 @@ export default function ServerAuthor() {
       return;
     }
     // Enable chosen repository
-    if (newServerLocalServerType == "Metadata Server") {
+    if (newServerLocalServerType ===  "Metadata Server") {
       setLoadingText("Enabling chosen local repository...");
       const enableRepositoryURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/local-repository/mode/${newServerRepository}`;
       try {
@@ -214,14 +217,14 @@ export default function ServerAuthor() {
           },
           timeout: 30000,
         });
-        if (enableRepositoryURLResponse.data.relatedHTTPCode != 200) {
+        if (enableRepositoryURLResponse.data.relatedHTTPCode !== 200) {
           console.error(enableRepositoryURLResponse.data);
           throw new Error("Error in enableRepositoryURLResponse");
         }
       } catch(error) {
         console.error("Error enabling chosen repository", { error });
         setNotificationType("error");
-        if (error.code && error.code == 'ECONNABORTED') {
+        if (error.code && error.code ===  'ECONNABORTED') {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
         } else {
@@ -247,14 +250,14 @@ export default function ServerAuthor() {
         },
         timeout: 30000,
       });
-      if (configureEventBusURLResponse.data.relatedHTTPCode != 200) {
+      if (configureEventBusURLResponse.data.relatedHTTPCode !== 200) {
         console.error(configureEventBusURLResponse.data);
         throw new Error("Error in configureEventBusURLResponse");
       }
     } catch(error) {
       console.error("error configuring event bus", { error });
       setNotificationType("error");
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code ===  'ECONNABORTED') {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
@@ -267,7 +270,7 @@ export default function ServerAuthor() {
       return;
     }
     // Configure security connector
-    if (newServerSecurityConnector != "") {
+    if (newServerSecurityConnector !== "") {
       setLoadingText("Configuring security connector...");
       const configureSecurityConnectorURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/security/connection`;
       try {
@@ -286,14 +289,14 @@ export default function ServerAuthor() {
           },
           timeout: 30000,
         });
-        if (configureSecurityConnectorURLResponse.data.relatedHTTPCode != 200) {
+        if (configureSecurityConnectorURLResponse.data.relatedHTTPCode !== 200) {
           console.error(configureSecurityConnectorURLResponse.data);
           throw new Error("Error in configureSecurityConnectorURLResponse");
         }
       } catch(error) {
         console.error("error configuring security connector", { error });
         setNotificationType("error");
-        if (error.code && error.code == 'ECONNABORTED') {
+        if (error.code && error.code ===  'ECONNABORTED') {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
         } else {
@@ -319,7 +322,7 @@ export default function ServerAuthor() {
     document.getElementById("loading-container").style.display = "block";
     // Enable Access Services
     try {
-      if (selectedAccessServices.length == availableAccessServices.length) {
+      if (selectedAccessServices.length ===  availableAccessServices.length) {
         configureAccessServices();
       } else {
         for (const service of selectedAccessServices) {
@@ -329,7 +332,7 @@ export default function ServerAuthor() {
       }
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -351,7 +354,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -379,7 +382,7 @@ export default function ServerAuthor() {
         const data = {
           tenantId
         };
-        if (destination.id != "default") {
+        if (destination.id !== "default") {
           data.config = destination.severities.map((s) => s.id);
         }
         setLoadingText(`Enabling the ${destination.label} audit log destination...`);
@@ -389,14 +392,14 @@ export default function ServerAuthor() {
           },
           timeout: 30000,
         });
-        if (enableAuditLogDestinationResponse.data.relatedHTTPCode != 200) {
+        if (enableAuditLogDestinationResponse.data.relatedHTTPCode !== 200) {
           console.error(enableAuditLogDestinationResponse.data);
           throw new Error("Error in enableAuditLogDestinationResponse");
         }
       } catch(error) {
         console.error(`Error enabling the ${destination.label} audit log destination`, { error });
         setNotificationType("error");
-        if (error.code && error.code == "ECONNABORTED") {
+        if (error.code && error.code ===  "ECONNABORTED") {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
         } else {
@@ -419,7 +422,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -448,7 +451,7 @@ export default function ServerAuthor() {
       } catch(error) {
         console.error(`Error registering the OMAG Server to the ${cohortName} cohort`, { error });
         setNotificationType("error");
-        if (error.code && error.code == "ECONNABORTED") {
+        if (error.code && error.code ===  "ECONNABORTED") {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
         } else {
@@ -471,7 +474,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -498,7 +501,7 @@ export default function ServerAuthor() {
       } catch(error) {
         console.error(`Error configuring the OMAG Server to load the ${archiveName} archive upon startup`, { error });
         setNotificationType("error");
-        if (error.code && error.code == "ECONNABORTED") {
+        if (error.code && error.code ===  "ECONNABORTED") {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
         } else {
@@ -521,7 +524,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -539,9 +542,9 @@ export default function ServerAuthor() {
   const handleConfigureRepositoryProxyConnectors = async () => {
     // If all three fields are blank, skip to next step
     if (
-      (!newServerProxyConnector || newServerProxyConnector == "") &&
-      (!newServerEventMapperConnector || newServerEventMapperConnector == "") &&
-      (!newServerEventSource || newServerEventSource == "")
+      (!newServerProxyConnector || newServerProxyConnector ===  "") &&
+      (!newServerEventMapperConnector || newServerEventMapperConnector ===  "") &&
+      (!newServerEventSource || newServerEventSource ===  "")
     ) {
       showNextStep();
       setProgressIndicatorIndex(progressIndicatorIndex + 1);
@@ -549,9 +552,9 @@ export default function ServerAuthor() {
     }
     // If one or two fields are blank, show notification
     if (
-      (!newServerProxyConnector || newServerProxyConnector == "") ||
-      (!newServerEventMapperConnector || newServerEventMapperConnector == "") ||
-      (!newServerEventSource || newServerEventSource == "")
+      (!newServerProxyConnector || newServerProxyConnector ===  "") ||
+      (!newServerEventMapperConnector || newServerEventMapperConnector ===  "") ||
+      (!newServerEventSource || newServerEventSource ===  "")
     ) {
       setNotificationType("error");
       setNotificationTitle("Input Error");
@@ -567,7 +570,7 @@ export default function ServerAuthor() {
       await configureRepositoryProxyConnector(newServerProxyConnector);
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -585,7 +588,7 @@ export default function ServerAuthor() {
       await configureRepositoryEventMapperConnector(newServerEventMapperConnector, newServerEventSource);
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -607,7 +610,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -625,8 +628,8 @@ export default function ServerAuthor() {
   const handleConfigureViewServices = async () => {
     // If all three fields are blank, skip to next step
     if (
-      (!newServerViewServiceRemoteServerURLRoot || newServerViewServiceRemoteServerURLRoot == "") &&
-      (!newServerViewServiceRemoteServerName || newServerViewServiceRemoteServerName == "") &&
+      (!newServerViewServiceRemoteServerURLRoot || newServerViewServiceRemoteServerURLRoot ===  "") &&
+      (!newServerViewServiceRemoteServerName || newServerViewServiceRemoteServerName ===  "") &&
       (!selectedViewServices || !selectedViewServices.length)
     ) {
       showNextStep();
@@ -635,8 +638,8 @@ export default function ServerAuthor() {
     }
     // If one or two fields are blank, show notification
     if (
-      (!newServerViewServiceRemoteServerURLRoot || newServerViewServiceRemoteServerURLRoot == "") ||
-      (!newServerViewServiceRemoteServerName || newServerViewServiceRemoteServerName == "") ||
+      (!newServerViewServiceRemoteServerURLRoot || newServerViewServiceRemoteServerURLRoot ===  "") ||
+      (!newServerViewServiceRemoteServerName || newServerViewServiceRemoteServerName ===  "") ||
       (!selectedViewServices || !selectedViewServices.length)
     ) {
       setNotificationType("error");
@@ -650,7 +653,7 @@ export default function ServerAuthor() {
     document.getElementById("loading-container").style.display = "block";
     // Enable View Services
     try {
-      if (selectedViewServices.length == availableViewServices.length) {
+      if (selectedViewServices.length ===  availableViewServices.length) {
         configureViewServices(newServerViewServiceRemoteServerURLRoot, newServerViewServiceRemoteServerName);
       } else {
         for (const service of selectedViewServices) {
@@ -660,7 +663,7 @@ export default function ServerAuthor() {
       }
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -682,7 +685,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -700,8 +703,8 @@ export default function ServerAuthor() {
   const handleConfigureDiscoveryEngines = async () => {
     // If all three fields are blank, skip to next step
     if (
-      (!newServerDiscoveryEngineRemoteServerURLRoot || newServerDiscoveryEngineRemoteServerURLRoot == "") &&
-      (!newServerDiscoveryEngineRemoteServerName || newServerDiscoveryEngineRemoteServerName == "") &&
+      (!newServerDiscoveryEngineRemoteServerURLRoot || newServerDiscoveryEngineRemoteServerURLRoot ===  "") &&
+      (!newServerDiscoveryEngineRemoteServerName || newServerDiscoveryEngineRemoteServerName ===  "") &&
       (!selectedDiscoveryEngines || !selectedDiscoveryEngines.length)
     ) {
       showNextStep();
@@ -710,8 +713,8 @@ export default function ServerAuthor() {
     }
     // If one or two fields are blank, show notification
     if (
-      (!newServerDiscoveryEngineRemoteServerURLRoot || newServerDiscoveryEngineRemoteServerURLRoot == "") ||
-      (!newServerDiscoveryEngineRemoteServerName || newServerDiscoveryEngineRemoteServerName == "") ||
+      (!newServerDiscoveryEngineRemoteServerURLRoot || newServerDiscoveryEngineRemoteServerURLRoot ===  "") ||
+      (!newServerDiscoveryEngineRemoteServerName || newServerDiscoveryEngineRemoteServerName ===  "") ||
       (!selectedDiscoveryEngines || !selectedDiscoveryEngines.length)
     ) {
       setNotificationType("error");
@@ -728,7 +731,7 @@ export default function ServerAuthor() {
       await configureDiscoveryEngineClient(newServerDiscoveryEngineRemoteServerURLRoot, newServerDiscoveryEngineRemoteServerName);
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -746,7 +749,7 @@ export default function ServerAuthor() {
       await configureDiscoveryEngines(selectedDiscoveryEngines);
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -768,7 +771,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -791,8 +794,8 @@ export default function ServerAuthor() {
     });
     // If all three fields are blank, skip to next step
     if (
-      (!newServerStewardshipEngineRemoteServerURLRoot || newServerStewardshipEngineRemoteServerURLRoot == "") &&
-      (!newServerStewardshipEngineRemoteServerName || newServerStewardshipEngineRemoteServerName == "") &&
+      (!newServerStewardshipEngineRemoteServerURLRoot || newServerStewardshipEngineRemoteServerURLRoot ===  "") &&
+      (!newServerStewardshipEngineRemoteServerName || newServerStewardshipEngineRemoteServerName ===  "") &&
       (!selectedStewardshipEngines || !selectedStewardshipEngines.length)
     ) {
       showNextStep();
@@ -801,8 +804,8 @@ export default function ServerAuthor() {
     }
     // If one or two fields are blank, show notification
     if (
-      (!newServerStewardshipEngineRemoteServerURLRoot || newServerStewardshipEngineRemoteServerURLRoot == "") ||
-      (!newServerStewardshipEngineRemoteServerName || newServerStewardshipEngineRemoteServerName == "") ||
+      (!newServerStewardshipEngineRemoteServerURLRoot || newServerStewardshipEngineRemoteServerURLRoot ===  "") ||
+      (!newServerStewardshipEngineRemoteServerName || newServerStewardshipEngineRemoteServerName ===  "") ||
       (!selectedStewardshipEngines || !selectedStewardshipEngines.length)
     ) {
       setNotificationType("error");
@@ -819,7 +822,7 @@ export default function ServerAuthor() {
       await configureStewardshipEngineClient(newServerStewardshipEngineRemoteServerURLRoot, newServerStewardshipEngineRemoteServerName);
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -837,7 +840,7 @@ export default function ServerAuthor() {
       await configureStewardshipEngines(selectedStewardshipEngines);
     } catch(error) {
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -859,7 +862,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("error fetching server config", {error});
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
@@ -891,7 +894,7 @@ export default function ServerAuthor() {
         },
         timeout: 30000
       });
-      if (startServerResponse.data.relatedHTTPCode == 200) {
+      if (startServerResponse.data.relatedHTTPCode ===  200) {
         setNotificationType("success");
         setNotificationTitle("Success!")
         setNotificationSubtitle(`Server instance deployed from configuration.`);
@@ -905,7 +908,7 @@ export default function ServerAuthor() {
     } catch(error) {
       console.error("Error starting server from stored config", { error });
       setNotificationType("error");
-      if (error.code && error.code == "ECONNABORTED") {
+      if (error.code && error.code ===  "ECONNABORTED") {
         setNotificationTitle("Connection Error");
         setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {

@@ -35,6 +35,26 @@ server in the OMAGServerPlatform many times over multiple platform restarts.
 A detailed description of the internals of the OMAGServerPlatform during server start up
 is available [here](../../../open-metadata-publication/website/omag-server).
 
+## Maven build profiles
+Default maven build will include **full-platform** profile, with all access service 
+and view server functionality. Please be aware this behavior might be subject of a future change.
+Default behavior might be change with **-DadminChassisOnly** option which will disable **full-platform** profile.
+
+By running 
+```
+mvn clean install -DadminChassisOnly
+```
+ the server-chassis-spring will contain only the following services:
+ * Administration Services - Operational
+ * Administration Services - Platform Configuration
+ * Administration Services - Server Configuration
+ * Administration Services - Server Configurations
+ * Platform Services
+ 
+ In this case, for any extra functionality, such as desired access services or view server, 
+ use [ **loader.path** spring-boot functionality ](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-executable-jar-format.html#executable-jar-property-launcher-features).
+ 
+ 
 ## Application properties
 
 Since this is a Spring Boot application, OMAGServerPlatform can be

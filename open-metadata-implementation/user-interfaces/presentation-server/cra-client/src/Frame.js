@@ -1,13 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext, useEffect, useState } from "react";
-import Search20 from "@carbon/icons-react/lib/search/20";
-import Notification20 from "@carbon/icons-react/lib/notification/20";
-import AppSwitcher20 from "@carbon/icons-react/lib/app-switcher/20";
 import HeaderContainer from "carbon-components-react/lib/components/UIShell/HeaderContainer";
-import { Content } from "carbon-components-react/lib/components/UIShell";
-import { Link, Route, Switch } from "react-router-dom";
-import Egeriawhite110 from "./images/Egeria_logo_white_110";
+import { Content, HeaderPanel, Switcher, SwitcherItem } from "carbon-components-react/lib/components/UIShell";
+import { User20 } from "@carbon/icons-react/lib";
+import { Link, Route } from "react-router-dom";
+import axios from 'axios';
+import Egeriawhite110 from "./images/odpi/Egeria_logo_white_110";
 import Login from "./auth"
 import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
@@ -32,7 +31,12 @@ import {
 } from "carbon-components-react/lib/components/UIShell";
 
 export default function Frame() {
-  const { getBrowserURL, getUser, userId } = useContext(IdentificationContext);
+  const {
+    getBrowserURL,
+    getUser,
+    setAuthenticated,
+    userId,
+  } = useContext(IdentificationContext);
   const rootUrl = getBrowserURL("");
   const homeUrl = getBrowserURL("home");
   const glossaryAuthorUrl = getBrowserURL("glossary-author");
@@ -42,6 +46,8 @@ export default function Frame() {
   const dinoUrl = getBrowserURL("dino");
 
   const [isLoading, setLoading] = useState(true);
+
+  const [userOpen, setUserOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -66,6 +72,8 @@ export default function Frame() {
     return (<Login currentURL={currentURL} />)
   }
 
+  console.log(getBrowserURL('logout'));
+
   return (
     <div className="container">
       <HeaderContainer
@@ -83,22 +91,39 @@ export default function Frame() {
               </HeaderName>
 
               <HeaderGlobalBar>
-                <HeaderGlobalAction aria-label="Search" onClick={() => {}}>
-                  <Search20 />
-                </HeaderGlobalAction>
-                <HeaderGlobalAction
-                  aria-label="Notifications"
-                  onClick={() => {}}
+                <HeaderGlobalAction 
+                  aria-label="User" 
+                  isActive={userOpen}
+                  onClick={async () => {
+                    setUserOpen(!userOpen);
+                  }}
                 >
-                  <Notification20 />
-                </HeaderGlobalAction>
-                <HeaderGlobalAction
-                  aria-label="App Switcher"
-                  onClick={() => {}}
-                >
-                  <AppSwitcher20 />
+                  <User20 />
                 </HeaderGlobalAction>
               </HeaderGlobalBar>
+              <HeaderPanel
+                aria-label="Header Panel"
+                expanded={userOpen}
+              >
+                <Switcher>
+                  <SwitcherItem
+                    style={{ textAlign: 'left' }}
+                    onClick={async () => {
+                      try {
+                        console.log('logout!')
+                        await axios.get(getBrowserURL('logout'));
+                        sessionStorage.removeItem("egeria-userId");
+                        setAuthenticated(false);
+                        window.location.href = getBrowserURL('login');
+                      } catch(err) {
+                        console.error(err);
+                      }
+                    }}
+                  >
+                    Logout
+                  </SwitcherItem>
+                </Switcher>
+              </HeaderPanel>
               <SideNav
                 aria-label="Side navigation"
                 expanded={isSideNavExpanded}
