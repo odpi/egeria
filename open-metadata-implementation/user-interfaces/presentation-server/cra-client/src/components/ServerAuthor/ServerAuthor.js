@@ -30,6 +30,7 @@ import ConfigureRepositoryProxyConnectors from "./ConfigureRepositoryProxyConnec
 import ConfigureViewServices from "./ConfigureViewServices";
 import ConfigureDiscoveryEngines from "./ConfigureDiscoveryEngines";
 import ConfigureStewardshipEngines from "./ConfigureStewardshipEngines";
+import ConfigureIntegrationServices from "./ConfigureIntegrationServices";
 import ConfigPreview from "./ConfigPreview";
 
 export default function ServerAuthor() {
@@ -95,7 +96,8 @@ export default function ServerAuthor() {
     ["Configure the repository proxy connectors"]: "repository-proxy-container",
     ["Configure the Open Metadata View Services (OMVS)"]: "view-services-container",
     ["Configure the discovery engine services"]: "discovery-engines-container",
-    ["Configure the security sync services"]: "security-sync-container",
+    // ["Configure the security sync services"]: "security-sync-container",
+    ["Configure the Open Metadata Integration Services (OMIS)"]: "integration-daemon-container",
     ["Configure the stewardship engine services"]: "stewardship-engines-container",
   }
 
@@ -961,7 +963,7 @@ export default function ServerAuthor() {
           id="server-config-forms"
           sm={{ span: 4 }}
           md={{ span: 6 }}
-          lg={{ span: 11, offset: 1 }}
+          lg={{ span: 12 }}
         >
           
           <h1>Create New OMAG Server</h1>
@@ -1044,7 +1046,7 @@ export default function ServerAuthor() {
           </div>
 
           <div id="view-services-container" className="hideable" style={{display: "none"}}>
-            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the Open Metadata View Services (OMVSs)</h4>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the Open Metadata View Services (OMVS)</h4>
             <ConfigureViewServices />
             <NavigationButtons
               handlePreviousStep={handleBackToPreviousStep}
@@ -1061,9 +1063,9 @@ export default function ServerAuthor() {
             />
           </div>
 
-          <div id="security-sync-container" className="hideable" style={{display: "none"}}>
-            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the security sync services</h4>
-            <p>Coming Soon!</p>
+          <div id="integration-daemon-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the Open Metadata Integration Services (OMIS)</h4>
+            <ConfigureIntegrationServices />
             <NavigationButtons
               handlePreviousStep={handleBackToPreviousStep}
               handleNextStep={showNextStep}

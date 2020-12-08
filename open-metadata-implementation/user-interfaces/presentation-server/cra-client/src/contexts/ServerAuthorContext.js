@@ -12,6 +12,7 @@ import serverTypes from "../components/ServerAuthor/defaults/serverTypes";
 import viewServices from "../components/ServerAuthor/defaults/viewServices";
 import discoveryEngines from "../components/ServerAuthor/defaults/discoveryEngines";
 import stewardshipEngines from "../components/ServerAuthor/defaults/stewardshipEngines";
+import integrationServices from "../components/ServerAuthor/defaults/integrationServices";
 
 export const ServerAuthorContext = createContext();
 export const ServerAuthorContextConsumer = ServerAuthorContext.Consumer;
@@ -58,6 +59,18 @@ const ServerAuthorContextProvider = props => {
   const [selectedStewardshipEngines, setSelectedStewardshipEngines] = useState([]);
   const [newServerStewardshipEngineRemoteServerName, setNewServerStewardshipEngineRemoteServerName] = useState("");
   const [newServerStewardshipEngineRemoteServerURLRoot, setNewServerStewardshipEngineRemoteServerURLRoot] = useState("");
+  // Integration Services
+  const [availableIntegrationServices, setAvailableIntegrationServices] = useState(integrationServices);
+  const [selectedIntegrationService, setSelectedIntegrationService] = useState("");
+  const [newServerIntegrationServiceRemoteServerName, setNewServerIntegrationServiceRemoteServerName] = useState("");
+  const [newServerIntegrationServiceRemoteServerURLRoot, setNewServerIntegrationServiceRemoteServerURLRoot] = useState("");
+  const [newServerIntegrationServiceConnectorName, setNewServerIntegrationServiceConnectorName] = useState("");
+  const [newServerIntegrationServiceConnectorUserId, setNewServerIntegrationServiceConnectorUserId] = useState("");
+  const [newServerIntegrationServiceConnection, setNewServerIntegrationServiceConnection] = useState("");
+  const [newServerIntegrationServiceMetadataSource, setNewServerIntegrationServiceMetadataSource] = useState("");
+  const [newServerIntegrationServiceRefreshTimeInterval, setNewServerIntegrationServiceRefreshTimeInterval] = useState(60);
+  const [newServerIntegrationServiceUsesBlockingCalls, setNewServerIntegrationServiceUsesBlockingCalls] = useState(false);
+  const [newServerIntegrationServicePermittedSynchronization, setNewServerIntegrationServicePermittedSynchronization] = useState("BOTH_DIRECTIONS");
   // Notifications
   const [notificationType, setNotificationType] = useState("error");
   const [notificationTitle, setNotificationTitle] = useState("");
@@ -69,9 +82,11 @@ const ServerAuthorContextProvider = props => {
   const [newServerConfig, setNewServerConfig] = useState(null);
   const [preventDeployment, setPreventDeployment] = useState(false);
 
+  // Refs
   const basicConfigFormStartRef = useRef(null);
   const discoveryEnginesFormStartRef = useRef(null);
   const stewardshipEnginesFormStartRef = useRef(null);
+  const integrationServicesFormStartRef = useRef(null);
   
   useEffect(() => {
     const fetchLists = async () => {
@@ -484,6 +499,10 @@ const ServerAuthorContextProvider = props => {
 
     switch(serverType) {
   
+      case "View Server":
+        steps.splice(steps.length - 1, 0, "Configure the Open Metadata View Services (OMVS)");
+        break;
+  
       case "Metadata Access Point":
       case "Metadata Server":
         steps.splice(2, 0, "Select access services");
@@ -501,20 +520,16 @@ const ServerAuthorContextProvider = props => {
         steps.splice(steps.length - 1, 0, "Register to a cohort");
         break;
   
-      case "View Server":
-        steps.splice(steps.length - 1, 0, "Configure the Open Metadata View Services (OMVS)");
-        break;
-  
       case "Discovery Server":
         steps.splice(steps.length - 1, 0, "Configure the discovery engine services");
         break;
   
-      case "Security Sync Server":
-        steps.splice(steps.length - 1, 0, "Configure the security sync services");
-        break;
-  
       case "Stewardship Server":
         steps.splice(steps.length - 1, 0, "Configure the stewardship engine services");
+        break;
+  
+      case "Integration Daemon":
+        steps.splice(steps.length - 1, 0, "Configure the Open Metadata Integration Services (OMIS)");
         break;
   
     }
@@ -617,6 +632,17 @@ const ServerAuthorContextProvider = props => {
         selectedStewardshipEngines, setSelectedStewardshipEngines,
         newServerStewardshipEngineRemoteServerName, setNewServerStewardshipEngineRemoteServerName,
         newServerStewardshipEngineRemoteServerURLRoot, setNewServerStewardshipEngineRemoteServerURLRoot,
+        availableIntegrationServices, setAvailableIntegrationServices,
+        selectedIntegrationService, setSelectedIntegrationService,
+        newServerIntegrationServiceRemoteServerName, setNewServerIntegrationServiceRemoteServerName,
+        newServerIntegrationServiceRemoteServerURLRoot, setNewServerIntegrationServiceRemoteServerURLRoot,
+        newServerIntegrationServiceConnectorName, setNewServerIntegrationServiceConnectorName,
+        newServerIntegrationServiceConnectorUserId, setNewServerIntegrationServiceConnectorUserId,
+        newServerIntegrationServiceConnection, setNewServerIntegrationServiceConnection,
+        newServerIntegrationServiceMetadataSource, setNewServerIntegrationServiceMetadataSource,
+        newServerIntegrationServiceRefreshTimeInterval, setNewServerIntegrationServiceRefreshTimeInterval,
+        newServerIntegrationServiceUsesBlockingCalls, setNewServerIntegrationServiceUsesBlockingCalls,
+        newServerIntegrationServicePermittedSynchronization, setNewServerIntegrationServicePermittedSynchronization,
         notificationType, setNotificationType,
         notificationTitle, setNotificationTitle,
         notificationSubtitle, setNotificationSubtitle,
@@ -628,6 +654,7 @@ const ServerAuthorContextProvider = props => {
         basicConfigFormStartRef,
         discoveryEnginesFormStartRef,
         stewardshipEnginesFormStartRef,
+        integrationServicesFormStartRef,
         // Functions
         fetchAccessServices,
         fetchKnownServers,
