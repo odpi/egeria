@@ -20,7 +20,7 @@ import {
 
 import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
-import Close16 from "../../../../images/Egeria_close_16";
+import Close16 from "../../../../images/carbon/Egeria_close_16";
 
 function NodeUpdateView(props) {
   console.log("NodeUpdateView");

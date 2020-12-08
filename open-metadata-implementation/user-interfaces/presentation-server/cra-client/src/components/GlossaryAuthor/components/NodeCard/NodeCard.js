@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
-import Launch32 from "../../../../images/Launch_32";
+import Launch32 from "../../../../images/carbon/Launch_32";
 import { Accordion, AccordionItem } from "carbon-components-react";
 
 const NodeCardSection = (props) => (
@@ -48,8 +48,7 @@ const LocalNodeCard = (props) => {
         <AccordionItem title="Description">{props.body}</AccordionItem>
       </Accordion>
       <div>
-        {/* <a is not correct as it kills the session - TODO sort this out properly with the router and breadcrumbs */}
-        <a href={props.link}>{props.icon}</a>
+         {props.icon}
       </div>
     </article>
   );
