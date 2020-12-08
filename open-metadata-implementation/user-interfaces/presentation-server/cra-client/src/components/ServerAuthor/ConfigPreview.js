@@ -47,7 +47,7 @@ export default function ConfigPreview({ options }) {
   const [editing_localServerPassword, setEditing_localServerPassword] = useState(false);
   const [editing_maxPageSize, setEditing_maxPageSize] = useState(false);
 
-  if (!newServerConfig || newServerConfig == {} || newServerConfig == '') {
+  if (!newServerConfig || newServerConfig === {} || newServerConfig === '') {
     return null;
   }
 
@@ -81,14 +81,14 @@ export default function ConfigPreview({ options }) {
           },
           timeout: 30000,
         });
-        if (enableServiceAccessResponse.data.relatedHTTPCode != 200) {
+        if (enableServiceAccessResponse.data.relatedHTTPCode !== 200) {
           console.error(enableServiceAccessResponse.data);
           throw new Error("Error in enableServiceAccessResponse");
         }
       } catch(error) {
         console.error("Error enabling service access", { error });
         setNotificationType("error");
-        if (error.code && error.code == "ECONNABORTED") {
+        if (error.code && error.code === "ECONNABORTED") {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
         } else {
@@ -127,14 +127,14 @@ export default function ConfigPreview({ options }) {
           },
           timeout: 30000,
         });
-        if (disableServiceAccessResponse.data.relatedHTTPCode != 200) {
+        if (disableServiceAccessResponse.data.relatedHTTPCode !== 200) {
           console.error(disableServiceAccessResponse.data);
           throw new Error("Error in disableServiceAccessResponse");
         }
       } catch(error) {
         console.error("Error disabling access service", { error });
         setNotificationType("error");
-        if (error.code && error.code == "ECONNABORTED") {
+        if (error.code && error.code === "ECONNABORTED") {
           setNotificationTitle("Connection Error");
           setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
         } else {
@@ -199,7 +199,7 @@ export default function ConfigPreview({ options }) {
 
   const handleCellChange = (field, originalValue, currentValue) => {
     console.log("called handleCellChange", { field, originalValue, currentValue });
-    if (currentValue == originalValue) {
+    if (currentValue === originalValue) {
       console.log("value matches original");
       setPreventDeployment(false);
     } else {
@@ -268,7 +268,7 @@ export default function ConfigPreview({ options }) {
   // Access Services
 
   let showAccessServices = false;
-  if (newServerConfig.localServerType == "Metadata Server" || newServerConfig.localServerType == "Metadata Access Point") {
+  if (newServerConfig.localServerType === "Metadata Server" || newServerConfig.localServerType === "Metadata Access Point") {
     showAccessServices = true;
   }
 
@@ -314,7 +314,7 @@ export default function ConfigPreview({ options }) {
             urlMarker: matchingService.accessServiceURLMarker,
             description: matchingService.accessServiceDescription,
             wiki: matchingService.accessServiceWiki,
-            status: matchingService.accessServiceOperationalStatus == "ENABLED",
+            status: matchingService.accessServiceOperationalStatus === "ENABLED",
             inTopic: matchingService.accessServiceInTopic.endpoint.address,
             outTopic: matchingService.accessServiceOutTopic.endpoint.address,
           });
@@ -348,7 +348,7 @@ export default function ConfigPreview({ options }) {
           urlMarker: c.accessServiceURLMarker,
           description: c.accessServiceDescription,
           wiki: c.accessServiceWiki,
-          status: c.accessServiceOperationalStatus == "ENABLED",
+          status: c.accessServiceOperationalStatus === "ENABLED",
           inTopic: c.accessServiceInTopic.endpoint.address,
           outTopic: c.accessServiceOutTopic.endpoint.address,
         }

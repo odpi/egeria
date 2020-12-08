@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * FilesResource supports the server-side capture of REST calls to add new file-based asset definitions.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}/filesystems")
 
 @Tag(name="Data Manager OMAS",
         description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers.",
@@ -36,7 +36,7 @@ public class FilesResource
 
 
     /**
-     * Creates a new folder asset for each element in the pathName that is linked from the anchor entity.
+     * Creates a new folder asset for each element in the pathName that is linked from the file server capability entity.
      * For example, a pathName of "one/two/three" creates 3 new folder assets, one called "one", the next called
      * "one/two" and the last one called "one/two/three".
      *
@@ -50,7 +50,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/filesystems/folders/{parentGUID}")
+    @PostMapping(path = "/folders/parent/{parentGUID}")
 
     public GUIDListResponse createFolderStructureInCatalog(@PathVariable String              serverName,
                                                            @PathVariable String              userId,
@@ -58,34 +58,6 @@ public class FilesResource
                                                            @RequestBody  PathNameRequestBody requestBody)
     {
         return restAPI.createFolderStructureInCatalog(serverName, userId, parentGUID, requestBody);
-    }
-
-
-    /**
-     * Creates a new folder asset for each element in the pathName.
-     * For example, a pathName of "one/two/three" creates 3 new folder assets, one called "one", the next called
-     * "one/two" and the last one called "one/two/three".
-     *
-     * @param serverName name of calling server
-     * @param userId calling user
-     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name
-     * @param fileSystemName unique name of the software server capability that represents the root of the path name
-     * @param requestBody pathname of the folder (or folders)
-     *
-     * @return list of GUIDs from the top level to the leaf of the supplied pathname or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem.
-     */
-    @PostMapping(path = "/filesystems/{fileSystemGUID}/{fileSystemName}/folders")
-
-    public GUIDListResponse createFolderStructureInCatalog(@PathVariable String              serverName,
-                                                           @PathVariable String              userId,
-                                                           @PathVariable String              fileSystemGUID,
-                                                           @PathVariable String              fileSystemName,
-                                                           @RequestBody  PathNameRequestBody requestBody)
-    {
-        return restAPI.createFolderStructureInCatalog(serverName, userId, fileSystemGUID, fileSystemName, requestBody);
     }
 
 
@@ -103,7 +75,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/filesystems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
+    @PostMapping(path = "/{fileSystemGUID}/folders/{folderGUID}/attach")
 
     public VoidResponse attachFolderToFileSystem(@PathVariable                  String                    serverName,
                                                  @PathVariable                  String                    userId,
@@ -129,7 +101,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/filesystems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
+    @PostMapping(path = "/{fileSystemGUID}/folders/{folderGUID}/detach")
 
     public VoidResponse detachFolderFromFileSystem(@PathVariable                  String                    serverName,
                                                    @PathVariable                  String                    userId,
@@ -150,8 +122,6 @@ public class FilesResource
      *
      * @param serverName name of calling server
      * @param userId calling user (assumed to be the owner)
-     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name
-     * @param fileSystemName unique name of the software server capability that represents the root of the path name
      * @param requestBody properties for the asset
      *
      * @return list of GUIDs from the top level to the root of the pathname or
@@ -159,15 +129,115 @@ public class FilesResource
      * PropertyServerException problem accessing property server
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/filesystems/{fileSystemGUID}/{fileSystemName}/data-files")
+    @PostMapping(path = "/data-files")
 
-    public GUIDListResponse addDataFileToCatalog(@PathVariable String                 serverName,
-                                                 @PathVariable String                 userId,
-                                                 @PathVariable String                 fileSystemGUID,
-                                                 @PathVariable String                 fileSystemName,
-                                                 @RequestBody DataFileRequestBody requestBody)
+    public GUIDListResponse addDataFileToCatalog(@PathVariable String              serverName,
+                                                 @PathVariable String              userId,
+                                                 @RequestBody  DataFileRequestBody requestBody)
     {
-        return restAPI.addDataFileToCatalog(serverName, userId, fileSystemGUID, fileSystemName, requestBody);
+        return restAPI.addDataFileToCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Add an asset description a file based on the content of a template object. Link this new asset to the folder structure implied in the path name.
+     * If the folder structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyFile.txt" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a file asset called
+     * "one/two/three/MyFile.txt".
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param templateGUID unique identifier of the file asset to copy
+     * @param requestBody override properties for the asset
+     *
+     * @return list of GUIDs from the top level to the root of the pathname or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-files/from-template/{templateGUID}")
+
+    public GUIDListResponse addDataFileToCatalogFromTemplate(@PathVariable String              serverName,
+                                                             @PathVariable String              userId,
+                                                             @PathVariable String              templateGUID,
+                                                             @RequestBody  TemplateRequestBody requestBody)
+    {
+        return restAPI.addDataFileToCatalogFromTemplate(serverName, userId, templateGUID, requestBody);
+    }
+
+
+    /**
+     * Update the file asset description in the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFileGUID unique identifier of the data file asset
+     * @param isMergeUpdate should the supplied properties completely override the existing properties or augment them?
+     * @param requestBody properties for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-files/{dataFileGUID}")
+
+    public VoidResponse updateDataFileInCatalog(@PathVariable String              serverName,
+                                                @PathVariable String              userId,
+                                                @PathVariable String              dataFileGUID,
+                                                @RequestParam boolean             isMergeUpdate,
+                                                @RequestBody  DataFileRequestBody requestBody)
+    {
+        return restAPI.updateDataFileInCatalog(serverName, userId, dataFileGUID, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Mark the file asset description in the catalog as archived.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFileGUID unique identifier of the data file asset
+     * @param requestBody properties to help locate the archive copy
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-files/{dataFileGUID}/archive")
+
+    public VoidResponse archiveDataFileInCatalog(@PathVariable String             serverName,
+                                                 @PathVariable String             userId,
+                                                 @PathVariable String             dataFileGUID,
+                                                 @RequestBody  ArchiveRequestBody requestBody)
+    {
+        return restAPI.archiveDataFileInCatalog(serverName, userId, dataFileGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the file asset description from the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFileGUID unique identifier of the data file asset
+     * @param requestBody full pathname for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-files/{dataFileGUID}/delete")
+
+    public VoidResponse deleteDataFileFromCatalog(@PathVariable String              serverName,
+                                                  @PathVariable String              userId,
+                                                  @PathVariable String              dataFileGUID,
+                                                  @RequestBody  PathNameRequestBody requestBody)
+    {
+        return restAPI.deleteDataFileFromCatalog(serverName, userId, dataFileGUID, requestBody);
     }
 
 
@@ -182,8 +252,6 @@ public class FilesResource
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name
-     * @param fileSystemName unique name of the software server capability that represents the root of the path name
      * @param requestBody pathname of the data folder
      *
      * @return list of GUIDs from the top level to the root of the pathname or
@@ -191,15 +259,117 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/filesystems/{fileSystemGUID}/{fileSystemName}/data-folders")
+    @PostMapping(path = "/data-folders")
 
-    public GUIDListResponse addDataFolderAssetToCatalog(@PathVariable String                   serverName,
-                                                        @PathVariable String                   userId,
-                                                        @PathVariable String                   fileSystemGUID,
-                                                        @PathVariable String                   fileSystemName,
-                                                        @RequestBody DataFolderRequestBody requestBody)
+    public GUIDListResponse addDataFolderAssetToCatalog(@PathVariable String                serverName,
+                                                        @PathVariable String                userId,
+                                                        @RequestBody  DataFolderRequestBody requestBody)
     {
-        return restAPI.addDataFolderAssetToCatalog(serverName, userId, fileSystemGUID, fileSystemName, requestBody);
+        return restAPI.addDataFolderAssetToCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Creates a new folder asset that is identified as a data asset using a template.  This means the files and sub-folders within
+     * it collectively make up the contents of the data asset.  As with other types of file-based asset, links
+     * are made to the folder structure implied in the path name.  If the folder
+     * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyDataFolder" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a DataFolder asset called
+     * "one/two/three/MyDataFolder".
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param templateGUID unique identifier of the file asset to copy
+     * @param requestBody override properties for the asset
+     *
+     * @return list of GUIDs from the top level to the root of the pathname or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-folders/from-template/{templateGUID}")
+
+    public GUIDListResponse addDataFolderToCatalogFromTemplate(@PathVariable String              serverName,
+                                                               @PathVariable String              userId,
+                                                               @PathVariable String              templateGUID,
+                                                               @RequestBody  TemplateRequestBody requestBody)
+    {
+        return restAPI.addDataFolderToCatalogFromTemplate(serverName, userId, templateGUID, requestBody);
+    }
+
+
+    /**
+     * Update the DataFolder asset description in the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFolderGUID unique identifier of the data folder asset
+     * @param isMergeUpdate should the supplied properties completely override the existing properties or augment them?
+     * @param requestBody properties for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-folders/{dataFolderGUID}")
+
+    public VoidResponse updateDataFolderInCatalog(@PathVariable String                serverName,
+                                                  @PathVariable String                userId,
+                                                  @PathVariable String                dataFolderGUID,
+                                                  @RequestParam boolean               isMergeUpdate,
+                                                  @RequestBody  DataFolderRequestBody requestBody)
+    {
+        return restAPI.updateDataFolderInCatalog(serverName, userId, dataFolderGUID, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Mark the data folder asset description in the catalog as archived.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFolderGUID unique identifier of the data file asset
+     * @param requestBody properties to help locate the archive copy
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-folders/{dataFolderGUID}/archive")
+
+    public VoidResponse archiveDataFolderInCatalog(@PathVariable String             serverName,
+                                                   @PathVariable String             userId,
+                                                   @PathVariable String             dataFolderGUID,
+                                                   @RequestBody  ArchiveRequestBody requestBody)
+    {
+        return restAPI.archiveDataFolderInCatalog(serverName, userId, dataFolderGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the data folder asset description from the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFolderGUID unique identifier of the data file asset
+     * @param requestBody full pathname for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/data-folders/{dataFolderGUID}/delete")
+
+    public VoidResponse deleteDataFolderFromCatalog(@PathVariable String              serverName,
+                                                    @PathVariable String              userId,
+                                                    @PathVariable String              dataFolderGUID,
+                                                    @RequestBody  PathNameRequestBody requestBody)
+    {
+        return restAPI.deleteDataFolderFromCatalog(serverName, userId, dataFolderGUID, requestBody);
     }
 
 
@@ -218,7 +388,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/attach")
+    @PostMapping(path = "/folders/{folderGUID}/data-files/{fileGUID}/attach")
 
     public VoidResponse  attachDataFileAssetToFolder(@PathVariable                  String                    serverName,
                                                      @PathVariable                  String                    userId,
@@ -246,7 +416,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/detach")
+    @PostMapping(path = "/folders/{folderGUID}/data-files/{fileGUID}/detach")
 
     public VoidResponse  detachDataFileAssetFromFolder(@PathVariable                  String                    serverName,
                                                        @PathVariable                  String                    userId,
@@ -273,7 +443,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/move-to")
+    @PostMapping(path = "/folders/{folderGUID}/data-files/{fileGUID}/move-to")
 
     public VoidResponse  moveDataFileInCatalog(@PathVariable                  String                    serverName,
                                                @PathVariable                  String                    userId,
@@ -300,7 +470,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/folders/{folderGUID}/assets/data-folders/{dataFolderGUID}/move-to")
+    @PostMapping(path = "/folders/{folderGUID}/data-folders/{dataFolderGUID}/move-to")
 
     public VoidResponse  moveDataFolderInCatalog(@PathVariable                  String                    serverName,
                                                  @PathVariable                  String                    userId,
@@ -430,7 +600,7 @@ public class FilesResource
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param anchorGUID unique identifier of the anchor folder or Filesystem
+     * @param fileSystemGUID unique identifier of the anchor folder or Filesystem
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
@@ -439,15 +609,41 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @GetMapping(path = "/{anchorGUID}/folders")
+    @GetMapping(path = "/{fileSystemGUID}/folders")
+
+    public GUIDListResponse  getTopLevelFolders(@PathVariable String  serverName,
+                                                @PathVariable String  userId,
+                                                @PathVariable String  fileSystemGUID,
+                                                @RequestParam int     startingFrom,
+                                                @RequestParam int     maxPageSize)
+    {
+        return restAPI.getTopLevelFolders(serverName, userId, fileSystemGUID, startingFrom, maxPageSize);
+    }
+
+
+    /**
+     * Return the list of folders nested inside a folder.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param parentFolderGUID unique identifier of the parent folder
+     * @param startingFrom starting point in the list
+     * @param maxPageSize maximum number of results
+     *
+     * @return list of folder unique identifiers (null means no nested folders) or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/folders/{parentFolderGUID}/folders")
 
     public GUIDListResponse  getNestedFolders(@PathVariable String  serverName,
                                               @PathVariable String  userId,
-                                              @PathVariable String  anchorGUID,
+                                              @PathVariable String  parentFolderGUID,
                                               @RequestParam int     startingFrom,
                                               @RequestParam int     maxPageSize)
     {
-        return restAPI.getNestedFolders(serverName, userId, anchorGUID, startingFrom, maxPageSize);
+        return restAPI.getNestedFolders(serverName, userId, parentFolderGUID, startingFrom, maxPageSize);
     }
 
 
@@ -465,7 +661,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @GetMapping(path = "/folders/{folderGUID}/files")
+    @GetMapping(path = "/folders/{folderGUID}/data-files")
 
     public GUIDListResponse  getFolderFiles(@PathVariable String  serverName,
                                             @PathVariable String  userId,
@@ -489,11 +685,11 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @GetMapping(path = "/files/{dataFileGUID}")
+    @GetMapping(path = "/data-files/{dataFileGUID}")
 
-    public DataFileResponse getDataFilesByGUID(@PathVariable String  serverName,
-                                               @PathVariable String  userId,
-                                               @PathVariable String  dataFileGUID)
+    public DataFileResponse getDataFileByGUID(@PathVariable String  serverName,
+                                              @PathVariable String  userId,
+                                              @PathVariable String  dataFileGUID)
     {
         return restAPI.getDataFileByGUID(serverName, userId, dataFileGUID);
     }
@@ -511,12 +707,38 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @GetMapping(path = "/files/by-path-name")
+    @PostMapping(path = "/data-files/by-path-name")
 
     public DataFileResponse getDataFileByPathName(@PathVariable String                serverName,
                                                   @PathVariable String                userId,
                                                   @RequestBody  PathNameRequestBody   requestBody)
     {
         return restAPI.getDataFileByPathName(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param startingFrom starting point in the list
+     * @param maxPageSize maximum number of results
+     * @param requestBody path name
+     *
+     * @return data file properties or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    @PostMapping(path = "/data-files/by-search-path-name")
+
+    public DataFilesResponse findDataFilesByPathName(@PathVariable String              serverName,
+                                                     @PathVariable String              userId,
+                                                     @RequestParam int                 startingFrom,
+                                                     @RequestParam int                 maxPageSize,
+                                                     @RequestBody  PathNameRequestBody requestBody)
+    {
+        return  restAPI.findDataFilesByPathName(serverName, userId, startingFrom, maxPageSize, requestBody);
     }
 }

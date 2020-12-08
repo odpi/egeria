@@ -104,7 +104,7 @@ export default function RelationshipPropertiesDisplay(props) {
     return attributeList;
   };
 
-  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length == 0) {
+  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length === 0) {
     properties = (
       <ul className="details-sublist">
         <li className="details-sublist-item"> none </li>

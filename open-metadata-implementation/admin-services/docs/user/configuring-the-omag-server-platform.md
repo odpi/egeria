@@ -39,7 +39,7 @@ its **application.properties** file found in the **resources** subdirectory.
   REST API calls.
   
 * Controlling the level of developer logging that the platform
-  produces when it is running.
+  produces when it is running. See [Configuring logging options](omag-server-platform-logging.md) for more details.
   
 * Defining where the connector implementations should be loaded from.
 

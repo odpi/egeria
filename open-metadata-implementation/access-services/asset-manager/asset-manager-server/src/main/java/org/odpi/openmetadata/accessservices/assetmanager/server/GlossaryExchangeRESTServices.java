@@ -64,7 +64,7 @@ public class GlossaryExchangeRESTServices
     {
         final String   methodName = "createGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
@@ -134,7 +134,7 @@ public class GlossaryExchangeRESTServices
     {
         final String methodName = "createGlossaryFromTemplate";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
@@ -566,9 +566,9 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -639,9 +639,9 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid

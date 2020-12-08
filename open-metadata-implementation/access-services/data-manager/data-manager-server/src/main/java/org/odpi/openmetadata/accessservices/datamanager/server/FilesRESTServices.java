@@ -18,6 +18,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 
 /**
  * FilesRESTServices provides the server-side implementation for managing files and folder assets in a
@@ -82,76 +84,6 @@ public class FilesRESTServices
                                                                      requestBody.getExternalSourceGUID(),
                                                                      requestBody.getExternalSourceName(),
                                                                      parentGUID,
-                                                                     requestBody.getFullPath(),
-                                                                     methodName));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Creates a new folder asset for each element in the pathName.
-     * For example, a pathName of "one/two/three" creates 3 new folder assets, one called "one", the next called
-     * "one/two" and the last one called "one/two/three".
-     *
-     * @param serverName name of calling server
-     * @param userId calling user
-     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name
-     * @param fileSystemName unique name of the software server capability that represents the root of the path name
-     * @param requestBody pathname of the folder (or folders)
-     *
-     * @return list of GUIDs from the top level to the leaf of the supplied pathname or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem.
-     */
-    public GUIDListResponse createFolderStructureInCatalog(String              serverName,
-                                                           String              userId,
-                                                           String              fileSystemGUID,
-                                                           String              fileSystemName,
-                                                           PathNameRequestBody requestBody)
-    {
-        final String requestBodyParameterName = "requestBody";
-        final String methodName = "createFolderStructureInCatalog";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GUIDListResponse response = new GUIDListResponse();
-        AuditLog         auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            invalidParameterHandler.validateObject(requestBody, requestBodyParameterName, methodName);
-
-            FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
-                    instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
-
-            response.setGUIDs(handler.createFolderStructureInCatalog(userId,
-                                                                     requestBody.getExternalSourceGUID(),
-                                                                     requestBody.getExternalSourceName(),
-                                                                     fileSystemGUID,
-                                                                     fileSystemName,
                                                                      requestBody.getFullPath(),
                                                                      methodName));
         }
@@ -341,8 +273,6 @@ public class FilesRESTServices
      *
      * @param serverName name of calling server
      * @param userId calling user (assumed to be the owner)
-     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name - null to use pathname
-     * @param fileSystemName unique name of the software server capability that represents the root of the path name - null to use pathname
      * @param requestBody properties for the asset
      *
      * @return list of GUIDs from the top level to the root of the pathname or
@@ -350,13 +280,10 @@ public class FilesRESTServices
      * PropertyServerException problem accessing property server
      * UserNotAuthorizedException security access problem
      */
-    public GUIDListResponse addDataFileToCatalog(String                 serverName,
-                                                 String                 userId,
-                                                 String                 fileSystemGUID,
-                                                 String                 fileSystemName,
+    public GUIDListResponse addDataFileToCatalog(String              serverName,
+                                                 String              userId,
                                                  DataFileRequestBody requestBody)
     {
-        final String requestBodyParameterName = "requestBody";
         final String methodName = "addFileToCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -368,24 +295,334 @@ public class FilesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            invalidParameterHandler.validateObject(requestBody, requestBodyParameterName, methodName);
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
-                    instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+                response.setGUIDs(handler.addFileToCatalog(userId,
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
+                                                           requestBody.getQualifiedName(),
+                                                           requestBody.getDisplayName(),
+                                                           requestBody.getDescription(),
+                                                           requestBody.getCreateTime(),
+                                                           requestBody.getModifiedTime(),
+                                                           requestBody.getEncodingType(),
+                                                           requestBody.getEncodingLanguage(),
+                                                           requestBody.getEncodingDescription(),
+                                                           requestBody.getEncodingProperties(),
+                                                           requestBody.getFileType(),
+                                                           requestBody.getAdditionalProperties(),
+                                                           requestBody.getConnectorProviderClassName(),
+                                                           requestBody.getTypeName(),
+                                                           requestBody.getExtendedProperties(),
+                                                           methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
-            response.setGUIDs(handler.addFileToCatalog(userId,
-                                                       requestBody.getExternalSourceGUID(),
-                                                       requestBody.getExternalSourceName(),
-                                                       fileSystemGUID,
-                                                       fileSystemName,
-                                                       requestBody.getQualifiedName(),
-                                                       requestBody.getDisplayName(),
-                                                       requestBody.getDescription(),
-                                                       requestBody.getAdditionalProperties(),
-                                                       requestBody.getConnectorProviderClassName(),
-                                                       requestBody.getTypeName(),
-                                                       requestBody.getExtendedProperties(),
-                                                       methodName));
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add an asset description a file based on the content of a template object. Link this new asset to the folder structure implied in the path name.
+     * If the folder structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyFile.txt" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a file asset called
+     * "one/two/three/MyFile.txt".
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param templateGUID unique identifier of the file asset to copy
+     * @param requestBody override properties for the asset
+     *
+     * @return list of GUIDs from the top level to the root of the pathname or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDListResponse addDataFileToCatalogFromTemplate(String              serverName,
+                                                             String              userId,
+                                                             String              templateGUID,
+                                                             TemplateRequestBody requestBody)
+    {
+        final String methodName = "addDataFileToCatalogFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDListResponse response = new GUIDListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                response.setGUIDs(handler.addFileToCatalogFromTemplate(userId,
+                                                                       requestBody.getExternalSourceGUID(),
+                                                                       requestBody.getExternalSourceName(),
+                                                                       templateGUID,
+                                                                       requestBody.getQualifiedName(),
+                                                                       requestBody.getDisplayName(),
+                                                                       requestBody.getDescription(),
+                                                                       methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the file asset description in the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFileGUID unique identifier of the data file asset
+     * @param isMergeUpdate should the supplied properties completely override the existing properties or augment them?
+     * @param requestBody properties for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse updateDataFileInCatalog(String              serverName,
+                                                String              userId,
+                                                String              dataFileGUID,
+                                                boolean             isMergeUpdate,
+                                                DataFileRequestBody requestBody)
+    {
+        final String methodName = "updateDataFileInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                handler.updateFileInCatalog(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            dataFileGUID,
+                                            isMergeUpdate,
+                                            requestBody.getQualifiedName(),
+                                            requestBody.getDisplayName(),
+                                            requestBody.getDescription(),
+                                            requestBody.getCreateTime(),
+                                            requestBody.getModifiedTime(),
+                                            requestBody.getEncodingType(),
+                                            requestBody.getEncodingLanguage(),
+                                            requestBody.getEncodingDescription(),
+                                            requestBody.getEncodingProperties(),
+                                            requestBody.getFileType(),
+                                            requestBody.getAdditionalProperties(),
+                                            requestBody.getExtendedProperties(),
+                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Mark the file asset description in the catalog as archived.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFileGUID unique identifier of the data file asset
+     * @param requestBody properties to help locate the archive copy
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse archiveDataFileInCatalog(String             serverName,
+                                                 String             userId,
+                                                 String             dataFileGUID,
+                                                 ArchiveRequestBody requestBody)
+    {
+        final String methodName                = "archiveDataFileInCatalog";
+        final String dataFileGUIDParameterName = "dataFileGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                handler.archiveFileInCatalog(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            dataFileGUID,
+                                            dataFileGUIDParameterName,
+                                            requestBody.getArchiveDate(),
+                                            requestBody.getArchiveProcess(),
+                                            requestBody.getArchiveProperties(),
+                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the file asset description from the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFileGUID unique identifier of the data file asset
+     * @param requestBody full pathname for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse deleteDataFileFromCatalog(String              serverName,
+                                                  String              userId,
+                                                  String              dataFileGUID,
+                                                  PathNameRequestBody requestBody)
+    {
+        final String methodName = "deleteDataFileInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                handler.deleteFileFromCatalog(userId,
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              dataFileGUID,
+                                              requestBody.getFullPath(),
+                                              methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -421,8 +658,6 @@ public class FilesRESTServices
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name - null to use pathname
-     * @param fileSystemName unique name of the software server capability that represents the root of the path name - null to use pathname
      * @param requestBody pathname of the file
      *
      * @return list of GUIDs from the top level to the root of the pathname or
@@ -430,14 +665,11 @@ public class FilesRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    public GUIDListResponse addDataFolderAssetToCatalog(String                   serverName,
-                                                        String                   userId,
-                                                        String                   fileSystemGUID,
-                                                        String                   fileSystemName,
+    public GUIDListResponse addDataFolderAssetToCatalog(String                serverName,
+                                                        String                userId,
                                                         DataFolderRequestBody requestBody)
     {
-        final String requestBodyParameterName = "requestBody";
-        final String methodName = "addDataFileAssetToCatalog";
+        final String methodName = "addDataFolderAssetToCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -448,8 +680,6 @@ public class FilesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            invalidParameterHandler.validateObject(requestBody, requestBodyParameterName, methodName);
-
             if (requestBody != null)
             {
                 FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
@@ -458,12 +688,326 @@ public class FilesRESTServices
                 response.setGUIDs(handler.addDataFolderAssetToCatalog(userId,
                                                                       requestBody.getExternalSourceGUID(),
                                                                       requestBody.getExternalSourceName(),
-                                                                      fileSystemGUID,
-                                                                      fileSystemName,
+                                                                      requestBody.getQualifiedName(),
                                                                       requestBody.getDisplayName(),
                                                                       requestBody.getDescription(),
-                                                                      requestBody.getQualifiedName(),
+                                                                      requestBody.getCreateTime(),
+                                                                      requestBody.getModifiedTime(),
+                                                                      requestBody.getEncodingType(),
+                                                                      requestBody.getEncodingLanguage(),
+                                                                      requestBody.getEncodingDescription(),
+                                                                      requestBody.getEncodingProperties(),
+                                                                      requestBody.getAdditionalProperties(),
+                                                                      requestBody.getConnectorProviderClassName(),
+                                                                      requestBody.getTypeName(),
+                                                                      requestBody.getExtendedProperties(),
                                                                       methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Creates a new folder asset that is identified as a data asset using a template.  This means the files and sub-folders within
+     * it collectively make up the contents of the data asset.  As with other types of file-based asset, links
+     * are made to the folder structure implied in the path name.  If the folder
+     * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyDataFolder" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a DataFolder asset called
+     * "one/two/three/MyDataFolder".
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param templateGUID unique identifier of the file asset to copy
+     * @param requestBody override properties for the asset
+     *
+     * @return list of GUIDs from the top level to the root of the pathname or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDListResponse addDataFolderToCatalogFromTemplate(String              serverName,
+                                                               String              userId,
+                                                               String              templateGUID,
+                                                               TemplateRequestBody requestBody)
+    {
+        final String methodName = "addDataFolderToCatalogFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDListResponse response = new GUIDListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                response.setGUIDs(handler.addFolderToCatalogFromTemplate(userId,
+                                                                         requestBody.getExternalSourceGUID(),
+                                                                         requestBody.getExternalSourceName(),
+                                                                         templateGUID,
+                                                                         requestBody.getQualifiedName(),
+                                                                         requestBody.getDisplayName(),
+                                                                         requestBody.getDescription(),
+                                                                         methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the DataFolder asset description in the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFolderGUID unique identifier of the data folder asset
+     * @param isMergeUpdate should the supplied properties completely override the existing properties or augment them?
+     * @param requestBody properties for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse updateDataFolderInCatalog(String                serverName,
+                                                  String                userId,
+                                                  String                dataFolderGUID,
+                                                  boolean               isMergeUpdate,
+                                                  DataFolderRequestBody requestBody)
+    {
+        final String methodName = "updateDataFolderInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                handler.updateFolderInCatalog(userId,
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              dataFolderGUID,
+                                              isMergeUpdate,
+                                              requestBody.getQualifiedName(),
+                                              requestBody.getDisplayName(),
+                                              requestBody.getDescription(),
+                                              requestBody.getCreateTime(),
+                                              requestBody.getModifiedTime(),
+                                              requestBody.getEncodingType(),
+                                              requestBody.getEncodingLanguage(),
+                                              requestBody.getEncodingDescription(),
+                                              requestBody.getEncodingProperties(),
+                                              requestBody.getAdditionalProperties(),
+                                              requestBody.getExtendedProperties(),
+                                              methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Mark the data folder asset description in the catalog as archived.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFolderGUID unique identifier of the data file asset
+     * @param requestBody properties to help locate the archive copy
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse archiveDataFolderInCatalog(String             serverName,
+                                                   String             userId,
+                                                   String             dataFolderGUID,
+                                                   ArchiveRequestBody requestBody)
+    {
+        final String methodName                  = "archiveDataFolderInCatalog";
+        final String dataFolderGUIDParameterName = "dataFolderGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                handler.archiveFolderInCatalog(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               dataFolderGUID,
+                                               dataFolderGUIDParameterName,
+                                               requestBody.getArchiveDate(),
+                                               requestBody.getArchiveProcess(),
+                                               requestBody.getArchiveProperties(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the datafolder asset description from the catalog.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user (assumed to be the owner)
+     * @param dataFolderGUID unique identifier of the data file asset
+     * @param requestBody full pathname for the asset
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse deleteDataFolderFromCatalog(String              serverName,
+                                                    String              userId,
+                                                    String              dataFolderGUID,
+                                                    PathNameRequestBody requestBody)
+    {
+        final String methodName = "deleteDataFolderInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                handler.deleteFolderFromCatalog(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                dataFolderGUID,
+                                                requestBody.getFullPath(),
+                                                methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (InvalidParameterException error)
@@ -1098,11 +1642,77 @@ public class FilesRESTServices
 
 
     /**
+     * Return the list of folders nested inside a filesystem.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param fileSystemGUID unique identifier of the Filesystem to query
+     * @param startingFrom starting point in the list
+     * @param maxPageSize maximum number of results
+     *
+     * @return list of folder unique identifiers (null means no nested folders) or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    public GUIDListResponse  getTopLevelFolders(String  serverName,
+                                                String  userId,
+                                                String  fileSystemGUID,
+                                                int     startingFrom,
+                                                int     maxPageSize)
+    {
+        final String methodName = "getTopLevelFolders";
+        final String guidParameterName = "fileSystemGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDListResponse response = new GUIDListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                    instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+            response.setGUIDs(handler.getTopLevelFolders(userId,
+                                                         fileSystemGUID,
+                                                         guidParameterName,
+                                                         startingFrom,
+                                                         maxPageSize,
+                                                         methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
      * Return the list of folders nested inside a folder.
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param parentFolderGUID unique identifier of the folder or Filesystem to query
+     * @param parentFolderGUID unique identifier of the folder to query
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
@@ -1320,6 +1930,76 @@ public class FilesRESTServices
                 DataFileElement dataFile = handler.getDataFileByPathName(userId, requestBody.getFullPath(), nameParameterName, methodName);
 
                 response.setDataFile(dataFile);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param startingFrom starting point in the list
+     * @param maxPageSize maximum number of results
+     * @param requestBody path name
+     *
+     * @return data file properties or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    public DataFilesResponse findDataFilesByPathName(String              serverName,
+                                                     String              userId,
+                                                     int                 startingFrom,
+                                                     int                 maxPageSize,
+                                                     PathNameRequestBody requestBody)
+    {
+        final String methodName        = "findDataFilesByPathName";
+        final String nameParameterName = "fullPath";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DataFilesResponse response = new DataFilesResponse();
+        AuditLog          auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
+                        instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
+
+                List<DataFileElement> dataFiles = handler.findDataFilesByName(userId,
+                                                                              requestBody.getFullPath(),
+                                                                              nameParameterName,
+                                                                              startingFrom,
+                                                                              maxPageSize,
+                                                                              methodName);
+
+                response.setElementList(dataFiles);
             }
         }
         catch (InvalidParameterException error)

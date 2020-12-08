@@ -38,6 +38,7 @@ public class ElementHeaderConverter
      * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName called server
      */
     ElementHeaderConverter(EntityDetail           entity,
                            OMRSRepositoryHelper   repositoryHelper,
@@ -59,6 +60,7 @@ public class ElementHeaderConverter
      * @param relationship properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public ElementHeaderConverter(EntityDetail         entity,
                                   Relationship         relationship,

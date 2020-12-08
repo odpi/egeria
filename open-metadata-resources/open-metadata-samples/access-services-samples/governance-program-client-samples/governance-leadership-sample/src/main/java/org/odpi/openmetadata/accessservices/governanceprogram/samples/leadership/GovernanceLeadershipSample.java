@@ -13,6 +13,8 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.Governa
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.http.HttpHelper;
+
 
 import java.util.Date;
 import java.util.HashMap;
@@ -644,6 +646,9 @@ public class GovernanceLeadershipSample
         serverName = args[0];
         serverURLRoot = args[1];
         clientUserId = args[2];
+
+        HttpHelper.noStrictSSLIfConfigured();
+
 
         System.out.println("===============================");
         System.out.println("Governance Leadership Sample   ");

@@ -37,42 +37,41 @@ const getLineType = (key) => {
         },
       ],
     },
+    hasA: {
+      key: "has-a",
+      plural: "has-a",
+      typeName: "HasA",
+      attributes: [
+        "description",
+        "status",
+        "steward",
+        "source",
+        {
+          key: "description",
+          label: "Description",
+        },
+        {
+          key: "steward",
+          label: "Steward",
+        },
+        {
+          key: "source",
+          label: "Source",
+        },
+        {
+          key: "status",
+          label: "Status",
+          // TODO implement enum values
+        },
+      ],
+      summaryResponseAttributes: [
+        {
+          key: "guid",
+          label: "Guid",
+        },
+      ],
+    },
   };
-  hasA: {
-    key: "has-a",
-    plural: "has-a",
-    typeName: "HasA",
-    attributes: [
-      "description",
-      "status",
-      "steward",
-      "source",
-      {
-        key: "description",
-        label: "Description",
-      },
-      {
-        key: "steward",
-        label: "Steward",
-      },
-      {
-        key: "source",
-        label: "Source",
-      },
-      {
-        key: "status",
-        label: "Status",
-        // TODO implement enum values
-      },
-    ],
-    summaryResponseAttributes: [
-      {
-        key: "guid",
-        label: "Guid",
-      },
-    ],
-  },
-};
 
   let lineType = LineTypes[key];
   if (lineType) {

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,25 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 {
     protected String              qualifiedName = null;
     private   Map<String, String> additionalProperties = null;
+
+
+    /**
+     * Constructor for simple creates.
+     *
+     * @param repositoryHelper helper methods
+     * @param serviceName      name of this OMAS
+     * @param serverName       name of local server
+     */
+    protected ReferenceableBuilder(OMRSRepositoryHelper repositoryHelper,
+                                   String               serviceName,
+                                   String               serverName)
+    {
+        super(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+              repositoryHelper,
+              serviceName,
+              serverName);
+    }
 
 
     /**
@@ -221,7 +241,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
 
     /**
-     * Set up the template classification.
+     * Set up the Template classification.
      *
      * @param userId calling user
      * @param name template name
@@ -302,6 +322,128 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                          additionalProperties,
                                                                          methodName);
         }
+
+        return properties;
+    }
+
+
+
+    /**
+     * Set up the Memento classification.
+     *
+     * @param userId calling user
+     * @param archiveDate timestamp that the archive either occurred or was detected
+     * @param archiveUser name of user responsible for performing the archive (or detecting it)
+     * @param archiveProcess process responsible for performing the archive (or detecting it)
+     * @param archiveProperties additional properties to locate the archived asset/artifact (if known)
+     * @param methodName calling method
+     * @throws InvalidParameterException Template classification not available in the repositories
+     */
+    public void setMemento(String              userId,
+                           Date                archiveDate,
+                           String              archiveUser,
+                           String              archiveProcess,
+                           Map<String, String> archiveProperties,
+                           String              methodName) throws InvalidParameterException
+    {
+        try
+        {
+            Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  InstanceProvenanceType.LOCAL_COHORT,
+                                                                                  userId,
+                                                                                  OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                                                                  typeName,
+                                                                                  ClassificationOrigin.ASSIGNED,
+                                                                                  null,
+                                                                                  getMementoProperties(archiveDate,
+                                                                                                               archiveUser,
+                                                                                                               archiveProcess,
+                                                                                                               archiveProperties,
+                                                                                                               methodName));
+            newClassifications.put(classification.getName(), classification);
+        }
+        catch (TypeErrorException error)
+        {
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME);
+        }
+    }
+
+
+    /**
+     * Return the template properties in an InstanceProperties object.
+     *
+     * @param archiveDate timestamp that the archive either occurred or was detected
+     * @param archiveUser name of user responsible for performing the archive (or detecting it)
+     * @param archiveProcess process responsible for performing the archive (or detecting it)
+     * @param archiveProperties additional properties to locate the archived asset/artifact (if known)
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getMementoProperties(Date                archiveDate,
+                                            String              archiveUser,
+                                            String              archiveProcess,
+                                            Map<String, String> archiveProperties,
+                                            String              methodName)
+    {
+        InstanceProperties properties;
+
+        if (archiveDate != null)
+        {
+            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
+                                                                    archiveDate,
+                                                                    methodName);
+        }
+        else
+        {
+            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
+                                                                    new Date(),
+                                                                    methodName);
+        }
+
+        if (archiveUser != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      OpenMetadataAPIMapper.ARCHIVE_USER_PROPERTY_NAME,
+                                                                      archiveUser,
+                                                                      methodName);
+        }
+
+        if (archiveProcess != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.ARCHIVE_PROCESS_PROPERTY_NAME,
+                                                                      archiveProcess,
+                                                                      methodName);
+        }
+
+        if (archiveProperties != null)
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.ARCHIVE_PROPERTIES_PROPERTY_NAME,
+                                                                         archiveProperties,
+                                                                         methodName);
+        }
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ARCHIVE_SERVICE_PROPERTY_NAME,
+                                                                  serviceName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ARCHIVE_METHOD_PROPERTY_NAME,
+                                                                  methodName,
+                                                                  methodName);
 
         return properties;
     }

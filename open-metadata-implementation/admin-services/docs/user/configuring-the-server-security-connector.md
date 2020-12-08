@@ -78,7 +78,7 @@ If the response looks more like the JSON below, a connector is configured.  The
 }
 ```
 
-# Removing the configured configuration document store connector
+# Removing the configured server security connector
 
 It is possible to remove the configuration for the connector using
 the following command:

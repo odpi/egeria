@@ -4,14 +4,14 @@
 
 package org.odpi.openmetadata.viewservices.serverauthor.api.rest;
 
-
-
-
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEndpoint;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Server Author's list of Resource endpoints, which contains the list of platforms.
+ */
 public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOMVSAPIResponse {
 
 
@@ -19,10 +19,6 @@ public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOM
      * Platform list
      */
     private List<ResourceEndpoint> platformList = null;
-    /**
-     * Server list
-     */
-    private List<ResourceEndpoint> serverList   = null;
 
     /**
      * Default constructor
@@ -45,7 +41,6 @@ public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOM
         if (template != null)
         {
             this.platformList = template.getPlatformList();
-            this.serverList = template.getServerList();
         }
     }
 
@@ -72,29 +67,6 @@ public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOM
     }
 
     /**
-     * Return the serverList.
-     *
-     * @return bean
-     */
-    public List<ResourceEndpoint> getServerList()
-    {
-        return serverList;
-    }
-
-
-    /**
-     * Set the resourceEndpointList.
-     *
-     * @param serverList - bean
-     */
-    public void setServerList(List<ResourceEndpoint> serverList)
-    {
-        this.serverList = serverList;
-    }
-
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -104,7 +76,6 @@ public class ServerAuthorResourceEndpointListResponse extends ServerAuthorViewOM
     {
         return "ServerAuthorResourceEndpointListResponse{" +
                 "platformList='" + platformList + '\'' +
-                ", serverList='" + serverList + '\'' +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
