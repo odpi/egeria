@@ -401,8 +401,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         if (noProperties)
         {
-            if ((firstInstanceProps.getInstanceProperties() == null) ||
-                (firstInstanceProps.getInstanceProperties().isEmpty()))
+            if ( (firstInstanceProps == null) ||
+                 (firstInstanceProps.getInstanceProperties() == null) ||
+                 (firstInstanceProps.getInstanceProperties().isEmpty()))
             {
                 matchProperties = true;
             }
