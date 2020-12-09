@@ -15,6 +15,7 @@ export default function BasicConfig() {
   const {
     newServerName, setNewServerName,
     newServerLocalURLRoot, setNewServerLocalURLRoot,
+    newServerOrganizationName, setNewServerOrganizationName,
     newServerLocalUserId, setNewServerLocalUserId,
     newServerLocalPassword, setNewServerLocalPassword,
     newServerMaxPageSize, setNewServerMaxPageSize,
@@ -57,13 +58,26 @@ export default function BasicConfig() {
         />
 
         <TextInput
+          id="new-server-organization-name"
+          name="new-server-organization-name"
+          type="text"
+          labelText="Organization name"
+          value={newServerOrganizationName}
+          onChange={e => setNewServerOrganizationName(e.target.value)}
+          placeholder="Org 1"
+          invalid={newServerOrganizationName == ""}
+          style={{marginBottom: "16px"}}
+          autoComplete="off"
+        />
+
+        <TextInput
           id="new-server-local-user-id"
           name="new-server-local-user-id"
           type="text"
           labelText="Local user ID"
           value={newServerLocalUserId}
           onChange={e => setNewServerLocalUserId(e.target.value)}
-          placeholder="myMetadataServerUserId"
+          placeholder="my_server_user_id"
           invalid={newServerLocalUserId === ""}
           style={{marginBottom: "16px"}}
           autoComplete="off"
@@ -75,7 +89,7 @@ export default function BasicConfig() {
           labelText="Local password"
           value={newServerLocalPassword}
           onChange={e => setNewServerLocalPassword(e.target.value)}
-          placeholder="myMetadataServerPassword"
+          placeholder="my_server_Password"
           invalid={newServerLocalPassword === ""}
           style={{marginBottom: "16px"}}
           autoComplete="new-password"
