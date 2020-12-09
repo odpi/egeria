@@ -39,21 +39,9 @@ const serverTypes = [
     label: "Security Officer Server"
   },
   {
-    id: "data-platform-server",
-    label: "Data Platform Server"
+    id: "integration-daemon",
+    label: "Integration Daemon"
   },
-  {
-    id: "virtualizer",
-    label: "Virtualizer"
-  },
-  {
-    id: "data-engine-proxy",
-    label: "Data Engine Proxy"
-  },
-  {
-    id: "security-sync-server",
-    label: "Security Sync Server"
-  }
 ]
 
 export default serverTypes;
