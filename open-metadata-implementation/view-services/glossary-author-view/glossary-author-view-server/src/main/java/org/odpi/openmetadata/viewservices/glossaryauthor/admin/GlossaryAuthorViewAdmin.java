@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * GlossaryAuthorViewAdmin is the class that is called by the UI Server to initialize and terminate
- * the Subject Area OMVS.  The initialization call provides this OMVS with the Audit log and configuration.
+ * the Glossary Author OMVS.  The initialization call provides this OMVS with the Audit log and configuration.
  */
 public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
 
@@ -35,7 +35,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
     }
 
     /**
-     * Initialize the subject area access service.
+     * Initialize the glossary author open metadata view service (OMVS).
      *
      * @param serverName                         name of the local server
      * @param viewServiceConfigurationProperties specific configuration properties for this view service.
@@ -84,7 +84,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
     }
 
     /**
-     * Shutdown the subject area view service.
+     * Shutdown the glossary author view service.
      */
     @Override
     public void shutdown() {

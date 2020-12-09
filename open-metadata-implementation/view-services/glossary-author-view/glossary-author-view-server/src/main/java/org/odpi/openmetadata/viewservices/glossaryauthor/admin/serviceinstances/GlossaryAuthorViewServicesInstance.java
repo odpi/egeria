@@ -4,6 +4,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
@@ -22,7 +23,7 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 {
     private final SubjectAreaNodeClients nodeClients;
     private final SubjectAreaRelationshipClients subjectAreaRelationshipClients;
-    private final SubjectAreaConfigClients subjectAreaConfigClients;
+    private final SubjectAreaConfigClient subjectAreaConfigClient;
 
     /**
      * Set up the Glossary Author OMVS instance
@@ -46,7 +47,7 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
         final SubjectArea subjectArea = new SubjectAreaImpl(remoteServerName, remoteServerURL);
         this.subjectAreaRelationshipClients = subjectArea.relationshipClients();
         this.nodeClients = subjectArea.nodeClients();
-        this.subjectAreaConfigClients = subjectArea.subjectAreaConfigClients();
+        this.subjectAreaConfigClient = subjectArea.subjectAreaConfigClient();
     }
 
     public String getViewServiceName()
@@ -60,7 +61,10 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
         return subjectAreaRelationshipClients;
     }
 
-    public SubjectAreaConfigClients getSubjectAreaConfigClients() {
-        return subjectAreaConfigClients;
+    public SubjectAreaConfigClient getSubjectAreaConfigClient() {
+        return subjectAreaConfigClient;
+    }
+    public int getGlossaryViewMaxPageSize() {
+        return maxPageSize;
     }
 }

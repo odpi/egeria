@@ -58,7 +58,7 @@ export default function StartingNodeNavigation({
     // ... and thanks to our hook it will only change if the original ...
     // value (FilterCriteria) hasn't changed for more than 500ms.
     // If the exactMatch changes then we need to re-issue the search.
-    [debouncedFilterCriteria, exactMatch]
+    [debouncedFilterCriteria, exactMatch, pageSize, pageNumber]
   );
   const paginationProps = () => ({
     disabled: false,
@@ -140,7 +140,7 @@ export default function StartingNodeNavigation({
   // issue search for first page of nodes
   const issueNodeSearch = (criteria) => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(nodeType.url + "?searchCriteria=" + criteria);
+    const url = encodeURI(nodeType.url + "?searchCriteria=" + criteria + ", pageSize=" + (pageSize+1) + ",offset="+((pageNumber-1)*pageSize));
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
 

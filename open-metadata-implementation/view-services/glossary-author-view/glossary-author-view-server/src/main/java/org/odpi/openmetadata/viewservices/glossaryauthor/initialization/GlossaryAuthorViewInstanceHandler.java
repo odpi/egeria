@@ -91,10 +91,17 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
      * @param serviceOperationName service operation - usually the top level rest call
      * @return SubjectAreaNodeClients subject area config API objects
      */
-    public SubjectAreaConfigClients getSubjectAreaConfigClients(String serverName, String userId, String serviceOperationName)
+    public SubjectAreaConfigClient getSubjectAreaConfigClient(String serverName, String userId, String serviceOperationName)
     throws
     InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
-        return instance.getSubjectAreaConfigClients();
+        return instance.getSubjectAreaConfigClient();
+    }
+    public int getGlossaryViewMaxPageSize(String serverName, String userId, String serviceOperationName)
+    throws
+    InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        return instance.getGlossaryViewMaxPageSize();
     }
 }

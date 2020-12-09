@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
@@ -56,8 +57,15 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SubjectAreaConfigClients clients = instanceHandler.getSubjectAreaConfigClients(serverName, userId, methodName);
-            Config config = clients.configs().getConfig(userId);
+            SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
+            int glossaryViewMaxMageSize = instanceHandler.getGlossaryViewMaxPageSize(serverName, userId, methodName);
+            Config config = client.getConfig(userId);
+            // Use the lower of the max page sizes as found in the glossary author view service and the subject area access service
+
+            if (glossaryViewMaxMageSize < config.getMaxPageSize()) {
+                config.setMaxPageSize(glossaryViewMaxMageSize);
+            }
+
             response.addResult(config);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
