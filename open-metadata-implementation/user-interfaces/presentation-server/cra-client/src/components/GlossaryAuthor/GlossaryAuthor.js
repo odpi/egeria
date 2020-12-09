@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect, useContext } from "react";
-import { Accordion, AccordionItem } from "carbon-components-react";
-import GlossaryAuthorContext from "./contexts/GlossaryAuthorContext";
-import getNodeType from "./components/properties/NodeTypes.js";
 import { IdentificationContext } from "../../contexts/IdentificationContext";
+
+import { Accordion, AccordionItem } from "carbon-components-react";
+import getNodeType from "./components/properties/NodeTypes.js";
 import { BrowserRouter } from "react-router-dom";
-import GlossaryAuthorRoutes from "./components/views/GlossaryAuthorRoutes";
+import GlossaryAuthorRoutes from "./components/navigations/GlossaryAuthorRoutes";
 import GlossaryAuthorTaskRouting from "./components/GlossaryAuthorTaskRouting";
 
 export default function GlossaryAuthor() {
@@ -21,7 +21,7 @@ export default function GlossaryAuthor() {
   const [glossaryAuthorURL, setGlossaryAuthorURL] = useState();
   const identificationContext = useContext(IdentificationContext);
 
-  const nodeType = getNodeType("glossary");
+  const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), "glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
     setGlossaryAuthorURL(
@@ -48,12 +48,12 @@ export default function GlossaryAuthor() {
         "/" +
         serverName +
         "/login";
-      if (history.pushState) {
+      if (window.history.pushState) {
         alert(
           "We have lost the session possibly due to a refresh of the web page. Please re-enter your credentials"
         );
-        history.pushState({}, null, loginUrl);
-        history.go();
+        window.history.pushState({}, null, loginUrl);
+        window.history.go();
       } else {
         alert(
           "The Browser does not support history. Please re-login here: " +
@@ -81,7 +81,7 @@ export default function GlossaryAuthor() {
         .then((res) => res.json())
         .then((res) => {
           console.log("get glossaries worked " + JSON.stringify(res));
-          if (res.relatedHTTPCode == 200) {
+          if (res.relatedHTTPCode === 200) {
             setConnected(true);
           } else {
             setFullResponse(JSON.stringify(res));
@@ -92,7 +92,7 @@ export default function GlossaryAuthor() {
               setExceptionErrorMessage(res.exceptionErrorMessage);
               setSystemAction(res.systemAction);
             } else if (res.errno) {
-              if (res.errno == "ECONNREFUSED") {
+              if (res.errno === "ECONNREFUSED") {
                 setErrorMsg(
                   "Retry the request when the View Server is available"
                 );
@@ -125,7 +125,6 @@ export default function GlossaryAuthor() {
     <div>
       {connected && (
         <div>
-          <GlossaryAuthorContext>
             <BrowserRouter>
               {/* this will cause the change in URL */}
               <GlossaryAuthorTaskRouting glossaryAuthorURL={glossaryAuthorURL} />
@@ -134,7 +133,6 @@ export default function GlossaryAuthor() {
               <GlossaryAuthorRoutes glossaryAuthorURL={glossaryAuthorURL} />
               {/* <GlossaryAuthorRoutes /> */}
             </BrowserRouter>
-          </GlossaryAuthorContext>
         </div>
       )}
       {!connected && (

@@ -18,12 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ValidValuesHandler provides the methods to create and maintain lists of valid
- * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
- * <p>
- * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
- * valid value sets.
+ * ProcessHandler provides the methods to create and maintain processes and their contents.
  */
 public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL, LINEAGE_MAPPING> extends ReferenceableHandler<PROCESS>
 {
@@ -157,6 +152,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param qualifiedName unique name for this asset
      * @param technicalName the stored display name property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param formula the formula that characterize the processing behavior of the process
+     * @param implementationLanguage the implementation language used to create the process
      * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
      * @param owner identifier of the owner
      * @param ownerType is the owner identifier a user id, personal profile or team profile
@@ -313,6 +310,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param qualifiedName unique name for this asset
      * @param technicalName the stored display name property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param formula the formula that characterize the processing behavior of the process
+     * @param implementationLanguage the implementation language used to create the process
      * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
      * @param owner identifier of the owner
      * @param ownerType is the owner identifier a user id, personal profile or team profile
@@ -550,8 +549,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param searchString string to find in the properties
      * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
@@ -565,8 +562,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<PROCESS> findProcesses(String userId,
-                                       String externalSourceGUID,
-                                       String externalSourceName,
                                        String searchString,
                                        String searchStringParameterName,
                                        int    startFrom,
@@ -575,36 +570,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        return null;
-    }
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        List<PROCESS> results = processHandler.findAssets(userId,
+                                                          searchString,
+                                                          searchStringParameterName,
+                                                          startFrom,
+                                                          validatedPageSize,
+                                                          methodName);
 
-    /**
-     * Return the list of processes associated with the process manager.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param methodName calling method
-     *
-     * @return list of metadata elements describing the processes associated with the requested process manager
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<PROCESS> getProcessesForExternalSource(String userId,
-                                                       String externalSourceGUID,
-                                                       String externalSourceName,
-                                                       int    startFrom,
-                                                       int    pageSize,
-                                                       String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        return null;
+        return results;
     }
 
 
@@ -613,8 +590,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param name name to search for
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
@@ -628,8 +603,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<PROCESS>   getProcessesByName(String userId,
-                                              String externalSourceGUID,
-                                              String externalSourceName,
                                               String name,
                                               String nameParameterName,
                                               int    startFrom,
@@ -646,8 +619,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the process metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the requested metadata element
      * @param processGUIDParameterName parameter supplying processGUID
      * @param methodName calling method
@@ -659,8 +630,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public PROCESS getProcessByGUID(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
                                     String processGUID,
                                     String processGUIDParameterName,
                                     String methodName) throws InvalidParameterException,
@@ -675,8 +644,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the process metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the requested metadata element
      * @param processGUIDParameterName parameter supplying processGUID
      * @param methodName calling method
@@ -688,8 +655,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public PROCESS getProcessParent(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
                                     String processGUID,
                                     String processGUIDParameterName,
                                     String methodName) throws InvalidParameterException,
@@ -704,8 +669,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the process metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the requested metadata element
      * @param processGUIDParameterName parameter supplying processGUID
      * @param startFrom paging start point
@@ -719,8 +682,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<PROCESS> getSubProcesses(String userId,
-                                         String externalSourceGUID,
-                                         String externalSourceName,
                                          String processGUID,
                                          String processGUIDParameterName,
                                          int    startFrom,
@@ -1074,6 +1035,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the metadata element representing a port.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the metadata element to remove
      * @param portGUIDParameterName parameter supplying portGUID
      * @param methodName calling method
@@ -1083,13 +1046,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removePort(String userId,
+                           String externalSourceGUID,
+                           String externalSourceName,
                            String portGUID,
                            String portGUIDParameterName,
                            String methodName) throws InvalidParameterException,
                                                      UserNotAuthorizedException,
                                                      PropertyServerException
     {
-        portHandler.removePort(userId, portGUID, portGUIDParameterName, methodName);
+        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName, methodName);
     }
 
 
@@ -1099,6 +1064,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      *
      * @param userId calling user
      * @param searchString string to find in the properties
+     * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -1269,8 +1235,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Classify a port, process or process as "BusinessSignificant" (this may effect the way that lineage is displayed).
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
      * @param elementGUIDParameterName parameter name for elementGUID
      * @param methodName calling method
@@ -1280,8 +1244,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setBusinessSignificant(String userId,
-                                       String externalSourceGUID,
-                                       String externalSourceName,
                                        String elementGUID,
                                        String elementGUIDParameterName,
                                        String methodName) throws InvalidParameterException,
@@ -1296,8 +1258,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the "BusinessSignificant" designation from the element.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
      * @param elementGUIDParameterName parameter name for elementGUID
      * @param methodName calling method
@@ -1307,8 +1267,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearBusinessSignificant(String userId,
-                                         String externalSourceGUID,
-                                         String externalSourceName,
                                          String elementGUID,
                                          String elementGUIDParameterName,
                                          String methodName) throws InvalidParameterException,
@@ -1364,8 +1322,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * the request.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
      * @param dataConsumerGUID unique identifier of the data consumer
@@ -1380,8 +1336,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public DATA_FLOW getDataFlow(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
                                  String dataSupplierGUID,
                                  String dataSupplierGUIDParameterName,
                                  String dataConsumerGUID,
@@ -1460,8 +1414,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
      * @param methodName calling method
@@ -1473,8 +1425,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<DATA_FLOW> getDataFlowConsumers(String userId,
-                                                String externalSourceGUID,
-                                                String externalSourceName,
                                                 String dataSupplierGUID,
                                                 String dataSupplierGUIDParameterName,
                                                 String methodName) throws InvalidParameterException,
@@ -1489,8 +1439,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param dataConsumerGUIDParameterName parameter supplying dataConsumerGUID
      * @param methodName calling method
@@ -1502,13 +1450,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<DATA_FLOW> getDataFlowSuppliers(String userId,
-                                                String externalSourceGUID,
-                                                String externalSourceName,
                                                 String dataConsumerGUID,
                                                 String dataConsumerGUIDParameterName,
                                                 String methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         return null;
     }
@@ -1559,8 +1505,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * the request.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param currentStepGUID unique identifier of the previous step
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
      * @param nextStepGUID unique identifier of the next step
@@ -1575,8 +1519,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public CONTROL_FLOW getControlFlow(String userId,
-                                       String externalSourceGUID,
-                                       String externalSourceName,
                                        String currentStepGUID,
                                        String currentStepGUIDParameterName,
                                        String nextStepGUID,
@@ -1643,8 +1585,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  String controlFlowGUID,
                                  String controlFlowGUIDParameterName,
                                  String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
     }
 
@@ -1653,10 +1595,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
-     * @param nextStepGUID unique identifier of the next step
-     * @param nextStepGUIDParameterName parameter supplying nextStepGUID
+     * @param currentStepGUID unique identifier of the current step
+     * @param currentStepGUIDParameterName parameter supplying currentStepGUID
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1666,13 +1606,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<CONTROL_FLOW> getControlFlowNextSteps(String userId,
-                                                      String externalSourceGUID,
-                                                      String externalSourceName,
-                                                      String nextStepGUID,
-                                                      String nextStepGUIDParameterName,
+                                                      String currentStepGUID,
+                                                      String currentStepGUIDParameterName,
                                                       String methodName) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         return null;
     }
@@ -1682,9 +1620,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
-     * @param currentStepGUID unique identifier of the previous step
+     * @param currentStepGUID unique identifier of the current step
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
      * @param methodName calling method
      *
@@ -1695,13 +1631,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<CONTROL_FLOW> getControlFlowPreviousSteps(String userId,
-                                                          String externalSourceGUID,
-                                                          String externalSourceName,
                                                           String currentStepGUID,
                                                           String currentStepGUIDParameterName,
                                                           String methodName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         return null;
     }
@@ -1714,7 +1648,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
+     * @param callerGUIDParameterName parameter supplying callerGUID
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param calledGUIDParameterName parameter supplying calledGUID
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
@@ -1750,8 +1686,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * the request.  This is often used in conjunction with update.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
      * @param callerGUIDParameterName parameter supplying callerGUID
      * @param calledGUID unique identifier of the element that is processing the call
@@ -1766,8 +1700,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public PROCESS_CALL getProcessCall(String userId,
-                                       String externalSourceGUID,
-                                       String externalSourceName,
                                        String callerGUID,
                                        String callerGUIDParameterName,
                                        String calledGUID,
@@ -1843,9 +1775,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the process call relationships linked from an specific element to the elements it calls.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
+     * @param callerGUIDParameterName parameter supplying callerGUID
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1855,8 +1786,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<PROCESS_CALL> getProcessCalled(String userId,
-                                               String externalSourceGUID,
-                                               String externalSourceName,
                                                String callerGUID,
                                                String callerGUIDParameterName,
                                                String methodName) throws InvalidParameterException,
@@ -1871,8 +1800,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the process call relationships linked from an specific element to its callers.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
      * @param methodName calling method
@@ -1884,8 +1811,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<PROCESS_CALL> getProcessCallers(String userId,
-                                                String externalSourceGUID,
-                                                String externalSourceName,
                                                 String calledGUID,
                                                 String calledGUIDParameterName,
                                                 String methodName) throws InvalidParameterException,
@@ -1902,27 +1827,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * supported by different technologies.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
+     * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setupLineageMapping(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
                                     String sourceElementGUID,
                                     String sourceElementGUIDParameterName,
                                     String destinationElementGUID,
                                     String destinationElementGUIDParameterName,
                                     String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
     }
 
@@ -1931,8 +1853,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the lineage mapping between two elements.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
@@ -1944,8 +1864,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearLineageMapping(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
                                     String sourceElementGUID,
                                     String sourceElementGUIDParameterName,
                                     String destinationElementGUID,
@@ -1961,19 +1879,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param methodName calling method
+     *
+     * @return list of lineage mapping relationships
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<LINEAGE_MAPPING> getDestinationLineageMappings(String userId,
-                                                               String externalSourceGUID,
-                                                               String externalSourceName,
                                                                String sourceElementGUID,
                                                                String sourceElementGUIDParameterName,
                                                                String methodName) throws InvalidParameterException,
@@ -1988,19 +1904,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
      * @param methodName calling method
      *
+     * @return list of lineage mapping relationships
+     * 
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<LINEAGE_MAPPING> getSourceLineageMappings(String userId,
-                                                          String externalSourceGUID,
-                                                          String externalSourceName,
                                                           String destinationElementGUID,
                                                           String destinationElementGUIDParameterName,
                                                           String methodName) throws InvalidParameterException,

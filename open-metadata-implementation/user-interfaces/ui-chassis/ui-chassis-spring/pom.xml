@@ -51,7 +51,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-ldap</artifactId>
@@ -312,6 +321,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.ldap</groupId>
+            <artifactId>spring-ldap-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
         </dependency>
@@ -392,23 +406,10 @@
                         </goals>
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
-                                <!-- Egeria ui admin needs to be in the component scan -->
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*
-                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>javax.xml.bind:*jaxb*</ignoredUnusedDeclaredDependency>
-                                <!-- Spring enablement - false positives from dependency checker -->
-                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
-                                </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>
-                                    org.springframework.boot:spring-boot-starter-security:*
-                                </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>
-                                    org.springframework.boot:spring-boot-starter-data-jpa:*
-                                </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>
-                                    org.springframework.cloud:spring-cloud-starter-netflix-zuul:*
-                                </ignoredUnusedDeclaredDependency>
-                                <!-- runtime database -->
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:*:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.cloud:*:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>com.h2database:h2:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>

@@ -715,6 +715,7 @@ public class LineageIntegratorContext
      * Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.
      *
      * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param formula description of how the value is calculated
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -743,10 +744,7 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaElementAsCalculatedValue(String userId,
-                                                    String assetManagerGUID,
-                                                    String assetManagerName,
-                                                    String schemaElementGUID) throws InvalidParameterException,
+    public void clearSchemaElementAsCalculatedValue(String schemaElementGUID) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -1845,10 +1843,7 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFlowElement> getDataFlowSuppliers(String userId,
-                                                      String assetManagerGUID,
-                                                      String assetManagerName,
-                                                      String dataConsumerGUID) throws InvalidParameterException,
+    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
@@ -1968,7 +1963,7 @@ public class LineageIntegratorContext
     /**
      * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
      *
-     * @param nextStepGUID unique identifier of the next step
+     * @param currentStepGUID unique identifier of the current step
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1976,18 +1971,18 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ControlFlowElement> getControlFlowNextSteps(String nextStepGUID) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public List<ControlFlowElement> getControlFlowNextSteps(String currentStepGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getControlFlowNextSteps(userId, assetManagerGUID, assetManagerName, nextStepGUID);
+        return lineageExchangeClient.getControlFlowNextSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID);
     }
 
 
     /**
      * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
      *
-     * @param currentStepGUID unique identifier of the previous step
+     * @param currentStepGUID unique identifier of the current step
      *
      * @return unique identifier and properties of the relationship
      *

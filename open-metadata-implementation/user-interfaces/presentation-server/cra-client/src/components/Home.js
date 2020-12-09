@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext } from "react";
 import { InfoSection, InfoCard, LocalInfoCard } from "./Info/Info";
-import GitHub32 from "../images/GitHub_logo_32";
-import EgeriaColor64 from "../images/Egeria_logo_color_64";
-import GlossaryAuthor32 from "../images/Egeria_glossary_author_32";
+import GitHub32 from "../images/github/GitHub_logo_32";
+import EgeriaColor64 from "../images/odpi/Egeria_logo_color_64";
+import GlossaryAuthor32 from "../images/odpi/Egeria_glossary_author_32";
 import { IdentificationContext } from "../contexts/IdentificationContext";
 
 export default function Home() {

@@ -488,21 +488,23 @@ const ResourcesContextProvider = (props) => {
     return null;
   }
 
-  const mapServerGUIDToServerName = (guid) => {
-    let serverGenId = guidToGenId[guid];
-    if (serverGenId) {
-      let serverGen = gens[serverGenId-1];
-      if (serverGen) {
-        let server = serverGen.resources[guid];
-        if (server) {
-          let serverName = server.serverName;
-          return serverName;
-        }
-      }
-    }
-    alert("Could not map supplied server GUID "+guid+" to a server!");
-    return null;
-  }
+  // commenting out as linting is indicating this function is not used.
+
+  // const mapServerGUIDToServerName = (guid) => {
+  //   let serverGenId = guidToGenId[guid];
+  //   if (serverGenId) {
+  //     let serverGen = gens[serverGenId-1];
+  //     if (serverGen) {
+  //       let server = serverGen.resources[guid];
+  //       if (server) {
+  //         let serverName = server.serverName;
+  //         return serverName;
+  //       }
+  //     }
+  //   }
+  //   alert("Could not map supplied server GUID "+guid+" to a server!");
+  //   return null;
+  // }
  
 
 

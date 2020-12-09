@@ -31,6 +31,12 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
     implementation project(':open-metadata-implementation:governance-servers:data-platform-services:data-platform-services-connector')
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-api')
+    implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-api')
+    implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-api')
+    implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-api')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
@@ -53,7 +59,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
-    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
+    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-client')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
@@ -107,6 +113,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector').jar }
                 from { project(':open-metadata-implementation:governance-servers:data-platform-services:data-platform-services-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector').jar }
@@ -135,6 +142,7 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample').shadowJar }
                 fileMode = 0755
             }
             into('user-interface') {

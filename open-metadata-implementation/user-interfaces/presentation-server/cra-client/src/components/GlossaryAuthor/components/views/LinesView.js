@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import { FormGroup } from "carbon-components-react";
 import Info16 from "@carbon/icons-react/lib/information/16";
-import Close16 from "../../../../images/Egeria_close_16";
+import Close16 from "../../../../images/carbon/Egeria_close_16";
 
 function LinesView(props) {
   console.log("LinesView");

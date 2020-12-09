@@ -38,7 +38,7 @@ public class SLF4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 
         super.validateLogRecord(logRecord, methodName);
 
-        String loggerName = logRecord.getOriginator().getServerName() + "." + logRecord.getOriginatorComponent().getComponentName();
+        String loggerName =  "org.odpi.openmetadata.frameworks.auditlog." + (logRecord.getOriginator().getServerName() + "." + logRecord.getOriginatorComponent().getComponentName()).replaceAll(" ","");
         Logger log = LoggerFactory.getLogger(loggerName);
 
         if (super.isSupportedSeverity(logRecord))
