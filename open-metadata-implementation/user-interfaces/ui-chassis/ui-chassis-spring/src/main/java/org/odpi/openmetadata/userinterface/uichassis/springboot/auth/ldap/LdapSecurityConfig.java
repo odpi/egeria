@@ -33,8 +33,8 @@ class LdapSecurityConfig extends SecurityConfig {
     @Value("${ldap.url}")
     private String ldapURL;
 
-    @Value("${ldap.user.dn.patterns}")
-    private String userDnPatterns;
+    @Value("#{'${ldap.user.dn.patterns}'.split(';')}")
+    private String[] userDnPatterns;
 
     @Value("${ldap.npa.dn}")
     private String npaDn;
