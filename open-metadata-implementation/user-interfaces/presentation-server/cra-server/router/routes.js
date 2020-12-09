@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const https = require('https');
@@ -10,6 +11,8 @@ const getAxiosInstance = require('../functions/getAxiosInstance');
 const validateURL = require('../validations/validateURL');
 const validateAdminURL = require('../validations/validateAdminURL');
 
+const cert = fs.readFileSync(path.join(__dirname, '../../') + "/../presentation-server/ssl/keys/server.cert");
+const key = fs.readFileSync(path.join(__dirname, '../../') + "/../presentation-server/ssl/keys/server.key");
 
 /**
  * Middleware to handle post requests that start with /login i.e. the login request. The tenant segment has been removed by previous middleware. 
@@ -50,9 +53,29 @@ router.get("/logout", function (req, res) {
     // https://stackoverflow.com/questions/13758207/why-is-passportjs-in-node-not-removing-session-on-logout
     //  explicity clear the cookie.
     res.clearCookie("connect.sid");
-    console.log("re direct to /loggedOut");
-    res.redirect("/" + req.query.serverName + "/login");
+    res.sendStatus(200);
   });
+});
+
+router.get("/user", (req, res) => {
+  console.log('/user');
+  console.log(req.user);
+  if (req.user) {
+    res.json({ user: req.user });
+  } else {
+    res.json({ user: null });
+  }
+});
+
+const staticJoinedPath = path.join(__dirname, "../../dist");
+router.use(express.static(staticJoinedPath, { index: false }));
+const joinedPath = path.join(__dirname, "../../dist", "index.html");
+/**
+ * Process login url,
+ */
+router.get("/login", (req, res) => {
+  console.log("/login called " + joinedPath);
+  res.sendFile(joinedPath);
 });
 
 router.post("/servers/*", (req, res) => {
@@ -192,8 +215,8 @@ router.get("/open-metadata/admin-services/*", (req, res) => {
     url: urlRoot + incomingPath,
     httpsAgent: new https.Agent({
       // ca: - at some stage add the certificate authority
-      cert: router.get('cert'),
-      key: router.get('key'),
+      cert,
+      key,
       rejectUnauthorized: false,
     }),
     headers: {
@@ -239,8 +262,8 @@ router.post("/open-metadata/admin-services/*", (req, res) => {
     },
     httpsAgent: new https.Agent({
       // ca: - at some stage add the certificate authority
-      cert: router.get('cert'),
-      key: router.get('key'),
+      cert,
+      key,
       rejectUnauthorized: false,
     }),
   };
@@ -282,8 +305,8 @@ router.delete("/open-metadata/admin-services/*", (req, res) => {
     },
     httpsAgent: new https.Agent({
       // ca: - at some stage add the certificate authority
-      cert: router.get('cert'),
-      key: router.get('key'),
+      cert,
+      key,
       rejectUnauthorized: false,
     }),
   };
@@ -320,8 +343,8 @@ router.get("/open-metadata/platform-services/*", (req, res) => {
     url: urlRoot + incomingPath,
     httpsAgent: new https.Agent({
       // ca: - at some stage add the certificate authority
-      cert: router.get('cert'),
-      key: router.get('key'),
+      cert,
+      key,
       rejectUnauthorized: false,
     }),
   }

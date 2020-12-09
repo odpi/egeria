@@ -189,6 +189,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
         /*
          * Take a look at the attributes for the type being tested
+         *
+         * This should only return current type attributes, excluding any that are deprecated.
          */
 
         this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), relationshipDef);
