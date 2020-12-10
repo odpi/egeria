@@ -37,7 +37,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
+            throws AuthenticationException,IOException {
 
         String username = request.getParameter(USERNAME);
         String password = request.getParameter(PASSWORD);
@@ -45,7 +45,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
                 .authenticate(new UsernamePasswordAuthenticationToken( username, password));
 
         if(authentication.getAuthorities().isEmpty()){
-            throw new InsufficientAuthenticationException("NO authorities for the user: " + authentication.getPrincipal().toString());
+            log.warn("NO roles for user: {}", request.getParameter(USERNAME));
+            response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
         }
         return authentication;
     }
@@ -58,8 +59,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
             log.warn("Bad credentials UNSUCCESSFUL AUTHENTICATION for user: {}", request.getParameter(USERNAME));
             response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         } else {
-            log.warn("UNSUCCESSFUL AUTHENTICATION for user: {}", request.getParameter(USERNAME), failed);
-            response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
+            log.warn("ERROR AUTHENTICATION for user: {}", request.getParameter(USERNAME), failed);
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         }
     }
 
