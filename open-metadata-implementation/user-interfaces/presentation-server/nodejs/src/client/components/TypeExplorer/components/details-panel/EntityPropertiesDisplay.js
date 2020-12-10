@@ -69,7 +69,9 @@ export default function EntityPropertiesDisplay(props) {
     const formattedAttributeName = formatAttributeName(attributeName, attribute);
     const formattedAttributeType = formatAttributeType(attributeName, attribute);
     formattedAttribute = <div>{formattedAttributeName} : {formattedAttributeType}
-        {(attribute.status === "DEPRECATED_ATTRIBUTE") ? "  (use "+attribute.replacedBy+")" : ""}
+        {(attribute.status === "DEPRECATED_ATTRIBUTE")
+           ?   attribute.replacedBy ? "  (use "+attribute.replacedBy+")" : "  (no replacement)"
+           :   ""}
     </div>;
     return formattedAttribute
   };
