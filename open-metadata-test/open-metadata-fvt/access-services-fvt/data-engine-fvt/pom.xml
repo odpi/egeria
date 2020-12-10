@@ -53,18 +53,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-client</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>http-helper</artifactId>
         </dependency>
 
         <!-- Integration Tests will depend on the assembly -->
@@ -174,7 +169,7 @@
                                 <retries>${retries}</retries>
                                 <delay>${delay}</delay>
                             </defaults>
-                                <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
+                            <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
                         </configuration>
                     </execution>
                 </executions>

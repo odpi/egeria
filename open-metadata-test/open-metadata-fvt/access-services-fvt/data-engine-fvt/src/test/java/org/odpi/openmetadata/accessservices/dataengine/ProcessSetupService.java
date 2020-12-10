@@ -97,7 +97,8 @@ public class ProcessSetupService {
 
     /**
      * Registers an external data engine source.
-     * @param userId the user which creates the data engine
+     *
+     * @param userId               the user which creates the data engine
      * @param dataEngineOMASClient the data engine client that is used to create the external data engine
      * @return the software server capability used to create the external data source that is needed for checks inside the FVT
      * @throws InvalidParameterException
@@ -105,7 +106,8 @@ public class ProcessSetupService {
      * @throws PropertyServerException
      * @throws ConnectorCheckedException
      */
-    public SoftwareServerCapability createExternalDataEngine(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
+    public SoftwareServerCapability createExternalDataEngine(String userId, DataEngineClient dataEngineOMASClient)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
         SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
         softwareServerCapability.setDisplayName(DATA_ENGINE_DISPLAY_NAME);
         softwareServerCapability.setQualifiedName(DATA_ENGINE_NAME);
@@ -150,7 +152,8 @@ public class ProcessSetupService {
         return lineageAttributes;
     }
 
-    private void createVirtualAssets(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    private void createVirtualAssets(String userId, DataEngineClient dataEngineOMASClient)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         List<Attribute> csvAttributes = createAttributes(csvHeaderAttributeNames, VIRTUAL, CSV, PortType.INOUT_PORT);
         SchemaType csvSchemaType = createSchemaType(VIRTUAL, CSV, csvAttributes);
         dataEngineOMASClient.createOrUpdateSchemaType(userId, csvSchemaType);
@@ -167,7 +170,8 @@ public class ProcessSetupService {
         return lineageMapping;
     }
 
-    private void createJobProcess(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    private void createJobProcess(String userId, DataEngineClient dataEngineOMASClient)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process job = new Process();
         String name = getJobProcessName();
         job.setQualifiedName(name);
@@ -177,7 +181,7 @@ public class ProcessSetupService {
         PortAlias inputPortAlias = createPortAlias(inputPortAliasDelegation, PortType.INPUT_PORT);
         String outputPortAliasDelegation = getPortImplementationName(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_OUTPUT_PORT_NAME);
         PortAlias outputPortAlias = createPortAlias(outputPortAliasDelegation, PortType.OUTPUT_PORT);
-        job.setPortAliases(Arrays.asList(inputPortAlias,outputPortAlias));
+        job.setPortAliases(Arrays.asList(inputPortAlias, outputPortAlias));
 
         List<LineageMapping> lineageMappings = createLineageMappings(FIRST_STAGE_PROCESS_NAME, SECOND_STAGE_PROCESS_NAME,
                 FIRST_STAGE_OUTPUT_PORT_NAME, SECOND_STAGE_INPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(),
@@ -200,7 +204,8 @@ public class ProcessSetupService {
         return portAlias;
     }
 
-    private void createFirstStageProcess(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    private void createFirstStageProcess(String userId, DataEngineClient dataEngineOMASClient)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process firstStageProcess = createStageProcess(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_INPUT_PORT_NAME, FIRST_STAGE_OUTPUT_PORT_NAME,
                 csvHeaderAttributeNames, csvHeaderAttributeNames);
 
@@ -215,7 +220,8 @@ public class ProcessSetupService {
         dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(firstStageProcess));
     }
 
-    private void createSecondStageProcess(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    private void createSecondStageProcess(String userId, DataEngineClient dataEngineOMASClient)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process secondStageProcess = createStageProcess(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_INPUT_PORT_NAME, SECOND_STAGE_OUTPUT_PORT_NAME,
                 csvHeaderAttributeNames, databaseTableAttributeNames);
 
@@ -225,12 +231,13 @@ public class ProcessSetupService {
             String targetName = getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), databaseColumn);
             LineageMapping lineageMapping = createLineageMapping(sourceName, targetName);
             lineageMappings.add(lineageMapping);
-        } );
+        });
         secondStageProcess.setLineageMappings(lineageMappings);
         dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(secondStageProcess));
     }
 
-    private void createThirdStageProcess(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    private void createThirdStageProcess(String userId, DataEngineClient dataEngineOMASClient)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process thirdStageProcess = createStageProcess(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_INPUT_PORT_NAME, THIRD_STAGE_OUTPUT_PORT_NAME,
                 databaseTableAttributeNames, databaseTableAttributeNames);
 

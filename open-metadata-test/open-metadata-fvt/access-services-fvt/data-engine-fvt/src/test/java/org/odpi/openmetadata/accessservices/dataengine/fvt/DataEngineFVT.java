@@ -13,14 +13,20 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -41,22 +47,30 @@ public class DataEngineFVT {
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String SOURCE = "source";
 
+    public DataEngineFVT() {
+        HttpHelper.noStrictSSL();
+    }
+
     private final ProcessSetupService processSetupService = new ProcessSetupService();
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
     public void registerExternalTool(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
         SoftwareServerCapability softwareServerCapability = processSetupService.createExternalDataEngine(userId, dataEngineClient);
 
-        Optional<EntityDetail> entityDetail = repositoryService.findSoftwareServerCapabilityByPropertyValue(softwareServerCapability.getQualifiedName());
+        List<EntityDetail> entityDetails = repositoryService.findSoftwareServerCapabilityByPropertyValue(softwareServerCapability.getQualifiedName());
 
-        if(!entityDetail.isPresent()) {
+        if (entityDetails == null || entityDetails.isEmpty()) {
             fail();
         }
 
-        EntityDetail entity = entityDetail.get();
+        assertEquals(1, entityDetails.size());
+        EntityDetail entity = entityDetails.get(0);
         assertEquals(softwareServerCapability.getDescription(), entity.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
         assertEquals(softwareServerCapability.getDisplayName(), entity.getProperties().getPropertyValue(NAME).valueAsString());
         assertEquals(softwareServerCapability.getEngineType(), entity.getProperties().getPropertyValue(TYPE).valueAsString());
@@ -70,14 +84,14 @@ public class DataEngineFVT {
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
     public void verifyLineageMappingsForAJobProcess(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
         processSetupService.createExternalDataEngine(userId, dataEngineClient);
         processSetupService.createJobProcessWithContent(userId, dataEngineClient);
 
         Map<String, List<String>> columnLineages = processSetupService.getJobProcessLineageMappingsProxiesByCsvColumn();
 
-        for(String columnName : columnLineages.keySet()) {
+        for (String columnName : columnLineages.keySet()) {
             List<String> attributes = columnLineages.get(columnName);
             String previousAttribute = null;
             for (int i = 0; i < attributes.size() - 1; i++) {
@@ -86,7 +100,7 @@ public class DataEngineFVT {
                 List<Relationship> relationships = repositoryService.findRelationshipsByGUID(entityGUID);
                 List<String> lineageMappingOtherProxyQualifiedName = repositoryService.getLineageMappingsProxiesQualifiedNames(relationships, currentAttribute);
                 List<String> expectedLineageMappings = new ArrayList<>();
-                if(previousAttribute != null) {
+                if (previousAttribute != null) {
                     expectedLineageMappings.add(previousAttribute);
                 }
                 expectedLineageMappings.add(attributes.get(i + 1));

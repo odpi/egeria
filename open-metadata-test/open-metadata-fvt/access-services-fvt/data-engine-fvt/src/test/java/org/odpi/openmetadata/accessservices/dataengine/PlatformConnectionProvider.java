@@ -8,9 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,8 +39,8 @@ public class PlatformConnectionProvider {
     private static DataEngineRESTClient dataEngineRESTClientLocalGraph;
     private static RepositoryService repositoryServiceLocalGraph;
 
-    protected static Stream<Arguments> getConnectionDetails() throws IOException, InvalidParameterException, NoSuchAlgorithmException, KeyStoreException,
-            KeyManagementException {
+    protected static Stream<Arguments> getConnectionDetails() throws IOException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException {
         String rootPath = Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("")).getPath();
         String appConfigPath = rootPath + APPLICATION_PROPERTIES;
 
@@ -53,12 +50,12 @@ public class PlatformConnectionProvider {
         String serverPlatformRootURL = properties.getProperty(BASE_URL) + properties.getProperty(PORT);
 
         List<Arguments> servers = new ArrayList<>();
-        if(Boolean.parseBoolean(properties.getProperty(SERVER_IN_MEMORY_ENABLED))) {
+        if (Boolean.parseBoolean(properties.getProperty(SERVER_IN_MEMORY_ENABLED))) {
             String inMemoryServerName = properties.getProperty(SERVER_IN_MEMORY_NAME);
-            if(dataEngineRESTClientInMemory == null) {
+            if (dataEngineRESTClientInMemory == null) {
                 dataEngineRESTClientInMemory = new DataEngineRESTClient(inMemoryServerName, serverPlatformRootURL);
             }
-            if(repositoryServiceInMemory == null) {
+            if (repositoryServiceInMemory == null) {
                 repositoryServiceInMemory = new RepositoryService(inMemoryServerName, userId, serverPlatformRootURL);
             }
             servers.add(Arguments.of(userId, dataEngineRESTClientInMemory, repositoryServiceInMemory));
