@@ -189,20 +189,20 @@ class GraphOMRSRelationshipMapper {
 
 
         if (relationship.getInstanceProvenanceType() != null) {
-            edge.property(PROPERTY_KEY_RELATIONSHIP_PROVENANCE_TYPE, relationship.getInstanceProvenanceType().getOrdinal());   // ** ordinal mapping
+            edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_PROVENANCE_TYPE, relationship.getInstanceProvenanceType().getOrdinal());   // ** ordinal mapping
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_PROVENANCE_TYPE);
+            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_PROVENANCE_TYPE);
             if (ep != null)
                 ep.remove();
         }
 
 
         if (relationship.getStatus() != null) {
-            edge.property(PROPERTY_KEY_RELATIONSHIP_STATUS, relationship.getStatus().getOrdinal());                           // ** ordinal mapping
+            edge.property(PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS, relationship.getStatus().getOrdinal());                           // ** ordinal mapping
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_STATUS);
+            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS);
             if (ep != null)
                 ep.remove();
         }
@@ -404,11 +404,11 @@ class GraphOMRSRelationshipMapper {
 
         GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
 
-        Integer provenanceOrdinal = (Integer) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_PROVENANCE_TYPE);
+        Integer provenanceOrdinal = (Integer) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_INSTANCE_PROVENANCE_TYPE);
         InstanceProvenanceType instanceProvenanceType = mapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
         relationship.setInstanceProvenanceType(instanceProvenanceType);
 
-        Integer statusOrdinal = (Integer) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_STATUS);
+        Integer statusOrdinal = (Integer) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS);
         InstanceStatus instanceStatus = mapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
         relationship.setStatus(instanceStatus);
 
