@@ -1,13 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.5 (Planned November 2020)
+# Release 2.5 ( November 2020)
 
-Release 2.5 adds support for:
-   * Project management of IT change
-   * IoT and large scale cohorts
-
-Below are the highlights:
+Below are the highlights of the 2.5 release:
 
 
 * The following improvements to the presentation-server user interface:
@@ -36,7 +32,15 @@ Below are the highlights:
   
      * find methods have reinstated support for core properties, previously temporarily disabled due to property name clashes that are now resolved
 
+* A new type 'OpenMetadataRoot' has been added as the root type for all Open Metadata Types. See the [base model](open-metadata-publication/website/open-metadata-types/0010-Base-Model.md) 
+  
+* The admin services guide has some [additional information](open-metadata-implementation/admin-services/docs/user/omag-server-platform-transport-level-security.md) on configuring TLS security
 
+* Improvements to the gradle build scripts, but at this point it remains incomplete and build of egeria still requires maven 
+
+* Bug Fixes
+
+* Dependency Updates
 
    
 ----
