@@ -52,6 +52,9 @@ public class OpenLineageServiceTest {
     private static LineageVerticesAndEdges lineageVerticesAndEdges;
 
     @Mock
+    private LineageGraphDisplayRulesService lineageGraphDisplayRulesService;
+
+    @Mock
     private OpenLineageClient openLineageClient;
 
     @InjectMocks
