@@ -284,19 +284,19 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     BAD_REAL_LOCAL_EVENT_MAPPER("OMRS-AUDIT-0035",
                              OMRSAuditLogRecordSeverity.EXCEPTION,
                              "The connector to the local repository's event mapper failed with a {0} exception and the following error message: {1}",
-                             "The server fails to start.",
+                             "The server is unable to start.",
                              "Correct the configuration to ensure that the local repository's event mapper connection is valid."),
 
     BAD_ARCHIVE_STORE("OMRS-AUDIT-0036",
                                 OMRSAuditLogRecordSeverity.EXCEPTION,
                                 "The connector to the local repository archive store failed with a {0} exception and the following error message: {1}",
-                                "The server fails to start.",
+                                "The server is unable to start up.",
                                 "Correct the configuration to ensure that the local repository's archive store connection is valid."),
 
     BAD_AUDIT_LOG_DESTINATION("OMRS-AUDIT-0037",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "The connector to the local repository audit log destination failed with a {0} exception and the following error message: {1}",
-                      "The server fails to start.",
+                      "The server does not start.",
                       "Correct the configuration to ensure that the local repository's audit log destination connection is valid."),
 
     BAD_TOPIC_CONNECTION("OMRS-AUDIT-0038",
@@ -416,14 +416,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     EVENT_PROCESSING_ERROR("OMRS-AUDIT-0101",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "Unable process an incoming event {0} due to exception {1} from listener {2}",
-                      "The information in the event is not available to the server.",
-                      "Review the exception to determine the source of the error and correct it."),
+                      "The information in the event is unavailable to the server.",
+                      "Review the exception to determine the source of the error and fix it."),
 
     NULL_EVENT_TO_PROCESS("OMRS-AUDIT-0102",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "Connector {0} is unable to process a null event {0} passed by the event bus",
                       "The OMRS Topic Connector was passed a null event by the event bus.",
-                      "Review the exception to determine the source of the error and correct it."),
+                      "Review the exception to identify the source of the error and correct it."),
 
     SEND_REGISTRY_EVENT_ERROR("OMRS-AUDIT-0105",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -461,7 +461,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                                         "with the same metadata collection id. " +
                                                         "There is a chance of metadata integrity issues since " +
                                                         "a metadata instance can be updated in two places.",
-                      "It is necessary to update the local metadata collection Id to remove the conflict."),
+                      "Update the local metadata collection Id to remove the conflict."),
 
     INCOMING_BAD_CONNECTION("OMRS-AUDIT-0109",
                       OMRSAuditLogRecordSeverity.ACTION,
@@ -569,7 +569,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     DUPLICATE_REGISTERED_SERVER_NAME("OMRS-AUDIT-0121",
                                OMRSAuditLogRecordSeverity.ACTION,
                                "Server name {0} is being used by metadata collection {1} and metadata collection {2}",
-                               "The local server has detected a duplicate record in its cohort registry store.",
+                               "The local server has identified a duplicate record in its cohort registry store.",
                                "This suggests that a server has been restarted with a different metadata collection id."),
 
     NULL_REGISTERED_SERVER_NAME("OMRS-AUDIT-0122",
@@ -582,25 +582,25 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     DUPLICATE_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0123",
                                      OMRSAuditLogRecordSeverity.ACTION,
                                      "Server name {0} with metadata collection id {1} is using the same server address of {2} as server name {3} with metadata collection id {4}",
-                                     "The local server has detected a duplicate record in its cohort registry store.",
-                                     "This suggests that a server has been restarted with a different metadata collection id."),
+                                     "The local server has found a duplicate record in its cohort registry store.",
+                                     "This indicates that a server has been restarted with a different metadata collection id."),
 
     NULL_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0124",
                                 OMRSAuditLogRecordSeverity.ACTION,
                                 "The server name {0} using metadata collection id {1} has registered with a null server address",
-                                "The local server has detected an suspicious record in its cohort registry store.",
+                                "The local server has identified an suspicious record in its cohort registry store.",
                                 "Correct the configuration of one of the named server so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
 
     NULL_REGISTERED_SERVER_CONNECTION("OMRS-AUDIT-0125",
                                 OMRSAuditLogRecordSeverity.ACTION,
                                 "The server name {0} using metadata collection id {1} has registered with a null server connection",
-                                "The local server has detected an suspicious record in its cohort registry store.",
-                                "Correct the configuration of one of the named server so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
+                                "The local server has found an suspicious record in its cohort registry store.",
+                                "Correct the configuration of one of the named servers so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
 
     NULL_REGISTERED_MEMBER("OMRS-AUDIT-0126",
                                       OMRSAuditLogRecordSeverity.ACTION,
                                       "A null member record has been stored in the cohort registry store",
-                                      "The local server has detected an suspicious record in its cohort registry store.",
+                                      "The local server has discovered an suspicious record in its cohort registry store.",
                                       "This is likely to be a logic error.  Gather information from the audit log, and the configuration" +
                                    "information in the configuration document for this server."),
 
@@ -626,7 +626,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                               "It will attempt to create a connector for it in order to validate that the connection object is valid. If all is " +
                               "well, the list of systems that are called when a request is made by the access services is updated with the new " +
                               "member.",
-                      "Look for the confirmation message that indicated that the connection object is valid and has been incorporated into " +
+                      "Look for the confirmation message that indicated that the connection object is valid and has been added into " +
                               "the enterprise connector manager's list."),
 
     NEW_REMOTE_MEMBER_FAILURE("OMRS-AUDIT-0129",
@@ -635,9 +635,9 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                       "enterprise connector manager.  The exception was {2} and the error message was {3}",
                       "The enterprise connector manager is preparing to process a new connection from a remote member of the cohort.  " +
                               "It will attempt to create a connector for it in order to validate that the connection object is valid. If all is " +
-                              "well, the list of systems that are called when a request is made by the access services is updated with the new " +
+                              "correct, the list of systems that are called when a request is made by the access services is updated with the new " +
                               "member.",
-                      "Look for the confirmation message that indicated that the connection object is valid and has been incorporated into " +
+                      "Look for the confirmation message that shows that the connection object is correct and has been incorporated into " +
                               "the enterprise connector manager's list."),
 
     FEDERATION_LIST("OMRS-AUDIT-0130",
@@ -671,14 +671,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                          "refreshed in its federation list. " +
                                        "It will make use of this new information on subsequent calls to this partner when it processes metadata " +
                                          "requests from the calling service.",
-                               "Verify that this message appears for each of the access services operating in this server."),
+                               "Check that this message appears for each of the access services operating in this server."),
 
     REMOTE_MEMBER_UNDEPLOYED("OMRS-AUDIT-0134",
                                OMRSAuditLogRecordSeverity.INFO,
                                "The remote connector for metadata collection id {0} is no longer being called by {1}",
                                "The connector has been removed from this access service's federation list " +
                                        "of servers that are called during a metadata request.",
-                             "Verify that this message appears for each of the access services operating in this server."),
+                             "Ensure that this message appears for each of the access services operating in this server."),
 
     INCOMING_CONFLICTING_TYPEDEFS("OMRS-AUDIT-0201",
                       OMRSAuditLogRecordSeverity.TYPES,
@@ -695,7 +695,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                             "hosts metadata collection {2} because TypeDef {3} ({4}) in the local " +
                                             "server is at version {5} which is different from this TypeDef in the " +
                                             "remote server which is at version {6}",
-                      "The remote server may not be able to exchange metadata with this local server.",
+                      "The remote server may be unable to exchange metadata with this local server.",
                       "It is necessary to update the TypeDef to remove the conflict to ensure that the remote server " +
                                             "can exchange metadata with this server."),
 
@@ -714,7 +714,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                             "collection {2} because the version of TypeDef {3} ({4}) in the local server " +
                                             "is at version {5} is different from this TypeDef in the remote server " +
                                             "which is at version {6}",
-                      "The local server will not exchange metadata with this remote server.",
+                      "The local server will not be able to exchange metadata with this remote server.",
                       "It is necessary to update the TypeDef to remove the conflict before the local server will " +
                                             "exchange metadata with the remote server."),
 
@@ -722,11 +722,11 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                       OMRSAuditLogRecordSeverity.TYPES,
                       "The local server in cohort {0} has rejected a TypeDef update from server {1} that hosts " +
                                    "metadata collection {2} because the version of TypeDef {3} ({4}) in the local " +
-                                   "server is at version {5} is different from this TypeDef in the remote server " +
+                                   "server is at version {5} is different to this TypeDef in the remote server " +
                                    "which is at version {6}",
-                      "The local server will not exchange metadata with this remote server.",
-                      "It is necessary to update the TypeDef to remove the conflict before the local server will " +
-                                   "exchange metadata with the remote server."),
+                      "The local server will not exchange any metadata with this remote server.",
+                      "It is required to update the TypeDef to remove the conflict before the local server will " +
+                                   "be able to exchange metadata with the remote server."),
 
     DUPLICATE_INSTANCES_FOR_GUID("OMRS-AUDIT-0206",
                            OMRSAuditLogRecordSeverity.ACTION,
@@ -766,13 +766,13 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                              "by the local instance with the unique identifier (guid) of {2} has regressed; the type that the reporting server is using locally is {3} and the" +
                                              "type from the instance from this metadata collection {4} is {5}; the two versions need to be reconciled. The accompanying error message is: {6}",
                                      "The server awaits an updated version.",
-                                     "Review the message and decide which instance is correct and update the version of the instance in error."),
+                                     "Review the message and decide which instance is correct and update the version of the instance which is in error."),
 
     UNABLE_TO_REMOVE_REFERENCE_COPY("OMRS-AUDIT-0211",
                                    OMRSAuditLogRecordSeverity.ERROR,
                                    "Server {0} that hosts metadata collection {1} was unable to remove the reference copy of an instance of type {2} with unique identifier (guid) of {3}.  The exception was {4} with error message: {5}",
-                                   "The server returns an exception to the caller.",
-                                   "Review the audit log for previous error messages.  This failed action may have been an attempt to correct a detected conflict."),
+                                   "The server will return an exception to the caller.",
+                                   "Review the audit log for previous error messages.  This failed action may have been an attempt to correct an identified conflict."),
 
     NEW_TYPE_ADDED("OMRS-AUDIT-0301",
                       OMRSAuditLogRecordSeverity.TYPES,
@@ -783,21 +783,21 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NEW_TYPE_NOT_SUPPORTED("OMRS-AUDIT-0302",
                       OMRSAuditLogRecordSeverity.TYPES,
                       "The local server is unable to add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature",
-                      "The local server will be able to manage metadata instances of this type.",
-                      "No action required.  This message is for information only."),
+                      "The local server will not be able to manage metadata instances of this type.",
+                      "No action needed.  This message is for information only."),
 
     TYPE_UPDATED("OMRS-AUDIT-0303",
                       OMRSAuditLogRecordSeverity.TYPES,
                       "The local server has updated an existing type called {0} with a unique identifier of {1} to version number of {2} using " +
                          "a patch from {3}",
                       "The local server will be able to manage metadata instances of this latest version of the type.",
-                      "No action required.  This message is for information only."),
+                      "No actions are required.  This message is for information only."),
 
     TYPE_REMOVED("OMRS-AUDIT-0304",
                       OMRSAuditLogRecordSeverity.TYPES,
                       "The local server has removed an existing type called {0} with a unique identifier of {1}; requester is {2}",
                       "The local server will be no longer be able to manage metadata instances of this type.",
-                      "No action required.  This message is for information only."),
+                      "No action is needed.  This message is for information only."),
 
     TYPE_IDENTIFIER_MISMATCH("OMRS-AUDIT-0305",
                       OMRSAuditLogRecordSeverity.TYPES,
@@ -815,7 +815,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                      "The local server will support this type until the next restart of the server.  After that the instances of this type stored in the local repository will not be retrievable.",
                      "Using the API in this way is sufficient for development where the repository does not contain valuable metadata.  For production, all types should be defined and maintained through open metadata archives."),
 
-    REMOTE_TYPE_CONFLICT("OMRS-AUDIT-0307 ",
+    REMOTE_TYPE_CONFLICT("OMRS-AUDIT-0307",
                          OMRSAuditLogRecordSeverity.TYPES,
                          "Conflicting type definitions for type {0} ({1}) have been detected in remote system {2} ({3}).  Other system involved has" +
                                  " metadata collection {4} Error message is: {5}",
@@ -827,7 +827,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NULL_TYPE_IDENTIFIER("OMRS-AUDIT-0308",
                              OMRSAuditLogRecordSeverity.TYPES,
                              "The local server has detected a type called {0} from {1} with a null unique identifier.",
-                             "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                             "The immediate request fails. The local server will be unable to manage metadata instances of this type from this source.",
                              "This is a serious error since it may cause " +
                                      "metadata to be corrupted.  " +
                                      "First check the caller to ensure it is operating properly.  " +
@@ -836,36 +836,36 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NULL_TYPE_NAME("OMRS-AUDIT-0309",
                          OMRSAuditLogRecordSeverity.TYPES,
                          "The local server has detected a type from {0} with a null unique name. The supplied unique identifier for the type is {1}.",
-                         "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                         "The immediate request fails. The local server will not be able to manage any metadata instances of this type from this source.",
                          "This suggests that two types with the same name have been defined in the cohort. This is a serious error since it may cause " +
                                  "metadata to be corrupted.  " +
-                                 "First check the caller to ensure it is operating properly.  " +
+                                 "First check the caller to ensure it is functioning properly.  " +
                                  "Then investigate the source of the type and any other errors."),
 
     UNKNOWN_TYPE("OMRS-AUDIT-0310",
                    OMRSAuditLogRecordSeverity.TYPES,
                    "The local server has been asked to process a request from {0} containing an unrecognized type {1} ({2}).",
-                   "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                   "The immediate request fails. The local server will not be able to manage metadata instances of this type from this origin.",
                    "This suggests that two types with the same name have been defined in the cohort. This is a serious error since it may cause " +
                            "metadata to be corrupted.  " +
-                           "First check the caller to ensure it is operating properly.  " +
+                           "First check the caller to ensure it is operating correctly.  " +
                            "Then investigate the source of the type and any other errors."),
 
     NULL_TYPE_CATEGORY("OMRS-AUDIT-0311",
                  OMRSAuditLogRecordSeverity.TYPES,
                  "The local server has been asked to process a request from {0} containing a type {1} ({2}) with a null type category.",
-                 "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                 "The immediate request fails. The local server will not be able to manage any metadata instances of this type from this origin.",
                  "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong type.  " +
-                         "First check the caller to ensure it is operating properly.  " +
+                         "First check the caller to ensure it is functioning correctly.  " +
                          "Then investigate the source of the type and any other errors."),
 
     UNKNOWN_TYPE_CATEGORY("OMRS-AUDIT-0312",
                        OMRSAuditLogRecordSeverity.TYPES,
                        "The local server has been asked to process a request from {0} containing a type {1} ({2}) with an unexpected type category " +
                                   "of {3}.  The local type definition has a category of {4}.",
-                       "The immediate request fails. The local server will not be able to manage metadata instances of this type from this source.",
+                       "The immediate request fails. The local server will be unable to manage metadata instances of this type from this origin.",
                        "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong type.  " +
-                               "First check the caller to ensure it is operating properly.  " +
+                               "First check the caller to verify it is operating properly.  " +
                                "Then investigate the source of the type and any other errors."),
 
     NULL_TYPE("OMRS-AUDIT-0313",
@@ -874,7 +874,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                        "The immediate request fails. The local server will not be able to manage metadata instances with a null type from this " +
                       "source.",
                        "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong type.  " +
-                               "First check the caller to ensure it is operating properly.  " +
+                               "First check the caller to verify it is operating correctly.  " +
                                "Then investigate the source of the type and any other errors."),
 
     TYPE_VERSION_MISMATCH("OMRS-AUDIT-0314",
@@ -883,16 +883,16 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                              "{3} but a version of {4}.  The locally supported version is {5}",
               "The immediate request fails. The local server will not be able to manage metadata instances with a null GUID from this source.",
               "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
-                      "First check the caller to ensure it is operating properly.  " +
+                      "First check the caller to verify it is functioning correctly.  " +
                       "Then investigate the source of the type and any other errors."),
 
     NULL_INSTANCE_ID("OMRS-AUDIT-0315",
                      OMRSAuditLogRecordSeverity.ACTION,
                      "The local server has been asked to process a request from {0} containing a containing an instance with type {1} " +
                              "({2}) of category {3} but a null unique identifier (GUID).",
-                     "The immediate request fails. The local server will not be able to manage metadata instances with a null GUID from this source.",
+                     "The immediate request fails. The local server will be unable to manage metadata instances with a null GUID from this source.",
                      "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
-                             "First check the caller to ensure it is operating properly.  " +
+                             "First check the caller to ensure it is working properly.  " +
                              "Then investigate the source of the type and any other errors."),
 
     NULL_METADATA_COLLECTION_ID("OMRS-AUDIT-0316",
@@ -902,15 +902,15 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                      "The immediate request fails. The local server will not be able to manage metadata instances with a null metadata " +
                                         "collection GUID because it is not clear which repository has update rights..",
                      "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
-                             "First check the caller to ensure it is operating properly.  " +
+                             "First check the caller to ensure it is working correctly.  " +
                              "Then investigate the source of the type and any other errors."),
 
     NULL_INSTANCE("OMRS-AUDIT-0317",
                      OMRSAuditLogRecordSeverity.ACTION,
                      "The local server method {0} has been asked to process a request from {1} containing a containing a null instance",
-                     "The immediate request fails. The local server will not be able to manage metadata instances with a null GUID from this source.",
+                     "The immediate request fails. The local server will not be able to manage any metadata instances with a null GUID from this source.",
                      "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
-                             "First check the caller to ensure it is operating properly.  " +
+                             "First check the caller to ensure it is working as expected.  " +
                              "Then investigate the source of the type and any other errors."),
 
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
@@ -939,7 +939,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NEW_TYPE_INFORMATION("OMRS-AUDIT-8004",
                                    OMRSAuditLogRecordSeverity.ACTION,
                                    "Version {0} of the instance {1} from server {2} and metadata collection {3} has a new type of {4} ({5}).  Previous type was {6} ({7})",
-                                   "The local server has received an event from another member of the open metadata repository cohort containing suspicious information.  The local server has enacted conflict processing.",
+                                   "The local server has received an event from another member of the open metadata repository cohort containing suspicious information.  The local server has commenced conflict processing.",
                                    "Validate and, if necessary, correct the type of the instance in the originator.  Monitor events from all " +
                                  "members of the cohort to ensure all copies are updated."),
 
@@ -1016,17 +1016,17 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NULL_OMRS_CONFIG("OMRS-AUDIT-9009",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                             "Unable to initialize part of the Open Metadata Repository Service (OMRS) because the configuration is null",
-                            "The local server is unable to properly manage the replication of metadata instances for " +
+                            "The local server is not able to properly manage the replication of metadata instances for " +
                                     "the metadata repository cohort.",
                             "This is an internal logic error.  " +
-                             "Raise a Git Issue, including the audit log, to get the admin services fixed."),
+                             "Raise a GitHub Issue, including the audit log, to get the admin services fixed."),
 
     SENT_UNKNOWN_EVENT("OMRS-AUDIT-9010",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Unable to send an event because the event is of an unknown type",
                         "The local server may not be communicating properly with other servers in " +
                                 "the metadata repository cohort.",
-                        "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
+                        "This is an internal logic error.  Raise a GitHub Issue, including the audit log, in order to get this fixed."),
 
     UNEXPECTED_EXCEPTION_FROM_EVENT("OMRS-AUDIT-9011",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -1038,7 +1038,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "Disconnecting from the enterprise topic connector generated an exception with message {0}",
                        "The server may not have disconnected from the topic cleanly.",
-                       "Review the exception and resolve any issues wit the topic listener that it documents."),
+                       "Review the exception and resolve any issues with the topic listener that it documents."),
 
     ENTERPRISE_CONNECTOR_DISCONNECT_ERROR("OMRS-AUDIT-9013",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -1068,7 +1068,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     UNHANDLED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9017",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "The topic listener for the {0} service threw an unexpected exception {1} with message {2}",
-                       "The contents of the event were not accepted by the topic listener.",
+                       "The contents of the event were unable to be accepted by the topic listener.",
                        "Review the exception and resolve the issue with the event that it documents."),
 
     UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING("OMRS-AUDIT-9018",
