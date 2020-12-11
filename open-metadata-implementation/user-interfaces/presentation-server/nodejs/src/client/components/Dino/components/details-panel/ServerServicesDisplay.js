@@ -50,7 +50,7 @@ export default function ServerServicesDisplay(props) {
     if (requestService) {
       resourcesContext.loadService(serverName, serviceName);
     }
-    
+
   };
 
   const formatService = (service) => {
@@ -100,8 +100,8 @@ export default function ServerServicesDisplay(props) {
     let serviceNamesUnsorted = Object.keys(serviceMap);
     if (serviceNamesUnsorted) {
       let serviceNamesSorted   = serviceNamesUnsorted.sort();
-    
-      /* 
+
+      /*
        * Use the name to index into the map in sorted order and display service appropriately for the service type
        */
       serviceList = serviceNamesSorted.map( (svcName) =>
@@ -116,7 +116,7 @@ export default function ServerServicesDisplay(props) {
     else {
       serviceList = null;
     }
-    
+
     return serviceList;
   };
 

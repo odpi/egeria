@@ -985,11 +985,11 @@ public class DinoViewHandler {
             ServerStatus serverStatus = platformServicesClient.getServerStatus(userId, serverName);
             serverOverview.setServerStatus(serverStatus);
 
-            /*
-             * Get the active services running on the server....
-             */
-            List<String> serverList = platformServicesClient.getActiveServices(userId, serverName);
-            serverOverview.setServerServicesList(serverList);
+            ///*
+            // * Get the active services running on the server....
+            // */
+            //List<String> serverList = platformServicesClient.getActiveServices(userId, serverName);
+            //serverOverview.setServerServicesList(serverList);
 
             /*
              * Get the integration services running on the server....
@@ -1522,8 +1522,7 @@ public class DinoViewHandler {
 
             List<RegisteredOMAGService> serviceList = integrationDaemonConfigurationClient.getConfiguredIntegrationServices();
 
-            /* TODO - probably you need to return this list (second level of expansion) and then if the user
-             * expands on eof the list meembers you then get the details for the expanded service....
+            /* TODO - probably you need to return this list (second level of expansion) and then if the user expands one of the list members, then get the details for the expanded service....
              */
 
             /*
@@ -1534,7 +1533,7 @@ public class DinoViewHandler {
 
             ServiceDetails serviceDetails = new ServiceDetails();
 
-            serviceDetails.setServiceName("Mickey Mouse was here!");  // TODO (obviously)
+            serviceDetails.setServiceName("SOMETHING CONSPICUOUS - TO BE REPLACED!");  // TODO (obviously)
 
             return serviceDetails;
 

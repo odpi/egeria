@@ -34,7 +34,6 @@ public class ServerOverview {
     private boolean                         isActive;
     private Map<String,ServerCohortDetails> cohortDetails;
     private ServerStatus                    serverStatus;
-    private List<String>                    serverServicesList;  // TODO - remove me
     private List<RegisteredOMAGService>     integrationServices;
     //private List<RegisteredOMAGService>     accessServices;
     //private List<RegisteredOMAGService>     commonServices;
@@ -65,7 +64,6 @@ public class ServerOverview {
                           boolean                         isActive,
                           Map<String,ServerCohortDetails> cohortDetails,
                           ServerStatus                    serverStatus,
-                          List<String>                    serverServicesList,  // TODO remove
                           List<RegisteredOMAGService>     integrationServices
                           //List<RegisteredOMAGService>     accessServices,
                           //List<RegisteredOMAGService>     commonServices,
@@ -83,7 +81,6 @@ public class ServerOverview {
         this.isActive                    = isActive;
         this.cohortDetails               = cohortDetails;
         this.serverStatus                = serverStatus;
-        this.serverServicesList          = serverServicesList;  // TODO remove me
         this.integrationServices         = integrationServices;
         //this.accessServices              = accessServices;
         //this.commonServices              = commonServices;
@@ -176,13 +173,6 @@ public class ServerOverview {
         this.serverStatus = serverStatus;
     }
 
-    public List<String> getServerServicesList() {
-        return serverServicesList;
-    }
-
-    public void setServerServicesList(List<String> serverServicesList) {
-        this.serverServicesList = serverServicesList;
-    }
     public List<RegisteredOMAGService> getIntegrationServices() {
         return integrationServices;
     }
@@ -210,7 +200,6 @@ public class ServerOverview {
                 ", isActive=" + isActive +'\'' +
                 ", cohortDetails=" + cohortDetails +'\'' +
                 ", serverStatus=" + serverStatus +'\'' +
-                ", serverServicesList=" + serverServicesList +'\'' +
                 ", integrationServices=" + integrationServices +'\'' +
                 '}';
     }

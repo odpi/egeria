@@ -362,11 +362,7 @@ export default function ServerDisplay() {
       displayedConfig = null;
       break;
   }
- 
-  
-  console.log("In ServerDisplay serverDetails has serverServicesList "+serverDetails.serverServicesList);
 
-  console.log("In ServerDisplay serverDetails has integrationServices "+serverDetails.integrationServices);
 
   return (
 
