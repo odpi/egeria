@@ -32,10 +32,11 @@ for each one.
 - [Google Guava](https://github.com/google/guava) licensed under [Apache License 2.0](https://github.com/google/guava/blob/master/COPYING)
 - [Google Tink](https://github.com/google/tink) licensed under [Apache License 2.0](https://github.com/google/tink/blob/master/LICENSE)
 - [h2](https://h2database.com) licensed under [Eclipse Public License 1.0](https://h2database.com/html/license.html)
-- [JanusGraph](https://github.com/JanusGraph/janusgraph) janusgraph-core, janusgraph-cql, janusgraph-cassandra, janusgraph-es, janusgraph-berkeleyje, janusgraph-lucene licensed under [Apache License 2.0](https://github.com/JanusGraph/janusgraph/blob/master/LICENSE.txt)
-- javax
-    - [persistence-api](https://github.com/javaee/jpa-spec) licensed under [Eclipse Public License v1.0](https://search.maven.org/artifact/javax.persistence/javax.persistence-api/2.2/jar)
-    - [validation-api](https://github.com/eclipse-ee4j/beanvalidation-api) licensed under [Apache License 2.0](https://github.com/eclipse-ee4j/beanvalidation-api/blob/master/license.txt)
+- [JanusGraph](https://github.com/JanusGraph/janusgraph) janusgraph-core, janusgraph-cql, janusgraph-cassandra, janusgraph-es, janusgraph-berkeleyje, janusgraph-lucene licensed under [Apache License 2.0](https://github.com/JanusGraph/janusgraph/blob/master/LICENSE.txt)  
+ - Eclipse EE4J / Jakarta Project
+    - [beanvalidation-api](https://github.com/eclipse-ee4j/beanvalidation-api) licensed under [Apache License 2.0](https://github.com/eclipse-ee4j/beanvalidation-api/blob/master/license.txt)
+    - [common-annotations-api](https://github.com/eclipse-ee4j/common-annotations-api) licensed under [Eclipse Public License 2.0](https://github.com/eclipse-ee4j/common-annotations-api/blob/master/LICENSE.md)
+    - [persistence-api](https://github.com/eclipse-ee4j/jpa-api) licensed under [Eclipse Public License 1.0 / 2.0](https://github.com/eclipse-ee4j/jpa-api/blob/master/LICENSE.md)
 - [jjwt](https://github.com/jwtk/jjwt) licensed under [Apache License 2.0](https://github.com/jwtk/jjwt/blob/master/LICENSE)
 - [Joda-Time](https://github.com/JodaOrg/joda-time) licensed under [Apache License 2.0](https://github.com/JodaOrg/joda-time/blob/master/LICENSE.txt)
 - JUnit
