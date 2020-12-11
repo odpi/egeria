@@ -130,7 +130,7 @@ const RepositoryServerContextProvider = (props) => {
       else {
         /*
          * response was not 'ok'. Parse the status fields and body text and contruct
-         a json response to pass to the callback...
+         * a json response to pass to the callback...
          */
         let json = {};
         json.relatedHTTPCode = response.status;
@@ -212,7 +212,7 @@ const RepositoryServerContextProvider = (props) => {
       else {
         /*
          * response was not 'ok'. Parse the status fields and body text and contruct
-         a json response to pass to the callback...
+         * a json response to pass to the callback...
          */
         let json = {};
         json.relatedHTTPCode = response.status;
@@ -286,7 +286,7 @@ const RepositoryServerContextProvider = (props) => {
       else {
         /*
          * response was not 'ok'. Parse the status fields and body text and contruct
-         a json response to pass to the callback...
+         * a json response to pass to the callback...
          */
         let json = {};
         json.relatedHTTPCode = response.status;

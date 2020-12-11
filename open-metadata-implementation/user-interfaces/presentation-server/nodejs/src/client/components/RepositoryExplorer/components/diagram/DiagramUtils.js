@@ -73,7 +73,7 @@ import * as d3  from "d3";  // using d3.path, ...
 
       const path = d3.path();
 
-      if ( d.source.id == d.target.id ) {
+      if ( d.source.id ===  d.target.id ) {
 
           /*
            * Reflexive link
@@ -141,9 +141,9 @@ import * as d3  from "d3";  // using d3.path, ...
       G = (G<255)?G:255;
       B = (B<255)?B:255;
 
-      var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
-      var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
-      var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+      var RR = ((R.toString(16).length === 1)?"0"+R.toString(16):R.toString(16));
+      var GG = ((G.toString(16).length === 1)?"0"+G.toString(16):G.toString(16));
+      var BB = ((B.toString(16).length === 1)?"0"+B.toString(16):B.toString(16));
 
       return "#"+RR+GG+BB;
   }
