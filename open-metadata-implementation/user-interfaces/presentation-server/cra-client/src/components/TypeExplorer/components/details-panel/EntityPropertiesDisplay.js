@@ -26,6 +26,7 @@ export default function EntityPropertiesDisplay(props) {
   const explorer           = props.expl;
 
 
+  
   /*
    * Marshall a map of attributes to display
    */

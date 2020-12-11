@@ -27,6 +27,7 @@ export default function RelationshipPropertiesDisplay(props) {
   const explorer           = props.expl;
 
 
+  
   /*
    * Marshall a map of attributes to display
    */
