@@ -245,17 +245,17 @@ public class GraphOMRSClassificationMapper {
         }
 
         if (classification.getInstanceProvenanceType() != null) {
-            vertex.property(PROPERTY_KEY_CLASSIFICATION_PROVENANCE_TYPE, classification.getInstanceProvenanceType().getOrdinal());     // ** ordinal mapping
+            vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_PROVENANCE_TYPE, classification.getInstanceProvenanceType().getOrdinal());     // ** ordinal mapping
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_PROVENANCE_TYPE);
+            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_PROVENANCE_TYPE);
             if (vp != null)
                 vp.remove();
         }
 
         if (classification.getStatus() != null) {
-            vertex.property(PROPERTY_KEY_CLASSIFICATION_STATUS, classification.getStatus().getOrdinal());                              // ** ordinal mapping
+            vertex.property(PROPERTY_KEY_CLASSIFICATION_CURRENT_STATUS, classification.getStatus().getOrdinal());                              // ** ordinal mapping
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_STATUS);
+            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CURRENT_STATUS);
             if (vp != null)
                 vp.remove();
         }
@@ -426,11 +426,11 @@ public class GraphOMRSClassificationMapper {
 
         GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
 
-        Integer provenanceOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_PROVENANCE_TYPE);
+        Integer provenanceOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_INSTANCE_PROVENANCE_TYPE);
         InstanceProvenanceType instanceProvenanceType = mapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
         classification.setInstanceProvenanceType(instanceProvenanceType);
 
-        Integer statusOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_STATUS);
+        Integer statusOrdinal = (Integer) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_CURRENT_STATUS);
         InstanceStatus instanceStatus = mapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
         classification.setStatus(instanceStatus);
 
