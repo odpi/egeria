@@ -8,6 +8,8 @@ import { ResourcesContext }                               from "../../contexts/R
 
 import { RequestContext }                                 from "../../contexts/RequestContext";
 
+import { InteractionContext }                             from "../../contexts/InteractionContext";
+
 import "./resource-selector.scss"
 
 
@@ -25,6 +27,9 @@ export default function ServerSelector() {
   const resourcesContext                  = useContext(ResourcesContext);
 
   const requestContext                    = useContext(RequestContext);
+
+  const interactionContext                    = useContext(InteractionContext);
+
 
   const [serversLoaded, setServersLoaded] = useState(false);
 
@@ -62,38 +67,44 @@ export default function ServerSelector() {
           return;
         }
       }
-    }
-    /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
-     */
-     reportFailedOperation("getServers",json);
-  }
-  
-  /*
-   * Always accept the operation name because operation name is needed even in the case where json is null
-   */
-  const reportFailedOperation = (operation, json) => {
-    if (json !== null) {
-      if (json.relatedHTTPCode === 200 ) {
-        /*
-         * Operation succeeded but did not return anything useful...
-         */
-        alert("No servers were found - they are optional and can be added to the configuration of the Dino View Service");
-      }
       else {
         /*
-         * Operation reported failure
+         * This is not the best way to determine the type of error, but it will
+         * suffice for now. The better solution requires an overhaul of index.js
+         * to improve its error reporting.
          */
-        const relatedHTTPCode = json.relatedHTTPCode;
-        const exceptionMessage = json.exceptionErrorMessage;
-        /*
-         * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-         */
-        alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
+        let message = json.exceptionErrorMessage;
+
+        if (message.includes("invalid supplied URL")) {
+          let tokens = message.split("/");
+          let tenantName = tokens[2];
+          json.exceptionErrorMessage = "Check the Presentation Server for tenant "+tenantName+" is configured. [Detail "+ json.exceptionErrorMessage + "]";
+        }
+        else if (message.includes("ECONNREFUSED")) {
+          let url = json.requestURL;
+          let tokens = url.split("/");
+          let tenantName = tokens[4];
+          let detailedErrorMessage = json.exceptionErrorMessage;
+          json.exceptionErrorMessage = "Could not connect to the view service";
+          json.exceptionSystemAction = "The system could not connect to the view service [Detail "+ detailedErrorMessage + "]";
+          json.exceptionUserAction = "Check the configuration of the Presentation Server for tenant "+tenantName+", and that the corresponding View Server is running";
+        }
+        else if (message.includes("OMAG-MULTI-TENANT-404-001")) {
+          let skipLength = "OMAG-MULTI-TENANT-404-001".length+1;
+          let shortMessage = message.substring(skipLength);
+          json.exceptionErrorMessage = shortMessage;
+          json.exceptionSystemAction = "The system could not retrieve the servers because the view service is not running";
+          json.exceptionUserAction = "Check the configuration of the Presentation Server and that the corresponding View Server is running, then retry the request.";
+        }
+        interactionContext.reportFailedOperation("get servers from view service",json);
       }
     }
     else {
-      alert("Operation "+operation+" did not get a response from the view server");
+      /*
+       * If there is no JSON in the response this constitutes a coding error, so raise
+       * an alert to make it conspicuous...
+       */
+      alert("ServerSelector received a response with no JSON. Please raise an issue on the Egeria github page.");
     }
   }
 
