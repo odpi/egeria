@@ -415,7 +415,7 @@ export default function ServerConfigServicesDisplay(props) {
      * Sort the service names
      */
     let serviceNamesUnsorted = Object.keys(serviceMap);
-    if (serviceNamesUnsorted) {
+    if (serviceNamesUnsorted) {  // TODO indents
     let serviceNamesSorted   = serviceNamesUnsorted.sort();
     
     /* 
