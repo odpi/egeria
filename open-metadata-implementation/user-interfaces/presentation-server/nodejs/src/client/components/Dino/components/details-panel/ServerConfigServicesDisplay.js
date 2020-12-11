@@ -416,19 +416,19 @@ export default function ServerConfigServicesDisplay(props) {
      */
     let serviceNamesUnsorted = Object.keys(serviceMap);
     if (serviceNamesUnsorted) {
-    let serviceNamesSorted   = serviceNamesUnsorted.sort();
+      let serviceNamesSorted   = serviceNamesUnsorted.sort();
     
-    /* 
-     * Use the name to index into the map in sorted order and display service appropriately for the service type
-     */
-    serviceList = serviceNamesSorted.map( (svcName) =>
+      /*
+       * Use the name to index into the map in sorted order and display service appropriately for the service type
+       */
+      serviceList = serviceNamesSorted.map( (svcName) =>
         <li className="details-sublist-item" key={svcName}> 
           <button className="collapsible" id={svcName} onClick={flipSection}> {svcName} : </button>
           <div className="content">
            {formatService(serviceMap[svcName])}
           </div>
         </li>
-    );
+      );
     }
     else {
       serviceList = null;
