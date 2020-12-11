@@ -326,7 +326,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                  * Check that the retyped entity properties match the original
                  */
 
-                assertCondition(((subTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties())),
+                assertCondition( this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties() ),
                                 assertion5,
                                 testTypeName + assertionMsg5,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
@@ -362,7 +362,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
 
-                assertCondition(((subTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties())),
+                assertCondition( this.doPropertiesMatch(instanceProperties, subTypedEntity.getProperties()),
                                 assertion9,
                                 testTypeName + assertionMsg9,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
@@ -434,7 +434,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                  * Check that the retyped entity properties match the original
                  */
 
-                assertCondition(((superTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, superTypedEntity.getProperties())),
+                assertCondition( this.doPropertiesMatch(instanceProperties, superTypedEntity.getProperties()),
                                 assertion12,
                                 testTypeName + assertionMsg12,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
@@ -473,7 +473,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
 
-                assertCondition(((retrievedSuperTypedEntity.getProperties() != null) && this.doPropertiesMatch(instanceProperties, retrievedSuperTypedEntity.getProperties())),
+                assertCondition(this.doPropertiesMatch(instanceProperties, retrievedSuperTypedEntity.getProperties()),
                                 assertion16,
                                 testTypeName + assertionMsg16,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
@@ -585,8 +585,10 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
         if (noProperties)
         {
-            if ((firstInstanceProps.getInstanceProperties() == null) ||
-                (firstInstanceProps.getInstanceProperties().isEmpty()))
+
+            if ( (firstInstanceProps == null) ||
+                 (firstInstanceProps.getInstanceProperties() == null) ||
+                 (firstInstanceProps.getInstanceProperties().isEmpty()))
             {
                 matchProperties = true;
             }

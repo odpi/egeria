@@ -28,7 +28,7 @@ const serverNameMiddleWare = (req, res, next) => {
     const segment1 = segmentArray.slice(1, 2).join("/");
     console.log("segment1 " + segment1);
 
-    if (segment1 != "servers" && segment1 != "open-metadata") {
+    if (segment1 != "servers" && segment1 != "open-metadata" && segment1 != "user") {
       // in a production scenario we are looking at login, favicon.ico and bundle.js for for now look for those in the last segment
       // TODO once we have development webpack, maybe the client should send a /js/ or a /static/ segment after the servername so we know to keep the subsequent segments.
 
