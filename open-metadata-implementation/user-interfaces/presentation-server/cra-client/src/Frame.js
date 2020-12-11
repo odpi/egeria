@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useContext, useState } from "react";
-import axios from 'axios';
-import { User20 } from "@carbon/icons-react/lib";
+import React, { useContext, useEffect, useState } from "react";
 import HeaderContainer from "carbon-components-react/lib/components/UIShell/HeaderContainer";
 import { Content, HeaderPanel, Switcher, SwitcherItem } from "carbon-components-react/lib/components/UIShell";
+import { User20 } from "@carbon/icons-react/lib";
 import { Link, Route } from "react-router-dom";
+import axios from 'axios';
 import Egeriawhite110 from "./images/odpi/Egeria_logo_white_110";
+import Login from "./auth"
 import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
 import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";
@@ -30,21 +31,48 @@ import {
 } from "carbon-components-react/lib/components/UIShell";
 
 export default function Frame() {
-  const identificationContext = useContext(IdentificationContext);
-  console.log("Frame context", { identificationContext });
-  const rootUrl = identificationContext.getBrowserURL("");
-  const homeUrl = identificationContext.getBrowserURL("home");
-  const glossaryAuthorUrl = identificationContext.getBrowserURL(
-    "glossary-author"
-  );
-  const rexUrl = identificationContext.getBrowserURL("repository-explorer");
-  const typeUrl = identificationContext.getBrowserURL("type-explorer");
-  const serverUrl = identificationContext.getBrowserURL("server-author");
-  const dinoUrl = identificationContext.getBrowserURL("dino");
+  const {
+    getBrowserURL,
+    getUser,
+    setAuthenticated,
+    userId,
+  } = useContext(IdentificationContext);
+  const rootUrl = getBrowserURL("");
+  const homeUrl = getBrowserURL("home");
+  const glossaryAuthorUrl = getBrowserURL("glossary-author");
+  const rexUrl = getBrowserURL("repository-explorer");
+  const typeUrl = getBrowserURL("type-explorer");
+  const serverUrl = getBrowserURL("server-author");
+  const dinoUrl = getBrowserURL("dino");
+
+  const [isLoading, setLoading] = useState(true);
 
   const [userOpen, setUserOpen] = useState(false);
 
-  console.log(identificationContext.getBrowserURL('logout'))
+  useEffect(() => {
+    setLoading(true);
+    console.log("fetching user");
+    async function fetchUser() {
+      await getUser();
+      setLoading(false);
+    }
+    if (!userId) {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, [getUser, userId]);
+
+  console.log({isLoading});
+
+  if (isLoading) return (<div className="frame"></div>);
+
+  if (!userId) {
+    const currentURL = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
+    return (<Login currentURL={currentURL} />)
+  }
+
+  console.log(getBrowserURL('logout'));
 
   return (
     <div className="container">
@@ -83,10 +111,10 @@ export default function Frame() {
                     onClick={async () => {
                       try {
                         console.log('logout!')
-                        await axios.get(identificationContext.getBrowserURL('logout'));
+                        await axios.get(getBrowserURL('logout'));
                         sessionStorage.removeItem("egeria-userId");
-                        identificationContext.setAuthenticated(false);
-                        window.location.href = identificationContext.getBrowserURL('login');
+                        setAuthenticated(false);
+                        window.location.href = getBrowserURL('login');
                       } catch(err) {
                         console.error(err);
                       }
