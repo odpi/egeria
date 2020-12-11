@@ -11,7 +11,6 @@
         <groupId>org.odpi.egeria</groupId>
         <version>2.6-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
     <scm>
@@ -20,18 +19,13 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <artifactId>asset-owner-fvt</artifactId>
-    <name>Asset Owner OMAS FVT</name>
+    <artifactId>data-engine-fvt</artifactId>
+    <name>Data Engine OMAS FVT</name>
     <description>
-        Asset Owner Open Metadata Access Service (OMAS) FVT Suite.
+        FVT resources for the Data Engine Open Metadata Access Service (OMAS).
     </description>
 
-    <!-- TODO: Properties used for FVT tests. Note tests currently hardcoded, whilst exec plugin is not. Needs consolidation -->
     <properties>
-        <fvt.serverport>10443</fvt.serverport>
-        <fvt.servername>fvtServer</fvt.servername>
-        <fvt.user>testUser</fvt.user>
-        <fvt.maxwait>10</fvt.maxwait>
         <!-- TODO: use of an out-of-module relative path isn't ideal, consider better approach -->
         <fvt.platform-wd>../../../../open-metadata-distribution/open-metadata-assemblies/target/egeria-${open-metadata.version}-distribution/egeria-omag-${open-metadata.version}</fvt.platform-wd>
     </properties>
@@ -40,12 +34,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-owner-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-owner-client</artifactId>
+            <artifactId>data-engine-api</artifactId>
         </dependency>
 
         <dependency>
@@ -55,17 +44,22 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>audit-log-framework</artifactId>
+            <artifactId>data-engine-client</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>fvt-utilities</artifactId>
+            <artifactId>repository-services-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>http-helper</artifactId>
         </dependency>
 
         <!-- Integration Tests will depend on the assembly -->
@@ -89,16 +83,29 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>http-helper</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
             <!-- start and stop of the server before/after integration tests. Plugin is good at shutting down process -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/test/resources/application.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>com.bazaarvoice.maven.plugins</groupId>
                 <artifactId>process-exec-maven-plugin</artifactId>
@@ -115,12 +122,12 @@
                             <workingDir>../${fvt.platform-wd}</workingDir>
                             <waitForInterrupt>false</waitForInterrupt>
                             <!-- check doesn't support SSL, so we can't use this yet. Maybe when PR addressed -->
-                            <!-- healthcheckUrl>https://localhost:${fvt.serverport}/open-metadata/platform-services/users/${fvt.user}/server-platform/origin</healthcheckUrl-->
-                            <waitAfterLaunch>${fvt.maxwait}</waitAfterLaunch>
+                            <!-- healthcheckUrl>https://localhost:${server.port}/open-metadata/platform-services/users/${user}/server-platform/origin</healthcheckUrl-->
+                            <waitAfterLaunch>${delay}</waitAfterLaunch>
                             <!--processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile-->
                             <arguments>
                                 <argument>java</argument>
-                                <argument>-Dserver.port=${fvt.serverport}</argument>
+                                <argument>-Dserver.port=${server.port}</argument>
                                 <argument>-Dloader.path=lib</argument>
                                 <argument>-Dspringdoc.api-docs.enabled=false</argument>
                                 <argument>-jar</argument>
@@ -153,9 +160,13 @@
                         <configuration>
                             <defaults>
                                 <name>Egeria chassis</name>
-                                <baseURL>https://localhost:${fvt.serverport}</baseURL>
-                                <server>${fvt.servername}</server>
-                                <user>${fvt.user}</user>
+                                <baseURL>${base.url}</baseURL>
+                                <serverPort>${server.port}</serverPort>
+                                <serverInMemory>${server.in-memory-graph.name}</serverInMemory>
+                                <serverLocalGraph>${server.local-graph.name}</serverLocalGraph>
+                                <user>${user}</user>
+                                <retries>${retries}</retries>
+                                <delay>${delay}</delay>
                             </defaults>
                             <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
                         </configuration>
@@ -195,15 +206,9 @@
                 <configuration>
                     <!-- Catch the case where we haven't run tests - may point to a coding or environment issue -->
                     <failIfNoTests>true</failIfNoTests>
-                </configuration>
-            </plugin>
-
-            <!-- Javadoc  -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
+                    <includes>
+                        <include>**/*FVT.java</include>
+                    </includes>
                 </configuration>
             </plugin>
 
@@ -249,28 +254,6 @@
                         </fileset>
                     </filesets>
                 </configuration>
-            </plugin>
-
-            <!-- always create empty javadoc and source jars for every project           -->
-            <!-- Needed for Maven central release process for all components of type jar -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>createemptydocsource</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <target>
-                                <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
-                                <touch file="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>
