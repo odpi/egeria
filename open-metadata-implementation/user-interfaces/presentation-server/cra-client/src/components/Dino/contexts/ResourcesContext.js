@@ -8,6 +8,8 @@ import PropTypes                                      from "prop-types";
 
 import { RequestContext }                             from "./RequestContext";
 
+import { InteractionContext }                         from "./InteractionContext";
+
 
 
 
@@ -28,7 +30,9 @@ export const ResourcesContextConsumer = ResourcesContext.Consumer;
 const ResourcesContextProvider = (props) => {
 
 
-  const requestContext = useContext(RequestContext);
+  const requestContext     = useContext(RequestContext);
+
+  const interactionContext = useContext(InteractionContext);
 
   /*
    * The resources context remembers the platforms, servers and cohorts that the user visits.
@@ -150,24 +154,6 @@ const ResourcesContextProvider = (props) => {
     return guid;
   }
 
-  /* 
-   * Always accept the operation name because operation name is needed even in the case where json is null
-   */
-  const reportFailedOperation = (operation, json) => {
-    if (json !== null) {      
-      const relatedHTTPCode = json.relatedHTTPCode;
-      const exceptionMessage = json.exceptionErrorMessage;
-      /*
-       * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-       */
-      alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
-    }
-    else {
-      alert("Operation "+operation+" did not get a response from the view server");
-    }
-  }
-  
-
 
 
   /*
@@ -189,20 +175,20 @@ const ResourcesContextProvider = (props) => {
   };
 
   const _loadPlatform = (json) => {
-    if (json !== null) {
+    if (json) {
       if (json.relatedHTTPCode === 200 ) {
         let requestSummary = json.requestSummary;
         let platformOverview = json.platformOverview;
-        if (requestSummary !== null && platformOverview !== null) {
+        if (requestSummary && platformOverview) {
           processRetrievedPlatform(requestSummary, platformOverview);
           return;
         }
       }
     }
     /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
+     * On failure ...
      */
-    reportFailedOperation("loadPlatform",json);
+    interactionContext.reportFailedOperation("load platform",json);
   }
 
  
@@ -408,7 +394,7 @@ const ResourcesContextProvider = (props) => {
       let guid = focus.guid;
       if (guid) {
         let genId = guidToGenId[guid];
-        if (genId !== null) {
+        if (genId) {
           let gen = gens[genId-1];
           return gen.resources[guid];
         }
@@ -424,20 +410,24 @@ const ResourcesContextProvider = (props) => {
   };
 
   const _getActiveServers = (json) => {
-    if (json !== null) {
+    if (json) {
       if (json.relatedHTTPCode === 200 ) {
         let requestSummary = json.requestSummary;
         let serverList = json.serverList;
-        if (requestSummary !== null && serverList !== null) {
+        if (requestSummary && serverList) {
           loadServersFromPlatformQuery(requestSummary, serverList);
+          return;
+        }
+        else {
+          alert("Operation succeeded but found no active servers for platform");
           return;
         }
       }
     }
     /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
+     * On failure ...
      */
-    reportFailedOperation("getActiveServers",json);
+    interactionContext.reportFailedOperation("get active servers",json);
   }
 
   /*
@@ -455,20 +445,24 @@ const ResourcesContextProvider = (props) => {
   };
 
   const _getKnownServers = (json) => {
-    if (json !== null) {
+    if (json) {
       if (json.relatedHTTPCode === 200 ) {
         let requestSummary = json.requestSummary;
         let serverList = json.serverList;
-        if (requestSummary !== null && serverList !== null) {
+        if (requestSummary && serverList) {
           loadServersFromPlatformQuery(requestSummary, serverList);
+          return;
+        }
+        else {
+          alert("Operation succeeded but found no known servers for platform");
           return;
         }
       }
     }
     /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
+     * On failure ...
      */
-    reportFailedOperation("getKnownServers",json);
+    interactionContext.reportFailedOperation("get known servers",json);
   }
   
 
@@ -488,27 +482,6 @@ const ResourcesContextProvider = (props) => {
     return null;
   }
 
-  // commenting out as linting is indicating this function is not used.
-
-  // const mapServerGUIDToServerName = (guid) => {
-  //   let serverGenId = guidToGenId[guid];
-  //   if (serverGenId) {
-  //     let serverGen = gens[serverGenId-1];
-  //     if (serverGen) {
-  //       let server = serverGen.resources[guid];
-  //       if (server) {
-  //         let serverName = server.serverName;
-  //         return serverName;
-  //       }
-  //     }
-  //   }
-  //   alert("Could not map supplied server GUID "+guid+" to a server!");
-  //   return null;
-  // }
- 
-
-
-  
 
   
 
@@ -571,20 +544,20 @@ const ResourcesContextProvider = (props) => {
   };
 
   const _loadServer = (json) => {
-    if (json !== null) {
+    if (json) {
       if (json.relatedHTTPCode === 200 ) {
         let requestSummary = json.requestSummary;
         let serverOverview = json.serverOverview;
-        if (requestSummary !== null && serverOverview !== null) {
+        if (requestSummary && serverOverview) {
           processRetrievedServer(requestSummary, serverOverview);
           return;
         }
       }
     }
-    /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
+     /*
+     * On failure ...
      */
-    reportFailedOperation("loadServer",json);
+    interactionContext.reportFailedOperation("load server",json);
   }
 
 
@@ -713,7 +686,7 @@ const ResourcesContextProvider = (props) => {
       let guid = focus.guid;
       if (guid) {
         let genId = guidToGenId[guid];
-        if (genId !== null) {
+        if (genId) {
           let gen = gens[genId-1];
           return gen.resources[guid];
         }
@@ -1018,7 +991,7 @@ const ResourcesContextProvider = (props) => {
 
   const _loadServerConfiguration = (json) => {
   
-    if (json !== null) {
+    if (json) {
       if (json.relatedHTTPCode === 200 ) {
 
         /*
@@ -1053,7 +1026,7 @@ const ResourcesContextProvider = (props) => {
           return;
 
         }
-        else if (json.storedConfig !== null) {
+        else if (json.storedConfig) {
           /*
            * There is only stored configuration. Nothing to compare, and no differences to report
            */
@@ -1068,9 +1041,9 @@ const ResourcesContextProvider = (props) => {
       }
     }
     /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
+     * On failure ...
      */
-    reportFailedOperation("loadServerConfiguration",json);
+    interactionContext.reportFailedOperation("load server configuration",json);
   }
 
   const index = (obj,i) => {return obj[i]}
