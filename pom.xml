@@ -3160,7 +3160,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.1</version>
             </plugin>
 
             <!-- Validates maven & java versions -->
