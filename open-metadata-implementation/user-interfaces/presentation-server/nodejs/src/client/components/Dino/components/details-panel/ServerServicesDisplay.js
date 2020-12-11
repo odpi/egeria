@@ -106,7 +106,7 @@ export default function ServerServicesDisplay(props) {
        */
       serviceList = serviceNamesSorted.map( (svcName) =>
         <li className="details-sublist-item" key={svcName}> 
-          <button className="collapsible" id={svcName} onClick={flipServiceSection}> Service : {svcName}</button>
+          <button className="collapsible" id={svcName} onClick={flipServiceSection}> Service : {svcName} </button>
           <div className="content">
            {formatService(serviceMap[svcName])}
           </div>

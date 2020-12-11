@@ -44,8 +44,8 @@ import "./dino.scss";
 
 export default function Dino() {
 
-  const containerDiv = useRef();
 
+  const containerDiv = useRef();
 
   /*
    * Height and width are stateful, so will cause a re-render.
