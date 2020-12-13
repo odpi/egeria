@@ -2,10 +2,9 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-# Configuring the stewardship engine services
+# Configuring the Open Metadata Engine Services (OMES)
 
-The stewardship engine services provide the principle [subsystem](../concepts/omag-subsystem.md) of
-a [stewardship server](../concepts/stewardship-server.md).
+The engine services provide support for bot 
 
 The configuration for the stewardship engine services is made up of 2 parts:
 
