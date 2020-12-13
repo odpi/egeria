@@ -8,7 +8,7 @@ Release 1.5 delivers the automatic metadata discovery of duplicate assets, Addit
 ## Released Components
 
 * The first governance server is released:
-  * The [Discovery Server](../open-metadata-implementation/governance-servers/discovery-engine-services) supports the scanning of assets and the notification when duplicate suspects are detected.
+  * The [Discovery Server](../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-server.md) supports the scanning of assets and the notification when duplicate suspects are detected.
   
   This server is supported by: 
    * The [Discovery Engine OMAS](../open-metadata-implementation/access-services/discovery-engine) supports the detection, recording and notification of exceptions and duplicate suspects.
