@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-metadata-implementation</artifactId>
+        <artifactId>security-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>2.6-SNAPSHOT</version>
     </parent>
@@ -22,20 +22,25 @@
     </scm>
 
 
-    <name>Integration Services</name>
+    <name>Security Integrator OMIS API</name>
     <description>
-        Provides the implementations of the integration services that run in an integration daemon.
+        Provides the connector API and FFDC definitions for the integration service.
     </description>
 
-    <artifactId>integration-services</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>catalog-integrator</module>
-        <module>files-integrator</module>
-        <module>database-integrator</module>
-        <module>lineage-integrator</module>
-        <module>organization-integrator</module>
-        <module>security-integrator</module>
-    </modules>
+    <artifactId>security-integrator-api</artifactId>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>integration-daemon-services-api</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
