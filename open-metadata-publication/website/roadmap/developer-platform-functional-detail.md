@@ -193,8 +193,9 @@ themselves.
 
 ### Governance Server Services
 
+A governance server makes use of open metadata to actively manage an aspect of the digital landscape.
 The [governance server services](../../../open-metadata-implementation/governance-servers) each provide the principle subsystem of a 
-[governance server](../../../open-metadata-implementation/admin-services/docs/concepts/governance-server-types.md).
+[type of governance server](../../../open-metadata-implementation/admin-services/docs/concepts/governance-server-types.md).
 They include:
 
 * [data-engine-proxy-services](../../../open-metadata-implementation/governance-servers/data-engine-proxy-services) for
@@ -204,7 +205,7 @@ the [Integration Daemon](../../../open-metadata-implementation/admin-services/do
 * [open-lineage-services](../../../open-metadata-implementation/governance-servers/open-lineage-services) for
 the [Open Lineage Server](../../../open-metadata-implementation/admin-services/docs/concepts/open-lineage-server.md).
 
-Each governance server is making use of open metadata to actively manage an aspect of the digital landscape.
+The strategy for governance servers is [here](governance-servers-strategy.md).
 
 ### Generic Handlers
 

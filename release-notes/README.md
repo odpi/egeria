@@ -3,18 +3,19 @@
 
 # ODPi Egeria Release Notes
 
-Below are the official releases of ODPi Egeria.  The project aims to
+Below are the official releases of Egeria.  The project aims to
 produce a new release about once a month.  Each release includes
 new features and fixes to existing function.  The team aims to
-provide complete backward compatibility from release to release.
-If this is not possible, it will be called out explicitly in the
+provide complete backward compatibility for all components that
+are officially released (to understand more about what it means to have released function see
+[Egeria Content Status](../open-metadata-publication/website/content-status)).
+If backwards compatible changes are not possible, it will be called out explicitly in the
 release notes with an explanation on how to upgrade.
+
 Each release will also upgrade the level of its dependencies to
 ensure Egeria is running with all of the latest security patches.
 We therefore recommend that you keep moving forward with us to
 get the best Egeria experience possible.
-To understand more about what it means to have released function see
-[Egeria Content Status](../open-metadata-publication/website/content-status)
 
 One way you can help us is to feedback on your experiences, both good
 and bad.  We would love to hear from you.
@@ -23,8 +24,8 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
- * [Release 2.4](release-notes-2-2.md) - October 2020
-    * Integration Server
+ * [Release 2.4](release-notes-2-4.md) - October 2020
+    * Integration Daemon
     * User Interface improvements
     * Additional tests
     * Bug fixes
@@ -32,7 +33,7 @@ Below are the release notes for the latest ODPi Egeria release:
 
 ## Older Releases
 
-* [Release 2.3](release-notes-2-2.md) - September 2020
+* [Release 2.3](release-notes-2-3.md) - September 2020
     * Presentation Server User Interface
     * Bug fixes
     * Dependency updates
@@ -64,7 +65,6 @@ Below are the release notes for the latest ODPi Egeria release:
     * Bug fixes
     
 * [Release 1.6](release-notes-1-6.md) - March 2020
-
     * Audit Log Framework (ALF) technical preview
     * Repository Explorer (TEX) 
 
@@ -101,6 +101,10 @@ Many of the features are large and the teams integrate code for
 partial function as soon as it is stable and has no impact on released function.
 So you will see support for much more function than is officially released.
 This way you can monitor and feedback on future items as they are developed.
+
+The [Road map for Egeria](../open-metadata-publication/website/roadmap)
+describes the end vision for Egeria and our current status.
+
 
 ## Reporting issues
 

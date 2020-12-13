@@ -1,9 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.5 (Planned February 2020)
+# Release 1.5 (March 2020)
 
-Release 1.5 delivers the automatic metadata discovery of duplicate assets, Additional, in Tech Preview, Data Engine OMAS, and a data engine proxy server.
+Release 1.5 delivers the automatic metadata discovery of duplicate assets.
+Additional, in Tech Preview, Data Engine OMAS, and a data engine proxy server.
 
 ## Released Components
 
@@ -30,6 +31,17 @@ Release 1.5 delivers the automatic metadata discovery of duplicate assets, Addit
      It supports the polling of data engines such as ETL platforms
      in order to catalog information about the data movement, transformation and copying they are engaged in.
      It calls the Data Engine OMAS.
+
+## Egeria Implementation Status at Release 1.5
+ 
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-1.5.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+         
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
