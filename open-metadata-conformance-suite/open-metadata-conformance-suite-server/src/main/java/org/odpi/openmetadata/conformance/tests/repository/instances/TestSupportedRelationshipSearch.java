@@ -13,6 +13,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -27,6 +30,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import java.text.MessageFormat;
 import java.util.*;
 
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.ALL;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.ANY;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
 
@@ -97,6 +102,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
     private static final String ASSERTION_102     = TEST_CASE_ID + "-102";
     private static final String ASSERTION_MSG_102 = "findRelationshipsByProperty supports general regular expressions: ";
+
+    private static final String ASSERTION_103     = TEST_CASE_ID + "-103";
+    private static final String ASSERTION_MSG_103 = "findRelationships using SearchProperties is supported: ";
 
     private static final String MISSING_EXPECTED_GUIDS = "(results missing expected GUIDs)";
 
@@ -755,6 +763,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                     performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.ALL);
 
                     performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.NONE);
+
+                    performSearchPropertiesTestForAttribute(attributeName);
 
                 }
 
@@ -2815,4 +2825,414 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     }
 
 
+
+    /*
+     * performSearchPropertiesTestForAttribute
+     *
+     * This set of test uses one attribute to construct a SearchProperties hierarchy
+     * with a fixed structure and set of MatchCriteria and operators. This is to test
+     * that the repository implements the findRelationships method and can handle both
+     * linear and nested SearchProperties objects and a variety of operators and
+     * match criteria. It would not be sensible to try to test with a lot of different
+     * permutations - there would simply be too many and the test would take too long
+     * to run and not be particularly more useful.
+     *
+     * To maintain separation of test cases and profiles there is no use of the LIKE
+     * operator as that is specific to String primitives and is part of the Advanced
+     * profile which tests regex handling.
+     *
+     * The attribute will have come from the definedAttributes set and hence is a
+     * primitive.
+     *
+     * The SearchProperties object will always have the following 'shape':
+     *
+     *
+     * 	"matchProperties" : {            SP1
+     *      "matchCriteria" : "ALL",
+     *		"conditions" : [  propCons1
+     *          {         PC1
+     *              "property" : <attributeName>,
+     *              "operator" : "EQ",
+     *              "value"    : <attributeValue>
+     *          },
+     *          {        PC2
+     *              "property" : <attributeName>,
+     *              "operator" : "NEQ",
+     *              "value"    : <modifiedAttributeValue>
+     *          },
+     *          {         PC3
+     *              "nestedConditions" : {      SP2
+     *                  "matchCriteria":"ANY",
+     *                  "conditions" : [   propCons2
+     *                      {         PC4
+     *                          "property" : <attributeName>,
+     *                          "operator" : "EQ",
+     *                          "value"    : <attributeValue>
+     *                      },
+     *                      {       PC5
+     *                          "property" : <attributeName>,
+     *                          "operator" : "NEQ",
+     *                          "value"    : <attributeValue>
+     *                      }
+     *                  ]
+     *              }
+     *          }
+     *       ]
+     *   }
+     *  This should always deliver a TRUE result.
+     */
+
+    private void performSearchPropertiesTestForAttribute(String attributeName) throws Exception {
+
+        Set<Object> possibleValues = propertyValueMap.get(attributeName).keySet();
+        Iterator<Object> possibleValueIterator = possibleValues.iterator();
+
+        /*
+         * Perform a search using the first discovered value for the property
+         */
+        if (possibleValueIterator.hasNext()) {
+
+            Object value = possibleValueIterator.next();
+
+            /*
+             * Construct a SearchProperties object using this attribute and value.
+             */
+
+
+            /*
+             * Need a 'good' PrimitivePropertyValue to use in the search properties.
+             */
+
+            PrimitivePropertyValue ppvGood = new PrimitivePropertyValue();
+            ppvGood.setPrimitiveDefCategory(propertyCatMap.get(attributeName));
+            ppvGood.setPrimitiveValue(value);
+
+            /*
+             * Also need a 'bad' value for negative conditions
+             */
+
+            PrimitivePropertyValue ppvBad = getWrongPrimitivePropertyValue(propertyCatMap.get(attributeName), value);
+            ppvBad.setPrimitiveDefCategory(propertyCatMap.get(attributeName));
+
+            // Level 2 (lower level)
+            SearchProperties searchProperties2 = new SearchProperties();
+
+            List<PropertyCondition> propertyConditions2 = new ArrayList<>();
+
+            PropertyCondition propCondition4 = new PropertyCondition();
+            propCondition4.setProperty(attributeName);
+            propCondition4.setOperator(PropertyComparisonOperator.EQ);
+            propCondition4.setValue(ppvGood);
+            propertyConditions2.add(propCondition4);
+
+            PropertyCondition propCondition5 = new PropertyCondition();
+            propCondition5.setProperty(attributeName);
+            propCondition5.setOperator(PropertyComparisonOperator.NEQ);
+            propCondition5.setValue(ppvGood);
+            propertyConditions2.add(propCondition5);
+
+            searchProperties2.setConditions(propertyConditions2);
+            searchProperties2.setMatchCriteria(ANY);
+
+            // Level 1 (higher level)
+            SearchProperties searchProperties1 = new SearchProperties();
+
+            List<PropertyCondition> propertyConditions1 = new ArrayList<>();
+
+            PropertyCondition propCondition1 = new PropertyCondition();
+            propCondition1.setProperty(attributeName);
+            propCondition1.setOperator(PropertyComparisonOperator.EQ);
+            propCondition1.setValue(ppvGood);
+            propertyConditions1.add(propCondition1);
+
+            PropertyCondition propCondition2 = new PropertyCondition();
+            propCondition2.setProperty(attributeName);
+            propCondition2.setOperator(PropertyComparisonOperator.NEQ);
+            propCondition2.setValue(ppvBad);
+            propertyConditions1.add(propCondition2);
+
+            PropertyCondition propCondition3 = new PropertyCondition();
+            propCondition3.setNestedConditions(searchProperties2);
+            propertyConditions1.add(propCondition3);
+
+            searchProperties1.setConditions(propertyConditions1);
+            searchProperties1.setMatchCriteria(ALL);
+
+            /*
+             * searchProperties1 should now be the full query as illustrated above.
+             */
+
+
+            /*
+             * Formulate the expected result - all relationships with the value should match
+             */
+            List<String> relationshipsWithValue = propertyValueMap.get(attributeName).get(value);
+            List<String> expectedGUIDs = relationshipsWithValue;
+            int expectedRelationshipCount = expectedGUIDs.size();
+            // In the case where the instances were created, expected may exceed pageSize.
+
+            /*
+             * Search....
+             */
+
+            List<Relationship> result;
+
+            Map<String,String> parameters = getParameters(relationshipDef.getGUID(), searchProperties1.toString());
+
+            try {
+
+                result = metadataCollection.findRelationships(workPad.getLocalServerUserId(),
+                                                         relationshipDef.getGUID(),
+                                                         null,  // no subtype GUID filtering
+                                                         searchProperties1,
+                                                         0,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         pageSize);
+
+            }
+            catch (FunctionNotSupportedException exc) {
+
+                /*
+                 * Because the above test only exercises one optional function (findRelationships using SearchProperties)
+                 * we can assert that it is that function that is not supported.
+                 */
+
+                super.addNotSupportedAssertion(ASSERTION_103,
+                                               ASSERTION_MSG_103 + exc.getMessage(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
+
+                return;
+
+            }
+            catch(Exception exc) {
+                /*
+                 * We are not expecting any exceptions from this method call. Log and fail the test.
+                 */
+
+                String methodName = "findRelationships";
+                String operationDescription = "find relationships of type " + relationshipDef.getName();
+                String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+                throw new Exception( msg , exc );
+
+            }
+
+            /*
+             * The approach to checking results match expectations is as follows:
+             * The original discovery request (top of this testcase) returned a set of instances that
+             * are known to be in the repository. If that search hit the page limit then the
+             * instances may be a partial result of what is actually in the repository. Although it
+             * is possible to sort the results on a property, there is no guarantee that the values
+             * associated with any particular property are distinct, so the resulting order is
+             * not guaranteed. If this were an OMAS this would not be a problem because the OMAS/
+             * user would mostly likely continue to search until they either find what they are
+             * looking for or exhaust the contents of the repository. Since this is an automated
+             * testcase for which we need a predictable, repeatable result, it needs to be more
+             * robust. It is not appropriate to keep looping page by page because we do not know
+             * how many matching instances the repository contains. It is preferable to perform
+             * a limited search (in this case one page) rather than loop exhaustively.
+             *
+             * A constant page size is assumed throughout the following.
+             * It is also assumed that instances are not being added or deleted during the course
+             * of this testcase.
+             *
+             * The original result set is filtered to generate the result we expect to get from a narrower
+             * search. If the original result set returned less than the page size then we know the full
+             * set of instances in the repository and hence completely know each narrower expected set.
+             * This case (of complete knowledge) can be summarised in pseudo code as:
+             *   if original result size < page size then:
+             *     result size < expected size => fail
+             *     result size == expected size => if search contains all expected => pass
+             *                                     else search !contains all expected => fail
+             *      search size > expect size => fail (should not get more than the expectation)
+             *
+             *
+             * In contrast, if the original result set returned a full page size then the testcase needs to
+             * exercise a looser result matching policy. This case (of incomplete knowledge) can be summarised in
+             * psudo code as:
+             *
+             *   if original result size == page size then:
+             *     search size < expected size => fail
+             *     search size == expected size => if search contains all expected => pass
+             *                                     else search !contains all expected => check whether the unexpected instances are a valid match
+             *                                       if true => pass
+             *                                       else => fail
+             *     search size > expect size =>    check whether the unexpected instances are a valid match
+             *                                       if true => pass
+             *                                       else => fail
+             *
+             * With the above in mind....
+             *
+             * Check that the expected number of relationships was returned. This has to consider the effect of the original
+             * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+             * But if the limit was hit (on the original search) then there may be additional instances in the repository
+             * that were not seen on the original search; the expected result was computed from only those instance that WERE seen,
+             * so the expectation may be a subset of the actual. If we hit page size there may be additional instances that were
+             * not included in the initial set, due to the initial set being limited by pageSize; the narrower search may
+             * pull in additional relationships that were not discovered previously.
+             *
+             */
+
+
+            /*
+             * We need to check that we got (at least) the expected number of results - which could include zero.
+             */
+            int resultCount = result == null ? 0 : result.size();
+            /*
+             * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
+             * In addition the result size should be no more than a page.
+             */
+            boolean unlimited_case = !pageLimited && resultCount == expectedRelationshipCount;
+            /*
+             * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
+             * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
+             * So in that latter case we need to accept Min().
+             */
+            boolean limited_large_case = pageLimited && expectedRelationshipCount >= pageSize && resultCount == pageSize;
+            boolean limited_small_case = pageLimited && expectedRelationshipCount <  pageSize && resultCount >= expectedRelationshipCount;
+            boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
+
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_3, resultCount, expectedRelationshipCount, parameters);
+            assertCondition((acceptable_result_size),
+                            ASSERTION_3,
+                            assertionMessage,
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
+
+
+            /*
+             * If there were any result, check that all expected relationships were returned and (in the pageLimited case) that any
+             * additional relationships were valid results for the search.
+             */
+            if (resultCount > 0) {
+
+                List<String> resultGUIDs = new ArrayList<>();
+                for (Relationship relationship : result) {
+                    resultGUIDs.add(relationship.getGUID());
+                }
+
+
+                /*
+                 * Here again, we need to be sensitive to whether there are (or may be) more relationships than the page limit.
+                 * If the original search hit the limit then we may legitimately receive additional instances in the results
+                 * of a narrower search. But not if the original result set was under the page limit.
+                 */
+
+                String unexpectedResult = "0";
+
+                if (!pageLimited) {
+
+                    if (!resultGUIDs.containsAll(expectedGUIDs))
+                        unexpectedResult = MISSING_EXPECTED_GUIDS;
+
+                } else { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                    for (Relationship relationship : result) {
+
+                        if (!(expectedGUIDs.contains(relationship.getGUID()))) {
+                            /*
+                             * This was an extra relationship that we either did not expect or that we have not seen previously.
+                             * Check it is a valid result.
+                             */
+                            InstanceProperties relationshipProperties = relationship.getProperties();
+                            if (relationshipProperties != null) {
+                                InstancePropertyValue ipValue = relationshipProperties.getPropertyValue(attributeName);
+                                if (ipValue != null) {
+                                    InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
+                                    if (ipCategory == InstancePropertyCategory.PRIMITIVE) {
+
+                                        Object primitiveValue = ipValue.valueAsObject();
+
+                                        /*
+                                         * Check for inequality and fail the match if unequal.
+                                         * This is because, even for strings, we used an exact match literalised property value
+                                         * and match criteria was ALL - so an relationship with an unequal property is not a valid result.
+                                         */
+
+                                        if (!primitiveValue.equals(value)) {
+                                            unexpectedResult = "('" + primitiveValue.toString() + "' for guid=" + relationship.getGUID() + ")";
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_4, unexpectedResult, parameters.toString());
+                assertCondition(unexpectedResult.equals("0"),
+                                ASSERTION_4,
+                                assertionMessage,
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
+            }
+
+        }
+    }
+
+    /**
+     * Create a primitive property value for the requested property that has value different to
+     * anything the seed generator would have created. This is to create a value that should fail
+     * any comparisons.
+     *
+     * @param primDefCat   the primitive category of the property
+     * @param primValue    the value of the actual property
+     * @return PrimitivePropertyValue object
+     */
+    private PrimitivePropertyValue getWrongPrimitivePropertyValue(PrimitiveDefCategory  primDefCat,
+                                                                  Object                primValue)
+    {
+
+        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
+
+        propertyValue.setPrimitiveDefCategory(primDefCat);
+
+
+        switch (primDefCat)
+        {
+            case OM_PRIMITIVE_TYPE_STRING:
+                propertyValue.setPrimitiveValue("InvalidValue");
+                break;
+            case OM_PRIMITIVE_TYPE_DATE:
+                Date date = new Date();                        // Date and Time now - should be different to actual
+                Long timestamp = date.getTime();
+                propertyValue.setPrimitiveValue(timestamp);    // Dates are stored as Long values
+                break;
+            case OM_PRIMITIVE_TYPE_INT:
+                propertyValue.setPrimitiveValue((int)primValue + 13);
+                break;
+            case OM_PRIMITIVE_TYPE_BOOLEAN:
+                propertyValue.setPrimitiveValue( ! ((boolean)primValue) );
+                break;
+            case OM_PRIMITIVE_TYPE_SHORT:
+                propertyValue.setPrimitiveValue((short)primValue + 13);
+                break;
+            case OM_PRIMITIVE_TYPE_BYTE:
+                propertyValue.setPrimitiveValue((byte)primValue + 13);
+                break;
+            case OM_PRIMITIVE_TYPE_CHAR:
+                propertyValue.setPrimitiveValue((char)primValue + 13);
+                break;
+            case OM_PRIMITIVE_TYPE_LONG:
+                propertyValue.setPrimitiveValue((long)primValue + 13);
+                break;
+            case OM_PRIMITIVE_TYPE_FLOAT:
+                propertyValue.setPrimitiveValue((float)primValue + 13);
+                break;
+            case OM_PRIMITIVE_TYPE_DOUBLE:
+            case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+            case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                propertyValue.setPrimitiveValue((double)primValue + 13);
+                break;
+            case OM_PRIMITIVE_TYPE_UNKNOWN:
+                break;
+        }
+
+        return propertyValue;
+    }
 }

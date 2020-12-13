@@ -8,13 +8,15 @@ import java.io.Serializable;
  * Encapsulates server base url and the serverName form the configuration.
  * The purpose is to be consumed in order to compute the url for registry repository view
  */
-public class OmasSettings implements Serializable {
+public class UISettings implements Serializable {
     String serverName;
     String baseUrl;
+    String pageSize;
 
-    public OmasSettings(String serverName, String baseUrl) {
+    public UISettings(String serverName, String baseUrl, String pageSize) {
         this.serverName = serverName;
         this.baseUrl = baseUrl;
+        this.pageSize = pageSize;
     }
 
     public String getServerName() {
@@ -23,5 +25,9 @@ public class OmasSettings implements Serializable {
 
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    public String getPageSize() {
+        return pageSize;
     }
 }

@@ -23,16 +23,24 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
- * [Release 2.4](release-notes-2-2.md) - October 2020
+* [Release 2.5](release-notes-2-5.md) - November 2020
+  * Integration Server
+  * User Interface improvements
+  * Additional tests
+  * Bug fixes
+  * Dependency updates
+
+ 
+## Older Releases
+
+* [Release 2.4](release-notes-2-4.md) - October 2020
     * Integration Server
     * User Interface improvements
     * Additional tests
     * Bug fixes
     * Dependency updates
 
-## Older Releases
-
-* [Release 2.3](release-notes-2-2.md) - September 2020
+* [Release 2.3](release-notes-2-3.md) - September 2020
     * Presentation Server User Interface
     * Bug fixes
     * Dependency updates
@@ -108,6 +116,10 @@ If you discover an issue in the release you are using, we recommend
 first upgrading to the latest available release.  If this does not
 resolve the problem, please raise a new
 [git issue](https://github.com/odpi/egeria).
+
+You can also follow our discussions by joining the LF AI & Data Foundation Slack team.
+Sign up at https://slack.lfai.foundation/ & join the
+`egeria-discussions` channel.
 
 
 ----

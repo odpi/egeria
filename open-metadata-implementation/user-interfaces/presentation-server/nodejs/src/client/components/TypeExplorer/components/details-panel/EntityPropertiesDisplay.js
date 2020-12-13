@@ -69,7 +69,9 @@ export default function EntityPropertiesDisplay(props) {
     const formattedAttributeName = formatAttributeName(attributeName, attribute);
     const formattedAttributeType = formatAttributeType(attributeName, attribute);
     formattedAttribute = <div>{formattedAttributeName} : {formattedAttributeType}
-        {(attribute.status === "DEPRECATED_ATTRIBUTE") ? "  (use "+attribute.replacedBy+")" : ""}
+        {(attribute.status === "DEPRECATED_ATTRIBUTE")
+           ?   attribute.replacedBy ? "  (use "+attribute.replacedBy+")" : "  (no replacement)"
+           :   ""}
     </div>;
     return formattedAttribute
   };
@@ -132,7 +134,7 @@ export default function EntityPropertiesDisplay(props) {
     return attributeList;
   };
 
-  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length == 0) {
+  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length === 0) {
     properties = (
       <div>
         list is empty

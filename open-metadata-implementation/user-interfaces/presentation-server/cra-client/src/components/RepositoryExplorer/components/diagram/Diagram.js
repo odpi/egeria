@@ -423,6 +423,7 @@ export default function Diagram(props) {
     links.selectAll('path')
        .attr('d', function(d) { return DiagramUtils.path_func(d, link_distance).path; })
        .lower();
+
     links.selectAll('text')
        .attr("x", function(d) { return d.x = DiagramUtils.path_func(d, link_distance).midpoint.x; } )
        .attr("y", function(d) { return d.y = DiagramUtils.path_func(d, link_distance).midpoint.y; } )
