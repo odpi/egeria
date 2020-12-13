@@ -7,15 +7,32 @@ A **Metadata Access Point** is an OMAG Server that can be a
 [member of an open metadata repository cohort](cohort-member.md)
 and supports the [access services](../../../access-services).
 
-![Figure 1: Metadata Access Point in ecosystem](metadata-access-point.png)
+![Figure 1](metadata-access-point.png#pagewidth)
 > Figure 1: Metadata Access Point in OMAG server ecosystem
 
 This means it provides specialist metadata
 APIs to user interfaces and governance servers that embrace metadata from
 all connected open metadata repository cohorts.
 
+The basic metadata access point has no metadata repository and metadata
+is retrieved and stored from remote repositories via the [cohort](cohort-member.md).
+It can be upgraded to a [Metadata Server](metadata-server.md)
+by adding a metadata repository which will enable it to
+store metadata locally.
+
 
 ## Configuring a Metadata Access Point
+
+Each [type of OMAG Server](omag-server.md) is configured by creating
+a [configuration document](configuration-document.md).  The contents
+of the configuration document identify the type of server and
+the options on the services it runs.
+
+Figure 2 shows the structure of the configuration document for the metadata
+access point.
+
+![Figure 2](metadata-access-point-config.png#pagewidth)
+> Figure 2: Configuration Document for a Metadata Access Point
 
 The tasks for configuring an metadata access point are as follows:
 
