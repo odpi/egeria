@@ -102,6 +102,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-analysis-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -188,11 +194,6 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-science-spring</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-spring</artifactId>
         </dependency>
 
         <dependency>
