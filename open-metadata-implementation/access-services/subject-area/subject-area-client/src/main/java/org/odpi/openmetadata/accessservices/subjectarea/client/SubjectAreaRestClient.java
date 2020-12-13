@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
@@ -15,6 +16,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * RESTClient is responsible for issuing calls to the Subject Area OMAS REST APIs.
@@ -167,7 +172,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
     }
 
     /**
-     * Issue a GET REST call that returns a response found objects using the information described in findRequest
+     * Issue a GET REST call that returns a response found objects using the information described in findRequest,
+     * specifying the maximum amount that the downstream server supports.
      *
      * @param <T> return type for results in {@link GenericResponse}
      * @param userId      unique identifier for requesting user, under which the request is performed
@@ -176,6 +182,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
+     * @param maximumPageSizeOnRestCall maximum amount that the downstream server supports.
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -186,22 +193,55 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String methodName,
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
-                                               FindRequest findRequest) throws InvalidParameterException,
+                                               FindRequest findRequest,
+                                               int maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                                PropertyServerException,
-                                                                               UserNotAuthorizedException
-    {
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
-        String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
-        String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
-        GenericResponse<T> response = callGetRESTCall(methodName, type, expandedURL);
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, response);
+                                                                               UserNotAuthorizedException {
 
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        GenericResponse<T> completeResponse = null;
+        int requestedPageSize = findRequest.getPageSize();
+        int startingFrom = findRequest.getStartingFrom();
+        if (maximumPageSizeOnRestCall >= requestedPageSize ) {
+             String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+             String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
+             completeResponse = callGetRESTCall(methodName, type, expandedURL);
+             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
+        } else {
+            // issue multiple calls to build up the requested page
+            int totalNumberRetrieved = 0;
+            // while we have got less than the requested page size continuing getting more by issuing rest calls
+            while (totalNumberRetrieved < requestedPageSize) {
+                // set the page size to the maximum that the downstream server accepts.
+                findRequest.setPageSize(maximumPageSizeOnRestCall);
+                // we need to amend the startingFrom potions when issuing subsequent requests.
+                findRequest.setStartingFrom(totalNumberRetrieved);
+                // encode a url with the new find request
+                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+                String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
+                // issue the get call
+                GenericResponse<T> responseForPart = callGetRESTCall(methodName, type, expandedURL);
+                exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
+
+                int numberRetrieved = responseForPart.results().size();
+                if (numberRetrieved == 0) {
+                    // break out of the while loop as there is no more to retrieve.
+                    totalNumberRetrieved = requestedPageSize;
+                } else {
+                    // there may be more to get
+                    totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
+                    if (completeResponse == null) {
+                        // first time in initialise the complete response
+                        completeResponse = responseForPart;
+                    } else {
+                        // add the results from thisget to the complete response
+                        completeResponse.addAllResults(responseForPart.results());
+                    }
+                    // amend the starting from
+                    startingFrom= startingFrom + numberRetrieved;
+                }
+            }
         }
-        return response;
+        return completeResponse;
     }
 
     /**

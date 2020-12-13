@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/glossaries")
+@RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/configs")
 
 @Tag(name="Glossary Author OMVS", description="Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs=@ExternalDocumentation(description="Glossary Author View Services (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
 

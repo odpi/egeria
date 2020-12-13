@@ -5,6 +5,8 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.admin;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance;
@@ -20,6 +22,8 @@ import org.slf4j.LoggerFactory;
 public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(GlossaryAuthorViewAdmin.class);
+
+    private static final Integer MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE = 101;
 
     private ViewServiceConfig viewServiceConfig = null;
     private AuditLog          auditLog          = null;
@@ -52,6 +56,21 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
             log.debug("==> Method: " + methodName + ",userid=" + serverUserName);
         }
         //TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
+        if (maxPageSize < MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE) {
+            final String viewServiceFullName = viewServiceConfig.getViewServiceFullName();
+            // There is a minimum max page size of this view service so that the UI can issue a paging call up to MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE-1 and
+            // the view service will support that page size. This means tha UI javascript can issue a single rest call to get the users page of data.
+
+            auditLog.logMessage(actionDescription, OMAGAdminAuditCode.VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW.getMessageDefinition(viewServiceFullName, serverName, MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE.toString(),
+                                                                                                                              ""+maxPageSize));
+
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW.getMessageDefinition(viewServiceFullName,
+                                                                                                                                 serverName, MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE.toString(),
+                                                                                                                                 ""+maxPageSize),
+                                                      this.getClass().getName(),
+                                                      methodName);
+
+        }
 
         auditLog.logMessage(actionDescription,
                            GlossaryAuthorViewAuditCode.SERVICE_INITIALIZING.getMessageDefinition());

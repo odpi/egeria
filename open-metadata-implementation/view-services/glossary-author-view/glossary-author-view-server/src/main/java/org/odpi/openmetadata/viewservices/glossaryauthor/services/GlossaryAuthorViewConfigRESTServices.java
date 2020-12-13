@@ -57,15 +57,10 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
+
             int glossaryViewMaxMageSize = instanceHandler.getGlossaryViewMaxPageSize(serverName, userId, methodName);
-            Config config = client.getConfig(userId);
-            // Use the lower of the max page sizes as found in the glossary author view service and the subject area access service
-
-            if (glossaryViewMaxMageSize < config.getMaxPageSize()) {
-                config.setMaxPageSize(glossaryViewMaxMageSize);
-            }
-
+            Config config = new Config();
+            config.setMaxPageSize(glossaryViewMaxMageSize);
             response.addResult(config);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);

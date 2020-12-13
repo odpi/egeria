@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -303,10 +304,16 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                         "A retrieve all configurations has been attempted, but operation is not supported.",
                         "The retrieve all server configurations operation is rejected.",
                         "Check whether OMAG Server configuration connector supports retrieve all configurations."),
+
     UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE(400, "OMAG-ADMIN-400-044",
-                                         "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server atored configurations but an error occurred.",
+                                         "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred.",
                                          "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
                                          "Check that the OMAG Server configuration connector has been specified correctly."),
+
+    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW(400, "OMAG-ADMIN-400-045",
+                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
+                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
+                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
 
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
