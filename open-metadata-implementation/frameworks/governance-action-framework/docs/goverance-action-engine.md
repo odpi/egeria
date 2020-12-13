@@ -1,10 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2019. -->
 
-# Stewardship Engine
+# Governance Action Engine
 
-The stewardship engine manages the execution of
-[stewardship actions](stewardship-action.md).  It is hosted in one or more
+The governance action engine manages the execution of
+[governance action services](goverance-action-service.md).  It is hosted in one or more
 stewardship servers.
 
 ----

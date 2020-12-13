@@ -3,7 +3,7 @@
 
 # Stewardship Action
 
-A stewardship action is a specialized [connector](../../open-connector-framework/docs/concepts/connector.md)
+A governance action service is a specialized [connector](../../open-connector-framework/docs/concepts/connector.md)
 that performs triage, assessment and/or remediation activities on request.
 
 ----
