@@ -42,7 +42,7 @@ public enum AssetConsumerErrorCode implements ExceptionMessageSet
                                  "is available in the cohort."),
     PROXY_CONNECTION_FOUND(404, "OMAS-ASSET-CONSUMER-404-006",
             "Only an entity proxy for requested connection {0} is found in the open metadata server {1}, error message was: {2}",
-            "The system is unable to populate the requested connection object because the object stored is only a stud from a relationship.",
+            "The system is unable to populate the requested connection object because the object stored is only a stub from a relationship.",
             "Check that the connection name is correct.  Check that all of the servers in the cohort are running. Retry the request when the " +
                                    "connection is available in the cohort."),
     ASSET_NOT_FOUND(404, "OMAS-ASSET-CONSUMER-404-007",
@@ -66,10 +66,10 @@ public enum AssetConsumerErrorCode implements ExceptionMessageSet
 
     UNABLE_TO_SEND_EVENT(500, "OMAS-ASSET-CONSUMER-500-004",
                          "An unexpected exception occurred when sending an event through connector {0} to the Asset Consumer OMAS out topic.  The failing " +
-                                 "event was {1}, the exception was {2} with message {2}",
+                                 "event was {1}, the exception was {2} with message {3}",
                          "The access service has issued a call to publish an event on its Out Topic and it failed.",
-                         "Look for errors in the event bus to understand why this is failing.  When the event bus is operating correctly, the event will" +
-                                 " be able to be published again.  In the meantime, events are being lost."),
+                         "Look for errors in the event bus to understand why this is failing.  When the event bus is operating correctly, event will" +
+                                 " begin to be published again.  In the meantime, events are being lost."),
 
     NULL_CONNECTOR_RETURNED(500, "OMAS-ASSET-CONSUMER-500-006",
                             "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +

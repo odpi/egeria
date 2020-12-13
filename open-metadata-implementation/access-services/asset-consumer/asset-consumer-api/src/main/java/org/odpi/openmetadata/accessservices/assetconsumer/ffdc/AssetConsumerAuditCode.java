@@ -59,7 +59,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
                "An asset consumer has logged a message for an asset.",
                "Review the message to ensure no action is required."),
 
-    OUT_TOPIC_EVENT("OMAS-ASSET_CONSUMER-0012",
+    OUT_TOPIC_EVENT("OMAS-ASSET-CONSUMER-0012",
                     OMRSAuditLogRecordSeverity.EVENT,
              "The Asset Consumer Open Metadata Access Service (OMAS) has sent event: {0}",
                      "The access service sends out asset notifications to ensure connected tools have the most up to-date " +
