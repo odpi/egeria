@@ -171,6 +171,7 @@ public abstract class EngineServiceAdmin
      *
      * @param engineServiceConfig configuration
      * @return list of engines
+     * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
     protected List<EngineConfig> getEngines(EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
     {
