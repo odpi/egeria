@@ -3,31 +3,35 @@
 package org.odpi.openmetadata.adminservices;
 
 
-import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.rest.IntegrationServiceConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.IntegrationServiceRequestBody;
-import org.odpi.openmetadata.adminservices.rest.IntegrationServicesResponse;
+import org.odpi.openmetadata.adminservices.configuration.OMAGEngineServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.EngineServiceConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody;
+import org.odpi.openmetadata.adminservices.rest.EngineServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
- * OMAGServerAdminForIntegrationServices provides the server-side support for the services that add integration services
+ * OMAGServerAdminForEngineServices provides the server-side support for the services that add engine services
  * configuration to an OMAG Server.
  */
-public class OMAGServerAdminForIntegrationServices
+public class OMAGServerAdminForEngineServices
 {
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForIntegrationServices.class),
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForEngineServices.class),
                                                                       CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
     
 
@@ -39,24 +43,24 @@ public class OMAGServerAdminForIntegrationServices
     /**
      * Default constructor
      */
-    public OMAGServerAdminForIntegrationServices()
+    public OMAGServerAdminForEngineServices()
     {
     }
 
 
     /**
-     * Return the list of integration services that are configured for this server.  If you want to see the configuration for these services,
-     * use the getIntegrationServicesConfiguration.
+     * Return the list of engine services that are configured for this server.  If you want to see the configuration for these services,
+     * use the getEngineServicesConfiguration.
      *
      * @param userId calling user
      * @param serverName name of server
      *
-     * @return list of integration service descriptions
+     * @return list of engine service descriptions
      */
-    public RegisteredOMAGServicesResponse getRegisteredIntegrationServices(String userId,
-                                                                           String serverName)
+    public RegisteredOMAGServicesResponse getRegisteredEngineServices(String userId,
+                                                                      String serverName)
     {
-        final String methodName = "getRegisteredIntegrationServices";
+        final String methodName = "getRegisteredEngineServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -73,27 +77,27 @@ public class OMAGServerAdminForIntegrationServices
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             /*
-             * Get the list of View Services configured in this server.
+             * Get the list of Engine Services configured in this server.
              */
-            List<IntegrationServiceConfig> integrationServiceConfigs = serverConfig.getIntegrationServicesConfig();
+            List<EngineServiceConfig> engineServiceConfigs = serverConfig.getEngineServicesConfig();
 
             /*
              * Set up the available view services.
              */
-            if ((integrationServiceConfigs != null) && (!integrationServiceConfigs.isEmpty()))
+            if ((engineServiceConfigs != null) && (!engineServiceConfigs.isEmpty()))
             {
                 List<RegisteredOMAGService> services = new ArrayList<>();
-                for (IntegrationServiceConfig integrationServiceConfig : integrationServiceConfigs)
+                for (EngineServiceConfig engineServiceConfig : engineServiceConfigs)
                 {
-                    if (integrationServiceConfig != null)
+                    if (engineServiceConfig != null)
                     {
-                        if (integrationServiceConfig.getIntegrationServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        if (engineServiceConfig.getEngineServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
-                            service.setServiceName(integrationServiceConfig.getIntegrationServiceFullName());
-                            service.setServiceDescription(integrationServiceConfig.getIntegrationServiceDescription());
-                            service.setServiceURLMarker(integrationServiceConfig.getIntegrationServiceURLMarker());
-                            service.setServiceWiki(integrationServiceConfig.getIntegrationServiceWiki());
+                            service.setServiceName(engineServiceConfig.getEngineServiceFullName());
+                            service.setServiceDescription(engineServiceConfig.getEngineServiceDescription());
+                            service.setServiceURLMarker(engineServiceConfig.getEngineServiceURLMarker());
+                            service.setServiceWiki(engineServiceConfig.getEngineServiceWiki());
                             services.add(service);
                         }
                     }
@@ -125,21 +129,21 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Return the list of integration services that are configured for this server.
+     * Return the list of engine services that are configured for this server.
      *
      * @param userId calling user
      * @param serverName name of server
      *
      * @return list of access service configurations
      */
-    public IntegrationServicesResponse getIntegrationServicesConfiguration(String userId,
-                                                                           String serverName)
+    public EngineServicesResponse getEngineServicesConfiguration(String userId,
+                                                                 String serverName)
     {
-        final String methodName = "getIntegrationServicesConfiguration";
+        final String methodName = "getEngineServicesConfiguration";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        IntegrationServicesResponse response = new IntegrationServicesResponse();
+        EngineServicesResponse response = new EngineServicesResponse();
 
         try
         {
@@ -152,9 +156,9 @@ public class OMAGServerAdminForIntegrationServices
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             /*
-             * Get the list of Integration Services configured in this server.
+             * Get the list of Engine Services configured in this server.
              */
-            response.setServices(serverConfig.getIntegrationServicesConfig());
+            response.setServices(serverConfig.getEngineServicesConfig());
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -176,25 +180,25 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Return the configuration for the requested integration service that is configured for this server.
+     * Return the configuration for the requested engine service that is configured for this server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param serviceURLMarker integration service name used in URL
+     * @param serviceURLMarker engine service name used in URL
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serviceURLMarker parameter.
      */
-    public IntegrationServiceConfigResponse getIntegrationServiceConfiguration(String userId,
-                                                                               String serverName,
-                                                                               String serviceURLMarker)
+    public EngineServiceConfigResponse getEngineServiceConfiguration(String userId,
+                                                                     String serverName,
+                                                                     String serviceURLMarker)
     {
-        final String methodName = "getIntegrationServiceConfiguration";
+        final String methodName = "getEngineServiceConfiguration";
         final String serviceURLMarkerParameterName = "serviceURLMarker";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        IntegrationServiceConfigResponse response = new IntegrationServiceConfigResponse();
+        EngineServiceConfigResponse response = new EngineServiceConfigResponse();
 
         try
         {
@@ -207,15 +211,15 @@ public class OMAGServerAdminForIntegrationServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<IntegrationServiceConfig> currentList = serverConfig.getIntegrationServicesConfig();
+            List<EngineServiceConfig> currentList = serverConfig.getEngineServicesConfig();
 
             if (currentList != null)
             {
-                for (IntegrationServiceConfig existingConfig : currentList)
+                for (EngineServiceConfig existingConfig : currentList)
                 {
                     if (existingConfig != null)
                     {
-                        if (serviceURLMarker.equals(existingConfig.getIntegrationServiceURLMarker()))
+                        if (serviceURLMarker.equals(existingConfig.getEngineServiceURLMarker()))
                         {
                             response.setConfig(existingConfig);
                         }
@@ -243,25 +247,26 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Enable a single registered integration service.  This builds the integration service configuration for the
+     * Enable a single registered engine service.  This builds the engine service configuration for the
      * server's config document.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param serviceURLMarker integration service name used in URL
-     * @param requestBody  minimum values to configure an integration service
+     * @param serviceURLMarker engine service name used in URL
+     * @param requestBody  minimum values to configure an engine service
      *
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureIntegrationService(String                        userId,
-                                                    String                        serverName,
-                                                    String                        serviceURLMarker,
-                                                    IntegrationServiceRequestBody requestBody)
+    public VoidResponse configureEngineService(String                   userId,
+                                               String                   serverName,
+                                               String                   serviceURLMarker,
+                                               EngineServiceRequestBody requestBody)
     {
-        final String methodName = "configureIntegrationService";
+        final String methodName = "configureEngineService";
+        final String requestBodyParameterName = "requestBody";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -274,28 +279,31 @@ public class OMAGServerAdminForIntegrationServices
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateIntegrationServiceConfig(serverName, requestBody, methodName);
+            errorHandler.validateOMAGServerClientConfig(serverName, requestBody, methodName);
 
             /*
-             * Get the configuration information for this integration service.
+             * Get the configuration information for this engine service.
              */
-            IntegrationServiceConfig serviceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(serviceURLMarker, serverName, methodName);
-            serviceConfig.setIntegrationServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
+            EngineServiceRegistration registration = OMAGEngineServiceRegistration.getEngineServiceRegistration(serviceURLMarker);
+
+            errorHandler.validateEngineServiceIsRegistered(registration, serviceURLMarker, serverName, methodName);
+
+            EngineServiceConfig serviceConfig = new EngineServiceConfig(registration);
 
             serviceConfig.setOMAGServerPlatformRootURL(requestBody.getOMAGServerPlatformRootURL());
             serviceConfig.setOMAGServerName(requestBody.getOMAGServerName());
-            serviceConfig.setIntegrationConnectorConfigs(requestBody.getIntegrationConnectorConfigs());
-            serviceConfig.setIntegrationServiceOptions(requestBody.getIntegrationServiceOptions());
+            serviceConfig.setEngines(requestBody.getEngines());
+            serviceConfig.setEngineServiceOptions(requestBody.getEngineServiceOptions());
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<IntegrationServiceConfig> integrationServiceConfigList = serverConfig.getIntegrationServicesConfig();
+            List<EngineServiceConfig> engineServiceConfigList = serverConfig.getEngineServicesConfig();
 
-            response = this.storeIntegrationServicesConfig(userId,
-                                                           serverName,
-                                                           serviceURLMarker,
-                                                           updateIntegrationServiceConfig(serviceConfig, integrationServiceConfigList),
-                                                           methodName);
+            response = this.storeEngineServicesConfig(userId,
+                                                      serverName,
+                                                      serviceURLMarker,
+                                                      updateEngineServiceConfig(serviceConfig, engineServiceConfigList),
+                                                      methodName);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -316,24 +324,26 @@ public class OMAGServerAdminForIntegrationServices
     }
 
 
-
     /**
-     * Add configuration for a single integration service to the server's config document.
+     * Add configuration for a single engine service to the server's config document.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param serviceConfig  all values to configure an integration service
+     * @param serviceConfig  all values to configure an engine service
      *
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureIntegrationService(String                   userId,
-                                                    String                   serverName,
-                                                    IntegrationServiceConfig serviceConfig)
+    public VoidResponse configureEngineService(String              userId,
+                                               String              serverName,
+                                               EngineServiceConfig serviceConfig)
     {
-        final String methodName = "configureIntegrationService";
+        final String methodName                    = "configureEngineService";
+        final String serviceConfigParameterName    = "serviceConfig";
+        final String serviceURLMarkerParameterName = "serviceConfig.serviceURLMarker";
+        final String engineNamesParameterName      = "serviceConfig.engineNames";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -346,16 +356,23 @@ public class OMAGServerAdminForIntegrationServices
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(serviceConfig, serviceConfigParameterName, serverName, methodName);
+            errorHandler.validatePropertyNotNull(serviceConfig.getEngineServiceURLMarker(), serviceURLMarkerParameterName, serverName, methodName);
+            errorHandler.validatePropertyNotNull(serviceConfig.getEngines(), engineNamesParameterName, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<IntegrationServiceConfig> integrationServiceConfigList = serverConfig.getIntegrationServicesConfig();
+            EngineServiceRegistration registration = OMAGEngineServiceRegistration.getEngineServiceRegistration(serviceConfig.getEngineServiceURLMarker());
 
-            response = this.storeIntegrationServicesConfig(userId,
-                                                           serverName,
-                                                           serviceConfig.getIntegrationServiceURLMarker(),
-                                                           updateIntegrationServiceConfig(serviceConfig, integrationServiceConfigList),
-                                                           methodName);
+            errorHandler.validateEngineServiceIsRegistered(registration, serviceConfig.getEngineServiceURLMarker(), serverName, methodName);
+
+            List<EngineServiceConfig> engineServiceConfigList = serverConfig.getEngineServicesConfig();
+
+            response = this.storeEngineServicesConfig(userId,
+                                                      serverName,
+                                                      serviceConfig.getEngineServiceURLMarker(),
+                                                      updateEngineServiceConfig(serviceConfig, engineServiceConfigList),
+                                                      methodName);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -379,28 +396,28 @@ public class OMAGServerAdminForIntegrationServices
     /**
      * Add/update the configuration for a single service in the configuration.
      *
-     * @param integrationServiceConfig configuration to add/change
+     * @param engineServiceConfig configuration to add/change
      * @param currentList current config (may be null)
      * @return updated list
      */
-    private List<IntegrationServiceConfig>  updateIntegrationServiceConfig(IntegrationServiceConfig         integrationServiceConfig,
-                                                                           List<IntegrationServiceConfig>   currentList)
+    private List<EngineServiceConfig>  updateEngineServiceConfig(EngineServiceConfig         engineServiceConfig,
+                                                                 List<EngineServiceConfig>   currentList)
     {
-        if (integrationServiceConfig == null)
+        if (engineServiceConfig == null)
         {
             return currentList;
         }
         else
         {
-            List<IntegrationServiceConfig> newList = new ArrayList<>();
+            List<EngineServiceConfig> newList = new ArrayList<>();
 
             if (currentList != null)
             {
-                for (IntegrationServiceConfig existingConfig : currentList)
+                for (EngineServiceConfig existingConfig : currentList)
                 {
                     if (existingConfig != null)
                     {
-                        if (integrationServiceConfig.getIntegrationServiceId() != existingConfig.getIntegrationServiceId())
+                        if (engineServiceConfig.getEngineServiceId() != existingConfig.getEngineServiceId())
                         {
                             newList.add(existingConfig);
                         }
@@ -408,7 +425,7 @@ public class OMAGServerAdminForIntegrationServices
                 }
             }
 
-            newList.add(integrationServiceConfig);
+            newList.add(engineServiceConfig);
 
             if (newList.isEmpty())
             {
@@ -421,25 +438,25 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Set up the configuration for all of the open metadata integration services (OMISs).  This overrides
+     * Set up the configuration for all of the open metadata engine services (OMESs).  This overrides
      * the current values.
      *
      * @param userId                user that is issuing the request.
      * @param serverName            local server name.
-     * @param integrationServicesConfig  list of configuration properties for each integration service.
+     * @param engineServicesConfig  list of configuration properties for each engine service.
      * @return void response or
      * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or integrationServicesConfig parameter.
+     * OMAGInvalidParameterException invalid serverName or engineServicesConfig parameter.
      */
-    public VoidResponse setIntegrationServicesConfig(String                         userId,
-                                                     String                         serverName,
-                                                     List<IntegrationServiceConfig> integrationServicesConfig)
+    public VoidResponse setEngineServicesConfig(String                    userId,
+                                                String                    serverName,
+                                                List<EngineServiceConfig> engineServicesConfig)
     {
-        final String methodName = "setIntegrationServicesConfig";
+        final String methodName = "setEngineServicesConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse response = storeIntegrationServicesConfig(userId, serverName, null, integrationServicesConfig, methodName);
+        VoidResponse response = storeEngineServicesConfig(userId, serverName, null, engineServicesConfig, methodName);
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
@@ -448,7 +465,7 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Disable the integration services.  This removes all configuration for the integration services
+     * Disable the engine services.  This removes all configuration for the engine services
      * and disables the enterprise repository services.
      *
      * @param userId  user that is issuing the request.
@@ -457,14 +474,14 @@ public class OMAGServerAdminForIntegrationServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearAllIntegrationServices(String userId,
-                                                    String serverName)
+    public VoidResponse clearAllEngineServices(String userId,
+                                               String serverName)
     {
-        final String methodName = "clearAllIntegrationServices";
+        final String methodName = "clearAllEngineServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse response = this.storeIntegrationServicesConfig(userId, serverName, null, null, methodName);
+        VoidResponse response = this.storeEngineServicesConfig(userId, serverName, null, null, methodName);
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
@@ -473,20 +490,20 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Remove an integration service.  This removes all configuration for the integration service.
+     * Remove an engine service.  This removes all configuration for the engine service.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param serviceURLMarker integration service name used in URL
+     * @param serviceURLMarker engine service name used in URL
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearIntegrationService(String userId,
-                                                String serverName,
-                                                String serviceURLMarker)
+    public VoidResponse clearEngineService(String userId,
+                                           String serverName,
+                                           String serviceURLMarker)
     {
-        final String methodName = "clearIntegrationService";
+        final String methodName = "clearEngineService";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -502,23 +519,23 @@ public class OMAGServerAdminForIntegrationServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<IntegrationServiceConfig> currentList = serverConfig.getIntegrationServicesConfig();
-            List<IntegrationServiceConfig> newList     = new ArrayList<>();
+            List<EngineServiceConfig> currentList = serverConfig.getEngineServicesConfig();
+            List<EngineServiceConfig> newList     = new ArrayList<>();
 
             if (currentList != null)
             {
-                for (IntegrationServiceConfig existingConfig : currentList)
+                for (EngineServiceConfig existingConfig : currentList)
                 {
                     if (existingConfig != null)
                     {
-                        if (! serviceURLMarker.equals(existingConfig.getIntegrationServiceURLMarker()))
+                        if (! serviceURLMarker.equals(existingConfig.getEngineServiceURLMarker()))
                         {
                             newList.add(existingConfig);
                         }
                     }
                 }
 
-                response = this.storeIntegrationServicesConfig(userId, serverName, serviceURLMarker, newList, methodName);
+                response = this.storeEngineServicesConfig(userId, serverName, serviceURLMarker, newList, methodName);
             }
         }
         catch (OMAGInvalidParameterException  error)
@@ -541,22 +558,22 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Store the latest set of integration services in the configuration document for the server.
+     * Store the latest set of engine services in the configuration document for the server.
      *
      * @param userId                     user that is issuing the request.
      * @param serverName                 local server name.
-     * @param serviceURLMarker           identifier of specific integration service
-     * @param integrationServicesConfig  list of configuration properties for each integration service.
+     * @param serviceURLMarker           identifier of specific engine service
+     * @param engineServicesConfig  list of configuration properties for each engine service.
      * @param methodName                 calling method
      * @return void response or
      * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or integrationServicesConfig parameter.
+     * OMAGInvalidParameterException invalid serverName or engineServicesConfig parameter.
      */
-    private VoidResponse storeIntegrationServicesConfig(String                         userId,
-                                                        String                         serverName,
-                                                        String                         serviceURLMarker,
-                                                        List<IntegrationServiceConfig> integrationServicesConfig,
-                                                        String                         methodName)
+    private VoidResponse storeEngineServicesConfig(String                    userId,
+                                                   String                    serverName,
+                                                   String                    serviceURLMarker,
+                                                   List<EngineServiceConfig> engineServicesConfig,
+                                                   String                    methodName)
     {
         VoidResponse response = new VoidResponse();
 
@@ -574,23 +591,23 @@ public class OMAGServerAdminForIntegrationServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (integrationServicesConfig == null)
+            if (engineServicesConfig == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for integration services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for engine services.");
             }
             else if (serviceURLMarker == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for integration services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for engine services.");
             }
             else
             {
                 configAuditTrail.add(new Date().toString() + " " + userId +
-                                             " updated configuration for integration service " + serviceURLMarker + ".");
+                                             " updated configuration for engine service " + serviceURLMarker + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
 
-            serverConfig.setIntegrationServicesConfig(integrationServicesConfig);
+            serverConfig.setEngineServicesConfig(engineServicesConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }

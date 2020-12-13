@@ -19,6 +19,7 @@ import java.util.List;
 public class ServerTypeClassifier
 {
     private static final String ACCESS_SERVICES_NAME      = "Open Metadata Access Services (OMAS)";
+    private static final String ENGINE_SERVICES_NAME      = "Open Metadata Engine Services (OMES)";
     private static final String INTEGRATION_SERVICES_NAME = "Open Metadata Integration Services (OMIS)";
     private static final String VIEW_SERVICES_NAME        = "Open Metadata View Services (OMVS)";
 
@@ -57,28 +58,26 @@ public class ServerTypeClassifier
 
         RepositoryServicesConfig        repositoryServicesConfig        = configurationDocument.getRepositoryServicesConfig();
         List<AccessServiceConfig>       accessServiceConfigList         = configurationDocument.getAccessServicesConfig();
+        List<EngineServiceConfig>       engineServiceConfigList         = configurationDocument.getEngineServicesConfig();
         List<IntegrationServiceConfig>  integrationServiceConfigList    = configurationDocument.getIntegrationServicesConfig();
         List<ViewServiceConfig>         viewServiceConfigList           = configurationDocument.getViewServicesConfig();
         ConformanceSuiteConfig          conformanceSuiteConfig          = configurationDocument.getConformanceSuiteConfig();
-        DiscoveryEngineServicesConfig   discoveryEngineServicesConfig   = configurationDocument.getDiscoveryEngineServicesConfig();
         OpenLineageServerConfig         openLineageServerConfig         = configurationDocument.getOpenLineageServerConfig();
         SecuritySyncConfig              securitySyncConfig              = configurationDocument.getSecuritySyncConfig();
         SecurityOfficerConfig           securityOfficerConfig           = configurationDocument.getSecurityOfficerConfig();
-        StewardshipEngineServicesConfig stewardshipEngineServicesConfig = configurationDocument.getStewardshipEngineServicesConfig();
         VirtualizationConfig            virtualizationConfig            = configurationDocument.getVirtualizationConfig();
         DataEngineProxyConfig           dataEngineProxyConfig           = configurationDocument.getDataEngineProxyConfig();
         DataPlatformServicesConfig      dataPlatformServicesConfig      = configurationDocument.getDataPlatformServicesConfig();
 
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
+                (engineServiceConfigList == null) &&
                 (integrationServiceConfigList == null) &&
                 (viewServiceConfigList == null) &&
                 (conformanceSuiteConfig == null) &&
-                (discoveryEngineServicesConfig == null) &&
                 (openLineageServerConfig == null) &&
                 (securitySyncConfig == null) &&
                 (securityOfficerConfig == null) &&
-                (stewardshipEngineServicesConfig == null) &&
                 (virtualizationConfig == null) &&
                 (dataEngineProxyConfig == null) &&
                 (dataPlatformServicesConfig == null))
@@ -138,11 +137,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -158,13 +152,13 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
+                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
+                                                virtualizationConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -188,6 +182,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
                                                 integrationServiceConfigList);
 
@@ -208,11 +207,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -225,11 +219,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
                                                 securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -248,6 +237,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
                                                 integrationServiceConfigList);
 
@@ -268,11 +262,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -285,11 +274,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
                                                 securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -308,6 +292,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
                                                 integrationServiceConfigList);
 
@@ -328,11 +317,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -348,18 +332,13 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
                                                 virtualizationConfig);
         }
 
-        if (discoveryEngineServicesConfig != null)
+        if (engineServiceConfigList != null)
         {
-            serverTypeClassification = ServerTypeClassification.DISCOVERY_SERVER;
+            serverTypeClassification = ServerTypeClassification.ENGINE_HOST;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -374,7 +353,7 @@ public class ServerTypeClassifier
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 VIEW_SERVICES_NAME,
-                                                viewServiceConfigList);
+                                                integrationServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -405,11 +384,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
                                                 securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -428,6 +402,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 VIEW_SERVICES_NAME,
                                                 viewServiceConfigList);
 
@@ -448,11 +427,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -468,11 +442,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
                                                 virtualizationConfig);
         }
@@ -485,6 +454,11 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -513,11 +487,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
                                                 securitySyncConfig);
 
@@ -525,11 +494,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
                                                 securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -553,6 +517,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 VIEW_SERVICES_NAME,
                                                 viewServiceConfigList);
 
@@ -573,11 +542,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -585,11 +549,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
                                                 securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -608,63 +567,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                VIEW_SERVICES_NAME,
-                                                viewServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
-        }
-
-        if (stewardshipEngineServicesConfig != null)
-        {
-            serverTypeClassification = ServerTypeClassification.STEWARDSHIP_SERVER;
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ACCESS_SERVICES_NAME,
-                                                accessServiceConfigList);
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -693,11 +597,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -705,11 +604,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
                                                 securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -728,6 +622,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
                                                 INTEGRATION_SERVICES_NAME,
                                                 integrationServiceConfigList);
 
@@ -753,11 +652,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -770,11 +664,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
                                                 securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
         }
 
         if (viewServiceConfigList != null)
@@ -785,6 +674,11 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 ACCESS_SERVICES_NAME,
                                                 accessServiceConfigList);
+
+            this.validateSubsystemNotConfigured(serverName,
+                                                serverTypeClassification.getServerTypeName(),
+                                                ENGINE_SERVICES_NAME,
+                                                engineServiceConfigList);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -808,11 +702,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                discoveryEngineServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
@@ -825,11 +714,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
                                                 securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                stewardshipEngineServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -872,6 +756,7 @@ public class ServerTypeClassifier
      * @param methodName calling method
      * @throws OMAGInvalidParameterException resulting exception if config document is null.
      */
+    @SuppressWarnings(value = "deprecated")
     private void validateConfigurationDocumentNotNull(String            serverName,
                                                       OMAGServerConfig  configurationDocument,
                                                       String            methodName) throws  OMAGInvalidParameterException
@@ -879,6 +764,22 @@ public class ServerTypeClassifier
         if (configurationDocument == null)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_SERVER_CONFIG.getMessageDefinition(serverName),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        if (configurationDocument.getDiscoveryEngineServicesConfig() != null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
+                                                                                                              configurationDocument.getDiscoveryEngineServicesConfig().toString()),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        if (configurationDocument.getStewardshipEngineServicesConfig() != null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
+                                                                                                              configurationDocument.getStewardshipEngineServicesConfig().toString()),
                                                     this.getClass().getName(),
                                                     methodName);
         }
