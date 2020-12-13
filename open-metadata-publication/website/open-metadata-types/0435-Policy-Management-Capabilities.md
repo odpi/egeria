@@ -61,12 +61,9 @@ Egeria's
 [Metadata Security](../../../open-metadata-implementation/common-services/metadata-security)
 module is a Policy Enforcement Point, calling the metadata security connectors as Policy Decision Points.
 
-Both the [Discovery Engine](../../../open-metadata-implementation/admin-services/docs/concepts/discovery-server.md)
-and [Stewardship Engine](../../../open-metadata-implementation/admin-services/docs/concepts/stewardship-server.md)
-can act as Policy Enforcement Points.  They used their configured
-[Discovery Services](../../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md)
-and [Stewardship Actions](../../../open-metadata-implementation/frameworks/governance-action-framework/docs/stewardship-action.md)
-respectively as their Policy Decision Points.  
+The [Engine Services](../../../open-metadata-implementation/engine-services)
+running in the [Engine Host OMAG Server](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
+can act as Policy Enforcement Points. 
 
 ----
 Return to [Area 4](Area-4-models.md).
