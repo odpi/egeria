@@ -6,11 +6,11 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 
 /**
- * OMVSServiceInstanceHandler retrieves information from the instance map for the
- * view service instances.  The instance map is thread-safe.  Instances are added
- * and removed by the ViewServiceAdmin class.
+ * OMESServiceInstanceHandler retrieves information from the instance map for the
+ * engine service instances.  The instance map is thread-safe.  Instances are added
+ * and removed by the EngineServiceAdmin class.
  */
-public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHandler
+public class OMESServiceInstanceHandler extends AuditableServerServiceInstanceHandler
 {
     private RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
@@ -20,10 +20,11 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *
      * @param serviceName a descriptive name for the OMVS
      */
-    public OMVSServiceInstanceHandler(String   serviceName)
+    public OMESServiceInstanceHandler(String   serviceName)
     {
         super(serviceName);
     }
+
 
     /**
      * Retrieve the exception handler that can package up common exceptions and pack them into
@@ -32,6 +33,4 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
      * @return exception handler object
      */
     public RESTExceptionHandler getExceptionHandler() { return exceptionHandler; }
-
-
 }
