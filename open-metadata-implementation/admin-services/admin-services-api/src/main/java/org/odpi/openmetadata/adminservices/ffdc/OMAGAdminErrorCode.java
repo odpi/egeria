@@ -376,13 +376,13 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     NO_ENGINES(400, "OMAG-ADMIN-400-104",
                "{0} in server {1} is not configured with any engines",
-               "The server is not able to run any requests.  It fails to start.",
+               "The server is not able to run any services in this engine.  It fails to start.",
                "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
                        "and then restart the server."),
 
     NULL_PROPERTY_NAME(400, "OMAG-ADMIN-400-105",
                "The {0} property in the configuration for server {1} is null",
-               "The server fails to start.",
+               "The server fails to start because this value is needed to operate successfully.",
                "Add a value for this property to the configuration document and restart the server."),
 
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",

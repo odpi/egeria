@@ -190,7 +190,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
             OMRSAuditLogRecordSeverity.STARTUP,
             "{0} out of {1} configured Open Metadata View Services (OMVSs) have started.",
             "The operational admin services have completed the initialization of all of the view service subsystems " +
-                    "enabled in the view server.  They are ready for use.  An view services is configured by adding " +
+                    "enabled in the view server.  They are ready for use.  An view service is configured by adding " +
                     "its configuration to the server's configuration document.  By default a newly configured view " +
                     "service is also ENABLED. A configured view service may be temporarily disabled in the configuration" +
                     "document.  In which case the start up sequence skips it and the number of started view services" +
@@ -256,13 +256,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                            "The operational admin services are initializing the engine service subsystems in a metadata server instance.  " +
                                    "These provide support for specialist governance engines.  The engine services support " +
                                    "a REST API. The engine service subsystems are started one at a time.  A fatal error in any of them prevents the server from starting.",
-                           "The server's configuration document lists the view services that should be started in this server.  " +
+                           "The server's configuration document lists the engine services that should be started in this server.  " +
                                    "Verify that the expected engine services are started and that they each report that their components are " +
                                    "working correctly."),
 
     SKIPPING_ENGINE_SERVICE("OMAG-ADMIN-0041",
                           OMRSAuditLogRecordSeverity.STARTUP,
-                          "The {0} is marked as DISABLED and so will not be started in the {1} engine host server",
+                          "The {0} engine service is marked as DISABLED and so will not be started in the {1} engine host server",
                           "The operational admin services will skip the initialization of the engine service subsystem " +
                                   "in this OMAG server because it is marked as disabled in the configuration document.",
                           "The server's configuration document lists the engine services that should be started in this server.  " +
@@ -272,13 +272,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
     ALL_ENGINE_SERVICES_STARTED("OMAG-ADMIN-0042",
                               OMRSAuditLogRecordSeverity.STARTUP,
                               "{0} out of {1} configured Open Metadata Engine Services (OMESs) have started.",
-                              "The operational admin services have completed the initialization of all of the view service subsystems " +
-                                      "enabled in the metadata server.  They are ready for use.  An view services is configured by adding " +
-                                      "its configuration to the server's configuration document.  By default a newly configured view " +
-                                      "service is also ENABLED. A configured view service may be temporarily disabled in the configuration" +
-                                      "document.  In which case the start up sequence skips it and the number of started view services" +
-                                      "is less than the number of configured view services.",
-                              "Review the start up messages to ensure that all of the correct view services have been started " +
+                              "The operational admin services have completed the initialization of all of the engine service subsystems " +
+                                      "enabled in the engine host server.  They are ready for use.  An engine service is configured by adding " +
+                                      "its configuration to the server's configuration document.  By default a newly configured engine " +
+                                      "service is also ENABLED. A configured engine service may be temporarily disabled in the configuration" +
+                                      "document.  In which case the start up sequence skips it and the number of started engine services" +
+                                      "is less than the number of configured engine services.",
+                              "Review the start up messages to ensure that all of the correct engine services have been started " +
                                       "and they are operating without errors."),
 
     STOPPING_ENGINE_SERVICES("OMAG-ADMIN-0043",
@@ -309,7 +309,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                  "The admin services are unable to create an instance of the engine service's admin class during the start up of a specific server " +
                                          "instance.  The server fails to start.",
                                  "Review the error message and the other reported failures to determine the cause of the problem.  Once this is resolved, restart the " +
-                                         "engine server."),
+                                         "engine host server."),
 
     ENGINE_SERVICE_FAILURE("OMAG-ADMIN-0047",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
