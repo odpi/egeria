@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProp
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import java.util.List;
 
@@ -364,6 +365,8 @@ public class CSVFileReaderSample
         System.out.println("Using userId: " + clientUserId);
         System.out.println("Reading file: " + fileName);
         System.out.println();
+
+        HttpHelper.noStrictSSLIfConfigured();
 
         try
         {

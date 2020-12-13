@@ -3,7 +3,7 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
-import Egeriacolor from "../images/Egeria_logo_color";
+import Egeriacolor from "../images/odpi/Egeria_logo_color";
 import { IdentificationContext } from "../contexts/IdentificationContext";
 
 import {
@@ -39,7 +39,7 @@ const Login = () => {
     })
       .then(res => res.json())
       .then(res => {
-        if (res.status == "success") {
+        if (res.status === "success") {
           console.log("login worked " + JSON.stringify(res));
           identificationContext.setUserId(userId);
           identificationContext.setUser(res.user);

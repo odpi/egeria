@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class RunAllFVTOn2Servers
 
     public static void main(String args[])
     {
+        HttpHelper.noStrictSSL();
+
         try
         {
             String url = RunAllFVTOn2Servers.getUrl(args);

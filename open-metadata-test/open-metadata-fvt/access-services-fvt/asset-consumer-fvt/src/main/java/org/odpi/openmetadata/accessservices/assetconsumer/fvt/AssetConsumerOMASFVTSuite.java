@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.fvt.errorhandling.Inva
 import org.odpi.openmetadata.accessservices.assetconsumer.fvt.tagging.CreateTagTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
+import org.odpi.openmetadata.http.HttpHelper;
 
 /**
  * AssetConsumerOMASFVT provides the main program for the Asset Consumer OMAS
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
  */
 public class AssetConsumerOMASFVTSuite extends FVTSuiteBase
 {
+
     /**
      * Run all of the defined tests and capture the results.
      *
@@ -26,6 +28,8 @@ public class AssetConsumerOMASFVTSuite extends FVTSuiteBase
                              String   serverPlatformRootURL,
                              String   userId)
     {
+        HttpHelper.noStrictSSL();
+
         int returnCode = 0;
 
         FVTResults results;

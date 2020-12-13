@@ -22,37 +22,45 @@ and bad.  We would love to hear from you.
 
 ## Latest Release
 
-Below are the release notes for the latest ODPi Egeria release:
+Below are the release notes for the latest Egeria release:
 
- * [Release 2.4](release-notes-2-4.md) - October 2020
+* [Release 2.5](release-notes-2-5.md) - December 2020
+  * Integration Server
+  * User Interface improvements
+  * Additional tests
+  * Bug fixes
+  * Dependency updates
+
+ 
+## Older Releases
+
+* [Release 2.4](release-notes-2-4.md) - November 2020
     * Integration Daemon
     * User Interface improvements
     * Additional tests
     * Bug fixes
     * Dependency updates
 
-## Older Releases
-
-* [Release 2.3](release-notes-2-3.md) - September 2020
+* [Release 2.3](release-notes-2-3.md) - October 2020
     * Presentation Server User Interface
     * Bug fixes
     * Dependency updates
 
-* [Release 2.2](release-notes-2-2.md) - August 2020
+* [Release 2.2](release-notes-2-2.md) - September 2020
     * Bug fixes
     * Dependency updates
 
- * [Release 2.1](release-notes-2-1.md) - July 2020
+ * [Release 2.1](release-notes-2-1.md) - August 2020
     * Bug fixes
     * Dependency updates
 
- * [Release 2.0](release-notes-2-0.md) - June 2020
+ * [Release 2.0](release-notes-2-0.md) - July 2020
     * https security for server chassis
     * encrypted file connector
     * Bug fixes
     * Dependency updates
 
-* [Release 1.8](release-notes-1-8.md) - May 2020
+* [Release 1.8](release-notes-1-8.md) - June 2020
     * Additional tutorial content in the form of the Egeria Dojo
     * Repository explorer usability and functionality improvements
     * Improved packaging for samples and utilities
@@ -61,36 +69,36 @@ Below are the release notes for the latest ODPi Egeria release:
     * Bug fixes
     * Dependency updates
     
-* [Release 1.7](release-notes-1-7.md) - April 2020
+* [Release 1.7](release-notes-1-7.md) - May 2020
     * Bug fixes
     
-* [Release 1.6](release-notes-1-6.md) - March 2020
+* [Release 1.6](release-notes-1-6.md) - April 2020
     * Audit Log Framework (ALF) technical preview
     * Repository Explorer (TEX) 
 
-* [Release 1.5 (February 2020)](release-notes-1-5.md) 
+* [Release 1.5](release-notes-1-5.md) - March 2020
     * Metadata de-duplication identification and notification
     * Data Engine OMAS Technical Preview
     * Data Engine Proxy Server Technical Preview
     
-* [Release 1.4 (January 2020)](release-notes-1-4.md) 
+* [Release 1.4](release-notes-1-4.md) - February 2020
     * Bug fixes, documentation
     
-* [Release 1.3 (December 2019)](release-notes-1-3.md)
+* [Release 1.3](release-notes-1-3.md) -  January 2019
     * Conformance test suite improvements
     * Open Metadata Archives
     
-* [Release 1.2 (November 2019)](release-notes-1-2.md)
+* [Release 1.2](release-notes-1-2.md) - December 2019
     * Conformance test suite
     * Asset cataloging and consumption
     * Governance zones and metadata security
     * Open metadata archives
 
-* [Release 1.1 (October 2019)](release-notes-1-1.md)
+* [Release 1.1](release-notes-1-1.md) - November 2019
     * Multi-tenant OMAG Server Platform
     * JanusGraph based metadata repository
 
-* [Release 1.0 (February 2019)](release-notes-1-0.md)
+* [Release 1.0](release-notes-1-0.md) - February 2019
     * Peer-to-peer metadata exchange
 
 
@@ -112,6 +120,10 @@ If you discover an issue in the release you are using, we recommend
 first upgrading to the latest available release.  If this does not
 resolve the problem, please raise a new
 [git issue](https://github.com/odpi/egeria).
+
+You can also follow our discussions by joining the LF AI & Data Foundation Slack team.
+Sign up at https://slack.lfai.foundation/ & join the
+`egeria-discussions` channel.
 
 
 ----

@@ -362,8 +362,8 @@ export default function ServerDisplay() {
       displayedConfig = null;
       break;
   }
- 
-  
+
+
   return (
 
     <div className="type-details-container">
@@ -378,9 +378,9 @@ export default function ServerDisplay() {
       <div className="type-details-item">{serverDetails.serverClassification.serverTypeName}</div>
       <div className="type-details-item">{serverDetails.serverClassification.serverTypeDescription}</div>
 
-      <button className="collapsible" onClick={flipSection}> Services: </button>
+      <button className="collapsible" onClick={flipSection}> Integration Services: </button>
       <div className="content">
-        <ServerServicesDisplay serverName={serverDetails.serverName} serviceList={serverDetails.serverServicesList}></ServerServicesDisplay>
+        <ServerServicesDisplay serverName={serverDetails.serverName} serviceCat="Integration" serviceList={serverDetails.integrationServices}></ServerServicesDisplay>
       </div>
       <br/>
 
