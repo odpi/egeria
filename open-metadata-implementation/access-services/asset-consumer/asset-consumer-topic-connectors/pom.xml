@@ -21,33 +21,18 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Asset Consumer OMAS Client</name>
+    <name>Asset Consumer OMAS Topic Connectors</name>
     <description>
-        Provides the client library for the Asset Consumer Open Metadata Access Service (OMAS).
+        Connector library for the Asset Consumer Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>asset-consumer-client</artifactId>
+    <artifactId>asset-consumer-topic-connectors</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-consumer-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-consumer-topic-connectors</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
+            <artifactId>audit-log-framework</artifactId>
         </dependency>
 
         <dependency>
@@ -57,16 +42,24 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>audit-log-framework</artifactId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
-        <!-- Asset Consumer is built on Connected Asset -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-client</artifactId>
+            <artifactId>asset-consumer-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
     </dependencies>
-
 
 </project>
