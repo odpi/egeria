@@ -18,16 +18,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CriticalityGovernanceClassification extends GovernanceClassificationBase
+public class ImpactGovernanceClassification extends GovernanceClassificationBase
 {
     private static final long     serialVersionUID = 1L;
 
-    private int criticalityLevel = 0;
+    private int impactLevel = 0;
 
     /**
      * Default constructor
      */
-    public CriticalityGovernanceClassification()
+    public ImpactGovernanceClassification()
     {
         super();
     }
@@ -38,13 +38,13 @@ public class CriticalityGovernanceClassification extends GovernanceClassificatio
      *
      * @param template object to copy
      */
-    public CriticalityGovernanceClassification(CriticalityGovernanceClassification template)
+    public ImpactGovernanceClassification(ImpactGovernanceClassification template)
     {
         super(template);
 
         if (template != null)
         {
-            criticalityLevel = template.getCriticalityLevel();
+            impactLevel = template.getImpactLevel();
         }
     }
 
@@ -54,20 +54,20 @@ public class CriticalityGovernanceClassification extends GovernanceClassificatio
      *
      * @return enum
      */
-    public int getCriticalityLevel()
+    public int getImpactLevel()
     {
-        return criticalityLevel;
+        return impactLevel;
     }
 
 
     /**
      * Set up the definition of how critical this data item is to the organization.
      *
-     * @param criticalityLevel int
+     * @param impactLevel int
      */
-    public void setCriticalityLevel(int criticalityLevel)
+    public void setImpactLevel(int impactLevel)
     {
-        this.criticalityLevel = criticalityLevel;
+        this.impactLevel = impactLevel;
     }
 
     /**
@@ -78,8 +78,8 @@ public class CriticalityGovernanceClassification extends GovernanceClassificatio
     @Override
     public String toString()
     {
-        return "CriticalityGovernanceClassification{" +
-                "criticalityLevel=" + criticalityLevel +
+        return "ImpactGovernanceClassification{" +
+                "impactLevel=" + impactLevel +
                 ", status=" + getStatus() +
                 ", confidence=" + getConfidence() +
                 ", steward='" + getSteward() + '\'' +
@@ -110,8 +110,8 @@ public class CriticalityGovernanceClassification extends GovernanceClassificatio
         {
             return false;
         }
-        CriticalityGovernanceClassification that = (CriticalityGovernanceClassification) objectToCompare;
-        return criticalityLevel == that.criticalityLevel;
+        ImpactGovernanceClassification that = (ImpactGovernanceClassification) objectToCompare;
+        return impactLevel == that.impactLevel;
     }
 
 
@@ -123,6 +123,6 @@ public class CriticalityGovernanceClassification extends GovernanceClassificatio
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), criticalityLevel);
+        return Objects.hash(super.hashCode(), impactLevel);
     }
 }
