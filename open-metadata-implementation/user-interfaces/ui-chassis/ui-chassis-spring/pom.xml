@@ -55,6 +55,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <!-- needed to remove dependency on junit-vintage-engine -->
+                        <groupId>org.junit.vintage</groupId>
+                        <artifactId>junit-vintage-engine</artifactId>
+                    </exclusion>
+                </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -383,8 +390,6 @@
                     <classpathDependencyExcludes>
                         <classpathDependencyExclude>org.slf4j:slf4j-simple</classpathDependencyExclude>
                     </classpathDependencyExcludes>
-                    <!-- TODO: tests disabled due to issue 4288 -->
-                    <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
