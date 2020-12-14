@@ -16,10 +16,8 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.*;
-import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
@@ -1426,7 +1424,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(connection, serverName, methodName);
+            errorHandler.validateServerConnection(connection, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -1546,7 +1544,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(connection, serverName, methodName);
+            errorHandler.validateServerConnection(connection, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -2105,7 +2103,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(auditLogDestination, serverName, methodName);
+            errorHandler.validateServerConnection(auditLogDestination, serverName, methodName);
 
             if (auditLogDestination != null)
             {
@@ -2200,7 +2198,7 @@ public class OMAGServerAdminServices
             {
                 for (Connection connection : auditLogDestinations)
                 {
-                    errorHandler.validateConnection(connection, serverName, methodName);
+                    errorHandler.validateServerConnection(connection, serverName, methodName);
                 }
             }
 

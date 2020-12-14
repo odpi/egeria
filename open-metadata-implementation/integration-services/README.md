@@ -18,6 +18,7 @@ The integration services available today are:
 * [Files Integrator](files-integrator) - collects metadata about files stored in a filesystem or file manager.
 * [Lineage Integrator](lineage-integrator) - collects metadata about processes, their internal logic and the data assets they work with.
 * [Organization Integrator](organization-integrator) - imports details of an organization's structure - such as teams and departments.
+* [Security Integrator](security-integrator) - distributes security properties to access control enforcement points.
 
 More information about the operation of the integration daemon and the integration services within,
 along with details of how to set up these integration services are

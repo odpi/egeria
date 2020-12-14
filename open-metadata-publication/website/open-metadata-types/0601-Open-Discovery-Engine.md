@@ -3,7 +3,7 @@
 
 # 0601 Open Discovery Engine
 
-An [open discovery engine](../../../open-metadata-implementation/governance-servers/discovery-engine-services)
+An [open discovery engine](../../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
 executes [open discovery services](../../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md)
 on request.
 

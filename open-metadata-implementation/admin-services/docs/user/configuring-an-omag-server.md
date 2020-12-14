@@ -38,7 +38,8 @@ originating from the server.
 * Which cohorts to connect to.
 
 Each of the configuration commands builds up sections in the configuration document.
-This document is stored in the configuration file after each configuration request so
+This document is stored in the [configuration store](../concepts/configuration-document-store-connector.md) after each
+configuration request so
 it is immediately available for use each time the open metadata services are activated
 in the OMAG Server.
 
@@ -63,7 +64,7 @@ For example:
 * {adminUserId} - The user id of the administrator, for example **garygeeke**.
 * {serverName} - The name of the OMAG server, for example **cocoMDS1**.
 
-Below are the commands to 
+Below are the linked to the 
 
 ### Common Configuration Tasks
 
@@ -80,10 +81,9 @@ Below are the commands to
   * [Configuring the open metadata archives loaded at server start](configuring-the-startup-archives.md) - Metadata Access Point, Metadata Server and Repository Proxy only
   * [Configuring the repository proxy connectors](configuring-the-repository-proxy-connector.md) - Repository Proxy only
   * [Configuring the Open Metadata Access Services (OMASs)](configuring-the-access-services.md) - Metadata Access Point and Metadata Server only
+  * [Configuring the Open Metadata Engine Services (OMES)](configuring-the-engine-services.md) - Engine Host only
   * [Configuring the Open Metadata Integration Services (OMIS)](configuring-the-integration-services.md) - Integration Daemon only
   * [Configuring the Open Metadata View Services (OMVSs)](configuring-the-view-services.md) - View Server only
-  * [Configuring the Discovery Engine Services](configuring-the-discovery-engine-services.md) - Discovery Server only
-  * [Configuring the Stewardship Engine Services](configuring-the-stewardship-engine-services.md) - Stewardship server only
 
 ### Advanced Configuration Topics
 

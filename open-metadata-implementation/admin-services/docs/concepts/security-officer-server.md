@@ -3,15 +3,22 @@
 
 # Security Officer Server
 
-The Security Officer Server is a [Governance Server](governance-server-types.md)
-that manages the setting of security classifications on data.
-These are then interpreted by security enforcement engines
-such as Apache Ranger and Palisade.
+The Security Officer Server is a deprecated governance server.  The [Engine Host OMAG Server](engine-host.md) provides the
+runtime for the
+[Metadata Watchdog Open Metadata Engine Service (OMES)](../../../engine-services/metadata-watchdog)
+that hosts the Security Officer Server function.
 
-The [security Sync Server](security-sync-server.md) provides the
-integration daemon that takes the 
+The [Integration Daemon OMAG Server](integration-daemon.md) provides the 
+runtime for the
+[Security Integrator Open Metadata Integration Service (OMIS)](../../../integration-services/security-integrator)
+that listens for changes to the
 [SecurityTag](../../../../open-metadata-publication/website/open-metadata-types/0423-Security-Tags.md) classifications
-set up by the Security Officer Server and pushes them to Apache Ranger.
+set up by the Security Officer Server and pushes them to a security enforcement point such as Apache Ranger.
+
+
+----
+* Go to [Governance Servers](governance-server-types.md).
+* Go to [Admin Guide](../user).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
