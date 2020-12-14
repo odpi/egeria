@@ -9,10 +9,15 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.AssetCatalogOMASService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -36,6 +41,10 @@ public class AssetController {
     @GetMapping( path = "/search")
     public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria,
                                             @RequestParam("types") List<String> types,
+                                            @RequestParam(name = "sequencingProperty", defaultValue = "displayName")
+                                                        String sequencingProperty,
+                                            @RequestParam(name = "sequencingOrder", defaultValue = "PROPERTY_ASCENDING")
+                                                        SequencingOrder sequencingOrder,
                                             @RequestParam(defaultValue="0") Integer from,
                                             @RequestParam(defaultValue="10") Integer pageSize)
             throws PropertyServerException, InvalidParameterException {
@@ -46,6 +55,8 @@ public class AssetController {
         }
         searchParameters.setPageSize(pageSize);
         searchParameters.setFrom(from);
+        searchParameters.setSequencingProperty(sequencingProperty);
+        searchParameters.setSequencingOrder(sequencingOrder);
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
     }
 
