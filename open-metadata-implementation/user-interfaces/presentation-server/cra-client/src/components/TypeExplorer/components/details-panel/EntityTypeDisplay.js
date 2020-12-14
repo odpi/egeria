@@ -25,26 +25,37 @@ export default function EntityTypeDisplay(props) {
 
   const entityExpl  = typesContext.getEntityType(typeName);
 
-  const hasInheritedRelationships = entityExpl.inheritedRelationshipNames && entityExpl.inheritedRelationshipNames.length > 0;
-  const hasLocalRelationships = entityExpl.RelationshipNames && entityExpl.RelationshipNames.length > 0;
-  const hasRelationships = hasInheritedRelationships || hasLocalRelationships;
+  if (entityExpl) {
 
-  const hasInheritedClassifications = entityExpl.inheritedClassificationNames && entityExpl.inheritedClassificationNames.length > 0;
-  const hasLocalClassifications = entityExpl.classificationNames && entityExpl.classificationNames.length > 0;
-  const hasClassifications = hasInheritedClassifications || hasLocalClassifications;
+    const hasInheritedRelationships = entityExpl.inheritedRelationshipNames && entityExpl.inheritedRelationshipNames.length > 0;
+    const hasLocalRelationships = entityExpl.RelationshipNames && entityExpl.RelationshipNames.length > 0;
+    const hasRelationships = hasInheritedRelationships || hasLocalRelationships;
 
-  return (
-    <div className="type-details-container">
-      <div className="type-details-item-bold">Entity Type : {typeName}</div>
-      <div className="type-details-item">{entityExpl.entityDef.description}</div>
-      <div className="type-details-item">Attributes : { !entityExpl.inheritedAttributes && !entityExpl.entityDef.propertiesDefinition ? "none" :
-        <EntityPropertiesDisplay expl={entityExpl} />}</div>     
-      <div className="type-details-item">Relationships : { !hasRelationships ? "none" :
-        <EntityRelationshipsDisplay expl={entityExpl} />}</div>
-      <div className="type-details-item">Classifications : { !hasClassifications ? "none" :
-        <EntityClassificationsDisplay expl={entityExpl} />}</div>
-    </div>
-  );
+    const hasInheritedClassifications = entityExpl.inheritedClassificationNames && entityExpl.inheritedClassificationNames.length > 0;
+    const hasLocalClassifications = entityExpl.classificationNames && entityExpl.classificationNames.length > 0;
+    const hasClassifications = hasInheritedClassifications || hasLocalClassifications;
+
+    return (
+      <div className="type-details-container">
+        <div className="type-details-item-bold">Entity Type : {typeName}</div>
+        <div className="type-details-item">{entityExpl.entityDef.description}</div>
+        <div className="type-details-item">Type Status : {entityExpl.entityDef.status}</div>
+        <div className="type-details-item">Attributes : { !entityExpl.inheritedAttributes && !entityExpl.entityDef.propertiesDefinition ? "none" :
+          <EntityPropertiesDisplay expl={entityExpl} />}</div>
+        <div className="type-details-item">Relationships : { !hasRelationships ? "none" :
+          <EntityRelationshipsDisplay expl={entityExpl} />}</div>
+        <div className="type-details-item">Classifications : { !hasClassifications ? "none" :
+          <EntityClassificationsDisplay expl={entityExpl} />}</div>
+      </div>
+    );
+  }
+  else {
+    return (
+      <div className="type-details-container">
+        <div className="type-details-item-bold">Entity type {typeName} not in server's types</div>
+      </div>
+    );
+  }
 }
 
 EntityTypeDisplay.propTypes = {

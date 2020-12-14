@@ -33,9 +33,9 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    IntegrationDaemonConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public IntegrationDaemonConfigurationClient(String adminUserId,
+                                                String serverName,
+                                                String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -53,11 +53,11 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    IntegrationDaemonConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL,
-                                         String connectionUserId,
-                                         String connectionPassword) throws OMAGInvalidParameterException
+    public IntegrationDaemonConfigurationClient(String adminUserId,
+                                                String serverName,
+                                                String serverPlatformRootURL,
+                                                String connectionUserId,
+                                                String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

@@ -16,11 +16,13 @@ export default function ServerServicesDisplay(props) {
 
   const inServices  = props.serviceList;
   const serverName  = props.serverName;
+  const serviceCat  = props.serviceCat;
   
   let outServices;
 
  
-  /*
+
+   /*
    * As the user flips a service section, expand the service details display and add the service 
    * to the gens so that it appears in the topology diagram.
    */
@@ -48,34 +50,75 @@ export default function ServerServicesDisplay(props) {
     if (requestService) {
       resourcesContext.loadService(serverName, serviceName);
     }
+
   };
 
+  const formatService = (service) => {
+    let formattedService = null;
+    switch (serviceCat) {
+
+      case "Integration":
+        formattedService = formatIntegrationService(service);
+        break;
+
+      default:
+        console.log("formatService: does not yet support this type of service!");
+        break;
+    }
+    return formattedService;
+  };
+
+  const formatIntegrationService = (svc) => {
+    return (
+      <div>
+        <ul>
+          <li className="details-sublist-item">Name : {svc.serviceName ? svc.serviceName : <i>blank</i>}</li>
+           <li className="details-sublist-item">Description : {svc.serviceDescription ? svc.serviceDescription : <i>blank</i>}</li>
+           <li className="details-sublist-item">URL Marker : {svc.serviceURLMarker ? svc.serviceURLMarker : <i>blank</i>}</li>
+          <li className="details-sublist-item">Wiki : {svc.serviceWiki ? svc.serviceWiki : <i>blank</i>}</li>
+         </ul>
+      </div>
+    );
+  }
 
 
   const expandServices = (inServices) => {
+    let serviceList;
+
+    /*
+     * Put services into a map keyed by service name
+     */
+    let serviceMap = {};
+    inServices.forEach(service => {
+      const serviceName = service.serviceName;
+      serviceMap[serviceName] = service;
+    });
 
     /*
      * Sort the service names
      */
-    let serviceNamesSorted   = inServices.sort();
-    
-    /*
-     * Use the name to index into the map in sorted order and display service
-     */
-    let serviceList = serviceNamesSorted.map( (svcName) => 
+    let serviceNamesUnsorted = Object.keys(serviceMap);
+    if (serviceNamesUnsorted) {
+      let serviceNamesSorted   = serviceNamesUnsorted.sort();
+
+      /*
+       * Use the name to index into the map in sorted order and display service appropriately for the service type
+       */
+      serviceList = serviceNamesSorted.map( (svcName) =>
         <li className="details-sublist-item" key={svcName}> 
           <button className="collapsible" id={svcName} onClick={flipServiceSection}> Service : {svcName} </button>
           <div className="content">
-             {resourcesContext.resourceExists("SERVICE_"+svcName) && <span>Service {svcName} has been added to diagram</span>}
-             {!resourcesContext.resourceExists("SERVICE_"+svcName) && <span>Service {svcName} has been removed from diagram</span>}
+           {formatService(serviceMap[svcName])}
           </div>
         </li>
-    );
+      );
+    }
+    else {
+      serviceList = null;
+    }
 
     return serviceList;
   };
-
-
 
   /*
    * Render services
@@ -92,7 +135,6 @@ export default function ServerServicesDisplay(props) {
       <ul className="type-details-container">       
        {expandServices(inServices)}          
       </ul>
-      
     );
   }
 
@@ -101,5 +143,6 @@ export default function ServerServicesDisplay(props) {
 
 ServerServicesDisplay.propTypes = {
   serverName : PropTypes.string,
-  serviceList: PropTypes.array
+  serviceList: PropTypes.array,
+  serviceCat : PropTypes.string
 };
