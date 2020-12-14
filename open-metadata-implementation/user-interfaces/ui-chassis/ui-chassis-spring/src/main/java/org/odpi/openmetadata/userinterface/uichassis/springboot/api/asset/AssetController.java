@@ -32,6 +32,8 @@ public class AssetController {
      *
      * @param searchCriteria the query parameter with the search phrase
      * @param types OM types list to search for
+     * @param sequencingProperty name of the property based on which to sort the result
+     * @param sequencingOrder PROPERTY_ASCENDING or PROPERTY_DESCENDING
      * @param from the offset for the results
      * @param pageSize the number of results per page
      * @return list of assets
