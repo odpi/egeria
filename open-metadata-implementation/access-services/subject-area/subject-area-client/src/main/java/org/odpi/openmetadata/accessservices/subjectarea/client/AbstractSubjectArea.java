@@ -91,6 +91,10 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
         return methodName + " for " + resultType().getSimpleName();
     }
 
+    /**
+     * Set the maximum pagesize to use on rest calls. This is so we do not request page sizes higher than is supported by the omas.
+     * @param maximumPageSizeOnRestCall maximum page size to use on rest calls.
+     */
     public void setMaximumPageSizeOnRestCall(int maximumPageSizeOnRestCall) {
         this.maximumPageSizeOnRestCall = maximumPageSizeOnRestCall;
     }

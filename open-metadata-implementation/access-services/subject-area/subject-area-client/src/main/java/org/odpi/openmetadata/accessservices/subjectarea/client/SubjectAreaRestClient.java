@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 public class SubjectAreaRestClient extends FFDCRESTClient {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaRestClient.class);
+    protected static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private final String serverName;
     private final String serverPlatformURLRoot;
@@ -199,6 +201,11 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                                                UserNotAuthorizedException {
 
         GenericResponse<T> completeResponse = null;
+        if (findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        }
+
+        invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
         int requestedPageSize = findRequest.getPageSize();
         int startingFrom = findRequest.getStartingFrom();
         if (maximumPageSizeOnRestCall >= requestedPageSize ) {
@@ -266,12 +273,59 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String methodName,
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
-                                               FindRequest findRequest) throws InvalidParameterException,
+                                               FindRequest findRequest,
+                                               int maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
-        String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
-        return getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate);
+        GenericResponse<T> completeResponse = null;
+        if (findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        }
+
+        invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
+        int requestedPageSize = findRequest.getPageSize();
+        int startingFrom = findRequest.getStartingFrom();
+        if (maximumPageSizeOnRestCall >= requestedPageSize ) {
+            String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+            completeResponse = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate);
+            exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
+        } else {
+            // issue multiple calls to build up the requested page
+            int totalNumberRetrieved = 0;
+            // while we have got less than the requested page size continuing getting more by issuing rest calls
+            while (totalNumberRetrieved < requestedPageSize) {
+                // set the page size to the maximum that the downstream server accepts.
+                findRequest.setPageSize(maximumPageSizeOnRestCall);
+                // we need to amend the startingFrom potions when issuing subsequent requests.
+                findRequest.setStartingFrom(totalNumberRetrieved);
+                // encode a url with the new find request
+                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+//                String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
+                // issue the get call
+                GenericResponse<T> responseForPart = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate);
+                exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
+
+                int numberRetrieved = responseForPart.results().size();
+                if (numberRetrieved == 0) {
+                    // break out of the while loop as there is no more to retrieve.
+                    totalNumberRetrieved = requestedPageSize;
+                } else {
+                    // there may be more to get
+                    totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
+                    if (completeResponse == null) {
+                        // first time in initialise the complete response
+                        completeResponse = responseForPart;
+                    } else {
+                        // add the results from this get to the complete response
+                        completeResponse.addAllResults(responseForPart.results());
+                    }
+                    // amend the starting from
+                    startingFrom= startingFrom + numberRetrieved;
+                }
+            }
+        }
+        return completeResponse;
     }
 
     /**

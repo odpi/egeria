@@ -26,7 +26,8 @@ public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSu
     protected AbstractSubjectAreaNode(SubjectAreaRestClient client, String baseUrl) {
         super(client, baseUrl);
     }
-
+    // TODO ensure check all cases that we get this from the server
+    private int maximumPageSizeOnRestCall = 1000;
     @Override
     public List<Line> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException,
                                                                                                    PropertyServerException,
@@ -37,7 +38,14 @@ public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSu
 
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Line.class);
         ParameterizedTypeReference<GenericResponse<Line>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest);
+        GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest, maximumPageSizeOnRestCall);
         return response.results();
+    }
+    /**
+     * Set the maximum pagesize to use on rest calls. This is so we do not request page sizes higher than is supported by the omas.
+     * @param maximumPageSizeOnRestCall maximum page size to use on rest calls.
+     */
+    public void setMaximumPageSizeOnRestCall(int maximumPageSizeOnRestCall) {
+        this.maximumPageSizeOnRestCall = maximumPageSizeOnRestCall;
     }
 }

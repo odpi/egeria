@@ -160,7 +160,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             if (requestedPageSize == null) {
                 requestedPageSize = invalidParameterHandler.getMaxPagingSize();
             }
-
+            invalidParameterHandler.validatePaging(startingFrom, requestedPageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
