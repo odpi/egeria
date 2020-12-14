@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.2 (August 2020)
+# Release 2.2 (September 2020)
 
 Below are the highlights of this release:
 
@@ -12,11 +12,22 @@ Below are the highlights of this release:
  * User interface improvements.
  * Ongoing bug fixes and refactoring especially in subject-area omas.
 
-Known Issues
+## Known Issues
  * In the VDC helm chart, the Apache Atlas initialization job fails to complete. This is due to a problem with the Apache Atlas server and Apache SOLR. See https://github.com/odpi/egeria/issues/3587 for more information.
 
-Dependencies
- * Spring Boot is updated to 2.3.3 .
+## Dependencies
+ * Spring Boot is updated to 2.3.3.
+ 
+## Egeria Implementation Status at Release 2.2
+ 
+ ![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.2.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+     
    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

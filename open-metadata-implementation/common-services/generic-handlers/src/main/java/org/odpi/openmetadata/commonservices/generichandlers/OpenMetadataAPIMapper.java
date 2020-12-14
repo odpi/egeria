@@ -89,9 +89,18 @@ public class OpenMetadataAPIMapper
     public static final String TEMPLATE_DESCRIPTION_PROPERTY_NAME                = "description";
     public static final String TEMPLATE_ADDITIONAL_PROPERTIES_PROPERTY_NAME      = "additionalProperties";
 
-    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_GUID  = "87b7371e-e311-460f-8849-08646d0d6ad3";   /* from Area 0 */
-    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_NAME  = "SourcedFrom";
+    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_GUID               = "87b7371e-e311-460f-8849-08646d0d6ad3";   /* from Area 0 */
+    public static final String SOURCED_FROM_RELATIONSHIP_TYPE_NAME               = "SourcedFrom";
     /* End1 = NewEntity; End 2 = Template */
+
+    public static final String MEMENTO_CLASSIFICATION_TYPE_GUID                  = "ecdcd472-6701-4303-8dec-267bcb54feb9";
+    public static final String MEMENTO_CLASSIFICATION_TYPE_NAME                  = "Memento";
+    public static final String ARCHIVE_DATE_PROPERTY_NAME                        = "archivedDate";
+    public static final String ARCHIVE_USER_PROPERTY_NAME                        = "archivedUser";
+    public static final String ARCHIVE_PROCESS_PROPERTY_NAME                     = "archivedProcess";
+    public static final String ARCHIVE_SERVICE_PROPERTY_NAME                     = "archivedService";
+    public static final String ARCHIVE_METHOD_PROPERTY_NAME                      = "archivedMethod";
+    public static final String ARCHIVE_PROPERTIES_PROPERTY_NAME                  = "archiveProperties";
 
 
     public static final String REFERENCEABLE_TO_MORE_INFO_TYPE_GUID              = "1cbf059e-2c11-4e0c-8aae-1da42c1ee73f";
@@ -460,10 +469,10 @@ public class OpenMetadataAPIMapper
     public static final String DATA_STORE_TYPE_NAME                      = "DataStore";
     /* Asset */
 
-    public static final String CREATE_TIME_PROPERTY_NAME                 = "storeCreateTime";                       /* from DataStore entity */
-    public static final String CREATE_TIME_PROPERTY_NAME_DEP             = "createTime";                            /* from DataStore entity */
-    public static final String MODIFIED_TIME_PROPERTY_NAME               = "storeUpdateTime";                       /* from DataStore entity */
-    public static final String MODIFIED_TIME_PROPERTY_NAME_DEP           = "modifiedTime";                          /* from DataStore entity */
+    public static final String STORE_CREATE_TIME_PROPERTY_NAME           = "storeCreateTime";                       /* from DataStore entity */
+    public static final String STORE_CREATE_TIME_PROPERTY_NAME_DEP       = "createTime";                            /* from DataStore entity */
+    public static final String STORE_UPDATE_TIME_PROPERTY_NAME           = "storeUpdateTime";                       /* from DataStore entity */
+    public static final String STORE_UPDATE_TIME_PROPERTY_NAME_DEP       = "updateTime";                            /* from DataStore entity */
 
     public static final String DATA_STORE_ENCODING_CLASSIFICATION_GUID   = "f08e48b5-6b66-40f5-8ff6-c2bfe527330b";
     public static final String DATA_STORE_ENCODING_CLASSIFICATION_NAME   = "DataStoreEncoding";
@@ -554,10 +563,9 @@ public class OpenMetadataAPIMapper
     public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME       = "DataContentForDataSet";
     /* End1 = Asset; End 2 = DataSet */
 
-    public static final String DATABASE_MANAGER_CLASSIFICATION_TYPE_GUID = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
-    public static final String DATABASE_MANAGER_CLASSIFICATION_TYPE_NAME = "DatabaseManager";
+    public static final String DATABASE_MANAGER_TYPE_GUID                = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
+    public static final String DATABASE_MANAGER_TYPE_NAME                = "DatabaseManager";
     /* SoftwareServerCapability */
-
 
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_GUID = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_NAME = "FileSystem";
@@ -795,6 +803,9 @@ public class OpenMetadataAPIMapper
     public static final String CRITICALITY_LEVEL_ENUM_TYPE_GUID                  = "22bcbf49-83e1-4432-b008-e09a8f842a1e";
     public static final String CRITICALITY_LEVEL_ENUM_TYPE_NAME                  = "CriticalityLevel";
 
+    public static final String IMPACT_SEVERITY_ENUM_TYPE_GUID                    = "3a6c4ba7-3cc5-48cd-8952-a50a92da016d";
+    public static final String IMPACT_SEVERITY_ENUM_TYPE_NAME                    = "ImpactSeverity";
+
     public static final String CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID          = "742ddb7d-9a4a-4eb5-8ac2-1d69953bd2b6";
     public static final String CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME          = "Confidentiality";
 
@@ -803,6 +814,9 @@ public class OpenMetadataAPIMapper
 
     public static final String CRITICALITY_CLASSIFICATION_TYPE_GUID              = "d46d211a-bd22-40d5-b642-87b4954a167e";
     public static final String CRITICALITY_CLASSIFICATION_TYPE_NAME              = "Criticality";
+
+    public static final String IMPACT_CLASSIFICATION_TYPE_GUID                   = "5b905856-90ec-4944-80c4-0d42bcad484a";
+    public static final String IMPACT_CLASSIFICATION_TYPE_NAME                   = "Impact";
 
     public static final String RETENTION_CLASSIFICATION_TYPE_GUID                = "83dbcdf2-9445-45d7-bb24-9fa661726553";
     public static final String RETENTION_CLASSIFICATION_TYPE_NAME                = "Retention";
@@ -816,6 +830,7 @@ public class OpenMetadataAPIMapper
     public static final String CONFIDENTIALITY_LEVEL_PROPERTY_NAME                  = "level";
     public static final String CONFIDENCE_LEVEL_PROPERTY_NAME                       = "level";
     public static final String CRITICALITY_LEVEL_PROPERTY_NAME                      = "level";
+    public static final String IMPACT_LEVEL_PROPERTY_NAME                           = "level";
     public static final String RETENTION_BASIS_PROPERTY_NAME                        = "basis";
     public static final String RETENTION_ASSOCIATED_GUID_PROPERTY_NAME              = "associatedGUID";
     public static final String RETENTION_ARCHIVE_AFTER_PROPERTY_NAME                = "archiveAfter";
@@ -1562,8 +1577,11 @@ public class OpenMetadataAPIMapper
     public static final String DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME         = "DataSourcePhysicalStatusAnnotation";
     /* plus DataSourceMeasurementAnnotation */
 
-    public static final String DS_PHYSICAL_CREATE_TIME_PROPERTY_NAME    = "sourceCreateTime";      /* from DataSourcePhysicalStatusAnnotation entity */
-    public static final String DS_PHYSICAL_MODIFIED_TIME_PROPERTY_NAME  = "sourceUpdateTime";    /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_CREATE_TIME_PROPERTY_NAME          = "sourceCreateTime";   /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_CREATE_TIME_PROPERTY_NAME_DEP      = "createTime";         /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_UPDATE_TIME_PROPERTY_NAME          = "sourceUpdateTime";   /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String SOURCE_UPDATE_TIME_PROPERTY_NAME_DEP      = "updateTime";        /* from DataSourcePhysicalStatusAnnotation entity */
+
     public static final String DS_PHYSICAL_SIZE_PROPERTY_NAME           = "size";            /* from DataSourcePhysicalStatusAnnotation entity */
     public static final String DS_PHYSICAL_ENCODING_PROPERTY_NAME       = "encoding";        /* from DataSourcePhysicalStatusAnnotation entity */
 

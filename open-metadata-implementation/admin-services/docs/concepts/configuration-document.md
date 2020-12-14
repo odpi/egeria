@@ -14,7 +14,7 @@ configuration properties for each of its desired capabilities.
 
 Figure 1 provides more details.
 
-![Figure 1](configuration-document-structure.png)
+![Figure 1](configuration-document-structure.png#pagewidth)
 > **Figure 1:** Structure of the configuration document
 
 
@@ -64,14 +64,14 @@ do not affect existing definitions in the configuration document.
 
 ### Services for specific types of OMAG Server
 
-* [Configuring Registration to a Cohort](../user/configuring-registration-to-a-cohort.md)
-* [Configuring Local Repository](../user/configuring-the-local-repository.md)
-* [Configuring Start up Archives](../user/configuring-the-startup-archives.md)
-* [Configuring Repository Proxy](../user/configuring-the-repository-proxy-connector.md)
-* [Configuring discovery engine properties](../user/configuring-the-discovery-engine-services.md)
-* [Configuring integration services](../user/configuring-the-integration-services.md)
-* [Configuring stewardship engine services](../user/configuring-the-stewardship-engine-services.md)
-* [Configuring view services](../user/configuring-the-view-services.md)
+  * [Configuring the local repository](../user/configuring-the-local-repository.md) - Metadata Server only
+  * [Configuring registration to a cohort](../user/configuring-registration-to-a-cohort.md) - Metadata Access Point, Metadata Server, Repository Proxy and Conformance Test Server only
+  * [Configuring the open metadata archives loaded at server start](../user/configuring-the-startup-archives.md) - Metadata Access Point, Metadata Server and Repository Proxy only
+  * [Configuring the repository proxy connectors](../user/configuring-the-repository-proxy-connector.md) - Repository Proxy only
+  * [Configuring the Open Metadata Access Services (OMASs)](../user/configuring-the-access-services.md) - Metadata Access Point and Metadata Server only
+  * [Configuring the Open Metadata Engine Services (OMES)](../user/configuring-the-engine-services.md) - Engine Host only
+  * [Configuring the Open Metadata Integration Services (OMIS)](../user/configuring-the-integration-services.md) - Integration Daemon only
+  * [Configuring the Open Metadata View Services (OMVSs)](../user/configuring-the-view-services.md) - View Server only
 
 ### Audit Trail
 

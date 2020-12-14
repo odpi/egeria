@@ -43,6 +43,7 @@ public abstract class AccessServiceAdmin
     protected String   supportedZonesPropertyName      = "SupportedZones";      /* Common */
     protected String   defaultZonesPropertyName        = "DefaultZones";        /* Common */
     protected String   publishZonesPropertyName        = "PublishZones";        /* Common */
+    protected String   archiveZonesPropertyName        = "ArchiveZones";        /* Common */
     protected String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";   /* Community Profile OMAS */
     protected String   karmaPointIncrementPropertyName = "KarmaPointIncrement"; /* Community Profile OMAS */
 

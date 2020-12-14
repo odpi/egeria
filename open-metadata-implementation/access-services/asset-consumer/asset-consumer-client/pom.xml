@@ -37,6 +37,16 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-consumer-topic-connectors</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
 

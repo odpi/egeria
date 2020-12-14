@@ -44,6 +44,7 @@ public class DiscoveryConfigurationServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId identifier of calling user.
+     * @param callerId unique identifier of the caller
      *
      * @return connection object for the out topic or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -51,7 +52,8 @@ public class DiscoveryConfigurationServices
      * PropertyServerException problem retrieving the discovery engine definition.
      */
     public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId)
+                                                    String userId,
+                                                    String callerId)
     {
         final String        methodName = "getOutTopicConnection";
 
@@ -63,7 +65,7 @@ public class DiscoveryConfigurationServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName));
+            response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName, callerId));
         }
         catch (InvalidParameterException error)
         {

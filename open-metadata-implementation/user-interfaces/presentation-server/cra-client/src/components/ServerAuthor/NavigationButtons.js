@@ -20,7 +20,7 @@ export default function NavigationButtons({ handlePreviousStep, handleNextStep }
 
   // First step
 
-  if (progressIndicatorIndex == 0) {
+  if (progressIndicatorIndex === 0) {
 
     return (
       <div className="bx--btn-set">
@@ -46,7 +46,7 @@ export default function NavigationButtons({ handlePreviousStep, handleNextStep }
 
   // Last step
 
-  if (progressIndicatorIndex == steps.length - 1) {
+  if (progressIndicatorIndex === steps.length - 1) {
 
     return (
 

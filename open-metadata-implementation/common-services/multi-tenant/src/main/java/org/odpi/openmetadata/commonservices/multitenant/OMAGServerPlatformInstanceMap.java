@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
@@ -111,6 +112,55 @@ public class OMAGServerPlatformInstanceMap
                                                            registration.getAccessServiceURLMarker(),
                                                            registration.getAccessServiceDescription(),
                                                            registration.getAccessServiceWiki()));
+                    }
+                }
+            }
+
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of engine services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in an engine hosting OMAG server.
+     *
+     * @param userId calling user
+     * @return list of engine service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredEngineServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Engine Services implemented in this server.
+         */
+        List<EngineServiceRegistration> engineServiceRegistrationList = OMAGEngineServiceRegistration.getEngineServiceRegistrationList();
+
+        /*
+         * Set up the available engine services.
+         */
+        if ((engineServiceRegistrationList != null) && (! engineServiceRegistrationList.isEmpty()))
+        {
+            for (EngineServiceRegistration registration : engineServiceRegistrationList)
+            {
+                if (registration != null)
+                {
+                    if (registration.getEngineServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                    {
+                        response.add(getServiceDescription(registration.getEngineServiceName(),
+                                                           registration.getEngineServiceURLMarker(),
+                                                           registration.getEngineServiceDescription(),
+                                                           registration.getEngineServiceWiki()));
                     }
                 }
             }

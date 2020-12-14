@@ -90,7 +90,7 @@ export default function PlatformServicesDisplay(props) {
     return attributeList;
   };
 
-  if (serviceMap === undefined || serviceMap === null || Object.keys(serviceMap).length == 0) {
+  if (serviceMap === undefined || serviceMap === null || Object.keys(serviceMap).length === 0) {
     services = (
       <div>
         list is empty

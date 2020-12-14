@@ -138,7 +138,6 @@
 
 
     <modules>
-
         <module>open-metadata-implementation</module>
         <module>open-metadata-conformance-suite</module>
         <module>open-metadata-distribution</module>
@@ -176,12 +175,15 @@
         <gremlin.version>3.4.8</gremlin.version>
         <netty.version>4.1.54.Final</netty.version>
 
-        <spring-boot.version>2.4.0</spring-boot.version>
+        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+        <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
         <spring.version>5.3.1</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
         <spring-data.version>2.4.1</spring-data.version>
+        <springdoc.version>1.4.6</springdoc.version>
+        <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <servo-core.version>0.13.0</servo-core.version>
-        <netflix-zuul.version>2.2.5.RELEASE</netflix-zuul.version>
+        <netflix-zuul.version>2.2.6.RELEASE</netflix-zuul.version>
         <tomcat.version>9.0.40</tomcat.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
@@ -218,8 +220,7 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.2</snappy.version>
         <snakeyaml.version>1.27</snakeyaml.version>
-        <springdoc.version>1.5.0</springdoc.version>
-        <classgraph.version>4.8.90</classgraph.version>
+        <classgraph.version>4.8.93</classgraph.version>
         <swagger.version>2.1.5</swagger.version>
         <groovy.version>3.0.6</groovy.version>
         <micrometer-registry-prometheus.version>1.6.1</micrometer-registry-prometheus.version>
@@ -234,12 +235,14 @@
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-reports-plugin.version>3.1.1</maven-reports-plugin.version>
+        <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-shade.version>3.2.4</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <maven-pmd.version>3.13.0</maven-pmd.version>
+        <maven-pmd.version>3.14.0</maven-pmd.version>
         <owasp.version>6.0.3</owasp.version>
         <spotbugs-maven.version>4.1.4</spotbugs-maven.version>
         <maven-download.version>1.6.0</maven-download.version>
@@ -258,7 +261,6 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
-        <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <git-commit-plugin.version>4.0.3</git-commit-plugin.version>
@@ -792,6 +794,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-catalog-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -828,6 +858,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-consumer-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-consumer-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1374,34 +1411,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-engine-spring</artifactId>
-                <scope>runtime</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1998,6 +2007,20 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-integrator-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-integrator-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>security-officer-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2110,34 +2133,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-spring</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-lineage-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2174,6 +2169,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId> data-folder-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>files-integration-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2529,6 +2531,18 @@
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
@@ -2585,6 +2599,12 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
                 <version>${spring-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.ldap</groupId>
+                <artifactId>spring-ldap-core</artifactId>
+                <version>${spring.ldap.core}</version>
             </dependency>
 
             <dependency>
@@ -3023,6 +3043,18 @@
                 </plugin>
 
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven-reports-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site-plugin.version}</version>
+                </plugin>
+
+                <plugin>
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
                     <version>${owasp.version}</version>
@@ -3115,6 +3147,12 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <failOnWarning>false</failOnWarning>
                 </configuration>
+            </plugin>
+
+            <!-- Use surefire for unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
             <!-- Validates maven & java versions -->
@@ -3373,6 +3411,30 @@
 
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>default</id>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <profiles>
         <profile>

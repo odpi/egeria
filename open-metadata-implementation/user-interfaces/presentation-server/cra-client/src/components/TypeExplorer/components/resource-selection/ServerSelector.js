@@ -8,6 +8,8 @@ import { RequestContext }                                 from "../../contexts/R
 
 import { TypesContext }                                   from "../../contexts/TypesContext";
 
+import { InteractionContext }                             from "../../contexts/InteractionContext";
+
 import "./resource-selector.scss"
 
 
@@ -22,7 +24,8 @@ import "./resource-selector.scss"
  */
 export default function ServerSelector() {
   
-  
+  const interactionContext                = useContext(InteractionContext);
+
   const requestContext                    = useContext(RequestContext);
 
   const typesContext                      = useContext(TypesContext);
@@ -65,38 +68,9 @@ export default function ServerSelector() {
       }
     }
     /*
-     * On failure ... json could be null or contain a bad relatedHTTPCode
+     * On failure ...
      */
-    reportFailedOperation("getServers",json);
-  }
-
-
-  /*
-   * Always accept the operation name because operation name is needed even in the case where json is null
-   */
-  const reportFailedOperation = (operation, json) => {
-    if (json !== null) {
-      if (json.relatedHTTPCode === 200 ) {
-        /*
-         * Operation succeeded but did not return anything useful...
-         */
-        alert("No servers were found - please check the configuration of the Repository Explorer View Service");
-      }
-      else {
-        /*
-         * Operation reported failure
-         */
-        const relatedHTTPCode = json.relatedHTTPCode;
-        const exceptionMessage = json.exceptionErrorMessage;
-        /*
-         * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
-         */
-        alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
-      }
-    }
-    else {
-      alert("Operation "+operation+" did not get a response from the view server");
-    }
+    interactionContext.reportFailedOperation("get servers",json);
   }
 
 
@@ -121,7 +95,7 @@ export default function ServerSelector() {
     let platformName   = serverInstance.platformName;
 
     /*
-     *  ...this operation initiates the load of type information from the specified repository server
+     * This operation initiates the load of type information from the specified repository server
      */
     typesContext.loadTypeInfo(serverName, platformName);
   }

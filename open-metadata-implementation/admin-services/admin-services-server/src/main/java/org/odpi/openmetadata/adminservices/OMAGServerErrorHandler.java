@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.IntegrationServiceRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -97,8 +99,34 @@ public class OMAGServerErrorHandler
 
         validateServerName(serverName, methodName);
         validateOMAGServerServiceRootURL(clientConfig.getOMAGServerPlatformRootURL(), serverName, methodName);
+        validateOMAGServerName(clientConfig.getOMAGServerPlatformRootURL(), serverName, methodName);
     }
 
+
+    /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param serverName  serverName passed on a request
+     * @param integrationServiceConfig  integration service config
+     * @param methodName  method receiving the call
+     * @throws OMAGInvalidParameterException null server name
+     */
+    void validateIntegrationServiceConfig(String                        serverName,
+                                          IntegrationServiceRequestBody integrationServiceConfig,
+                                          String                        methodName) throws OMAGInvalidParameterException
+    {
+        final String connectorConfigPropertyName = "integrationServerConfig.connectorConfig";
+        final String connectorNamePropertyName = "integrationServerConfig.connectorConfig.connectorName";
+
+        this.validateOMAGServerClientConfig(serverName, integrationServiceConfig, methodName);
+
+        for (IntegrationConnectorConfig connectorConfig : integrationServiceConfig.getIntegrationConnectorConfigs())
+        {
+            this.validatePropertyNotNull(connectorConfig, connectorConfigPropertyName, serverName, methodName);
+            this.validatePropertyNotNull(connectorConfig.getConnectorName(), connectorNamePropertyName, serverName, methodName);
+            this.validateServerConnection(connectorConfig.getConnection(), serverName, methodName);
+        }
+    }
 
 
     /**
@@ -187,6 +215,36 @@ public class OMAGServerErrorHandler
         else if (registration.getViewServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
         {
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.VIEW_SERVICE_NOT_ENABLED.getMessageDefinition(serverName, serviceURLMarker),
+                                                      this.getClass().getName(),
+                                                      methodName);
+        }
+    }
+
+
+    /**
+     * Check that a requested engine service is registered with this server before allowing the engine service to be configured
+     * into the configuration document
+     *
+     * @param registration registration record for the engine service.
+     * @param serviceURLMarker string used in URL for this engine service
+     * @param serverName name of the server being configured
+     * @param methodName calling method
+     * @throws OMAGConfigurationErrorException resulting exception if the engine service is not supported.
+     */
+    void validateEngineServiceIsRegistered(EngineServiceRegistration registration,
+                                           String                    serviceURLMarker,
+                                           String                    serverName,
+                                           String                    methodName) throws OMAGConfigurationErrorException
+    {
+        if (registration == null)
+        {
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ENGINE_SERVICE_NOT_RECOGNIZED.getMessageDefinition(serverName, serviceURLMarker),
+                                                      this.getClass().getName(),
+                                                      methodName);
+        }
+        else if (registration.getEngineServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
+        {
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ENGINE_SERVICE_NOT_ENABLED.getMessageDefinition(serverName, serviceURLMarker),
                                                       this.getClass().getName(),
                                                       methodName);
         }
@@ -377,9 +435,9 @@ public class OMAGServerErrorHandler
      * @param methodName  method called
      * @throws OMAGInvalidParameterException the connection is null
      */
-    void validateConnection(Connection connection,
-                            String     serverName,
-                            String     methodName) throws OMAGInvalidParameterException
+    void validateServerConnection(Connection connection,
+                                  String     serverName,
+                                  String     methodName) throws OMAGInvalidParameterException
     {
         if (connection == null)
         {
@@ -399,8 +457,8 @@ public class OMAGServerErrorHandler
      * @param methodName  method called
      * @throws OMAGInvalidParameterException the connection is null
      */
-    void validateConnection(Connection connection,
-                            String     methodName) throws OMAGInvalidParameterException
+    void validatePlatformConnection(Connection connection,
+                                    String     methodName) throws OMAGInvalidParameterException
     {
         if (connection == null)
         {
@@ -501,6 +559,25 @@ public class OMAGServerErrorHandler
         if ((omagServerName == null) || ("".equals(omagServerName)))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_OMAG_SERVER_NAME.getMessageDefinition(serverService, serverName),
+                                                    this.getClass().getName(),
+                                                    serverService);
+        }
+    }
+
+
+    /**
+     * Validate that the server name of the server where an access service resides is not null.
+     *
+     * @param serviceURLMarker  remote server name passed on the request
+     * @param serverName  server name for this server
+     * @param serverService name of the service being configured
+     * @throws OMAGInvalidParameterException the name is null
+     */
+    public void validateServiceURLMarker(String serviceURLMarker, String serverName, String serverService) throws OMAGInvalidParameterException
+    {
+        if ((serviceURLMarker == null) || ("".equals(serviceURLMarker)))
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_SERVICE_URL_MARKER.getMessageDefinition(serverService, serverName),
                                                     this.getClass().getName(),
                                                     serverService);
         }

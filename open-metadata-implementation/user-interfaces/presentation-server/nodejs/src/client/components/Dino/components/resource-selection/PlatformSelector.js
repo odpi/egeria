@@ -67,8 +67,8 @@ export default function PlatformSelector() {
       }
       else {
         /*
-         * This is not the best way to determine the type of error, but it will 
-         * suffice for now. The better solution requires an overhaul of index.js 
+         * This is not the best way to determine the type of error, but it will
+         * suffice for now. The better solution requires an overhaul of index.js
          * to improve its error reporting.
          */
         let message = json.exceptionErrorMessage;

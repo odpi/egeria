@@ -487,6 +487,7 @@ public class OpenMetadataAPIGenericHandler<B>
             InstanceProperties  confidentialityProperties = null;
             InstanceProperties  confidenceProperties      = null;
             InstanceProperties  criticalityProperties     = null;
+            InstanceProperties  impactProperties          = null;
             InstanceProperties  retentionProperties       = null;
             InstanceProperties  ownershipProperties       = null;
             InstanceProperties  zoneProperties            = null;
@@ -511,6 +512,10 @@ public class OpenMetadataAPIGenericHandler<B>
                             confidenceProperties = classification.getProperties();
                         }
                         else if (OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            criticalityProperties = classification.getProperties();
+                        }
+                        else if (OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
                         {
                             criticalityProperties = classification.getProperties();
                         }
@@ -544,6 +549,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                confidentialityProperties,
                                                confidenceProperties,
                                                criticalityProperties,
+                                               impactProperties,
                                                retentionProperties,
                                                ownershipProperties,
                                                zoneProperties,
@@ -593,6 +599,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param confidentialityProperties properties from the Confidentiality classification
      * @param confidenceProperties properties from the Confidence classification
      * @param criticalityProperties properties from the Criticality classification
+     * @param impactProperties properties from the Impact classification
      * @param retentionProperties properties from the Retention classification
      * @param ownershipProperties properties from the AssetOwnership classification
      * @param zoneProperties properties from the AssetZoneMembership classification
@@ -609,6 +616,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     InstanceProperties confidentialityProperties,
                                                     InstanceProperties confidenceProperties,
                                                     InstanceProperties criticalityProperties,
+                                                    InstanceProperties impactProperties,
                                                     InstanceProperties retentionProperties,
                                                     InstanceProperties ownershipProperties,
                                                     InstanceProperties zoneProperties,
@@ -744,6 +752,33 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.CRITICALITY_LEVEL_PROPERTY_NAME,
                                                                                criticalityProperties,
                                                                                methodName));
+        }
+
+        if (impactProperties != null)
+        {
+            ImpactGovernanceClassification classification = new ImpactGovernanceClassification();
+
+            classification.setStatus(this.getGovernanceClassificationStatus(impactProperties, methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        impactProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       impactProperties,
+                                                                       methodName));
+            classification.setImpactLevel(repositoryHelper.getIntProperty(serviceName,
+                                                                          OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME,
+                                                                          impactProperties,
+                                                                          methodName));
         }
 
         if (retentionProperties != null)
@@ -2460,6 +2495,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME, methodName),
+                                               newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, methodName),
@@ -2803,6 +2839,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param description description of the term
      * @param abbreviation abbreviation used for the term
      * @param usage illustrations of how the term is used
+     * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  the parameters are invalid
@@ -3363,6 +3400,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4364,6 +4402,304 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         serverName,
                                                         methodName);
+        }
+    }
+
+
+    /**
+     * Classify as an Memento any entity if it is anchored to the anchor entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorEntity entity anchor to match against
+     * @param potentialAnchoredEntity entity to validate
+     * @param classificationOriginGUID original entity that the Memento classification  was attached to
+     * @param classificationProperties properties for the classification
+     * @param methodName calling method
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException calling user is not authorize to issue this request
+     */
+    private void archiveAnchoredEntity(String             userId,
+                                       String             externalSourceGUID,
+                                       String             externalSourceName,
+                                       EntityDetail       anchorEntity,
+                                       EntityProxy        potentialAnchoredEntity,
+                                       String             classificationOriginGUID,
+                                       InstanceProperties classificationProperties,
+                                       String             methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        /*
+         * Only need to progress if anchor entity exists.
+         */
+        if (anchorEntity != null)
+        {
+            final String guidParameterName = "potentialAnchoredEntity";
+
+            if ((potentialAnchoredEntity != null) && (potentialAnchoredEntity.getType() != null))
+            {
+                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                        potentialAnchoredEntity.getGUID(),
+                                                                        guidParameterName,
+                                                                        potentialAnchoredEntity.getType().getTypeDefName(),
+                                                                        methodName);
+
+                String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                if ((anchorGUID != null) && (anchorGUID.equals(anchorEntity.getGUID())))
+                {
+                    this.archiveBeanInRepository(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 entity.getGUID(),
+                                                 guidParameterName,
+                                                 potentialAnchoredEntity.getType().getTypeDefName(),
+                                                 ClassificationOrigin.PROPAGATED,
+                                                 classificationOriginGUID,
+                                                 classificationProperties,
+                                                 anchorEntity,
+                                                 methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
+     * been deleted or archived.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param classificationProperties properties for the classification
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void archiveBeanInRepository(String             userId,
+                                        String             externalSourceGUID,
+                                        String             externalSourceName,
+                                        String             entityGUID,
+                                        String             entityGUIDParameterName,
+                                        String             entityTypeName,
+                                        InstanceProperties classificationProperties,
+                                        String             methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        this.archiveBeanInRepository(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     entityGUID,
+                                     entityGUIDParameterName,
+                                     entityTypeName,
+                                     classificationProperties,
+                                     supportedZones,
+                                     methodName);
+    }
+
+
+    /**
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
+     * been deleted or archived. Note, this method is designed to work only on anchor entities or entities with no anchor.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param classificationProperties properties for the classification
+     * @param serviceSupportedZones supported zones for calling service
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void archiveBeanInRepository(String             userId,
+                                        String             externalSourceGUID,
+                                        String             externalSourceName,
+                                        String             entityGUID,
+                                        String             entityGUIDParameterName,
+                                        String             entityTypeName,
+                                        InstanceProperties classificationProperties,
+                                        List<String>       serviceSupportedZones,
+                                        String             methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
+                                                              entityGUID,
+                                                              entityGUIDParameterName,
+                                                              entityTypeName,
+                                                              false,
+                                                              serviceSupportedZones,
+                                                              methodName);
+
+        invalidParameterHandler.validateAnchorGUID(entityGUID,
+                                                   entityGUIDParameterName,
+                                                   anchorEntity,
+                                                   entityGUID,
+                                                   entityTypeName,
+                                                   methodName);
+
+        this.archiveBeanInRepository(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     entityGUID,
+                                     entityGUIDParameterName,
+                                     entityTypeName,
+                                     ClassificationOrigin.ASSIGNED,
+                                     entityGUID,
+                                     classificationProperties,
+                                     anchorEntity,
+                                     methodName);
+
+        /*
+         * Update the the LatestChange in the archived entity.
+         */
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+        {
+            final String actionDescriptionTemplate = "Classifying as Memento %s %s";
+
+            String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
+            int    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL;
+
+            this.addLatestChangeToAnchor(anchorEntity,
+                                         latestChangeTarget,
+                                         OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                         entityGUID,
+                                         entityTypeName,
+                                         null,
+                                         userId,
+                                         actionDescription,
+                                         methodName);
+        }
+    }
+
+
+    /**
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
+     * been deleted or archived.  Note that this classification is propagated to all elements with the same
+     * AnchorGUID.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName parameter name supplying entityGUID
+     * @param entityTypeName unique name of the entity's type
+     * @param classificationOrigin is this classification assigned or propagated?
+     * @param classificationOriginGUID which entity did a propagated classification originate from?
+     * @param classificationProperties properties for the classification
+     * @param anchorEntity anchor entity for the bean (can be null)
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repository.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private void archiveBeanInRepository(String               userId,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         String               entityGUID,
+                                         String               entityGUIDParameterName,
+                                         String               entityTypeName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties,
+                                         EntityDetail         anchorEntity,
+                                         String               methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        /*
+         * This is to pick up any errors in the iteration through the anchored elements.
+         */
+        invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        /*
+         * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.
+         * (This is why we explicitly delete the relationship to the parent element before calling this method).
+         */
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       entityGUID,
+                                                                                       entityTypeName,
+                                                                                       null,
+                                                                                       null,
+                                                                                       0,
+                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            this.archiveAnchoredEntity(userId,
+                                       externalSourceGUID,
+                                       externalSourceName,
+                                       anchorEntity,
+                                       repositoryHandler.getOtherEnd(entityGUID, entityTypeName, relationship, methodName),
+                                       classificationOriginGUID,
+                                       classificationProperties,
+                                       methodName);
+        }
+
+        /*
+         * This method explicitly removes all relationships attached to the entity before it deleted the entity.  This ensure that repository
+         * events are created for all of the relationships.  This is why the code above needs to deal with the nested entities first.
+         */
+        repositoryHandler.classifyEntity(userId,
+                                         null,
+                                         null,
+                                         entityGUID,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_GUID,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                         classificationOrigin,
+                                         classificationOriginGUID,
+                                         classificationProperties,
+                                         methodName);
+
+
+        /*
+         * Update the qualified name in the archived entity.
+         */
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+        {
+            String qualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                      anchorEntity.getProperties(),
+                                                                      methodName) + "_archivedOn_" + new Date().toString();
+
+            String entityTypeGUID = invalidParameterHandler.validateTypeName(entityTypeName,
+                                                                             OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                             serviceName,
+                                                                             methodName,
+                                                                             repositoryHelper);
+            this.updateBeanPropertyInRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                entityGUID,
+                                                entityGUIDParameterName,
+                                                entityTypeGUID,
+                                                entityTypeName,
+                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                qualifiedName,
+                                                methodName);
         }
     }
 

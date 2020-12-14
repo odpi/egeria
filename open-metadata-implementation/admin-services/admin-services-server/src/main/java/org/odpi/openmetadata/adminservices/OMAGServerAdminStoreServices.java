@@ -24,7 +24,6 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurit
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -67,7 +66,7 @@ public class OMAGServerAdminStoreServices
         {
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
 
-            errorHandler.validateConnection(connection, methodName);
+            errorHandler.validatePlatformConnection(connection, methodName);
 
             configurationStoreConnection = connection;
         }

@@ -12,7 +12,7 @@ import static org.testng.Assert.*;
 
 
 /**
- * ExceptionMessageSetTest is a base class for unit test cases that are validating exception message sets.
+ * MessageSetTest is a base class for unit test cases that are validating exception message sets.
  * It contains utilities the validate the message set enum contains unique message ids, non-null names
  * and descriptions and can be serialized to JSON and back again.
  */

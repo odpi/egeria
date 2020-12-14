@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { createContext, useState } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 export const IdentificationContext = createContext();
 export const IdentificationContextConsumer = IdentificationContext.Consumer;
@@ -41,6 +42,28 @@ const getRestURL = (serviceName) => {
   return url;
 };
 
+const getUser = async () => {
+  try {
+    console.log("called getUser");
+    const response = await axios.get('/user');
+    console.log({response})
+    if (response.status === 200) {
+      setUserId(response.data.user.username);
+      setUser(response.data.user);
+      return response.data.user;
+    } else {
+      console.error("Error fetching user");
+      console.dir(response);
+      setUserId("");
+      return "";
+    }
+  } catch (err) {
+    console.error(err);
+    setUserId("");
+    return "";
+  }
+}
+
   return (
     <IdentificationContext.Provider
       value={{
@@ -52,7 +75,8 @@ const getRestURL = (serviceName) => {
         setAuthenticated,
         serverName,
         getBrowserURL,
-        getRestURL
+        getRestURL,
+        getUser,
       }}
     >
       {props.children}
