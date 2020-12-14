@@ -44,20 +44,16 @@ export default function TypeDisplay() {
     switch (focusContext.view.category) {
 
       case "Entity":
-        return <EntityTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
+        return <EntityTypeDisplay typeName={focusContext.view.typeName} />
 
       case "Relationship":
-        return <RelationshipTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
+        return <RelationshipTypeDisplay typeName={focusContext.view.typeName} />
 
       case "Classification":
-        return <ClassificationTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
+        return <ClassificationTypeDisplay typeName={focusContext.view.typeName} />
 
       case "Enum":
         return <EnumTypeDisplay typeName={focusContext.view.typeName} />
-        break;
 
     }
   }
