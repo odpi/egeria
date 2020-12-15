@@ -1,0 +1,75 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+# Release 2.6 (Planned January 2021)
+
+Release 2.6 adds support for:
+ * New Governance Server called [Engine Host](../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
+   with associated [Open Metadata Engine Services (OMES)](../open-metadata-implementation/engine-services).
+   This Governance Server replaces the Discovery Server, Stewardship Server, Virtualizer and Security Officer Server.
+   
+ * Extensions to Open Metadata Types for lineage, duplicate processing, governance actions,
+   the software development lifecycle and analytics models.
+
+Details of these changes are in the sections that follow.
+
+## Description of Changes
+
+### Removal of the Discovery Server and Stewardship Server
+ 
+The Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been consolidated into a new
+type of server called the [Engine Host OMAG Server](../open-metadata-implementation/admin-services/docs/concepts/engine-host.md). 
+The Engine Host runs one-to-many [Open Metadata Engine Services (OMES)](../open-metadata-implementation/engine-services).
+Each engine services hosts a specific type of governance engine. The first engine service called
+[Asset Analysis OMES](../open-metadata-implementation/engine-services/asset-analysis) will be for
+[discovery engines](../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
+and others for the different types of [governance action engines](../open-metadata-implementation/frameworks/governance-action-framework/docs/goverance-action-engine.md).
+from the 
+[Governance Action Framework (GAF)](../open-metadata-implementation/frameworks/governance-action-framework).
+
+The reason for this change is that there is a lot of duplicated code in the original servers and this change simplifies
+the [Governance Server Services](../open-metadata-implementation/governance-servers) and
+[Server Administration](../open-metadata-implementation/admin-services/docs/user).
+With this change it will also be easier for Egeria to host other types of governance engines such as Palisade and Gaian.
+
+### New open metadata types for Governance Actions
+
+The following types have been added to support the governance action engines:
+
+* [0461 Governance Action Engines](../open-metadata-publication/website/open-metadata-types/0461-Governance-Engines.md)
+* [0462 Governance Action Types](../open-metadata-publication/website/open-metadata-types/0462-Governance-Action-Types.md)
+* [0463 Governance Actions](../open-metadata-publication/website/open-metadata-types/0463-Governance-Actions.md)
+
+### Updates to open metadata types for Lineage Mapping
+
+The [LineageMapping](../open-metadata-publication/website/open-metadata-types/0770-Lineage-Mapping.md)
+open metadata relationship type has been updated to link **Referenceables** rather than **SchemaElements**.
+This is to capture lineage between components at different levels of detail since the data field mappings may not
+always be available. Lineage mapping is described in more detail [here](../open-metadata-publication/website/lineage).
+
+### New open metadata types for Duplicate Processing
+
+Since Egeria is integrating and distributing metadata from many different sources, it is inevitable that
+there will be multiple metadata instances that represent the same real-world "thing".  The 
+[0465 Duplicate Processing](../open-metadata-publication/website/open-metadata-types/0465-Duplicate-Processing.md)
+types allow these elements to be linked together.
+
+
+### New Metadata Types for the Software Development Lifecycle and Analytics Models
+
+*Details to follow...*
+
+
+## Egeria Implementation Status at Release 2.6
+
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.6.png#pagewidth)
+
+Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+Open Metadata and Governance vision, strategy and content.
+
+----
+* Return to [Release Notes](.)
+   
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -28,6 +28,7 @@ public class Referenceable implements Serializable
     private ConfidentialityGovernanceClassification confidentiality    = null;
     private ConfidenceGovernanceClassification      confidence         = null;
     private CriticalityGovernanceClassification     criticality        = null;
+    private ImpactGovernanceClassification          impact             = null;
     private RetentionGovernanceClassification       retention          = null;
 
 
@@ -61,6 +62,7 @@ public class Referenceable implements Serializable
             confidentiality      = template.getConfidentiality();
             confidence           = template.getConfidence();
             criticality          = template.getCriticality();
+            impact               = template.getImpact();
             retention            = template.getRetention();
             extendedProperties   = template.getExtendedProperties();
 
@@ -376,6 +378,28 @@ public class Referenceable implements Serializable
     public void setCriticality(CriticalityGovernanceClassification criticality)
     {
         this.criticality = criticality;
+    }
+
+
+    /**
+     * Return the classification that defines the impact of this referenceable to the business.
+     *
+     * @return criticality classification properties
+     */
+    public ImpactGovernanceClassification getImpact()
+    {
+        return impact;
+    }
+
+
+    /**
+     * Set up the classification that defines the impact of this referenceable to the business.
+     *
+     * @param impact impact classification properties
+     */
+    public void setImpact(ImpactGovernanceClassification impact)
+    {
+        this.impact = impact;
     }
 
 

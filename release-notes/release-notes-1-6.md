@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.6 (March 2020)
+# Release 1.6 (April 2020)
 
 Release 1.6 adds support for:
    * Audit Log Framework (ALF) technical preview
-   * Repository Explorer (TEX) 
+   * Repository Explorer (REX) 
     
 Below are the highlights:
 
@@ -22,6 +22,17 @@ Below are the highlights:
     * Spring updated to 5.2.4, spring boot to 2.2.5 & other spring components accordingly.
   
   For a full list refer to the git commit logs.
+  
+## Egeria Implementation Status at Release 1.6
+ 
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-1.6.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+      
    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

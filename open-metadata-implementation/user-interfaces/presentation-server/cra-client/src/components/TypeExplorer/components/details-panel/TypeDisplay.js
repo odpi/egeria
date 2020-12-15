@@ -33,7 +33,7 @@ export default function TypeDisplay() {
     /* 
      * No entity type has been selected as the focus - display an 'empty' message
      */
-    return <p>Type information will appear here when a type is selected</p>    
+    return <p>No type selected</p>
 
   }
   else {
@@ -45,19 +45,15 @@ export default function TypeDisplay() {
 
       case "Entity":
         return <EntityTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
 
       case "Relationship":
         return <RelationshipTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
 
       case "Classification":
         return <ClassificationTypeDisplay typeName={focusContext.view.typeName} />  
-        break;
 
       case "Enum":
         return <EnumTypeDisplay typeName={focusContext.view.typeName} />
-        break;
 
     }
   }

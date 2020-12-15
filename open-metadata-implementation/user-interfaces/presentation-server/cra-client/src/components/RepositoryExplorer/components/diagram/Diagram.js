@@ -314,7 +314,8 @@ export default function Diagram(props) {
   }
 
   const unpin = (d) => {
-    d.fx = null, d.fy = null;
+    d.fx = null;
+    d.fy = null;
   }
 
  
@@ -429,12 +430,12 @@ export default function Diagram(props) {
        .attr("fill", function(d) { return ( (d.id === focusGUID) ? egeria_text_color_string : "#888" );} )
        .attr("dominant-baseline", function(d) { return (d.source.x > d.target.x) ? "baseline" : "hanging"; } )
        .attr("transform" , d => `rotate(${180/Math.PI * Math.atan((d.target.y-d.source.y)/(d.target.x-d.source.x))}, ${d.x}, ${d.y})`)
-       .attr("dx", d => { ((d.target.y-d.source.y)<0)? 100.0 : -100.0; })
-       .attr("dy", d => {
+       .attr("dx", d => ((d.target.y-d.source.y)<0)? 100.0 : -100.0 )
+       .attr("dy", d => 
            ((d.target.x-d.source.x)>0)?
            20.0 * (d.target.x-d.source.x)/(d.target.y-d.source.y) :
-           20.0 * (d.source.x-d.target.x)/(d.target.y-d.source.y) ;
-           });
+           20.0 * (d.source.x-d.target.x)/(d.target.y-d.source.y) 
+           );
             
   };
 

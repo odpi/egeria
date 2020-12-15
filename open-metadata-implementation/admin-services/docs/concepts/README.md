@@ -38,22 +38,10 @@ Follow the links to find out more about each type of server.
   integration between third party tools, platforms and engines (ie technology other that metadata repositories).
     * [Integration Daemon](integration-daemon.md) - the integration daemons are managing the exchange of metadata
     between specific types of third party technology and an open metadata access point
-       * [Data Platform Server](data-platform-server.md) - the data platform server provides metadata extraction
-       from data stores such as database servers and file systems.
-       * [Data Engine Proxy](data-engine-proxy.md) - the data engine proxy provides metadata extraction from processing
-       engines that transform and distribute data, such as an ETL engine.
-       * [Security Sync Server](security-sync-server.md) - the security sync server pushes security tag settings
-       for assets to a security enforcement point such as Apache Ranger.
-       * [Virtualizer](virtualizer.md) - the virtualizer is an experimental server for automatically
-       configuring a data virtualization platform.
-    * [Security Officer Server](security-officer-server.md) - the security officer server is an experimental server
-    looking at supporting algorithms that use metadata to automatically configure security tags for assets.
+    * [Data Engine Proxy](data-engine-proxy.md) - the data engine proxy provides metadata extraction from processing
+    engines that transform and distribute data, such as an ETL engine.
     * [Engine Host](engine-host.md) - the engine hosts support open governance engines that provide value-add services
     to the open metadata ecosystem.
-       * [Discovery Server](discovery-server.md) - the discovery server hosts one or more discovery engines that
-       drive the analysis of assets to discover new insights into its structure, content and quality.
-       * [Stewardship Server](stewardship-server.md) - the stewardship server supports the review and resolution of
-       issues and insights discovered by the other governance servers.
     * [Open Lineage Server](open-lineage-server.md) - the open lineage server provides capture of lineage
     in a warehouse for further review and analysis.
 

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.platformservices.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -26,15 +25,12 @@ public class PlatformServicesClient
 {
     private PlatformServicesRESTClient  restClient;                 /* Initialized in constructor */
 
-    protected String                    platformName;               /* Initialized in constructor */
-    protected String                    platformRootURL;            /* Initialized in constructor */
+    private   String                    platformRootURL;            /* Initialized in constructor */
     protected AuditLog                  auditLog;                   /* Initialized in constructor */
 
     private final String                retrieveURLTemplatePrefix   = "/open-metadata/platform-services/users/{1}/server-platform";
 
-    private final NullRequestBody       nullRequestBody             = new NullRequestBody();
-
-    protected InvalidParameterHandler   invalidParameterHandler     = new InvalidParameterHandler();
+    private InvalidParameterHandler   invalidParameterHandler     = new InvalidParameterHandler();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -49,9 +45,6 @@ public class PlatformServicesClient
                                   String   platformRootURL,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-
-
-        this.platformName    = platformName;
         this.platformRootURL = platformRootURL;
         this.restClient      = new PlatformServicesRESTClient(platformName, platformRootURL, auditLog);
     }
@@ -68,8 +61,6 @@ public class PlatformServicesClient
     public PlatformServicesClient(String platformName,
                                   String platformRootURL) throws InvalidParameterException
     {
-
-        this.platformName    = platformName;
         this.platformRootURL = platformRootURL;
         this.restClient      = new PlatformServicesRESTClient(platformName, platformRootURL);
     }
@@ -94,8 +85,6 @@ public class PlatformServicesClient
                                   String   password,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-
-        this.platformName    = platformName;
         this.platformRootURL = platformRootURL;
         this.restClient      = new PlatformServicesRESTClient(platformName, platformRootURL, userId, password, auditLog);
     }
@@ -117,23 +106,15 @@ public class PlatformServicesClient
                                   String userId,
                                   String password) throws InvalidParameterException
     {
-
-        this.platformName    = platformName;
         this.platformRootURL = platformRootURL;
         this.restClient      = new PlatformServicesRESTClient(platformName, platformRootURL, userId, password);
     }
-
-
-
-
-
 
 
     /**
      * Retrieve the platform origin
      *
      * @param userId calling user
-
      *
      * @return List of server names
      *
@@ -146,8 +127,6 @@ public class PlatformServicesClient
                                                             PropertyServerException
     {
         final String methodName = "getPlatformOrigin";
-
-
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -195,7 +174,6 @@ public class PlatformServicesClient
     }
 
 
-
     /**
      * Retrieve a list of the active services on a server
      *
@@ -225,14 +203,10 @@ public class PlatformServicesClient
     }
 
 
-
-
-
     /**
      * Retrieve a list of the active servers on the platform
      *
      * @param userId calling user
-
      *
      * @return List of server names
      *
@@ -245,8 +219,6 @@ public class PlatformServicesClient
                                                                  PropertyServerException
     {
         final String methodName = "getActiveServers";
-
-
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -262,7 +234,6 @@ public class PlatformServicesClient
      * Retrieve a list of the known servers on the platform
      *
      * @param userId calling user
-
      *
      * @return List of server names
      *
@@ -271,12 +242,10 @@ public class PlatformServicesClient
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<String> getKnownServers(String   userId) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String methodName = "getKnownServers";
-
-
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -288,12 +257,10 @@ public class PlatformServicesClient
     }
 
 
-
     /**
      * Retrieve a list of the access services registered on the platform
      *
      * @param userId calling user
-
      *
      * @return List of access services
      *
@@ -307,8 +274,6 @@ public class PlatformServicesClient
     {
         final String methodName = "getAccessServices";
 
-
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/access-services";
@@ -318,11 +283,38 @@ public class PlatformServicesClient
         return restResult.getServices();
     }
 
+
+    /**
+     * Retrieve a list of the engine services registered on the platform
+     *
+     * @param userId calling user
+     *
+     * @return List of engine services
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<RegisteredOMAGService> getEngineServices(String   userId) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "getEngineServices";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/engine-services";
+
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, userId);
+
+        return restResult.getServices();
+    }
+
+
     /**
      * Retrieve a list of the access services registered on the platform
      *
      * @param userId calling user
-
      *
      * @return List of view services
      *
@@ -331,12 +323,10 @@ public class PlatformServicesClient
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getViewServices(String   userId) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName = "getViewServices";
-
-
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -352,7 +342,6 @@ public class PlatformServicesClient
      * Retrieve a list of the governance services registered on the platform
      *
      * @param userId calling user
-
      *
      * @return List of governance services
      *
@@ -361,12 +350,10 @@ public class PlatformServicesClient
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getGovernanceServices(String   userId) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName = "getGovernanceServices";
-
-
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -382,7 +369,6 @@ public class PlatformServicesClient
      * Retrieve a list of the common services registered on the platform
      *
      * @param userId calling user
-
      *
      * @return List of common services
      *
@@ -396,8 +382,6 @@ public class PlatformServicesClient
     {
         final String methodName = "getCommonServices";
 
-
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/common-services";
@@ -406,6 +390,4 @@ public class PlatformServicesClient
 
         return restResult.getServices();
     }
-
-
 }

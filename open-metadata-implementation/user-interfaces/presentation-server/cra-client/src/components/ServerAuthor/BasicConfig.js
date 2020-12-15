@@ -15,6 +15,7 @@ export default function BasicConfig() {
   const {
     newServerName, setNewServerName,
     newServerLocalURLRoot, setNewServerLocalURLRoot,
+    newServerOrganizationName, setNewServerOrganizationName,
     newServerLocalUserId, setNewServerLocalUserId,
     newServerLocalPassword, setNewServerLocalPassword,
     newServerMaxPageSize, setNewServerMaxPageSize,
@@ -38,7 +39,7 @@ export default function BasicConfig() {
           value={newServerName}
           onChange={e => setNewServerName(e.target.value)}
           placeholder="cocoMDS1"
-          invalid={newServerName == ""}
+          invalid={newServerName  ===  ""}
           style={{marginBottom: "16px", width: "100%"}}
           ref={basicConfigFormStartRef}
           autoComplete="off"
@@ -52,8 +53,21 @@ export default function BasicConfig() {
           value={newServerLocalURLRoot}
           onChange={e => setNewServerLocalURLRoot(e.target.value)}
           placeholder="https://localhost:9443"
-          invalid={newServerLocalURLRoot == ""}
+          invalid={newServerLocalURLRoot  ===  ""}
           style={{marginBottom: "16px"}}
+        />
+
+        <TextInput
+          id="new-server-organization-name"
+          name="new-server-organization-name"
+          type="text"
+          labelText="Organization name"
+          value={newServerOrganizationName}
+          onChange={e => setNewServerOrganizationName(e.target.value)}
+          placeholder="Org 1"
+          invalid={newServerOrganizationName == ""}
+          style={{marginBottom: "16px"}}
+          autoComplete="off"
         />
 
         <TextInput
@@ -63,8 +77,8 @@ export default function BasicConfig() {
           labelText="Local user ID"
           value={newServerLocalUserId}
           onChange={e => setNewServerLocalUserId(e.target.value)}
-          placeholder="myMetadataServerUserId"
-          invalid={newServerLocalUserId == ""}
+          placeholder="my_server_user_id"
+          invalid={newServerLocalUserId === ""}
           style={{marginBottom: "16px"}}
           autoComplete="off"
         />
@@ -75,8 +89,8 @@ export default function BasicConfig() {
           labelText="Local password"
           value={newServerLocalPassword}
           onChange={e => setNewServerLocalPassword(e.target.value)}
-          placeholder="myMetadataServerPassword"
-          invalid={newServerLocalPassword == ""}
+          placeholder="my_server_Password"
+          invalid={newServerLocalPassword === ""}
           style={{marginBottom: "16px"}}
           autoComplete="new-password"
         />
@@ -89,7 +103,7 @@ export default function BasicConfig() {
           value={newServerMaxPageSize}
           onChange={e => setNewServerMaxPageSize(e.target.value)}
           placeholder="1000"
-          invalid={newServerMaxPageSize == ""}
+          invalid={newServerMaxPageSize === ""}
           style={{marginBottom: "16px"}}
         />
 
@@ -109,7 +123,7 @@ export default function BasicConfig() {
 
       {
         // If server type is Metadata Server, show local repository tiles
-        (newServerLocalServerType == "Metadata Server") &&
+        (newServerLocalServerType === "Metadata Server") &&
         <fieldset className="bx--fieldset" style={{ marginBottom: "32px" }}>
           <legend className="bx--label" style={{ textAlign: "left" }}>Server repository type</legend>
           <TileGroup

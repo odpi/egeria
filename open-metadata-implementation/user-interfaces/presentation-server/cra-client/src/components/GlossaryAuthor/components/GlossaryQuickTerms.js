@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState } from "react";
-import Add32 from "../../../images/Egeria_add_32";
+import React, { useState, useContext } from "react";
+
+import { IdentificationContext } from "../../../contexts/IdentificationContext";
+import Add32 from "../../../images/carbon/Egeria_add_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { Button, Form, FormGroup, TextInput, Loading } from "carbon-components-react";
 
@@ -10,19 +12,21 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 export default function GlossaryQuickTerms(props) {
-  const glossaryNodeType = getNodeType("glossary");
+  const identificationContext = useContext(IdentificationContext);
+  const glossaryNodeType = getNodeType(identificationContext.getRestURL("glossary-author"), "glossary");
   const [terms, setTerms] = useState([]);
   const [termsWithStatus, setTermsWithStatus] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
   const [restCallInProgress, setRestCallInProgress] = useState(false);
   let history = useHistory();
-  const url = getUrl();
   const { glossaryguid } = useParams();
+  const url = getUrl();
+
   function getUrl() {
     return glossaryNodeType.url + "/" + glossaryguid + "/terms";
   }
   const validateForm = () => {
-    if (terms.length == 0) {
+    if (terms.length === 0) {
       return false;
     } else {
       return true;
@@ -53,7 +57,7 @@ export default function GlossaryQuickTerms(props) {
     let workingTermsWithStatus = [];
     for (let i = 0; i < terms.length; i++) {
       let workingTermWithStatus = terms[i];
-      if (terms[i].name.trim() == "") {
+      if (terms[i].name.trim() === "") {
         workingTermWithStatus.status = "Error - blank name";
       } else if (json.result[i].relatedHTTPCode == "200") {
         workingTermWithStatus = json.result[i].result[0];
@@ -101,7 +105,7 @@ export default function GlossaryQuickTerms(props) {
         </button>
       </div>
       {restCallInProgress && <Loading description="Waiting for network call to the server to complete" withOverlay={true} />}
-      {!restCallInProgress && termsWithStatus.length == 0 && (
+      {!restCallInProgress && termsWithStatus.length === 0 && (
         <div>
           <div className="row-container">
             <h3>Quickly add terms to the Glossary.</h3>
@@ -193,7 +197,7 @@ export default function GlossaryQuickTerms(props) {
                         defaultValue={item.description}
                         readOnly
                       />
-                      {item.status == "Success" && (
+                      {item.status === "Success" && (
                         <div className="row-container">
                           <TextInput
                             type="text"
@@ -203,7 +207,7 @@ export default function GlossaryQuickTerms(props) {
                           <div className="left-20" alias="white_check_mark" src="https://github.githubassets.com/images/icons/emoji/unicode/2705.png">✅</div>
                         </div>
                       )}
-                      {item.status != "Success" && (
+                      {item.status !== "Success" && (
                         <div>
                           <TextInput
                             type="text"

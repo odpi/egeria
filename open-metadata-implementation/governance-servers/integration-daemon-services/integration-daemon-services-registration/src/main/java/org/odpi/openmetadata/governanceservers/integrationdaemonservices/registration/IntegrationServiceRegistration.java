@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class IntegrationServiceRegistration implements Serializable
     private String                   integrationServicePartnerOMAS         = null;
     private ServiceOperationalStatus integrationServiceOperationalStatus   = null;
     private String                   integrationServiceContextManagerClass = null;
+    private PermittedSynchronization defaultPermittedSynchronization;
 
 
     /**
@@ -52,6 +54,7 @@ public class IntegrationServiceRegistration implements Serializable
             integrationServicePartnerOMAS         = template.getIntegrationServicePartnerOMAS();
             integrationServiceContextManagerClass = template.getIntegrationServiceContextManagerClass();
             integrationServiceOperationalStatus   = template.getIntegrationServiceOperationalStatus();
+            defaultPermittedSynchronization       = template.getDefaultPermittedSynchronization();
         }
     }
 
@@ -272,6 +275,28 @@ public class IntegrationServiceRegistration implements Serializable
     }
 
 
+    /**
+     * Return the default value for permitted synchronization that should be set up for the integration connectors
+     * as they are configured.
+     *
+     * @return enum default
+     */
+    public PermittedSynchronization getDefaultPermittedSynchronization()
+    {
+        return defaultPermittedSynchronization;
+    }
+
+
+    /**
+     * Set up the default value for permitted synchronization that should be set up for the integration connectors
+     * as they are configured.
+     *
+     * @param defaultPermittedSynchronization enum default
+     */
+    public void setDefaultPermittedSynchronization(PermittedSynchronization defaultPermittedSynchronization)
+    {
+        this.defaultPermittedSynchronization = defaultPermittedSynchronization;
+    }
 
 
     /**

@@ -97,10 +97,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                                                                 auditLog,
                                                                 serverUserName,
                                                                 repositoryConnector.getMaxPageSize(),
-                                                                this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                           AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                                                                                           DiscoveryEngineOutTopicClientProvider.class.getName(),
-                                                                                           auditLog));
+                                                                accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
             /*

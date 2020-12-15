@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React, { useContext, useState, useEffect, useRef }    from "react";
+import React, { useContext, useEffect, useRef }    from "react";
 
 import { TypesContext }                                      from "../../contexts/TypesContext";
 
@@ -275,13 +275,13 @@ export default function EntityNeighborhoodDiagram(props) {
         let innerLink = {};
         innerLink.source = n.root;
         innerLink.target = relNode;
-        innerLink.name = "("+cardRoot+")"+":"+roleRoot;
+        innerLink.name = `(${cardRoot}):${roleRoot}`;
         n.links.push(innerLink);
 
         let outerLink = {};
         outerLink.source = relNode;
         outerLink.target = remoteNode;
-        outerLink.name = "("+cardRemote+")"+":"+roleRemote;
+        outerLink.name = `(${cardRemote}):${roleRemote}`;
         n.links.push(outerLink);
       }
     );
@@ -347,8 +347,11 @@ export default function EntityNeighborhoodDiagram(props) {
     svg.selectAll("svg").remove();
 
     /*
-     * Clear the introductory text...
+     * Show just a message about no entity types being selected...
      */
+    while (displayDiv.lastChild) {
+      displayDiv.removeChild(displayDiv.lastChild);
+    }
     const textNode = document.createTextNode("No entity type has been selected as the focus");
     const paraNode = document.createElement("p");
     paraNode.appendChild(textNode);
@@ -537,6 +540,7 @@ const nhbdUpdate = (nhbd) => {
            .attr("text-anchor", d => locateLabelAnchor(d,width,height))
            .style("font-style", d => d.inherited ? "italic" : "normal")
            .text(d => d.name)
+           .text(d => typesContext.isTypeDeprecated(d.category, d.name) ? "["+d.name+"]" : d.name )
            .on("click", d => { nodeSelected(d.category, d.name); })
            .clone(true)
            .lower()
@@ -584,11 +588,11 @@ const nhbdUpdate = (nhbd) => {
   /*
    * Transition exiting nodes to the root's position.
    */
-  const nodeExit = node.exit()
-                       .transition(transition).remove()
-                       .attr("transform", d => `translate(${root.x},${root.y})`)
-                       .attr("fill-opacity", 0)
-                       .attr("stroke-opacity", 0);
+  node.exit()
+                  .transition(transition).remove()
+                  .attr("transform", d => `translate(${root.x},${root.y})`)
+                  .attr("fill-opacity", 0)
+                  .attr("stroke-opacity", 0);
 
 
 
@@ -848,9 +852,15 @@ const nhbdUpdate = (nhbd) => {
         }
         else {
           initialiseNeighborhoodDiagram();
-          let nhbd = createNeighborhood(focusContext.focus);
-          nhbd = renderNeighborhoodDiagram(nhbd);
-          nhbdUpdate(nhbd);
+          if (focusContext.focus != "" && focusContext.focus != "none") {
+            if (typesContext.getEntityType(focusContext.focus)) {
+              let nhbd = createNeighborhood(focusContext.focus);
+              nhbd = renderNeighborhoodDiagram(nhbd);
+              nhbdUpdate(nhbd);
+              return;
+            }
+          }
+          renderLackOfFocus();
         }
       }
     },

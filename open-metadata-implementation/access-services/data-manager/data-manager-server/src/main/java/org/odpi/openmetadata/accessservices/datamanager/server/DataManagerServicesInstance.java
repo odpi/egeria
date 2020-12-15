@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
+import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.DataManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.datamanager.converters.*;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
@@ -23,8 +24,6 @@ import java.util.List;
 public class DataManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_MANAGER_OMAS;
-
-    private Connection outTopicConnection;
 
     private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> dataManagerIntegratorHandler;
     private RelationalDataHandler<DatabaseElement,
@@ -48,7 +47,8 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
-     * @param outTopicConnection topic of the client side listener
+     * @param outTopicEventBusConnection inner event bus connection to use to build topic connection to send to client if they which
+     *                                   to listen on the out topic.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public DataManagerServicesInstance(OMRSRepositoryConnector repositoryConnector,
@@ -58,7 +58,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                         AuditLog               auditLog,
                                         String                 localServerUserId,
                                         int                    maxPageSize,
-                                        Connection             outTopicConnection) throws NewInstanceException
+                                        Connection             outTopicEventBusConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
@@ -67,9 +67,11 @@ public class DataManagerServicesInstance extends OMASServiceInstance
               publishZones,
               auditLog,
               localServerUserId,
-              maxPageSize);
-
-        this.outTopicConnection = outTopicConnection;
+              maxPageSize,
+              null,
+              null,
+              DataManagerOutTopicClientProvider.class.getName(),
+              outTopicEventBusConnection);
 
         if (repositoryHandler == null)
         {
