@@ -10,6 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.slf4j:slf4j-api'
 
 
 }
