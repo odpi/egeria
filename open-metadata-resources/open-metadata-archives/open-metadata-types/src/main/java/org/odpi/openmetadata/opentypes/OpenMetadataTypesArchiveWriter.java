@@ -19,7 +19,6 @@ import java.net.URISyntaxException;
 public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
 {
     private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
-//    private static final Logger log = LoggerFactory.getLogger(OpenMetadataTypesArchiveWriter.class);
 
     /**
      * Default constructor
