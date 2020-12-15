@@ -11,7 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * OpenMetadataPlatformSecurityConnector provides the base class for a connector that validates access to the
@@ -24,6 +25,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public class OpenMetadataPlatformSecurityConnector extends ConnectorBase implements OpenMetadataPlatformSecurity
 {
+
+    private static final Logger log = LoggerFactory.getLogger(OpenMetadataPlatformSecurityConnector.class);
+
     protected MessageFormatter messageFormatter = new MessageFormatter();
     protected String           connectorName    = null;
     protected String           serverRootURL    = null;
@@ -40,7 +44,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
                              AuditLogRecordSeverity severity,
                              String                 logMessage)
     {
-        System.out.println(severity.getName() + " " + logMessageId + " " + logMessage);
+        log.info(severity.getName() + " " + logMessageId + " " + logMessage);
     }
 
 

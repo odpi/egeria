@@ -29,7 +29,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 
 @SpringBootApplication
@@ -168,8 +172,8 @@ public class OMAGServerPlatform
         {
             log.info("Temporarily deactivating the auto-started servers '{}'", servers.toString());
 
-            System.out.println(new Date().toString() + " OMag Server Platform shutdown requested. Temporarily deactivating the following " +
-                                       "auto-started servers: " + servers.toString());
+            log.info(new Date().toString() + " OMag Server Platform shutdown requested. Temporarily deactivating the following " +
+                    "auto-started servers: " + servers.toString());
 
             operationalServices.deactivateTemporarilyServerList(sysUser, servers);
         }
@@ -182,12 +186,11 @@ public class OMAGServerPlatform
         @EventListener
         public void onApplicationEvent(ContextRefreshedEvent event)
         {
-            System.out.println();
-            System.out.println(OMAGServerPlatform.this.startupMessage);
+            log.info(OMAGServerPlatform.this.startupMessage);
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
             }
-            System.out.println(new Date().toString() + " OMAG server platform ready for more configuration");
+            log.info(new Date().toString() + " OMAG server platform ready for more configuration");
         }
 
         @EventListener
