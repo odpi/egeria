@@ -46,7 +46,7 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
      *
      * @param args ignored arguments
      */
-    public static void main(String[] args) throws JoranException, URISyntaxException {
+    public static void main(String[] args) throws JoranException {
 
         //if logback.xml is not present and no config in the command line set default configuration to logback-om.xml
         if ( ClassLoader.getSystemResource("logback.xml")== null
