@@ -487,6 +487,7 @@ public class OpenMetadataAPIGenericHandler<B>
             InstanceProperties  confidentialityProperties = null;
             InstanceProperties  confidenceProperties      = null;
             InstanceProperties  criticalityProperties     = null;
+            InstanceProperties  impactProperties          = null;
             InstanceProperties  retentionProperties       = null;
             InstanceProperties  ownershipProperties       = null;
             InstanceProperties  zoneProperties            = null;
@@ -511,6 +512,10 @@ public class OpenMetadataAPIGenericHandler<B>
                             confidenceProperties = classification.getProperties();
                         }
                         else if (OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            criticalityProperties = classification.getProperties();
+                        }
+                        else if (OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
                         {
                             criticalityProperties = classification.getProperties();
                         }
@@ -544,6 +549,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                confidentialityProperties,
                                                confidenceProperties,
                                                criticalityProperties,
+                                               impactProperties,
                                                retentionProperties,
                                                ownershipProperties,
                                                zoneProperties,
@@ -593,6 +599,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param confidentialityProperties properties from the Confidentiality classification
      * @param confidenceProperties properties from the Confidence classification
      * @param criticalityProperties properties from the Criticality classification
+     * @param impactProperties properties from the Impact classification
      * @param retentionProperties properties from the Retention classification
      * @param ownershipProperties properties from the AssetOwnership classification
      * @param zoneProperties properties from the AssetZoneMembership classification
@@ -609,6 +616,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     InstanceProperties confidentialityProperties,
                                                     InstanceProperties confidenceProperties,
                                                     InstanceProperties criticalityProperties,
+                                                    InstanceProperties impactProperties,
                                                     InstanceProperties retentionProperties,
                                                     InstanceProperties ownershipProperties,
                                                     InstanceProperties zoneProperties,
@@ -744,6 +752,33 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.CRITICALITY_LEVEL_PROPERTY_NAME,
                                                                                criticalityProperties,
                                                                                methodName));
+        }
+
+        if (impactProperties != null)
+        {
+            ImpactGovernanceClassification classification = new ImpactGovernanceClassification();
+
+            classification.setStatus(this.getGovernanceClassificationStatus(impactProperties, methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        impactProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       impactProperties,
+                                                                       methodName));
+            classification.setImpactLevel(repositoryHelper.getIntProperty(serviceName,
+                                                                          OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME,
+                                                                          impactProperties,
+                                                                          methodName));
         }
 
         if (retentionProperties != null)
@@ -2460,6 +2495,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME, methodName),
+                                               newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, methodName),

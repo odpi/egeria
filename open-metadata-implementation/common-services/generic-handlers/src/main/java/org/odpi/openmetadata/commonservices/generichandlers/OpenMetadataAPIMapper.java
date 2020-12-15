@@ -803,6 +803,9 @@ public class OpenMetadataAPIMapper
     public static final String CRITICALITY_LEVEL_ENUM_TYPE_GUID                  = "22bcbf49-83e1-4432-b008-e09a8f842a1e";
     public static final String CRITICALITY_LEVEL_ENUM_TYPE_NAME                  = "CriticalityLevel";
 
+    public static final String IMPACT_SEVERITY_ENUM_TYPE_GUID                    = "3a6c4ba7-3cc5-48cd-8952-a50a92da016d";
+    public static final String IMPACT_SEVERITY_ENUM_TYPE_NAME                    = "ImpactSeverity";
+
     public static final String CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID          = "742ddb7d-9a4a-4eb5-8ac2-1d69953bd2b6";
     public static final String CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME          = "Confidentiality";
 
@@ -811,6 +814,9 @@ public class OpenMetadataAPIMapper
 
     public static final String CRITICALITY_CLASSIFICATION_TYPE_GUID              = "d46d211a-bd22-40d5-b642-87b4954a167e";
     public static final String CRITICALITY_CLASSIFICATION_TYPE_NAME              = "Criticality";
+
+    public static final String IMPACT_CLASSIFICATION_TYPE_GUID                   = "5b905856-90ec-4944-80c4-0d42bcad484a";
+    public static final String IMPACT_CLASSIFICATION_TYPE_NAME                   = "Impact";
 
     public static final String RETENTION_CLASSIFICATION_TYPE_GUID                = "83dbcdf2-9445-45d7-bb24-9fa661726553";
     public static final String RETENTION_CLASSIFICATION_TYPE_NAME                = "Retention";
@@ -824,6 +830,7 @@ public class OpenMetadataAPIMapper
     public static final String CONFIDENTIALITY_LEVEL_PROPERTY_NAME                  = "level";
     public static final String CONFIDENCE_LEVEL_PROPERTY_NAME                       = "level";
     public static final String CRITICALITY_LEVEL_PROPERTY_NAME                      = "level";
+    public static final String IMPACT_LEVEL_PROPERTY_NAME                           = "level";
     public static final String RETENTION_BASIS_PROPERTY_NAME                        = "basis";
     public static final String RETENTION_ASSOCIATED_GUID_PROPERTY_NAME              = "associatedGUID";
     public static final String RETENTION_ARCHIVE_AFTER_PROPERTY_NAME                = "archiveAfter";

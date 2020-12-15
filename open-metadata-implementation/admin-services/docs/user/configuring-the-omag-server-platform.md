@@ -50,9 +50,13 @@ In addition, Egeria adds support for additional application properties.
 * [Auto-starting servers](configuring-the-server-startup-list-for-the-platform.md) - Defining which OMAG Servers, 
   if any, should be started automatically by the OMAG Server Platform when it starts.
 
-##Transport Level Security
+## Transport Level Security (TLS)
 
-See [Transport Level Security in Egeria & Certificates](omag-server-platform-transport-level-security.md) for information on setting up transport level security with egeria
+Transport level security describes the security applied to API calls made between servers.
+The most commonly known transport level security is SSL.
+
+See [Transport Level Security in Egeria and Certificates](omag-server-platform-transport-level-security.md) for
+information on setting up transport level security in the OMAG Server Platform.
 
 ----
 Return to the [Administration Services User Guide](.)

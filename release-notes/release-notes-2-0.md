@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.0 (June 2020)
+# Release 2.0 (July 2020)
 
 Release 2.0 adds support for:
 
@@ -15,6 +15,16 @@ Below are the highlights:
 - Docker containers, docker-compose scripts, kubernetes deployments have all been updated to use https accordingly.
 - The [Encrypted Configuration File Store Connector](../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/README.md) is now used by default to ensure security of sensitive configuration details like credentials.
 
+## Egeria Implementation Status at Release 2.0
+ 
+ ![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.0.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

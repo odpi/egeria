@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetconsumer.converters.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -43,13 +45,16 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
      * @param auditLog destination for audit log events.
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum number of results that can be returned on a single call
+     * @param outTopicEventBusConnection inner event bus connection to use to build topic connection to send to client if they which
+     *                                   to listen on the out topic.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetConsumerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                          List<String>            supportedZones,
                                          AuditLog                auditLog,
                                          String                  localServerUserId,
-                                         int                     maxPageSize) throws NewInstanceException
+                                         int                     maxPageSize,
+                                         Connection              outTopicEventBusConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
@@ -58,7 +63,11 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
               null,
               auditLog,
               localServerUserId,
-              maxPageSize);
+              maxPageSize,
+              null,
+              null,
+              AssetConsumerOutTopicClientProvider.class.getName(),
+              outTopicEventBusConnection);
 
         final String methodName = "new ServiceInstance";
 

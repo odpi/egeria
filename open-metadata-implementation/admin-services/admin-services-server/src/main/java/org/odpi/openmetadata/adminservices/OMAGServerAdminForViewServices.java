@@ -231,7 +231,6 @@ public class OMAGServerAdminForViewServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-
             List<ViewServiceConfig> currentList = serverConfig.getViewServicesConfig();
 
             if (currentList != null)
@@ -247,7 +246,6 @@ public class OMAGServerAdminForViewServices
                     }
                 }
             }
-
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -404,7 +402,6 @@ public class OMAGServerAdminForViewServices
                         }
                     }
                 }
-
             }
 
             if (viewServiceConfigList.isEmpty())

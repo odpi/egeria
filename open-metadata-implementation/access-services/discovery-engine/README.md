@@ -34,36 +34,48 @@ categories.
 * The **discovery engines** - these manage the work of a collection of related discovery services.
 * The **discovery server** - this hosts one or more discovery engines.  It provides a REST API
   to request specific analysis on particular assets, monitor progress of the
-  discovery services and review the results.
+  discovery services and review the results.  In Egeria, the discovery server
+  is implemented by the [Asset Analysis OMES](../../engine-services/asset-analysis)
+  running in an [engine host](../../admin-services/docs/concepts/engine-host.md).
 
 Figure 1 shows how these capabilities work together.
 
 ![Figure 1](docs/open-discovery-operation.png)
 > **Figure 1:** Interfaces of the Discovery Engine OMAS
 
+1. The discovery engine retrieves configuration from the Discovery Engine OMAS.
+2. When a discovery engine receives a request to analyse an asset, it
+   retrieves the annotations from previous analysis of this asset.
+3. While the discovery service is running, it is writing new annotations about
+   the asset through the Discovery Engine OMAS.   
+
+More details of this processing follows.
+
+## Discovery Engine Configuration 
+
 The configuration of the discovery engines and the discovery services
 that they support are managed in the metadata server through
 the Discovery Engine OMAS.
 
-The [Discovery Server](../../admin-services/docs/concepts/discovery-server.md) is typically
+The [Engine Host OMAG Server](../../admin-services/docs/concepts/engine-host.md) is typically
 located close to the data assets to minimize the network traffic
 resulting from the analysis.  Where the data assets are
 distributed in multiple locations, it is possible to
-deploy a Discovery Server in each location so the
+deploy an Engine Host server in each location so the
 discovery workload is kept close to the data.
 
 A single Discovery Engine OMAS can support multiple
-discovery servers deployed in this way.
+engine hosts deployed in this way.
 
-Each discovery server is configured
+The [Asset Analysis OMES](../../engine-services/asset-analysis) on the engine host server is configured
 with the location of the metadata server where the Discovery Engine OMAS
 is running along with the names of the discovery engines it will host.
 The same discovery engine can simultaneously run on multiple
-discovery servers.  This means the discovery server
+discovery servers.  This means the Asset Analysis OMES
 can host all of the discovery engines it needs to analyse
 the assets at its location.
 
-When the discovery server starts, it calls the Discovery
+When the Asset Analysis OMES starts in the engine host, it calls the Discovery
 Engine OMAS to retrieve the configuration for each of its
 discovery engines (see Figure 1, number 1).
 It also connects to the Discovery Engine
@@ -79,6 +91,8 @@ This is shown in figure 2.
 ![Figure 2](docs/discovery-engine-configuration.png)
 > **Figure 2:** Discovery Engine Configuration
 
+## Processing Discovery Requests
+
 When a discovery request is made, the discovery engine creates an instance
 of the discovery service and gives it access to a
 [discovery context](../../frameworks/open-discovery-framework/docs/discovery-context.md).
@@ -87,18 +101,22 @@ to access the data stored in the asset and a store to
 record the new metadata it has discovered about the asset.
 Behind the scenes, the discovery context is calling
 the Discovery Engine OMAS to both retrieve metadata
-about the Asset and its connector (see Figure 1, number 2],
+about the Asset and its connector (see Figure 1, number 2),
 and to store the new metadata (Figure 1, number 3).
+
+## Further Information
 
 The [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework)
 provides more information about the discovery engines and
 discovery services along with the metadata APIs.
 
 In Egeria, both the metadata server where the Discovery Engine OMAS runs
-and the discovery server are types of [OMAG Servers](../../../open-metadata-publication/website/omag-server/omag-server.md).
-More information on the operation of the discovery server
-can be found under the [Discovery Engine Services](../../governance-servers/discovery-engine-services).
-These services belong to the specialist subsystem of the discovery server.
+and the engine host whether the Asset Analysis OMES runs are types of [OMAG Servers](../../../open-metadata-publication/website/omag-server/omag-server.md).
+More information on the operation of the engine host
+can be found under the [Engine Services](../../engine-services).
+
+An overview of automated metadata discovery approaches is available
+[here](../../../open-metadata-publication/website/metadata-discovery).
 
 
 ## Design information

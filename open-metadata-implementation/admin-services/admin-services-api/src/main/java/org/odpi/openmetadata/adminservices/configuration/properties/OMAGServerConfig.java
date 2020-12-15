@@ -102,6 +102,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
     private List<IntegrationServiceConfig>  integrationServicesConfig       = null;
+    private List<EngineServiceConfig>       engineServicesConfig            = null;
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
@@ -149,18 +150,19 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
             integrationServicesConfig       = template.getIntegrationServicesConfig();
+            engineServicesConfig            = template.getEngineServicesConfig();
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();
-            discoveryEngineServicesConfig   = template.getDiscoveryEngineServicesConfig();
             openLineageServerConfig         = template.getOpenLineageServerConfig();
+            dataEngineProxyConfig           = template.getDataEngineProxyConfig();
+            discoveryEngineServicesConfig   = template.getDiscoveryEngineServicesConfig();
             stewardshipEngineServicesConfig = template.getStewardshipEngineServicesConfig();
             securitySyncConfig              = template.getSecuritySyncConfig();
             securityOfficerConfig           = template.getSecurityOfficerConfig();
-            auditTrail                      = template.getAuditTrail();
             virtualizationConfig            = template.getVirtualizationConfig();
-            dataEngineProxyConfig           = template.getDataEngineProxyConfig();
             dataPlatformServicesConfig      = template.getDataPlatformServicesConfig();
+            auditTrail                      = template.getAuditTrail();
         }
     }
 
@@ -459,6 +461,28 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the configuration for the registered Open Metadata Engine Services (OMESs).
+     *
+     * @return array of configuration properties, one for each OMES
+     */
+    public List<EngineServiceConfig> getEngineServicesConfig()
+    {
+        return engineServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).
+     *
+     * @param engineServicesConfig array of configuration properties, one for each OMIS
+     */
+    public void setEngineServicesConfig(List<EngineServiceConfig> engineServicesConfig)
+    {
+        this.engineServicesConfig = engineServicesConfig;
+    }
+
+
+    /**
      * Return the configuration for the registered Open Metadata View Services (OMVSs).
      *
      * @return array of configuration properties, one for each OMVS
@@ -525,27 +549,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for a discovery server.
-     *
-     * @return DiscoveryServerConfig properties
-     */
-    public DiscoveryEngineServicesConfig getDiscoveryEngineServicesConfig()
-    {
-        return discoveryEngineServicesConfig;
-    }
-
-
-    /**
-     * Set up the configuration for a discovery server.
-     *
-     * @param discoveryEngineServicesConfig DiscoveryServerConfig properties
-     */
-    public void setDiscoveryEngineServicesConfig(DiscoveryEngineServicesConfig discoveryEngineServicesConfig)
-    {
-        this.discoveryEngineServicesConfig = discoveryEngineServicesConfig;
-    }
-
-    /**
      * Return the configuration for open lineage services.
      *
      * @return OpenLineageConfig properties
@@ -564,80 +567,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setOpenLineageServerConfig(OpenLineageServerConfig openLineageServerConfig)
     {
         this.openLineageServerConfig = openLineageServerConfig;
-    }
-
-
-    /**
-     * Return the configuration for the stewardship services in a server.
-     *
-     * @return StewardshipServicesConfig properties
-     */
-    public StewardshipEngineServicesConfig getStewardshipEngineServicesConfig()
-    {
-        return stewardshipEngineServicesConfig;
-    }
-
-
-    /**
-     * Set up the configuration for the stewardship services in a server.
-     *
-     * @param stewardshipEngineServicesConfig StewardshipServicesConfig properties
-     */
-    public void setStewardshipEngineServicesConfig(StewardshipEngineServicesConfig stewardshipEngineServicesConfig)
-    {
-        this.stewardshipEngineServicesConfig = stewardshipEngineServicesConfig;
-    }
-
-
-    /**
-     * Return the configuration for the security synchronization services.
-     *
-     * @return SecuritySyncConfig properties
-     */
-    public SecuritySyncConfig getSecuritySyncConfig()
-    {
-        return securitySyncConfig;
-    }
-
-
-    /**
-     * Set up the configuration for the security synchronization services.
-     *
-     * @param securitySyncConfig SecuritySyncConfig properties
-     */
-    public void setSecuritySyncConfig(SecuritySyncConfig securitySyncConfig)
-    {
-        this.securitySyncConfig = securitySyncConfig;
-    }
-
-    /**
-     * Return the configuration for the security officer services.
-     *
-     * @return SecurityOfficerConfig properties
-     */
-    public SecurityOfficerConfig getSecurityOfficerConfig()
-    {
-        return securityOfficerConfig;
-    }
-
-    /**
-     * Set up the configuration for the security officer services.
-     *
-     * @param securityOfficerConfig SecurityOfficerConfig properties
-     */
-    public void setSecurityOfficerConfig(SecurityOfficerConfig securityOfficerConfig)
-    {
-        this.securityOfficerConfig = securityOfficerConfig;
-    }
-
-    /**
-     * Return the configuration for the virtualization services.
-     *
-     * @return VirtualizationConfig properties
-     */
-    public VirtualizationConfig getVirtualizationConfig()
-    {
-        return virtualizationConfig;
     }
 
 
@@ -662,11 +591,116 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     }
 
 
+
+    /**
+     * Return the configuration for a discovery server.
+     *
+     * @return DiscoveryServerConfig properties
+     */
+    @Deprecated
+    public DiscoveryEngineServicesConfig getDiscoveryEngineServicesConfig()
+    {
+        return discoveryEngineServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for a discovery server.
+     *
+     * @param discoveryEngineServicesConfig DiscoveryServerConfig properties
+     */
+    @Deprecated
+    public void setDiscoveryEngineServicesConfig(DiscoveryEngineServicesConfig discoveryEngineServicesConfig)
+    {
+        this.discoveryEngineServicesConfig = discoveryEngineServicesConfig;
+    }
+
+    /**
+     * Return the configuration for the stewardship services in a server.
+     *
+     * @return StewardshipServicesConfig properties
+     */
+    @Deprecated
+    public StewardshipEngineServicesConfig getStewardshipEngineServicesConfig()
+    {
+        return stewardshipEngineServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the stewardship services in a server.
+     *
+     * @param stewardshipEngineServicesConfig StewardshipServicesConfig properties
+     */
+    @Deprecated
+    public void setStewardshipEngineServicesConfig(StewardshipEngineServicesConfig stewardshipEngineServicesConfig)
+    {
+        this.stewardshipEngineServicesConfig = stewardshipEngineServicesConfig;
+    }
+
+
+    /**
+     * Return the configuration for the security synchronization services.
+     *
+     * @return SecuritySyncConfig properties
+     */
+    @Deprecated
+    public SecuritySyncConfig getSecuritySyncConfig()
+    {
+        return securitySyncConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the security synchronization services.
+     *
+     * @param securitySyncConfig SecuritySyncConfig properties
+     */
+    @Deprecated
+    public void setSecuritySyncConfig(SecuritySyncConfig securitySyncConfig)
+    {
+        this.securitySyncConfig = securitySyncConfig;
+    }
+
+    /**
+     * Return the configuration for the security officer services.
+     *
+     * @return SecurityOfficerConfig properties
+     */
+    @Deprecated
+    public SecurityOfficerConfig getSecurityOfficerConfig()
+    {
+        return securityOfficerConfig;
+    }
+
+    /**
+     * Set up the configuration for the security officer services.
+     *
+     * @param securityOfficerConfig SecurityOfficerConfig properties
+     */
+    @Deprecated
+    public void setSecurityOfficerConfig(SecurityOfficerConfig securityOfficerConfig)
+    {
+        this.securityOfficerConfig = securityOfficerConfig;
+    }
+
+    /**
+     * Return the configuration for the virtualization services.
+     *
+     * @return VirtualizationConfig properties
+     */
+    @Deprecated
+    public VirtualizationConfig getVirtualizationConfig()
+    {
+        return virtualizationConfig;
+    }
+
     /**
      * Set up the configuration for the virtualization services.
      *
      * @param virtualizationConfig properties
      */
+    @Deprecated
     public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig)
     {
         this.virtualizationConfig = virtualizationConfig;
@@ -677,6 +711,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return DataEngineProxyConfig properties
      */
+    @Deprecated
     public DataPlatformServicesConfig getDataPlatformServicesConfig() {
         return dataPlatformServicesConfig;
     }
@@ -686,9 +721,12 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @param dataPlatformServicesConfig properties
      */
-    public void setDataPlatformServicesConfig(DataPlatformServicesConfig dataPlatformServicesConfig) {
+    @Deprecated
+    public void setDataPlatformServicesConfig(DataPlatformServicesConfig dataPlatformServicesConfig)
+    {
         this.dataPlatformServicesConfig = dataPlatformServicesConfig;
     }
+
 
     /**
      * Return the list of audit log entries associated with this config file.
@@ -722,25 +760,33 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public String toString()
     {
         return "OMAGServerConfig{" +
-                "localServerId='" + localServerId + '\'' +
-                ", localServerName='" + localServerName + '\'' +
-                ", localServerType='" + localServerType + '\'' +
-                ", organizationName='" + organizationName + '\'' +
-                ", localServerURL='" + localServerURL + '\'' +
-                ", localServerUserId='" + localServerUserId + '\'' +
-                ", maxPageSize=" + maxPageSize +
-                ", eventBusConfig=" + eventBusConfig +
-                ", accessServicesConfig=" + accessServicesConfig +
-                ", repositoryServicesConfig=" + repositoryServicesConfig +
-                ", discoveryServerConfig=" + discoveryEngineServicesConfig +
-                ", openLineageConfig=" + openLineageServerConfig +
-                ", stewardshipServicesConfig=" + stewardshipEngineServicesConfig +
-                ", securitySyncConfig=" + securitySyncConfig +
-                ", securityOfficerConfig=" + securityOfficerConfig +
-                ", dataEngineProxyConfig=" + dataEngineProxyConfig +
-                ", dataPlatformServicesConfig=" + dataPlatformServicesConfig +
-                ", auditTrail=" + auditTrail +
-                '}';
+                       "versionId='" + versionId + '\'' +
+                       ", localServerId='" + localServerId + '\'' +
+                       ", localServerName='" + localServerName + '\'' +
+                       ", localServerType='" + localServerType + '\'' +
+                       ", organizationName='" + organizationName + '\'' +
+                       ", localServerURL='" + localServerURL + '\'' +
+                       ", localServerUserId='" + localServerUserId + '\'' +
+                       ", localServerPassword='" + localServerPassword + '\'' +
+                       ", maxPageSize=" + maxPageSize +
+                       ", serverSecurityConnection=" + serverSecurityConnection +
+                       ", eventBusConfig=" + eventBusConfig +
+                       ", accessServicesConfig=" + accessServicesConfig +
+                       ", integrationServicesConfig=" + integrationServicesConfig +
+                       ", engineServicesConfig=" + engineServicesConfig +
+                       ", viewServicesConfig=" + viewServicesConfig +
+                       ", repositoryServicesConfig=" + repositoryServicesConfig +
+                       ", conformanceSuiteConfig=" + conformanceSuiteConfig +
+                       ", discoveryEngineServicesConfig=" + discoveryEngineServicesConfig +
+                       ", openLineageServerConfig=" + openLineageServerConfig +
+                       ", stewardshipEngineServicesConfig=" + stewardshipEngineServicesConfig +
+                       ", securitySyncConfig=" + securitySyncConfig +
+                       ", securityOfficerConfig=" + securityOfficerConfig +
+                       ", virtualizationConfig=" + virtualizationConfig +
+                       ", dataEngineProxyConfig=" + dataEngineProxyConfig +
+                       ", dataPlatformServicesConfig=" + dataPlatformServicesConfig +
+                       ", auditTrail=" + auditTrail +
+                       '}';
     }
 
 
@@ -763,24 +809,31 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         }
         OMAGServerConfig that = (OMAGServerConfig) objectToCompare;
         return getMaxPageSize() == that.getMaxPageSize() &&
-                Objects.equals(getLocalServerId(), that.getLocalServerId()) &&
-                Objects.equals(getLocalServerName(), that.getLocalServerName()) &&
-                Objects.equals(getLocalServerType(), that.getLocalServerType()) &&
-                Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
-                Objects.equals(getLocalServerURL(), that.getLocalServerURL()) &&
-                Objects.equals(getLocalServerUserId(), that.getLocalServerUserId()) &&
-                Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
-                Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
-                Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
-                Objects.equals(getDiscoveryEngineServicesConfig(), that.getDiscoveryEngineServicesConfig()) &&
-                Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
-                Objects.equals(getStewardshipEngineServicesConfig(), that.getStewardshipEngineServicesConfig()) &&
-                Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
-                Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
-                Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
-                Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
-                Objects.equals(getDataPlatformServicesConfig(), that.getDataPlatformServicesConfig()) &&
-                Objects.equals(getAuditTrail(), that.getAuditTrail());
+                       Objects.equals(getVersionId(), that.getVersionId()) &&
+                       Objects.equals(getLocalServerId(), that.getLocalServerId()) &&
+                       Objects.equals(getLocalServerName(), that.getLocalServerName()) &&
+                       Objects.equals(getLocalServerType(), that.getLocalServerType()) &&
+                       Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
+                       Objects.equals(getLocalServerURL(), that.getLocalServerURL()) &&
+                       Objects.equals(getLocalServerUserId(), that.getLocalServerUserId()) &&
+                       Objects.equals(getLocalServerPassword(), that.getLocalServerPassword()) &&
+                       Objects.equals(getServerSecurityConnection(), that.getServerSecurityConnection()) &&
+                       Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
+                       Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
+                       Objects.equals(getIntegrationServicesConfig(), that.getIntegrationServicesConfig()) &&
+                       Objects.equals(getEngineServicesConfig(), that.getEngineServicesConfig()) &&
+                       Objects.equals(getViewServicesConfig(), that.getViewServicesConfig()) &&
+                       Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
+                       Objects.equals(getConformanceSuiteConfig(), that.getConformanceSuiteConfig()) &&
+                       Objects.equals(getDiscoveryEngineServicesConfig(), that.getDiscoveryEngineServicesConfig()) &&
+                       Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
+                       Objects.equals(getStewardshipEngineServicesConfig(), that.getStewardshipEngineServicesConfig()) &&
+                       Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
+                       Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
+                       Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
+                       Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
+                       Objects.equals(getDataPlatformServicesConfig(), that.getDataPlatformServicesConfig()) &&
+                       Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
 
@@ -792,10 +845,13 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
-                            getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
-                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineServicesConfig(),
-                            getStewardshipEngineServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
-                            getAuditTrail(), getVirtualizationConfig(), getDataEngineProxyConfig(), getDataPlatformServicesConfig());
+        return Objects.hash(getVersionId(), getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
+                            getLocalServerURL(),
+                            getLocalServerUserId(), getLocalServerPassword(), getMaxPageSize(), getServerSecurityConnection(), getEventBusConfig(),
+                            getAccessServicesConfig(), getIntegrationServicesConfig(), getEngineServicesConfig(), getViewServicesConfig(),
+                            getRepositoryServicesConfig(), getConformanceSuiteConfig(), getDiscoveryEngineServicesConfig(),
+                            getOpenLineageServerConfig(),
+                            getStewardshipEngineServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(), getVirtualizationConfig(),
+                            getDataEngineProxyConfig(), getDataPlatformServicesConfig(), getAuditTrail());
     }
 }
