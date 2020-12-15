@@ -1643,7 +1643,7 @@ public class DinoViewRESTServices {
                     response.setServiceDetails(handler.serverGetServiceDetails(userId,
                                                                    requestBody.getServerName(),
                                                                    requestBody.getPlatformName(),
-                                                                   requestBody.getServiceName(),
+                                                                   requestBody.getServiceURLMarker(),
                                                                    methodName));
 
                 }

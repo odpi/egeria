@@ -1494,7 +1494,7 @@ public class DinoViewHandler {
     public ServiceDetails serverGetServiceDetails(String    userId,
                                                   String    serverName,
                                                   String    platformName,
-                                                  String    serviceName,    // TODO - actually the service marker
+                                                  String    serviceURLMarker,
                                                   String    methodName)
 
     throws
@@ -1515,25 +1515,17 @@ public class DinoViewHandler {
             IntegrationDaemonConfigurationClient integrationDaemonConfigurationClient =
                     this.getIntegrationDaemonConfigurationClient(userId, serverName, platformRootURL);
 
-            /*
-             * Get a list of hte integration services that are configured on the server
-             *
-             */
-
-            List<RegisteredOMAGService> serviceList = integrationDaemonConfigurationClient.getConfiguredIntegrationServices();
-
-            /* TODO - probably you need to return this list (second level of expansion) and then if the user expands one of the list members, then get the details for the expanded service....
-             */
 
             /*
-             * Get the configuration - can throw OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
+             * Get the configuration of the integration service that has been requested. This can throw
+             * OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
              *
              */
-            IntegrationServiceConfig serviceConfig = integrationDaemonConfigurationClient.getIntegrationServiceConfiguration(serviceName);
+            IntegrationServiceConfig serviceConfig = integrationDaemonConfigurationClient.getIntegrationServiceConfiguration(serviceURLMarker);
 
             ServiceDetails serviceDetails = new ServiceDetails();
 
-            serviceDetails.setServiceName("SOMETHING CONSPICUOUS - TO BE REPLACED!");  // TODO (obviously)
+            serviceDetails.setIntegrationServiceConfig(serviceConfig);
 
             return serviceDetails;
 

@@ -23,7 +23,7 @@ public class DinoServiceRequestBody {
     private String                    serverName;                    // must be non-null
     private String                    platformName;                  // must be non-null
     private String                    serverInstanceName;
-    private String                    serviceName;                   // must be non-null
+    private String                    serviceURLMarker;                   // must be non-null
     private String                    description;
 
 
@@ -43,9 +43,9 @@ public class DinoServiceRequestBody {
 
     public void setPlatformName(String platformName) { this.platformName = platformName; }
 
-    public String getServiceName() { return serviceName; }
+    public String getServiceURLMarker() { return serviceURLMarker; }
 
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceURLMarker(String serviceURLMarker) { this.serviceURLMarker = serviceURLMarker; }
 
     public String getServerInstanceName() { return serverInstanceName; }
 
@@ -62,7 +62,7 @@ public class DinoServiceRequestBody {
                 ", serverName=" + serverName +
                 ", platformName=" + platformName +
                 ", serverInstanceName=" + serverInstanceName +
-                ", serviceName=" + serviceName +
+                ", serviceURLMarker=" + serviceURLMarker +
                 ", description=" + description +
                 '}';
     }

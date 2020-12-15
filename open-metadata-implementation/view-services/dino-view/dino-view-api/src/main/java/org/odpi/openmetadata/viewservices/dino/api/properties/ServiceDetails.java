@@ -6,10 +6,7 @@ package org.odpi.openmetadata.viewservices.dino.api.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
-import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
-
-import java.util.List;
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,7 +19,7 @@ public class ServiceDetails {
     private static final long    serialVersionUID = 1L;
 
 
-    private String serviceName;
+    private IntegrationServiceConfig integrationServiceConfig;
 
 
     /**
@@ -41,19 +38,15 @@ public class ServiceDetails {
      */
     public ServiceDetails(ServiceDetails template) {
 
-        this.serviceName = template.getServiceName();
-
-
+        this.integrationServiceConfig = template.getIntegrationServiceConfig();
 
     }
 
-    public String getServiceName() {  return serviceName;  }
+    public IntegrationServiceConfig getIntegrationServiceConfig() {  return integrationServiceConfig;  }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public void setIntegrationServiceConfig(IntegrationServiceConfig integrationServiceConfig) {
+        this.integrationServiceConfig = integrationServiceConfig;
     }
-
-
 
 
 }
