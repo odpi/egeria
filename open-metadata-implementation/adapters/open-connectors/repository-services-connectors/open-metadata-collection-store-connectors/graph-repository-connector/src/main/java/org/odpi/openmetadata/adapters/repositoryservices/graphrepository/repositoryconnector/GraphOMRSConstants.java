@@ -50,9 +50,9 @@ public class GraphOMRSConstants {
         put(PROPERTY_NAME_METADATACOLLECTION_NAME,        "java.lang.String");
         put(PROPERTY_NAME_VERSION,                        "java.lang.Long");
         put(PROPERTY_NAME_CREATED_BY,                     "java.lang.String");
-        put(PROPERTY_NAME_CREATE_TIME,                    "java.lang.Date");
+        put(PROPERTY_NAME_CREATE_TIME,                    "java.util.Date");
         put(PROPERTY_NAME_UPDATED_BY,                     "java.lang.String");
-        put(PROPERTY_NAME_UPDATE_TIME,                    "java.lang.Date");
+        put(PROPERTY_NAME_UPDATE_TIME,                    "java.util.Date");
         put(PROPERTY_NAME_INSTANCE_PROVENANCE_TYPE,       "java.lang.Integer");    // enum stored by ordinal
         put(PROPERTY_NAME_CURRENT_STATUS,                 "java.lang.Integer");    // enum stored by ordinal
         put(PROPERTY_NAME_STATUS_ON_DELETE,               "java.lang.Integer");    // enum stored by ordinal
