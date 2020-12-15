@@ -2,7 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.opentypes;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.classic.util.ContextInitializer;
+import ch.qos.logback.core.joran.spi.JoranException;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
+import org.slf4j.LoggerFactory;
+
+import java.net.URISyntaxException;
 
 
 /**
@@ -12,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWrit
 public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
 {
     private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
+//    private static final Logger log = LoggerFactory.getLogger(OpenMetadataTypesArchiveWriter.class);
 
     /**
      * Default constructor
@@ -39,8 +47,19 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
      *
      * @param args ignored arguments
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws JoranException, URISyntaxException {
+
+        //if logback.xml is not present and no config in the command line set default configuration to logback-om.xml
+        if ( ClassLoader.getSystemResource("logback.xml")== null
+                &&  System.getProperty(ContextInitializer.CONFIG_FILE_PROPERTY) == null ) {
+
+            LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+            context.reset();
+            JoranConfigurator configurator = new JoranConfigurator();
+            configurator.setContext(context);
+            configurator.doConfigure(OpenMetadataTypesArchiveWriter.class.getResourceAsStream("/logback-om.xml"));
+
+        }
         OpenMetadataTypesArchiveWriter archiveWriter = new OpenMetadataTypesArchiveWriter();
 
         archiveWriter.writeOpenMetadataTypesArchive();
