@@ -19,7 +19,7 @@ created the KnowDuplicateLink.
 
 * **PEER** - means the two elements have simply been linked together.
 * **CONSOLIDATED** - means that the element at end2 is an\element that has been created
-by consolidating the properties of a number of
+by consolidating the properties of a number of duplicate entities.
 
 
 Return to [Area 4](Area-4-models.md).
