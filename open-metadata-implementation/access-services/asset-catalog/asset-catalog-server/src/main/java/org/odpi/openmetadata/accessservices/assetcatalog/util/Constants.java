@@ -89,6 +89,8 @@ public final class Constants {
     public static final String TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
+    public static final String DISPLAY_NAME = "displayName";
+    public static final String TYPE_SEQUENCING = "type";
 
     public static final String GUID_PARAMETER = "GUID";
     public static final String SEARCH_PARAMETER = "searchParameter";
