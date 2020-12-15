@@ -35,6 +35,7 @@
         <module>database-integrator</module>
         <module>lineage-integrator</module>
         <module>organization-integrator</module>
+        <module>security-integrator</module>
     </modules>
 
 </project>

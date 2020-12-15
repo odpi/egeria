@@ -36,6 +36,28 @@ public class AssetConsumerResource
 
 
     /**
+     * Return the connection object for the Asset Consumer's OMAS's out topic.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     * @param callerId unique identifier of the caller
+     *
+     * @return connection object for the out topic or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/topics/out-topic-connection/{callerId}")
+
+    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String callerId)
+    {
+        return restAPI.getOutTopicConnection(serverName, userId, callerId);
+    }
+
+
+    /**
      * Adds a reply to a comment.
      *
      * @param serverName    name of the server instances for this request.

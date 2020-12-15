@@ -1597,7 +1597,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                    OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
-                                                          OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME))
+                                                          OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
                                                           OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME)))

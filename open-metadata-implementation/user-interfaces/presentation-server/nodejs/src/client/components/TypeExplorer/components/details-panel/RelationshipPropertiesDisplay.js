@@ -67,7 +67,9 @@ export default function RelationshipPropertiesDisplay(props) {
     const formattedAttributeName = formatAttributeName(attributeName, attribute);
     const formattedAttributeType = formatAttributeType(attributeName, attribute);
     formattedAttribute = <div>{formattedAttributeName} : {formattedAttributeType}
-        {(attribute.status === "DEPRECATED_ATTRIBUTE") ? "  (use "+attribute.replacedBy+")" : ""}
+        {(attribute.status === "DEPRECATED_ATTRIBUTE")
+           ?   attribute.replacedBy ? "  (use "+attribute.replacedBy+")" : "  (no replacement)"
+           :   ""}
     </div>;
     return formattedAttribute
   };
@@ -134,7 +136,7 @@ export default function RelationshipPropertiesDisplay(props) {
     return attributeList;
   };
 
-  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length == 0) {
+  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length === 0) {
     properties = (
       <ul className="details-sublist">
         <li className="details-sublist-item"> none </li>

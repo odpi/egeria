@@ -31,8 +31,8 @@ export default function ConfigureAuditLog({ previousAction, nextAction }) {
   const initialState = auditLogDestinations.map((d, i) => {
     return {
       ...d,
-      selected: d.id == "default",
-      severities: d.id == "default" ? [] : auditLogSeverities.map((s) => {
+      selected: d.id === "default",
+      severities: d.id === "default" ? [] : auditLogSeverities.map((s) => {
         return {
           ...s,
           selected: true
@@ -42,27 +42,27 @@ export default function ConfigureAuditLog({ previousAction, nextAction }) {
   })
 
   const reducer = (destinations, action) => {
-    if (action.type == 'selectDestination') {
+    if (action.type === 'selectDestination') {
       return destinations.map(dest => {
-        if (dest.id == action.destination) {
+        if (dest.id === action.destination) {
           dest.selected = true;
         }
         return dest;
       });
     }
-    if (action.type == 'deselectDestination') {
+    if (action.type === 'deselectDestination') {
       return destinations.map(destination => {
-        if (destination.id == action.destination) {
+        if (destination.id === action.destination) {
           destination.selected = false;
         }
         return destination;
       });
     }
-    if (action.type == 'selectSeverity') {
+    if (action.type === 'selectSeverity') {
       return destinations.map(dest => {
-        if (dest.id == action.destination) {
+        if (dest.id === action.destination) {
           dest.severities = dest.severities.map(sev => {
-            if (sev.id == action.severity) {
+            if (sev.id === action.severity) {
               sev.selected = true;
             }
             return sev;
@@ -71,11 +71,11 @@ export default function ConfigureAuditLog({ previousAction, nextAction }) {
         return dest;
       });
     }
-    if (action.type == 'deselectSeverity') {
+    if (action.type === 'deselectSeverity') {
       return destinations.map(dest => {
-        if (dest.id == action.destination) {
+        if (dest.id === action.destination) {
           dest.severities = dest.severities.map(sev => {
-            if (sev.id == action.severity) {
+            if (sev.id === action.severity) {
               sev.selected = false;
             }
             return sev;

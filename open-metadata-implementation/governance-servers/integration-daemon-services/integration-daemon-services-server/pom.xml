@@ -95,6 +95,11 @@
             <artifactId>organization-integrator-server</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>security-integrator-server</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

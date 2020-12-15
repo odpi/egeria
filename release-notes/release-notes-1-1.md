@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.1
+# Release 1.1 (November 2019)
 
 Release 1.1 focuses on establishing a secure, multi-tenant platform for
 metadata servers and governance servers.
@@ -51,7 +51,16 @@ Below are the highlights:
    a Java Date object to a Java Long object.  This was to overcome a problem
    deserialization dates from JSON to Java.
 
-
+## Egeria Implementation Status at Release 1.1
+ 
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-1.1.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+         
 
 
 ----

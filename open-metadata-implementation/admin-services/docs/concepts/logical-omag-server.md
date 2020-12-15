@@ -11,6 +11,10 @@ that runs in its own process.
 ![OMAG Servers and Platforms](omag-server-deployment-choices.png#pagewidth)
 
 
+To understand more:
+* [OMAG Server Documentation](omag-server.md)
+* [OMAG Server Platform Documentation](omag-server-platform.md)
+
 
 
 ----

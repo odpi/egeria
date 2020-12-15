@@ -6,6 +6,8 @@ import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZ
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.http.HttpHelper;
+
 
 
 /**
@@ -138,6 +140,9 @@ public class CreateGovernanceZoneSample
         System.out.println("Running against server: " + serverName + " at " + serverURLRoot);
         System.out.println("Using userId: " + clientUserId);
         System.out.println();
+
+        HttpHelper.noStrictSSLIfConfigured();
+
 
         try
         {

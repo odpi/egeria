@@ -41,3 +41,20 @@ The other diagram is the neighborhood diagram, which is displayed as a radial pl
 
 ![Neighborhood Diagram](image3)
 
+&nbsp;
+
+There are three checkboxes, located just beneath the help icon, that provide finer control of the types that are retrieved from the server and the way that they are displayed.
+
+&nbsp;
+
+The `Enterprise` checkbox allows Type Explorer to perform an enterprise scope query rather than a local query of the selected server.
+
+&nbsp;
+
+The `Include deprecated types` checkbox instructs Type Explorer to retrieve all types from the server, whether or not the types are deprecated. This can be useful for closer inspection of the type system. The name of a deprecated type will be displayed in square brakcets, like this `[<type name>]`. If this option is checked and a deprecated entity type is the focus (i.e. is highlighted in the diagram and its details are shown on the left hand side), then if the `Include deprecated types` is unchecked, Type Explorer will
+automatically clear the focus because the deprecated entity type will no longer be present.
+
+&nbsp;
+
+The `Include deprecated attributes` checkbox instructs Type Explorer to display any deprecated attributes. When this option is checked, any deprecated attributes will be displayed. The name of a deprecated attribute will be displayed in square brakcets, like this `[<attribute name>]`, together with its type and the name of the attribute that replaces it.
+

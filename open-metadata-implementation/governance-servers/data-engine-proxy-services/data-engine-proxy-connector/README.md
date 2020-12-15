@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+[![javadoc](https://javadoc.io/badge2/org.odpi.egeria/data-engine-proxy-connector/javadoc.svg)](https://javadoc.io/doc/org.odpi.egeria/data-engine-proxy-connector)
+
 # Data Engine Proxy Connector
 
 The Data Engine Proxy Connector defines the interfaces that need to be implemented in

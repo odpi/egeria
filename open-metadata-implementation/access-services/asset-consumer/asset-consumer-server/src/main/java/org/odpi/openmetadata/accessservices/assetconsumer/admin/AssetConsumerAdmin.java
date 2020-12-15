@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.admin;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.listener.AssetConsumerOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
@@ -65,7 +66,8 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                               supportedZones,
                                                               auditLog,
                                                               serverUserName,
-                                                              repositoryConnector.getMaxPageSize());
+                                                              repositoryConnector.getMaxPageSize(),
+                                                              accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
             /*

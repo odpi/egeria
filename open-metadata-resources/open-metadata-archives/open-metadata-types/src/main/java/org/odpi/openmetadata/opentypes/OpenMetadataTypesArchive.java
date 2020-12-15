@@ -157,6 +157,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0010ManagingMemento();
+        update0422GovernanceActionClassifications();
     }
 
 
@@ -243,6 +244,176 @@ public class OpenMetadataTypesArchive
 
         return classificationDef;
     }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0422 Add the Impact classification
+     */
+    private void update0422GovernanceActionClassifications()
+    {
+        this.archiveBuilder.addEnumDef(getImpactSeverityEnum());
+        this.archiveBuilder.addClassificationDef(addImpactClassification());
+    }
+
+
+    private EnumDef getImpactSeverityEnum()
+    {
+        final String guid            = "5b905856-90ec-4944-80c4-0d42bcad484a";
+        final String name            = "ImpactSeverity";
+        final String description     = "Defines the severity of the impact that a situation has.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "Unclassified";
+        final String element1Description     = "There is no assessment of the impact's severity on this data.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+        enumDef.setDefaultValue(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "Low";
+        final String element2Description     = "The impact is low.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 2;
+        final String element3Value           = "Medium";
+        final String element3Description     = "The impact is medium.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                                                     element3Value,
+                                                     element3Description,
+                                                     element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element4Ordinal         = 3;
+        final String element4Value           = "High";
+        final String element4Description     = "The impact is high.";
+        final String element4DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
+                                                     element4Value,
+                                                     element4Description,
+                                                     element4DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element99Ordinal         = 99;
+        final String element99Value           = "Other";
+        final String element99Description     = "Another confidence level.";
+        final String element99DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
+                                                     element99Value,
+                                                     element99Description,
+                                                     element99DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+    private ClassificationDef addImpactClassification()
+    {
+        final String guid            = "3a6c4ba7-3cc5-48cd-8952-a50a92da016d";
+        final String name            = "Impact";
+        final String description     = "Defines the severity of a situation on the attach entity.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 true);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "status";
+        final String attribute1Description     = "Status of this classification.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "confidence";
+        final String attribute2Description     = "Level of confidence in the classification (0=none -> 100=excellent).";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "steward";
+        final String attribute3Description     = "Person responsible for maintaining this classification.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "source";
+        final String attribute4Description     = "Source of the classification.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "notes";
+        final String attribute5Description     = "Information relating to the classification.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "level";
+        final String attribute6Description     = "Level of severity associated with this classification";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "levelIdentifier";
+        final String attribute7Description     = "Defined level for this classification.";
+        final String attribute7DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
+                                                         attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("ImpactSeverity",
+                                                         attribute6Name,
+                                                         attribute6Description,
+                                                         attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute7Name,
+                                                        attribute7Description,
+                                                        attribute7DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
 
 
 

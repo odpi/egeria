@@ -6,29 +6,59 @@
 
 # Open Metadata Engine Services (OMES)
 
-The engine services each provide the services that host a specific
-type of governance engine.  These services are still in design.
+The engine services are each able to host a specific
+type of governance engine. 
 
-## Background
+Broadly there are two types of Governance Engines:
+* [Discovery Engines](../frameworks/open-discovery-framework/docs/discovery-engine.md) that run automatic metadata
+discovery requests to analyse the content of an [asset's](../access-services/docs/concepts/assets) real-world counterpart.
+* [Governance Action Engines](../frameworks/governance-action-framework/docs/goverance-action-engine.md) that
+ manage the processing supporting governance processing such as the the resolution of issues reported in the open
+metadata ecosystem or the assets it supports.
 
-The diagram below shows the existing hierarchy of OMAG Server Types
-![OMAG Server Types](../admin-services/docs/concepts/types-of-omag-servers.png)
 
-The Discovery Server and the Stewardship Server are classified as types of
-*Engine Hosts*.  The Discovery Server hosts Discovery Engines and the
-Stewardship server hosts Stewardship Engines.
-There is a lot of duplicated code in these two servers that are
-implemented today as separate [governance services](../governance-servers).
+## Engine Services Descriptions
 
-The plan is to create a more generic **Engine Host** governance server.
-It will run one to many **engine-services**.  Each engine services will
-host a specific type of engine.  The first two engine services will be
-one for the discovery engines and another for the stewardship engines
-(although the different types of stewardship engines may each be supported by
-their own engine service.)
+* [Asset Analysis OMES](asset-analysis) - Analyses the content of an asset's real world counterpart, generates annotations
+  in an open discovery report that is attached to the asset in the open metadata repositories.
+   * Loads [Open Discovery Engines](../frameworks/open-discovery-framework/docs/discovery-engine.md),
+   * runs [Open Discovery Services](../frameworks/open-discovery-framework/docs/discovery-service.md) and 
+   * calls the [Discovery Engine OMAS](../access-services/discovery-engine).
+  
+* [Metadata Watchdog OMES](metadata-watchdog) - Monitors changes in the metadata and initiates updates as a result.  
+  One example of a watchdog service is duplicate detection. Another example is to monitor the addition of 
+  open discovery reports and take action on their content.  
+  Examples of updates include creating RequestForAction instances.
+   * Loads **Open WatchDog Engines**,
+   * runs **Open WatchDog Services** and
+   * calls the [Asset Manager OMAS](../access-services/asset-manager).
+  
+* [Request Triage OMES](request-triage) - Monitors for new/changed RequestForAction instances and runs triage rules to 
+  determine how to manage the request.  This could be to initiate an external workflow, wait for manual decision or 
+  initiate a remediation request.
+   * Loads **Open Triage Engines**,
+   * runs **Open Triage Services** and
+   * calls the [Stewardship Action OMAS](../access-services/stewardship-action).
+  
+* [Issue Remediation OMES](issue-remediation) - Monitors for RemediationRequest instances and runs the requested 
+  remediation service. Examples of remediation services are duplicate linking and consolidating.
+   * Loads **Open Remediation Engines**,
+   * runs **Open Remediation Services** and  
+   * calls the [Asset Manager OMAS](../access-services/asset-manager).
+  
+* [Action Scheduler OMES](action-scheduler) - Maintains a calendar of events and creates RequestForAction instances 
+  at the requested time.  For example, it may move assets between zones when a particular date is reached.
+  Loads **Open Scheduling Engines**,
+  runs **Open Scheduling Services** and
+  calls the [Asset Manager OMAS](../access-services/asset-manager).
+  
+* [Asset Provisioning OMES](asset-provisioning) - Invokes a provisioning service whenever a provisioning 
+  request is made.  Typically the provisioning service is an external service.  It may also create lineage metadata 
+  to describe the work of the provisioning engine.
+   * Loads **Open Provisioning Engines**,
+   * runs **Open Provisioning Services** and
+   * calls the [Asset Manager OMAS](../access-services/asset-manager).
 
-With this change it is easier for Egeria to host other types of governance engines
-such as Palisade and Gaian.
 
 ----
 Return to [open-metadata-implementation](..).

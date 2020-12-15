@@ -41,8 +41,9 @@ public enum DiscoveryEngineErrorCode implements ExceptionMessageSet
     UNABLE_TO_SEND_EVENT(500, "OMAS-DISCOVERY-ENGINE-500-004",
             "An unexpected exception occurred when sending an event through connector {0} to the Discovery Engine OMAS out topic.  The failing " +
                     "event was {1}, the exception was {2} with message {2}",
-            "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
-            "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
+                         "The access service has issued a call to publish an event on its Out Topic and it failed.",
+                         "Look for errors in the event bus to understand why this is failing.  When the event bus is operating correctly, the event will" +
+                                 " be able to be published again.  In the meantime, events are being lost."),
 
     UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OMAS-DISCOVERY-ENGINE-503-005",
             "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
