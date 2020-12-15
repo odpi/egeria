@@ -380,7 +380,11 @@ export default function ServerDisplay() {
 
       <button className="collapsible" onClick={flipSection}> Integration Services: </button>
       <div className="content">
-        <ServerServicesDisplay serverName={serverDetails.serverName} serviceCat="Integration" serviceList={serverDetails.integrationServices}></ServerServicesDisplay>
+        <ServerServicesDisplay platformName={}
+                               serverName={serverDetails.serverName}
+                               serviceCat="Integration"
+                               serviceList={serverDetails.integrationServices}>
+        </ServerServicesDisplay>
       </div>
       <br/>
 
@@ -599,7 +603,7 @@ export default function ServerDisplay() {
 
 
 ServerDisplay.propTypes = {
-  
+  platformName : PropTypes.string
 };
 
 
