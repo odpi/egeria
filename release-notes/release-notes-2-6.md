@@ -78,6 +78,8 @@ files you need to preserve over to their new locations:
 The result of this is that all the dynamic data created by egeria locally in the filesystem is restricted to the 'data' directory
 so this can be mapped to a volume easily.
 
+If you have already explicitly configured the relevant connector yourself there will be no change. this updates the defaults only.
+
 ## Egeria Implementation Status at Release 2.6
 
 ![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.6.png#pagewidth)
