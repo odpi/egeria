@@ -31,7 +31,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     /*
      * This is the name of the configuration file that is used if there is no file name in the connection.
      */
-    private static final String defaultFilenameTemplate = "omag.server.{0}.config";
+    private static final String defaultFilenameTemplate = "data/servers/{0}/config/{0}.config";
 
     /*
      * Variables used in writing to the file.
