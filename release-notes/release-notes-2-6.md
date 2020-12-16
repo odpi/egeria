@@ -59,6 +59,24 @@ types allow these elements to be linked together.
 
 *Details to follow...*
 
+### Changes to data files created/used by Egeria
+
+Up to and including release 2.5, various data files were created in the current working directory when Egeria was run. This included
+configuration files, cohort information, graph repositories etc.  This made it difficult to manage Egeria in a container environment 
+where we want to manage persistent data explicitly - for example via a docker volume, or a kubernetes persistent volume (claim).
+
+Because of this the default locations of a number of files have changed, so when deploying release 2.6 make sure you copy any existing
+files you need to preserve over to their new locations:
+
+| usage                | old | new | variables |
+| -------------------- | ------------------------- | ------------------------------------------ | -------------------------------- |
+| Server configuration | omag.server.{0}.config    | data/servers/{0}/config/{0}.config         | 0 = server Name                  |
+| File based audit log | omag.server.{0}.auditlog/ | data/servers/{0}/logs/auditlog/            | 0 = server Name                  |
+| cohort registry      | {0}.{1}.registrystore     | data/servers/{0}/cohorts/{1}.registrystore | 0 = server Name, 1 = cohort name |
+| Graph repository     | {0}-graph-repository/     | data/servers/{0}/repository/graph/         | 0 = server Name                  |
+
+The result of this is that all the dynamic data created by egeria locally in the filesystem is restricted to the 'data' directory
+so this can be mapped to a volume easily.
 
 ## Egeria Implementation Status at Release 2.6
 

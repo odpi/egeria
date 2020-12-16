@@ -253,9 +253,9 @@ public class GraphOMRSGraphFactory {
 
         Map<String, Object> berkleyStorageProperties = new HashMap<>();
         berkleyStorageProperties.put("storage.backend", "berkeleyje");
-        berkleyStorageProperties.put("storage.directory", "./data/servers/" + serverRepositoryPath + "/repository/graph/berkeley");
+        berkleyStorageProperties.put("storage.directory", "./data/servers/" + thisRepositoryName + "/repository/graph/berkeley");
         berkleyStorageProperties.put("index.search.backend", "lucene");
-        berkleyStorageProperties.put("index.search.directory", "./data/servers/" + serverRepositoryPath + "/repository/graph/searchindex");
+        berkleyStorageProperties.put("index.search.directory", "./data/servers/" + thisRepositoryName + "/repository/graph/searchindex");
         return berkleyStorageProperties;
     }
 

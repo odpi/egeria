@@ -169,7 +169,7 @@ public class ConnectorConfigurationFactory
     {
         final String destinationName = "Files";
 
-        String endpointAddress = "data/servers/" + localServerName + "logs/auditlog";
+        String endpointAddress = "data/servers/" + localServerName + "/logs/auditlog";
 
         Endpoint endpoint = new Endpoint();
 
