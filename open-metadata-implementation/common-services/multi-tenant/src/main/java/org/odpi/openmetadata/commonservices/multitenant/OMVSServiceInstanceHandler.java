@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 /**
  * OMVSServiceInstanceHandler retrieves information from the instance map for the
  * view service instances.  The instance map is thread-safe.  Instances are added
- * and removed by the GovernanceProgramAdmin class.
+ * and removed by the ViewServiceAdmin class.
  */
 public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHandler
 {

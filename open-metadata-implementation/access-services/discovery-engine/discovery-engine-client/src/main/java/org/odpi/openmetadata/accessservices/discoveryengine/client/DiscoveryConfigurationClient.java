@@ -35,6 +35,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
     private String        serverName;               /* Initialized in constructor */
     private String        serverPlatformURLRoot;    /* Initialized in constructor */
     private ODFRESTClient restClient;               /* Initialized in constructor */
+    private String        callerId;                 /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
@@ -49,11 +50,13 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DiscoveryConfigurationClient(String     serverName,
-                                        String     serverPlatformURLRoot) throws InvalidParameterException
+    public DiscoveryConfigurationClient(String serverName,
+                                        String serverPlatformURLRoot,
+                                        String callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
@@ -62,6 +65,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot);
+        this.callerId = callerId;
     }
 
 
@@ -73,13 +77,15 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DiscoveryConfigurationClient(String     serverName,
-                                        String     serverPlatformURLRoot,
-                                        String     userId,
-                                        String     password) throws InvalidParameterException
+    public DiscoveryConfigurationClient(String serverName,
+                                        String serverPlatformURLRoot,
+                                        String userId,
+                                        String password,
+                                        String callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -88,6 +94,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.callerId = callerId;
     }
 
 
@@ -100,13 +107,15 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination
+     * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
     public DiscoveryConfigurationClient(String        serverName,
                                         String        serverPlatformURLRoot,
                                         ODFRESTClient restClient,
                                         int           maxPageSize,
-                                        AuditLog      auditLog) throws InvalidParameterException
+                                        AuditLog      auditLog,
+                                        String        callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -117,6 +126,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient = restClient;
         this.auditLog = auditLog;
+        this.callerId = callerId;
     }
 
 
@@ -156,7 +166,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         final String methodName = "registerListener";
         final String nameParameter = "listener";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/topics/out-topic-connection";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/topics/out-topic-connection/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(listener, nameParameter, methodName);
@@ -170,7 +180,8 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
             ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
                                                                                  serverPlatformURLRoot + urlTemplate,
                                                                                  serverName,
-                                                                                 userId);
+                                                                                 userId,
+                                                                                 callerId);
 
             Connection      topicConnection = restResult.getConnection();
             ConnectorBroker connectorBroker = new ConnectorBroker();

@@ -32,6 +32,7 @@
     <modules>
         <module>asset-consumer-api</module>
         <module>asset-consumer-client</module>
+        <module>asset-consumer-topic-connectors</module>
         <module>asset-consumer-server</module>
         <module>asset-consumer-spring</module>
     </modules>

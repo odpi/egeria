@@ -16,7 +16,7 @@ import java.util.List;
  * to monitor changes to the metadata.  This class is looking for changes to the discovery engines
  * and discovery services configuration.  When it detects an appropriate change it passes the
  * update to the DiscoveryEngineOutTopicPublisher to publish a DiscoveryEngineEvent describing the
- * change.  These events are picked up by the Discovery Server (See discovery-engine-services) to
+ * change.  These events are picked up by the Engine Host Server (See Asset Analysis OMES) to
  * control the configuration of the discovery engines it is hosting.
  */
 public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase

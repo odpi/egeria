@@ -49,7 +49,7 @@ public class AssetManagerOMASResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    @GetMapping(path = "/topics/out-topic-connection")
+    @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
     public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
                                                     @PathVariable String userId,

@@ -49,7 +49,7 @@
 * [Discovery Context](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-context.md)
 * [Discovery Engine](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
 * [Discovery Pipeline](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-pipeline.md)
-* [Discovery Server](../../open-metadata-implementation/admin-services/docs/concepts/discovery-server.md)
+* [Discovery Server](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-server.md)
 * [Discovery Service](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md)
 
 ## E
@@ -115,6 +115,7 @@
 ## L
 
 * [Likes](../../open-metadata-implementation/access-services/docs/concepts/feedback/likes.md)
+* [Lineage](lineage)
 * [Local Metadata Collection Id](../../open-metadata-implementation/repository-services/docs/metadata-collection-id.md)
 * [Local Repository Services (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/local-repository-services.md)
 
@@ -122,6 +123,7 @@
 ## M
 
 * [Master Data Manager](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/master-data-manager.md)
+* [Memento Classification](open-metadata-types/0010-Base-Model.md)
 * [Metadata Access Point](../../open-metadata-implementation/admin-services/docs/concepts/metadata-access-point.md)
 * [Metadata Archives](../../open-metadata-resources/open-metadata-archives)
 * [Metadata Catalog](../../open-metadata-implementation/access-services/asset-catalog)
@@ -200,6 +202,7 @@
 
 * [Tagging](../../open-metadata-implementation/access-services/docs/concepts/attachments/tagging.md)
 * [Tool](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/tool.md)
+* Tombstone - see Memento
 * Topics
   * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.md)
   * [OMRS Topic](../../open-metadata-implementation/repository-services/docs/omrs-event-topic.md)

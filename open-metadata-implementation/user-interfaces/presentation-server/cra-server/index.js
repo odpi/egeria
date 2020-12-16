@@ -22,8 +22,8 @@ const env = process.env.NODE_ENV || 'development';
 
 
 // ssl self signed certificate and key
-const cert = fs.readFileSync(path.join(__dirname, '../') + "/../presentation-server/ssl/keys/server.cert");
-const key = fs.readFileSync(path.join(__dirname, '../') + "/../presentation-server/ssl/keys/server.key");
+const cert = fs.readFileSync(path.join(__dirname, '../') + "/ssl/keys/server.cert");
+const key = fs.readFileSync(path.join(__dirname, '../') + "/ssl/keys/server.key");
 const options = {
   key: key,
   cert: cert,
@@ -56,7 +56,6 @@ app.set('passport', passport)
 app.use('/', router);
 
 if (env === 'production') {
-  // app.use(express.static(path.join(__dirname, '../cra-client/build')));
   app.all('*', (req, res, next) => res.sendFile(path.join(__dirname, '../cra-client/build/index.html')));
 }
 

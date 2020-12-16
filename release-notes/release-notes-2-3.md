@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.3 (September 2020)
+# Release 2.3 (October 2020)
 
 ## New capabilities & Major changes
  * A new Presentation Server User interface has been added, making use of [React](https://reactjs.org/) & [Carbon](https://www.carbondesignsystem.com/) 
@@ -30,6 +30,17 @@
  * Spring has been updated to 2.3.9
  * Spring Security has been updated to 5.4.0
  * For a full list run 'mvn dependency:tree' against top level directory and/or review the top level pom.xml
+ 
+ ## Egeria Implementation Status at Release 2.3
+ 
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.3.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

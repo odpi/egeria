@@ -20,10 +20,10 @@ provided by Egeria.
 Discovery services are responsible for analysing the content of assets and creating
 descriptions of its content (called [Annotations](../../../frameworks/open-discovery-framework/docs/discovery-annotation.md)).  The annotations from a top-level discovery service
 execution are grouped together and linked from the asset as a discovery analysis report.
-They run in the [discovery server](../../../frameworks/open-discovery-framework/docs/discovery-server.md).
+They run in the [Asset Analysis OMES](../../../engine-services/asset-analysis).
 
 Once the discovery service has completed its analysis,
-an event is sent to the [stewardship server](../../../frameworks/governance-action-framework/docs/stewardship-server.md)
+an event is sent to the [Request Triage](../../../engine-services/request-triage)
 to process the results.
 
 The interfaces used by a discovery service are defined in

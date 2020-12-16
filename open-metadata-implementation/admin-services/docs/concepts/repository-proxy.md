@@ -21,6 +21,11 @@ There are two repository proxy implementations included with Egeria
 
 ## Configuring a Repository Proxy
 
+Figure 2 shows the configuration document for a metadata that does not connect to a cohort.
+
+![Figure 1](../concepts/standalone-metadata-server-config.png)
+> **Figure 1:** Configuration for a repository proxy
+
 The tasks for configuring an repository proxy are as follows:
 
 * [Setting up the default event bus](../user/configuring-event-bus.md)
