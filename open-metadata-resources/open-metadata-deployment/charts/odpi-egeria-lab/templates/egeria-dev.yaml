@@ -32,7 +32,7 @@ spec:
 ...
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   creationTimestamp: null
   name: {{ include "myapp.fullname" . }}-dev
@@ -45,12 +45,12 @@ metadata:
 
 spec:
   replicas: 1
+  serviceName: {{ .Release.Name }}-dev
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/component: dev
-  strategy: {}
   template:
     metadata:
       creationTimestamp: null
@@ -86,7 +86,20 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
+          {{ if .Values.persistence.enabled }}
+          volumeMounts:
+            - mountPath: "/deployments/data"
+              name: {{ .Release.Name }}-dev-data
+         {{ end }}
       restartPolicy: Always
-
-status: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}-dev-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        #storageClassName:
 ...
