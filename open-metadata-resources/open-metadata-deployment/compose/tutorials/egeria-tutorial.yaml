@@ -164,19 +164,19 @@ services:
 networks:
     cocopharma:
 
-# These are the persistent volumes used by each of the egeria servers
-# Here we store any metadata repositories, cohort registration, configuration etc
+# These are the persistent volumes used by each of the egeria servers. See the README.md for further information
 #
-# We also persist data for zookeeper & kafka
-#
-# The UI/presentation server etc containers do not persist data, nor does the jupiter notebook environment
-#
-# These will be created on first use, and then used subsequently
-# These sample definitions assume defaults such as drivers. see https://docs.docker.com/compose/compose-file/#volume-configuration-reference
+# Change external to true and create volumes manually if you wish to persist between runs
 volumes:
     core-data:
+        external: false
     datalake-data:
+        external: false
     dev-data:
+        external: false
     factory-data:
+        external: false
     zookeeper-data:
+        external: false
     kafka-data:
+        external: false
