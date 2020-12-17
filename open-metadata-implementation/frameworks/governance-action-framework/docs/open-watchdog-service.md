@@ -1,12 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Watchdog Engine
+# Open Watchdog Services
 
 Monitors changes in the metadata and initiates updates as a result.  One example of a
 watchdog service is duplicate detection. Another example is to monitor the addition of
 open discovery reports and take action on their content.  Examples of updates include
-creating RequestForAction instances.
+creating GovernanceAction instances.
 
 
 

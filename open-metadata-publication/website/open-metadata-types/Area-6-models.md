@@ -26,10 +26,7 @@ When the discovery service is rerun, the new annotations
 can be matched to the annotations from the previous run.
 The steward's actions will impact how the new annotations are processed.
 
-* **[0601 Open Discovery Engines](0601-Open-Discovery-Engine.md)**
-* **[0602 Open Discovery Services](0602-Open-Discovery-Services.md)**
-* **[0603 Open Discovery Pipelines](0603-Open-Discovery-Pipelines.md)**
-* **[0604 Asset Discovery Services](0604-Asset-Discovery-Services.md)**
+* **[0601 Open Discovery Engines and Services](0601-Open-Discovery-Engine.md)**
 * **[0605 Discovery Analysis Report](0605-Open-Discovery-Analysis-Reports.md)**
 * **[0610 Annotation](0610-Annotations.md)**
 * **[0611 Annotation Reviews](0612-Annotation-Reviews.md)**

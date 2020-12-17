@@ -38,7 +38,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*;
@@ -407,6 +412,11 @@ public class AssetCatalogHandler {
                 log.debug("This asset if a different zone: {}", entityDetail.getGUID());
             }
         }
+        SequencingOrder sequencingOrder = searchParameters.getSequencingOrder();
+        String sequencingProperty = searchParameters.getSequencingProperty();
+
+        list.sort((firstAsset, secondAsset) ->
+                orderElements(firstAsset, secondAsset, sequencingProperty, sequencingOrder));
         return list;
     }
 
@@ -1456,5 +1466,52 @@ public class AssetCatalogHandler {
             }
         }
         return response;
+    }
+
+    private int orderElements(AssetElements firstAsset, AssetElements secondAsset, String sequencingProperty, SequencingOrder sequencingOrder) {
+        String firstField;
+        String secondField;
+        if (TYPE_SEQUENCING.equals(sequencingProperty)) {
+            if (firstAsset.getType() == null || secondAsset.getType() == null) {
+                return 0;
+            }
+            firstField = firstAsset.getType().getName();
+            secondField = secondAsset.getType().getName();
+        } else {
+            if (firstAsset.getProperties() == null || secondAsset.getProperties() == null) {
+                return 0;
+            }
+            firstField = firstAsset.getProperties().get(sequencingProperty);
+            secondField = secondAsset.getProperties().get(sequencingProperty);
+            if (DISPLAY_NAME.equals(sequencingProperty)) {
+                if (firstField == null) {
+                    firstField = firstAsset.getProperties().get(NAME);
+                }
+                if (secondField == null) {
+                    secondField = secondAsset.getProperties().get(NAME);
+                }
+            }
+        }
+
+        return compareFields(firstField, secondField, sequencingOrder);
+
+
+    }
+
+    private int compareFields(String firstComparedProperty, String secondComparedProperty, SequencingOrder sequencingOrder) {
+        if (firstComparedProperty != null && secondComparedProperty != null) {
+            if (sequencingOrder == SequencingOrder.PROPERTY_ASCENDING) {
+                return firstComparedProperty.toLowerCase().compareTo(secondComparedProperty.toLowerCase());
+            } else if (sequencingOrder == SequencingOrder.PROPERTY_DESCENDING) {
+                return secondComparedProperty.toLowerCase().compareTo(firstComparedProperty.toLowerCase());
+            }
+        }
+        if (firstComparedProperty == null && secondComparedProperty != null) {
+            return 1;
+        }
+        if (firstComparedProperty != null &&  secondComparedProperty == null) {
+            return -1;
+        }
+        return 0;
     }
 }
