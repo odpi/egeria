@@ -24,6 +24,8 @@ services:
             - '12181:2181'
         networks:
             - cocopharma
+        volumes:
+            - zookeeper-data:/bitnami/zookeeper
 
     kafka:
         depends_on:
@@ -37,6 +39,8 @@ services:
             - '19092:9092'
         networks:
             - cocopharma
+        volumes:
+            - kafka-data:/bitnami/kafka
 
     notebook:
         image: '${egeria_repo}/jupyter:${egeria_version}'
@@ -74,6 +78,8 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        volumes:
+            - core-data:/deployments/data
 
     datalake:
         depends_on:
@@ -85,6 +91,8 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        volumes:
+            - datalake-data:/deployments/data
 
     dev:
         depends_on:
@@ -96,6 +104,8 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        volumes:
+            - dev-data:/deployments/data
 
     factory:
         depends_on:
@@ -107,6 +117,8 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        volumes:
+            - factory-data:/deployments/data
 
     ui:
         depends_on:
@@ -142,7 +154,7 @@ services:
             - datalake
         image: '${egeria_repo}/egeria-presentation-server:${egeria_version}'
         environment:
-          - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
+            - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
         ports:
             - '18091:8091'
         networks:
@@ -151,3 +163,20 @@ services:
             - '.env'
 networks:
     cocopharma:
+
+# These are the persistent volumes used by each of the egeria servers
+# Here we store any metadata repositories, cohort registration, configuration etc
+#
+# We also persist data for zookeeper & kafka
+#
+# The UI/presentation server etc containers do not persist data, nor does the jupiter notebook environment
+#
+# These will be created on first use, and then used subsequently
+# These sample definitions assume defaults such as drivers. see https://docs.docker.com/compose/compose-file/#volume-configuration-reference
+volumes:
+    core-data:
+    datalake-data:
+    dev-data:
+    factory-data:
+    zookeeper-data:
+    kafka-data:
