@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Configuring the integration services
+# Configuring the Open Metadata Integration Services (OMIS)
 
 The [integration services](../../../integration-services) (or Open Metadata Integration Services (OMISs) to give them
 their full name)
@@ -11,7 +11,7 @@ Each integration service hosts one or more [integration connectors](../../../gov
 is responsible for the exchange of metadata with a specific deployment of a third party technology.
 For example, the [Database Integrator](../../../integration-services/database-integrator) integration service
 supports integration connectors that work with relational databases (RDBMS).
-A deployment of this service in an integration daemon may host, say,
+A deployment of this integration service in an integration daemon may host, say,
 two integration connectors each loading metadata from their own relational database server.
 
 It is possible to get a description of each of the registered
@@ -24,7 +24,7 @@ Note the `integrationServiceURLMarker` for the integration service that you want
 
 Figure 1 shows the structure of the configuration for an individual integration service.
 
-![Figure 1](../../../governance-servers/integration-daemon-services/docs/integration-connector-configuration.png)
+![Figure 1](../concepts/integration-service-config.png#pagewidth)
 > **Figure 1:** The configuration document contents for an integration service
 
 The descriptive information and operational status are filled out automatically by the
@@ -45,13 +45,27 @@ to use and how it should be operated.
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/integration-services/{integrationServiceURLMarker}
 {
         "class": "IntegrationServiceRequestBody",
-        "omagserverPlatformRootURL": {MDServerURLRoot},
+        "omagserverPlatformRootURL": "{MDServerURLRoot}",
         "omagserverName" : "{MDServerName}",
-        [ {
+        "integrationConnectorConfigs" : [ 
+        {
              "class": "IntegrationConnectorConfig",
-             "connectorName" : " ... "             
-             "connectorUserId" : " ... "           
-             "connection" : { ... },               
+             "connectorName" : " ... ",             
+             "connectorUserId" : " ... ",           
+             "connection" : 
+                          { 
+                              "class" : "Connection",
+                              "connectorType" : 
+                              {
+                                  "class" : "ConnectorType",
+                                  "connectorProviderClassName" : "{connector provider class name}"
+                              },
+                              "endpoint" :
+                              {
+                                  "class" : "Endpoint",
+                                  "address" : "..."
+                              }
+                          },               
              "metadataSourceQualifiedName" : " ... ",
              "refreshTimeInterval" : "60", 
              "usesBlockingCalls" : "false",
@@ -93,9 +107,9 @@ Where:
 
 
 ----
-* Return to [Configuring an OMAG Server](configuring-an-omag-server.md)
 * Return to [the Integration Daemon](../concepts/integration-daemon.md)
 * Return to [configuration document structure](../concepts/configuration-document.md)
+* Return to [Configuring an OMAG Server](configuring-an-omag-server.md)
 
 
 ----

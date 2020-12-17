@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f9a46621-26dc-48a2-b38e-8614d13c3f00",
+		"_postman_id": "01b3f712-8bbb-474b-ad42-ab66fff58f9a",
 		"name": "Egeria-admin-services-server-configuration",
 		"description": "Requests for configuring an OMAG Server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -156,8 +156,617 @@
 			"name": "Configuring OMAG Servers",
 			"item": [
 				{
+					"name": "Basic configuration for all types of OMAG Servers",
+					"item": [
+						{
+							"name": "Set local server type name",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-type?typeName=OMAG Server",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"server-type"
+									],
+									"query": [
+										{
+											"key": "typeName",
+											"value": "OMAG Server"
+										}
+									]
+								},
+								"description": "Set up a descriptive type name for your server.  This is used in messages and events - you can choose any value you like."
+							},
+							"response": []
+						},
+						{
+							"name": "Set organization name",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/organization-name?name={{organization_name}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"organization-name"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{organization_name}}"
+										}
+									]
+								},
+								"description": "Set up the name of the organization that owns this server."
+							},
+							"response": []
+						},
+						{
+							"name": "Set local server user Id",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-user-id?id={{server-user}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"server-user-id"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{server-user}}"
+										}
+									]
+								},
+								"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+							},
+							"response": []
+						},
+						{
+							"name": "Set local server user password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-user-password?password={{server-password}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"server-user-password"
+									],
+									"query": [
+										{
+											"key": "password",
+											"value": "{{server-password}}"
+										}
+									]
+								},
+								"description": "Set up the password that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+							},
+							"response": []
+						},
+						{
+							"name": "Set max page size",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/max-page-size?limit={{max_page_size}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"max-page-size"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "{{max_page_size}}"
+										}
+									]
+								},
+								"description": "Set up the maximum number of results that can be returned on an open metadata request."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Server Security Connection",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"security",
+										"connection"
+									]
+								},
+								"description": "Retrieve the Connection object used to create the connector that verifies the authorization of users calling the platform and admin services."
+							},
+							"response": []
+						},
+						{
+							"name": "Set Server Security Connection",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"security",
+										"connection"
+									]
+								},
+								"description": "Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.  This call is preconfigured to set up the sample server security connector.  This allows only the Coco Pharmaceuticals employees to issue calls to the server.\n\n\nOnce you have set up this security connector in your OMAG Server, the default user `me` in the `Egeria` environment will no longer be authorized to issue REST calls to the server (try some of the requests that were \"working\" earlier to verify this).  To switch the user to one that the OMAG Server will accept, click on the eye symbol (top right), then click on `edit` and change the current value of `user` to `erinoverview`."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Server Security Connection",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"security",
+										"connection"
+									]
+								},
+								"description": "Remove the currently configured Server Security Connection.  This means that no security checks will be performed by the OMAG Server when it is processing inbound REST API calls."
+							},
+							"response": []
+						},
+						{
+							"name": "Get configured audit log destinations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations"
+									]
+								},
+								"description": "Retrieve the list of audit log destinations configured for a server."
+							},
+							"response": []
+						},
+						{
+							"name": "Set default audit log destination",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/default",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations",
+										"default"
+									]
+								},
+								"description": "Set up the server so that it is using the default audit log setting which is to output to the console only."
+							},
+							"response": []
+						},
+						{
+							"name": "Add file audit log destination",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/files",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations",
+										"files"
+									]
+								},
+								"description": "Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+							},
+							"response": []
+						},
+						{
+							"name": "Add topic audit log destination",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/event-topic",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations",
+										"event-topic"
+									]
+								},
+								"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+							},
+							"response": []
+						},
+						{
+							"name": "Add console audit log destination",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/console",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations",
+										"console"
+									]
+								},
+								"description": "Add the console audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+							},
+							"response": []
+						},
+						{
+							"name": "Add audit log destination connection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/connection",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations",
+										"connection"
+									]
+								},
+								"description": "Add a connection for an audit log destination to the server's configuration document.  This connection typically creates an audit log destination connector written by a thrid party.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete configured audit log destinations",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations"
+									]
+								},
+								"description": "Delete the list of audit log destinations configured for a server."
+							},
+							"response": []
+						}
+					],
+					"description": "This folder has the configuration commands that are common for all types of OMAG Server.\n\nThis is the link to their documentation https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-omag-server-basic-properties.html",
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "Configuration for Cohort Members",
 					"item": [
+						{
+							"name": "Configuring defaults for the Cohort Members",
+							"item": [
+								{
+									"name": "Set local server URL root",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"class\": \"URLRequestBody\",\n    \"urlRoot\": \"{{baseURL}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-url-root-for-caller",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"open-metadata",
+												"admin-services",
+												"users",
+												"{{user}}",
+												"servers",
+												"{{server}}",
+												"server-url-root-for-caller"
+											]
+										},
+										"description": "Update the URL root that other servers that are also members any open metadata repository cohort that the server belongs to should use to make calls to this local server. This value is sent when the server registers with the cohort.  If the server is not going to join a cohort then this value is not needed.\n\nThis value should be set to the URL of the OMAG Server Platform where the server will run.  If the server is deployed to many servers in an HA cluster configuration, it should be set to a DNS name that will disperse requests across the server cluster."
+									},
+									"response": []
+								},
+								{
+									"name": "Get event bus defaults",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"open-metadata",
+												"admin-services",
+												"users",
+												"{{user}}",
+												"servers",
+												"{{server}}",
+												"event-bus"
+											]
+										},
+										"description": "Retrieve the common properties needed to call your event bus.\nThese defaults will be incorporated into any future configuration that includes an event bus topic."
+									},
+									"response": []
+								},
+								{
+									"name": "Set up event bus defaults",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"open-metadata",
+												"admin-services",
+												"users",
+												"{{user}}",
+												"servers",
+												"{{server}}",
+												"event-bus"
+											]
+										},
+										"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+									},
+									"response": []
+								},
+								{
+									"name": "Delete event bus defaults",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"open-metadata",
+												"admin-services",
+												"users",
+												"{{user}}",
+												"servers",
+												"{{server}}",
+												"event-bus"
+											]
+										},
+										"description": "Remove the event bus details from the server's configuration document."
+									},
+									"response": []
+								}
+							],
+							"description": "These values need to be set up first when configuring a cohort member.  These are the links to the documentation:\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-event-bus.html\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-local-server-url.html",
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
 						{
 							"name": "Configuration for Metadata Access Points",
 							"item": [
@@ -336,6 +945,54 @@
 									"description": "These are the specialized requests for metadata servers.",
 									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
+								},
+								{
+									"name": "Get registered access services",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/access-services",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"open-metadata",
+												"platform-services",
+												"users",
+												"{{user}}",
+												"server-platform",
+												"registered-services",
+												"access-services"
+											]
+										},
+										"description": "This call is used return a list of registered Open Metadata Access Services for the platform."
+									},
+									"response": []
+								},
+								{
+									"name": "Get names of configured access services",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"open-metadata",
+												"admin-services",
+												"users",
+												"{{user}}",
+												"servers",
+												"{{server}}",
+												"access-services"
+											]
+										},
+										"description": "This call is used return the list of Open Metadata Access Services that are configured for this server."
+									},
+									"response": []
 								},
 								{
 									"name": "Get the configuration for all of the access services",
@@ -668,7 +1325,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "0a725c16-c87e-4f4b-ba0b-79e18f660db7",
+										"id": "a59574e9-82e7-44f7-8995-7ac46584a713",
 										"type": "text/javascript",
 										"exec": [
 											""
@@ -678,7 +1335,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "dfa8a6c9-6506-474a-aa8d-5297f0e4fe1b",
+										"id": "ea309630-c700-4284-96eb-29572778029c",
 										"type": "text/javascript",
 										"exec": [
 											""
@@ -800,39 +1457,6 @@
 							"description": "This folder contains the specialized configuration for a repository proxy server.\nThis type of server it typically a cohort member and also needs the configuration values common to all types of server.",
 							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
-						},
-						{
-							"name": "Set local server URL root",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"class\": \"URLRequestBody\",\n    \"urlRoot\": \"{{baseURL}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-url-root-for-caller",
-									"host": [
-										"{{baseURL}}"
-									],
-									"path": [
-										"open-metadata",
-										"admin-services",
-										"users",
-										"{{user}}",
-										"servers",
-										"{{server}}",
-										"server-url-root-for-caller"
-									]
-								},
-								"description": "Update the URL root that other servers that are also members any open metadata repository cohort that the server belongs to should use to make calls to this local server. This value is sent when the server registers with the cohort.  If the server is not going to join a cohort then this value is not needed.\n\nThis value should be set to the URL of the OMAG Server Platform where the server will run.  If the server is deployed to many servers in an HA cluster configuration, it should be set to a DNS name that will disperse requests across the server cluster."
-							},
-							"response": []
 						},
 						{
 							"name": "Add cohort configuration",
@@ -998,7 +1622,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "4f82d0b5-0bfb-4222-96f8-ab66fcaa700b",
+								"id": "d33d66ca-d6b8-4135-8dc5-899367b8d361",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -1008,7 +1632,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1134c590-dac6-4370-b272-cf69eaa02d7b",
+								"id": "a8f85975-55fa-4ee4-8592-1318acc36939",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -1020,24 +1644,39 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Configuration for Discovery Servers",
+					"name": "Configuration for Engine Host Servers",
 					"item": [
 						{
-							"name": "Configure metadata server for discovery server",
+							"name": "Get registered engine services",
 							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/discovery-engine-services/access-service",
+									"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/engine-services",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"platform-services",
+										"users",
+										"{{user}}",
+										"server-platform",
+										"registered-services",
+										"engine-services"
+									]
+								},
+								"description": "This call is used return a list of registered Open Metadata Engine Services for the platform."
+							},
+							"response": []
+						},
+						{
+							"name": "Get names of configured engine services",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1048,577 +1687,297 @@
 										"{{user}}",
 										"servers",
 										"{{server}}",
-										"discovery-engine-services",
-										"access-service"
+										"engine-services"
 									]
-								}
+								},
+								"description": "This call is used return the list of Open Metadata Engine Services that are configured for this server."
+							},
+							"response": []
+						},
+						{
+							"name": "Get configuration of configured engine services",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"engine-services"
+									]
+								},
+								"description": "This call is used return the configuration values of the Open Metadata Engine Services configured for the server."
+							},
+							"response": []
+						},
+						{
+							"name": "Get configuration of specific configured engine service",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services/asset-analysis/configuration",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"engine-services",
+										"asset-analysis",
+										"configuration"
+									]
+								},
+								"description": "This call is used return the configuration values of the specific Open Metadata Engine Service configured for the server."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure engine host server with engine service",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"EngineServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{baseURL}}\",\n    \"omagserverName\" : \"myMetadataServer\",\n    \"engines\" : [ { \"engineName \" : \"engine1\", \"engineUserId\" : \"engine1UserId\"},\n                  { \"engineName \" : \"engine2\", \"engineUserId\" : \"engine2UserId\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services/asset-analysis",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"engine-services",
+										"asset-analysis"
+									]
+								},
+								"description": "Add details of the metadata server to call and the engines to run."
 							},
 							"response": []
 						}
 					],
-					"description": "This folder contains the configuration that is unique to discovery servers.",
+					"description": "This folder includes the requests for configuring engine services in an Engine Host OMAG Server.",
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Set organization name",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
+					"name": "Configuration for Integration Daemons",
+					"item": [
+						{
+							"name": "Get registered integration services",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/integration-services",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"platform-services",
+										"users",
+										"{{user}}",
+										"server-platform",
+										"registered-services",
+										"integration-services"
+									]
+								},
+								"description": "This call is used return a list of registered Open Metadata Integration Services for the platform."
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/organization-name?name={{organization_name}}",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"organization-name"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "{{organization_name}}"
-								}
-							]
+						{
+							"name": "Get names of configured integration services",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/integration-services",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"integration-services"
+									]
+								},
+								"description": "This call is used return the list of Open Metadata Integration Services that are configured for this server."
+							},
+							"response": []
 						},
-						"description": "Set up the name of the organization that owns this server."
-					},
-					"response": []
+						{
+							"name": "Get configuration of configured integration services",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/integration-services",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"integration-services"
+									]
+								},
+								"description": "This call is used return the configuration values of the Open Metadata Integration Services configured for the server."
+							},
+							"response": []
+						},
+						{
+							"name": "Get configuration of specific configured integration service",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services/asset-analysis/configuration",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"engine-services",
+										"asset-analysis",
+										"configuration"
+									]
+								},
+								"description": "This call is used return the configuration values of the specific Open Metadata Integration Service configured for the server."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure integration daemon server with an integration service",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{baseURL}}\",\n    \"omagserverName\" : \"myMetadataServer\",\n    \"integrationConnectorConfigs\" : [ \n        {\n             \"class\": \"IntegrationConnectorConfig\",\n             \"connectorName\" : \"dbIntegrator\",             \n             \"connectorUserId\" : \"dbIntegratornpa\",         \n             \"connection\" : \n             { \n                 \"class\" : \"Connection\",\n                 \"connectorType\" : \n                 {\n                     \"class\" : \"ConnectorType\",\n                     \"connectorProviderClassName\" : \"connector provider class name\"\n                 }\n             },               \n             \"metadataSourceQualifiedName\" : \"myDBServer\",\n             \"refreshTimeInterval\" : \"60\", \n             \"usesBlockingCalls\" : \"false\",\n             \"permittedSynchronization\" : \"FROM_THIRD_PARTY\"\n        } ] \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/integration-services/database-integrator",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"integration-services",
+										"database-integrator"
+									]
+								},
+								"description": "Add details of the metadata server to call and the connectors to run."
+							},
+							"response": []
+						}
+					],
+					"description": "An Integration Daemon is an OMAG Server that hosts integration services.  Each integration service hosts one or more integration connectors.\n\nThe Integration daemon is configured in two stages:\n* Add the audit log configuration\n* Add the list of Connections for the integration connectors for each of the integration services that are to run in the integration connector.\n\nDetails on configuring integration daemons can be found here:\nhttps://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/integration-daemon.html",
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Set local server type",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
+					"name": "Configuring View Servers",
+					"item": [
+						{
+							"name": "Get registered view services",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/view-services",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"platform-services",
+										"users",
+										"{{user}}",
+										"server-platform",
+										"registered-services",
+										"view-services"
+									]
+								},
+								"description": "This call is used return a list of registered Open Metadata View Services for the platform."
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-type?typeName=OMAG Server",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"server-type"
-							],
-							"query": [
-								{
-									"key": "typeName",
-									"value": "OMAG Server"
-								}
-							]
-						},
-						"description": "Set up a descriptive type name for your server.  This is used in messages and events - you can choose any value you like."
-					},
-					"response": []
-				},
-				{
-					"name": "Set max page size",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/max-page-size?limit={{max_page_size}}",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"max-page-size"
-							],
-							"query": [
-								{
-									"key": "limit",
-									"value": "{{max_page_size}}"
-								}
-							]
-						},
-						"description": "Set up the maximum number of results that can be returned on an open metadata request."
-					},
-					"response": []
-				},
-				{
-					"name": "Set local server user password",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-user-password?password={{server-password}}",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"server-user-password"
-							],
-							"query": [
-								{
-									"key": "password",
-									"value": "{{server-password}}"
-								}
-							]
-						},
-						"description": "Set up the password that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
-					},
-					"response": []
-				},
-				{
-					"name": "Set local server user Id",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-user-id?id={{server-user}}",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"server-user-id"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "{{server-user}}"
-								}
-							]
-						},
-						"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
-					},
-					"response": []
-				},
-				{
-					"name": "Get event bus defaults",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"event-bus"
-							]
-						},
-						"description": "Retrieve the common properties needed to call your event bus.\nThese defaults will be incorporated into any future configuration that includes an event bus topic."
-					},
-					"response": []
-				},
-				{
-					"name": "Set up event bus defaults",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"event-bus"
-							]
-						},
-						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
-					},
-					"response": []
-				},
-				{
-					"name": "Delete event bus defaults",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"event-bus"
-							]
-						},
-						"description": "Remove the event bus details from the server's configuration document."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Server Security Connection",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"security",
-								"connection"
-							]
-						},
-						"description": "Retrieve the Connection object used to create the connector that verifies the authorization of users calling the platform and admin services."
-					},
-					"response": []
-				},
-				{
-					"name": "Set Server Security Connection",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider\"\n    }\n}"
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"security",
-								"connection"
-							]
-						},
-						"description": "Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.  This call is preconfigured to set up the sample server security connector.  This allows only the Coco Pharmaceuticals employees to issue calls to the server.\n\n\nOnce you have set up this security connector in your OMAG Server, the default user `me` in the `Egeria` environment will no longer be authorized to issue REST calls to the server (try some of the requests that were \"working\" earlier to verify this).  To switch the user to one that the OMAG Server will accept, click on the eye symbol (top right), then click on `edit` and change the current value of `user` to `erinoverview`."
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Server Security Connection",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"security",
-								"connection"
-							]
-						},
-						"description": "Remove the currently configured Server Security Connection.  This means that no security checks will be performed by the OMAG Server when it is processing inbound REST API calls."
-					},
-					"response": []
-				},
-				{
-					"name": "Get configured audit log destinations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"audit-log-destinations"
-							]
-						},
-						"description": "Retrieve the list of audit log destinations configured for a server."
-					},
-					"response": []
-				},
-				{
-					"name": "Set default audit log destination",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/default",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"audit-log-destinations",
-								"default"
-							]
-						},
-						"description": "Set up the server so that it is using the default audit log setting which is to output to the console only."
-					},
-					"response": []
-				},
-				{
-					"name": "Add file audit log destination",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "[]",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/files",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"audit-log-destinations",
-								"files"
-							]
-						},
-						"description": "Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
-					},
-					"response": []
-				},
-				{
-					"name": "Add topic audit log destination",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "[]",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/event-topic",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"audit-log-destinations",
-								"event-topic"
-							]
-						},
-						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
-					},
-					"response": []
-				},
-				{
-					"name": "Add console audit log destination",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "[]",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/console",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"audit-log-destinations",
-								"console"
-							]
-						},
-						"description": "Add the console audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
-					},
-					"response": []
-				},
-				{
-					"name": "Add audit log destination connection",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/connection",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"audit-log-destinations",
-								"connection"
-							]
-						},
-						"description": "Add a connection for an audit log destination to the server's configuration document.  This connection typically creates an audit log destination connector written by a thrid party.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
-					},
-					"response": []
-				},
-				{
-					"name": "Delete configured audit log destinations",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"open-metadata",
-								"admin-services",
-								"users",
-								"{{user}}",
-								"servers",
-								"{{server}}",
-								"audit-log-destinations"
-							]
-						},
-						"description": "Delete the list of audit log destinations configured for a server."
-					},
-					"response": []
+						{
+							"name": "Get names of configured view services",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"view-services"
+									]
+								},
+								"description": "This call is used return the list of Open Metadata View Services that are configured for this server."
+							},
+							"response": []
+						}
+					],
+					"description": "This folder contains the requests used to configure view services in a view server.",
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"description": "This folder groups all of the requests to configure the different types of OMAG Servers.  There is a folder for requests that are common to all types of OMAG Servers, and then aditional folders for specialized OMAG Servers.",

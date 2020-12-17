@@ -18,14 +18,14 @@ public class AccessServiceRegistration implements Serializable
     private static final String   defaultOutTopicLeaf = ".outTopic";
 
 
-    private int                            accessServiceCode;
-    private String                         accessServiceName;
-    private String                         accessServiceFullName;
-    private String                         accessServiceURLMarker;
-    private String                         accessServiceDescription;
-    private String                         accessServiceWiki;
+    private int                      accessServiceCode;
+    private String                   accessServiceName;
+    private String                   accessServiceFullName;
+    private String                   accessServiceURLMarker;
+    private String                   accessServiceDescription;
+    private String                   accessServiceWiki;
     private ServiceOperationalStatus accessServiceOperationalStatus;
-    private String                         accessServiceAdminClassName;
+    private String                   accessServiceAdminClassName;
 
     /**
      * Complete Constructor

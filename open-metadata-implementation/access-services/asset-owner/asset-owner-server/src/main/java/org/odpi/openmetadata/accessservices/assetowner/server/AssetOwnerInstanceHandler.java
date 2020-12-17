@@ -15,9 +15,9 @@ import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisRe
 
 
 /**
- * AssetConsumerInstanceHandler retrieves information from the instance map for the
+ * AssetOwnerInstanceHandler retrieves information from the instance map for the
  * access service instances.  The instance map is thread-safe.  Instances are added
- * and removed by the AssetConsumerAdmin class.
+ * and removed by the AssetOwnerAdmin class.
  */
 class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
 {

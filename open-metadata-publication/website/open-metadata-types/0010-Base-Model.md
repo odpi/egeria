@@ -50,8 +50,8 @@ to store the guid at the start of a comment thread.
 
 Finally, the **Memento** classification identifies that the Referenceable
 refers to a real-world asset/artifact that has either been deleted or archived offline.  The metadata
-element has been retained to show its role in the lineage of other
-assets/artifacts.  The properties in this classification identifies
+element has been retained to show its role in the [lineage of other assets/artifacts](../lineage).
+The properties in this classification identifies
 the archive processing and any information that helps to locate
 the asset/artifact in the archive (if applicable).
 

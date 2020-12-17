@@ -105,30 +105,18 @@ public class DatabaseViewProperties extends DatabaseTableProperties
     public String toString()
     {
         return "DatabaseViewProperties{" +
-                "formula='" + formula + '\'' +
-                ", queries=" + queries +
-                ", elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
-                ", orderedValues=" + getOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getPrecision() +
-                ", nullable=" + getIsNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "formula='" + formula + '\'' +
+                       ", queries=" + queries +
+                       ", deprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", aliases='" + getAliases() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
