@@ -23,6 +23,16 @@ metadata repositories:
   [open metadata repository cohort](../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md).
 
 
+## Egeria Implementation Status at Release 1.0
+ 
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-1.5.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+         
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

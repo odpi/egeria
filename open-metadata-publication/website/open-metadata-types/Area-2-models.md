@@ -35,8 +35,13 @@ get access to the data assets.
 * **[0230 Code Tables](0230-Code-Tables.md)**
 * **[0235 Information View](0235-Information-View.md)**
 * **[0238 Reports](0238-Reports.md)**
+* **[0265 Analytics Assets](0265-Analytics-Assets.md)**
+* **[0280 Software Development Assets](0280-Software-Development-Assets.md)**
+* **[0281 Software Modules](0281-Software-Modules.md)**
+* **[0282 Released Software Components](0282-Released-Software-Components.md)**
+* **[0285 Analytics Development Assets](0285-Analytics-Development-Assets.md)**
 * **[0290 Ports](0290-Ports.md)**
-* **[0298 Lineage Relationships](0298-Process-Hierarchies.md)**
+* **[0298 Process Hierarchies](0298-Process-Hierarchies.md)**
 
 ![UML Packages](area-2-assets-overview.png#pagewidth)
 
