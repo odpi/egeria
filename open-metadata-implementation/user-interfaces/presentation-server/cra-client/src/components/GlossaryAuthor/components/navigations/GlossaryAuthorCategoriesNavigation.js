@@ -37,11 +37,11 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
   const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), "category");
   useEffect(() => {
     getChildren();
-  }, [selectedNodeGuid, onlyTop]);
+  }, [selectedNodeGuid, onlyTop, pageSize, pageNumber]);
 
   const getChildren = () => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(props.getCategoriesURL  + "?onlyTop="+onlyTop);
+    const url = encodeURI(props.getCategoriesURL + "?onlyTop=" + onlyTop + "&pageSize=" + (pageSize+1) + "&startingFrom="+((pageNumber-1)*pageSize));
     issueRestGet(url, onSuccessfulGetChildren, onErrorGetChildren);
   };
 
@@ -74,7 +74,7 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
     //setPaginationOptions(options);
     setPageSize(options.pageSize);
     setPageNumber(options.page);
-    refreshNodes(completeResults, options.pageSize, options.page);
+    //refreshNodes(completeResults, options.pageSize, options.page);
   };
 
   // Refresh the displayed nodes search results

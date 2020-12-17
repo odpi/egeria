@@ -4,16 +4,15 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
-import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
@@ -33,12 +32,11 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private OMRSOperationalServices              operationalRepositoryServices       = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
     private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
+    private List<EngineServiceAdmin>             operationalEngineServiceAdminList   = new ArrayList<>();
     private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
-    private DiscoveryServerOperationalServices   operationalDiscoveryServer          = null;
     private IntegrationDaemonOperationalServices operationalIntegrationDaemon        = null;
     private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
-    private StewardshipOperationalServices       operationalStewardshipServices      = null;
     private SecuritySyncOperationalServices      operationalSecuritySyncServices     = null;
     private SecurityOfficerOperationalServices   operationalSecurityOfficerService   = null;
     private VirtualizationOperationalServices    operationalVirtualizationServices   = null;
@@ -148,6 +146,29 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
     }
 
+
+    /**
+     * Return the list of references to the admin object for each active Open Metadata Engine Service (OMES).
+     *
+     * @return list of EngineServiceAdmin objects
+     */
+    List<EngineServiceAdmin> getOperationalEngineServiceAdminList()
+    {
+        return operationalEngineServiceAdminList;
+    }
+
+
+    /**
+     * Set up the list of references to the admin object for each active Open Metadata Engine Service (OMES).
+     *
+     * @param operationalEngineServiceAdminList list of EngineServiceAdmin objects
+     */
+    void setOperationalEngineServiceAdminList(List<EngineServiceAdmin> operationalEngineServiceAdminList)
+    {
+        this.operationalEngineServiceAdminList = operationalEngineServiceAdminList;
+    }
+
+
     /**
      * Return the list of references to the admin object for each active Open Metadata View Service (OMVS).
      *
@@ -190,28 +211,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     {
         this.operationalConformanceSuiteServices = operationalConformanceSuiteServices;
     }
-
-
-    /**
-     * Return the running instance of the discovery engine.
-     *
-     * @return DiscoveryServerOperationalServices object
-     */
-    DiscoveryServerOperationalServices getOperationalDiscoveryServer() {
-        return operationalDiscoveryServer;
-    }
-
-
-    /**
-     * Set up the running instance of the discovery engine.
-     *
-     * @param operationalDiscoveryServer DiscoveryServerOperationalServices object
-     */
-    void setOperationalDiscoveryServer(DiscoveryServerOperationalServices operationalDiscoveryServer)
-    {
-        this.operationalDiscoveryServer = operationalDiscoveryServer;
-    }
-
+    
 
     /**
      * Return the running instance of the integration daemon.
@@ -252,27 +252,6 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      */
     OpenLineageServerOperationalServices getOpenLineageOperationalServices() {
         return openLineageOperationalServices;
-    }
-
-
-    /**
-     * Return the running instance of the stewardship services.
-     *
-     * @return StewardshipOperationalServices object
-     */
-    StewardshipOperationalServices getOperationalStewardshipServices() {
-        return operationalStewardshipServices;
-    }
-
-
-    /**
-     * Set up running instance of the stewardship services.
-     *
-     * @param operationalStewardshipServices StewardshipOperationalServices object
-     */
-    void setOperationalStewardshipServices(StewardshipOperationalServices operationalStewardshipServices)
-    {
-        this.operationalStewardshipServices = operationalStewardshipServices;
     }
 
 

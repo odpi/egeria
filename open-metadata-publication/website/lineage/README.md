@@ -1,0 +1,96 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+# Lineage
+
+Lineage shows how data flows from its origins to its various destinations.
+This includes details of the processing along the way.  It is used both to understand:
+ 
+* whether the data used in reports and analytics models has come from the correct sources and has passed through
+  the correct processing (traceability of data).
+  
+* what would be the impact on downstream processing and consumers if something was changed (impact analysis).
+
+
+## The lineage graph
+
+Lineage is typically envisaged as a graph showing processes interacting with different data stores.  
+Figure 1 shows some examples of different types of processes and data stores.
+
+
+![Figure 1](lineage-examples.png#pagewidth)
+> **Figure 1:** Examples of processes
+
+
+Some processes copy data from one store to another.  Other processes may retrieve data
+from multiple stores and combine them to produce a new value that is stored in another store.
+The result is that a logical flow of data emerges from the interaction. 
+
+
+![Figure 2](lineage-capture.png#pagewidth)
+> **Figure 2:** The lineage graph emerges
+
+Since there is no over-arching controller, lineage capture involves contributions from many
+technologies that have to be stitched together to created the overall flow.
+
+Each technology contributes what they know to open metadata
+and the open metadata services stitch it together.  The stitching process is a mixture of automated matching and
+human stewardship.  Consistency in naming and use of open metadata types increases the
+effectiveness of the stitching process.
+
+Figure 3 abstracts the example shown in figure 2.  From this you can see that the flow is not a simple
+progression from left to right.  API calls can pass data in either direction for example. 
+
+![Figure 3](basic-concept-of-lineage.png#pagewidth)
+> **Figure 3:** The abstract lineage graph
+
+There are also often systems that act as a hub, with many processes extracting data, performing processing and
+then storing the results back into the same system.  Other stores act as a consolidation point, receiving
+data from many systems and then distributing to multiple downstream stores.  So the graph also involves
+loops and fan-in-fan-out structures.
+
+
+## Lineage mapping
+
+The [LineageMapping](../open-metadata-types/0770-Lineage-Mapping.md) relationship is used to link
+metadata elements from one process/data store (collectively known as [Assets](../cataloging-assets)).
+
+For critical processes, an organization may need to trace the journey of a particular data field
+as it flows between processes and data stores.  For this to work, lineage needs to capture details of the inner
+workings of processes as well the parameters of APIs and schemas of data stores.
+However, not all technologies support this level of and so the lineage graph is often a mixture of
+different levels of detail.
+
+Figure 4 shows the lineage mapping between processes.
+This shows the flow of control between processes but no details about the
+processing inside the processes.
+
+![Figure 4](lineage-mapping-process-to-process.png#pagewidth)
+> **Figure 4:** Lineage mapping between processes
+
+Figure 5 shows lineage mapping between ports on the processes.  This detail is useful for
+more complex processes where different subsets of data fields are received and sent by the
+process through different interfaces.
+
+![Figure 5](lineage-mapping-port-to-port.png#pagewidth)
+> **Figure 5:** Lineage mapping between ports
+
+Figure 6 shows detailed mapping between data fields.  This level of lineage means that it is possible to
+trace what is happening with specific data fields.
+
+![Figure 6](lineage-mapping-data-fields.png#pagewidth)
+> **Figure 6:** Lineage mapping between the data fields
+
+Figure 7 shows lineage across multiple technologies.
+
+![Figure 7](complex-lineage-mapping.png#pagewidth)
+> **Figure 6:** Lineage mapping between the data fields
+
+## Further reading
+
+* [Lineage Integrator Open Metadata Integration Server (OMIS)](../../../open-metadata-implementation/integration-services/lineage-integrator)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

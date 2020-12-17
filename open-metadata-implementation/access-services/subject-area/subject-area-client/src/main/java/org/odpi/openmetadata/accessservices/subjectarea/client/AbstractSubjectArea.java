@@ -18,8 +18,6 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
 
     protected final String BASE_URL;
     protected final SubjectAreaRestClient client;
-    // TODO ensure check all cases that we get this from the server
-    private int maximumPageSizeOnRestCall = 1000;
 
     protected AbstractSubjectArea(SubjectAreaRestClient client, String baseUrl) {
         this.BASE_URL = baseUrl;
@@ -47,6 +45,12 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
 
     @Override
     public List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest);
+        return response.results();
+    }
+    @Override
+    public List<T> find(String userId, FindRequest findRequest , Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, maximumPageSizeOnRestCall);
         return response.results();
@@ -91,11 +95,4 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
         return methodName + " for " + resultType().getSimpleName();
     }
 
-    /**
-     * Set the maximum pagesize to use on rest calls. This is so we do not request page sizes higher than is supported by the omas.
-     * @param maximumPageSizeOnRestCall maximum page size to use on rest calls.
-     */
-    public void setMaximumPageSizeOnRestCall(int maximumPageSizeOnRestCall) {
-        this.maximumPageSizeOnRestCall = maximumPageSizeOnRestCall;
-    }
 }

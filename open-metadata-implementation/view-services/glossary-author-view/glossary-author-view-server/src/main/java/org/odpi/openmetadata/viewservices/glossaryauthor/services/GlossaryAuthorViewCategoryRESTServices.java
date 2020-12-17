@@ -160,8 +160,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSequencingProperty(sequencingProperty);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
-            ((AbstractSubjectArea)clients).setMaximumPageSizeOnRestCall(subjectAreaConfig.getMaxPageSize());
-            List<Category> categories = clients.categories().find(userId, findRequest);
+            List<Category> categories = clients.categories().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(categories);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);

@@ -1287,7 +1287,7 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement>  handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 handler.addAssetOrigin(userId,
                                        assetGUID,
@@ -1482,7 +1482,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.updateAssetZones(userId,
                                      assetGUID,

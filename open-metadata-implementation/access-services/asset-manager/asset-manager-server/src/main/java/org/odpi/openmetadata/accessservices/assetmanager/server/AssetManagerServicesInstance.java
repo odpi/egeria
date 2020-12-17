@@ -51,13 +51,13 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetManagerServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                        List<String>           supportedZones,
-                                        List<String>           defaultZones,
-                                        List<String>           publishZones,
-                                        AuditLog               auditLog,
-                                        String                 localServerUserId,
-                                        int                    maxPageSize,
-                                        Connection             outTopicConnection) throws NewInstanceException
+                                        List<String>            supportedZones,
+                                        List<String>            defaultZones,
+                                        List<String>            publishZones,
+                                        AuditLog                auditLog,
+                                        String                  localServerUserId,
+                                        int                     maxPageSize,
+                                        Connection              outTopicConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,

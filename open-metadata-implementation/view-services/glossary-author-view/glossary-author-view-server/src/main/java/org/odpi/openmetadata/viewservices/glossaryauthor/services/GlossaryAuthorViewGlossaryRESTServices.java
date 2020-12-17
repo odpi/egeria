@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
@@ -16,13 +15,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.BreadCrumbHandler;
 import org.odpi.openmetadata.viewservices.glossaryauthor.properties.BreadCrumb;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -128,7 +124,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param requestedPageSize  the maximum number of elements that can be returned on this request.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
@@ -144,7 +140,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             Date asOfTime,
             String searchCriteria,
             Integer startingFrom,
-            Integer requestedPageSize,
+            Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
                                                             ) {
@@ -157,27 +153,23 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             if (startingFrom == null) {
                 startingFrom = 0;
             }
-            if (requestedPageSize == null) {
-                requestedPageSize = invalidParameterHandler.getMaxPagingSize();
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
             }
-            invalidParameterHandler.validatePaging(startingFrom, requestedPageSize, methodName);
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
             findRequest.setStartingFrom(startingFrom);
-            findRequest.setPageSize(requestedPageSize);
+            findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
-            ((AbstractSubjectArea)clients).setMaximumPageSizeOnRestCall(subjectAreaConfig.getMaxPageSize());
-            List<Glossary> glossaries = clients.glossaries().find(userId, findRequest);
+            List<Glossary> glossaries = clients.glossaries().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(glossaries);
-
         } catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
@@ -521,8 +513,10 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
+            Config subjectAreaConfig = client.getConfig(userId);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            List<Category> categories = ((SubjectAreaGlossaryClient)clients.glossaries()).getCategories(userId, guid, findRequest, onlyTop);
+            List<Category> categories = ((SubjectAreaGlossaryClient)clients.glossaries()).getCategories(userId, guid, findRequest, onlyTop, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(categories);
         } catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -554,8 +548,10 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
+            Config subjectAreaConfig = client.getConfig(userId);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            List<Term> terms = ((SubjectAreaGlossaryClient)clients.glossaries()).getTerms(userId, guid, findRequest);
+            List<Term> terms = ((SubjectAreaGlossaryClient)clients.glossaries()).getTerms(userId, guid, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(terms);
         } catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);

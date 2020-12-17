@@ -27,7 +27,6 @@ export default function StartingNodeNavigation({
 }) {
   const identificationContext = useContext(IdentificationContext);
   const [nodes, setNodes] = useState([]);
-  const [completeResults, setCompleteResults] = useState([]);
   const [isCardView, setIsCardView] = useState(true);
   const [total, setTotal] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
@@ -77,11 +76,8 @@ export default function StartingNodeNavigation({
   const onPagination = (options) => {
     console.log("onPaginationChange");
     console.log(options);
-    // save the pagination options in state
-    //setPaginationOptions(options);
     setPageSize(options.pageSize);
     setPageNumber(options.page);
-    refreshNodes(completeResults, options.pageSize, options.page);
   };
 
   // Refresh the displayed nodes search results
@@ -93,27 +89,27 @@ export default function StartingNodeNavigation({
     let selectedInResults = false;
     setTotal(results.length);
     if (results && results.length > 0) {
-      // if page = 1 and pageSize 10, searchTableRowsStart = 1
-      // if page = 2 and pageSize 10, searchTableRowsStart = 11
-      // if page = 2 and pageSize 10 and results.length = 15, searchTableRowsStart = 11 , searchTableRowsSize = 5
-      const searchTableRowsStart = (passedPageNumber - 1) * passedPageSize;
-      let searchTableRowsSize = passedPageSize;
-      // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
-      if (searchTableRowsStart + searchTableRowsSize - 1 > results.length) {
-        searchTableRowsSize = results.length - searchTableRowsStart;
-      }
-      const slicedResults = results.slice(
-        searchTableRowsStart,
-        searchTableRowsStart + searchTableRowsSize
-      );
-      slicedResults.map(function (row) {
+      // // if page = 1 and pageSize 10, searchTableRowsStart = 1
+      // // if page = 2 and pageSize 10, searchTableRowsStart = 11
+      // // if page = 2 and pageSize 10 and results.length = 15, searchTableRowsStart = 11 , searchTableRowsSize = 5
+      // const searchTableRowsStart = (passedPageNumber - 1) * passedPageSize;
+      // let searchTableRowsSize = passedPageSize;
+      // // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
+      // if (searchTableRowsStart + searchTableRowsSize - 1 > results.length) {
+      //   searchTableRowsSize = results.length - searchTableRowsStart;
+      // }
+      // const slicedResults = results.slice(
+      //   searchTableRowsStart,
+      //   searchTableRowsStart + searchTableRowsSize
+      // );
+      results.map(function (row) {
         row.id = row.systemAttributes.guid;
         if (selectedNodeGuid && selectedNodeGuid === row.id) {
           row.isSelected = true;
           selectedInResults = true;
         }
       });
-      setNodes(slicedResults);
+      setNodes(results);
     } else {
       setNodes([]);
     }
@@ -140,7 +136,7 @@ export default function StartingNodeNavigation({
   // issue search for first page of nodes
   const issueNodeSearch = (criteria) => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(nodeType.url + "?searchCriteria=" + criteria + ", pageSize=" + (pageSize+1) + ",offset="+((pageNumber-1)*pageSize));
+    const url = encodeURI(nodeType.url + "?searchCriteria=" + criteria + "&pageSize=" + (pageSize+1) + "&startingFrom="+((pageNumber-1)*pageSize));
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
 
@@ -165,8 +161,13 @@ export default function StartingNodeNavigation({
 
   const onSuccessfulDelete = () => {
     setSelectedNodeGuid(undefined);
-    // reprocess the current criteria and issue the search
-    processUserCriteriaAndIssueSearch();
+    if (pageNumber == 1) {
+      // we are already on the first page so just refresh that content
+      processUserCriteriaAndIssueSearch();
+    } else {
+      // we are not on the first page, so set the page number to 1. Or we could end up showing an empty page with no pagination widget.   
+      setPageNumber(1);
+    }
   };
 
   const onErrorDelete = (msg) => {
@@ -182,9 +183,8 @@ export default function StartingNodeNavigation({
       row.id = row.systemAttributes.guid;
     });
     refreshNodes(json.result, pageSize, pageNumber);
-    setCompleteResults(json.result);
+    // setCompleteResults(json.result);
 
-    // setNodes(json.result);
   };
 
   const onErrorSearch = (msg) => {
@@ -260,7 +260,7 @@ export default function StartingNodeNavigation({
           </article>
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-2 bx--col-xlg-2 bx--col-max-2">
             <div className="node-card__exact_control">
-              <label forHtml="exactMatch">Exact Match </label>
+              <label htmlFor="exactMatch">Exact Match </label>
               <input
                 type="checkbox"
                 id="node_nav_exact_Match"

@@ -30,11 +30,11 @@ const GlossaryAuthorTermsNavigation = (props) => {
 
   useEffect(() => {
     getChildren();
-  }, [selectedNodeGuid]);
+  }, [selectedNodeGuid, pageSize, pageNumber]);
 
   const getChildren = () => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(props.getTermsURL);
+    const url = encodeURI(props.getTermsURL + "?pageSize=" + (pageSize+1) + "&startingFrom="+((pageNumber-1)*pageSize));
     issueRestGet(url, onSuccessfulGetChildren, onErrorGetChildren);
   };
   const paginationProps = () => ({
@@ -58,7 +58,7 @@ const GlossaryAuthorTermsNavigation = (props) => {
     //setPaginationOptions(options);
     setPageSize(options.pageSize);
     setPageNumber(options.page);
-    refreshNodes(completeResults, options.pageSize, options.page);
+    // refreshNodes(completeResults, options.pageSize, options.page);
   };
 
   // Refresh the displayed nodes search results

@@ -161,8 +161,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             findRequest.setSequencingProperty(sequencingProperty);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
-            ((AbstractSubjectArea)clients).setMaximumPageSizeOnRestCall(subjectAreaConfig.getMaxPageSize());
-            List<Project> projects = clients.projects().find(userId, findRequest);
+            List<Project> projects = clients.projects().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(projects);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);

@@ -159,8 +159,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             findRequest.setSequencingProperty(sequencingProperty);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
-            ((AbstractSubjectArea)clients).setMaximumPageSizeOnRestCall(subjectAreaConfig.getMaxPageSize());
-            List<Term> terms = clients.terms().find(userId, findRequest);
+            List<Term> terms = clients.terms().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(terms);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);

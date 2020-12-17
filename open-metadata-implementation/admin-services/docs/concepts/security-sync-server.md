@@ -3,23 +3,21 @@
 
 # Security Sync Server
 
-The **Security Sync Server** is an [Integration Daemon](integration-daemon.md)
-that is responsible for keeping a security
+The Security Sync Server is a deprecated governance server.  The equivalent function runs as the
+[Security Integrator Open Metadata Integration Service (OMIS)](../../../integration-services/security-integrator)
+in an [Integration Daemon](integration-daemon.md).
+It is responsible for keeping a security
 enforcement engine supplied with the latest metadata settings.
 
-The security sync server is paired with the 
-[Governance Engine OMAS](../../../access-services/governance-engine).
+The Security Integrator OMIS is paired with the 
+[Asset Manager OMAS](../../../access-services/asset-manager).
 
-# Configuring the Security Sync Server
 
-* [Setting basic properties for an OMAG server](../user/configuring-omag-server-basic-properties.md)
-* [Configuring the audit log destinations](../user/configuring-the-audit-log.md)
-* [Configuring the server security connector](../user/configuring-the-server-security-connector.md)
-* [Configuring the Security Sync Services](../user/configuring-the-integration-services.md)
 
 ----
-* Return to [Integration Daemon](integration-daemon.md).
-* Return to [Admin Guide](../user).
+* Go to [Governance Servers](governance-server-types.md).
+* Go to [Admin Guide](../user).
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

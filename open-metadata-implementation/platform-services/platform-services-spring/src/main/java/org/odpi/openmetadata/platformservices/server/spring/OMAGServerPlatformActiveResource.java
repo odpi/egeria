@@ -65,15 +65,15 @@ public class OMAGServerPlatformActiveResource
 
 
     /**
-     * Return the list of integration services that are implemented in this OMAG Server Platform
-     * and can be configured for a metadata server.
+     * Return the list of engine services that are implemented in this OMAG Server Platform
+     * and can be configured for an engine host server.
      *
      * @param userId calling user
      * @return list of service descriptions
      */
-    @GetMapping(path = "/registered-services/integration-services")
-    @Operation( summary = "Get registered integration services",
-            description="Retrieve a list of integration services implemented in this platform",
+    @GetMapping(path = "/registered-services/engine-services")
+    @Operation( summary = "Get registered engine services",
+            description="Retrieve a list of engine services implemented in this platform",
             responses = {
                     @ApiResponse(responseCode = "200", description="list of service descriptions",
                             content = @Content(
@@ -83,15 +83,43 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
+    public RegisteredOMAGServicesResponse getRegisteredEngineServices(@Parameter(description="calling user") @PathVariable String userId)
+    {
+        return platformAPI.getRegisteredEngineServices(userId);
+    }
+
+
+
+
+    /**
+     * Return the list of integration services that are implemented in this OMAG Server Platform
+     * and can be configured for a integration daemon server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    @GetMapping(path = "/registered-services/integration-services")
+    @Operation( summary = "Get registered integration services",
+                description="Retrieve a list of integration services implemented in this platform",
+                responses = {
+                        @ApiResponse(responseCode = "200", description="list of service descriptions",
+                                     content = @Content(
+                                             mediaType ="application/json",
+                                             schema = @Schema(implementation=RegisteredOMAGServicesResponse.class)
+                                     )
+
+                        )
+                })
     public RegisteredOMAGServicesResponse getRegisteredIntegrationServices(@Parameter(description="calling user") @PathVariable String userId)
     {
         return platformAPI.getRegisteredIntegrationServices(userId);
     }
 
 
+
     /**
      * Return the list of view services that are registered (supported) in this OMAG Server Platform
-     * and can be configured for a metadata server.
+     * and can be configured for a view server.
      *
      * @param userId calling user
      * @return list of service descriptions

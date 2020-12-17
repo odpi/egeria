@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
@@ -135,7 +136,32 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         }
         return response;
     }
+    /**
+     * Issue a GET REST call that returns a response object by guid. This is a get for a single object.
+     *
+     * @param <T> return type for results in {@link GenericResponse}
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param guid        unique identifier of the received object
+     * @param methodName  name of the method being called.
+     * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
+     * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
 
+     * @return GenericResponse with T result
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
+    public <T> GenericResponse<T> getByIdRESTCall(String userId,
+                                                  String guid,
+                                                  String methodName,
+                                                  ParameterizedTypeReference<GenericResponse<T>> type,
+                                                  String urnTemplate) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        return getByIdRESTCall(userId, guid, methodName, type, urnTemplate, null, null);
+    }
     /**
      * Issue a GET REST call that returns a response object by guid.
      *
@@ -156,22 +182,107 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                   String guid,
                                                   String methodName,
                                                   ParameterizedTypeReference<GenericResponse<T>> type,
-                                                  String urnTemplate) throws InvalidParameterException,
+                                                  String urnTemplate,
+                                                  FindRequest findRequest) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+       return getByIdRESTCall(userId, guid, methodName, type, urnTemplate, findRequest, null);
+    }
+    /**
+     * Issue a GET REST call that returns a response object by guid.
+     *
+     * @param <T> return type for results in {@link GenericResponse}
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param guid        unique identifier of the received object
+     * @param methodName  name of the method being called.
+     * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
+     * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
+     * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
+     * @return GenericResponse with T result
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
+    public <T> GenericResponse<T> getByIdRESTCall(String userId,
+                                                  String guid,
+                                                  String methodName,
+                                                  ParameterizedTypeReference<GenericResponse<T>> type,
+                                                  String urnTemplate,
+                                                  FindRequest findRequest,
+                                                  Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        String expandedURL = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId, guid);
-        GenericResponse<T> response = callGetRESTCall(methodName, type, expandedURL);
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, response);
 
+        GenericResponse<T> completeResponse = null;
+        int requestedPageSize = 0;
+        int startingFrom = 0;
+        if (findRequest != null && findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+            invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
+            requestedPageSize = findRequest.getPageSize();
+            startingFrom = findRequest.getStartingFrom();
+        }
+
+        if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize ) {
+            // Only need to make one call
+            String expandedURL;
+            if (findRequest == null) {
+                expandedURL = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId, guid);
+            } else {
+                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+                expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId, guid);
+            }
+            completeResponse = callGetRESTCall(methodName, type, expandedURL);
+            exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
+        } else {
+            // issue multiple calls to build up the requested page
+            int totalNumberRetrieved = 0;
+            // while we have got less than the requested page size continuing getting more by issuing rest calls
+            while (totalNumberRetrieved < requestedPageSize) {
+                // set the page size to the maximum that the downstream server accepts.
+                findRequest.setPageSize(maximumPageSizeOnRestCall);
+                // we need to amend the startingFrom potions when issuing subsequent requests.
+                findRequest.setStartingFrom(totalNumberRetrieved);
+                // encode a url with the new find request
+                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+                String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId, guid);
+                // issue the get call
+                GenericResponse<T> responseForPart = callGetRESTCall(methodName, type, expandedURL);
+                exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
+
+                int numberRetrieved = responseForPart.results().size();
+                if (numberRetrieved == 0 || numberRetrieved < maximumPageSizeOnRestCall) {
+                    // break out of the while loop as there is no more to retrieve.
+                    totalNumberRetrieved = requestedPageSize;
+                } else {
+                    // there may be more to get
+                    totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
+                    if (completeResponse == null) {
+                        // first time in initialise the complete response
+                        completeResponse = responseForPart;
+                    } else {
+                        // add the results from this get to the complete response
+                        completeResponse.addAllResults(responseForPart.results());
+                    }
+                    // amend the starting from
+                    startingFrom= startingFrom + numberRetrieved;
+                }
+            }
+        }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
-        return response;
+        return completeResponse;
     }
+
+
+
 
     /**
      * Issue a GET REST call that returns a response found objects using the information described in findRequest,
@@ -184,7 +295,33 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
-     * @param maximumPageSizeOnRestCall maximum amount that the downstream server supports.
+     *
+     * @return GenericResponse with T results
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
+    public <T> GenericResponse<T> findRESTCall(String userId,
+                                               String methodName,
+                                               String urnTemplate,
+                                               ParameterizedTypeReference<GenericResponse<T>> type,
+                                               FindRequest findRequest) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException {
+        return findRESTCall(userId, methodName, urnTemplate, type, findRequest,null);
+    }
+    /**
+     * Issue a GET REST call that returns a response found objects using the information described in findRequest,
+     * specifying the maximum amount that the downstream server supports.
+     *
+     * @param <T> return type for results in {@link GenericResponse}
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param methodName  name of the method being called.
+     * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
+     * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
+     * @param findRequest {@link FindRequest}
+     * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -196,10 +333,12 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
                                                FindRequest findRequest,
-                                               int maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                               Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException {
-
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
         GenericResponse<T> completeResponse = null;
         if (findRequest.getPageSize() == null) {
             findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
@@ -208,7 +347,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
         int requestedPageSize = findRequest.getPageSize();
         int startingFrom = findRequest.getStartingFrom();
-        if (maximumPageSizeOnRestCall >= requestedPageSize ) {
+        if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize ) {
+            // Only need to make one call
              String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
              String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
              completeResponse = callGetRESTCall(methodName, type, expandedURL);
@@ -230,9 +370,10 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                 exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
 
                 int numberRetrieved = responseForPart.results().size();
-                if (numberRetrieved == 0) {
+                if (numberRetrieved == 0 || numberRetrieved < maximumPageSizeOnRestCall) {
                     // break out of the while loop as there is no more to retrieve.
                     totalNumberRetrieved = requestedPageSize;
+                    completeResponse = responseForPart;
                 } else {
                     // there may be more to get
                     totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
@@ -240,13 +381,16 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                         // first time in initialise the complete response
                         completeResponse = responseForPart;
                     } else {
-                        // add the results from thisget to the complete response
+                        // add the results from this get to the complete response
                         completeResponse.addAllResults(responseForPart.results());
                     }
                     // amend the starting from
                     startingFrom= startingFrom + numberRetrieved;
                 }
             }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return completeResponse;
     }
@@ -274,7 +418,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
                                                FindRequest findRequest,
-                                               int maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                               Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
@@ -286,9 +430,10 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
         int requestedPageSize = findRequest.getPageSize();
         int startingFrom = findRequest.getStartingFrom();
-        if (maximumPageSizeOnRestCall >= requestedPageSize ) {
+        if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall == 0 || maximumPageSizeOnRestCall >= requestedPageSize ) {
+            // only need to issued one rest call
             String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
-            completeResponse = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate);
+            completeResponse = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate, findRequest);
             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
             // issue multiple calls to build up the requested page
@@ -301,9 +446,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                 findRequest.setStartingFrom(totalNumberRetrieved);
                 // encode a url with the new find request
                 String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
-//                String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
                 // issue the get call
-                GenericResponse<T> responseForPart = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate);
+                GenericResponse<T> responseForPart = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate, findRequest);
                 exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
 
                 int numberRetrieved = responseForPart.results().size();

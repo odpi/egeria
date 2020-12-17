@@ -13,21 +13,11 @@ import java.util.Set;
  */
 public enum GovernanceServicesDescription implements Serializable
 {
-    DISCOVERY_ENGINE_SERVICES        (2000,
-                                      "Discovery Engine Services",
-                                      "discovery-server",
-                                      "Run automated discovery services",
-                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/discovery-engine-services/"),
     SECURITY_SYNC_SERVICES           (2001,
                                       "Security Sync Services",
                                       null,
                                       "Keep security enforcement engine up-to-date",
                                       "https://egeria.odpi.org/open-metadata-implementation/governance-servers/security-sync-services/"),
-    STEWARDSHIP_SERVICES             (2002,
-                                      "Stewardship Engine Services",
-                                      "stewardship-server",
-                                      "Run automated stewardship actions",
-                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/stewardship-services/"),
     OPEN_LINEAGE_SERVICES            (2003,
                                       "Open Lineage Services",
                                       "open-lineage",
@@ -61,12 +51,12 @@ public enum GovernanceServicesDescription implements Serializable
     INTEGRATION_DAEMON_SERVICES      (2009,
                                       "Integration Daemon Services",
                                       null,
-                                      "Host one or more integration services that are exchanging metadata with third party technology",
+                                      "Host one or more integration services that are exchanging metadata with third party technologies",
                                       "https://egeria.odpi.org/open-metadata-implementation/governance-servers/integration-daemon-services/"),
     ;
 
 
-    private static final long     serialVersionUID    = 1L;
+    private static final long serialVersionUID = 1L;
 
     private int    serviceCode;
     private String serviceName;
@@ -84,17 +74,14 @@ public enum GovernanceServicesDescription implements Serializable
     {
         List<GovernanceServicesDescription> serviceDescriptionList = new ArrayList<>();
 
-        serviceDescriptionList.add(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES);
-        serviceDescriptionList.add(GovernanceServicesDescription.SECURITY_SYNC_SERVICES);
-        serviceDescriptionList.add(GovernanceServicesDescription.STEWARDSHIP_SERVICES);
         serviceDescriptionList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES);
-        serviceDescriptionList.add(GovernanceServicesDescription.VIRTUALIZATION_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES);
         serviceDescriptionList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES);
-        serviceDescriptionList.add(GovernanceServicesDescription.SECURITY_OFFICER_SERVICES);
         serviceDescriptionList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES);
 
         return serviceDescriptionList;
     }
+
 
     /**
      * Return a set of non null url markers (short names) of the governance services
@@ -104,9 +91,11 @@ public enum GovernanceServicesDescription implements Serializable
     public static Set<String> getGovernanceServersURLMarkers()
     {
         Set<String> urlMarkerSet = new HashSet<>();
-        for (GovernanceServicesDescription governanceServicesDescription:getGovernanceServersDescriptionList()) {
+        for (GovernanceServicesDescription governanceServicesDescription:getGovernanceServersDescriptionList())
+        {
             String urlMarker = governanceServicesDescription.getServiceURLMarker();
-            if (urlMarker != null) {
+            if (urlMarker != null)
+            {
                 urlMarkerSet.add(urlMarker);
             }
         }

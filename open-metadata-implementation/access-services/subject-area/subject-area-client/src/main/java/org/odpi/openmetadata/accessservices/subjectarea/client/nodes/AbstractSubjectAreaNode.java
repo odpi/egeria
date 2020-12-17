@@ -20,19 +20,17 @@ import java.util.List;
 
 /**
  * @param <E> inherited from {@link Node} type
- * Abstract class for Subject Area client node operations
+ *            Abstract class for Subject Area client node operations
  */
 public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaNodeClient<E> {
     protected AbstractSubjectAreaNode(SubjectAreaRestClient client, String baseUrl) {
         super(client, baseUrl);
     }
-    // TODO ensure check all cases that we get this from the server
-    private int maximumPageSizeOnRestCall = 1000;
+
     @Override
-    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
-    {
+    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                                                                                                                      PropertyServerException,
+                                                                                                                                      UserNotAuthorizedException {
         final String urlTemplate = BASE_URL + "/%s/relationships";
         final String methodInfo = getMethodInfo("getRelationships");
 
@@ -41,11 +39,12 @@ public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSu
         GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest, maximumPageSizeOnRestCall);
         return response.results();
     }
-    /**
-     * Set the maximum pagesize to use on rest calls. This is so we do not request page sizes higher than is supported by the omas.
-     * @param maximumPageSizeOnRestCall maximum page size to use on rest calls.
-     */
-    public void setMaximumPageSizeOnRestCall(int maximumPageSizeOnRestCall) {
-        this.maximumPageSizeOnRestCall = maximumPageSizeOnRestCall;
+
+    @Override
+    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException {
+        return getRelationships(userId, guid, findRequest, null);
     }
+
 }
