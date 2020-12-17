@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -90,17 +91,13 @@ public class AssetContextHandler {
      * @param userId         the user id
      * @param guid           the guid of the entity
      * @param entityTypeName the name of the entity type
-     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
      * @return the existing list of glossary terms available in the repository
      */
-    public EntityDetail getEntityByTypeAndGuid(String userId, String guid, String entityTypeName) {
-        EntityDetail entityDetails = null;
-        try {
-            entityDetails = handlerHelper.getEntityDetails(userId, guid, entityTypeName);
-        } catch (OCFCheckedExceptionBase ocfCheckedExceptionBase) {
-            ocfCheckedExceptionBase.printStackTrace();
-        }
-        return entityDetails;
+    public EntityDetail getEntityByTypeAndGuid(String userId, String guid, String entityTypeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return handlerHelper.getEntityDetails(userId, guid, entityTypeName);
     }
 
     /**

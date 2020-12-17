@@ -7,6 +7,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
+import org.janusgraph.core.Cardinality;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.PropertyKey;
@@ -328,13 +329,10 @@ public class GraphOMRSGraphFactory {
 
             createCompositeIndexForVertexProperty(PROPERTY_NAME_GUID,                    PROPERTY_KEY_ENTITY_GUID,      true);
             createCompositeIndexForVertexProperty(PROPERTY_NAME_TYPE_NAME,               PROPERTY_KEY_ENTITY_TYPE_NAME, false);
-
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATED_BY,              PROPERTY_KEY_ENTITY_CREATED_BY);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATED_BY,              PROPERTY_KEY_ENTITY_UPDATED_BY);
-
-            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,              PROPERTY_KEY_ENTITY_CREATE_TIME);
-            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,              PROPERTY_KEY_ENTITY_UPDATE_TIME);
-
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,             PROPERTY_KEY_ENTITY_CREATE_TIME);
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,             PROPERTY_KEY_ENTITY_UPDATE_TIME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_MAINTAINED_BY,           PROPERTY_KEY_ENTITY_MAINTAINED_BY);              // maintainedBy is a serialized list so use Text mapping
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_INSTANCE_URL,            PROPERTY_KEY_ENTITY_INSTANCE_URL);
@@ -346,9 +344,9 @@ public class GraphOMRSGraphFactory {
              *  Relationship core property indexes
              */
 
-            // A Relationship edge has the following properties and indexes:
-            // guid                                -   composite unique
-            // typeName                            -   composite non-unique
+            // A Relationship edge has the following properties and indexes. Edge indexes cannot be unique:
+            // guid                                -   composite
+            // typeName                            -   composite
             // createdBy                           -   mixed (default)
             // updatedBy                           -   mixed (default)
             // createTime                          -   none - mixed may be useful when matchProperties allows date predicate (e.g. greaterThan/since)
@@ -365,15 +363,12 @@ public class GraphOMRSGraphFactory {
             // InstanceProperties entityProperties -   mixed on each primitive property
 
 
-            createCompositeIndexForEdgeProperty(PROPERTY_NAME_GUID,                    PROPERTY_KEY_RELATIONSHIP_GUID,        true);
-            createCompositeIndexForEdgeProperty(PROPERTY_NAME_TYPE_NAME,               PROPERTY_KEY_RELATIONSHIP_TYPE_NAME,   false);
-
+            createCompositeIndexForEdgeProperty(PROPERTY_NAME_GUID,                    PROPERTY_KEY_RELATIONSHIP_GUID);
+            createCompositeIndexForEdgeProperty(PROPERTY_NAME_TYPE_NAME,               PROPERTY_KEY_RELATIONSHIP_TYPE_NAME);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_CREATED_BY,              PROPERTY_KEY_RELATIONSHIP_CREATED_BY);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_UPDATED_BY,              PROPERTY_KEY_RELATIONSHIP_UPDATED_BY);
-
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,           PROPERTY_KEY_RELATIONSHIP_CREATE_TIME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,           PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME);
-
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_MAINTAINED_BY,           PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_INSTANCE_URL,            PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL);
@@ -390,10 +385,11 @@ public class GraphOMRSGraphFactory {
             // which uses a mixed index because it is not unique:
 
             createCompositeIndexForVertexProperty(PROPERTY_NAME_TYPE_NAME,                PROPERTY_KEY_CLASSIFICATION_TYPE_NAME, false);
-
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CLASSIFICATION_NAME,      PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATED_BY,               PROPERTY_KEY_CLASSIFICATION_CREATED_BY);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATED_BY,               PROPERTY_KEY_CLASSIFICATION_UPDATED_BY);
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,              PROPERTY_KEY_CLASSIFICATION_CREATE_TIME);
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,              PROPERTY_KEY_CLASSIFICATION_UPDATE_TIME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_MAINTAINED_BY,            PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME,  PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_INSTANCE_LICENSE,         PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE);
@@ -420,10 +416,8 @@ public class GraphOMRSGraphFactory {
 
         put(PROPERTY_KEY_ENTITY_CREATED_BY,                        MixedIndexMapping.String);
         put(PROPERTY_KEY_ENTITY_UPDATED_BY,                        MixedIndexMapping.String);
-
-        put(PROPERTY_KEY_ENTITY_CREATE_TIME,                       MixedIndexMapping.Date);  // TODO repeat for rels and classifications
-        put(PROPERTY_KEY_ENTITY_UPDATE_TIME,                       MixedIndexMapping.Date);  // TODO repeat for rels and classifications
-
+        put(PROPERTY_KEY_ENTITY_CREATE_TIME,                       MixedIndexMapping.Date  );
+        put(PROPERTY_KEY_ENTITY_UPDATE_TIME,                       MixedIndexMapping.Date  );
         put(PROPERTY_KEY_ENTITY_MAINTAINED_BY,                     MixedIndexMapping.Text  );    // maintainedBy is stored as a serialized list so uses Text mapping
         put(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME,           MixedIndexMapping.String);
         put(PROPERTY_KEY_ENTITY_INSTANCE_URL,                      MixedIndexMapping.String);
@@ -433,6 +427,8 @@ public class GraphOMRSGraphFactory {
 
         put(PROPERTY_KEY_RELATIONSHIP_CREATED_BY,                  MixedIndexMapping.String);
         put(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY,                  MixedIndexMapping.String);
+        put(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME,                 MixedIndexMapping.Date  );
+        put(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME,                 MixedIndexMapping.Date  );
         put(PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY,               MixedIndexMapping.Text  );    // maintainedBy is stored as a serialized list so uses Text mapping
         put(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME,     MixedIndexMapping.String);
         put(PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL,                MixedIndexMapping.String);
@@ -443,6 +439,8 @@ public class GraphOMRSGraphFactory {
         put(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME,       MixedIndexMapping.String);
         put(PROPERTY_KEY_CLASSIFICATION_CREATED_BY,                MixedIndexMapping.String);
         put(PROPERTY_KEY_CLASSIFICATION_UPDATED_BY,                MixedIndexMapping.String);
+        put(PROPERTY_KEY_CLASSIFICATION_CREATE_TIME,               MixedIndexMapping.Date  );
+        put(PROPERTY_KEY_CLASSIFICATION_UPDATE_TIME,               MixedIndexMapping.Date  );
         put(PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY,             MixedIndexMapping.Text  );    // maintainedBy is stored as a serialized list so uses Text mapping
         put(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME,   MixedIndexMapping.String);
         put(PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE,          MixedIndexMapping.String);
@@ -506,7 +504,7 @@ public class GraphOMRSGraphFactory {
             log.debug("{} try to build index {}", methodName, indexName);
             // To avoid values being tokenized by treating non-alphanumeric characters as delimiters, avoid the default (Text) mapping and explicitly use String instead.
             JanusGraphManagement.IndexBuilder vertexIndexBuilder = management.buildIndex(indexName, Vertex.class);
-            if (mapping == MixedIndexMapping.Text || mapping == MixedIndexMapping.Default)
+            if (mapping == MixedIndexMapping.Text || mapping == MixedIndexMapping.Default || mapping == MixedIndexMapping.Date )
                     vertexIndexBuilder.addKey(propertyKey);                              // allow default - implicitly Text mapping
             else
                 vertexIndexBuilder.addKey(propertyKey, Mapping.STRING.asParameter() );   // override default - explicitly String mapping
@@ -685,7 +683,7 @@ public class GraphOMRSGraphFactory {
 
                 edgeIndexBuilder.addKey(propertyKey);                                    // default - implicitly Text mapping
 
-            else if (mapping == MixedIndexMapping.Default)
+            else if (mapping == MixedIndexMapping.Default || mapping == MixedIndexMapping.Date)
 
                 edgeIndexBuilder.addKey(propertyKey, Mapping.DEFAULT.asParameter());     // allow default mapping
 
@@ -727,7 +725,7 @@ public class GraphOMRSGraphFactory {
 
     }
 
-    private void createCompositeIndexForEdgeProperty(String propertyName, String propertyKeyName, boolean unique) {
+    private void createCompositeIndexForEdgeProperty(String propertyName, String propertyKeyName) {
 
         final String methodName = "createCompositeIndexForEdgeProperty";
 
@@ -776,13 +774,7 @@ public class GraphOMRSGraphFactory {
             }
 
             JanusGraphManagement.IndexBuilder indexBuilder = management.buildIndex(indexName, Edge.class).addKey(propertyKey);
-            if (unique) {
-                indexBuilder.unique();
-            }
             JanusGraphIndex index = indexBuilder.buildCompositeIndex();
-            if (unique) {
-                management.setConsistency(index, ConsistencyModifier.LOCK);
-            }
             management.commit();
 
             // If we are reusing a key creating in an earlier management transaction - e.g. "guid" - we need to reindex
@@ -878,7 +870,7 @@ public class GraphOMRSGraphFactory {
 
         final String methodName = "checkAndUpdateControlInformation";
 
-        boolean ret = true;
+        boolean ret;
 
         // Check metadataCollectionId matches and fail if not; make audit entry
 
