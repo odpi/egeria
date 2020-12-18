@@ -440,7 +440,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         final String methodName = "getSecureDirectory";
 
         // Start by trying to identify any pre-existing keystore directory
-        File pwd = new File(".");
+        File pwd = new File("./data/platform/keys");
         File[] keystoreDirs = pwd.listFiles((dir, name) -> name.startsWith(KEYSTORE_FOLDER_PREFIX));
         File secureDir;
         if (keystoreDirs == null || keystoreDirs.length == 0) {

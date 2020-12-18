@@ -74,6 +74,7 @@ files you need to preserve over to their new locations:
 | File based audit log | omag.server.{0}.auditlog/ | data/servers/{0}/logs/auditlog/            | 0 = server Name                  |
 | cohort registry      | {0}.{1}.registrystore     | data/servers/{0}/cohorts/{1}.registrystore | 0 = server Name, 1 = cohort name |
 | Graph repository     | {0}-graph-repository/     | data/servers/{0}/repository/graph/         | 0 = server Name                  |
+| Encrypted config key | keystore_*                | data/platform/keys                         |                                  |
 
 The result of this is that all the dynamic data created by egeria locally in the filesystem is restricted to the 'data' directory
 so this can be mapped to a volume easily.
