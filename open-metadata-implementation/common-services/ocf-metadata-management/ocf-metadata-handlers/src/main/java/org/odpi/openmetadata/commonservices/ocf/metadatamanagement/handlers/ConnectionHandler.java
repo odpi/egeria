@@ -657,18 +657,18 @@ public class ConnectionHandler extends RootHandler
                     {
                         Connection realConnection = embeddedConnection.getEmbeddedConnection();
 
-                        repositoryHandler.removeRelationshipBetweenEntities(userId,
-                                                                            externalSourceGUID,
-                                                                            externalSourceName,
-                                                                            ConnectionMapper.EMBEDDED_CONNECTION_TYPE_GUID,
-                                                                            ConnectionMapper.EMBEDDED_CONNECTION_TYPE_NAME,
-                                                                            connectionGUID,
-                                                                            ConnectionMapper.VIRTUAL_CONNECTION_TYPE_NAME,
-                                                                            realConnection.getGUID(),
-                                                                            methodName);
-
                         if (realConnection != null)
                         {
+                            repositoryHandler.removeRelationshipBetweenEntities(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    ConnectionMapper.EMBEDDED_CONNECTION_TYPE_GUID,
+                                    ConnectionMapper.EMBEDDED_CONNECTION_TYPE_NAME,
+                                    connectionGUID,
+                                    ConnectionMapper.VIRTUAL_CONNECTION_TYPE_NAME,
+                                    realConnection.getGUID(),
+                                    methodName);
+
                             this.removeConnection(userId,
                                                   externalSourceGUID,
                                                   externalSourceName,
