@@ -78,7 +78,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType("org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider"));
+        connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;
