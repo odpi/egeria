@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * KafkaOpenMetadataEventProducer manages the sending of events on Apache Kafka.  This is done through called to
@@ -25,7 +26,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class KafkaOpenMetadataEventProducer implements Runnable
 {
-    private volatile List<String> sendBuffer = new ArrayList<>();
+    private final List<String> sendBuffer = Collections.synchronizedList(new ArrayList<>());
 
     private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataEventProducer.class);
 
@@ -33,14 +34,14 @@ public class KafkaOpenMetadataEventProducer implements Runnable
 
     private volatile boolean running = true;
 
-    private              AuditLog auditLog;
-    private              String   listenerThreadName;
-    private              String   topicName;
-    private              int      sleepTime            = 1000;
-    private static final long     recoverySleepTimeSec = 10L;
+    private final AuditLog auditLog;
+    private final String   listenerThreadName;
+    private final String   topicName;
+    private final int sleepTime = 1000;
+    private static final long recoverySleepTimeSec = 10L;
 
-    private String                          localServerId;
-    private Properties                      producerProperties;
+    private final String                          localServerId;
+    private final Properties                      producerProperties;
     private Producer<String, String>        producer = null;
 
     private KafkaOpenMetadataTopicConnector connector;
@@ -182,11 +183,11 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     @Override
     public void run()
     {
-        String           actionDescription = listenerThreadName + ":run";
+        final String           actionDescription = listenerThreadName + ":run";
 
         auditLog.logMessage(actionDescription,
                             KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_START.getMessageDefinition(topicName,
-                                                                                                               Integer.toString(sendBuffer.size())),
+                                                                                                               String.valueOf(sendBuffer.size())),
                             this.producerProperties.toString());
 
 
@@ -201,7 +202,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                  */
                 if (bufferedEvent == null)
                 {
-                    Thread.sleep(sleepTime);
+                    TimeUnit.MILLISECONDS.sleep(sleepTime);
                 }
                 else
                 {
@@ -254,7 +255,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      *
      * @param newEvent  event to publish
      */
-    private synchronized void putEvent(String  newEvent)
+    private void putEvent(String  newEvent)
     {
         sendBuffer.add(newEvent);
     }
@@ -265,7 +266,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      *
      * @return int
      */
-    private synchronized int getSendBufferSize()
+    private int getSendBufferSize()
     {
         return sendBuffer.size();
     }
@@ -276,7 +277,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      *
      * @return list of received events.
      */
-    private synchronized String getEvent()
+    private String getEvent()
     {
         if (sendBuffer.isEmpty())
         {
@@ -330,7 +331,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      *
      * @return boolean
      */
-    private synchronized  boolean isRunning()
+    private boolean isRunning()
     {
         return running;
     }
