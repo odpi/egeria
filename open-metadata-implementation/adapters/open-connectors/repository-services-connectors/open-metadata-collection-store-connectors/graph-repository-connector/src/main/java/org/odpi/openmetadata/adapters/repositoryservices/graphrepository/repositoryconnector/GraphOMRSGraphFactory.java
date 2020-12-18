@@ -248,13 +248,14 @@ public class GraphOMRSGraphFactory {
 
     private Map<String, Object> getBerkleyStorageProperties() {
 
+        // In current usage, the repository name is the server name, so ok to use for storage path
         final String serverRepositoryPath = thisRepositoryName + "-graph-repository";
 
         Map<String, Object> berkleyStorageProperties = new HashMap<>();
         berkleyStorageProperties.put("storage.backend", "berkeleyje");
-        berkleyStorageProperties.put("storage.directory", "./" + serverRepositoryPath + "/berkeley");
+        berkleyStorageProperties.put("storage.directory", "./data/servers/" + thisRepositoryName + "/repository/graph/berkeley");
         berkleyStorageProperties.put("index.search.backend", "lucene");
-        berkleyStorageProperties.put("index.search.directory", "./" + serverRepositoryPath + "/searchindex");
+        berkleyStorageProperties.put("index.search.directory", "./data/servers/" + thisRepositoryName + "/repository/graph/searchindex");
         return berkleyStorageProperties;
     }
 
