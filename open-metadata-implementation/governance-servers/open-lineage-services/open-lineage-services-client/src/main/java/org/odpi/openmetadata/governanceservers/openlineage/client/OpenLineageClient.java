@@ -61,8 +61,8 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     private void detectExceptions(String methodName,
                                   LineageResponse response)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
-        openLineageExceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
-        openLineageExceptionHandler.detectAndThrowPropertyServerException(methodName, response);
+        openLineageExceptionHandler.detectAndThrowInvalidParameterException(response);
+        openLineageExceptionHandler.detectAndThrowPropertyServerException(response);
         openLineageExceptionHandler.detectAndThrowOpenLineageException(methodName, response);
     }
 

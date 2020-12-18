@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaTypeChoice;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -113,7 +114,7 @@ public class AssetSchemaTypeChoice extends AssetSchemaType
      */
     public List<AssetSchemaType> getSchemaTypeOptions()
     {
-        List<AssetSchemaType> assetSchemaTypes = null;
+        List<AssetSchemaType> assetSchemaTypes = new ArrayList<>();
 
         if ((schemaTypeChoiceBean != null) && (schemaTypeChoiceBean.getSchemaOptions() != null))
         {

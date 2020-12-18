@@ -23,7 +23,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum AssetAnalysisAuditCode implements AuditLogMessageSet
 {
-    SERVER_INITIALIZING("ASSET-ANALYSIS-OMES-0001",
+    SERVER_INITIALIZING("OMES-ASSET-ANALYSIS-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The Asset Analysis engine services are initializing in server {0}",
                         "A new OMAG server has been started that is configured to run the Asset Analysis OMES.  " +
@@ -32,7 +32,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                 "discovery engines is retrieved from the metadata server and the discovery engines are initialized.",
                         "Verify that the start up sequence goes on to initialize the configured discovery engines."),
 
-    ENGINE_INITIALIZING("ASSET-ANALYSIS-OMES-0005",
+    ENGINE_INITIALIZING("OMES-ASSET-ANALYSIS-0005",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "A new discovery engine instance {0} is initializing in server {1}",
                         "The Asset Analysis OMES is initializing a discovery engine to analyze the " +
@@ -40,7 +40,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                 "retrieved from the Discovery Engine OMAS running in the metadata server",
                         "Verify that this discovery engine successfully retrieves its configuration from the metadata server."),
 
-    SERVER_NOT_AUTHORIZED("ASSET-ANALYSIS-OMES-0007",
+    SERVER_NOT_AUTHORIZED("OMES-ASSET-ANALYSIS-0007",
                      OMRSAuditLogRecordSeverity.EXCEPTION,
                      "Asset Analysis OMES in engine host server {0} is not authorized to retrieve any its configuration from the Discovery Engine " +
                                   "OMAS running in server {1} on OMAG Server Platform {2} with userId {3}.  The error message was: {4}",
@@ -51,14 +51,14 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                   "remote server is correct but it needs updating to allow this userId.  The error message should help to narrow down the cause of the error.  " +
                              "Once the problem has been resolved, restart the engine host server."),
 
-    SUPPORTED_DISCOVERY_TYPE("ASSET-ANALYSIS-OMES-0008",
+    SUPPORTED_DISCOVERY_TYPE("OMES-ASSET-ANALYSIS-0008",
                              OMRSAuditLogRecordSeverity.INFO,
                              "Discovery engine {0} in engine host server {1} is configured to process discovery requests of type {2}",
                              "The discovery engine has successfully retrieved the configuration to run analysis requests for the named discovery " +
                                      "request type.  It is ready to run discovery requests of this type",
                              "Verify that this is an appropriate discovery request type for the discovery engine."),
 
-    NO_SUPPORTED_REQUEST_TYPES("ASSET-ANALYSIS-OMES-0009",
+    NO_SUPPORTED_REQUEST_TYPES("OMES-ASSET-ANALYSIS-0009",
                                OMRSAuditLogRecordSeverity.ERROR,
                                "Discovery engine {0} in engine host server {1} is not configured to support any type of discovery requests",
                                "The discovery engine has no configuration that links it to a discovery request type and a corresponding discovery " +
@@ -66,7 +66,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                "Add the configuration for at least one registered discovery service (and corresponding discovery request type to " +
                                        "this discovery engine."),
 
-    REQUEST_TYPE_CONFIG_ERROR("ASSET-ANALYSIS-OMES-0010",
+    REQUEST_TYPE_CONFIG_ERROR("OMES-ASSET-ANALYSIS-0010",
                               OMRSAuditLogRecordSeverity.EXCEPTION,
                               "Discovery engine {0} in engine host server {1} is not able to retrieve its configured discovery request types from the " +
                                     "Discovery Engine OMAS running in server {2} on OMAG Server Platform {3}.  The error message was {4}",
@@ -76,77 +76,77 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                     "The error message should help to narrow down the cause of the error.  " +
                                     "Once the problem has been resolved, restart the discovery engine."),
 
-    ENGINE_INITIALIZED("ASSET-ANALYSIS-OMES-0011",
+    ENGINE_INITIALIZED("OMES-ASSET-ANALYSIS-0011",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The discovery engine {0} in engine host server {1} has initialized",
                         "The discovery engine has completed initialization and is ready to receive discovery requests.",
                         "Verify that the discovery engine has been initialized wit the correct list of discovery request types."),
 
-    SERVICE_INSTANCE_FAILURE("ASSET-ANALYSIS-OMES-0012",
+    SERVICE_INSTANCE_FAILURE("OMES-ASSET-ANALYSIS-0012",
                              OMRSAuditLogRecordSeverity.ERROR,
                              "The Asset Analysis OMES is unable to initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its discovery services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
-    SERVER_INITIALIZED("ASSET-ANALYSIS-OMES-0013",
+    SERVER_INITIALIZED("OMES-ASSET-ANALYSIS-0013",
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The Asset Analysis OMES in server {0} has initialized",
                        "The engine service has completed initialization.",
                        "Verify that all of the configured discovery engines have successfully started and retrieved their configuration."),
 
-    SERVER_SHUTTING_DOWN("ASSET-ANALYSIS-OMES-0014",
+    SERVER_SHUTTING_DOWN("OMES-ASSET-ANALYSIS-0014",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The Asset Analysis OMES in server {0} is shutting down",
                     "The local administrator has requested shut down of this engine service.",
                     "Verify that this server is no longer needed and the shutdown is expected."),
 
-    ENGINE_SHUTDOWN("ASSET-ANALYSIS-OMES-0015",
+    ENGINE_SHUTDOWN("OMES-ASSET-ANALYSIS-0015",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The discovery engine {0} in server {1} is shutting down",
                     "The local administrator has requested shut down of this discovery engine.  No more discovery requests will be processed by this engine.",
                     "Verify that this shutdown is intended and the discovery engine is no longer needed."),
 
-    SERVER_SHUTDOWN("ASSET-ANALYSIS-OMES-0016",
+    SERVER_SHUTDOWN("OMES-ASSET-ANALYSIS-0016",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
                          "The Asset Analysis OMES in server {0} has completed shutdown",
                          "The local administrator has requested shut down of this engine service and the operation has completed.",
                          "Verify that all configured discovery engines shut down successfully."),
 
-    DISCOVERY_SERVICE_STARTING("ASSET-ANALYSIS-OMES-0017",
+    DISCOVERY_SERVICE_STARTING("OMES-ASSET-ANALYSIS-0017",
                     OMRSAuditLogRecordSeverity.STARTUP,
                     "The discovery service {0} is starting to analyze asset {1} with discovery request type {2} in discovery engine {3} (guid={4});" +
                                        " the results will be stored in discovery analysis report {5}",
                     "A new discovery request is being processed.",
                     "Verify that the discovery service ran to completion."),
 
-    DISCOVERY_SERVICE_FAILED("ASSET-ANALYSIS-OMES-0018",
+    DISCOVERY_SERVICE_FAILED("OMES-ASSET-ANALYSIS-0018",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
                     "The discovery service {0} threw an exception of type {1} during the generation of discovery analysis report {2} for asset {3} " +
                                      "during discovery request type {4} in discovery engine {5} (guid={6}). The error message was {7}",
                     "A discovery service failed to complete the analysis of an asset.",
                     "Review the exception to determine the cause of the error."),
 
-    DISCOVERY_SERVICE_COMPLETE("ASSET-ANALYSIS-OMES-0019",
+    DISCOVERY_SERVICE_COMPLETE("OMES-ASSET-ANALYSIS-0019",
                                OMRSAuditLogRecordSeverity.SHUTDOWN,
                                "The discovery service {0} has completed the analysis of asset {1} with discovery request type {2} in {3} " +
                                        "milliseconds; the results are stored in discovery analysis report {4}",
                                "A discovery request has completed.",
                                "It is possible to query the result of the discovery request through the engine service's REST API."),
 
-    NO_DISCOVERY_ENGINES_STARTED("ASSET-ANALYSIS-OMES-0020",
+    NO_DISCOVERY_ENGINES_STARTED("OMES-ASSET-ANALYSIS-0020",
                          OMRSAuditLogRecordSeverity.ERROR,
                          "Asset Analysis OMES in server {0} is unable to start any discovery engines",
                          "The engine service is not able to run any discovery requests.  It fails to start.",
                          "Add the configuration for at least one discovery engine to this engine service."),
 
-    EXC_ON_ERROR_STATUS_UPDATE("ASSET-ANALYSIS-OMES-0021",
+    EXC_ON_ERROR_STATUS_UPDATE("OMES-ASSET-ANALYSIS-0021",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,
                                  "Discovery engine {0} is unable to update the status for discovery service {1}.  The exception was {2} with error " +
                                        "message {3}",
                                  "The server is not able to record the failed result for a discovery request. The discovery report status is not updated.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the discovery request."),
 
-    UNKNOWN_DISCOVERY_ENGINE_NAME( "ASSET-ANALYSIS-OMES-0022",
+    UNKNOWN_DISCOVERY_ENGINE_NAME( "OMES-ASSET-ANALYSIS-0022",
                                    OMRSAuditLogRecordSeverity.STARTUP,
                                   "Discovery engine called {0} is not known by metadata server {1}.  Exception {2} with message {3} " +
                                            "returned to server {4}",
@@ -155,7 +155,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                   "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
                                           "configuration of the server.  Once the cause is resolved, restart the server."),
 
-    NO_CONFIGURATION_LISTENER("ASSET-ANALYSIS-OMES-0023",
+    NO_CONFIGURATION_LISTENER("OMES-ASSET-ANALYSIS-0023",
                               OMRSAuditLogRecordSeverity.ERROR,
                               "The Asset Analysis OMES are unable to retrieve the connection for the configuration " +
                                       "listener for server {0} from metadata server {1}. " +
@@ -172,7 +172,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                                     "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
                                                     "refresh-config command or wait for the Asset Analysis OMES to retry the configuration request."),
 
-    CONFIGURATION_LISTENER_REGISTERED("ASSET-ANALYSIS-OMES-0024",
+    CONFIGURATION_LISTENER_REGISTERED("OMES-ASSET-ANALYSIS-0024",
                               OMRSAuditLogRecordSeverity.STARTUP,
                               "The Asset Analysis OMES has registered the configuration " +
                                       "listener for server {0}.  It will receive configuration updates from metadata server {1}",
@@ -188,7 +188,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                       "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
                                       "refresh-config command or wait for the Asset Analysis OMES to retry the configuration request."),
 
-    CLEARING_ALL_DISCOVERY_SERVICE_CONFIG("ASSET-ANALYSIS-OMES-0025",
+    CLEARING_ALL_DISCOVERY_SERVICE_CONFIG("OMES-ASSET-ANALYSIS-0025",
                                  OMRSAuditLogRecordSeverity.INFO,
                                  "All discovery service configuration is being refreshed for discovery engine {0}",
                                  "The Asset Analysis OMES will call the Discovery Engine OMAS in the metadata server to " +
@@ -198,7 +198,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                  "Monitor the Asset Analysis OMES to ensure all of the discovery services are retrieved." +
                                                   "Then it is ready to process new discovery requests."),
 
-    FINISHED_ALL_DISCOVERY_SERVICE_CONFIG("ASSET-ANALYSIS-OMES-0026",
+    FINISHED_ALL_DISCOVERY_SERVICE_CONFIG("OMES-ASSET-ANALYSIS-0026",
                                           OMRSAuditLogRecordSeverity.INFO,
                                           "Refreshing all discovery service configuration has being completed for discovery engine {0}",
                                           "The discovery engine is ready to receive discovery requests for all successfully loaded " +
@@ -207,7 +207,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                                   "If there are any discovery services missing then validate the configuration of" +
                                                   "the discovery engine in the metadata server."),
 
-    DISCOVERY_SERVICE_NO_CONFIG("ASSET-ANALYSIS-OMES-0027",
+    DISCOVERY_SERVICE_NO_CONFIG("OMES-ASSET-ANALYSIS-0027",
                                           OMRSAuditLogRecordSeverity.INFO,
                                           "Failed to refresh configuration for discovery service registered as " +
                                         "{0} for discovery request types {1}.  The exception was {2} with error message {3}",
@@ -217,7 +217,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                         "call to request that the discovery engine calls the Discovery Engine OMAS to refresh the configuration for" +
                                         " the discovery service."),
 
-    DISCOVERY_ENGINE_NO_CONFIG("ASSET-ANALYSIS-OMES-0028",
+    DISCOVERY_ENGINE_NO_CONFIG("OMES-ASSET-ANALYSIS-0028",
                                 OMRSAuditLogRecordSeverity.ERROR,
                                 "Failed to refresh configuration for discovery engine {0}.  The exception was {1} with error message {2}",
                                 "The discovery engine is unable to process any discovery requests until its configuration can be retrieved.",
