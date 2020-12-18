@@ -955,7 +955,7 @@ public class RepositoryHandler
                      */
                     for (String entityClassificationName : entityClassificationMap.keySet())
                     {
-                        if (entityClassificationName != null)
+                        if (entityClassificationName != null && classification != null)
                         {
                             this.declassifyEntity(userId,
                                                   externalSourceGUID,
@@ -1102,7 +1102,7 @@ public class RepositoryHandler
                      */
                     for (String entityClassificationName : entityClassificationMap.keySet())
                     {
-                        if (entityClassificationName != null)
+                        if (entityClassificationName != null && classification != null)
                         {
                             this.declassifyEntity(userId,
                                                   entityGUID,
