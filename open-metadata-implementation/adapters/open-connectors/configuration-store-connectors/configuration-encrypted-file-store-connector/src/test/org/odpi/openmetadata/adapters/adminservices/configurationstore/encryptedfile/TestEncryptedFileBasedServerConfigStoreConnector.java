@@ -17,6 +17,7 @@ public class TestEncryptedFileBasedServerConfigStoreConnector
         assertFalse(connector.isFileNameAConfig("omag..server.aaa.config","omag.server.{0}.config"));
         assertTrue(connector.isFileNameAConfig("aaaabbbaaaa","aaaa{0}aaaa"));
         assertTrue(connector.isFileNameAConfig("aaa.config","{0}.config"));
+        assertTrue(connector.isFileNameAConfig("data/servers/aaa/config/aaa.config","data/servers/{0}/config/{0}.config"));
         assertTrue(connector.isFileNameAConfig("configaaa","config{0}"));
         assertTrue(connector.isFileNameAConfig("aaa","{0}"));
     }

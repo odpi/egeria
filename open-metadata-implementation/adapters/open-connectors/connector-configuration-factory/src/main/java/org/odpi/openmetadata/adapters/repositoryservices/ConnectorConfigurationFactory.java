@@ -69,7 +69,7 @@ public class ConnectorConfigurationFactory
     public Connection getServerConfigConnection(String    serverName)
     {
         Endpoint   endpoint = new Endpoint();
-        endpoint.setAddress("omag.server." + serverName + ".config");
+        endpoint.setAddress("data/servers/" + serverName + "/config/" + serverName + ".config");
 
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
@@ -169,7 +169,7 @@ public class ConnectorConfigurationFactory
     {
         final String destinationName = "Files";
 
-        String endpointAddress = "omag.server." + localServerName + ".auditlog";
+        String endpointAddress = "data/servers/" + localServerName + "/logs/auditlog";
 
         Endpoint endpoint = new Endpoint();
 
@@ -280,7 +280,7 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDefaultCohortRegistryConnection(String localServerName, String cohortName)
     {
-        String endpointAddress = localServerName + "." + cohortName + ".registrystore";
+        String endpointAddress = "./data/servers/" + localServerName + "/cohorts/" + cohortName + ".registrystore";
 
         Endpoint endpoint = new Endpoint();
 

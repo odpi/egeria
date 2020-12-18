@@ -45,7 +45,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     private static final int    RANDOM_NAME_LENGTH = 32;
 
     private static final String      KEY_ENV_VAR               = "EGERIA_CONFIG_KEYS";
-    private static final String      DEFAULT_FILENAME_TEMPLATE = "omag.server.{0}.config";
+    private static final String      DEFAULT_FILENAME_TEMPLATE = "data/servers/{0}/config/{0}.config";
     private static final KeyTemplate KEY_TEMPLATE              = AeadKeyTemplates.CHACHA20_POLY1305;
 
     private String configStoreName  = null;

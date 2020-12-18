@@ -150,7 +150,7 @@ public class EmbeddedConnection extends PropertyBase
     {
         if (embeddedConnection == null)
         {
-            return embeddedConnection;
+            return null;
         }
         else
         {
