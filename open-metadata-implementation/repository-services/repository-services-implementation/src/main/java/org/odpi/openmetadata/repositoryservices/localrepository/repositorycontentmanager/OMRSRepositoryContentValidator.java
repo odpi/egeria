@@ -3185,13 +3185,9 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 String             entityOneTypeName    = null;
                 String             entityTwoTypeName    = null;
 
-
-                if (relationshipDef != null)
-                {
-                    entityOneEndDef = relationshipDef.getEndDef1();
-                    entityTwoEndDef = relationshipDef.getEndDef2();
-                    log.debug("Got EndDefs");
-                }
+                entityOneEndDef = relationshipDef.getEndDef1();
+                entityTwoEndDef = relationshipDef.getEndDef2();
+                log.debug("Got EndDefs");
 
                 if ((entityOneEndDef != null) && (entityTwoEndDef != null))
                 {
@@ -3212,13 +3208,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                  * At this point we know what the expected types of
                  * the ends should be.  Now look at the relationship instance.
                  */
-                if ((entityOneProxy != null) && (entityTwoProxy != null))
-                {
-                    entityOneType = entityOneProxy.getType();
-                    entityTwoType = entityTwoProxy.getType();
 
-                    log.debug("Got Proxy Types of One: " + entityOneType + " and Two: " + entityOneType);
-                }
+                entityOneType = entityOneProxy.getType();
+                entityTwoType = entityTwoProxy.getType();
+
+                log.debug("Got Proxy Types of One: " + entityOneType + " and Two: " + entityOneType);
+
 
                 if ((entityOneType != null) && (entityTwoType != null))
                 {
