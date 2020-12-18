@@ -310,11 +310,6 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                          "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
                                          "Check that the OMAG Server configuration connector has been specified correctly."),
 
-    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW(400, "OMAG-ADMIN-400-045",
-                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
-                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
-                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
-
     NULL_SERVICE_URL_MARKER(400, "OMAG-ADMIN-400-045",
                             "The {0} service of server {1} has been configured with a null service URL marker",
                             "The system is unable to accept a null value for this property because the admin services " +
@@ -356,6 +351,11 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                     "The system is unable to initialize this server since it no longer supports the requested subsystem.",
                                     "Use information in the admin guide to update the configuration to request the replacement service " +
                                             "and restart the server."),
+
+    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW(400, "OMAG-ADMIN-400-051",
+                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
+                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
+                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
 
     NO_CONFIG_DOC(400,"OMAG-ADMIN-400-101",
                   "An engine service for OMAG server {0} has been passed null configuration",
