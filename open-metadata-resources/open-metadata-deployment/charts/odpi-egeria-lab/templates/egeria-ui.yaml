@@ -17,12 +17,16 @@ spec:
   ports:
     - port: 8443
       targetPort: 8443
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.ui }}
+      {{- end }}
   {{ if .Values.debug.egeriaJVM }}
     - name: debug
       port: 5005
       targetPort: 5005
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.debug.ui }}
+      {{- end }}
   {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}

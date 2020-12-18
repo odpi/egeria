@@ -17,7 +17,9 @@ spec:
   ports:
     - port: 8888
       targetPort: 8888
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.jupyter }}
+      {{- end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

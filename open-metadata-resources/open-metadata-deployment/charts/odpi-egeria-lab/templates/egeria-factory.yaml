@@ -18,12 +18,16 @@ spec:
     - name: https
       port: 9443
       targetPort: 9443
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.factory }}
+      {{- end }}
     {{ if .Values.debug.egeriaJVM }}
     - name: debug
       port: 5005
       targetPort: 5005
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.debug.factory }}
+      {{- end }}
   {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
@@ -59,6 +63,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: factory
     spec:
+      {{- include "egeria.security" . | nindent 6 }}
       containers:
         - name: egeria
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\

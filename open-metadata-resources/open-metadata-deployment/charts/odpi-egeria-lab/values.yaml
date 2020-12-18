@@ -3,7 +3,13 @@
 ---
 
 service:
-  type: NodePort
+  # Change this to 'NodePort' if you want externalized addresses for our services.
+  # If not, expose the service manually after deployment ie using a LoadBalancer
+  #
+  # For example to expose the egeria lab stateful set you might use:
+  # kubectl expose odpi-egeria-lab-dev --name egeria-dev
+  type: ClusterIP
+  #type: NodePort
   nodeport:
     jupyter: 30888
     core: 30080
