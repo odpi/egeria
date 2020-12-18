@@ -72,7 +72,7 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
 
     @Test
     public void getCategoryHomeGlossary() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
+        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
                 eq(CATEGORY_ANCHOR_RELATIONSHIP_GUID), eq(CATEGORY_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),
                 eq("getCategoryHomeGlossary"))).thenReturn(Collections.singletonList(glossaries.get(0)));
 

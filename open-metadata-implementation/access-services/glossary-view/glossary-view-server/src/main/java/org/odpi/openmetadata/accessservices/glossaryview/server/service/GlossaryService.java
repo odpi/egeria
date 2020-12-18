@@ -72,7 +72,7 @@ public class GlossaryService extends GlossaryViewOMAS {
      * @return glossary
      */
     public GlossaryViewEntityDetailResponse getCategoryHomeGlossary(String userId, String serverName, String categoryGUID){
-        return getRelatedEntitiesResponse(userId, serverName, categoryGUID, GLOSSARY_TYPE_NAME,
+        return getRelatedEntitiesResponse(userId, serverName, categoryGUID, CATEGORY_TYPE_NAME,
                 CATEGORY_ANCHOR_RELATIONSHIP_NAME, 0, 0, "getCategoryHomeGlossary");
     }
 
