@@ -258,7 +258,7 @@ public class IntegrationServiceHandler
         if the server hosting  integration daemon has encountered a problem
         when starting then the connectorHandlers can be null
          */
-        if( connectorHandlers != null )
+        if(connectorHandlers != null)
         {
             for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
             {
