@@ -19,7 +19,7 @@ public class ExceptionHandler {
     public void captureOMRSCheckedExceptionBase(AssetCatalogOMASAPIResponse response, OMRSCheckedExceptionBase e) {
         response.setRelatedHTTPCode(e.getReportedHTTPCode());
         response.setExceptionClassName(e.getClass().getName());
-        response.setExceptionErrorMessage(e.getErrorMessage());
+        response.setExceptionErrorMessage(e.getReportedErrorMessage());
         response.setExceptionSystemAction(e.getReportedSystemAction());
         response.setExceptionUserAction(e.getReportedUserAction());
     }
@@ -33,7 +33,7 @@ public class ExceptionHandler {
     public void captureAssetCatalogExeption(AssetCatalogOMASAPIResponse response, AssetCatalogException e) {
         response.setRelatedHTTPCode(e.getReportedHTTPCode());
         response.setExceptionClassName(e.getClass().getName());
-        response.setExceptionErrorMessage(e.getErrorMessage());
+        response.setExceptionErrorMessage(e.getReportedErrorMessage());
         response.setExceptionSystemAction(e.getReportedSystemAction());
         response.setExceptionUserAction(e.getReportedUserAction());
     }

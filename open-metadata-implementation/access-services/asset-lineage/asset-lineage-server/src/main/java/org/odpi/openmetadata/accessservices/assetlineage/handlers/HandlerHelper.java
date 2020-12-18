@@ -151,11 +151,13 @@ public class HandlerHelper {
      * @param entityDetailGUID the entity identifier
      * @param entityTypeName the entity type name
      * @return the entity
-     * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
      */
     public EntityDetail getEntityDetails(String userId,
                                          String entityDetailGUID,
-                                         String entityTypeName) throws OCFCheckedExceptionBase {
+                                         String entityTypeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityDetails";
 
         return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
