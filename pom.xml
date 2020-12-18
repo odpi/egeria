@@ -3239,6 +3239,7 @@
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
                         <exclude>**/presentation-server/**</exclude>
+                        <exclude>data/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
