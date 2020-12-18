@@ -22,6 +22,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RESTClient is responsible for issuing calls to the Subject Area OMAS REST APIs.
@@ -160,7 +161,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        return getByIdRESTCall(userId, guid, methodName, type, urnTemplate, null, null);
+        return getByIdRESTCall(userId, guid, methodName, type, urnTemplate, null, null, null);
     }
     /**
      * Issue a GET REST call that returns a response object by guid.
@@ -187,7 +188,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-       return getByIdRESTCall(userId, guid, methodName, type, urnTemplate, findRequest, null);
+       return getByIdRESTCall(userId, guid, methodName, type, urnTemplate, findRequest, null, null);
     }
     /**
      * Issue a GET REST call that returns a response object by guid.
@@ -211,9 +212,10 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                   ParameterizedTypeReference<GenericResponse<T>> type,
                                                   String urnTemplate,
                                                   FindRequest findRequest,
-                                                  Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+                                                  Integer maximumPageSizeOnRestCall,
+                                                  Map<String, String> params) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -222,8 +224,10 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         GenericResponse<T> completeResponse = null;
         int requestedPageSize = 0;
         int startingFrom = 0;
-        if (findRequest != null && findRequest.getPageSize() == null) {
-            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        if (findRequest != null) {
+            if (findRequest.getPageSize() == null) {
+                findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+            }
             invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
             requestedPageSize = findRequest.getPageSize();
             startingFrom = findRequest.getStartingFrom();
@@ -235,7 +239,14 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             if (findRequest == null) {
                 expandedURL = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId, guid);
             } else {
-                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+                QueryBuilder queryBuilder = createFindQuery(methodName, findRequest);
+                if (params != null && params.keySet().size() >0) {
+                    for (String param: params.keySet()) {
+                        queryBuilder.addParam(param,params.get(param));
+                    }
+                }
+
+                String findUrlTemplate = urnTemplate + queryBuilder.toString();
                 expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId, guid);
             }
             completeResponse = callGetRESTCall(methodName, type, expandedURL);
@@ -250,7 +261,13 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                 // we need to amend the startingFrom potions when issuing subsequent requests.
                 findRequest.setStartingFrom(totalNumberRetrieved);
                 // encode a url with the new find request
-                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+                QueryBuilder queryBuilder = createFindQuery(methodName, findRequest);
+                if (params != null && params.keySet().size() >0) {
+                    for (String param: params.keySet()) {
+                        queryBuilder.addParam(param,params.get(param));
+                    }
+                }
+                String findUrlTemplate = urnTemplate + queryBuilder.toString();
                 String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId, guid);
                 // issue the get call
                 GenericResponse<T> responseForPart = callGetRESTCall(methodName, type, expandedURL);
@@ -260,6 +277,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                 if (numberRetrieved == 0 || numberRetrieved < maximumPageSizeOnRestCall) {
                     // break out of the while loop as there is no more to retrieve.
                     totalNumberRetrieved = requestedPageSize;
+                    completeResponse = responseForPart;
                 } else {
                     // there may be more to get
                     totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
@@ -432,8 +450,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         int startingFrom = findRequest.getStartingFrom();
         if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall == 0 || maximumPageSizeOnRestCall >= requestedPageSize ) {
             // only need to issued one rest call
-            String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
-            completeResponse = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate, findRequest);
+            completeResponse = getByIdRESTCall(userId, guid, methodName, type, urnTemplate, findRequest);
             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
             // issue multiple calls to build up the requested page
@@ -444,10 +461,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                 findRequest.setPageSize(maximumPageSizeOnRestCall);
                 // we need to amend the startingFrom potions when issuing subsequent requests.
                 findRequest.setStartingFrom(totalNumberRetrieved);
-                // encode a url with the new find request
-                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
                 // issue the get call
-                GenericResponse<T> responseForPart = getByIdRESTCall(userId, guid, methodName, type, findUrlTemplate, findRequest);
+                GenericResponse<T> responseForPart = getByIdRESTCall(userId, guid, methodName, type, urnTemplate, findRequest);
                 exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
 
                 int numberRetrieved = responseForPart.results().size();

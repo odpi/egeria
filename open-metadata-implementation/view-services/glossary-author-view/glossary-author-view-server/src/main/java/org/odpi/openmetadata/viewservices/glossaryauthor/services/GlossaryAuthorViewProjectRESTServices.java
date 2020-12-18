@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;

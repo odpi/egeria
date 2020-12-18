@@ -18,7 +18,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SubjectAreaNodeClient
 public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubjectAreaNode<G> {
@@ -61,13 +63,11 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
     public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo("getCategories");
-        QueryBuilder query = client.createFindQuery(methodInfo, findRequest);
-        query.addParam("onlyTop", onlyTop);
-        String urlTemplate = urnTemplate + query.toString();
-
+        Map<String, String> params = new HashMap<>();
+        params.put("onlyTop", onlyTop+"");
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
         ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Category> response = client.getByIdRESTCall(userId ,guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall);
+        GenericResponse<Category> response = client.getByIdRESTCall(userId ,guid, methodInfo, type, urnTemplate, findRequest, maximumPageSizeOnRestCall, params);
         return response.results();
     }
 
@@ -99,10 +99,10 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      */
     public List<Term> getTerms(String userId, String guid, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodInfo = getMethodInfo("getTerms");
-        final String urlTemplate = BASE_URL + "/%s/terms" + client.createFindQuery(methodInfo, findRequest).toString();
+        final String urlTemplate = BASE_URL + "/%s/terms";
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
         ParameterizedTypeReference<GenericResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall);
+        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall, null);
         return response.results();
     }
 }

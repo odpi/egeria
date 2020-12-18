@@ -316,6 +316,7 @@ export default function Diagram(props) {
   const unpin = (d) => {
     d.fx = null;
     d.fy = null;
+    return null;
   }
 
  
