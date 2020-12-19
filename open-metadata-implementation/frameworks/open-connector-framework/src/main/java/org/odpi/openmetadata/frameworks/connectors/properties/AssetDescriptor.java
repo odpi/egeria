@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This is the base class for a connected asset.  It is passed to all of the embedded property objects so the name
@@ -184,4 +185,44 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
         }
     }
 
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        AssetDescriptor that = (AssetDescriptor) objectToCompare;
+        return Objects.equals(assetBean, that.assetBean) &&
+                       Objects.equals(assetName, that.assetName) &&
+                       Objects.equals(assetTypeName, that.assetTypeName) &&
+                       Objects.equals(assetSuperTypeNames, that.assetSuperTypeNames);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), assetBean, assetName, assetTypeName, assetSuperTypeNames);
+    }
 }

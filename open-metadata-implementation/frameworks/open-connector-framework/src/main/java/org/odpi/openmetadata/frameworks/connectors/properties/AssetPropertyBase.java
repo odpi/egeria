@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import java.util.Objects;
+
 /**
  * The AssetPropertyBase class is a base class for all properties that link off of the connected asset.
  * It manages the information about the parent asset.
@@ -85,5 +87,39 @@ public abstract class AssetPropertyBase extends AssetPropertyElementBase
         }
 
         return parentAssetTypeName;
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        AssetPropertyBase that = (AssetPropertyBase) objectToCompare;
+        return Objects.equals(parentAsset, that.parentAsset);
+    }
+
+
+    /**
+     * Return code value representing the contents of this object.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(parentAsset);
     }
 }

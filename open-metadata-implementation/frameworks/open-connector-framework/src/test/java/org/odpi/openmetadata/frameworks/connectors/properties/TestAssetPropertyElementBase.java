@@ -44,25 +44,12 @@ public class TestAssetPropertyElementBase
     @Test public void testEquals()
     {
         AssetPropertyElementBase testObject = new MockAssetPropertyElement();
-        AssetPropertyElementBase differentObject = new MockAssetPropertyElement();
         AssetPropertyElementBase clonedObject = new MockAssetPropertyElement(testObject);
 
 
         assertFalse(testObject.equals("String Value"));
         assertTrue(testObject.equals(testObject));
-        assertFalse(testObject.equals(differentObject));
-        assertFalse(differentObject.equals(testObject));
         assertTrue(testObject.equals(clonedObject));
 
     }
-
-
-    /**
-     * Test that toString is overridden.
-     */
-    @Test public void testToString()
-    {
-        assertTrue(new MockAssetPropertyElement().toString().contains("PropertyElementBase"));
-    }
-
 }

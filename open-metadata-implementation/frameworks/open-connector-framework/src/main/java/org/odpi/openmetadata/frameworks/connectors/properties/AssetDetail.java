@@ -142,7 +142,7 @@ public class AssetDetail extends AssetSummary
     {
         if (externalIdentifiers == null)
         {
-            return externalIdentifiers;
+            return null;
         }
         else
         {
@@ -160,7 +160,7 @@ public class AssetDetail extends AssetSummary
     {
         if (relatedMediaReferences == null)
         {
-            return relatedMediaReferences;
+            return null;
         }
         else
         {
@@ -178,7 +178,7 @@ public class AssetDetail extends AssetSummary
     {
         if (noteLogs == null)
         {
-            return noteLogs;
+            return null;
         }
         else
         {
@@ -196,7 +196,7 @@ public class AssetDetail extends AssetSummary
     {
         if (externalReferences == null)
         {
-            return externalReferences;
+            return null;
         }
         else
         {
@@ -214,7 +214,7 @@ public class AssetDetail extends AssetSummary
     {
         if (connections == null)
         {
-            return connections;
+            return null;
         }
         else
         {
@@ -232,7 +232,7 @@ public class AssetDetail extends AssetSummary
     {
         if (licenses == null)
         {
-            return licenses;
+            return null;
         }
         else
         {
@@ -250,7 +250,7 @@ public class AssetDetail extends AssetSummary
     {
         if (certifications == null)
         {
-            return certifications;
+            return null;
         }
         else
         {
@@ -297,6 +297,10 @@ public class AssetDetail extends AssetSummary
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         AssetDetail that = (AssetDetail) objectToCompare;
         return Objects.equals(externalIdentifiers, that.externalIdentifiers) &&
                        Objects.equals(relatedMediaReferences, that.relatedMediaReferences) &&
@@ -316,6 +320,7 @@ public class AssetDetail extends AssetSummary
     @Override
     public int hashCode()
     {
-        return Objects.hash(externalIdentifiers, relatedMediaReferences, noteLogs, externalReferences, connections, licenses, certifications);
+        return Objects.hash(super.hashCode(), externalIdentifiers, relatedMediaReferences, noteLogs, externalReferences, connections, licenses,
+                            certifications);
     }
 }
