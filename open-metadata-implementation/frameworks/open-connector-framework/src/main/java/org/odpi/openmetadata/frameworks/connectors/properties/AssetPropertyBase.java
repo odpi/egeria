@@ -86,28 +86,4 @@ public abstract class AssetPropertyBase extends AssetPropertyElementBase
 
         return parentAssetTypeName;
     }
-
-
-    /**
-     * An equals() method for subclasses to check they are connected to the same parent asset.
-     *
-     * @param objectToCompare object to test
-     * @return boolean indicating whether this object is connected to equivalent parent assets.
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-
-        AssetPropertyBase that = (AssetPropertyBase) objectToCompare;
-
-        return parentAsset != null ? parentAsset.equals(that.parentAsset) : that.parentAsset == null;
-    }
 }

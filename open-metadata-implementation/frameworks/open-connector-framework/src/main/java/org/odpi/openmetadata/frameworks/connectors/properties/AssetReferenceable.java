@@ -235,7 +235,7 @@ public class AssetReferenceable extends AssetElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetReferenceable))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -244,6 +244,18 @@ public class AssetReferenceable extends AssetElementHeader
             return false;
         }
         AssetReferenceable that = (AssetReferenceable) objectToCompare;
-        return Objects.equals(getReferenceableBean(), that.getReferenceableBean());
+        return Objects.equals(referenceableBean, that.referenceableBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), referenceableBean);
     }
 }

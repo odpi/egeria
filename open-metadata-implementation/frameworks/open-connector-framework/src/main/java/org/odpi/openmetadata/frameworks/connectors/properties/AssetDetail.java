@@ -293,21 +293,29 @@ public class AssetDetail extends AssetSummary
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetDetail))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         AssetDetail that = (AssetDetail) objectToCompare;
-        return Objects.equals(getExternalIdentifiers(), that.getExternalIdentifiers()) &&
-                Objects.equals(getRelatedMediaReferences(), that.getRelatedMediaReferences()) &&
-                Objects.equals(getNoteLogs(), that.getNoteLogs()) &&
-                Objects.equals(getExternalReferences(), that.getExternalReferences()) &&
-                Objects.equals(getConnections(), that.getConnections()) &&
-                Objects.equals(getLicenses(), that.getLicenses()) &&
-                Objects.equals(getCertifications(), that.getCertifications());
+        return Objects.equals(externalIdentifiers, that.externalIdentifiers) &&
+                       Objects.equals(relatedMediaReferences, that.relatedMediaReferences) &&
+                       Objects.equals(noteLogs, that.noteLogs) &&
+                       Objects.equals(externalReferences, that.externalReferences) &&
+                       Objects.equals(connections, that.connections) &&
+                       Objects.equals(licenses, that.licenses) &&
+                       Objects.equals(certifications, that.certifications);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(externalIdentifiers, relatedMediaReferences, noteLogs, externalReferences, connections, licenses, certifications);
     }
 }

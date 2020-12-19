@@ -199,6 +199,7 @@ public class AssetElementType extends AssetPropertyElementBase
         return Objects.equals(getElementTypeBean(), that.getElementTypeBean());
     }
 
+
     /**
      * Create a hash code for this element type.
      *

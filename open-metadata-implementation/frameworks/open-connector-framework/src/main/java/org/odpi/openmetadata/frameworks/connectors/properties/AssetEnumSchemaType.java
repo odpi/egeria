@@ -178,6 +178,7 @@ public class AssetEnumSchemaType extends AssetSimpleSchemaType
     }
 
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -191,7 +192,7 @@ public class AssetEnumSchemaType extends AssetSimpleSchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetEnumSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -200,6 +201,18 @@ public class AssetEnumSchemaType extends AssetSimpleSchemaType
             return false;
         }
         AssetEnumSchemaType that = (AssetEnumSchemaType) objectToCompare;
-        return Objects.equals(getEnumSchemaTypeBean(), that.getEnumSchemaTypeBean());
+        return Objects.equals(enumSchemaTypeBean, that.enumSchemaTypeBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), enumSchemaTypeBean);
     }
 }
