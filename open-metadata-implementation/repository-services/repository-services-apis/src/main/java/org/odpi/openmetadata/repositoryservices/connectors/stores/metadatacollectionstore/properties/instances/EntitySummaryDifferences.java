@@ -10,8 +10,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
  *          classifications.</li>
  * </ul>
  */
-public class EntitySummaryDifferences extends Differences {
-
+public class EntitySummaryDifferences extends Differences
+{
     private ClassificationDifferences classificationDifferences = null;
 
     /**
@@ -60,5 +60,4 @@ public class EntitySummaryDifferences extends Differences {
         classificationDifferences = new ClassificationDifferences();
         classificationDifferences.check(left, right);
     }
-
 }

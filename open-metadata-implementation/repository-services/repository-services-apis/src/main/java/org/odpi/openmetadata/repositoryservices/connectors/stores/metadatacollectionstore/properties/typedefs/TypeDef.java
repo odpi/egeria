@@ -508,10 +508,10 @@ public abstract class TypeDef extends TypeDefSummary
 
 
     /**
-     * Validated that the GUID, name and version number of a TypeDef are equal.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param objectToCompare to test
-     * @return boolean flag to say object is the same TypeDefSummary
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -520,39 +520,36 @@ public abstract class TypeDef extends TypeDefSummary
         {
             return true;
         }
-        if (!(objectToCompare instanceof TypeDef))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         TypeDef typeDef = (TypeDef) objectToCompare;
-        return Objects.equals(getSuperType(), typeDef.getSuperType()) &&
-                Objects.equals(getDescription(), typeDef.getDescription()) &&
-                Objects.equals(getDescriptionGUID(), typeDef.getDescriptionGUID()) &&
-                Objects.equals(getOrigin(), typeDef.getOrigin()) &&
-                Objects.equals(getCreatedBy(), typeDef.getCreatedBy()) &&
-                Objects.equals(getUpdatedBy(), typeDef.getUpdatedBy()) &&
-                Objects.equals(getCreateTime(), typeDef.getCreateTime()) &&
-                Objects.equals(getUpdateTime(), typeDef.getUpdateTime()) &&
-                Objects.equals(getOptions(), typeDef.getOptions()) &&
-                Objects.equals(getExternalStandardMappings(), typeDef.getExternalStandardMappings()) &&
-                Objects.equals(getValidInstanceStatusList(), typeDef.getValidInstanceStatusList()) &&
-                getInitialStatus() == typeDef.getInitialStatus() &&
-                Objects.equals(getPropertiesDefinition(), typeDef.getPropertiesDefinition());
+        return Objects.equals(superType, typeDef.superType) &&
+                       Objects.equals(description, typeDef.description) &&
+                       Objects.equals(descriptionGUID, typeDef.descriptionGUID) &&
+                       Objects.equals(origin, typeDef.origin) &&
+                       Objects.equals(createdBy, typeDef.createdBy) &&
+                       Objects.equals(updatedBy, typeDef.updatedBy) &&
+                       Objects.equals(createTime, typeDef.createTime) &&
+                       Objects.equals(updateTime, typeDef.updateTime) &&
+                       Objects.equals(options, typeDef.options) &&
+                       Objects.equals(externalStandardMappings, typeDef.externalStandardMappings) &&
+                       Objects.equals(validInstanceStatusList, typeDef.validInstanceStatusList) &&
+                       initialStatus == typeDef.initialStatus &&
+                       Objects.equals(propertiesDefinition, typeDef.propertiesDefinition);
     }
 
 
     /**
-     * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.
+     * Return a hash code based on the values of this object.
      *
-     * @return int hash code
+     * @return in hash code
      */
     @Override
     public int hashCode()
     {
-        return guid != null ? guid.hashCode() : 0;
+        return Objects.hash(superType, description, descriptionGUID, origin, createdBy, updatedBy, createTime, updateTime, options,
+                            externalStandardMappings, validInstanceStatusList, initialStatus, propertiesDefinition);
     }
 }

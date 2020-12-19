@@ -191,10 +191,10 @@ public class RelationshipDef extends TypeDef
 
 
     /**
-     * Verify that supplied object has the same properties.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param objectToCompare object to test
-     * @return result
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -203,17 +203,25 @@ public class RelationshipDef extends TypeDef
         {
             return true;
         }
-        if (!(objectToCompare instanceof RelationshipDef))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         RelationshipDef that = (RelationshipDef) objectToCompare;
-        return getPropagationRule() == that.getPropagationRule() &&
-                Objects.equals(getEndDef1(), that.getEndDef1()) &&
-                Objects.equals(getEndDef2(), that.getEndDef2());
+        return propagationRule == that.propagationRule &&
+                       Objects.equals(endDef1, that.endDef1) &&
+                       Objects.equals(endDef2, that.endDef2);
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(propagationRule, endDef1, endDef2);
     }
 }
