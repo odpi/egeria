@@ -83,10 +83,11 @@ public class GovernanceRelationship implements Serializable
     }
 
 
+
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object to compare
+     * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
     @Override
@@ -96,15 +97,23 @@ public class GovernanceRelationship implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceRelationship))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         GovernanceRelationship that = (GovernanceRelationship) objectToCompare;
-        return Objects.equals(getRationale(), that.getRationale());
+        return Objects.equals(rationale, that.rationale);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(rationale);
     }
 }

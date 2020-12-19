@@ -167,7 +167,6 @@ public class ElementHeader implements Serializable
     }
 
 
-
     /**
      * Standard toString method.
      *
@@ -184,6 +183,7 @@ public class ElementHeader implements Serializable
                 ", GUID='" + getGUID() + '\'' +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
