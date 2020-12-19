@@ -42,7 +42,7 @@ Components included are:
  
  ## Checking what is running
  
- Use the docker command to checiners are running. You should have
+ Use the docker command to check containers are running. You should have
  * 1 Jupyter container to run the notebooks
  * 4 Egeria containers
  * Kafka and Zookeeper containers for messaging
@@ -66,7 +66,7 @@ the containers.
 
 If this still fails, check the logs (below) and also consider if there is enough memory for docker. Finally follow any 
 debugging guides for the container environment itself (outside the scope of this readme) in case of some system
-issue or incompatability.
+issue or incompatibility.
 
  ## Logging
  
@@ -77,7 +77,7 @@ issue or incompatability.
  To look at the logs of individual containers, use the `docker log` command and either the container id, or name from the list 
  of running containers. See the docker documentation for more detail on this command.
  
- ie to see the state of the core container use:
+ For example, to see the state of the core container use:
  ```
 $ docker logs tutorials_core_1                                                                                                                                                                                                                                                                                                         [10:43:39]
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
@@ -98,7 +98,10 @@ INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRat
 Mon Sep 21 09:39:29 GMT 2020 No OMAG servers listed in startup configuration
 Mon Sep 21 09:39:51 GMT 2020 OMAG server platform ready for more configuration
 ```
-It is much easier to see any audit log messages produced - for example if you run this comyou manwill see output like
+It is much easier to see any audit log messages produced - for example if you run this command you will see messages that
+confirm which other cohort members are communicating with that server, the subsystems that are running
+and the events that are being exchanged.  For example:
+
 ```
 Mon Sep 21 09:49:00 GMT 2020 cocoMDS5 Startup OMRS-AUDIT-0032 The local repository outbound event manager is sending out the 548 type definition events that were generated and buffered during server initialization
 Mon Sep 21 09:49:00 GMT 2020 cocoMDS2 Information OMRS-AUDIT-0132 A new remote connector from server cocoMDS3 with metadata collection id 9d524bcf-e62a-4e42-8c41-ed6426387b05 has been deployed to enterprise connector for Project Management OMAS
