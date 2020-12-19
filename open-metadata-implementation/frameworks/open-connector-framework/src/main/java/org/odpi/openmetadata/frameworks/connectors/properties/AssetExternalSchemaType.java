@@ -205,7 +205,7 @@ public class AssetExternalSchemaType extends AssetSchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetExternalSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -214,6 +214,18 @@ public class AssetExternalSchemaType extends AssetSchemaType
             return false;
         }
         AssetExternalSchemaType that = (AssetExternalSchemaType) objectToCompare;
-        return Objects.equals(getExternalSchemaTypeBean(), that.getExternalSchemaTypeBean());
+        return Objects.equals(externalSchemaTypeBean, that.externalSchemaTypeBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), externalSchemaTypeBean);
     }
 }

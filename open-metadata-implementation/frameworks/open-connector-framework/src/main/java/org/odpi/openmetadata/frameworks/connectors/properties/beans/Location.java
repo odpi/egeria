@@ -136,7 +136,7 @@ public class Location extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof Location))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -146,6 +146,18 @@ public class Location extends Referenceable
         }
         Location location = (Location) objectToCompare;
         return Objects.equals(getDisplayName(), location.getDisplayName()) &&
-                Objects.equals(getDescription(), location.getDescription());
+                       Objects.equals(getDescription(), location.getDescription());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription());
     }
 }

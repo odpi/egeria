@@ -274,7 +274,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof VirtualConnectionProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -284,5 +284,17 @@ public class VirtualConnectionProperties extends ConnectionProperties
         }
         VirtualConnectionProperties that = (VirtualConnectionProperties) objectToCompare;
         return Objects.equals(getConnectionBean(), that.getConnectionBean());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getConnectionBean());
     }
 }

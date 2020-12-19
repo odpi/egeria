@@ -189,6 +189,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> createNestedFolders(String userId,
                                             String fileManagerCapabilityGUID,
                                             String fileManagerCapabilityName,
@@ -237,6 +238,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void attachTopLevelFolder(String userId,
                                      String fileManagerCapabilityGUID,
                                      String fileManagerCapabilityName,
@@ -282,6 +284,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void detachTopLevelFolder(String userId,
                                      String fileManagerCapabilityGUID,
                                      String fileManagerCapabilityName,
@@ -333,6 +336,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFileToCatalog(String             userId,
                                              String             fileManagerCapabilityGUID,
                                              String             fileManagerCapabilityName,
@@ -386,6 +390,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFileToCatalogFromTemplate(String             userId,
                                                          String             fileManagerCapabilityGUID,
                                                          String             fileManagerCapabilityName,
@@ -433,6 +438,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void updateDataFileInCatalog(String             userId,
                                         String             fileManagerCapabilityGUID,
                                         String             fileManagerCapabilityName,
@@ -481,6 +487,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void archiveDataFileInCatalog(String            userId,
                                          String            fileManagerCapabilityGUID,
                                          String            fileManagerCapabilityName,
@@ -525,6 +532,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void deleteDataFileFromCatalog(String userId,
                                           String fileManagerCapabilityGUID,
                                           String fileManagerCapabilityName,
@@ -579,6 +587,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFolderToCatalog(String               userId,
                                                String               fileManagerCapabilityGUID,
                                                String               fileManagerCapabilityName,
@@ -632,6 +641,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFolderToCatalogFromTemplate(String             userId,
                                                            String             fileManagerCapabilityGUID,
                                                            String             fileManagerCapabilityName,
@@ -679,6 +689,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void updateDataFolderInCatalog(String               userId,
                                           String               fileManagerCapabilityGUID,
                                           String               fileManagerCapabilityName,
@@ -727,6 +738,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void archiveDataFolderInCatalog(String            userId,
                                            String            fileManagerCapabilityGUID,
                                            String            fileManagerCapabilityName,
@@ -769,6 +781,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void deleteDataFolderFromCatalog(String userId,
                                             String fileManagerCapabilityGUID,
                                             String fileManagerCapabilityName,
@@ -815,6 +828,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void attachDataFileAssetToFolder(String userId,
                                             String fileManagerCapabilityGUID,
                                             String fileManagerCapabilityName,
@@ -862,6 +876,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void detachDataFileAssetFromFolder(String userId,
                                               String fileManagerCapabilityGUID,
                                               String fileManagerCapabilityName,
@@ -908,6 +923,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void moveDataFileInCatalog(String userId,
                                       String fileManagerCapabilityGUID,
                                       String fileManagerCapabilityName,
@@ -954,6 +970,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void moveDataFolderInCatalog(String userId,
                                         String fileManagerCapabilityGUID,
                                         String fileManagerCapabilityName,
@@ -998,6 +1015,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public FileFolderElement getFolderByGUID(String   userId,
                                              String   folderGUID) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -1033,6 +1051,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public FileFolderElement getFolderByPathName(String   userId,
                                                  String   pathName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -1075,6 +1094,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<FileFolderElement>  getTopLevelFolders(String userId,
                                                        String fileSystemGUID,
                                                        int    startFrom,
@@ -1117,6 +1137,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<FileFolderElement>  getNestedFolders(String  userId,
                                                      String  parentFolderGUID,
                                                      int     startFrom,
@@ -1160,6 +1181,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<DataFileElement>  getTopLevelDataFiles(String userId,
                                                        String fileSystemGUID,
                                                        int    startFrom,
@@ -1202,6 +1224,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<DataFileElement> getFolderFiles(String  userId,
                                                 String  folderGUID,
                                                 int     startFrom,
@@ -1243,6 +1266,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public DataFileElement getFileByGUID(String userId,
                                          String fileGUID) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
@@ -1278,6 +1302,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public DataFileElement getFileByPathName(String   userId,
                                              String   pathName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
@@ -1320,6 +1345,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<DataFileElement> findFilesByPathName(String userId,
                                                      String pathName,
                                                      int    startFrom,

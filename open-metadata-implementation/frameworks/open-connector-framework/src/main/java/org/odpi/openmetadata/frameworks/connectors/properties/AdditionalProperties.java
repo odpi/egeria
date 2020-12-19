@@ -108,10 +108,26 @@ public class AdditionalProperties extends AssetPropertyBase
 
 
     /**
-     * Test whether the supplied object is equal to this object.
+     * Standard toString method.
      *
-     * @param objectToCompare   object to test
-     * @return boolean indicating if the supplied object represents the same content as this object.
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "AdditionalProperties{" +
+                "additionalProperties=" + additionalProperties +
+                ", parentAsset=" + parentAsset +
+                '}';
+    }
+
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -120,7 +136,7 @@ public class AdditionalProperties extends AssetPropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof AdditionalProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -134,16 +150,13 @@ public class AdditionalProperties extends AssetPropertyBase
 
 
     /**
-     * Standard toString method.
+     * Hash of properties
      *
-     * @return print out of variables in a JSON-style
+     * @return int
      */
     @Override
-    public String toString()
+    public int hashCode()
     {
-        return "AdditionalProperties{" +
-                "additionalProperties=" + additionalProperties +
-                ", parentAsset=" + parentAsset +
-                '}';
+        return Objects.hash(super.hashCode(), additionalProperties);
     }
 }

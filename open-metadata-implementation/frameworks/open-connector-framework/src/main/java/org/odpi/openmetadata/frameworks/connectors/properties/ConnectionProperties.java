@@ -343,7 +343,7 @@ public class ConnectionProperties extends AssetReferenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof ConnectionProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -352,6 +352,18 @@ public class ConnectionProperties extends AssetReferenceable
             return false;
         }
         ConnectionProperties that = (ConnectionProperties) objectToCompare;
-        return Objects.equals(getConnectionBean(), that.getConnectionBean());
+        return Objects.equals(connectionBean, that.connectionBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), connectionBean);
     }
 }

@@ -45,5 +45,26 @@ public class GovernanceProcessProperties extends TechnicalControl
      *
      * @return string containing the properties and their values
      */
-
+    @Override
+    public String toString()
+    {
+        return "GovernanceProcessProperties{" +
+                       "relatedGovernanceDrivers=" + getRelatedGovernanceDrivers() +
+                       ", governanceControls=" + getGovernanceControls() +
+                       ", title='" + getTitle() + '\'' +
+                       ", summary='" + getSummary() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", scope='" + getScope() + '\'' +
+                       ", status=" + getStatus() +
+                       ", priority='" + getPriority() + '\'' +
+                       ", implications=" + getImplications() +
+                       ", outcomes=" + getOutcomes() +
+                       ", governanceMetrics=" + getGovernanceMetrics() +
+                       ", governanceZones=" + getGovernanceZones() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
+    }
 }

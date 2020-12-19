@@ -194,10 +194,21 @@ public class Rating extends ElementHeader
             return false;
         }
         Rating rating = (Rating) objectToCompare;
-        return getIsPublic() == rating.getIsPublic() &&
-                getStarRating() == rating.getStarRating() &&
-                Objects.equals(getReview(), rating.getReview()) &&
-                Objects.equals(getUser(), rating.getUser());
+        return isPublic == rating.isPublic &&
+                       getStarRating() == rating.getStarRating() &&
+                       Objects.equals(getReview(), rating.getReview()) &&
+                       Objects.equals(getUser(), rating.getUser());
     }
 
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getStarRating(), getReview(), getUser(), isPublic);
+    }
 }

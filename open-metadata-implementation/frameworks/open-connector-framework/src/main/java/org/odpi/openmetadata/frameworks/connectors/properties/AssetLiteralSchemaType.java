@@ -207,7 +207,7 @@ public class AssetLiteralSchemaType extends AssetSchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetLiteralSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -216,6 +216,18 @@ public class AssetLiteralSchemaType extends AssetSchemaType
             return false;
         }
         AssetLiteralSchemaType that = (AssetLiteralSchemaType) objectToCompare;
-        return Objects.equals(getLiteralSchemaTypeBean(), that.getLiteralSchemaTypeBean());
+        return Objects.equals(literalSchemaTypeBean, that.literalSchemaTypeBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), literalSchemaTypeBean);
     }
 }

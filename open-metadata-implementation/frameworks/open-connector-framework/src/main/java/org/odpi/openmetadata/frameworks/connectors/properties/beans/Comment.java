@@ -172,6 +172,7 @@ public class Comment extends Referenceable
     }
 
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -185,7 +186,7 @@ public class Comment extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof Comment))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -194,9 +195,22 @@ public class Comment extends Referenceable
             return false;
         }
         Comment comment = (Comment) objectToCompare;
-        return getCommentType() == comment.getCommentType() &&
-                Objects.equals(getCommentText(), comment.getCommentText()) &&
-                Objects.equals(getIsPublic(), comment.getIsPublic()) &&
-                Objects.equals(getUser(), comment.getUser());
+        return isPublic == comment.isPublic &&
+                       getCommentType() == comment.getCommentType() &&
+                       Objects.equals(getCommentText(), comment.getCommentText()) &&
+                       Objects.equals(getUser(), comment.getUser());
+    }
+
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getCommentType(), getCommentText(), getUser(), isPublic);
     }
 }

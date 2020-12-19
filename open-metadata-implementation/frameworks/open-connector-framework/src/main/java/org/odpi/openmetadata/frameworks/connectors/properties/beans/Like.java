@@ -127,7 +127,7 @@ public class Like extends ElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Like))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -136,7 +136,19 @@ public class Like extends ElementHeader
             return false;
         }
         Like like = (Like) objectToCompare;
-        return getIsPublic() == like.getIsPublic() &&
-                Objects.equals(getUser(), like.getUser());
+        return isPublic == like.isPublic &&
+                       Objects.equals(getUser(), like.getUser());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getUser(), isPublic);
     }
 }
