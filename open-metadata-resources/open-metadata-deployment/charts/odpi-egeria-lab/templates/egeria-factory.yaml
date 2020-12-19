@@ -18,12 +18,16 @@ spec:
     - name: https
       port: 9443
       targetPort: 9443
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.factory }}
+      {{- end }}
     {{ if .Values.debug.egeriaJVM }}
     - name: debug
       port: 5005
       targetPort: 5005
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.debug.factory }}
+      {{- end }}
   {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
@@ -32,7 +36,7 @@ spec:
 ...
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   creationTimestamp: null
   name: {{ include "myapp.fullname" . }}-factory
@@ -45,12 +49,12 @@ metadata:
 
 spec:
   replicas: 1
+  serviceName: {{ .Release.Name }}-factory
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/component: factory
-  strategy: {}
   template:
     metadata:
       creationTimestamp: null
@@ -59,6 +63,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: factory
     spec:
+      {{- include "egeria.security" . | nindent 6 }}
       containers:
         - name: egeria
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -86,7 +91,20 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
+          {{ if .Values.persistence.enabled }}
+          volumeMounts:
+            - mountPath: "/deployments/data"
+              name: {{ .Release.Name }}-factory-data
+          {{ end }}
       restartPolicy: Always
-
-status: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-factory-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 8Gi
+      #storageClassName:
 ...
