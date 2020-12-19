@@ -3012,6 +3012,7 @@ public class RepositoryHandler
         {
             EntityProxy requiredEnd = relationship.getEntityOneProxy();
             EntityProxy startingEnd = relationship.getEntityTwoProxy();
+
             if (startingEntityGUID.equals(requiredEnd.getGUID()))
             {
                 requiredEnd = relationship.getEntityTwoProxy();
@@ -3106,6 +3107,7 @@ public class RepositoryHandler
 
                     EntityProxy requiredEnd = relationship.getEntityOneProxy();
                     EntityProxy startingEnd = relationship.getEntityTwoProxy();
+
                     if (startingEntityGUID.equals(requiredEnd.getGUID()))
                     {
                         requiredEnd = relationship.getEntityTwoProxy();
@@ -3596,7 +3598,7 @@ public class RepositoryHandler
                                                                                             null,
                                                                                             2);
 
-            if ((returnedEntities == null) || returnedEntities.isEmpty())
+            if ((returnedEntities == null) || (returnedEntities.isEmpty()))
             {
                 return null;
             }
