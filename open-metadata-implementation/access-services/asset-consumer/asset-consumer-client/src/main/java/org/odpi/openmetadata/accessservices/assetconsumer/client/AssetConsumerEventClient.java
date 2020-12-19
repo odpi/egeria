@@ -103,6 +103,7 @@ public class AssetConsumerEventClient implements AssetConsumerEventInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void registerListener(String                     userId,
                                  AssetConsumerEventListener listener) throws InvalidParameterException,
                                                                             ConnectionCheckedException,
