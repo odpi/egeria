@@ -17,7 +17,9 @@ spec:
   ports:
     - port: 8091
       targetPort: 8091
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.presentation }}
+      {{- end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

@@ -108,6 +108,19 @@ Mon Sep 21 09:49:00 GMT 2020 cocoMDS2 Cohort OMRS-AUDIT-0110 A new registration 
 This can be quite verbose when the servers start up, since a lot of type information is exchanged between the servers. 
 
 To follow 'in real time' you can use `docker logs -f <container>` (-f for 'follow')
+
+## Persistence
+
+This docker-compose environment uses docker volumes to persist data. However they are bound to the lifecycle imposed by docker-compose. This means that when you issue the 'docker-compose -f ./egeria-tutorial.yaml down' they are deleted. To avoid this you will need to manually create the volumes and change their definition to external.
+
+To do this edit egeria-tutorial.yaml and change `external: false` to `external: true`.
+
+Then manually create each volume ie `docker volume create datalake-data` before running `docker-compose -f ./egeria-tutorial.yaml up`. Now when you subsequently do the down, the volumes will be left behind. Use `docker volume ls` to list & `docker volume rm <id>` to delete.
+
+Egeria is also set to use the local graph repository by default, which will write to data in these volumes
+
+Set the value of 'repositoryType' to 'in-memory-repository' in the .env file to not use the graph repository.
+
  ### Using the environment to extend notebooks or develop new ones
  
   - If you are using a notebook written to assume 'localhost:9443' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
