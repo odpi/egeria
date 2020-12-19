@@ -207,6 +207,10 @@ public class RelationshipDef extends TypeDef
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         RelationshipDef that = (RelationshipDef) objectToCompare;
         return propagationRule == that.propagationRule &&
                        Objects.equals(endDef1, that.endDef1) &&
@@ -222,6 +226,6 @@ public class RelationshipDef extends TypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(propagationRule, endDef1, endDef2);
+        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2);
     }
 }

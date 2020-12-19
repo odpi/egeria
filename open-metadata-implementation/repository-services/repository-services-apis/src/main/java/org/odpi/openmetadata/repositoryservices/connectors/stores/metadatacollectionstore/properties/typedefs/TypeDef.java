@@ -524,6 +524,10 @@ public abstract class TypeDef extends TypeDefSummary
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         TypeDef typeDef = (TypeDef) objectToCompare;
         return Objects.equals(superType, typeDef.superType) &&
                        Objects.equals(description, typeDef.description) &&
@@ -549,7 +553,7 @@ public abstract class TypeDef extends TypeDefSummary
     @Override
     public int hashCode()
     {
-        return Objects.hash(superType, description, descriptionGUID, origin, createdBy, updatedBy, createTime, updateTime, options,
+        return Objects.hash(super.hashCode(), superType, description, descriptionGUID, origin, createdBy, updatedBy, createTime, updateTime, options,
                             externalStandardMappings, validInstanceStatusList, initialStatus, propertiesDefinition);
     }
 }

@@ -187,8 +187,6 @@ public class ClassificationDef extends TypeDef
     }
 
 
-
-
     /**
      * Validate that an object is equal depending on their stored values.
      *
@@ -206,6 +204,10 @@ public class ClassificationDef extends TypeDef
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         ClassificationDef that = (ClassificationDef) objectToCompare;
         return propagatable == that.propagatable &&
                        Objects.equals(validEntityDefs, that.validEntityDefs);
@@ -220,6 +222,6 @@ public class ClassificationDef extends TypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(validEntityDefs, propagatable);
+        return Objects.hash(super.hashCode(), validEntityDefs, propagatable);
     }
 }
