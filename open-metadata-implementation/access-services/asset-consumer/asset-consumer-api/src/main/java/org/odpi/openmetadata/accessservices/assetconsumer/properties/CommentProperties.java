@@ -187,7 +187,7 @@ public class CommentProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof CommentProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -195,10 +195,22 @@ public class CommentProperties extends ReferenceableProperties
         {
             return false;
         }
-        CommentProperties comment = (CommentProperties) objectToCompare;
-        return getCommentType() == comment.getCommentType() &&
-                Objects.equals(getCommentText(), comment.getCommentText()) &&
-                Objects.equals(getIsPublic(), comment.getIsPublic()) &&
-                Objects.equals(getUser(), comment.getUser());
+        CommentProperties that = (CommentProperties) objectToCompare;
+        return isPublic == that.isPublic &&
+                       commentType == that.commentType &&
+                       Objects.equals(commentText, that.commentText) &&
+                       Objects.equals(user, that.user);
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), commentType, commentText, user, isPublic);
     }
 }

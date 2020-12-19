@@ -159,7 +159,7 @@ public class AssetRating extends AssetElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetRating))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -168,6 +168,18 @@ public class AssetRating extends AssetElementHeader
             return false;
         }
         AssetRating that = (AssetRating) objectToCompare;
-        return Objects.equals(getRatingBean(), that.getRatingBean());
+        return Objects.equals(ratingBean, that.ratingBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), ratingBean);
     }
 }

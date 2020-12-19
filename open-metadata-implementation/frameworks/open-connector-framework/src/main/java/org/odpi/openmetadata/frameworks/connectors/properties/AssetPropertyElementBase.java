@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -12,8 +13,6 @@ import java.util.UUID;
 public abstract class AssetPropertyElementBase implements Serializable
 {
     private static final long     serialVersionUID = 1L;
-
-    private              int      hashCode = UUID.randomUUID().hashCode();
 
 
     /**
@@ -37,63 +36,42 @@ public abstract class AssetPropertyElementBase implements Serializable
     public AssetPropertyElementBase(AssetPropertyElementBase template)
     {
         /*
-         * The hashCode value is replaced with the value from the template so the template object and this
-         * new object will return equals set to true.
+         * Nothing to do.  This constructor is included so variables are added in this class at a later date
+         * without impacting the subclasses.
          */
-        if (template != null)
-        {
-            hashCode = template.hashCode();
-        }
     }
 
 
     /**
-     * Provide a common implementation of hashCode for all OCF properties objects.  The UUID is unique and
-     * is randomly assigned and so its hashCode is as good as anything to describe the hash code of the properties
-     * object.  This method may be overridden by subclasses.
-     */
-    public int hashCode()
-    {
-        return hashCode;
-    }
-
-
-    /**
-     * Provide a common implementation of equals for all OCF properties objects.  The UUID is unique and
-     * is randomly assigned and so its hashCode is as good as anything to evaluate the equality of the properties
-     * object.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param object object to test
-     * @return boolean flag
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
-    public boolean equals(Object object)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == object)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (object == null || getClass() != object.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
 
-        AssetPropertyElementBase that = (AssetPropertyElementBase) object;
-
-        return hashCode == that.hashCode;
+        return true;
     }
 
 
     /**
-     * Standard toString method.
+     * Hash of properties
      *
-     * @return print out of variables in a JSON-style
+     * @return int
      */
     @Override
-    public String toString()
+    public int hashCode()
     {
-        return "PropertyElementBase{" +
-                "hashCode=" + hashCode +
-                '}';
+        return 1;
     }
 }

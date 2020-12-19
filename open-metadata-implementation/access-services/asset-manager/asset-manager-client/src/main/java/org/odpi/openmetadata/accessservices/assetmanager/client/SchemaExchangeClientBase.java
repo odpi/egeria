@@ -146,6 +146,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createSchemaType(String               userId,
                                    String               assetManagerGUID,
                                    String               assetManagerName,
@@ -215,6 +216,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createSchemaTypeFromTemplate(String              userId,
                                                String              assetManagerGUID,
                                                String              assetManagerName,
@@ -279,6 +281,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateSchemaType(String               userId,
                                  String               assetManagerGUID,
                                  String               assetManagerName,
@@ -333,6 +336,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupSchemaTypeParent(String  userId,
                                       String  assetManagerGUID,
                                       String  assetManagerName,
@@ -381,6 +385,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearSchemaTypeParent(String userId,
                                       String assetManagerGUID,
                                       String assetManagerName,
@@ -426,6 +431,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeSchemaType(String userId,
                                  String assetManagerGUID,
                                  String assetManagerName,
@@ -471,6 +477,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<SchemaTypeElement> findSchemaType(String userId,
                                                   String assetManagerGUID,
                                                   String assetManagerName,
@@ -522,6 +529,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public SchemaTypeElement getSchemaTypeForElement(String userId,
                                                      String assetManagerGUID,
                                                      String assetManagerName,
@@ -567,6 +575,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<SchemaTypeElement>   getSchemaTypeByName(String userId,
                                                          String assetManagerGUID,
                                                          String assetManagerName,
@@ -618,6 +627,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public SchemaTypeElement getSchemaTypeByGUID(String userId,
                                                  String assetManagerGUID,
                                                  String assetManagerName,
@@ -659,6 +669,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public ElementHeader getSchemaTypeParent(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,
@@ -713,6 +724,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createSchemaAttribute(String                    userId,
                                         String                    assetManagerGUID,
                                         String                    assetManagerName,
@@ -783,6 +795,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createSchemaAttributeFromTemplate(String              userId,
                                                     String              assetManagerGUID,
                                                     String              assetManagerName,
@@ -847,6 +860,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateSchemaAttribute(String                    userId,
                                       String                    assetManagerGUID,
                                       String                    assetManagerName,
@@ -899,6 +913,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setSchemaElementAsCalculatedValue(String userId,
                                                   String assetManagerGUID,
                                                   String assetManagerName,
@@ -945,6 +960,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearSchemaElementAsCalculatedValue(String userId,
                                                     String assetManagerGUID,
                                                     String assetManagerName,
@@ -989,6 +1005,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupColumnAsPrimaryKey(String     userId,
                                         String     assetManagerGUID,
                                         String     assetManagerName,
@@ -1043,6 +1060,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearColumnAsPrimaryKey(String userId,
                                         String assetManagerGUID,
                                         String assetManagerName,
@@ -1086,6 +1104,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupForeignKeyRelationship(String               userId,
                                             String               assetManagerGUID,
                                             String               assetManagerName,
@@ -1136,6 +1155,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateForeignKeyRelationship(String               userId,
                                              String               assetManagerGUID,
                                              String               assetManagerName,
@@ -1183,6 +1203,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearForeignKeyRelationship(String userId,
                                             String assetManagerGUID,
                                             String assetManagerName,
@@ -1224,6 +1245,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeSchemaAttribute(String userId,
                                       String assetManagerGUID,
                                       String assetManagerName,
@@ -1269,6 +1291,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<SchemaAttributeElement>   findSchemaAttributes(String userId,
                                                                String assetManagerGUID,
                                                                String assetManagerName,
@@ -1321,6 +1344,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<SchemaAttributeElement>    getAttributesForSchemaType(String userId,
                                                                       String assetManagerGUID,
                                                                       String assetManagerName,
@@ -1370,6 +1394,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<SchemaAttributeElement>   getSchemaAttributesByName(String userId,
                                                                     String assetManagerGUID,
                                                                     String assetManagerName,
@@ -1421,6 +1446,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public SchemaAttributeElement getSchemaAttributeByGUID(String userId,
                                                            String assetManagerGUID,
                                                            String assetManagerName,

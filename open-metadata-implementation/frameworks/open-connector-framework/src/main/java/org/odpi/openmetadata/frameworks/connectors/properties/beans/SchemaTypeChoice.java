@@ -149,6 +149,7 @@ public class SchemaTypeChoice extends SchemaType
                 '}';
     }
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -171,6 +172,18 @@ public class SchemaTypeChoice extends SchemaType
             return false;
         }
         SchemaTypeChoice that = (SchemaTypeChoice) objectToCompare;
-        return Objects.equals(schemaOptions, that.schemaOptions);
+        return Objects.equals(getSchemaOptions(), that.getSchemaOptions());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getSchemaOptions());
     }
 }

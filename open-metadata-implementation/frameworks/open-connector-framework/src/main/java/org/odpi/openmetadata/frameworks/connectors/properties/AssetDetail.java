@@ -142,7 +142,7 @@ public class AssetDetail extends AssetSummary
     {
         if (externalIdentifiers == null)
         {
-            return externalIdentifiers;
+            return null;
         }
         else
         {
@@ -160,7 +160,7 @@ public class AssetDetail extends AssetSummary
     {
         if (relatedMediaReferences == null)
         {
-            return relatedMediaReferences;
+            return null;
         }
         else
         {
@@ -178,7 +178,7 @@ public class AssetDetail extends AssetSummary
     {
         if (noteLogs == null)
         {
-            return noteLogs;
+            return null;
         }
         else
         {
@@ -196,7 +196,7 @@ public class AssetDetail extends AssetSummary
     {
         if (externalReferences == null)
         {
-            return externalReferences;
+            return null;
         }
         else
         {
@@ -214,7 +214,7 @@ public class AssetDetail extends AssetSummary
     {
         if (connections == null)
         {
-            return connections;
+            return null;
         }
         else
         {
@@ -232,7 +232,7 @@ public class AssetDetail extends AssetSummary
     {
         if (licenses == null)
         {
-            return licenses;
+            return null;
         }
         else
         {
@@ -250,7 +250,7 @@ public class AssetDetail extends AssetSummary
     {
         if (certifications == null)
         {
-            return certifications;
+            return null;
         }
         else
         {
@@ -293,7 +293,7 @@ public class AssetDetail extends AssetSummary
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetDetail))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -302,12 +302,25 @@ public class AssetDetail extends AssetSummary
             return false;
         }
         AssetDetail that = (AssetDetail) objectToCompare;
-        return Objects.equals(getExternalIdentifiers(), that.getExternalIdentifiers()) &&
-                Objects.equals(getRelatedMediaReferences(), that.getRelatedMediaReferences()) &&
-                Objects.equals(getNoteLogs(), that.getNoteLogs()) &&
-                Objects.equals(getExternalReferences(), that.getExternalReferences()) &&
-                Objects.equals(getConnections(), that.getConnections()) &&
-                Objects.equals(getLicenses(), that.getLicenses()) &&
-                Objects.equals(getCertifications(), that.getCertifications());
+        return Objects.equals(externalIdentifiers, that.externalIdentifiers) &&
+                       Objects.equals(relatedMediaReferences, that.relatedMediaReferences) &&
+                       Objects.equals(noteLogs, that.noteLogs) &&
+                       Objects.equals(externalReferences, that.externalReferences) &&
+                       Objects.equals(connections, that.connections) &&
+                       Objects.equals(licenses, that.licenses) &&
+                       Objects.equals(certifications, that.certifications);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), externalIdentifiers, relatedMediaReferences, noteLogs, externalReferences, connections, licenses,
+                            certifications);
     }
 }

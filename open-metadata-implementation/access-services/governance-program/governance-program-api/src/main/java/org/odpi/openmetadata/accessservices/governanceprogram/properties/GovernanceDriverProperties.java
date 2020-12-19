@@ -153,11 +153,12 @@ public abstract class GovernanceDriverProperties extends GovernanceDefinitionPro
     }
 
 
+
     /**
-     * Test the properties of the governance driver to determine if the supplied object is equal to this one.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object
-     * @return boolean evaluation
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -166,7 +167,7 @@ public abstract class GovernanceDriverProperties extends GovernanceDefinitionPro
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceDriverProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -175,7 +176,19 @@ public abstract class GovernanceDriverProperties extends GovernanceDefinitionPro
             return false;
         }
         GovernanceDriverProperties that = (GovernanceDriverProperties) objectToCompare;
-        return Objects.equals(getRelatedGovernanceDrivers(), that.getRelatedGovernanceDrivers()) &&
-                Objects.equals(getGovernancePolicies(), that.getGovernancePolicies());
+        return Objects.equals(relatedGovernanceDrivers, that.relatedGovernanceDrivers) &&
+                       Objects.equals(governancePolicies, that.governancePolicies);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), relatedGovernanceDrivers, governancePolicies);
     }
 }

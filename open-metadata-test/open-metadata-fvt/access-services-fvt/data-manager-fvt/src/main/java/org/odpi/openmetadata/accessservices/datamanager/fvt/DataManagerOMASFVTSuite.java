@@ -5,17 +5,10 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.databases.CreateDatabaseTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
-import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
 import org.odpi.openmetadata.http.HttpHelper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-
-import static java.lang.System.exit;
 
 /**
  * DataManagerOMASFVTSuite provides the main program for the Data Manager OMAS
@@ -32,6 +25,7 @@ public class DataManagerOMASFVTSuite extends FVTSuiteBase
      * @param userId calling user
      * @return combined results of running test
      */
+    @Override
     protected int performFVT(String   serverName,
                              String   serverPlatformRootURL,
                              String   userId)

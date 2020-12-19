@@ -146,6 +146,7 @@ public class AvroFileAssetOwner extends AssetOwner implements AssetOnboardingAvr
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addAvroFileToCatalog(String    userId,
                                              String    displayName,
                                              String    description,

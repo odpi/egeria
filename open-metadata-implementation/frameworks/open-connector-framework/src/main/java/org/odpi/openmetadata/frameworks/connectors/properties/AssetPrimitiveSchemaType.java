@@ -178,6 +178,7 @@ public class AssetPrimitiveSchemaType extends AssetSimpleSchemaType
     }
 
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -191,7 +192,7 @@ public class AssetPrimitiveSchemaType extends AssetSimpleSchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetPrimitiveSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -200,6 +201,18 @@ public class AssetPrimitiveSchemaType extends AssetSimpleSchemaType
             return false;
         }
         AssetPrimitiveSchemaType that = (AssetPrimitiveSchemaType) objectToCompare;
-        return Objects.equals(getPrimitiveSchemaTypeBean(), that.getPrimitiveSchemaTypeBean());
+        return Objects.equals(primitiveSchemaTypeBean, that.primitiveSchemaTypeBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), primitiveSchemaTypeBean);
     }
 }

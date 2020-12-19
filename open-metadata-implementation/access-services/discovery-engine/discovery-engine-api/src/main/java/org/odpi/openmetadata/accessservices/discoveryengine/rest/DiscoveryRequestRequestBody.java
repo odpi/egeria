@@ -45,7 +45,7 @@ public class DiscoveryRequestRequestBody extends ODFOMASAPIRequestBody
     {
         super(template);
 
-        if (template == null)
+        if (template != null)
         {
             analysisParameters = template.getAnalysisParameters();
             annotationTypes = template.getAnnotationTypes();

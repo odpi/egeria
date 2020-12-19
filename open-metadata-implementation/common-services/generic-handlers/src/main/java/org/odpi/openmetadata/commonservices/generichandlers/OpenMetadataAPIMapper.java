@@ -36,8 +36,8 @@ public class OpenMetadataAPIMapper
     public static final String NAME_PROPERTY_NAME                        = "name";                                 /* from Asset entity */
     public static final String FORMULA_PROPERTY_NAME                     = "formula";                              /* from Process entity */
 
-    public static final String LOCATION_TYPE_GUID            = "3e09cb2b-5f15-4fd2-b004-fe0146ad8628";
-    public static final String LOCATION_TYPE_NAME            = "Location";
+    public static final String LOCATION_TYPE_GUID                        = "3e09cb2b-5f15-4fd2-b004-fe0146ad8628";
+    public static final String LOCATION_TYPE_NAME                        = "Location";
     /* Referenceable */
 
     public static final String ASSET_LOCATION_TYPE_GUID                  = "bc236b62-d0e6-4c5c-93a1-3a35c3dba7b1";  /* from Area 0 */
@@ -1084,7 +1084,7 @@ public class OpenMetadataAPIMapper
     public static final String TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID  = "e2bb76bb-774a-43ff-9045-3a05f663d5d9";  /* from Area 5 */
     public static final String TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME  = "TypeEmbeddedAttribute";
     /* Linked to SchemaAttribute */
-    public static final String TYPE_NAME_PROPERTY_NAME                  = "typeName";      /* from TypeEmbeddedAttribute classification */
+    public static final String TYPE_NAME_PROPERTY_NAME                  = "schemaTypeName";      /* from TypeEmbeddedAttribute classification */
 
     /* For Schema Link */
     public static final String SCHEMA_LINK_TYPE_GUID                    = "67e08705-2d2a-4df6-9239-1818161a41e0";      /* from Area 5 */

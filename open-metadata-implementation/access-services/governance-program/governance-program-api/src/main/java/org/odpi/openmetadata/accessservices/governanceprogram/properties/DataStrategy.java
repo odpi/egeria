@@ -117,11 +117,12 @@ public class DataStrategy extends GovernanceDriverProperties
     }
 
 
+
     /**
-     * Test the properties of the DataStrategy to determine if the supplied object is equal to this one.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object
-     * @return boolean evaluation
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -130,7 +131,7 @@ public class DataStrategy extends GovernanceDriverProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof DataStrategy))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -139,6 +140,18 @@ public class DataStrategy extends GovernanceDriverProperties
             return false;
         }
         DataStrategy that = (DataStrategy) objectToCompare;
-        return Objects.equals(getBusinessImperatives(), that.getBusinessImperatives());
+        return Objects.equals(businessImperatives, that.businessImperatives);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), businessImperatives);
     }
 }
