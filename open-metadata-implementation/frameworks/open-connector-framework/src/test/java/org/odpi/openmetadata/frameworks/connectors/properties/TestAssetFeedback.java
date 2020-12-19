@@ -127,9 +127,6 @@ public class TestAssetFeedback
 
         AssetFeedback sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
-
-        assertFalse(getTestObject().equals(getDifferentObject()));
-        assertFalse(getTestObject().equals(getAnotherDifferentObject()));
     }
 
 

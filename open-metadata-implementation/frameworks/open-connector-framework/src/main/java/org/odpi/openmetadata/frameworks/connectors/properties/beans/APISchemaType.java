@@ -120,6 +120,7 @@ public class APISchemaType extends SchemaType
                 '}';
     }
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -133,7 +134,7 @@ public class APISchemaType extends SchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof APISchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -142,6 +143,18 @@ public class APISchemaType extends SchemaType
             return false;
         }
         APISchemaType that = (APISchemaType) objectToCompare;
-        return Objects.equals(getOperationCount(), that.getOperationCount());
+        return getOperationCount() == that.getOperationCount();
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getOperationCount());
     }
 }

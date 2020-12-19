@@ -193,6 +193,7 @@ public class AssetFeedback extends AssetPropertyBase
                 '}';
     }
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -206,18 +207,26 @@ public class AssetFeedback extends AssetPropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetFeedback))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         AssetFeedback that = (AssetFeedback) objectToCompare;
-        return Objects.equals(getInformalTags(), that.getInformalTags()) &&
-                Objects.equals(getLikes(), that.getLikes()) &&
-                Objects.equals(getRatings(), that.getRatings()) &&
-                Objects.equals(getComments(), that.getComments());
+        return Objects.equals(informalTags, that.informalTags) &&
+                       Objects.equals(likes, that.likes) &&
+                       Objects.equals(ratings, that.ratings) &&
+                       Objects.equals(comments, that.comments);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(informalTags, likes, ratings, comments);
     }
 }

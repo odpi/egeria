@@ -103,7 +103,7 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof ComplexSchemaTypeProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -112,6 +112,18 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
             return false;
         }
         ComplexSchemaTypeProperties that = (ComplexSchemaTypeProperties) objectToCompare;
-        return Objects.equals(getAttributeCount(), that.getAttributeCount());
+        return attributeCount == that.attributeCount;
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), attributeCount);
     }
 }

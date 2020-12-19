@@ -134,7 +134,7 @@ public class Meaning extends ElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Meaning))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -144,6 +144,18 @@ public class Meaning extends ElementHeader
         }
         Meaning meaning = (Meaning) objectToCompare;
         return Objects.equals(getName(), meaning.getName()) &&
-                Objects.equals(getDescription(), meaning.getDescription());
+                       Objects.equals(getDescription(), meaning.getDescription());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getName(), getDescription());
     }
 }

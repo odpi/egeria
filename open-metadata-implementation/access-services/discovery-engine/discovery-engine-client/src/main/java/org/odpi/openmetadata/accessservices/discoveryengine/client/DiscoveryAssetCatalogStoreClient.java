@@ -46,6 +46,7 @@ public class DiscoveryAssetCatalogStoreClient extends DiscoveryAssetCatalogStore
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
+    @Override
     public List<String> getAssets(int  startFrom,
                                   int  pageSize) throws InvalidParameterException,
                                                         UserNotAuthorizedException,
@@ -67,6 +68,7 @@ public class DiscoveryAssetCatalogStoreClient extends DiscoveryAssetCatalogStore
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
+    @Override
     public List<String>  getAssetsByQualifiedName(String   name,
                                                   int      startFrom,
                                                   int      pageSize) throws InvalidParameterException,
@@ -89,6 +91,7 @@ public class DiscoveryAssetCatalogStoreClient extends DiscoveryAssetCatalogStore
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
+    @Override
     public List<String>  getAssetsByName(String   name,
                                          int      startFrom,
                                          int      pageSize) throws InvalidParameterException,
@@ -111,6 +114,7 @@ public class DiscoveryAssetCatalogStoreClient extends DiscoveryAssetCatalogStore
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
+    @Override
     public List<String> findAssets(String   searchString,
                                    int      startFrom,
                                    int      pageSize) throws InvalidParameterException,
@@ -132,6 +136,7 @@ public class DiscoveryAssetCatalogStoreClient extends DiscoveryAssetCatalogStore
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
+    @Override
     public  List<String> getAssetsByEndpoint(String   networkAddress,
                                              int      startFrom,
                                              int      pageSize) throws InvalidParameterException,

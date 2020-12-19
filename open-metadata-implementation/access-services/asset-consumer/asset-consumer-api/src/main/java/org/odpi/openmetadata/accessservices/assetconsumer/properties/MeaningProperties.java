@@ -131,7 +131,7 @@ public class MeaningProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof MeaningProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -139,8 +139,20 @@ public class MeaningProperties extends ReferenceableProperties
         {
             return false;
         }
-        MeaningProperties meaning = (MeaningProperties) objectToCompare;
-        return Objects.equals(getName(), meaning.getName()) &&
-                Objects.equals(getDescription(), meaning.getDescription());
+        MeaningProperties that = (MeaningProperties) objectToCompare;
+        return Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description);
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), name, description);
     }
 }

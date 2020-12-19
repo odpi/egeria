@@ -17,7 +17,9 @@ spec:
   ports:
     - port: 80
       targetPort: 80
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.uistatic }}
+      {{- end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

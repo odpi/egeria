@@ -197,4 +197,32 @@ public class OMRSEventV1InstanceSection implements Serializable
     {
         this.originalInstanceGUID = originalInstanceGUID;
     }
+
+
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventV1InstanceSection{" +
+                       "eventType=" + eventType +
+                       ", typeDefGUID='" + typeDefGUID + '\'' +
+                       ", typeDefName='" + typeDefName + '\'' +
+                       ", instanceGUID='" + instanceGUID + '\'' +
+                       ", originalEntity=" + originalEntity +
+                       ", entity=" + entity +
+                       ", originalRelationship=" + originalRelationship +
+                       ", relationship=" + relationship +
+                       ", originalClassification=" + originalClassification +
+                       ", classification=" + classification +
+                       ", instanceBatch=" + instanceBatch +
+                       ", homeMetadataCollectionId='" + homeMetadataCollectionId + '\'' +
+                       ", originalHomeMetadataCollectionId='" + originalHomeMetadataCollectionId + '\'' +
+                       ", originalTypeDefSummary=" + originalTypeDefSummary +
+                       ", originalInstanceGUID='" + originalInstanceGUID + '\'' +
+                       '}';
+    }
 }

@@ -61,8 +61,9 @@ how to install, set up docker and make use of Egeria's docker image.
 ---
 
 * Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
-* Link to the [Setting up th Hands-on Lab Infrastructure](../../open-metadata-resources/open-metadata-tutorials/lab-infrastructure-guide)
-tutorial that uses docker
+* Link to the [Setting up the Hands-on Lab Infrastructure](../../open-metadata-resources/open-metadata-tutorials/lab-infrastructure-guide)
+tutorial that uses docker.
+
 ----
 * Link to [Egeria's Community Guide](../../Community-Guide.md) to find out more about joining the Egeria community.
 

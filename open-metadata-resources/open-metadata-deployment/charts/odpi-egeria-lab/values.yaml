@@ -3,7 +3,13 @@
 ---
 
 service:
-  type: NodePort
+  # Change this to 'NodePort' if you want externalized addresses for our services.
+  # If not, expose the service manually after deployment ie using a LoadBalancer
+  #
+  # For example to expose the egeria lab stateful set you might use:
+  # kubectl expose odpi-egeria-lab-dev --name egeria-dev
+  type: ClusterIP
+  #type: NodePort
   nodeport:
     jupyter: 30888
     core: 30080
@@ -25,6 +31,7 @@ egeria:
   #logging: OFF
   development: true
   version: "2.6-SNAPSHOT"
+  repositoryType: "local-graph-repository"
 
 debug:
   egeriaJVM: false
@@ -57,7 +64,13 @@ image:
   uistatic:
     name: egeria-uistatic
 
+# Persistence
+persistence:
+  enabled: true
+  # See also kafka below
+
 # When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
+# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
 kafka:
     #volumePermissions:
     #enabled: true
@@ -65,9 +78,11 @@ kafka:
         enabled: false
     zookeeper:
         persistence: 
-            enabled: false
+            enabled: true
     persistence: 
-        enabled: false
+        enabled: true
+    logpersistence: 
+        enabled: true
     #can be enabled if external kafka access is required
     #service:
         #nodeport: 30092

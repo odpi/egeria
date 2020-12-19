@@ -1133,7 +1133,20 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults(enterpriseParentConnector);
+        List<Relationship> results = executor.getResults(enterpriseParentConnector);
+
+        if ((results == null) || (results.isEmpty()))
+        {
+            /*
+             * This could be either that the entity exists with no relationships, or the entity GUID is invalid.
+             * The call below checks that the entityGUID is valid.  The check is done at the end rather than before
+             * retrieving relationships so that it is avoided if there are relationships to return.
+             */
+            this.isEntityKnown(userId, entityGUID);
+            results = null;
+        }
+
+        return results;
     }
 
 
@@ -4309,8 +4322,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (results != null)
         {
-            List<EntityDetail>         processedResults;
-
             for (EntityDetail returnedEntity : results)
             {
                 combinedResults = this.addUniqueEntity(combinedResults,
@@ -4374,8 +4385,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (results != null)
         {
-            List<Relationship>         processedResults;
-
             for (Relationship returnedRelationship : results)
             {
                 combinedResults = this.addUniqueRelationship(combinedResults,
