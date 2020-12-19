@@ -4112,7 +4112,71 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the starting entity.
+     * Return the list of relationships of the requested type connecting the supplied entities.
+     *
+     * @param userId  user making the request
+     * @param entity1GUID  entity at end 1 GUID
+     * @param entity1TypeName   entity 1's type name
+     * @param entity2GUID  entity at end 2 GUID
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationship or null
+     *
+     * @throws InvalidParameterException wrong type in entity 1
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public List<Relationship> getRelationshipsBetweenEntities(String                 userId,
+                                                              String                 entity1GUID,
+                                                              String                 entity1TypeName,
+                                                              String                 entity2GUID,
+                                                              String                 relationshipTypeGUID,
+                                                              String                 relationshipTypeName,
+                                                              String                 methodName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
+                                                                               entity1GUID,
+                                                                               entity1TypeName,
+                                                                               relationshipTypeGUID,
+                                                                               relationshipTypeName,
+                                                                               methodName);
+
+        if (entity1Relationships != null)
+        {
+            List<Relationship> results = new ArrayList<>();
+
+            for (Relationship  relationship : entity1Relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy  entity2Proxy = this.getOtherEnd(entity1GUID, entity1TypeName, relationship, methodName);
+                    if (entity2Proxy != null)
+                    {
+                        if (entity2GUID.equals(entity2Proxy.getGUID()))
+                        {
+                            results.add(relationship);
+                        }
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the first found relationship of the requested type connecting the supplied entities.
      *
      * @param userId  user making the request
      * @param entity1GUID  entity at end 1 GUID
@@ -4138,12 +4202,13 @@ public class RepositoryHandler
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
-                                                                               entity1GUID,
-                                                                               entity1TypeName,
-                                                                               relationshipTypeGUID,
-                                                                               relationshipTypeName,
-                                                                               methodName);
+        List<Relationship>  entity1Relationships = this.getRelationshipsBetweenEntities(userId,
+                                                                                        entity1GUID,
+                                                                                        entity1TypeName,
+                                                                                        entity2GUID,
+                                                                                        relationshipTypeGUID,
+                                                                                        relationshipTypeName,
+                                                                                        methodName);
 
         if (entity1Relationships != null)
         {
@@ -4151,14 +4216,7 @@ public class RepositoryHandler
             {
                 if (relationship != null)
                 {
-                    EntityProxy  entity2Proxy = this.getOtherEnd(entity1GUID, entity1TypeName, relationship, methodName);
-                    if (entity2Proxy != null)
-                    {
-                        if (entity2GUID.equals(entity2Proxy.getGUID()))
-                        {
-                            return relationship;
-                        }
-                    }
+                    return relationship;
                 }
             }
         }
