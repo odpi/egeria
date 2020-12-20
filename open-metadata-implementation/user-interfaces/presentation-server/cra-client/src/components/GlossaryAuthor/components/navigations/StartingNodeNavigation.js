@@ -87,7 +87,16 @@ export default function StartingNodeNavigation({
 
   function refreshNodes(results, passedPageSize, passedPageNumber) {
     let selectedInResults = false;
-    setTotal(results.length);
+    // the total that we are trying to keep track of is all the previous pages plus the current results length.
+    // because we ask for one more thatn the page size the pagination widget should indicate a there is another page only if there really is  
+
+    console.log("passed page number " +passedPageNumber);
+    console.log("passed page size " +passedPageSize);
+    console.log("resuilts length " + results.length);
+    // define as a constant so that the + is an arithmetic + not a string concatination +.
+    const calculatedTotal =  ((passedPageNumber-1)*passedPageSize) + results.length;
+    console.log("total is going to be " + calculatedTotal);
+    setTotal(calculatedTotal);
     if (results.length > passedPageSize) {
       // remove the last element.  
       results.pop();
@@ -335,11 +344,9 @@ export default function StartingNodeNavigation({
           />
         )}
         {nodes.length === 0 && <div>No {nodeType.plural} found!</div>}
-        {nodes.length > 0 && (
-          <div className="search-item">
-            <Pagination {...paginationProps()} />
-          </div>
-        )}
+        <div className="search-item">
+          <Pagination {...paginationProps()} />
+        </div>
       </div>
     </div>
   );

@@ -252,54 +252,18 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             completeResponse = callGetRESTCall(methodName, type, expandedURL);
             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
-            // issue multiple calls to build up the requested page
-            int totalNumberRetrieved = 0;
-            // while we have got less than the requested page size continuing getting more by issuing rest calls
-            while (totalNumberRetrieved < requestedPageSize) {
-                // set the page size to the maximum that the downstream server accepts.
-                findRequest.setPageSize(maximumPageSizeOnRestCall);
-                // we need to amend the startingFrom potions when issuing subsequent requests.
-                findRequest.setStartingFrom(totalNumberRetrieved);
-                // encode a url with the new find request
-                QueryBuilder queryBuilder = createFindQuery(methodName, findRequest);
-                if (params != null && params.keySet().size() >0) {
-                    for (String param: params.keySet()) {
-                        queryBuilder.addParam(param,params.get(param));
-                    }
-                }
-                String findUrlTemplate = urnTemplate + queryBuilder.toString();
-                String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId, guid);
-                // issue the get call
-                GenericResponse<T> responseForPart = callGetRESTCall(methodName, type, expandedURL);
-                exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
-
-                int numberRetrieved = responseForPart.results().size();
-                if (numberRetrieved == 0 || numberRetrieved < maximumPageSizeOnRestCall) {
-                    // break out of the while loop as there is no more to retrieve.
-                    totalNumberRetrieved = requestedPageSize;
-                    completeResponse = responseForPart;
-                } else {
-                    // there may be more to get
-                    totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
-                    if (completeResponse == null) {
-                        // first time in initialise the complete response
-                        completeResponse = responseForPart;
-                    } else {
-                        // add the results from this get to the complete response
-                        completeResponse.addAllResults(responseForPart.results());
-                    }
-                    // amend the starting from
-                    startingFrom= startingFrom + numberRetrieved;
-                }
-            }
+            // amend the urnTemplate to replace the guid - which will be the last %s, note there might be characters after this %s we need to keep.
+            int lastIndex = urnTemplate.lastIndexOf("%s");
+            String lastBit =urnTemplate.substring(lastIndex);
+            String lastBitWithGuid = lastBit.replace("%s",guid);
+            urnTemplate = urnTemplate.substring(0, lastIndex) + lastBitWithGuid;
+            completeResponse = getAccumulatedResponse(userId, methodName, urnTemplate, type, findRequest, maximumPageSizeOnRestCall, requestedPageSize);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return completeResponse;
     }
-
-
 
 
     /**
@@ -364,7 +328,6 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
 
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
         int requestedPageSize = findRequest.getPageSize();
-        int startingFrom = findRequest.getStartingFrom();
         if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize ) {
             // Only need to make one call
              String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
@@ -372,45 +335,56 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
              completeResponse = callGetRESTCall(methodName, type, expandedURL);
              exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
-            // issue multiple calls to build up the requested page
-            int totalNumberRetrieved = 0;
-            // while we have got less than the requested page size continuing getting more by issuing rest calls
-            while (totalNumberRetrieved < requestedPageSize) {
-                // set the page size to the maximum that the downstream server accepts.
-                findRequest.setPageSize(maximumPageSizeOnRestCall);
-                // we need to amend the startingFrom potions when issuing subsequent requests.
-                findRequest.setStartingFrom(totalNumberRetrieved);
-                // encode a url with the new find request
-                String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
-                String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
-                // issue the get call
-                GenericResponse<T> responseForPart = callGetRESTCall(methodName, type, expandedURL);
-                exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
 
-                int numberRetrieved = responseForPart.results().size();
-                if (numberRetrieved == 0 || numberRetrieved < maximumPageSizeOnRestCall) {
-                    // break out of the while loop as there is no more to retrieve.
-                    totalNumberRetrieved = requestedPageSize;
-                    completeResponse = responseForPart;
-                } else {
-                    // there may be more to get
-                    totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
-                    if (completeResponse == null) {
-                        // first time in initialise the complete response
-                        completeResponse = responseForPart;
-                    } else {
-                        // add the results from this get to the complete response
-                        completeResponse.addAllResults(responseForPart.results());
-                    }
-                    // amend the starting from
-                    startingFrom= startingFrom + numberRetrieved;
-                }
-            }
+            completeResponse = getAccumulatedResponse(userId, methodName, urnTemplate, type, findRequest, maximumPageSizeOnRestCall, requestedPageSize);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return completeResponse;
+    }
+
+    private <T> GenericResponse<T> getAccumulatedResponse(String userId, String methodName, String urnTemplate, ParameterizedTypeReference<GenericResponse<T>> type, FindRequest findRequest, Integer maximumPageSizeOnRestCall, int requestedPageSize) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        // issue multiple calls to build up the requested page
+        GenericResponse<T> completeResponse = null;
+        int startingFrom = findRequest.getStartingFrom();
+        int totalNumberRetrieved = 0;
+        // while we have got less than the requested page size continuing getting more by issuing rest calls
+        while (totalNumberRetrieved < requestedPageSize) {
+            // set the page size to the maximum that the downstream server accepts.
+            findRequest.setPageSize(maximumPageSizeOnRestCall);
+            // we need to amend the startingFrom portions when issuing subsequent requests.
+            findRequest.setStartingFrom(startingFrom + totalNumberRetrieved);
+            // encode a url with the new find request
+            String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+            String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
+            // issue the get call
+            GenericResponse<T> responseForPart = callGetRESTCall(methodName, type, expandedURL);
+            exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
+
+            int numberRetrieved = responseForPart.results().size();
+
+            if (getMore(numberRetrieved, maximumPageSizeOnRestCall, requestedPageSize)) {
+                // there are more to get
+                totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
+            } else {
+                // Don't get any more
+                totalNumberRetrieved = requestedPageSize;
+            }
+            // update the completeResponse
+            if (completeResponse == null) {
+                // first time in initialise the complete response
+                completeResponse = responseForPart;
+            } else {
+                // add the results from this get to the complete response
+                completeResponse.addAllResults(responseForPart.results());
+            }
+        }
+        return completeResponse;
+    }
+
+    boolean getMore(int numberRetrieved, int maximumPageSizeOnRestCall, int requestedPageSize) {
+       return  (numberRetrieved == maximumPageSizeOnRestCall) && (requestedPageSize > maximumPageSizeOnRestCall);
     }
 
     /**
