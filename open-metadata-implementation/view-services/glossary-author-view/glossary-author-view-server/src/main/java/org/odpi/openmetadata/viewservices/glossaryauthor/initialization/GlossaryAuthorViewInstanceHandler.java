@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
@@ -63,7 +65,7 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
     private SubjectAreaRelationshipClients getSubjectAreaRelationship(String serverName, String userId, String serviceOperationName)
     throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
-        return instance.getSubjectAreaRelationship();
+        return instance.getSubjectAreaRelationshipClients();
     }
 
     /**
@@ -78,5 +80,28 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
     throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return (GlossaryAuthorViewServicesInstance)
                 super.getServerServiceInstance(userId, serverName, serviceOperationName);
+    }
+
+    /**
+     * This method returns the object for the tenant to use to work with the
+     * subject area config API
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return SubjectAreaNodeClients subject area config API objects
+     */
+    public SubjectAreaConfigClient getSubjectAreaConfigClient(String serverName, String userId, String serviceOperationName)
+    throws
+    InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        return instance.getSubjectAreaConfigClient();
+    }
+    public int getGlossaryViewMaxPageSize(String serverName, String userId, String serviceOperationName)
+    throws
+    InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        return instance.getGlossaryViewMaxPageSize();
     }
 }
