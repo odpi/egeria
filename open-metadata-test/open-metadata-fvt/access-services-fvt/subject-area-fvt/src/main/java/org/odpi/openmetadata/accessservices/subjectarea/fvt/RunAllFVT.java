@@ -54,6 +54,7 @@ public class RunAllFVT
         GraphFVT.runIt(url,serverName,userId);
         EffectiveDatesFVT.runIt(url,serverName,userId);
         CheckSerializationFVT.runIt(url, serverName, userId);
+        ConfigFVT.runIt(url, serverName, userId);
 
         int finalGlossaryCount = GlossaryFVT.getGlossaryCount(url,serverName,userId);
         int finalTermCount = TermFVT.getTermCount(url,serverName,userId);

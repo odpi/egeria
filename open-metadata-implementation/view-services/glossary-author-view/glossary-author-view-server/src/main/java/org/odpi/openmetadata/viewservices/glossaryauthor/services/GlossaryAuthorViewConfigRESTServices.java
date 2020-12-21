@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria term. */
+/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
@@ -21,64 +20,27 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The GlossaryAuthorViewTermRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the Glossary Author Open Metadata
- * View Service (OMVS). This interface provides view term authoring interfaces for subject area experts to author terms.
+ * The GlossaryAuthorViewCategoryRESTServices provides the org.odpi.openmetadata.viewservices.glossaryauthor.services implementation of the Glossary Author Open Metadata
+ * View Service (OMVS). This interface provides view interfaces for subject area experts to work with the views configuration.
  */
 
-public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
-    private static String className = GlossaryAuthorViewTermRESTServices.class.getName();
+public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView {
+    private static String className = GlossaryAuthorViewConfigRESTServices.class.getName();
 
     /**
      * Default constructor
      */
-    public GlossaryAuthorViewTermRESTServices() {
+    public GlossaryAuthorViewConfigRESTServices() {
 
     }
 
     /**
-     * Create a Term
-     *
-     * @param serverName name of the local view server.
-     * @param userId  userId under which the request is performed
-     * @param suppliedTerm Term to create
-     * @return the created term.
-     *
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-
-    public SubjectAreaOMASAPIResponse<Term> createTerm(String serverName, String userId, Term suppliedTerm) {
-        final String methodName = "createTerm";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
-        AuditLog auditLog = null;
-
-        // should not be called without a supplied term - the calling layer should not allow this.
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            Term createdTerm = clients.terms().create(userId, suppliedTerm);
-            response.addResult(createdTerm);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
-        }
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Get a term. The server has a maximum page size defined, the number of categories (a field of Term) returned is limited by that maximum page size.
+     * Get the config.
      *
      * @param serverName name of the local view server.
      * @param userId     user identifier
-     * @param guid       guid of the term to get
-     * @return response which when successful contains the term with the requested guid
+     * @param guid       identifier of the config - current is the only valid valid at this time.
+     * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -87,17 +49,19 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Term> getTerm(String serverName, String userId, String guid) {
-        final String methodName = "getTerm";
+    public SubjectAreaOMASAPIResponse<Config> getConfig(String serverName, String userId, String guid) {
+        final String methodName = "getConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Config> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            Term obtainedTerm = clients.terms().getByGUID(userId, guid);
-            response.addResult(obtainedTerm);
+
+            int glossaryViewMaxMageSize = instanceHandler.getGlossaryViewMaxPageSize(serverName, userId, methodName);
+            Config config = new Config();
+            config.setMaxPageSize(glossaryViewMaxMageSize);
+            response.addResult(config);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -106,11 +70,11 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
     }
 
     /**
-     * Find Term
+     * Find Category
      *
      * @param serverName         name of the local view server.
      * @param userId             user identifier
-     * @param searchCriteria     String expression matching Term property values .
+     * @param searchCriteria     String expression matching Category property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -125,7 +89,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> findTerm(
+    public SubjectAreaOMASAPIResponse<Category> findCategory(
             String serverName,
             String userId,
             Date asOfTime,
@@ -135,17 +99,18 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             SequencingOrder sequencingOrder,
             String sequencingProperty
     ) {
-        final String methodName = "findTerm";
+        final String methodName = "findCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
+
         try {
-            if (pageSize == null) {
-                pageSize = invalidParameterHandler.getMaxPagingSize();
-            }
             if (startingFrom == null) {
                 startingFrom = 0;
+            }
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
             }
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -157,10 +122,9 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
-            SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
-            Config subjectAreaConfig = client.getConfig(userId);
-            List<Term> terms = clients.terms().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
-            response.addAllResults(terms);
+
+            List<Category> categories = clients.categories().find(userId, findRequest);
+            response.addAllResults(categories);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -169,18 +133,18 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
     }
 
     /**
-     * Get Term relationships
+     * Get Category relationships
      *
      * @param serverName         name of the local view server.
      * @param userId             user identifier
-     * @param guid               guid of the term to get
+     * @param guid               guid of the category to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return a response which when successful contains the term relationships
+     * @return a response which when successful contains the category relationships
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -188,7 +152,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(
+    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(
             String serverName,
             String userId,
             String guid,
@@ -200,7 +164,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
 
     ) {
-        final String methodName = "getTermRelationships";
+        final String methodName = "getCategoryRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
@@ -209,8 +173,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             if (pageSize == null) {
                 pageSize = invalidParameterHandler.getMaxPagingSize();
             }
-            if (startingFrom == null) {
-                startingFrom = 0;
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
             }
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -222,7 +186,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  clients.terms().getRelationships(userId, guid, findRequest);
+            List<Line> lines =  clients.categories().getRelationships(userId, guid, findRequest);
             response.addAllResults(lines);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -232,16 +196,16 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
     }
 
     /**
-     * Update a Term
+     * Update a Category
      * <p>
      * Status is not updated using this call.
      *
      * @param serverName         name of the local view server.
      * @param userId             user identifier
-     * @param guid               guid of the term to update
-     * @param term               term to update
+     * @param guid       guid of the category to update
+     * @param category   category to update
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return a response which when successful contains the updated term
+     * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -250,31 +214,30 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Term> updateTerm(
+    public SubjectAreaOMASAPIResponse<Category> updateCategory(
             String serverName,
             String userId,
             String guid,
-            Term term,
+            Category category,
             boolean isReplace
     ) {
-        final String methodName = "updateTerm";
+        final String methodName = "updateCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
-        // should not be called without a supplied term - the calling layer should not allow this.
+        // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            Term updatedTerm;
-
+            Category updatedCategory;
             if (isReplace) {
-                updatedTerm = clients.terms().replace(userId, guid, term);
+                updatedCategory = clients.categories().replace(userId, guid, category);
             } else {
-                updatedTerm = clients.terms().update(userId, guid, term);
+                updatedCategory = clients.categories().update(userId, guid, category);
             }
-            response.addResult(updatedTerm);
+            response.addResult(updatedCategory);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -283,21 +246,21 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
     }
 
     /**
-     * Delete a Term instance
+     * Delete a Category instance
      * <p>
-     * The deletion of a term is only allowed if there is no term content (i.e. no terms or categories).
+     * The deletion of a category is only allowed if there is no category content (i.e. no categories or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
      * is optional. Soft delete is the default.
      * <p>
-     * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
+     * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
-     * A hard delete means that the term will not exist after the operation.
+     * A hard delete means that the category will not exist after the operation.
      * when not successful the following Exceptions can occur
      *
      * @param serverName         name of the local view server.
      * @param userId             user identifier
-     * @param guid       guid of the term to be deleted.
+     * @param guid       guid of the category to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
@@ -307,44 +270,45 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> deleteTerm(
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(
             String serverName,
             String userId,
             String guid,
             boolean isPurge
     ) {
 
-        final String methodName = "deleteTerm";
+        final String methodName = "deleteCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
-        // should not be called without a supplied term - the calling layer should not allow this.
+        // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+
             if (isPurge) {
-                clients.terms().purge(userId, guid);
+                clients.categories().purge(userId, guid);
             } else {
-                clients.terms().delete(userId, guid);
+                clients.categories().delete(userId, guid);
             }
         }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
     /**
-     * Restore a Term
+     * Restore a Category
      * <p>
-     * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param serverName         name of the local view server.
      * @param userId             user identifier
-     * @param guid       guid of the term to restore
-     * @return response which when successful contains the restored term
+     * @param guid       guid of the category to restore
+     * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -352,22 +316,22 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> restoreTerm(
+    public SubjectAreaOMASAPIResponse<Category> restoreCategory(
             String serverName,
             String userId,
             String guid) {
-        final String methodName = "restoreTerm";
+        final String methodName = "restoreCategory";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
-        // should not be called without a supplied term - the calling layer should not allow this.
+        // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            Term term = clients.terms().restore(userId, guid);
-            response.addResult(term);
+            Category category = clients.categories().restore(userId, guid);
+            response.addResult(category);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -375,18 +339,18 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse<Category> getCategories(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
-        final String methodName = "getCategories";
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategoryChildren";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         FindRequest findRequest = new FindRequest();
-        if (pageSize == null) {
-            pageSize = invalidParameterHandler.getMaxPagingSize();
-        }
         if (startingFrom == null) {
             startingFrom = 0;
+        }
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
         }
         try {
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
@@ -394,7 +358,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            List<Category> categories = ((SubjectAreaTermClient) clients.categories()).getCategories(userId, guid, findRequest);
+            List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
             response.addAllResults(categories);
         } catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -402,4 +366,32 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+            final String methodName = "getCategorizedTerms";
+
+            RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+            SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+            AuditLog auditLog = null;
+            FindRequest findRequest = new FindRequest();
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            try {
+                invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+                findRequest.setPageSize(pageSize);
+                findRequest.setStartingFrom(startingFrom);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+                List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest);
+                response.addAllResults(terms);
+            } catch (Throwable error) {
+                response = getResponseForError(error, auditLog, className, methodName);
+            }
+            restCallLogger.logRESTCallReturn(token, response.toString());
+            return response;
+        }
 }
