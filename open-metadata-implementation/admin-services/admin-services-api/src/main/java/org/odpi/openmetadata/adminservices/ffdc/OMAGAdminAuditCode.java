@@ -484,6 +484,12 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                           "and will use it to set the endpoints that the view service may query.",
                   "Verify that this is the intended value for this service (null means that the view service will not be able to perform queries."),
 
+    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW("OMAG-ADMIN-0215",
+                                       OMRSAuditLogRecordSeverity.STARTUP,
+                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
+                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
+                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
+
     ;
 
     private String                     logMessageId;

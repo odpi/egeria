@@ -2,10 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -107,7 +110,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      *
      * @param serverName         name of the local view server.
      * @param userId             user identifier
-     * @param searchCriteria     String expression matching Category property values .
+     * @param searchCriteria     String expression matching Category property values.
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -155,8 +158,9 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
-
-            List<Category> categories = clients.categories().find(userId, findRequest);
+            SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
+            Config subjectAreaConfig = client.getConfig(userId);
+            List<Category> categories = clients.categories().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(categories);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);

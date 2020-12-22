@@ -75,7 +75,8 @@ public class AssetLineageRestServices {
             }
 
             auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType, String.valueOf(entitiesByTypeName.size())));
-
+            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES", entityType,
+                    String.valueOf(entitiesByTypeName.stream().map(e->e.getGUID()).collect(Collectors.joining(",")))));
 
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
             if (publisher == null) {
