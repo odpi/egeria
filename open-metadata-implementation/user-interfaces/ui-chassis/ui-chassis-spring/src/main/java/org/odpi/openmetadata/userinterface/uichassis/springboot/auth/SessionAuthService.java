@@ -17,7 +17,7 @@ public class SessionAuthService extends TokenSettings implements AuthService {
     @Override
     public User addAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         TokenUser tokenUser = getTokenUser(authentication);
-        request.getSession().setAttribute(USER_ATTRIBUTE_NAME, tokenUser.getUser());
+        request.getSession().setAttribute(USER_ATTRIBUTE_NAME, toJSON(tokenUser.getUser()));
         String token = createTokenForUser(tokenUser.getUser(), tokenSecret);
         response.addHeader(AUTH_HEADER_NAME, token);
         return tokenUser.getUser();
