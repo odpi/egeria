@@ -173,7 +173,7 @@
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.6.0</kafka.version>
         <janus.version>0.5.2</janus.version>
-        <gremlin.version>3.4.8</gremlin.version>
+        <gremlin.version>3.4.9</gremlin.version>
         <netty.version>4.1.54.Final</netty.version>
 
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
