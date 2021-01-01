@@ -216,7 +216,7 @@
         <oss.version>4.9.0</oss.version>
         <spotbugs-annotations.version>4.2.0</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
-        <joda.version>2.10.8</joda.version>
+        <joda.version>2.10.9</joda.version>
         <jackson-asl.version>1.9.13-atlassian-2</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.2</snappy.version>
