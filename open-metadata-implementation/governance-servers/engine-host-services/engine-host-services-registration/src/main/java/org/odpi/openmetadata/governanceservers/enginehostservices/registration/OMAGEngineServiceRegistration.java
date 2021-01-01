@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.configuration;
+package org.odpi.openmetadata.governanceservers.enginehostservices.registration;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
 
