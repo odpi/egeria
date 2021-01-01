@@ -132,7 +132,7 @@ allprojects {
             implementation("org.codehaus.groovy:groovy:3.0.6")
             implementation("org.codehaus.groovy:groovy-cli-picocli:3.0.6")
             implementation("org.codehaus.groovy:groovy-console:3.0.6")
-            implementation("org.codehaus.groovy:groovy-jsr223:3.0.6")
+            implementation("org.codehaus.groovy:groovy-jsr223:3.0.7")
             implementation("org.codehaus.groovy:groovy-templates:3.0.6")
             implementation("org.codehaus.groovy:groovysh:3.0.6")
             implementation("org.codehaus.plexus:plexus-utils:3.3.0")
