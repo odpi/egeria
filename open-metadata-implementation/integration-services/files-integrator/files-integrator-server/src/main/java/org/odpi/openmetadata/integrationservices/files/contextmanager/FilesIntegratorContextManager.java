@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceCli
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.FileSystemProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.context
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorContext;
+import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorErrorCode;
 
 import java.util.Map;
@@ -30,9 +32,8 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
     private FilesAndFoldersClient  filesAndFoldersClient  = null;
     private MetadataSourceClient   metadataSourceClient   = null;
 
-    private DataManagerRESTClient restClient     = null;
-    private String   metadataSourceQualifiedName = null;
-    private String   metadataSourceGUID          = null;
+    private DataManagerRESTClient restClient         = null;
+    private String                metadataSourceGUID = null;
 
     /**
      * Default constructor
@@ -43,10 +44,38 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
 
 
     /**
+     * Initialize server properties for the context manager.
+     *
+     * @param partnerOMASServerName name of the server to connect to
+     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum number of results that can be returned on a single REST call
+     * @param auditLog logging destination
+     */
+    @Override
+    public void initializeContextManager(String   partnerOMASServerName,
+                                         String   partnerOMASPlatformRootURL,
+                                         String   userId,
+                                         String   password,
+                                         int      maxPageSize,
+                                         AuditLog auditLog)
+    {
+        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+
+        final String methodName = "initializeContextManager";
+
+        auditLog.logMessage(methodName,
+                            FilesIntegratorAuditCode.CONTEXT_INITIALIZING.getMessageDefinition(partnerOMASServerName, partnerOMASPlatformRootURL));
+    }
+
+
+    /**
      * Suggestion for subclass to create client(s) to partner OMAS.
      *
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
+    @Override
     public void createClients() throws InvalidParameterException
     {
         if (localServerPassword == null)
@@ -94,9 +123,6 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
     {
         if (metadataSourceQualifiedName != null)
         {
-            this.metadataSourceQualifiedName = metadataSourceQualifiedName;
-
-
             this.metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
             if (this.metadataSourceGUID == null)
@@ -127,6 +153,7 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
+    @Override
     public void setContext(String                   connectorId,
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
@@ -136,8 +163,30 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        final String  methodName = "setContext";
+
+        String permittedSynchronizationName = PermittedSynchronization.BOTH_DIRECTIONS.getName();
+        String serviceOptionsString = "null";
+
+        if (permittedSynchronization != null)
+        {
+            permittedSynchronizationName = permittedSynchronization.getName();
+        }
+
+        if (serviceOptions != null)
+        {
+            serviceOptionsString = serviceOptions.toString();
+        }
+
         if (integrationConnector instanceof FilesIntegratorConnector)
         {
+            auditLog.logMessage(methodName,
+                                FilesIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
+                                                                                                             connectorId,
+                                                                                                             metadataSourceQualifiedName,
+                                                                                                             permittedSynchronizationName,
+                                                                                                             serviceOptionsString));
+
             FilesIntegratorConnector serviceSpecificConnector = (FilesIntegratorConnector)integrationConnector;
 
             this.setUpMetadataSource(metadataSourceQualifiedName);
@@ -158,7 +207,6 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
         else
         {
             final String  parameterName = "integrationConnector";
-            final String  methodName = "setContext";
 
             throw new InvalidParameterException(FilesIntegratorErrorCode.INVALID_CONNECTOR.
                     getMessageDefinition(connectorName,

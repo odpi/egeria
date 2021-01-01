@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.integrationservices.lineageintegrator.ffdc;
+package org.odpi.openmetadata.integrationservices.organizationintegrator.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
@@ -8,7 +8,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 
 /**
- * The LineageIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
+ * The OrganizationIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -20,23 +20,22 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum LineageIntegratorAuditCode implements AuditLogMessageSet
+public enum OrganizationIntegratorAuditCode implements AuditLogMessageSet
 {
-    CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0001",
+    CONTEXT_INITIALIZING("OMIS-ORGANIZATION-INTEGRATOR-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
-                        "The lineage integrator context manager is being initialized for calls to server {0} on platform {1}",
-                        "The Lineage Integrator OMIS is initializing its context manager.",
+                        "The organization integrator context manager is being initialized for calls to server {0} on platform {1}",
+                        "The Organization Integrator OMIS is initializing its context manager.",
                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
-    CONNECTOR_CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0002",
-                                   OMRSAuditLogRecordSeverity.STARTUP,
-                                   "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
-                                   "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
-                                           "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
-                                   "Verify that this connector is being started with the correct configuration."),
+    CONNECTOR_CONTEXT_INITIALIZING("OMIS-ORGANIZATION-INTEGRATOR-0002",
+                        OMRSAuditLogRecordSeverity.STARTUP,
+                        "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
+                        "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
+                                "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
+                        "Verify that this connector is being started with the correct configuration."),
 
-
-    PERMITTED_SYNCHRONIZATION("OMIS-LINEAGE-INTEGRATOR-0003",
+    PERMITTED_SYNCHRONIZATION("OMIS-ORGANIZATION-INTEGRATOR-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The context for connector {0} has its permitted synchronization set to {1}",
              "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
@@ -44,6 +43,13 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
              "Check that this permitted synchronized value is as expected.  If it is not," +
                      "change the configuration for this connector and restart the integration daemon."),
 
+    DISABLED_EXCHANGE_SERVICES("OMIS-ORGANIZATION-INTEGRATOR-0004",
+                               OMRSAuditLogRecordSeverity.STARTUP,
+                               "The following exchange services are disabled in the context for connector {1}: {2}",
+                               "The context is set up to ensure that the connector can only issue requests to supported services.  " +
+                                       "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
+                               "Check that this value is as expected.  If it is not," +
+                                       "change the configuration for this connector and restart the integration daemon."),
     ;
 
 
@@ -52,10 +58,10 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
 
 
     /**
-     * The constructor for LineageIntegratorAuditCode expects to be passed one of the enumeration rows defined in
-     * LineageIntegratorAuditCode above.   For example:
+     * The constructor for OrganizationIntegratorAuditCode expects to be passed one of the enumeration rows defined in
+     * OrganizationIntegratorAuditCode above.   For example:
      *
-     *     LineageIntegratorAuditCode   auditCode = LineageIntegratorAuditCode.SERVER_SHUTDOWN;
+     *     OrganizationIntegratorAuditCode   auditCode = OrganizationIntegratorAuditCode.SERVER_SHUTDOWN;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -65,11 +71,11 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    LineageIntegratorAuditCode(String                     messageId,
-                               OMRSAuditLogRecordSeverity severity,
-                               String                     message,
-                               String                     systemAction,
-                               String                     userAction)
+    OrganizationIntegratorAuditCode(String                     messageId,
+                                    OMRSAuditLogRecordSeverity severity,
+                                    String                     message,
+                                    String                     systemAction,
+                                    String                     userAction)
     {
         messageDefinition = new AuditLogMessageDefinition(messageId,
                                                           severity,
@@ -111,7 +117,7 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "LineageIntegratorAuditCode{" +
+        return "OrganizationIntegratorAuditCode{" +
                 "messageDefinition=" + messageDefinition +
                 '}';
     }

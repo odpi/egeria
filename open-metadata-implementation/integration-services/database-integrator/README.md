@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
+![TechPreview](../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+
 # Database Integrator Open Metadata Integration Service (OMIS)
 
 The Database Integrator integration service supports the exchange of data assets and their related schema and
