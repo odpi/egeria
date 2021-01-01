@@ -1,6 +1,9 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc;
+package org.odpi.openmetadata.accessservices.governanceengine.ffdc;
+
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 import java.text.MessageFormat;
 
@@ -23,95 +26,94 @@ import java.text.MessageFormat;
  * <li>UserAction - describes how a GovernanceEngineInterface should correct the error</li>
  * </ul>
  */
-public enum GovernanceEngineErrorCode {
-    BAD_OUT_TOPIC_CONNECTION(400, "OMAS-GOVERNANCE-ENGINE-400-001 ",
-            "The Governance Engine Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
-            "The access service has not been passed valid configuration for its out topic connection.",
-            "Correct the configuration and restart the service."),
-    NULL_TOPIC_CONNECTOR(400, "OMAS-GOVERNANCEENGINE-400-012",
-                         "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
-                         "The local server will not connect to the cohort.",
-                         "The connection to the connector is configured in the server configuration.  " +
-                                 "Review previous error messages to determine the precise error in the " +
-                                 "start up configuration. " +
-                                 "Correct the configuration and reconnect the server to the cohort. "),
-    OMRS_NOT_INITIALIZED(404, "OMAS-GOVERNANCE-ENGINE-404-001 ",
-            "The open metadata repository services are not initialized for the {0} operation",
-            "The system is unable to connect to the open metadata property handlers.",
-            "Check that the handlers where the Asset Consumer OMAS is running initialized correctly.  " +
-                    "Correct any errors discovered and retry the request when the open metadata services are available.");
+public enum GovernanceEngineErrorCode implements ExceptionMessageSet
+{
+    NULL_LISTENER(500, "OMAS-GOVERNANCE-ENGINE-400-017",
+                  "A null topic listener has been passed by user {0} on method {1}",
+                  "There is a coding error in the caller to the Governance Engine OMAS.",
+                  "Correct the caller logic and retry the request."),
 
-    private int httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    OMRS_NOT_INITIALIZED(404, "OMAS-GOVERNANCE-ENGINE-404-002",
+                         "The open metadata repository services are not initialized for the {0} operation",
+                         "The system is unable to connect to the open metadata property server.",
+                         "Check that the server where the Governance Engine OMAS is running initialized correctly.  " +
+                                 "Correct any errors discovered and retry the request when the open metadata services are available."),
+
+    UNABLE_TO_SEND_EVENT(500, "OMAS-GOVERNANCE-ENGINE-500-004",
+                         "An unexpected exception occurred when sending an event through connector {0} to the Governance Engine OMAS out topic.  The failing " +
+                                 "event was {1}, the exception was {2} with message {2}",
+                         "The access service has issued a call to publish an event on its Out Topic and it failed.",
+                         "Look for errors in the event bus to understand why this is failing.  When the event bus is operating correctly, the event will" +
+                                 " be able to be published again.  In the meantime, events are being lost."),
+
+    UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OMAS-GOVERNANCE-ENGINE-503-005",
+                                        "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
+                                        "The system detected an unexpected error during start up and is now in an unknown start.",
+                                        "The error message should indicate the cause of the error.  Otherwise look for errors in the " +
+                                                "remote server's audit log and console to understand and correct the source of the error.");
+
+
+
+    private ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for GovernanceEngineErrorCode expects to be passed one of the enumeration rows defined in
      * GovernanceEngineErrorCode above.   For example:
-     * <p>
-     * GovernanceEngineErrorCode   errorCode = GovernanceEngineErrorCode.ASSET_NOT_FOUND;
-     * <p>
+     *
+     *     GovernanceEngineErrorCode   errorCode = GovernanceEngineErrorCode.SERVER_NOT_AVAILABLE;
+     *
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode  - error code to use over REST calls
-     * @param newErrorMessageId - unique Id for the message
-     * @param newErrorMessage   - text for the message
-     * @param newSystemAction   - description of the action taken by the system when the error condition happened
-     * @param newUserAction     - instructions for resolving the error
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
      */
-    GovernanceEngineErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction) {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
-    }
-
-    public int getHTTPErrorCode() {
-        return httpErrorCode;
+    GovernanceEngineErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return errorMessageId
+     * @return message definition object.
      */
-    public String getErrorMessageId() {
-        return errorMessageId;
-    }
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    public String getFormattedErrorMessage(String... params) {
-        MessageFormat mf = new MessageFormat(errorMessage);
-
-        return mf.format(params);
-    }
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction() {
-        return systemAction;
+    public ExceptionMessageDefinition getMessageDefinition()
+    {
+        return messageDefinition;
     }
 
 
     /**
-     * Returns instructions of how to resolve the issue reported in this exception.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return userAction
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getUserAction() {
-        return userAction;
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
+    {
+        messageDefinition.setMessageParameters(params);
+
+        return messageDefinition;
+    }
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "GovernanceEngineErrorCode{" +
+                       "messageDefinition=" + messageDefinition +
+                       '}';
     }
 }

@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
+package org.odpi.openmetadata.accessservices.governanceengine.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineErrorCode;
-import org.odpi.openmetadata.accessservices.governanceengine.server.outtopic.GovernanceEngineOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.governanceengine.server.outtopic.GovernanceEnginePublisher;
+import org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher;
+import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -23,10 +24,10 @@ import java.util.List;
 
 public class GovernanceEngineAdmin extends AccessServiceAdmin
 {
-    private AuditLog                         auditLog       = null;
-    private GovernanceEngineServicesInstance instance       = null;
-    private String                           serverName     = null;
-    private GovernanceEnginePublisher        eventPublisher = null;
+    private AuditLog                          auditLog       = null;
+    private GovernanceEngineInstance          instance       = null;
+    private String                            serverName     = null;
+    private GovernanceEngineOutTopicPublisher eventPublisher = null;
 
     /**
      * Initialize the access service.
@@ -77,14 +78,14 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
              * OutTopic connection for the client so that the client can query it to connect to the right
              * out topic.
              */
-            this.instance = new GovernanceEngineServicesInstance(repositoryConnector,
-                                                                 supportedZones,
-                                                                 defaultZones,
-                                                                 publishZones,
-                                                                 auditLog,
-                                                                 serverUserName,
-                                                                 repositoryConnector.getMaxPageSize(),
-                                                                 accessServiceConfig.getAccessServiceOutTopic());
+            this.instance = new GovernanceEngineInstance(repositoryConnector,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog,
+                                                         serverUserName,
+                                                         repositoryConnector.getMaxPageSize(),
+                                                         accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
             /*
@@ -106,7 +107,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                                                                                                           outTopicAuditLog,
                                                                                                           AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
                                                                                                           actionDescription);
-                eventPublisher = new GovernanceEnginePublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
+                eventPublisher = new GovernanceEngineOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
 
                 this.registerWithEnterpriseTopic(AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
                                                  serverName,
