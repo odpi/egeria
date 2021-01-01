@@ -8,7 +8,7 @@
      * Creates an Audit log record about the asset.  This log record is stored in the local server's Audit Log.
      *
      * @param userId               userId of user making request.
-     * @param assetGUID            unique id for the asset.
+     * @param requestType            unique id for the asset.
      * @param connectorInstanceId  (optional) id of connector in use (if any).
      * @param connectionName       (optional) name of the connection (extracted from the connector).
      * @param connectorType        (optional) type of connector in use (if any).
@@ -20,7 +20,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void  addLogMessageToAsset(String userId,
-                               String assetGUID,
+                               String requestType,
                                String connectorInstanceId,
                                String connectionName,
                                String connectorType,
