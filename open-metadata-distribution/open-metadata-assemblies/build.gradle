@@ -59,7 +59,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
-    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-lineage-client')
+    implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-client')
