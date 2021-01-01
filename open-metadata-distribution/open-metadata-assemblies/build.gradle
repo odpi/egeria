@@ -24,7 +24,6 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:cassandra-data-store-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:data-platform-connectors:cassandra-metadata-extractor-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
@@ -38,6 +37,7 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-api')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
@@ -59,6 +59,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
+    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-lineage-client')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-client')
@@ -70,11 +71,9 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-client')
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
-    implementation project(':open-metadata-implementation:access-services:information-view:information-view-client')
     implementation project(':open-metadata-implementation:access-services:project-management:project-management-client')
     implementation project(':open-metadata-implementation:access-services:security-officer:security-officer-client')
     implementation project(':open-metadata-implementation:access-services:software-developer:software-developer-client')
-    implementation project(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-client')
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
@@ -106,7 +105,6 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:cassandra-data-store-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:data-platform-connectors:cassandra-metadata-extractor-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
