@@ -446,6 +446,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
 
             configurationProperties.put(serverIdPropertyName, callerId);
 
+            newEventBusConnection.setConfigurationProperties(configurationProperties);
 
             return this.buildClientTopicConnection(newEventBusConnection, connectorProviderClassName, methodName);
         }
