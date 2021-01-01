@@ -143,6 +143,8 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
         this.restClient = restClient;
     }
 
