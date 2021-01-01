@@ -110,7 +110,7 @@ allprojects {
             implementation("jakarta.persistence:jakarta.persistence-api:2.2.3")
             implementation("javax.validation:validation-api:2.0.1.Final")
             implementation("javax.xml.bind:jaxb-api:2.3.1")
-            implementation("org.apache.avro:avro:1.10.0")
+            implementation("org.apache.avro:avro:1.10.1")
             implementation("org.apache.commons:commons-collections4:4.4")
             implementation("org.apache.commons:commons-lang3:3.11")
             implementation("org.apache.derby:derby:10.8.3.1")
