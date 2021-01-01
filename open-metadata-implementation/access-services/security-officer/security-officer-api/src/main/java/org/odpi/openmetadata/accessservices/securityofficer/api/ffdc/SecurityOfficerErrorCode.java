@@ -2,7 +2,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-package org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode;
+package org.odpi.openmetadata.accessservices.securityofficer.api.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
@@ -38,6 +38,18 @@ public enum SecurityOfficerErrorCode implements ExceptionMessageSet {
                                  "Review previous error messages to determine the precise error in the " +
                                  "start up configuration. " +
                                  "Correct the configuration and reconnect the server to the cohort. "),
+
+    NULL_LISTENER(400, "OMAS-SECURITY-OFFICER-400-017",
+                  "A null topic listener has been passed by user {0} on method {1}",
+                  "There is a coding error in the caller to the Governance Engine OMAS.",
+                  "Correct the caller logic and retry the request."),
+
+    UNABLE_TO_SEND_EVENT(500, "OMAS-SECURITY-OFFICER-500-004",
+                         "An unexpected exception occurred when sending an event through connector {0} to the Security Officer OMAS out topic.  The failing " +
+                                 "event was {1}, the exception was {2} with message {2}",
+                         "The access service has issued a call to publish an event on its Out Topic and it failed.",
+                         "Look for errors in the event bus to understand why this is failing.  When the event bus is operating correctly, the event will" +
+                                 " be able to be published again.  In the meantime, events are being lost."),
 
     UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OMAS-SECURITY-OFFICER-503-005",
                                         "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",

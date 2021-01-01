@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
+package org.odpi.openmetadata.accessservices.securityofficer.server.spring;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +9,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.governanceengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.governanceengine.model.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.securityofficer.server.services.GovernedAssetRESTServices;
+import org.odpi.openmetadata.accessservices.securityofficer.spring.GovernedAssetOMASResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,8 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-public class GovernanceEngineOMASResourceTest {
+public class GovernedAssetOMASResourceTest
+{
 
     private static final String USER = "user";
     private static final String SERVER_NAME = "serverName";
@@ -34,7 +37,7 @@ public class GovernanceEngineOMASResourceTest {
     private GovernedAssetRESTServices governedAssetRESTServices;
 
     @InjectMocks
-    private GovernanceEngineOMASResource governanceEngineOMASResource;
+    private GovernedAssetOMASResource governanceEngineOMASResource;
 
     @Test
     void getGovernedAssets() {

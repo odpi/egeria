@@ -2,11 +2,11 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.publisher;
+package org.odpi.openmetadata.accessservices.securityofficer.server.publisher;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.securityofficer.api.auditlog.SecurityOfficerAuditCode;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerAuditCode;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerTagEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.server.processors.SecurityOfficerEventProcessor;
@@ -28,10 +28,10 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Objects;
 
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.CONFIDENTIALITY;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ELEMENT;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.CONFIDENTIALITY;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SCHEMA_ELEMENT;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SEMANTIC_ASSIGNMENT;
 
 public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
@@ -76,12 +76,9 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
                 return;
             }
 
-            try {
-                for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
-                    sendEvent(securityOfficerEvent);
-                }
-            } catch (JsonProcessingException e) {
-                log.debug("Unable to build the event for classified glossary term.");
+            for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents)
+            {
+                publishEvent(securityOfficerEvent);
             }
         } else {
             log.debug("No processing needed");
@@ -96,13 +93,11 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
         if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
             List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processDeClassifiedGlossaryTerm(entity);
 
-            try {
-                for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
-                    sendEvent(securityOfficerEvent);
-                }
-            } catch (JsonProcessingException e) {
-                log.debug("Unable to build the event for de-classified glossary term.");
+
+            for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
+                publishEvent(securityOfficerEvent);
             }
+
         } else {
             log.debug("No processing needed");
         }
@@ -115,13 +110,11 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
         if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
             List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processReClassifiedGlossaryTerm(entity);
 
-            try {
-                for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
-                    sendEvent(securityOfficerEvent);
-                }
-            } catch (JsonProcessingException e) {
-                log.debug("Unable to build the event for re-classified glossary term.");
+
+            for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
+                publishEvent(securityOfficerEvent);
             }
+
         } else {
             log.debug("No processing needed");
         }
@@ -164,11 +157,8 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
         if (relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && isSchemaElement(relationship.getEntityOneProxy().getType())) {
             SecurityOfficerEvent securityOfficerEvent = securityOfficerEventProcessor.processSemanticAssignmentForSchemaElement(relationship);
 
-            try {
-                sendEvent(securityOfficerEvent);
-            } catch (JsonProcessingException e) {
-                log.debug("Unable to build the event for semantic assigment between a glossary term and a schema element.");
-            }
+            publishEvent(securityOfficerEvent);
+
         } else {
             log.debug("No processing needed");
         }
@@ -226,14 +216,15 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     public void processConflictingTypeEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String targetMetadataCollectionId, TypeDefSummary targetTypeDef, String targetInstanceGUID, TypeDefSummary otherTypeDef, String errorMessage) {
     }
 
-    public void sendEvent(SecurityOfficerEvent securityOfficerEvent) throws JsonProcessingException {
-        String event = OBJECT_MAPPER.writeValueAsString(securityOfficerEvent);
+    public void publishEvent(SecurityOfficerEvent securityOfficerEvent) {
 
         try {
+            String event = OBJECT_MAPPER.writeValueAsString(securityOfficerEvent);
+
             openMetadataTopicConnector.sendEvent(event);
-        } catch (ConnectorCheckedException e) {
+        } catch (ConnectorCheckedException | JsonProcessingException e) {
             log.error("Exception publishing event", e);
-            final String actionDescription = "sendEvent";
+            final String actionDescription = "publishEvent";
 
             auditLog.logException(actionDescription, SecurityOfficerAuditCode.PUBLISH_EVENT_EXCEPTION.getMessageDefinition(securityOfficerEvent.getClass().getName(), e.getMessage(),
                                   "event {" + securityOfficerEvent + "}"), e);
@@ -272,5 +263,10 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
         } else {
             return classification.getName();
         }
+    }
+
+    public void disconnect()
+    {
+
     }
 }

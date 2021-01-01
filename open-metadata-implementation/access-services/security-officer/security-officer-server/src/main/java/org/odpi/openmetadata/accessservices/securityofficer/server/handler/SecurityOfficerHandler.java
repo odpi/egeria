@@ -2,10 +2,10 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.handler;
+package org.odpi.openmetadata.accessservices.securityofficer.server.handler;
 
-import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
-import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.MetadataServerException;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -31,11 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ELEMENT;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SEMANTIC_ASSIGNMENT;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SEMANTIC_ASSIGNMENT_GUID;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SECURITY_OFFICER;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SEMANTIC_ASSIGNMENT_GUID;
 
 public class SecurityOfficerHandler {
 
@@ -47,17 +45,17 @@ public class SecurityOfficerHandler {
      * official name.
      *
      * @param repositoryConnector - connector to the property handlers.
-     * @throws MetadataServerException - there is a problem retrieving information from the metadata server
+     * @throws PropertyServerException - there is a problem retrieving information from the metadata server
      */
-    public SecurityOfficerHandler(OMRSRepositoryConnector repositoryConnector) throws MetadataServerException {
+    public SecurityOfficerHandler(OMRSRepositoryConnector repositoryConnector) throws PropertyServerException {
         final String methodName = "SecurityOfficerHandler";
 
         if (repositoryConnector != null) {
             try {
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
             } catch (RepositoryErrorException e) {
-                throw new MetadataServerException(SecurityOfficerErrorCode.NO_METADATA_COLLECTION.getMessageDefinition(repositoryConnector.getRepositoryName()),
-                        this.getClass().getName(), methodName, e);
+                throw new PropertyServerException(SecurityOfficerErrorCode.NO_METADATA_COLLECTION.getMessageDefinition(repositoryConnector.getRepositoryName()),
+                                                  this.getClass().getName(), methodName, e);
             }
         }
     }

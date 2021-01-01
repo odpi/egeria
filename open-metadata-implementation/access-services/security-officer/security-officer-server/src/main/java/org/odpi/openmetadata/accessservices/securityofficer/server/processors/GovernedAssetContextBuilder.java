@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor;
+package org.odpi.openmetadata.accessservices.securityofficer.server.processors;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.Context;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants;
+import org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

@@ -3,7 +3,7 @@
  *  Copyright Contributors to the ODPi Egeria project.
  */
 
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils;
+package org.odpi.openmetadata.accessservices.securityofficer.server.utils;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.BusinessTerm;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.Entity;
@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_LABELS;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_PROPERTIES;
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_TAGS;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SECURITY_LABELS;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SECURITY_OFFICER;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SECURITY_PROPERTIES;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SECURITY_TAGS;
 
 public class Builder {
 

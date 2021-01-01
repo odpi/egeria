@@ -2,19 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.securityofficer.server.listener;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
-import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEventType;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineAuditCode;
-import org.odpi.openmetadata.accessservices.governanceengine.api.model.GovernedAsset;
-import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineInstanceHandler;
-import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
-import org.odpi.openmetadata.accessservices.governanceengine.server.publisher.GovernanceEnginePublisher;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.GovernedAssetEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEventType;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerAuditCode;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.GovernedAsset;
+import org.odpi.openmetadata.accessservices.securityofficer.server.handler.GovernedAssetHandler;
+import org.odpi.openmetadata.accessservices.securityofficer.server.publisher.SecurityOfficerPublisher;
+import org.odpi.openmetadata.accessservices.securityofficer.server.services.SecurityOfficerInstanceHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -26,27 +26,27 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
+public class SecurityOfficerOMRSTopicListener extends OMRSTopicListenerBase {
 
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMRSTopicListener.class);
-    private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
+    private static final Logger                         log             = LoggerFactory.getLogger(SecurityOfficerOMRSTopicListener.class);
+    private static       SecurityOfficerInstanceHandler instanceHandler = new SecurityOfficerInstanceHandler();
 
-    private OMRSRepositoryHelper      repositoryHelper;
-    private OMRSRepositoryValidator   repositoryValidator;
-    private String                    componentName;
-    private String                    serverName;
-    private String                    serverUserId;
-    private List<String>              supportedZones;
-    private GovernanceEnginePublisher publisher;
+    private OMRSRepositoryHelper     repositoryHelper;
+    private OMRSRepositoryValidator  repositoryValidator;
+    private String                   componentName;
+    private String                   serverName;
+    private String                   serverUserId;
+    private List<String>             supportedZones;
+    private SecurityOfficerPublisher publisher;
 
-    public GovernanceEngineOMRSTopicListener(OpenMetadataTopicConnector openMetadataTopicConnector,
-                                             OMRSRepositoryHelper repositoryHelper,
-                                             OMRSRepositoryValidator repositoryValidator,
-                                             String componentName,
-                                             String serverName,
-                                             String serverUserId,
-                                             List<String> supportedZones,
-                                             AuditLog auditLog) {
+    public SecurityOfficerOMRSTopicListener(SecurityOfficerPublisher securityOfficerPublisher,
+                                            OMRSRepositoryHelper repositoryHelper,
+                                            OMRSRepositoryValidator repositoryValidator,
+                                            String componentName,
+                                            String serverName,
+                                            String serverUserId,
+                                            List<String> supportedZones,
+                                            AuditLog auditLog) {
         super(componentName, auditLog);
         this.repositoryHelper    = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
@@ -54,7 +54,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
         this.serverName          = serverName;
         this.serverUserId        = serverUserId;
         this.supportedZones      = supportedZones;
-        publisher                = new GovernanceEnginePublisher(openMetadataTopicConnector, auditLog);
+        this.publisher           = securityOfficerPublisher;
     }
 
     /**
@@ -108,7 +108,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
                 return;
             }
 
-            GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
+            SecurityOfficerEvent governanceEngineEvent = getGovernanceEngineEvent(entity, SecurityOfficerEventType.NEW_CLASSIFIED_ASSET);
             publisher.publishEvent(governanceEngineEvent);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
             logExceptionToAudit(methodName, instanceEvent, e);
@@ -128,7 +128,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
                 return;
             }
 
-            GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.RE_CLASSIFIED_ASSET);
+            SecurityOfficerEvent governanceEngineEvent = getGovernanceEngineEvent(entity, SecurityOfficerEventType.RE_CLASSIFIED_ASSET);
             publisher.publishEvent(governanceEngineEvent);
 
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
@@ -152,7 +152,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
                 return;
             }
 
-            GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DELETED_ASSET);
+            GovernedAssetEvent governanceEngineEvent = getGovernanceEngineEvent(entity, SecurityOfficerEventType.DELETED_ASSET);
             publisher.publishEvent(governanceEngineEvent);
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             logExceptionToAudit(methodName, instanceEvent, e);
@@ -174,7 +174,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
                 return;
             }
 
-            GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DE_CLASSIFIED_ASSET);
+            GovernedAssetEvent governanceEngineEvent = getGovernanceEngineEvent(entity, SecurityOfficerEventType.DE_CLASSIFIED_ASSET);
             publisher.publishEvent(governanceEngineEvent);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
             logExceptionToAudit(methodName, instanceEvent, e);
@@ -182,8 +182,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
 
     }
 
-    private GovernanceEngineEvent getGovernanceEngineEvent(EntityDetail entityDetail,
-                                                           GovernanceEngineEventType governanceEngineEventType) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private GovernedAssetEvent getGovernanceEngineEvent(EntityDetail entityDetail,
+                                                        SecurityOfficerEventType governanceEngineEventType) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getGovernanceEngineEvent";
         GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(serverUserId, serverName, methodName);
 
@@ -191,7 +191,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
             return null;
         }
 
-        GovernanceEngineEvent governanceEvent = new GovernanceEngineEvent();
+        GovernedAssetEvent governanceEvent = new GovernedAssetEvent();
         governanceEvent.setEventType(governanceEngineEventType);
         GovernedAsset governedAsset = governedAssetHandler.convertGovernedAsset(serverUserId, entityDetail);
         governanceEvent.setGovernedAsset(governedAsset);
@@ -211,8 +211,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase {
 
     private void logExceptionToAudit(String methodName, OMRSInstanceEvent instanceEvent, Throwable error) {
         auditLog.logException(methodName,
-                GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(instanceEvent.getInstanceEventType().getName()),
-                "instanceEvent {" + instanceEvent.toString() + "}",
-                error);
+                              SecurityOfficerAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(instanceEvent.getInstanceEventType().getName()),
+                              "instanceEvent {" + instanceEvent.toString() + "}",
+                              error);
     }
 }

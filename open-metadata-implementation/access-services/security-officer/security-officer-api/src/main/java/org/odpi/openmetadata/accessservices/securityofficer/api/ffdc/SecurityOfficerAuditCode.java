@@ -2,7 +2,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-package org.odpi.openmetadata.accessservices.securityofficer.api.auditlog;
+package org.odpi.openmetadata.accessservices.securityofficer.api.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
@@ -69,7 +69,30 @@ public enum SecurityOfficerAuditCode implements AuditLogMessageSet
             "The error message should indicate the cause of the error.  Otherwise look for errors in the " +
                        "remote server's audit log and console to understand and correct the source of the error."),
 
-      ;
+    EVENT_PROCESSING_ERROR("OMAS-SECURITY-OFFICER-0010",
+                           OMRSAuditLogRecordSeverity.EXCEPTION,
+                           "The Security Officer Open Metadata Access Service (OMAS) encounter an exception while processing event of type {0}",
+                           "The event could not be processed",
+                           "Review the exception to determine the source of the error and correct it."),
+
+
+    OUT_TOPIC_FAILURE("OMAS-OMAS-SECURITY-OFFICER-0014",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "The Security Officer Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
+                              "error message: {2}",
+                      "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
+                      "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
+                              "bus.  Once this is resolved, restart the server."),
+
+    OUT_TOPIC_EVENT("OMAS-OMAS-SECURITY-OFFICER-0015",
+                    OMRSAuditLogRecordSeverity.EVENT,
+                    "The Security Officer Open Metadata Access Service (OMAS) has sent event: {0}",
+                    "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
+                            "configuration.  This message is to create a record of the events that are being published.",
+                    "This event indicates that the configuration for a governance engine, or governance service has changed.  " +
+                            "Check that each connected governance server receives this event and updates its configuration if " +
+                            "the change affects their operation."),
+    ;
 
 
 

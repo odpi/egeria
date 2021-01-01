@@ -1,0 +1,41 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="121px"
+     height="141px" viewBox="-0.5 -0.5 121 141"
+     content="&lt;mxfile userAgent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.62 Safari/537.36&quot; version=&quot;9.4.2&quot; editor=&quot;www.draw.io&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;c270e35f-5476-c79b-2911-20ff09b4e5da&quot; name=&quot;Page-1&quot;&gt;rZRNU4MwEIZ/DVcHSD+vbake9MRBPWZgC3ECy6RLKf56Q1lKkdbRsRwY8mQ32X3zBkess+OjkUX6gjFox3fjoyM2ju/P5xP7bkDdgpm7bEFiVNwirweh+gSGLtNSxbAfBBKiJlUMYYR5DhENmDQGq2HYDvVw10ImMAJhJPWYvqqY0pYu/HnPn0AlabezN+P+MtkFcyf7VMZYXSAROGJtEKn9yo5r0I12nS5t3vbG7LkwAzn9JsFvEw5Sl9xbkBWh1Fwd1V3LBss8hibLc8SqShVBWMioma3sGVuWUqZ5eqe0XqNGc8oVm2mw2Ews583AEBxvFuydZbD2AcyATG1DuoQZK8fW8RY8rvqD8Dp104tD6PIkn31yXrqXx36wQtfVmoxkgdgag4doKMUEc6mDnq564dyhSLZhU781/GHaDd857AOIava9LAkt6ld/Rix4jbaepoif5bQ1Y2kijhJ8ZaRJgC58MBbdgJakDsPV/6OgGPkthHyvTnvc03Lb03Mnyy2/Wc4dW252xXH+3x1nh/3dP81d/EBF8AU=&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <rect x="0" y="80" width="120" height="60" rx="9" ry="9" fill="#d5e8d4" stroke="#000000" pointer-events="none"/>
+    <g transform="translate(38.5,103.5)">
+        <switch>
+            <foreignObject style="overflow:visible;" pointer-events="all" width="42" height="12"
+                           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                <div xmlns="http://www.w3.org/1999/xhtml"
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 44px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                    <div xmlns="http://www.w3.org/1999/xhtml"
+                         style="display:inline-block;text-align:inherit;text-decoration:inherit;">EmpSal
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="21" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">EmpSal
+            </text>
+        </switch>
+    </g>
+    <path d="M 60 20 L 60 73.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+    <path d="M 60 78.88 L 56.5 71.88 L 60 73.63 L 63.5 71.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10"
+          pointer-events="none"/>
+    <rect x="30" y="0" width="60" height="20" rx="3" ry="3" fill="#ffffff" stroke="#000000" pointer-events="none"/>
+    <g transform="translate(35.5,3.5)">
+        <switch>
+            <foreignObject style="overflow:visible;" pointer-events="all" width="48" height="12"
+                           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                <div xmlns="http://www.w3.org/1999/xhtml"
+                     style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 50px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                    <div xmlns="http://www.w3.org/1999/xhtml"
+                         style="display:inline-block;text-align:inherit;text-decoration:inherit;">Sensitive
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="24" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Sensitive
+            </text>
+        </switch>
+    </g>
+</svg>

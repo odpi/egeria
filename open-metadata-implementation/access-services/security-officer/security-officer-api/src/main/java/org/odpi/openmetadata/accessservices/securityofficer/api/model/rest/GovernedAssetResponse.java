@@ -1,10 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.securityofficer.api.model;
+package org.odpi.openmetadata.accessservices.securityofficer.api.model.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.GovernedAsset;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.io.Serializable;
 
@@ -18,10 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GovernedAssetResponse extends GovernanceEngineOMASResponse implements Serializable {
+public class GovernedAssetResponse extends SecurityOfficerOMASAPIResponse implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private GovernedAsset asset;
+    private static final long          serialVersionUID = 1L;
+    private              GovernedAsset asset;
 
     /**
      * Return the Connection object.

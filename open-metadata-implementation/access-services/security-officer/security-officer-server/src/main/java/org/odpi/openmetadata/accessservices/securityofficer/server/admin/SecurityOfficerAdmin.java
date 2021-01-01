@@ -2,14 +2,14 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.admin;
+package org.odpi.openmetadata.accessservices.securityofficer.server.admin;
 
-import org.odpi.openmetadata.accessservices.securityofficer.api.auditlog.SecurityOfficerAuditCode;
-import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.listener.SecurityOfficerOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor.SecurityOfficerEventProcessor;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.publisher.SecurityOfficerPublisher;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.services.SecurityOfficerServicesInstance;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerAuditCode;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerErrorCode;
+import org.odpi.openmetadata.accessservices.securityofficer.server.listener.SecurityOfficerOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.securityofficer.server.processors.SecurityOfficerEventProcessor;
+import org.odpi.openmetadata.accessservices.securityofficer.server.publisher.SecurityOfficerPublisher;
+import org.odpi.openmetadata.accessservices.securityofficer.server.services.SecurityOfficerInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -18,8 +18,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -32,7 +30,8 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
 
     private AuditLog auditLog;
     private String serverName;
-    private SecurityOfficerServicesInstance instance;
+    private SecurityOfficerInstance instance;
+    private SecurityOfficerPublisher securityOfficerPublisher;
 
     /**
      * Initialize the access service.
@@ -63,9 +62,8 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
                     accessServiceConfigurationProperties.getAccessServiceOutTopic());
             SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector);
 
-            SecurityOfficerPublisher securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor,
-                                                                                             securityOfficerOutputTopic, auditLog);
-            this.instance = new SecurityOfficerServicesInstance(enterpriseOMRSRepositoryConnector, supportedZones, auditLog, serverUserName,
+            securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor, securityOfficerOutputTopic, auditLog);
+            this.instance = new SecurityOfficerInstance(enterpriseOMRSRepositoryConnector, supportedZones, auditLog, serverUserName,
                                                                 enterpriseOMRSRepositoryConnector.getMaxPageSize(),
                                                                 accessServiceConfigurationProperties.getAccessServiceOutTopic(),
                                                                 securityOfficerPublisher);
@@ -74,8 +72,14 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
                                              serverName,
                                              enterpriseOMRSTopicConnector,
                                              new SecurityOfficerOMRSTopicListener(
+                                                     securityOfficerPublisher,
+                                                     enterpriseOMRSRepositoryConnector.getRepositoryHelper(),
+                                                     enterpriseOMRSRepositoryConnector.getRepositoryValidator(),
                                                      AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
-                                                     securityOfficerPublisher),
+                                                     serverName,
+                                                     serverUserName,
+                                                     supportedZones,
+                                                     auditLog),
                                              auditLog);
 
             auditLog.logMessage(actionDescription, SecurityOfficerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
@@ -90,12 +94,12 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
 
             throw new OMAGConfigurationErrorException(
                         SecurityOfficerErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                           AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                                           AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
                                                                                                            serverName, error.getMessage()),
                         this.getClass().getName(), actionDescription, error);
-            }
         }
     }
+
 
     /**
      * Returns the topic created based on connection properties
@@ -109,14 +113,8 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
             try {
                 return getTopicConnector(topicConnection);
             } catch (Exception e) {
-                SecurityOfficerAuditCode auditCode = SecurityOfficerAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTION;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(topicConnection.toString(), serverName, e.getMessage()),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+                auditLog.logException(actionDescription,
+                                      SecurityOfficerAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTION.getMessageDefinition(topicConnection.toString(), serverName, e.getMessage()), e);
                 throw e;
             }
 
@@ -136,17 +134,10 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
             return topicConnector;
         } catch (Exception error) {
             final String methodName = "getTopicConnector";
-            SecurityOfficerErrorCode errorCode =
-                    SecurityOfficerErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
 
-            throw new OMRSConfigErrorException(errorCode.getHttpErrorCode(),
+            throw new OMRSConfigErrorException(SecurityOfficerErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(methodName),
                     this.getClass().getName(),
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
                     error);
 
         }
@@ -158,28 +149,18 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
      */
     public synchronized void shutdown() {
         final String actionDescription = "shutdown";
-        SecurityOfficerAuditCode auditCode;
 
-        auditCode = SecurityOfficerAuditCode.SERVICE_TERMINATING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-
-        if (instance != null) {
+        if (this.instance != null)
+        {
             this.instance.shutdown();
         }
 
-        auditCode = SecurityOfficerAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        if (this.securityOfficerPublisher != null)
+        {
+            this.securityOfficerPublisher.disconnect();
+        }
+
+        auditLog.logMessage(actionDescription, SecurityOfficerAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
+
     }
 }

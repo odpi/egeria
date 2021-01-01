@@ -2,7 +2,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.services;
+package org.odpi.openmetadata.accessservices.securityofficer.server.services;
 
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.SecurityOfficerAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;

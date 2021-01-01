@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils;
+package org.odpi.openmetadata.accessservices.securityofficer.server.utils;
 
 public class Constants {
 

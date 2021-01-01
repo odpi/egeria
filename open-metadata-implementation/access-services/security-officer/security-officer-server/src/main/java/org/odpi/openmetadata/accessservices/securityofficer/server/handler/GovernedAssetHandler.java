@@ -1,14 +1,14 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.handler;
+package org.odpi.openmetadata.accessservices.securityofficer.server.handler;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.Context;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.GovernedAsset;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor.GovernedAssetContextBuilder;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants;
+import org.odpi.openmetadata.accessservices.securityofficer.server.processors.GovernedAssetContextBuilder;
+import org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -52,7 +52,7 @@ public class GovernedAssetHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param errorHandler            provides utilities for manipulating the repository services
      * @param supportedZones          setting of the supported zones for the handler
-     **/
+     */
     public GovernedAssetHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                 RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler,
                                 List<String> supportedZones) {

@@ -2,14 +2,14 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-package org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor;
+package org.odpi.openmetadata.accessservices.securityofficer.server.processors;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEventType;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerTagEvent;
-import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.securityofficer.server.handler.SecurityOfficerHandler;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Builder;
+import org.odpi.openmetadata.accessservices.securityofficer.server.utils.Builder;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -30,8 +30,8 @@ public class SecurityOfficerEventProcessor {
     public SecurityOfficerEventProcessor(OMRSRepositoryConnector enterpriseOMRSRepositoryConnector) {
         try {
             securityOfficerHandler = new SecurityOfficerHandler(enterpriseOMRSRepositoryConnector);
-        } catch (MetadataServerException e) {
-            log.error(e.getErrorMessage());
+        } catch (PropertyServerException e) {
+            log.error(e.getMessage());
         }
     }
 
