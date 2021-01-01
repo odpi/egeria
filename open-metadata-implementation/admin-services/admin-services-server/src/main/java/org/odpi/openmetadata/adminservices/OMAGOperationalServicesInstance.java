@@ -4,20 +4,16 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
-import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
+import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
-import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
-import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +28,12 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private OMRSOperationalServices              operationalRepositoryServices       = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
     private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
-    private List<EngineServiceAdmin>             operationalEngineServiceAdminList   = new ArrayList<>();
     private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
+    private EngineHostOperationalServices        operationalEngineHost               = null;
     private IntegrationDaemonOperationalServices operationalIntegrationDaemon        = null;
     private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
-    private SecuritySyncOperationalServices      operationalSecuritySyncServices     = null;
-    private SecurityOfficerOperationalServices   operationalSecurityOfficerService   = null;
-    private VirtualizationOperationalServices    operationalVirtualizationServices   = null;
     private DataEngineProxyOperationalServices   operationalDataEngineProxyServices  = null;
-    private DataPlatformOperationalServices      operationalDataPlatformServices     = null;
     private OMRSAuditLog                         auditLog                            = null;
 
 
@@ -148,28 +140,6 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
-     * Return the list of references to the admin object for each active Open Metadata Engine Service (OMES).
-     *
-     * @return list of EngineServiceAdmin objects
-     */
-    List<EngineServiceAdmin> getOperationalEngineServiceAdminList()
-    {
-        return operationalEngineServiceAdminList;
-    }
-
-
-    /**
-     * Set up the list of references to the admin object for each active Open Metadata Engine Service (OMES).
-     *
-     * @param operationalEngineServiceAdminList list of EngineServiceAdmin objects
-     */
-    void setOperationalEngineServiceAdminList(List<EngineServiceAdmin> operationalEngineServiceAdminList)
-    {
-        this.operationalEngineServiceAdminList = operationalEngineServiceAdminList;
-    }
-
-
-    /**
      * Return the list of references to the admin object for each active Open Metadata View Service (OMVS).
      *
      * @return list of ViewServiceAdmin objects
@@ -218,6 +188,27 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return IntegrationDaemonOperationalServices object
      */
+    EngineHostOperationalServices getOperationalEngineHost() {
+        return operationalEngineHost;
+    }
+
+
+    /**
+     * Set up the running instance of the integration daemon.
+     *
+     * @param operationalEngineHost IntegrationDaemonOperationalServices object
+     */
+    void setOperationalEngineHost(EngineHostOperationalServices operationalEngineHost)
+    {
+        this.operationalEngineHost = operationalEngineHost;
+    }
+
+
+    /**
+     * Return the running instance of the integration daemon.
+     *
+     * @return IntegrationDaemonOperationalServices object
+     */
     IntegrationDaemonOperationalServices getOperationalIntegrationDaemon() {
         return operationalIntegrationDaemon;
     }
@@ -256,68 +247,6 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
-     * Return the running instance of the Security Sync
-     *
-     * @return SecuritySyncOperationalServices object
-     */
-    SecuritySyncOperationalServices getOperationalSecuritySyncServices()
-    {
-        return operationalSecuritySyncServices;
-    }
-
-
-    /**
-     * Set up the running instance of the Security Sync
-     *
-     * @param operationalSecuritySyncServices SecuritySyncOperationalServices object
-     */
-    void setOperationalSecuritySyncServices(SecuritySyncOperationalServices operationalSecuritySyncServices)
-    {
-        this.operationalSecuritySyncServices = operationalSecuritySyncServices;
-    }
-
-    /**
-     * Return the running instance of the Security Officer Server
-     *
-     * @return SecurityOfficerOperationalServices object
-     */
-    SecurityOfficerOperationalServices getOperationalSecurityOfficerService()
-    {
-        return operationalSecurityOfficerService;
-    }
-
-    /**
-     * Set up the running instance of the Security Officer Server
-     *
-     * @param operationalSecurityOfficerService SecurityOfficerOperationalServices object
-     */
-    void setOperationalSecurityOfficerService(SecurityOfficerOperationalServices operationalSecurityOfficerService)
-    {
-        this.operationalSecurityOfficerService = operationalSecurityOfficerService;
-    }
-
-    /**
-     * Return the running instance of Virtualizer
-     *
-     * @return VirtualizationOperationalServices object
-     */
-    VirtualizationOperationalServices getOperationalVirtualizationServices()
-    {
-        return operationalVirtualizationServices;
-    }
-
-
-    /**
-     * Set up the running instance of Virtualizer
-     *
-     * @param operationalVirtualizationServices VirtualizationOperationalServices object
-     */
-    void setOperationalVirtualizationServices(VirtualizationOperationalServices operationalVirtualizationServices)
-    {
-        this.operationalVirtualizationServices = operationalVirtualizationServices;
-    }
-
-    /**
      * Return the running instance of Data Engine proxy
      *
      * @return DataEngineProxyOperationalServices
@@ -336,27 +265,6 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalDataEngineProxyServices(DataEngineProxyOperationalServices operationalDataEngineProxyServices)
     {
         this.operationalDataEngineProxyServices = operationalDataEngineProxyServices;
-    }
-
-
-    /**
-     * Return the running instance of Data Platform Service
-     *
-     * @return DataPlatformOperationalServices
-     */
-    DataPlatformOperationalServices getOperationalDataPlatformServices() {
-        return operationalDataPlatformServices;
-    }
-
-
-    /**
-     * Set up the running instance of Data Platform Service
-     *
-     * @param operationalDataPlatformServices DataPlatformOperationalServices
-     */
-    void setOperationalDataPlatformServices(DataPlatformOperationalServices operationalDataPlatformServices)
-    {
-        this.operationalDataPlatformServices = operationalDataPlatformServices;
     }
 
 

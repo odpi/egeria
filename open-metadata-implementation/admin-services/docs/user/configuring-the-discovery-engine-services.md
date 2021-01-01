@@ -12,7 +12,7 @@ To configure a discovery engine, follow the instructions for configuring an
 
 ----
 * Go to [the Engine Host Server](../concepts/engine-host.md)
-* Go to [configuration document structure](../concepts/configuration-document.md)
+* Go to [the configuration document structure](../concepts/configuration-document.md)
 * Go to [Configuring an OMAG Server](configuring-an-omag-server.md)
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

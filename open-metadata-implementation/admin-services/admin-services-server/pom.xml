@@ -102,23 +102,17 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>engine-host-services-registration</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>engine-host-services-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>security-sync-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>security-officer-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>virtualization-services-server</artifactId>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -127,12 +121,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-platform-services-server</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-client</artifactId>

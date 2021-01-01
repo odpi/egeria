@@ -5,10 +5,12 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminForEngineServices;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
+import org.odpi.openmetadata.adminservices.rest.EngineHostServicesResponse;
 import org.odpi.openmetadata.adminservices.rest.EngineServiceConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody;
-import org.odpi.openmetadata.adminservices.rest.EngineServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -42,26 +44,26 @@ public class ConfigEngineServicesResource
      */
     @GetMapping("/engine-services")
 
-    public RegisteredOMAGServicesResponse getRegisteredEngineServices(@PathVariable String userId,
+    public RegisteredOMAGServicesResponse getConfiguredEngineServices(@PathVariable String userId,
                                                                       @PathVariable String serverName)
     {
-        return adminAPI.getRegisteredEngineServices(userId, serverName);
+        return adminAPI.getConfiguredEngineServices(userId, serverName);
     }
 
 
     /**
-     * Return the engine services configuration for this server.
+     * Return the configuration for the complete engine host services in this server.
      *
      * @param userId calling user
      * @param serverName name of server
-     * @return response containing the engine services configuration
+     * @return response containing the engine host services configuration
      */
-    @GetMapping("/engine-services/configuration")
+    @GetMapping("/engine-host-services/configuration")
 
-    public EngineServicesResponse getEngineServicesConfiguration(@PathVariable String userId,
-                                                                 @PathVariable String serverName)
+    public EngineHostServicesResponse getEngineHostServicesConfiguration(@PathVariable String userId,
+                                                                         @PathVariable String serverName)
     {
-        return adminAPI.getEngineServicesConfiguration(userId, serverName);
+        return adminAPI.getEngineHostServicesConfiguration(userId, serverName);
     }
 
 
@@ -80,6 +82,28 @@ public class ConfigEngineServicesResource
                                                                      @PathVariable String serviceURLMarker)
     {
         return adminAPI.getEngineServiceConfiguration(userId, serverName, serviceURLMarker);
+    }
+
+
+    /**
+     * Set up the name and platform URL root for the metadata server running the Governance Engine OMAS that provides
+     * the governance engine definitions used by the engine services.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param clientConfig  URL root and server name for the metadata server.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PostMapping("/engine-definitions/client-config")
+
+    public VoidResponse setEngineDefinitionsClientConfig(@PathVariable String                 userId,
+                                                         @PathVariable String                 serverName,
+                                                         @RequestBody  OMAGServerClientConfig clientConfig)
+    {
+        return adminAPI.setEngineDefinitionsClientConfig(userId, serverName, clientConfig);
     }
 
 
@@ -147,6 +171,64 @@ public class ConfigEngineServicesResource
                                                 @RequestBody  List<EngineServiceConfig> engineServicesConfig)
     {
         return adminAPI.setEngineServicesConfig(userId, serverName, engineServicesConfig);
+    }
+
+    /**
+     * Set up the configuration for an Engine Host OMAG Server in a single call.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param servicesConfig full configuration for the engine host server.
+     * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PostMapping(path = "/engine-host-services")
+
+    public VoidResponse setEngineHostServicesConfig(@PathVariable String                   userId,
+                                                    @PathVariable String                   serverName,
+                                                    @RequestBody  EngineHostServicesConfig servicesConfig)
+    {
+        return adminAPI.setEngineHostServicesConfig(userId, serverName, servicesConfig);
+    }
+
+
+    /**
+     * Remove the configuration for an Engine Host OMAG Server in a single call.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/engine-host-services")
+
+    public VoidResponse clearEngineHostServicesConfig(@PathVariable String userId,
+                                                      @PathVariable String serverName)
+    {
+        return adminAPI.clearEngineHostServicesConfig(userId, serverName);
+    }
+
+
+    /**
+     * Remove the configuration for the Governance Engine OMAS Engine client configuration in a single call.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/engine-definitions/client-config")
+
+    public VoidResponse clearEngineDefinitionsClientConfig(@PathVariable String userId,
+                                                           @PathVariable String serverName)
+    {
+        return adminAPI.clearEngineDefinitionsClientConfig(userId, serverName);
     }
 
 

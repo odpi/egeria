@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
@@ -16,23 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EngineServicesResponse provides a response object for returning information about a
- * list of services that are configured in an OMAG Server Platform.
+ * EngineHostServicesResponse provides a response object for returning information about a
+ * list of engine services that are configured for an engine host OMAG Server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EngineServicesResponse extends FFDCResponseBase
+public class EngineHostServicesResponse extends FFDCResponseBase
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<EngineServiceConfig> services;
+    private EngineHostServicesConfig services;
 
 
     /**
      * Default constructor
      */
-    public EngineServicesResponse()
+    public EngineHostServicesResponse()
     {
     }
 
@@ -42,7 +43,7 @@ public class EngineServicesResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public EngineServicesResponse(EngineServicesResponse template)
+    public EngineHostServicesResponse(EngineHostServicesResponse template)
     {
         super(template);
 
@@ -58,20 +59,9 @@ public class EngineServicesResponse extends FFDCResponseBase
      *
      * @return service descriptions
      */
-    public List<EngineServiceConfig> getServices()
+    public EngineHostServicesConfig getServices()
     {
-        if (services == null)
-        {
-            return null;
-        }
-        else if (services.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return services;
-        }
+        return services;
     }
 
 
@@ -80,7 +70,7 @@ public class EngineServicesResponse extends FFDCResponseBase
      *
      * @param services service
      */
-    public void setServices(List<EngineServiceConfig> services)
+    public void setServices(EngineHostServicesConfig services)
     {
         this.services = services;
     }
@@ -94,7 +84,7 @@ public class EngineServicesResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "EngineServicesResponse{" +
+        return "EngineHostServicesResponse{" +
                 "services=" + services +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -131,7 +121,7 @@ public class EngineServicesResponse extends FFDCResponseBase
         {
             return false;
         }
-        EngineServicesResponse that = (EngineServicesResponse) objectToCompare;
+        EngineHostServicesResponse that = (EngineHostServicesResponse) objectToCompare;
         return Objects.equals(getServices(), that.getServices());
     }
 
