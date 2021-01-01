@@ -34,6 +34,7 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
      *
      * @param metadataCollectionId - String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
         super.setMetadataCollectionId(metadataCollectionId);
@@ -65,6 +66,7 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
      * @return OMRSMetadataInstanceStore - metadata information retrieved from the metadata repository.
      * @throws RepositoryErrorException no metadata collection
      */
+    @Override
     public OMRSMetadataCollection getMetadataCollection() throws RepositoryErrorException
     {
         if (metadataCollection == null)

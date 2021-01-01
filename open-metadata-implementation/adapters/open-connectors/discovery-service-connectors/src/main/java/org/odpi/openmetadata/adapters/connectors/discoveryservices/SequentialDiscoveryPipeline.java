@@ -16,6 +16,7 @@ public class SequentialDiscoveryPipeline extends AuditableDiscoveryPipeline
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     protected void runDiscoveryPipeline() throws ConnectorCheckedException
     {
         DiscoveryAnalysisReportStore discoveryReport = super.discoveryContext.getAnnotationStore().getDiscoveryReport();

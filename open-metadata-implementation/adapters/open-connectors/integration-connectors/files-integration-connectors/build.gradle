@@ -19,7 +19,7 @@ dependencies {
 
 }
 
-description = 'Basic Files Integration Connector'
+description = 'Basic Files Integration Connectors'
 
 java {
     withJavadocJar()

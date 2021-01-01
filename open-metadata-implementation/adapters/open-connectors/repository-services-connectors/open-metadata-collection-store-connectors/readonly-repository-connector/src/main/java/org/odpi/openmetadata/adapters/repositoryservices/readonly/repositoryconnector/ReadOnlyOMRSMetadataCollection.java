@@ -58,6 +58,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * not have any relationships at this stage.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail addEntity(String                     userId,
                                   String                     entityTypeGUID,
                                   InstanceProperties         initialProperties,
@@ -89,8 +90,8 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-
      */
+    @Override
     public EntityDetail addExternalEntity(String                userId,
                                           String                entityTypeGUID,
                                           String                externalSourceGUID,
@@ -115,6 +116,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param entityProxy details of entity to add.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public void addEntityProxy(String       userId,
                                EntityProxy  entityProxy) throws FunctionNotSupportedException
     {
@@ -133,6 +135,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the current entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail updateEntityStatus(String           userId,
                                            String           entityGUID,
                                            InstanceStatus   newStatus) throws FunctionNotSupportedException
@@ -154,6 +157,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail updateEntityProperties(String               userId,
                                                String               entityGUID,
                                                InstanceProperties   properties) throws FunctionNotSupportedException
@@ -174,6 +178,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail undoEntityUpdate(String  userId,
                                          String  entityGUID) throws FunctionNotSupportedException
     {
@@ -198,6 +203,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return deleted entity
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail   deleteEntity(String    userId,
                                        String    typeDefGUID,
                                        String    typeDefName,
@@ -220,6 +226,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public void purgeEntity(String    userId,
                             String    typeDefGUID,
                             String    typeDefName,
@@ -239,6 +246,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the restored entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail restoreEntity(String    userId,
                                       String    deletedEntityGUID) throws FunctionNotSupportedException
     {
@@ -260,6 +268,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail classifyEntity(String               userId,
                                        String               entityGUID,
                                        String               classificationName,
@@ -287,6 +296,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public  EntityDetail classifyEntity(String               userId,
                                         String               entityGUID,
                                         String               classificationName,
@@ -313,6 +323,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail declassifyEntity(String  userId,
                                          String  entityGUID,
                                          String  classificationName) throws FunctionNotSupportedException
@@ -335,6 +346,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail updateEntityClassification(String               userId,
                                                    String               entityGUID,
                                                    String               classificationName,
@@ -361,6 +373,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return Relationship structure with the new header, requested entities and properties.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship addRelationship(String               userId,
                                         String               relationshipTypeGUID,
                                         InstanceProperties   initialProperties,
@@ -394,6 +407,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return Relationship structure with the new header, requested entities and properties.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship addExternalRelationship(String               userId,
                                                 String               relationshipTypeGUID,
                                                 String               externalSourceGUID,
@@ -420,6 +434,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return Resulting relationship structure with the new status set.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship updateRelationshipStatus(String           userId,
                                                  String           relationshipGUID,
                                                  InstanceStatus   newStatus) throws FunctionNotSupportedException
@@ -440,6 +455,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return Resulting relationship structure with the new properties set.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship updateRelationshipProperties(String               userId,
                                                      String               relationshipGUID,
                                                      InstanceProperties   properties) throws FunctionNotSupportedException
@@ -460,6 +476,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return Relationship structure with the new current header, requested entities and properties.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship undoRelationshipUpdate(String  userId,
                                                String  relationshipGUID) throws FunctionNotSupportedException
     {
@@ -483,6 +500,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return deleted relationship
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship deleteRelationship(String    userId,
                                            String    typeDefGUID,
                                            String    typeDefName,
@@ -505,6 +523,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public void purgeRelationship(String    userId,
                                   String    typeDefGUID,
                                   String    typeDefName,
@@ -525,6 +544,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return Relationship structure with the restored header, requested entities and properties.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship restoreRelationship(String    userId,
                                             String    deletedRelationshipGUID) throws FunctionNotSupportedException
     {
@@ -554,6 +574,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return entity - new values for this entity, including the new guid.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail reIdentifyEntity(String     userId,
                                          String     typeDefGUID,
                                          String     typeDefName,
@@ -580,6 +601,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return entity - new values for this entity, including the new type information.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail reTypeEntity(String         userId,
                                      String         entityGUID,
                                      TypeDefSummary currentTypeDefSummary,
@@ -608,6 +630,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return entity - new values for this entity, including the new home information.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public EntityDetail reHomeEntity(String         userId,
                                      String         entityGUID,
                                      String         typeDefGUID,
@@ -637,6 +660,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return relationship - new values for this relationship, including the new guid.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship reIdentifyRelationship(String     userId,
                                                String     typeDefGUID,
                                                String     typeDefName,
@@ -663,6 +687,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return relationship - new values for this relationship, including the new type information.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship reTypeRelationship(String         userId,
                                            String         relationshipGUID,
                                            TypeDefSummary currentTypeDefSummary,
@@ -691,6 +716,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @return relationship - new values for this relationship, including the new home information.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Relationship reHomeRelationship(String   userId,
                                            String   relationshipGUID,
                                            String   typeDefGUID,
@@ -721,6 +747,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
      * @throws FunctionNotSupportedException this method is not supported
      */
+    @Override
     public List<Classification> getHomeClassifications(String userId,
                                                        String entityGUID) throws InvalidParameterException,
                                                                                  RepositoryErrorException,
@@ -750,6 +777,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
      * @throws FunctionNotSupportedException this method is not supported
      */
+    @Override
     public List<Classification> getHomeClassifications(String userId,
                                                        String entityGUID,
                                                        Date   asOfTime) throws InvalidParameterException,

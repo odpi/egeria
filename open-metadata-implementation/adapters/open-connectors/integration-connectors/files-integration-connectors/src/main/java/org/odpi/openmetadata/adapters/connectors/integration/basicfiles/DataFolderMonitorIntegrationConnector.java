@@ -30,6 +30,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
      *
      * @return file alteration listener implementation
      */
+    @Override
     FileAlterationListenerAdaptor getListener()
     {
         return new DataFolderMonitorIntegrationConnector.FileCataloguingListener(this);
@@ -42,6 +43,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -61,6 +63,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
      *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
+    @Override
     public void refresh() throws ConnectorCheckedException
     {
         final String methodName = "refresh";

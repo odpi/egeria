@@ -28,6 +28,7 @@ public class ReadOnlyOMRSRepositoryConnector extends InMemoryOMRSRepositoryConne
      *
      * @param metadataCollectionId - String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
         super.metadataCollectionId = metadataCollectionId;
