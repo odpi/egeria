@@ -99,7 +99,7 @@ allprojects {
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation("io.micrometer:micrometer-registry-prometheus:1.6.1")
             implementation("io.netty:netty-all:4.1.54.Final")
-            implementation("io.netty:netty-buffer:4.1.54.Final")
+            implementation("io.netty:netty-buffer:4.1.56.Final")
             implementation("io.netty:netty-codec:4.1.54.Final")
             implementation("io.netty:netty-common:4.1.54.Final")
             implementation("io.netty:netty-handler:4.1.54.Final")
