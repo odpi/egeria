@@ -154,7 +154,7 @@ allprojects {
             implementation("org.springframework.boot:spring-boot-starter-security:2.3.5.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-validation:2.3.5.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-web:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-test:2.3.5.RELEASE")
+            implementation("org.springframework.boot:spring-boot-starter-test:2.4.1")
             implementation("org.springframework.boot:spring-boot-test:2.3.5.RELEASE")
             implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.6.RELEASE")
             implementation("org.springframework.data:spring-data-commons:2.4.1")
