@@ -1875,7 +1875,7 @@ public class OpenMetadataTypesArchive2_4
     /**
      * 05xx - Deprecate RelationalView classification and replace it with CalculatedValue.  This is because the expression
      * rally belongs on the SchemaType and calculated values are possible on other types of schema.  Also enable
-     * all schema types to begin in a TypeEmbeddedAttribute classification.
+     * all schema types to be in a TypeEmbeddedAttribute classification.
      */
     private void update05xxSchemaAttributes()
     {

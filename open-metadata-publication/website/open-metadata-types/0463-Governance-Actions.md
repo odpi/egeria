@@ -28,6 +28,13 @@ a [GovernanceProcess](0430-Technical-Controls.md) or a
 The GovernanceAction is also linked to
 any follow on activities through the **NextGovernanceAction**
 relationship so it is possible to trace through a chain of actions.
+The **guard** describes the output guard from the previous action(s)
+that will trigger the next action(s).  
+If the guard is mandatory (ie **mandatoryGuard** = true),
+a next action can not run until a previous action has produced this guard.
+If **ignoreMultipleTriggers** = true, the next action is only triggered once.
+If it is false then the next action is triggered each time the guard is produced
+by the previous action(s).
 
 ![UML](0463-Governance-Actions.png#pagewidth)
 
