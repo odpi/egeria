@@ -18,6 +18,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
 
     protected final String BASE_URL;
     protected final SubjectAreaRestClient client;
+
     protected AbstractSubjectArea(SubjectAreaRestClient client, String baseUrl) {
         this.BASE_URL = baseUrl;
         this.client = client;
@@ -43,11 +44,15 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
     }
 
     @Override
-    public List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
-    {
+    public List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
         GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest);
+        return response.results();
+    }
+    @Override
+    public List<T> find(String userId, FindRequest findRequest , Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, maximumPageSizeOnRestCall);
         return response.results();
     }
 
@@ -89,4 +94,5 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
     protected String getMethodInfo(String methodName) {
         return methodName + " for " + resultType().getSimpleName();
     }
+
 }

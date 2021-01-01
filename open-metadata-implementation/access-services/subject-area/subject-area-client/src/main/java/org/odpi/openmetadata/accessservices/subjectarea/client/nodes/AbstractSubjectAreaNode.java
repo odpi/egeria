@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * @param <E> inherited from {@link Node} type
- * Abstract class for Subject Area client node operations
+ *            Abstract class for Subject Area client node operations
  */
 public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaNodeClient<E> {
     protected AbstractSubjectAreaNode(SubjectAreaRestClient client, String baseUrl) {
@@ -28,16 +28,23 @@ public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSu
     }
 
     @Override
-    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
-    {
+    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                                                                                                                      PropertyServerException,
+                                                                                                                                      UserNotAuthorizedException {
         final String urlTemplate = BASE_URL + "/%s/relationships";
         final String methodInfo = getMethodInfo("getRelationships");
 
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Line.class);
         ParameterizedTypeReference<GenericResponse<Line>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest);
+        GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest, maximumPageSizeOnRestCall);
         return response.results();
     }
+
+    @Override
+    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException {
+        return getRelationships(userId, guid, findRequest, null);
+    }
+
 }
