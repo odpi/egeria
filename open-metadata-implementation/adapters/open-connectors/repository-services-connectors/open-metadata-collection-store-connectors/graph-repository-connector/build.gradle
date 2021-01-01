@@ -20,7 +20,7 @@ dependencies {
     runtimeOnly 'org.janusgraph:janusgraph-lucene:0.5.2'
     runtimeOnly 'org.janusgraph:janusgraph-es:0.5.2'
     runtimeOnly 'org.janusgraph:janusgraph-cql:0.5.2'
-    runtimeOnly 'joda-time:joda-time:2.10.8'
+    runtimeOnly 'joda-time:joda-time:2.10.9'
     runtimeOnly 'org.antlr:antlr-runtime:3.5.2'
     runtimeOnly 'org.xerial.snappy:snappy-java:1.1.8.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
