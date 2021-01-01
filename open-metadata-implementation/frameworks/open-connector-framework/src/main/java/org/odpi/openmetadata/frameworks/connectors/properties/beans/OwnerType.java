@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>Profile - The owner's profile unique identifier (guid) is stored in the owner property.</li>
  *     <li>Other - A different identifier for the owner outside of the scope of open metadata has been used.</li>
  * </ul>
- * Being able to use a profile guid in this field allows for Asset's to be owned by Teams and Engines as well
+ * Being able to use a profile guid in this field allows for Assets to be owned by Teams and Engines as well
  * as people.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

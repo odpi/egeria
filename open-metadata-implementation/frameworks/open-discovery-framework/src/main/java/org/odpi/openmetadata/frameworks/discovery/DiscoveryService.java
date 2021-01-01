@@ -111,9 +111,14 @@ public abstract class DiscoveryService extends ConnectorBase
 
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
+     * This is where the function of the discovery service is implemented.
      *
-     * @throws DiscoveryServiceException there is a problem within the discovery service.
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() in your version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -149,10 +154,13 @@ public abstract class DiscoveryService extends ConnectorBase
 
 
     /**
-     * Free up any resources held since the connector is no longer needed.
+     * Free up any resources held since the connector is no longer needed.  This is a standard
+     * method from the Open Connector Framework (OCF).  If you need to override this method
+     * be sure to call super.disconnect() in your version.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         final String methodName = "disconnect";
