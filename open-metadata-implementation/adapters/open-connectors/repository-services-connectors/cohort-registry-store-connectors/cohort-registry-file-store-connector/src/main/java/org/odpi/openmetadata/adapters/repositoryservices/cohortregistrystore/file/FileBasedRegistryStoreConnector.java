@@ -16,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistry
 
 import org.apache.commons.io.FileUtils;
 
-import javax.jws.Oneway;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
