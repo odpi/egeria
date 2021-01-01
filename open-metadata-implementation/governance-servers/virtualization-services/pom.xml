@@ -28,7 +28,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>virtualization-services-api</module>
-        <module>virtualization-services-server</module>
     </modules>
 
 
