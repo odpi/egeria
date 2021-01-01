@@ -50,12 +50,12 @@ type of governance service.
 
 | Governance Service | Engine Service |
 | :----------------- | :------------- | 
-| Open Discovery Service | [Asset Analysis OMES](../../engine-services/asset-analysis) |
-| Open Watchdog Service | [Metadata Watchdog OMES](../../engine-services/metadata-watchdog) |
-| Open Verification Service | [Rule Verifier OMES](../../engine-services/rule-verifier) |
-| Open Triage Service | [Request Triage OMES](../../engine-services/request-triage) |
-| Open Remediation Service | [Issue Remediation OMES](../../engine-services/issue-remediation) |
-| Open Provisioning Service | [Asset Provisioning OMES](../../engine-services/asset-provisioning) |
+| Open Discovery Service | [Asset Analysis OMES](../../../../engine-services/asset-analysis) |
+| Open Watchdog Service | [Metadata Watchdog OMES](../../../../engine-services/metadata-watchdog) |
+| Open Verification Service | [Rule Verifier OMES](../../../../engine-services/rule-verifier) |
+| Open Triage Service | [Request Triage OMES](../../../../engine-services/request-triage) |
+| Open Remediation Service | [Issue Remediation OMES](../../../../engine-services/issue-remediation) |
+| Open Provisioning Service | [Asset Provisioning OMES](../../../../engine-services/asset-provisioning) |
 
 
 ## Support for implementing governance services

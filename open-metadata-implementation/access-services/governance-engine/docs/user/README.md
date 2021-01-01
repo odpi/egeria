@@ -9,7 +9,7 @@
 ## Defining Governance Action Processes
 
 ----
-Return to the [access-services](..) module.
+Return to the [module overview](../..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

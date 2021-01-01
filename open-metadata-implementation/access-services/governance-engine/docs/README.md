@@ -7,7 +7,7 @@
 * [User Guide](user)
 
 ----
-Return to the [module overview](..) module.
+Return to the [module overview](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

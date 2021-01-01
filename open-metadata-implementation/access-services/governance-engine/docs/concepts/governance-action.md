@@ -22,6 +22,22 @@ The governance action metadata entity is used to coordinate
 the desired activity in the governance engine, record its current state and
 act as a record of the activity for future audits.
 
+Governance actions can be created through the [Governance Engine OMAS API](../user).
+Some governance services (for example, the 
+[Open Watchdog Service](../../../../frameworks/governance-action-framework/docs/open-watchdog-service.md))
+can create governance actions when they run.  
+
+Governance services produce output strings called **guards** that indicate specific
+conditions or outcomes.  These guards can be used to trigger new governance actions.
+Triggered governance actions are linked to their predecessor so it possible to trace
+through the governance actions that ran.
+
+The [governance action process](governance-action-process.md) defines the flow of governance
+actions.  It uses [governance action types](governance-action-type.md) to build up a template of
+possible governance actions linked via the guards.
+When the process runs, its linked governance action types control the triggering of new
+governance actions.
+
 If the start date of the governance action is in the future, the
 [Engine Host Services](../../../../governance-servers/engine-host-services)
 running in the same [Engine Host](../../../../admin-services/docs/concepts/engine-host.md)
@@ -31,8 +47,6 @@ If the start date is left blank, the requested governance service is run
 as soon as possible.
 
 
-Governance actions can be created through the [Asset Manager OMAS](../../../asset-manager)
-API or as part of an automated [governance action process](governance-action-process.md).
 
 ----
 
