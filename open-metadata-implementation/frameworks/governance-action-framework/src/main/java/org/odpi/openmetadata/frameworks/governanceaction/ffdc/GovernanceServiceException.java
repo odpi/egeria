@@ -3,24 +3,25 @@
 package org.odpi.openmetadata.frameworks.governanceaction.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
 /**
- * StewardshipEngineException indicates there is a problem with a request to a specific stewardship engine.  The
+ * GovernanceServiceException indicates there is a problem with a request to a specific governance engine.  The
  * error codes and messages indicate the cause of the problem and guidance on finding a remedy.
  */
-public class StewardshipEngineException extends OCFCheckedExceptionBase
+public class GovernanceServiceException extends ConnectorCheckedException
 {
     private static final long serialVersionUID = 1L;
 
     /**
-     * This is the typical constructor used for creating a StewardshipEngineException.
+     * This is the typical constructor used for creating a GovernanceServiceException.
      *
      * @param messageDefinition content of message
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      */
-    public StewardshipEngineException(ExceptionMessageDefinition messageDefinition,
+    public GovernanceServiceException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription)
     {
@@ -29,14 +30,14 @@ public class StewardshipEngineException extends OCFCheckedExceptionBase
 
 
     /**
-     * This is the constructor used for creating a StewardshipEngineException in response to a previous exception.
+     * This is the constructor used for creating a GovernanceServiceException in response to a previous exception.
      *
      * @param messageDefinition content of message
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError   the error that resulted in this exception.
      */
-    public StewardshipEngineException(ExceptionMessageDefinition messageDefinition,
+    public GovernanceServiceException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
                                       Throwable                  caughtError)
@@ -51,7 +52,7 @@ public class StewardshipEngineException extends OCFCheckedExceptionBase
      * @param errorMessage associated message
      * @param template   object to copy
      */
-    public StewardshipEngineException(String                  errorMessage,
+    public GovernanceServiceException(String                  errorMessage,
                                       OCFCheckedExceptionBase template)
     {
         super(errorMessage, template);
