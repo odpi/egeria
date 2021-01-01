@@ -655,8 +655,9 @@ project(':open-metadata-implementation:governance-servers:open-lineage-services:
 project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-server').projectDir = file('open-metadata-implementation/governance-servers/open-lineage-services/open-lineage-services-server')
 project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-spring').projectDir = file('open-metadata-implementation/governance-servers/open-lineage-services/open-lineage-services-spring')
 project(':open-metadata-implementation:governance-servers:open-lineage-services').projectDir = file('open-metadata-implementation/governance-servers/open-lineage-services')
-project(':open-metadata-implementation:governance-servers:virtualization-services:virtualization-services-api').projectDir = file('open-metadata-implementation/governance-servers/virtualization-services/virtualization-services-api')
-project(':open-metadata-implementation:governance-servers:virtualization-services').projectDir = file('open-metadata-implementation/governance-servers/virtualization-services')
+// todo convert to governance action connector
+//project(':open-metadata-implementation:governance-servers:virtualization-services:virtualization-services-api').projectDir = file('open-metadata-implementation/governance-servers/virtualization-services/virtualization-services-api')
+//project(':open-metadata-implementation:governance-servers:virtualization-services').projectDir = file('open-metadata-implementation/governance-servers/virtualization-services')
 project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-server').projectDir = file('open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-services-server')
 project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-connector').projectDir = file('open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-connector')
 project(':open-metadata-implementation:governance-servers:data-engine-proxy-services').projectDir = file('open-metadata-implementation/governance-servers/data-engine-proxy-services')
