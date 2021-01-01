@@ -95,7 +95,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME))
+                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
                 {
                     EntityProxy end2 = relationship.getEntityTwoProxy();
 
@@ -107,10 +107,10 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                               end2.getUniqueProperties(),
                                                                                                               methodName),
                                                                            relationship.getGUID(),
-                                                                           repositoryHelper.getStringArrayProperty(sourceName,
-                                                                                                                   OpenMetadataAPIMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
-                                                                                                                   relationship.getProperties(),
-                                                                                                                   methodName));
+                                                                           repositoryHelper.getStringProperty(sourceName,
+                                                                                                              OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                              relationship.getProperties(),
+                                                                                                              methodName));
                     }
                 }
             }

@@ -939,7 +939,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String              discoveryServiceGUID      = null;
-        List<String>        discoveryRequestType      = null;
+        String              discoveryRequestType      = null;
         Map<String, String> defaultAnalysisParameters = null;
         VoidResponse        response                  = new VoidResponse();
         AuditLog            auditLog                  = null;
@@ -948,7 +948,7 @@ public class DiscoveryConfigurationServices
         if (requestBody != null)
         {
             discoveryServiceGUID      = requestBody.getDiscoveryServiceGUID();
-            discoveryRequestType      = requestBody.getDiscoveryRequestTypes();
+            discoveryRequestType      = requestBody.getDiscoveryRequestType();
             defaultAnalysisParameters = requestBody.getDefaultAnalysisParameters();
         }
 
@@ -1000,7 +1000,7 @@ public class DiscoveryConfigurationServices
                                                                             String  discoveryEngineGUID,
                                                                             String  discoveryServiceGUID)
     {
-        final String        methodName = "getRegisteredDiscoveryService";
+        final String        methodName = "getRegisteredGovernanceService";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
