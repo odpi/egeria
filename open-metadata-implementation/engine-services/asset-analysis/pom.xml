@@ -21,9 +21,9 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Asset Analysis Engine Services</name>
+    <name>Asset Analysis OMES</name>
     <description>
-        Hosts Open Discovery Engines running Open Discovery Services on demand.
+        Asset Analysis Open Engine Services (OMES) hosts Open Discovery Engines running Open Discovery Services on demand.
     </description>
 
     <artifactId>asset-analysis</artifactId>

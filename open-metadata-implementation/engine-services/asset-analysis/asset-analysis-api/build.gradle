@@ -14,7 +14,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
 }
 
-description = 'Asset Analysis Engine Services API'
+description = 'Asset Analysis OMES API'
 
 java {
     withJavadocJar()

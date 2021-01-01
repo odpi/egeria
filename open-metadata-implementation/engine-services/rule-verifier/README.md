@@ -1,13 +1,17 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Action Scheduler Open Metadata Engine Service (OMES)
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
 
-The Action Scheduler OMES maintains a calendar of events and creates RequestForAction instances 
-at the requested time.  For example, it may move assets between zones when a particular date is reached.
-It loads **Open Scheduling Engines**,
-runs **Open Scheduling Services** and
-calls the [Asset Manager OMAS](../../access-services/asset-manager).
+# Rule Verifier Open Metadata Engine Service (OMES)
+
+The Rule Verifier OMES is responsible for running
+[Open Verification Services](../../frameworks/governance-action-framework/docs/open-verification-service.md)
+from the [Governance Action Framework (GAF)](../../frameworks/governance-action-framework).
+
+These services can be called through the Rule Verifier OMES's
+REST API or by creating a [Governance Action](../../frameworks/governance-action-framework/docs/governance-action.md)
+using the [Governance Engine OMAS](../../access-services/governance-engine).
 
 
 ----
