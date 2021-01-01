@@ -143,6 +143,7 @@ public class EngineHostRESTServices
      *
      * @param serverName governance server name
      * @param userId calling user
+     * @param serviceURLMarker URL marker of the engine service
      * @return list of statuses - on for each assigned governance engines or
      *
      *  InvalidParameterException one of the parameters is null or invalid or

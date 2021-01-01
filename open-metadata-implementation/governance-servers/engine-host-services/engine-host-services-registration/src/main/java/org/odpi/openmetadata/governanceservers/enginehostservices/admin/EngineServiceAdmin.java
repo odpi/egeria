@@ -42,6 +42,7 @@ public abstract class EngineServiceAdmin
      * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions.
      * @param engineServiceConfig details of the options and the engines to run
      *
+     * @return map of governance engine names to handlers
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
     public abstract Map<String, GovernanceEngineHandler> initialize(String                              localServerId,
