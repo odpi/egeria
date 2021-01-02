@@ -280,6 +280,7 @@ include(':open-metadata-implementation:governance-servers:open-lineage-services:
 include(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-server')
 include(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-spring')
 include(':open-metadata-implementation:governance-servers:open-lineage-services')
+//Todo: convert to integration connector
 //include(':open-metadata-implementation:governance-servers:virtualization-services:virtualization-services-api')
 //include(':open-metadata-implementation:governance-servers:virtualization-services')
 include(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-server')
@@ -719,6 +720,7 @@ project(':open-metadata-resources:open-metadata-deployment:charts').projectDir =
 project(':open-metadata-resources:open-metadata-deployment:compose').projectDir = file('open-metadata-resources/open-metadata-deployment/compose')
 project(':open-metadata-test:open-metadata-ut').projectDir = file('open-metadata-test/open-metadata-ut')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-consumer-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/asset-consumer-fvt')
+project(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-manager-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/asset-manager-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-owner-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/asset-owner-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/data-manager-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/digital-architecture-fvt')
