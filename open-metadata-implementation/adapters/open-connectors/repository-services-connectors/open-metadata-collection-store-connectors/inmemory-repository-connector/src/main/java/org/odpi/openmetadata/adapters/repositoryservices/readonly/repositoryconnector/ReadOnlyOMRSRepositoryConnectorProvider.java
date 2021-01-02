@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 /**
  * In the Open Connector Framework (OCF), a ConnectorProvider is a factory for a specific type of connector.
- * The InMemoryOMRSRepositoryConnectorProvider is the connector provider for the ReadOnlyOMRSRepositoryConnectorProvider.
+ * The ReadOnlyOMRSRepositoryConnectorProvider is the connector provider for the ReadOnlyOMRSRepositoryConnector.
  * It extends OMRSRepositoryConnectorProviderBase which in turn extends the OCF ConnectorProviderBase.
  * ConnectorProviderBase supports the creation of connector instances.
  *

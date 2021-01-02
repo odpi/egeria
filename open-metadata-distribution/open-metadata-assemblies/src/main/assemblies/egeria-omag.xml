@@ -77,7 +77,6 @@
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
                 <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>
-                <include>org.odpi.egeria:readonly-repository-connector:*</include>
                 <!--include>org.odpi.egeria:security-officer-tag-connector:*</include-->
                 <include>org.odpi.egeria:spring-rest-client-connector:*</include>
                 <!--include>org.odpi.egeria:ranger-connector:*</include-->

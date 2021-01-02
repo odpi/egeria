@@ -132,10 +132,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>readonly-repository-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>spring-rest-client-connector</artifactId>
         </dependency>
         <dependency>
