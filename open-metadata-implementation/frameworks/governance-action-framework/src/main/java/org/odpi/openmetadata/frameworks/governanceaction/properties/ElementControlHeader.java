@@ -41,7 +41,7 @@ public class ElementControlHeader implements Serializable
 
 
     private String                    elementSourceServer           = null;
-    private ElementOrigin             elementOrigin                 = ElementOrigin.CONFIGURATION;
+    private ElementOriginCategory     elementOriginCategory         = ElementOriginCategory.CONFIGURATION;
     private String                    elementMetadataCollectionId   = null;
     private String                    elementMetadataCollectionName = null;
     private String                    elementLicense                = null;
@@ -75,7 +75,7 @@ public class ElementControlHeader implements Serializable
         {
             this.headerVersion                 = template.getHeaderVersion();
             this.elementSourceServer           = template.getElementSourceServer();
-            this.elementOrigin                 = template.getElementOrigin();
+            this.elementOriginCategory         = template.getElementOriginCategory();
             this.elementMetadataCollectionId   = template.getElementMetadataCollectionId();
             this.elementMetadataCollectionName = template.getElementMetadataCollectionName();
             this.elementLicense                = template.getElementLicense();
@@ -147,11 +147,11 @@ public class ElementControlHeader implements Serializable
     /**
      * Set up the category of this element's origin.
      *
-     * @param elementOrigin see ElementOrigin enum
+     * @param elementOriginCategory see ElementOrigin enum
      */
-    public void setElementOrigin(ElementOrigin elementOrigin)
+    public void setElementOriginCategory(ElementOriginCategory elementOriginCategory)
     {
-        this.elementOrigin = elementOrigin;
+        this.elementOriginCategory = elementOriginCategory;
     }
 
 
@@ -160,7 +160,7 @@ public class ElementControlHeader implements Serializable
      *
      * @return ElementOrigin enum
      */
-    public ElementOrigin getElementOrigin() { return elementOrigin; }
+    public ElementOriginCategory getElementOriginCategory() { return elementOriginCategory; }
 
 
     /**
@@ -425,7 +425,7 @@ public class ElementControlHeader implements Serializable
     {
         return "ElementControlHeader{" +
                 "elementSourceServer='" + elementSourceServer + '\'' +
-                ", elementOrigin=" + elementOrigin +
+                ", elementOriginCategory=" + elementOriginCategory +
                 ", elementMetadataCollectionId='" + elementMetadataCollectionId + '\'' +
                 ", elementMetadataCollectionName='" + elementMetadataCollectionName + '\'' +
                 ", elementLicense='" + elementLicense + '\'' +
@@ -463,7 +463,7 @@ public class ElementControlHeader implements Serializable
         ElementControlHeader that = (ElementControlHeader) objectToCompare;
         return elementVersion == that.elementVersion &&
                 Objects.equals(elementSourceServer, that.elementSourceServer) &&
-                elementOrigin == that.elementOrigin &&
+                elementOriginCategory == that.elementOriginCategory &&
                 Objects.equals(elementMetadataCollectionId, that.elementMetadataCollectionId) &&
                 Objects.equals(elementMetadataCollectionName, that.elementMetadataCollectionName) &&
                 Objects.equals(elementLicense, that.elementLicense) &&
@@ -485,7 +485,7 @@ public class ElementControlHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementSourceServer, elementOrigin, elementMetadataCollectionId, elementMetadataCollectionName, elementLicense,
+        return Objects.hash(elementSourceServer, elementOriginCategory, elementMetadataCollectionId, elementMetadataCollectionName, elementLicense,
                             elementCreatedBy, elementUpdatedBy, elementMaintainedBy, elementCreateTime, elementUpdateTime, elementVersion,
                             elementStatus, mappingProperties);
     }

@@ -7,6 +7,10 @@ import org.odpi.openmetadata.accessservices.governanceengine.properties.OwnerCat
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementType;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -25,6 +29,9 @@ import java.util.Map;
  */
 abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 {
+    private PropertyHelper propertyHelper = new PropertyHelper();
+
+
     /**
      * Constructor
      *
@@ -88,7 +95,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     ElementHeader getMetadataElementHeader(Class<B>             beanClass,
-                                           InstanceHeader header,
+                                           InstanceHeader       header,
                                            List<Classification> entityClassifications,
                                            String               methodName) throws PropertyServerException
     {
@@ -161,7 +168,10 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
                     ElementClassification beanClassification = new ElementClassification();
 
                     beanClassification.setClassificationName(entityClassification.getName());
-                    beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
+
+                    Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties());
+
+                    beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
 
                     beanClassifications.add(beanClassification);
                 }
@@ -187,10 +197,10 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
         if (instanceType != null)
         {
-            elementType.setTypeId(instanceType.getTypeDefGUID());
-            elementType.setTypeName(instanceType.getTypeDefName());
-            elementType.setTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setTypeDescription(instanceType.getTypeDefDescription());
+            elementType.setElementTypeId(instanceType.getTypeDefGUID());
+            elementType.setElementTypeName(instanceType.getTypeDefName());
+            elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
 
             List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
 
@@ -208,7 +218,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
                 if (! superTypes.isEmpty())
                 {
-                    elementType.setSuperTypeNames(superTypes);
+                    elementType.setElementSuperTypeNames(superTypes);
                 }
             }
         }

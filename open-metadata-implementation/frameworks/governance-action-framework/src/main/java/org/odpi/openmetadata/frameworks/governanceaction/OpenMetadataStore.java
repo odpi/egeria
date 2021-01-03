@@ -44,13 +44,17 @@ public interface OpenMetadataStore
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param searchString name to retrieve
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataElement> findMetadataElementsWithString(String searchString) throws InvalidParameterException,
+    List<OpenMetadataElement> findMetadataElementsWithString(String searchString,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException;
 

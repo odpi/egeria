@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
@@ -58,6 +59,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param searchString name to retrieve
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
@@ -65,7 +68,9 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String searchString) throws InvalidParameterException,
+    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String searchString,
+                                                                             int    startFrom,
+                                                                             int    pageSize) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException;
 
@@ -177,11 +182,11 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract String createMetadataElementInStore(String            metadataElementTypeName,
-                                                           ElementProperties properties,
-                                                           String            templateGUID) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
+    public abstract String createMetadataElementInStore(String            metadataElementTypeName,
+                                                        ElementProperties properties,
+                                                        String            templateGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
 
 
     /**
@@ -200,12 +205,12 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract String createMetadataElementInStore(String            metadataElementTypeName,
-                                                           ElementStatus     initialStatus,
-                                                           ElementProperties properties,
-                                                           String            templateGUID) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
+    public abstract String createMetadataElementInStore(String            metadataElementTypeName,
+                                                        ElementStatus     initialStatus,
+                                                        ElementProperties properties,
+                                                        String            templateGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
 
 
     /**
@@ -222,11 +227,11 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void updateMetadataElementInStore(String            metadataElementGUID,
-                                                         boolean           replaceProperties,
-                                                         ElementProperties properties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+    public abstract void updateMetadataElementInStore(String            metadataElementGUID,
+                                                      boolean           replaceProperties,
+                                                      ElementProperties properties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
 
 
     /**
@@ -240,10 +245,10 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void updateMetadataElementStatusInStore(String        metadataElementGUID,
-                                                               ElementStatus newElementStatus) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException;
+    public abstract void updateMetadataElementStatusInStore(String        metadataElementGUID,
+                                                            ElementStatus newElementStatus) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
 
     /**
@@ -255,9 +260,9 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void deleteMetadataElementInStore(String metadataElementGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
+    public abstract void deleteMetadataElementInStore(String metadataElementGUID) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
 
 
     /**
@@ -274,11 +279,11 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void classifyMetadataElementInStore(String            metadataElementGUID,
-                                                           String            classificationName,
-                                                           ElementProperties properties) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException;
+    public abstract void classifyMetadataElementInStore(String            metadataElementGUID,
+                                                        String            classificationName,
+                                                        ElementProperties properties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**
@@ -295,12 +300,12 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void reclassifyMetadataElementInStore(String            metadataElementGUID,
-                                                             String            classificationName,
-                                                             boolean           replaceProperties,
-                                                             ElementProperties properties) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
+    public abstract void reclassifyMetadataElementInStore(String            metadataElementGUID,
+                                                          String            classificationName,
+                                                          boolean           replaceProperties,
+                                                          ElementProperties properties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
 
 
     /**
@@ -313,10 +318,10 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void unclassifyMetadataElementInStore(String metadataElementGUID,
-                                                             String classificationName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException;
+    public abstract void unclassifyMetadataElementInStore(String metadataElementGUID,
+                                                          String classificationName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
 
 
     /**
@@ -336,12 +341,12 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract String createRelatedElementsInStore(String            relationshipTypeName,
-                                                           String            metadataElement1GUID,
-                                                           String            metadataElement2GUID,
-                                                           ElementProperties properties) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException;
+    public abstract String createRelatedElementsInStore(String            relationshipTypeName,
+                                                        String            metadataElement1GUID,
+                                                        String            metadataElement2GUID,
+                                                        ElementProperties properties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**
@@ -357,11 +362,11 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void updateRelatedElementsInStore(String            relationshipGUID,
-                                                         boolean           replaceProperties,
-                                                         ElementProperties properties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+    public abstract void updateRelatedElementsInStore(String            relationshipGUID,
+                                                      boolean           replaceProperties,
+                                                      ElementProperties properties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
 
 
     /**
@@ -373,9 +378,9 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected abstract void deleteRelatedElementsInStore(String relationshipGUID) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException;
+    public abstract void deleteRelatedElementsInStore(String relationshipGUID) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 
     /**
      * Update the status of a specific action target. By default, these values are derived from
@@ -392,12 +397,12 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    protected abstract void updateActionTargetStatus(String                 actionTargetGUID,
-                                                     GovernanceActionStatus status,
-                                                     Date                   startDate,
-                                                     Date                   completionDate) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException;
+    public abstract void updateActionTargetStatus(String                 actionTargetGUID,
+                                                  GovernanceActionStatus status,
+                                                  Date                   startDate,
+                                                  Date                   completionDate) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
@@ -409,10 +414,10 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    protected abstract void recordCompletionStatus(CompletionStatus status,
-                                                   List<String>     outputGuards) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException;
+    public abstract void recordCompletionStatus(CompletionStatus status,
+                                                List<String>     outputGuards) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 
 
 
@@ -499,6 +504,30 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
                                                 Map<String, String>           additionalProperties) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException;
+
+
+    /**
+     * Register a listener to receive events about changes to metadata elements in the open metadata store.
+     * There can be only one registered listener.  If this method is called more than once, the new parameters
+     * replace the existing parameters.  This means the watchdog governance action service can change the
+     * listener and the parameters that control the types of events received while it is running.
+     *
+     * The types of events passed to the listener are controlled by the combination of the interesting event types and
+     * the interesting metadata types.  That is an event is only passed to the listener if it matches both
+     * the interesting event types and the interesting metadata types.
+     *
+     * If interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
+     * If the listener parameter is null, no more events are passed to the listener.
+     *
+     * @param listener listener object to receive events
+     * @param interestingEventTypes types of events that should be passed to the listener
+     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types.
+     *
+     * @throws InvalidParameterException one or more of the type names are unrecognized
+     */
+    public abstract void registerListener(WatchdogGovernanceListener listener,
+                                          List<WatchdogEventType>    interestingEventTypes,
+                                          List<String>               interestingMetadataTypes) throws InvalidParameterException;
 
 
     /**

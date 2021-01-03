@@ -224,7 +224,7 @@ public class ElementClassificationHeader extends ElementControlHeader
                        ", classificationOriginGUID='" + classificationOriginGUID + '\'' +
                        ", headerVersion=" + getHeaderVersion() +
                        ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                       ", elementOrigin=" + getElementOrigin() +
+                       ", elementOriginCategory=" + getElementOriginCategory() +
                        ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
                        ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
                        ", elementLicense='" + getElementLicense() + '\'' +

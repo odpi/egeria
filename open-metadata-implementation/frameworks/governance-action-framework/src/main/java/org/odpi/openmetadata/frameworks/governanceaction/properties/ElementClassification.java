@@ -117,7 +117,7 @@ public class ElementClassification extends ElementClassificationHeader
                 ", classificationOrigin=" + getClassificationOrigin() +
                 ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
                 ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                ", elementOrigin=" + getElementOrigin() +
+                ", elementOriginCategory=" + getElementOriginCategory() +
                 ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
                 ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
                 ", elementLicense='" + getElementLicense() + '\'' +

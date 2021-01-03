@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>discovery-engine</artifactId>
+        <artifactId>governance-engine</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>2.6-SNAPSHOT</version>
     </parent>
@@ -21,12 +21,12 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Discovery Engine OMAS Connectors</name>
+    <name>Governance Engine OMAS Connectors</name>
     <description>
-        Connector library for the Discovery Engine Open Metadata Access Service (OMAS).
+        Connector library for the Governance Engine Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>discovery-engine-connectors</artifactId>
+    <artifactId>governance-engine-topic-connectors</artifactId>
 
     <dependencies>
 
@@ -47,7 +47,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-api</artifactId>
+            <artifactId>governance-engine-api</artifactId>
         </dependency>
 
         <dependency>

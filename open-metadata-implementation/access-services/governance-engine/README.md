@@ -57,7 +57,7 @@ The module structure for the Governance Engine OMAS is as follows:
 
 * [governance-engine-client](governance-engine-client) supports the client library.
 * [governance-engine-api](governance-engine-api) supports the common Java classes that are used both by the client and the server.
-* [governance-engine-api](governance-engine-connectors) provides access to this modules In and Out Topics.
+* [governance-engine-topic-connectors](governance-engine-topic-connectors) provides access to this modules In and Out Topics.
 * [governance-engine-server](governance-engine-server) supports in implementation of the access service and its related event management.
 * [governance-engine-spring](governance-engine-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 

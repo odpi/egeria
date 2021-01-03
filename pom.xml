@@ -1411,7 +1411,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-connectors</artifactId>
+                <artifactId>discovery-engine-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1530,7 +1530,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>governance-engine-connectors</artifactId>
+                <artifactId>governance-engine-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>

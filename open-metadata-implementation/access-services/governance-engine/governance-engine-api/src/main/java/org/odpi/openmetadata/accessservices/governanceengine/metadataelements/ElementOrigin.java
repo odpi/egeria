@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementOriginCategory;
 
 import java.io.Serializable;
 import java.util.Objects;

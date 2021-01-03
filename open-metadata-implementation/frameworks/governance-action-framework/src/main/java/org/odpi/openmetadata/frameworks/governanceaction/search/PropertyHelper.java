@@ -355,15 +355,15 @@ public class PropertyHelper
 
 
     /**
-     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
-     * supplied is null, a new instance properties object is created.
+     * Add the supplied property map to an element properties object.  Each of the entries in the map is added
+     * as a separate property in element properties.  If the element properties object
+     * supplied is null, a new element properties object is created.
      *
      * @param properties properties object to add property to, may be null.
      * @param mapValues contents of the map
      * @return instance properties object.
      */
-    public ElementProperties addPropertyMap(ElementProperties  properties,
+    public ElementProperties addPropertyMap(ElementProperties   properties,
                                             Map<String, Object> mapValues)
     {
         if ((mapValues != null) && (! mapValues.isEmpty()))

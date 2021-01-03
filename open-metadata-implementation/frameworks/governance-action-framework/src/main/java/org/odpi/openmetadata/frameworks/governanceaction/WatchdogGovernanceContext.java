@@ -64,15 +64,15 @@ public class WatchdogGovernanceContext extends GovernanceContext
      *
      * @param listener listener object to receive events
      * @param interestingEventTypes types of events that should be passed to the listener
-     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types.
+     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
+     *
+     * @throws InvalidParameterException one or more of the type names are unrecognized
      */
     public void registerListener(WatchdogGovernanceListener listener,
                                  List<WatchdogEventType>    interestingEventTypes,
-                                 List<String>               interestingMetadataTypes)
+                                 List<String>               interestingMetadataTypes) throws InvalidParameterException
     {
-        this.registeredListener = listener;
-        this.interestingEvents  = interestingEventTypes;
-        this.interestingTypes   = interestingMetadataTypes;
+        openMetadataStore.registerListener(listener, interestingEventTypes, interestingMetadataTypes);
     }
 
 

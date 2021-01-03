@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -20,10 +22,22 @@ import java.util.List;
  * Some discovery services manage the invocation of other discovery services.  These discovery services are called
  * discovery pipelines.
  */
-public abstract class DiscoveryService extends ConnectorBase
+public abstract class DiscoveryService extends ConnectorBase implements AuditLoggingComponent
 {
     protected String           discoveryServiceName = "<Unknown>";
     protected DiscoveryContext discoveryContext = null;
+    protected AuditLog         auditLog = null;
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
+    }
 
 
     /**

@@ -12,34 +12,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ElementOrigin defines where the metadata comes from and, hence if it can be updated.
- * <ul>
- *     <li>
- *         LOCAL_COHORT: the element is being maintained within the local cohort.
- *         The metadata collection id is for one of the repositories in the cohort.
- *         This metadata collection id identifies the home repository for this element.
- *     </li>
- *     <li>
- *         EXPORT_ARCHIVE: the element was created from an export archive.
- *         The metadata collection id for the element is the metadata collection id of the originating server.
- *         If the originating server later joins the cohort with the same metadata collection id then these
- *         elements will be refreshed from the originating server's current repository.
- *     </li>
- *     <li>
- *         CONTENT_PACK: the element comes from an open metadata content pack.
- *         The metadata collection id of the elements is set to the GUID of the pack.
- *     </li>
- *     <li>
- *         DEREGISTERED_REPOSITORY: the element comes from a metadata repository that used to be a part
- *         of the repository cohort but has been deregistered. The metadata collection id remains the same.
- *         If the repository rejoins the cohort then these elements can be refreshed from the rejoining repository.
- *     </li>
- * </ul>
+ * ElementOriginCategory defines where the metadata comes from.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ElementOrigin implements Serializable
+public enum ElementOriginCategory implements Serializable
 {
     UNKNOWN                 (0, "<Unknown>",               "Unknown provenance"),
     LOCAL_COHORT            (1, "Local to cohort",         "The element is being maintained within one of the local cohort members. " +
@@ -72,7 +50,7 @@ public enum ElementOrigin implements Serializable
      * @param originName name for origin
      * @param originDescription description for origin
      */
-    ElementOrigin(int originCode, String originName, String originDescription)
+    ElementOriginCategory(int originCode, String originName, String originDescription)
     {
         this.originCode = originCode;
         this.originName = originName;
@@ -121,7 +99,7 @@ public enum ElementOrigin implements Serializable
     @Override
     public String toString()
     {
-        return "ElementOrigin{" +
+        return "ElementOriginCategory{" +
                 "originCode=" + originCode +
                 ", originName='" + originName + '\'' +
                 ", originDescription='" + originDescription + '\'' +

@@ -4,12 +4,13 @@ package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
+import org.odpi.openmetadata.frameworks.discovery.DiscoveryPipeline;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 
 /**
  * SequentialDiscoveryPipeline is a discovery pipeline that provides an inline sequential invocation of the supplied discovery services.
  */
-public class SequentialDiscoveryPipeline extends AuditableDiscoveryPipeline
+public class SequentialDiscoveryPipeline extends DiscoveryPipeline
 {
     /**
      * This implementation provides an inline sequential invocation of the supplied discovery services.

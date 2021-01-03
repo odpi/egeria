@@ -159,8 +159,8 @@ public abstract class GovernanceEngineHandler
         else
         {
             this.governanceEngineGUID = governanceEngineElement.getElementHeader().getGUID();
-            this.governanceEngineTypeName = governanceEngineElement.getElementHeader().getType().getTypeName();
-            this.governanceEngineSuperTypeNames = governanceEngineElement.getElementHeader().getType().getSuperTypeNames();
+            this.governanceEngineTypeName = governanceEngineElement.getElementHeader().getType().getElementTypeName();
+            this.governanceEngineSuperTypeNames = governanceEngineElement.getElementHeader().getType().getElementSuperTypeNames();
             this.governanceEngineProperties = governanceEngineElement.getProperties();
 
             refreshAllServiceConfig();

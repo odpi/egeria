@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class ElementHeader implements Serializable
     private ElementType   type = null;
     private ElementOrigin origin = null;
 
-    private List<ElementClassification> classifications  = null;
+    private List<ElementClassification> classifications = null;
 
 
     /**
