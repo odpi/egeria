@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ArrayPropertyValue extends InstancePropertyValue
+public class ArrayPropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -57,9 +57,9 @@ public class ArrayPropertyValue extends InstancePropertyValue
     /**
      * Delegate the process of cloning to the subclass.
      *
-     * @return subclass of InstancePropertyValue
+     * @return subclass of PropertyValue
      */
-    public InstancePropertyValue cloneFromSubclass() {
+    public PropertyValue cloneFromSubclass() {
         return new ArrayPropertyValue(this);
     }
 
@@ -70,7 +70,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      * @return string value
      */
     public String valueAsString() {
-        return mapValuesAsString(arrayValues.getInstanceProperties()).toString();
+        return mapValuesAsString(arrayValues.getPropertyValues()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      * @return object value
      */
     public Object valueAsObject() {
-        return mapValuesAsObject(arrayValues.getInstanceProperties());
+        return mapValuesAsObject(arrayValues.getPropertyValues());
     }
 
 
@@ -128,7 +128,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      * @param elementNumber index number of the element in the array
      * @param propertyValue value to store
      */
-    public void setArrayValue(int elementNumber, InstancePropertyValue propertyValue)
+    public void setArrayValue(int elementNumber, PropertyValue propertyValue)
     {
         if (arrayCount > elementNumber)
         {

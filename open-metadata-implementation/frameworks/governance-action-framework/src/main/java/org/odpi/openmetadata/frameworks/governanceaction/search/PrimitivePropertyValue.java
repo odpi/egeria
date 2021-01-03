@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PrimitivePropertyValue extends InstancePropertyValue
+public class PrimitivePropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -61,9 +61,9 @@ public class PrimitivePropertyValue extends InstancePropertyValue
     /**
      * Delegate the process of cloning to the subclass.
      *
-     * @return subclass of InstancePropertyValue
+     * @return subclass of PropertyValue
      */
-    public  InstancePropertyValue cloneFromSubclass()
+    public PropertyValue cloneFromSubclass()
     {
         return new PrimitivePropertyValue(this);
     }

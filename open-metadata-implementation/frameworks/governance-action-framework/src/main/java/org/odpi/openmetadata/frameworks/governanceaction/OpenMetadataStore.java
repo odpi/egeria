@@ -17,27 +17,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * OpenMetadataStore provides access to metadata elements stored in the open metadata repositories.
+ * OpenMetadataStore provides access to metadata elements stored in the metadata repositories.  It is implemented by the
+ * abstract class OpenMetadataClient and used by all of the governance action services to retrieve metadata.
+ *
+ * The concrete class for OpenMetadataClient is implemented by a metadata repository provider. In Egeria, this class is
+ * implemented in the Governance Engine OMAS client.
  */
-public abstract class OpenMetadataStore
+public interface OpenMetadataStore
 {
-    private String serverPlatformURLRoot;
-    private String serverName;
-
-
-    /**
-     * Simple constructor for the minimal toString implementation
-     *
-     * @param serverPlatformURLRoot network identifier for the platform where the metadata server is running
-     * @param serverName name of the server supporting the metadata store
-     */
-    public OpenMetadataStore(String serverPlatformURLRoot, String serverName)
-    {
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.serverName = serverName;
-    }
-
-
     /**
      * Retrieve the metadata element using its unique identifier.
      *
@@ -45,12 +32,12 @@ public abstract class OpenMetadataStore
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance service is not able to access the element
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public abstract OpenMetadataElement getMetadataElementByGUID(String elementGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
+    OpenMetadataElement getMetadataElementByGUID(String elementGUID) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**
@@ -60,12 +47,12 @@ public abstract class OpenMetadataStore
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
-     * @throws UserNotAuthorizedException the governance service is not able to access the element
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String searchString) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException;
+    List<OpenMetadataElement> findMetadataElementsWithString(String searchString) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
 
 
     /**
@@ -79,15 +66,15 @@ public abstract class OpenMetadataStore
      * @return list of related elements
      *
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
-     * @throws UserNotAuthorizedException the governance service is not able to access the elements
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public abstract List<RelatedMetadataElement> getRelatedMetadataElements(String elementGUID,
-                                                                            String relationshipTypeName,
-                                                                            int    startFrom,
-                                                                            int    pageSize) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException;
+    List<RelatedMetadataElement> getRelatedMetadataElements(String elementGUID,
+                                                            String relationshipTypeName,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -96,7 +83,7 @@ public abstract class OpenMetadataStore
      * @param metadataElementTypeName type of interest (null means any element type)
      * @param metadataElementSubtypeName optional list of the subtypes of the metadataElementTypeName to
      *                           include in the search results. Null means all subtypes.
-     * @param matchProperties Optional list of entity property conditions to match.
+     * @param searchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param matchClassifications Optional list of classifications to match.
@@ -108,20 +95,20 @@ public abstract class OpenMetadataStore
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
-     * @throws UserNotAuthorizedException the governance service is not able to access the elements
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public  abstract List<OpenMetadataElement> findMetadataElements(String                metadataElementTypeName,
-                                                                    List<String>          metadataElementSubtypeName,
-                                                                    SearchProperties      matchProperties,
-                                                                    List<ElementStatus>   limitResultsByStatus,
-                                                                    SearchClassifications matchClassifications,
-                                                                    String                sequencingProperty,
-                                                                    SequencingOrder       sequencingOrder,
-                                                                    int                   startFrom,
-                                                                    int                   pageSize) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException;
+    List<OpenMetadataElement> findMetadataElements(String                metadataElementTypeName,
+                                                   List<String>          metadataElementSubtypeName,
+                                                   SearchProperties      searchProperties,
+                                                   List<ElementStatus>   limitResultsByStatus,
+                                                   SearchClassifications matchClassifications,
+                                                   String                sequencingProperty,
+                                                   SequencingOrder       sequencingOrder,
+                                                   int                   startFrom,
+                                                   int                   pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
 
 
     /**
@@ -140,31 +127,16 @@ public abstract class OpenMetadataStore
      *
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the search parameters are is invalid
-     * @throws UserNotAuthorizedException the governance service is not able to access the elements
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public  abstract List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                                            SearchProperties matchProperties,
-                                                                                            Date             asOfTime,
-                                                                                            String           sequencingProperty,
-                                                                                            SequencingOrder  sequencingOrder,
-                                                                                            int              startFrom,
-                                                                                            int              pageSize) throws InvalidParameterException,
-                                                                                                                              UserNotAuthorizedException,
-                                                                                                                              PropertyServerException;
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
-    @Override
-    public String toString()
-    {
-        return "OpenMetadataStore{" +
-                       "serverPlatformURLRoot='" + serverPlatformURLRoot + '\'' +
-                       ", serverName='" + serverName + '\'' +
-                       '}';
-    }
+    List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                           SearchProperties matchProperties,
+                                                                           Date             asOfTime,
+                                                                           String           sequencingProperty,
+                                                                           SequencingOrder  sequencingOrder,
+                                                                           int              startFrom,
+                                                                           int              pageSize) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException;
 }

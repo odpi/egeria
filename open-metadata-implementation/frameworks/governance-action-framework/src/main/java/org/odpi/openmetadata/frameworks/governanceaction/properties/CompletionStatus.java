@@ -12,16 +12,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CompletionStatus defines the completion status of a governance service.
+ * CompletionStatus defines the completion status of a governance action service.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CompletionStatus implements Serializable
 {
-    ACTIONED        (5,  10, "Actioned",   "The governance service for the governance action has successfully completed processing"),
-    INVALID         (6,  11, "Invalid",    "The governance service has not performed the requested action because it is not appropriate (for example, a false positive)"),
-    FAILED          (8,  13, "Failed",     "The governance service failed to execute the requested action"),
+    ACTIONED        (5,  10, "Actioned",   "The governance action service for the governance action has successfully completed processing"),
+    INVALID         (6,  11, "Invalid",    "The governance action service has not performed the requested action because it is not appropriate (for example, a false positive)"),
+    FAILED          (8,  13, "Failed",     "The governance action service failed to execute the requested action"),
     OTHER           (99, 99, "Other",      "Undefined or unknown completion status");
 
     private static final long     serialVersionUID = 1L;

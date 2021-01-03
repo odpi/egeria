@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MapPropertyValue extends InstancePropertyValue
+public class MapPropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -54,9 +54,9 @@ public class MapPropertyValue extends InstancePropertyValue
     /**
      * Delegate the process of cloning to the subclass.
      *
-     * @return subclass of InstancePropertyValue
+     * @return subclass of PropertyValue
      */
-    public  InstancePropertyValue cloneFromSubclass()
+    public PropertyValue cloneFromSubclass()
     {
         return new MapPropertyValue(this);
     }
@@ -69,7 +69,7 @@ public class MapPropertyValue extends InstancePropertyValue
      */
     public String valueAsString()
     {
-      return mapValuesAsString(mapValues.getInstanceProperties()).toString();
+      return mapValuesAsString(mapValues.getPropertyValues()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class MapPropertyValue extends InstancePropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(mapValues.getInstanceProperties());
+        return mapValuesAsObject(mapValues.getPropertyValues());
     }
 
 
@@ -127,9 +127,9 @@ public class MapPropertyValue extends InstancePropertyValue
      * If a null is supplied for the property value, the property is removed.
      *
      * @param propertyName String name
-     * @param propertyValue InstancePropertyValue value to store
+     * @param propertyValue PropertyValue value to store
      */
-    public void setMapValue(String  propertyName, InstancePropertyValue  propertyValue)
+    public void setMapValue(String  propertyName, PropertyValue propertyValue)
     {
         if (mapValues == null)
         {

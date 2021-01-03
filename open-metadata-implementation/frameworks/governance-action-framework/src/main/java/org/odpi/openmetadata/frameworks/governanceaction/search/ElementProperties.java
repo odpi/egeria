@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *
  * There are variable properties that are defined in the TypeDefs. They are managed in
  * a java.util.Map map object built around HashMap.  The property name (or domain) of the map is the name
- * of the property.  The property value (or range) of the map is a subclass of InstancePropertyValue depending on
+ * of the property.  The property value (or range) of the map is a subclass of PropertyValue depending on
  * the type of the property:
  * <ul>
  *     <li>
@@ -53,7 +53,7 @@ public class ElementProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private Map<String, InstancePropertyValue>  instanceProperties = new HashMap<>();
+    private Map<String, PropertyValue> instanceProperties = new HashMap<>();
 
 
     /**
@@ -83,8 +83,8 @@ public class ElementProperties implements Serializable
             {
                 while (propertyNames.hasNext())
                 {
-                    String                 newPropertyName  = propertyNames.next();
-                    InstancePropertyValue  newPropertyValue = templateProperties.getPropertyValue(newPropertyName);
+                    String        newPropertyName  = propertyNames.next();
+                    PropertyValue newPropertyValue = templateProperties.getPropertyValue(newPropertyName);
 
                     instanceProperties.put(newPropertyName, newPropertyValue);
                 }
@@ -98,7 +98,7 @@ public class ElementProperties implements Serializable
      *
      * @return  instance properties map.
      */
-    public Map<String, InstancePropertyValue> getInstanceProperties()
+    public Map<String, PropertyValue> getPropertyValues()
     {
         if (instanceProperties == null)
         {
@@ -120,7 +120,7 @@ public class ElementProperties implements Serializable
      *
      * @param instanceProperties map of name valued properties
      */
-    public void setInstanceProperties(Map<String, InstancePropertyValue> instanceProperties)
+    public void setInstanceProperties(Map<String, PropertyValue> instanceProperties)
     {
         if (instanceProperties == null)
         {
@@ -152,7 +152,7 @@ public class ElementProperties implements Serializable
      * @param name String name of the property to return.
      * @return requested property value.
      */
-    public InstancePropertyValue getPropertyValue(String name)
+    public PropertyValue getPropertyValue(String name)
     {
         return instanceProperties.get(name);
     }
@@ -166,7 +166,7 @@ public class ElementProperties implements Serializable
      * @param  newPropertyName name
      * @param  newPropertyValue value
      */
-    public void setProperty(String newPropertyName, InstancePropertyValue newPropertyValue)
+    public void setProperty(String newPropertyName, PropertyValue newPropertyValue)
     {
         final String methodName = "setProperty";
 
@@ -235,7 +235,7 @@ public class ElementProperties implements Serializable
             return false;
         }
         ElementProperties that = (ElementProperties) objectToCompare;
-        return Objects.equals(getInstanceProperties(), that.getInstanceProperties());
+        return Objects.equals(getPropertyValues(), that.getPropertyValues());
     }
 
 
@@ -248,7 +248,7 @@ public class ElementProperties implements Serializable
     public int hashCode()
     {
 
-        return Objects.hash(getInstanceProperties());
+        return Objects.hash(getPropertyValues());
     }
 }
 

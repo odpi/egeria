@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * InstancePropertyValue provides a common class for holding an instance type and value.
+ * PropertyValue provides a common class for holding an instance type and value.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = PrimitivePropertyValue.class, name = "PrimitivePropertyValue"),
         @JsonSubTypes.Type(value = StructPropertyValue.class, name = "StructPropertyValue")
 })
-public abstract class InstancePropertyValue implements Serializable
+public abstract class PropertyValue implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public abstract class InstancePropertyValue implements Serializable
     /**
      * Default constructor for Jackson
      */
-    protected InstancePropertyValue()
+    protected PropertyValue()
     {
     }
 
@@ -53,7 +53,7 @@ public abstract class InstancePropertyValue implements Serializable
      *
      * @param propertyCategory PropertyCategory Enum
      */
-    protected InstancePropertyValue(PropertyCategory propertyCategory)
+    protected PropertyValue(PropertyCategory propertyCategory)
     {
         this.propertyCategory = propertyCategory;
     }
@@ -62,9 +62,9 @@ public abstract class InstancePropertyValue implements Serializable
     /**
      * Copy/clone constructor initializes the instance property value from the supplied template.
      *
-     * @param template InstancePropertyValue
+     * @param template PropertyValue
      */
-    protected InstancePropertyValue(InstancePropertyValue template)
+    protected PropertyValue(PropertyValue template)
     {
         if (template != null)
         {
@@ -78,9 +78,9 @@ public abstract class InstancePropertyValue implements Serializable
     /**
      * Delegate the process of cloning to the subclass.
      *
-     * @return subclass of InstancePropertyValue
+     * @return subclass of PropertyValue
      */
-    public abstract InstancePropertyValue cloneFromSubclass();
+    public abstract PropertyValue cloneFromSubclass();
 
 
     /**
@@ -108,7 +108,7 @@ public abstract class InstancePropertyValue implements Serializable
      * @param <V> value
      * @return Map object values
      */
-    protected <K, V extends InstancePropertyValue> Map<K, Object> mapValuesAsObject(Map<K, V> valMap)
+    protected <K, V extends PropertyValue> Map<K, Object> mapValuesAsObject(Map<K, V> valMap)
     {
         return convertValues(valMap, entry -> (entry.getValue() == null ? null : entry.getValue().valueAsObject()));
     }
@@ -123,14 +123,14 @@ public abstract class InstancePropertyValue implements Serializable
      * @param <V> value
      * @return Map string values
      */
-    protected <K, V extends InstancePropertyValue> Map<K, String> mapValuesAsString(Map<K, V> valMap)
+    protected <K, V extends PropertyValue> Map<K, String> mapValuesAsString(Map<K, V> valMap)
     {
         return convertValues(valMap, entry -> (entry.getValue() == null ? "<null>" : entry.getValue().valueAsString()));
     }
 
 
     /**
-     * Converts an InstancePropertyValue to the values we need.
+     * Converts an PropertyValue to the values we need.
      * Object, String or whatever.
      *
      * @param valMap values
@@ -141,7 +141,7 @@ public abstract class InstancePropertyValue implements Serializable
      *           For example, types Object {@link #mapValuesAsObject} or String {@link #mapValuesAsString}.
      * @return Map with new values
      */
-    private <K, V extends InstancePropertyValue, R> Map<K, R> convertValues(Map<K, V> valMap, Function<Map.Entry<K, V>, R> mapper)
+    private <K, V extends PropertyValue, R> Map<K, R> convertValues(Map<K, V> valMap, Function<Map.Entry<K, V>, R> mapper)
     {
         return Optional.ofNullable(valMap)
                 .map(Map::entrySet)
@@ -220,7 +220,7 @@ public abstract class InstancePropertyValue implements Serializable
     @Override
     public String toString()
     {
-        return "InstancePropertyValue{" +
+        return "PropertyValue{" +
                 "propertyCategory=" + propertyCategory +
                 ", typeGUID='" + typeGUID + '\'' +
                 ", typeName='" + typeName + '\'' +
@@ -241,11 +241,11 @@ public abstract class InstancePropertyValue implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof InstancePropertyValue))
+        if (!(objectToCompare instanceof PropertyValue))
         {
             return false;
         }
-        InstancePropertyValue that = (InstancePropertyValue) objectToCompare;
+        PropertyValue that = (PropertyValue) objectToCompare;
         return getPropertyCategory() == that.getPropertyCategory() &&
                 Objects.equals(getTypeGUID(), that.getTypeGUID()) &&
                 Objects.equals(getTypeName(), that.getTypeName());

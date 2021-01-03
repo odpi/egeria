@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * WatchdogClassificationEvent describes the structure of the events passed to the WatchdogGovernanceService
+ * WatchdogClassificationEvent describes the structure of the events passed to the WatchdogGovernanceActionService
  * that describe changes to classifications attached to metadata elements.
  *
  * This form of the WatchdogGovernanceEvent is used with the following event types:

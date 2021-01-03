@@ -22,12 +22,12 @@ public enum GovernanceActionStatus implements Serializable
     REQUESTED       (0,  0,  "Requested",  "The governance action has been created and is pending"),
     APPROVED        (1,  1,  "Approved",   "The governance action is approved to run"),
     WAITING         (2,  2,  "Waiting",    "The governance action is waiting for its start time or the right conditions to run"),
-    ACTIVATING      (3,  3,  "Activating", "The governance service for the governance action is being initialized in the governance engine"),
-    IN_PROGRESS     (4,  4,  "In Progress","The governance engine is running the associated governance service for the governance action"),
-    ACTIONED        (5,  10, "Actioned",   "The governance service for the governance action has successfully completed processing"),
+    ACTIVATING      (3,  3,  "Activating", "The governance action service for the governance action is being initialized in the governance engine"),
+    IN_PROGRESS     (4,  4,  "In Progress","The governance engine is running the associated governance action service for the governance action"),
+    ACTIONED        (5,  10, "Actioned",   "The governance action service for the governance action has successfully completed processing"),
     INVALID         (6,  11, "Invalid",    "The governance action has not been run because it is not appropriate (for example, a false positive)"),
     IGNORED         (7,  12, "Ignored",    "The governance action has not been run because a different governance action was chosen"),
-    FAILED          (8,  13, "Failed",     "The governance service for the governance action failed to execute"),
+    FAILED          (8,  13, "Failed",     "The governance action service for the governance action failed to execute"),
     OTHER           (99, 99, "Other",      "Undefined or unknown governance action status");
 
     private static final long     serialVersionUID = 1L;

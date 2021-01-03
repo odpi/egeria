@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * WatchdogMetadataElementEvent describes the structure of the events passed to the WatchdogGovernanceService
+ * WatchdogMetadataElementEvent describes the structure of the events passed to the WatchdogGovernanceActionService
  * that relate to changes to metadata elements.  That is event types:
  *
  * <ul>

@@ -17,13 +17,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EnumPropertyValue extends InstancePropertyValue
+public class EnumPropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
-    private int     ordinal = 99;
     private String  symbolicName = null;
-    private String  description = null;
 
 
     /**
@@ -46,9 +44,7 @@ public class EnumPropertyValue extends InstancePropertyValue
 
         if (template != null)
         {
-            this.ordinal = template.getOrdinal();
             this.symbolicName = template.getSymbolicName();
-            this.description = template.getDescription();
         }
     }
 
@@ -56,9 +52,9 @@ public class EnumPropertyValue extends InstancePropertyValue
     /**
      * Delegate the process of cloning to the subclass.
      *
-     * @return subclass of InstancePropertyValue
+     * @return subclass of PropertyValue
      */
-    public  InstancePropertyValue cloneFromSubclass()
+    public PropertyValue cloneFromSubclass()
     {
         return new EnumPropertyValue(this);
     }
@@ -87,22 +83,6 @@ public class EnumPropertyValue extends InstancePropertyValue
 
 
     /**
-     * Return the integer ordinal for this enum.
-     *
-     * @return int ordinal
-     */
-    public int getOrdinal() { return ordinal; }
-
-
-    /**
-     * Set the integer ordinal for this enum.
-     *
-     * @param ordinal int
-     */
-    public void setOrdinal(int ordinal) { this.ordinal = ordinal; }
-
-
-    /**
      * Return the symbolic name for this enum value.
      *
      * @return String symbolic name
@@ -119,22 +99,6 @@ public class EnumPropertyValue extends InstancePropertyValue
 
 
     /**
-     * Return the description for this enum.
-     *
-     * @return String description
-     */
-    public String getDescription() { return description; }
-
-
-    /**
-     * Set up the description for this enum.
-     *
-     * @param description String description
-     */
-    public void setDescription(String description) { this.description = description; }
-
-
-    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -143,10 +107,8 @@ public class EnumPropertyValue extends InstancePropertyValue
     public String toString()
     {
         return "EnumPropertyValue{" +
-                "ordinal=" + ordinal +
-                ", symbolicName='" + symbolicName + '\'' +
-                ", description='" + description + '\'' +
-                ", instancePropertyCategory=" + getPropertyCategory() +
+                "symbolicName='" + symbolicName + '\'' +
+                ", propertyCategory=" + getPropertyCategory() +
                 ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
@@ -175,9 +137,7 @@ public class EnumPropertyValue extends InstancePropertyValue
             return false;
         }
         EnumPropertyValue that = (EnumPropertyValue) objectToCompare;
-        return getOrdinal() == that.getOrdinal() &&
-                Objects.equals(getSymbolicName(), that.getSymbolicName()) &&
-                Objects.equals(getDescription(), that.getDescription());
+        return Objects.equals(getSymbolicName(), that.getSymbolicName());
     }
 
 
@@ -189,8 +149,7 @@ public class EnumPropertyValue extends InstancePropertyValue
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(), getOrdinal(), getSymbolicName(), getDescription());
+        return Objects.hash(super.hashCode(), getSymbolicName());
     }
 }
 

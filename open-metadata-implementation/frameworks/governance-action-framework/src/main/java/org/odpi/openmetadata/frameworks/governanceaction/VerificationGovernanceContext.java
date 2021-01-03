@@ -18,24 +18,24 @@ import java.util.Map;
  * metadata element, a verification service could check that the schema metadata elements for the Asset
  * are correct.
  */
-public abstract class VerificationGovernanceContext extends GovernanceContext
+public class VerificationGovernanceContext extends GovernanceContext
 {
     /**
-     * Constructor sets up the key parameters for processing the request to the governance service.
+     * Constructor sets up the key parameters for processing the request to the governance action service.
      *
      * @param userId calling user
      * @param requestType unique identifier of the asset that the annotations should be attached to
-     * @param requestParameters name-value properties to control the governance service
-     * @param requestSourceElements metadata elements associated with the request to the governance service
-     * @param actionTargetElements metadata elements that need to be worked on by the governance service
-     * @param openMetadataStore client to the metadata store for use by the governance service
+     * @param requestParameters name-value properties to control the governance action service
+     * @param requestSourceElements metadata elements associated with the request to the governance action service
+     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
+     * @param openMetadataStore client to the metadata store for use by the governance action service
      */
     public VerificationGovernanceContext(String                     userId,
                                          String                     requestType,
                                          Map<String, String>        requestParameters,
                                          List<RequestSourceElement> requestSourceElements,
                                          List<ActionTargetElement>  actionTargetElements,
-                                         OpenMetadataStore          openMetadataStore)
+                                         OpenMetadataClient openMetadataStore)
     {
         super(userId, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
     }

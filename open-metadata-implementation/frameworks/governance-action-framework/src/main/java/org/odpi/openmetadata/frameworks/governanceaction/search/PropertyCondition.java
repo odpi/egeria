@@ -27,10 +27,10 @@ public class PropertyCondition implements Serializable
 
     private static final long    serialVersionUID = 1L;
 
-    private String property;
+    private String                     property;
     private PropertyComparisonOperator operator;
-    private InstancePropertyValue value;
-    private SearchProperties nestedConditions;
+    private PropertyValue              value;
+    private SearchProperties           nestedConditions;
 
     /**
      * Typical constructor
@@ -101,9 +101,9 @@ public class PropertyCondition implements Serializable
     /**
      * Retrieve the value of the property against which to compare.
      *
-     * @return InstancePropertyValue
+     * @return PropertyValue
      */
-    public InstancePropertyValue getValue()
+    public PropertyValue getValue()
     {
         return value;
     }
@@ -113,7 +113,7 @@ public class PropertyCondition implements Serializable
      *
      * @param value against which to compare
      */
-    public void setValue(InstancePropertyValue value)
+    public void setValue(PropertyValue value)
     {
         this.value = value;
     }

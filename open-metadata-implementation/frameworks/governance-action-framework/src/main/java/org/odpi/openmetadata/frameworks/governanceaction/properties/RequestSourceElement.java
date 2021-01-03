@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RequestSourceElement describes the element that triggered the request to the governance service.
+ * RequestSourceElement describes the element that triggered the request to the governance action service.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,7 +50,7 @@ public class RequestSourceElement implements Serializable
 
 
     /**
-     * Return the specific element that caused the governance service to be started.
+     * Return the specific element that caused the governance action service to be started.
      *
      * @return metadata element
      */
@@ -61,7 +61,7 @@ public class RequestSourceElement implements Serializable
 
 
     /**
-     * Set up the specific element that caused the governance service to be started.
+     * Set up the specific element that caused the governance action service to be started.
      *
      * @param requestSourceElement metadata element
      */

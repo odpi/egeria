@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * WatchdogRelatedElementsEvent describes the structure of the events passed to the WatchdogGovernanceService
+ * WatchdogRelatedElementsEvent describes the structure of the events passed to the WatchdogGovernanceActionService
  * that represent changes to relationships.  It applies to the following event types:
  *
  * <ul>

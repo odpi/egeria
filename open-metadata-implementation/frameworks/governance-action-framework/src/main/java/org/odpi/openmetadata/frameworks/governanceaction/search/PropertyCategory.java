@@ -13,14 +13,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The PropertyCategory defines the list of value types for the properties for open metadata.
- * It is used in the InstancePropertyValue class to distinguish its subclasses.
+ * It is used in the PropertyValue class to distinguish its subclasses.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum PropertyCategory implements Serializable
 {
-    UNKNOWN     (0, "<Unknown>", "Uninitialized InstancePropertyValue object."),
+    UNKNOWN     (0, "<Unknown>", "Uninitialized PropertyValue object."),
     PRIMITIVE   (1, "Primitive", "A primitive type."),
     ENUM        (2, "Enum",      "A pre-defined list of valid values."),
     STRUCT      (3, "Struct",    "A collection of related properties."),

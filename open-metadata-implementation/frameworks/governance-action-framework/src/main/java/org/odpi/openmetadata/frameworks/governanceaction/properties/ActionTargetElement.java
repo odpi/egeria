@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ActionTargetElement describes an element that a governance service should process.
+ * ActionTargetElement describes an element that a governance action service should process.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -83,7 +83,7 @@ public class ActionTargetElement implements Serializable
 
     /**
      * Return the current status of the action target.  The default value is the status is derived from
-     * the governance service.  However if it has to process many target elements, then these values can
+     * the governance action service.  However if it has to process many target elements, then these values can
      * be used to show progress.
      *
      * @return status enum
@@ -96,7 +96,7 @@ public class ActionTargetElement implements Serializable
 
     /**
      * Set up current status of the action target.  The default value is the status is derived from
-     * the governance service.  However if it has to process many target elements, then these values can
+     * the governance action service.  However if it has to process many target elements, then these values can
      * be used to show progress.
      *
      * @param status enum
@@ -108,8 +108,8 @@ public class ActionTargetElement implements Serializable
 
 
     /**
-     * Return the date/time when the governance service started processing this target element. By default,
-     * this value is derived from the startDate for the governance service.  However if it has to process many target elements, then these values can
+     * Return the date/time when the governance action service started processing this target element. By default,
+     * this value is derived from the startDate for the governance action service.  However if it has to process many target elements, then these values can
      * be used to show progress.
      *
      * @return date object
@@ -121,9 +121,9 @@ public class ActionTargetElement implements Serializable
 
 
     /**
-     * Set up the date/time when the governance service started processing this target element. By default,
-     * this value is derived from the startDate for the governance service.  However if it has to process many target elements, then these values can
-     * be used to show progress.
+     * Set up the date/time when the governance action service started processing this target element. By default,
+     * this value is derived from the startDate for the governance action service.  However if it has to process many target
+     * elements, then these values can be used to show progress.
      *
      * @param startDate date object
      */
@@ -134,9 +134,9 @@ public class ActionTargetElement implements Serializable
 
 
     /**
-     * Return the date/time when the governance service stopped processing this target element. By default,
-     * this value is derived from the completionDate for the governance service.  However if it has to process many target elements, then these values can
-     * be used to show progress.
+     * Return the date/time when the governance action service stopped processing this target element. By default,
+     * this value is derived from the completionDate for the governance action service.  However if it has to process
+     * many target elements, then these values can be used to show progress.
      *
      * @return date object
      */
@@ -147,9 +147,9 @@ public class ActionTargetElement implements Serializable
 
 
     /**
-     * Set up the date/time when the governance service stopped processing this target element. By default,
-     * this value is derived from the completionDate for the governance service.  However if it has to process many target elements, then these values can
-     * be used to show progress.
+     * Set up the date/time when the governance action service stopped processing this target element. By default,
+     * this value is derived from the completionDate for the governance action service.  However if it has to process
+     * many target elements, then these values can be used to show progress.
      *
      * @param completionDate date object
      */
@@ -160,7 +160,7 @@ public class ActionTargetElement implements Serializable
 
 
     /**
-     * Return details of the target element that the governance service is to process.
+     * Return details of the target element that the governance action service is to process.
      *
      * @return metadata element properties
      */
@@ -171,7 +171,7 @@ public class ActionTargetElement implements Serializable
 
 
     /**
-     * Set up details of the target element that the governance service is to process.
+     * Set up details of the target element that the governance action service is to process.
      *
      * @param targetElement metadata element properties
      */

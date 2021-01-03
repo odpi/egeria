@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class StructPropertyValue extends InstancePropertyValue
+public class StructPropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -54,9 +54,9 @@ public class StructPropertyValue extends InstancePropertyValue
     /**
      * Delegate the process of cloning to the subclass.
      *
-     * @return subclass of InstancePropertyValue
+     * @return subclass of PropertyValue
      */
-    public  InstancePropertyValue cloneFromSubclass()
+    public PropertyValue cloneFromSubclass()
     {
         return new StructPropertyValue(this);
     }
@@ -69,7 +69,7 @@ public class StructPropertyValue extends InstancePropertyValue
      */
     public String valueAsString()
     {
-        return mapValuesAsString(attributes.getInstanceProperties()).toString();
+        return mapValuesAsString(attributes.getPropertyValues()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class StructPropertyValue extends InstancePropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(attributes.getInstanceProperties());
+        return mapValuesAsObject(attributes.getPropertyValues());
     }
 
 
