@@ -69,7 +69,7 @@ public class EngineConfigurationRefreshListener extends GovernanceEngineEventLis
                     {
                         auditLog.logException(actionDescription,
                                               EngineHostServicesAuditCode.GOVERNANCE_SERVICE_NO_CONFIG.getMessageDefinition(governanceServiceEvent.getRegisteredGovernanceServiceGUID(),
-                                                                                                                            governanceServiceEvent.getRequestType().toString(),
+                                                                                                                            governanceServiceEvent.getRequestType(),
                                                                                                                             error.getClass().getName(),
                                                                                                                             error.getMessage()),
                                               governanceServiceEvent.toString(),

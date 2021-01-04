@@ -48,7 +48,7 @@ public enum CatalogIntegratorAuditCode implements AuditLogMessageSet
                                "The following exchange services are disabled in the context for connector {1}: {2}",
                                "The context is set up to ensure that the connector can only issue requests to supported services.  " +
                                        "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
-                               "Check that this value is as expected.  If it is not," +
+                               "Check that this value is as expected.  If it is not, " +
                                        "change the configuration for this connector and restart the integration daemon."),
     ;
 

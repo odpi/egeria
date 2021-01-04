@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The EngineHostServicesErrorCode error code is used to define first failure data capture (FFDC) for errors that
- * occur when working with the Integration Daemon Services.  It is used in conjunction with all exceptions,
+ * occur when working with the Engine Host Services.  It is used in conjunction with all exceptions,
  * both Checked and Runtime (unchecked).
  *
  * The 5 fields in the enum are:
@@ -32,13 +32,13 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                   "Engine host {0} has been passed a null configuration document section for the engine host services",
                   "The engine host services can not retrieve its configuration values.  " +
                           "The hosting engine host server fails to start.",
-                  "This is an internal logic error since the admin services should not have initialized the engine host services" +
+                  "This is an internal logic error since the admin services should not have initialized the engine host services " +
                           "without this section of the configuration document filled in.  Raise an issue to get this fixed."),
 
     NO_ENGINE_SERVICES_CONFIGURED(400,"ENGINE-HOST-SERVICES-400-002",
                                        "Engine host {0} is not configured with any engine services",
                                        "The engine host, fails to start because it would be bored with nothing to do.",
-                                       "Add the configuration for at least one engine service to the engine services' section" +
+                                       "Add the configuration for at least one engine service to the engine services' section " +
                                                "of this engine host's configuration document and then restart the engine host server."),
 
     SERVICE_INSTANCE_FAILURE(400, "ENGINE-HOST-SERVICES-400-003",

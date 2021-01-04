@@ -51,5 +51,19 @@ public class GovernanceClassification extends GovernanceClassificationBase imple
     public void setSecurityProperties(Map<String, String> securityProperties) {
         this.securityProperties = securityProperties;
     }
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "GovernanceClassification{" +
+                       "securityLabels=" + securityLabels +
+                       ", securityProperties=" + securityProperties +
+                       '}';
+    }
 }
 

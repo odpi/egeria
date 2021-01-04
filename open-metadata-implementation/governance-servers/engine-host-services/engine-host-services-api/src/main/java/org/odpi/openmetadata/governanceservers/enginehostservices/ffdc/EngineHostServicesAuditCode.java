@@ -259,7 +259,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                                   "retrieve details of all of the governance services configured for this engine." +
                                                   "During this process, some governance request may fail if the associated governance" +
                                                   "service is only partially configured.",
-                                          "Monitor the Asset Analysis OMES to ensure all of the governance services are retrieved." +
+                                          "Monitor the Asset Analysis OMES to ensure all of the governance services are retrieved. " +
                                                   "Then it is ready to process new governance requests."),
 
     FINISHED_ALL_GOVERNANCE_SERVICE_CONFIG("ENGINE-HOST-SERVICES-0029",
