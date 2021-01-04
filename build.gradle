@@ -149,7 +149,7 @@ allprojects {
             implementation("org.springdoc:springdoc-openapi-ui:1.4.8")
             implementation("org.springframework.boot:spring-boot:2.3.5.RELEASE")
             implementation("org.springframework.boot:spring-boot-autoconfigure:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-actuator:2.3.5.RELEASE")
+            implementation("org.springframework.boot:spring-boot-starter-actuator:2.4.1")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.3.5.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-security:2.3.5.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-validation:2.3.5.RELEASE")
