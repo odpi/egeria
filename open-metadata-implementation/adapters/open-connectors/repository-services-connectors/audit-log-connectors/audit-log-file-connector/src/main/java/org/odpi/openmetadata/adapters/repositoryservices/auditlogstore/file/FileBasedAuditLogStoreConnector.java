@@ -83,6 +83,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @return unique identifier assigned to the log record
      * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
      */
+    @Override
     public String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException
     {
         final String   methodName = "storeLogRecord";
@@ -118,6 +119,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @throws InvalidParameterException     indicates that the logRecordId parameter is invalid.
      * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
+    @Override
     public OMRSAuditLogRecord getAuditLogRecord(String logRecordId) throws InvalidParameterException,
                                                                            RepositoryErrorException
     {
@@ -140,6 +142,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @throws PagingErrorException          indicates that the offset or the maximumRecords parameters are invalid.
      * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date startDate,
                                                                   Date endDate,
                                                                   int offset,
@@ -167,6 +170,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @throws PagingErrorException          indicates that the offset or the maximumRecords parameters are invalid.
      * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String severity,
                                                                  Date startDate,
                                                                  Date endDate,
@@ -195,6 +199,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      * @throws RepositoryErrorException indicates that the audit log store is not available or has an error.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsByComponent(String component,
                                                                   Date   startDate,
                                                                   Date   endDate,
@@ -214,6 +219,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

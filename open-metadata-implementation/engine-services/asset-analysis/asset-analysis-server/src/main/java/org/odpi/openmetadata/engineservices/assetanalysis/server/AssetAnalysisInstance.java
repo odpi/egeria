@@ -7,10 +7,7 @@ import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisErro
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.engineservices.assetanalysis.properties.DiscoveryEngineSummary;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,36 +46,6 @@ public class AssetAnalysisInstance extends OMESServiceInstance
     }
 
 
-    /**
-     * Return the discovery engine instance requested on an discovery engine services request.
-     *
-     * @return list of discovery engine summaries.
-     */
-    synchronized List<DiscoveryEngineSummary> getDiscoveryEngineStatuses()
-    {
-        List<DiscoveryEngineSummary> results = new ArrayList<>();
-
-        if (discoveryEngineInstances != null)
-        {
-            for (DiscoveryEngineHandler  discoveryEngineHandler : discoveryEngineInstances.values())
-            {
-                if (discoveryEngineHandler != null)
-                {
-                    results.add(discoveryEngineHandler.getSummary());
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
-
-    }
 
     /**
      * Return the discovery engine instance requested on an discovery engine services request.
@@ -104,26 +71,5 @@ public class AssetAnalysisInstance extends OMESServiceInstance
         }
 
         return instance;
-    }
-
-
-    /**
-     * Shutdown the engines
-     */
-    @Override
-    public void shutdown()
-    {
-        if (discoveryEngineInstances != null)
-        {
-            for (DiscoveryEngineHandler  handler : discoveryEngineInstances.values())
-            {
-                if (handler != null)
-                {
-                    handler.terminate();
-                }
-            }
-        }
-
-        super.shutdown();
     }
 }

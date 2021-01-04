@@ -170,7 +170,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
              "Read Only OMRS Repository Connector",
              "Native open metadata repository connector that maps open metadata calls to an in memory cache.",
              "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
-                                           "-store-connectors/readonly-repository-connector/"),
+                                           "-store-connectors/inmemory-repository-connector/"),
 
     INTEGRATION_CONNECTOR(31,
              "Integration Connector",

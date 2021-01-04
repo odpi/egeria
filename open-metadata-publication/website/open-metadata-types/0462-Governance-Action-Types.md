@@ -11,7 +11,6 @@ They are used as a template to create [GovernanceActions](0463-Governance-Action
 
 ![UML](0462-Governance-Action-Types.png#pagewidth)
 
-
 Return to [Area 4](Area-4-models.md).
 
 ----

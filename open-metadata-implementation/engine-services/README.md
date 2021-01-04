@@ -2,8 +2,6 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-![In Development](../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
-
 # Open Metadata Engine Services (OMES)
 
 The engine services are each able to host a specific
@@ -31,33 +29,33 @@ metadata ecosystem or the assets it supports.
   Examples of updates include creating RequestForAction instances.
    * Loads **Open WatchDog Engines**,
    * runs **Open WatchDog Services** and
-   * calls the [Asset Manager OMAS](../access-services/asset-manager).
+   * calls the [Governance Engine OMAS](../access-services/governance-engine).
   
 * [Request Triage OMES](request-triage) - Monitors for new/changed RequestForAction instances and runs triage rules to 
   determine how to manage the request.  This could be to initiate an external workflow, wait for manual decision or 
   initiate a remediation request.
    * Loads **Open Triage Engines**,
    * runs **Open Triage Services** and
-   * calls the [Stewardship Action OMAS](../access-services/stewardship-action).
+   * calls the [Governance Engine OMAS](../access-services/governance-engine).
   
 * [Issue Remediation OMES](issue-remediation) - Monitors for RemediationRequest instances and runs the requested 
   remediation service. Examples of remediation services are duplicate linking and consolidating.
    * Loads **Open Remediation Engines**,
    * runs **Open Remediation Services** and  
-   * calls the [Asset Manager OMAS](../access-services/asset-manager).
+   * calls the [Governance Engine OMAS](../access-services/governance-engine).
   
-* [Action Scheduler OMES](action-scheduler) - Maintains a calendar of events and creates RequestForAction instances 
-  at the requested time.  For example, it may move assets between zones when a particular date is reached.
-  Loads **Open Scheduling Engines**,
-  runs **Open Scheduling Services** and
-  calls the [Asset Manager OMAS](../access-services/asset-manager).
+* [Rule Verifier OMES](rule-verifier) - Validates that specific metadata elements are set up correctly. For example, 
+  it could detect assets that are not allocated to a governance zone.
+   * Loads **Open Verification Engines**,
+   * runs **Open Verification Services** and
+   * calls the [Governance Engine OMAS](../access-services/governance-engine).
   
 * [Asset Provisioning OMES](asset-provisioning) - Invokes a provisioning service whenever a provisioning 
   request is made.  Typically the provisioning service is an external service.  It may also create lineage metadata 
   to describe the work of the provisioning engine.
    * Loads **Open Provisioning Engines**,
    * runs **Open Provisioning Services** and
-   * calls the [Asset Manager OMAS](../access-services/asset-manager).
+   * calls the [Governance Engine OMAS](../access-services/governance-engine).
 
 
 ----

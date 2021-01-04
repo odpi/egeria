@@ -567,6 +567,44 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
 
     /**
+     * Step through the assets visible to this caller.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<AssetElement> scanAssets(String userId,
+                                         String assetManagerGUID,
+                                         String assetManagerName,
+                                         int    startFrom,
+                                         int    pageSize,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        List<AssetElement> results = assetHandler.assetScan(userId,
+                                                            OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                            startFrom,
+                                                            pageSize,
+                                                            methodName);
+
+        addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
+
+        return results;
+    }
+
+
+    /**
      * Retrieve the list of asset metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *

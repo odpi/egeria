@@ -21,7 +21,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Asset Analysis Engine Services with Spring</name>
+    <name>Asset Analysis OMES with Spring</name>
     <description>
         The asset analysis engine services with Spring module uses Spring to implement a RESTful service
         for the asset analysis services (heart of the open metadata discovery services).
@@ -44,11 +44,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-analysis-api</artifactId>
         </dependency>
 
         <dependency>

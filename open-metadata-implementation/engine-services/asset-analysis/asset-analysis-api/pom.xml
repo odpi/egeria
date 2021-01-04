@@ -22,7 +22,7 @@
     </scm>
 
 
-    <name>Asset Analysis Engine Services API</name>
+    <name>Asset Analysis OMES API</name>
     <description>
         Provides the definitions that make up the APIs used by external components when communicating
         with the asset analysis engine services (heart of the metadata discovery services).

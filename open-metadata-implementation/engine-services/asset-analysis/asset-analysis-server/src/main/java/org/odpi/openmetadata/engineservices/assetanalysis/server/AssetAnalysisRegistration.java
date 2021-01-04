@@ -4,7 +4,7 @@ package org.odpi.openmetadata.engineservices.assetanalysis.server;
 
 
 import org.odpi.openmetadata.engineservices.assetanalysis.admin.AssetAnalysisAdmin;
-import org.odpi.openmetadata.adminservices.configuration.OMAGEngineServiceRegistration;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;

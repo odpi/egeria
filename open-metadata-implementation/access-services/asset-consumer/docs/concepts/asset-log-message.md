@@ -11,7 +11,7 @@ It is used to record that a specific action has been taken on an asset.
 The log record contains the following information:
 
 * **userId** -              userId of user making request.
-* **assetGUID** -           unique id for the asset.
+* **requestType** -           unique id for the asset.
 * **connectorInstanceId** - (optional) id of connector in use (if any).
 * **connectionName** -      (optional) name of the connection (extracted from the connector).
 * **connectorType** -       (optional) type of connector in use (if any).

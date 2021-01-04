@@ -28,7 +28,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
 {
 
-    INVALID_CONNECTOR(400,"DATABASE-INTEGRATOR-400-001",
+    INVALID_CONNECTOR(400,"OMIS-DATABASE-INTEGRATOR-400-001",
                   "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
                   "The integration service fails to start and this in turn causes the integration daemon to fail.",
                   "The connector was configured through the administration calls for the integration service." +

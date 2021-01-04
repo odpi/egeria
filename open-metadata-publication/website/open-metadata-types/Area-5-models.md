@@ -27,6 +27,7 @@ capability around the data assets.
 * **[0536 API Schemas](0536-API-Schemas.md)**
 * **[0540 Data Classes](0540-Data-Classes.md)**
 * **[0545 Reference Data](0545-Reference-Data.md)**
+* **[0550 Instance Metadata](0550-Instance-Metadata.md)**
 * **[0565 Design Model Elements](0565-Design-Model-Elements.md)**
 * **[0566 Design Model Organization](0566-Design-Model-Organization.md)**
 * **[0568 Design Model Scoping](0568-Design-Model-Scoping.md)**

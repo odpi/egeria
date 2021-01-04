@@ -7,15 +7,17 @@
 The engine services (or Open Metadata Engine Services (OMESs) to give them
 their full name)
 run in an [Engine Host](../concepts/engine-host.md) OMAG Server.
+They are part of the [Engine Host Services](configuring-the-engine-host-services.md).
 
 Each [engine service](../../../engine-services) provides support for a particular
 type of **Governance Engine**, that is the
 [Open Discovery Engines](../../../frameworks/open-discovery-framework/docs/discovery-engine.md)
 and [Governance Action Engines](../../../frameworks/governance-action-framework).
 
-Each engine service hosts one or more governance engines of a specific type:
+Each engine service hosts one or more governance engines. A governance engine is a collection
+of governance services of a specific type.:
 
-* **Asset Analysis** - Hosts [OpenDiscoveryEngines](../../../frameworks/open-discovery-framework/docs/discovery-engine.md) 
+* **Asset Analysis** - Hosts  [Open Discovery Services](../../../frameworks/open-discovery-framework/docs/discovery-engine.md) 
   that analyse the content of an asset's real world counterpart, 
   generates [annotations](../../../frameworks/open-discovery-framework/docs/discovery-annotation.md)
   in an [open discovery analysis report](../../../frameworks/open-discovery-framework/docs/discovery-analysis-report.md)
@@ -36,7 +38,7 @@ Each engine service hosts one or more governance engines of a specific type:
   that monitor for remediation requests and runs the requested remediation service.
   Examples of remediation services are duplicate linking and consolidating.
   
-* **Action Scheduler** - Hosts [OpenSchedulingEngines](../../../frameworks/governance-action-framework/docs/open-scheduling-engine.md)
+* **Action Scheduler** - Hosts [OpenSchedulingEngines](../../../frameworks/governance-action-framework/docs/open-verification-service.md)
   that maintains a calendar of events and creates RequestForAction instances at the requested
   time.  For example, it may move assets between zones when a particular date is reached.
 

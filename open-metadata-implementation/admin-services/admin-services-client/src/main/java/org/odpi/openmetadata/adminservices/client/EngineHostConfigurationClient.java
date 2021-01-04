@@ -4,13 +4,15 @@
 package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.EngineServiceConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody;
-import org.odpi.openmetadata.adminservices.rest.EngineServicesResponse;
+import org.odpi.openmetadata.adminservices.rest.EngineHostServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -120,24 +122,24 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Return the configuration for the engine services in this server.
+     * Return the configuration for the complete engine host services in this server.
      *
-     * @return list of engine service configuration
+     * @return response containing the engine host services configuration
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<EngineServiceConfig> getEngineServicesConfiguration() throws OMAGNotAuthorizedException,
-                                                                             OMAGInvalidParameterException,
-                                                                             OMAGConfigurationErrorException
+    public EngineHostServicesConfig getEngineHostServicesConfiguration() throws OMAGNotAuthorizedException,
+                                                                                OMAGInvalidParameterException,
+                                                                                OMAGConfigurationErrorException
     {
-        final String methodName  = "getEngineServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/engine-services/configuration";
+        final String methodName  = "getEngineHostServicesConfiguration";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/engine-host-services/configuration";
 
-        EngineServicesResponse restResult = restClient.callEngineServicesGetRESTCall(methodName,
-                                                                                     serverPlatformRootURL + urlTemplate,
-                                                                                     adminUserId,
-                                                                                     serverName);
+        EngineHostServicesResponse restResult = restClient.callEngineHostServicesGetRESTCall(methodName,
+                                                                                             serverPlatformRootURL + urlTemplate,
+                                                                                             adminUserId,
+                                                                                             serverName);
         return restResult.getServices();
     }
 
@@ -171,6 +173,44 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      * =============================================================
      * Configure server making maximum use of defaults
      */
+
+    /**
+     * Set up the name and platform URL root for the metadata server running the Governance Engine OMAS that provides
+     * the governance engine definitions used by the engine services.
+     *
+     * @param clientConfig  URL root and server name for the metadata server.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+
+    public void setEngineDefinitionsClientConfig(OMAGServerClientConfig clientConfig) throws OMAGNotAuthorizedException,
+                                                                                             OMAGInvalidParameterException,
+                                                                                             OMAGConfigurationErrorException
+    {
+        final String methodName  = "setEngineDefinitionsClientConfig";
+        final String configParameterName = "clientConfig";
+        final String urlParameterName = "clientConfig.serverPlatformURLRoot";
+        final String serverNameParameterName = "clientConfig.serverName";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/engine-definitions/client-config";
+
+        try
+        {
+            invalidParameterHandler.validateObject(clientConfig, configParameterName, methodName);
+            invalidParameterHandler.validateName(clientConfig.getOMAGServerPlatformRootURL(), urlParameterName, methodName);
+            invalidParameterHandler.validateName(clientConfig.getOMAGServerName(), serverNameParameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        clientConfig,
+                                        adminUserId,
+                                        serverName);
+    }
 
 
     /**
@@ -260,7 +300,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Set up the configuration for all of the open metadata engine services (OMISs).  This overrides
+     * Set up the configuration for all of the open metadata engine services (OMESs).  This overrides
      * the current values.
      *
      * @param engineServicesConfig  list of configuration properties for each engine service.
@@ -273,7 +313,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
                                                                                                OMAGInvalidParameterException,
                                                                                                OMAGConfigurationErrorException
     {
-        final String methodName    = "setEngineServicesConfig";
+        final String methodName    = "setEngineHostServicesConfig";
         final String configName    = "engineServicesConfig";
         final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/engine-services/configuration/all";
 
@@ -295,7 +335,84 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Disable the engine services.  This removes all configuration for the engine host server.
+     * Set up the configuration for the Engine Host Services in an Engine Host OMAG Server in a single call.  This overrides the current values.
+     *
+     * @param engineHostServicesConfig  governance engine definition client config and list of configuration properties for each engine service.
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setEngineHostServicesConfig(EngineHostServicesConfig engineHostServicesConfig) throws OMAGNotAuthorizedException,
+                                                                                                      OMAGInvalidParameterException,
+                                                                                                      OMAGConfigurationErrorException
+    {
+        final String methodName    = "setEngineHostServicesConfig";
+        final String configName    = "engineHostServicesConfig";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/engine-host-services";
+
+        try
+        {
+            invalidParameterHandler.validateObject(engineHostServicesConfig, configName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        engineHostServicesConfig,
+                                        adminUserId,
+                                        serverName);
+    }
+
+
+    /**
+     * Clear the configuration for the engine host services.
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void clearEngineHostServices() throws OMAGNotAuthorizedException,
+                                                 OMAGInvalidParameterException,
+                                                 OMAGConfigurationErrorException
+    {
+        final String methodName  = "clearEngineHostServices";
+        final String urlTemplate = "open-metadata/admin-services/users/{0}/servers/{1}/engine-host-services";
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                          serverPlatformRootURL + urlTemplate,
+                                          adminUserId,
+                                          serverName);
+    }
+
+
+    /**
+     * Clear the configuration for the metadata server that provides the governance engine definitions through the
+     * Governance Engine OMAS.
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void clearEngineDefinitionsClientConfig() throws OMAGNotAuthorizedException,
+                                                            OMAGInvalidParameterException,
+                                                            OMAGConfigurationErrorException
+    {
+        final String methodName  = "clearEngineDefinitionsClientConfig";
+        final String urlTemplate = "open-metadata/admin-services/users/{0}/servers/{1}/engine-definitions/client-config";
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                          serverPlatformRootURL + urlTemplate,
+                                          adminUserId,
+                                          serverName);
+    }
+
+
+    /**
+     * Disable the engine services.  This removes all configuration for the engine services in the engine host server.
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
