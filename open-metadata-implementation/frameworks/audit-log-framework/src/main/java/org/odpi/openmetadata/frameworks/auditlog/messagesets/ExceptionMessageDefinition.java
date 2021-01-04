@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Arrays;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -49,5 +51,24 @@ public class ExceptionMessageDefinition extends MessageDefinition
     public int getHttpErrorCode()
     {
         return httpErrorCode;
+    }
+
+
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString()
+    {
+        return "ExceptionMessageDefinition{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", messageId='" + getMessageId() + '\'' +
+                       ", messageTemplate='" + getMessageTemplate() + '\'' +
+                       ", messageParams=" + Arrays.toString(getMessageParams()) +
+                       ", systemAction='" + getSystemAction() + '\'' +
+                       ", userAction='" + getUserAction() + '\'' +
+                       '}';
     }
 }

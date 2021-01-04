@@ -399,7 +399,7 @@ public class Certification extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof Certification))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -409,16 +409,30 @@ public class Certification extends Referenceable
         }
         Certification that = (Certification) objectToCompare;
         return Objects.equals(getCertificateGUID(), that.getCertificateGUID()) &&
-                Objects.equals(getCertificationTypeName(), that.getCertificationTypeName()) &&
-                Objects.equals(getExaminer(), that.getExaminer()) &&
-                Objects.equals(getSummary(), that.getSummary()) &&
-                Objects.equals(getLink(), that.getLink()) &&
-                Objects.equals(getStartDate(), that.getStartDate()) &&
-                Objects.equals(getEndDate(), that.getEndDate()) &&
-                Objects.equals(getCertificationConditions(), that.getCertificationConditions()) &&
-                Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
-                Objects.equals(getCustodian(), that.getCustodian()) &&
-                Objects.equals(getRecipient(), that.getRecipient()) &&
-                Objects.equals(getNotes(), that.getNotes());
+                       Objects.equals(getCertificationTypeName(), that.getCertificationTypeName()) &&
+                       Objects.equals(getExaminer(), that.getExaminer()) &&
+                       Objects.equals(getSummary(), that.getSummary()) &&
+                       Objects.equals(getLink(), that.getLink()) &&
+                       Objects.equals(getStartDate(), that.getStartDate()) &&
+                       Objects.equals(getEndDate(), that.getEndDate()) &&
+                       Objects.equals(getCertificationConditions(), that.getCertificationConditions()) &&
+                       Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
+                       Objects.equals(getCustodian(), that.getCustodian()) &&
+                       Objects.equals(getRecipient(), that.getRecipient()) &&
+                       Objects.equals(getNotes(), that.getNotes());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getCertificateGUID(), getCertificationTypeName(), getExaminer(), getSummary(), getLink(),
+                            getStartDate(),
+                            getEndDate(), getCertificationConditions(), getCreatedBy(), getCustodian(), getRecipient(), getNotes());
     }
 }

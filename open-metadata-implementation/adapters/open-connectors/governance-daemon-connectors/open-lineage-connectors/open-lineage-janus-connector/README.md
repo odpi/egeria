@@ -43,7 +43,10 @@ Example:
 
 The above example configures the server with an embedded JanusGraph that uses BerkeleyDB as the storing solution and Lucene for the indexing. 
   
- 
+If you are deploying into a container environment and storing to file, ie via BerkeleyDB, it is recommended the storage directory is mapped into something like './data/servers/cocoLineage/lineageGraph' or similar
+and that you ensure './data' or a subdirectory mapped to a mapped volume or k8s pvc. This follows the default pattern used
+elsewhere in Egeria.
+
 ---
  - Standalone JanusGraph server 
  

@@ -37,11 +37,12 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
   const nodeType = getNodeType(identificationContext.getRestURL("glossary-author"), "category");
   useEffect(() => {
     getChildren();
-  }, [selectedNodeGuid]);
+  }, [selectedNodeGuid, pageSize, pageNumber]);
 
   const getChildren = () => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    issueRestGet(encodeURI(props.getCategoriesURL), onSuccessfulGetChildren, onErrorGetChildren);
+    const url = encodeURI(props.getCategoriesURL + "?pageSize=" + (pageSize+1) + "&startingFrom="+((pageNumber-1)*pageSize));
+    issueRestGet(url, onSuccessfulGetChildren, onErrorGetChildren);
   };
 
   const paginationProps = () => ({
@@ -65,7 +66,6 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
     //setPaginationOptions(options);
     setPageSize(options.pageSize);
     setPageNumber(options.page);
-    refreshNodes(completeResults, options.pageSize, options.page);
   };
 
   // Refresh the displayed nodes search results
@@ -76,21 +76,12 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
   function refreshNodes(results, passedPageSize, passedPageNumber) {
     let selectedInResults = false;
     setTotal(results.length);
+    if (results.length > passedPageSize) {
+      // remove the last element.  
+      results.pop();
+    }
     if (results && results.length > 0) {
-      // if page = 1 and pageSize 10, searchTableRowsStart = 1
-      // if page = 2 and pageSize 10, searchTableRowsStart = 11
-      // if page = 2 and pageSize 10 and results.length = 15, searchTableRowsStart = 11 , searchTableRowsSize = 5
-      const searchTableRowsStart = (passedPageNumber - 1) * passedPageSize;
-      let searchTableRowsSize = passedPageSize;
-      // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
-      if (searchTableRowsStart + searchTableRowsSize - 1 > results.length) {
-        searchTableRowsSize = results.length - searchTableRowsStart;
-      }
-      const slicedResults = results.slice(
-        searchTableRowsStart,
-        searchTableRowsStart + searchTableRowsSize
-      );
-      slicedResults.map(function (row) {
+      results.map(function (row) {
         row.id = row.systemAttributes.guid;
         if (selectedNodeGuid && selectedNodeGuid === row.id) {
           row.isSelected = true;
@@ -98,7 +89,7 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
         }
         return row;
       });
-      setNodes(slicedResults);
+      setNodes(results);
     } else {
       setNodes([]);
     }

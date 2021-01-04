@@ -52,7 +52,7 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
     {
         super(template);
 
-        if (template == null)
+        if (template != null)
         {
             displayName = template.getDisplayName();
             description = template.getDescription();

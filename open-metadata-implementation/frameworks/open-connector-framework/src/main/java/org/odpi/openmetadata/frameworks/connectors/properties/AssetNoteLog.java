@@ -155,6 +155,7 @@ public class AssetNoteLog extends AssetReferenceable
     }
 
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -168,7 +169,7 @@ public class AssetNoteLog extends AssetReferenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetNoteLog))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -177,7 +178,19 @@ public class AssetNoteLog extends AssetReferenceable
             return false;
         }
         AssetNoteLog that = (AssetNoteLog) objectToCompare;
-        return Objects.equals(getNoteLogBean(), that.getNoteLogBean()) &&
-                Objects.equals(getNotes(), that.getNotes());
+        return Objects.equals(noteLogBean, that.noteLogBean) &&
+                       Objects.equals(notes, that.notes);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), noteLogBean, notes);
     }
 }

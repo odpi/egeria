@@ -45,8 +45,6 @@ public class LineageMappingConverter<B> extends AssetManagerOMASConverter<B>
                                     Relationship relationship,
                                     String       methodName) throws PropertyServerException
     {
-        final String thisMethodName = "getNewRelationshipBean";
-        
         try
         {
             /*

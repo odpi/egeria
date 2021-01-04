@@ -35,6 +35,7 @@ public class DiscoveryEngineOutTopicClientConnector extends OpenMetadataTopicLis
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
+    @Override
     public  synchronized void registerListener(String                       userId,
                                                DiscoveryEngineEventListener listener) throws InvalidParameterException
     {
@@ -58,6 +59,7 @@ public class DiscoveryEngineOutTopicClientConnector extends OpenMetadataTopicLis
      *
      * @param event inbound event
      */
+    @Override
     public synchronized void processEvent(String event)
     {
         if (event != null)

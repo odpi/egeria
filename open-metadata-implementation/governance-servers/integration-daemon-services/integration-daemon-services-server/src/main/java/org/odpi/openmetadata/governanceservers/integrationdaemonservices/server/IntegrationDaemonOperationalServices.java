@@ -11,8 +11,8 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.context
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationDaemonHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,10 +142,11 @@ public class IntegrationDaemonOperationalServices
             }
 
             /*
-             * Create the integration daemon handler
+             * Create the thread that calls refresh on all of the connectors.
              */
-            IntegrationDaemonHandler integrationDaemonHandler = new IntegrationDaemonHandler(daemonConnectorHandlers);
-
+            IntegrationDaemonThread integrationDaemonThread = new IntegrationDaemonThread(localServerName,
+                                                                                          daemonConnectorHandlers,
+                                                                                          auditLog);
             /*
              * Create the integration daemon instance.
              */
@@ -154,7 +155,7 @@ public class IntegrationDaemonOperationalServices
                                                                       auditLog,
                                                                       localServerUserId,
                                                                       maxPageSize,
-                                                                      integrationDaemonHandler,
+                                                                      integrationDaemonThread,
                                                                       integrationServiceHandlerMap);
 
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));

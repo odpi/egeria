@@ -266,7 +266,6 @@ public class OMAGServerAdminForEngineServices
                                                EngineServiceRequestBody requestBody)
     {
         final String methodName = "configureEngineService";
-        final String requestBodyParameterName = "requestBody";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 

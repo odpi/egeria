@@ -35,6 +35,7 @@ public class AssetManagerOutTopicClientConnector extends OpenMetadataTopicListen
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
+    @Override
     public  synchronized void registerListener(String                       userId,
                                                AssetManagerEventListener listener) throws InvalidParameterException
     {
@@ -58,6 +59,7 @@ public class AssetManagerOutTopicClientConnector extends OpenMetadataTopicListen
      *
      * @param event inbound event
      */
+    @Override
     public synchronized void processEvent(String event)
     {
         if (event != null)

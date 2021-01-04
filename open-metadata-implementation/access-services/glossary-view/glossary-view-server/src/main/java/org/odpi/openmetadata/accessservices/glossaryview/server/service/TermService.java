@@ -12,6 +12,8 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 public class TermService extends GlossaryViewOMAS {
 
     private static final String TERM_TYPE_NAME = "GlossaryTerm";
+    private static final String GLOSSARY_TYPE_NAME = "Glossary";
+    private static final String CATEGORY_TYPE_NAME = "GlossaryCategory";
 
     private static final String TERM_CATEGORIZATION_RELATIONSHIP_NAME = "TermCategorization";
     private static final String LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME = "LibraryTermReference";
@@ -71,9 +73,9 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse all external glossaries
      */
     public GlossaryViewEntityDetailResponse getTermsViaTermAnchorRelationships(String userId, String serverName,
-                                                                               String glossaryGUID, Integer from, Integer size){
-        return getRelatedEntitiesResponse(userId, serverName, glossaryGUID, TERM_TYPE_NAME,
-                TERM_ANCHOR_RELATIONSHIP_NAME, from, size,"getTermsViaTermAnchorRelationships");
+                                                                               String glossaryGUID, Integer from, Integer size) {
+        return getRelatedEntitiesResponse(userId, serverName, glossaryGUID, GLOSSARY_TYPE_NAME,
+                TERM_ANCHOR_RELATIONSHIP_NAME, from, size, "getTermsViaTermAnchorRelationships");
     }
 
     /**
@@ -89,9 +91,9 @@ public class TermService extends GlossaryViewOMAS {
      */
     public GlossaryViewEntityDetailResponse getTermsViaTermCategorizationRelationships(String userId, String serverName,
                                                                                        String categoryGUID,
-                                                                                       Integer from, Integer size){
-        return getRelatedEntitiesResponse(userId, serverName, categoryGUID, TERM_TYPE_NAME,
-                TERM_CATEGORIZATION_RELATIONSHIP_NAME, from, size,"getTermsViaTermCategorizationRelationships");
+                                                                                       Integer from, Integer size) {
+        return getRelatedEntitiesResponse(userId, serverName, categoryGUID, CATEGORY_TYPE_NAME,
+                TERM_CATEGORIZATION_RELATIONSHIP_NAME, from, size, "getTermsViaTermCategorizationRelationships");
     }
 
     /**

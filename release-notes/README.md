@@ -25,24 +25,23 @@ and bad.  We would love to hear from you.
 Below are the release notes for the latest Egeria release:
 
 * [Release 2.5](release-notes-2-5.md) - December 2020
-  * Integration Server
   * User Interface improvements
   * Additional tests
   * Bug fixes
   * Dependency updates
-
  
 ## Older Releases
 
 * [Release 2.4](release-notes-2-4.md) - November 2020
     * Integration Daemon
-    * User Interface improvements
+    * Rex/Tex in Presentation Server
     * Additional tests
     * Bug fixes
     * Dependency updates
 
 * [Release 2.3](release-notes-2-3.md) - October 2020
     * Presentation Server User Interface
+    * Dino UI function
     * Bug fixes
     * Dependency updates
 
@@ -71,10 +70,11 @@ Below are the release notes for the latest Egeria release:
     
 * [Release 1.7](release-notes-1-7.md) - May 2020
     * Bug fixes
-    
+    * Dependency updates
+
 * [Release 1.6](release-notes-1-6.md) - April 2020
     * Audit Log Framework (ALF) technical preview
-    * Repository Explorer (TEX) 
+    * Repository Explorer (REX) 
 
 * [Release 1.5](release-notes-1-5.md) - March 2020
     * Metadata de-duplication identification and notification
@@ -83,7 +83,8 @@ Below are the release notes for the latest Egeria release:
     
 * [Release 1.4](release-notes-1-4.md) - February 2020
     * Bug fixes, documentation
-    
+    * Dependency updates
+
 * [Release 1.3](release-notes-1-3.md) -  January 2019
     * Conformance test suite improvements
     * Open Metadata Archives

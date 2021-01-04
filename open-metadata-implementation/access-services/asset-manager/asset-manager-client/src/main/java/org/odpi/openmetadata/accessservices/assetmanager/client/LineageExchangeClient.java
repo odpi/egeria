@@ -146,6 +146,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createProcess(String              userId,
                                 String              assetManagerGUID,
                                 String              assetManagerName,
@@ -217,6 +218,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createProcessFromTemplate(String              userId,
                                             String              assetManagerGUID,
                                             String              assetManagerName,
@@ -281,6 +283,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateProcess(String            userId,
                               String            assetManagerGUID,
                               String            assetManagerName,
@@ -334,6 +337,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateProcessStatus(String        userId,
                                     String        assetManagerGUID,
                                     String        assetManagerName,
@@ -384,6 +388,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupProcessParent(String                 userId,
                                    String                 assetManagerGUID,
                                    String                 assetManagerName,
@@ -431,6 +436,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearProcessParent(String userId,
                                    String assetManagerGUID,
                                    String assetManagerName,
@@ -474,6 +480,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void publishProcess(String userId,
                                String assetManagerGUID,
                                String assetManagerName,
@@ -512,6 +519,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void withdrawProcess(String userId,
                                 String assetManagerGUID,
                                 String assetManagerName,
@@ -549,6 +557,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeProcess(String userId,
                               String assetManagerGUID,
                               String assetManagerName,
@@ -594,6 +603,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ProcessElement> findProcesses(String userId,
                                               String assetManagerGUID,
                                               String assetManagerName,
@@ -645,6 +655,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ProcessElement>   getProcessesForAssetManager(String userId,
                                                               String assetManagerGUID,
                                                               String assetManagerName,
@@ -690,6 +701,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ProcessElement>   getProcessesByName(String userId,
                                                      String assetManagerGUID,
                                                      String assetManagerName,
@@ -741,6 +753,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public ProcessElement getProcessByGUID(String userId,
                                            String assetManagerGUID,
                                            String assetManagerName,
@@ -782,6 +795,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public ProcessElement getProcessParent(String userId,
                                            String assetManagerGUID,
                                            String assetManagerName,
@@ -825,6 +839,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ProcessElement> getSubProcesses(String userId,
                                                 String assetManagerGUID,
                                                 String assetManagerName,
@@ -885,6 +900,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createPort(String              userId,
                              String              assetManagerGUID,
                              String              assetManagerName,
@@ -951,6 +967,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updatePort(String         userId,
                            String         assetManagerGUID,
                            String         assetManagerName,
@@ -1002,6 +1019,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupProcessPort(String  userId,
                                  String  assetManagerGUID,
                                  String  assetManagerName,
@@ -1045,6 +1063,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearProcessPort(String userId,
                                  String assetManagerGUID,
                                  String assetManagerName,
@@ -1088,6 +1107,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupPortDelegation(String  userId,
                                     String  assetManagerGUID,
                                     String  assetManagerName,
@@ -1131,6 +1151,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearPortDelegation(String userId,
                                     String assetManagerGUID,
                                     String assetManagerName,
@@ -1173,6 +1194,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupPortSchemaType(String  userId,
                                     String  assetManagerGUID,
                                     String  assetManagerName,
@@ -1216,6 +1238,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearPortSchemaType(String userId,
                                     String assetManagerGUID,
                                     String assetManagerName,
@@ -1257,6 +1280,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removePort(String userId,
                            String assetManagerGUID,
                            String assetManagerName,
@@ -1302,6 +1326,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<PortElement>   findPorts(String userId,
                                          String assetManagerGUID,
                                          String assetManagerName,
@@ -1354,6 +1379,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<PortElement> getPortsForProcess(String userId,
                                                 String assetManagerGUID,
                                                 String assetManagerName,
@@ -1401,6 +1427,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<PortElement>  getPortUse(String userId,
                                          String assetManagerGUID,
                                          String assetManagerName,
@@ -1447,6 +1474,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public PortElement getPortDelegation(String userId,
                                          String assetManagerGUID,
                                          String assetManagerName,
@@ -1490,6 +1518,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<PortElement>   getPortsByName(String userId,
                                               String assetManagerGUID,
                                               String assetManagerName,
@@ -1541,6 +1570,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public PortElement getPortByGUID(String userId,
                                      String assetManagerGUID,
                                      String assetManagerName,
@@ -1585,6 +1615,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setBusinessSignificant(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,
@@ -1626,6 +1657,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearBusinessSignificant(String userId,
                                          String assetManagerGUID,
                                          String assetManagerName,
@@ -1673,6 +1705,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String setupDataFlow(String  userId,
                                 String  assetManagerGUID,
                                 String  assetManagerName,
@@ -1737,6 +1770,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public DataFlowElement getDataFlow(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,
@@ -1789,6 +1823,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void   updateDataFlow(String userId,
                                  String assetManagerGUID,
                                  String assetManagerName,
@@ -1839,6 +1874,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearDataFlow(String userId,
                               String assetManagerGUID,
                               String assetManagerName,
@@ -1878,6 +1914,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DataFlowElement> getDataFlowConsumers(String userId,
                                                       String assetManagerGUID,
                                                       String assetManagerName,
@@ -1919,6 +1956,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DataFlowElement> getDataFlowSuppliers(String userId,
                                                       String assetManagerGUID,
                                                       String assetManagerName,
@@ -1965,6 +2003,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String setupControlFlow(String  userId,
                                    String  assetManagerGUID,
                                    String  assetManagerName,
@@ -2029,6 +2068,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public ControlFlowElement getControlFlow(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,
@@ -2080,6 +2120,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateControlFlow(String userId,
                                   String assetManagerGUID,
                                   String assetManagerName,
@@ -2130,6 +2171,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearControlFlow(String userId,
                                  String assetManagerGUID,
                                  String assetManagerName,
@@ -2168,6 +2210,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ControlFlowElement> getControlFlowNextSteps(String userId,
                                                             String assetManagerGUID,
                                                             String assetManagerName,
@@ -2209,6 +2252,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ControlFlowElement> getControlFlowPreviousSteps(String userId,
                                                                 String assetManagerGUID,
                                                                 String assetManagerName,
@@ -2255,6 +2299,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String setupProcessCall(String  userId,
                                    String  assetManagerGUID,
                                    String  assetManagerName,
@@ -2319,6 +2364,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public ProcessCallElement getProcessCall(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,
@@ -2370,6 +2416,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateProcessCall(String userId,
                                   String assetManagerGUID,
                                   String assetManagerName,
@@ -2420,6 +2467,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearProcessCall(String userId,
                                  String assetManagerGUID,
                                  String assetManagerName,
@@ -2459,6 +2507,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ProcessCallElement> getProcessCalled(String userId,
                                                      String assetManagerGUID,
                                                      String assetManagerName,
@@ -2500,6 +2549,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ProcessCallElement> getProcessCallers(String userId,
                                                       String assetManagerGUID,
                                                       String assetManagerName,
@@ -2542,6 +2592,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupLineageMapping(String  userId,
                                     String  assetManagerGUID,
                                     String  assetManagerName,
@@ -2583,6 +2634,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearLineageMapping(String userId,
                                     String assetManagerGUID,
                                     String assetManagerName,
@@ -2625,6 +2677,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<LineageMappingElement> getDestinationLineageMappings(String userId,
                                                                      String assetManagerGUID,
                                                                      String assetManagerName,
@@ -2665,6 +2718,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<LineageMappingElement> getSourceLineageMappings(String userId,
                                                                 String assetManagerGUID,
                                                                 String assetManagerName,
