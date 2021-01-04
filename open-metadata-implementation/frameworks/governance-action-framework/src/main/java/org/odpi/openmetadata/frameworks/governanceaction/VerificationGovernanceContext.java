@@ -39,5 +39,4 @@ public class VerificationGovernanceContext extends GovernanceContext
     {
         super(userId, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
     }
-
 }

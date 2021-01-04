@@ -35,7 +35,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param openMetadataStore client to the metadata store for use by the governance actionservice
+     * @param openMetadataStore client to the metadata store for use by the governance action service
      */
     public ProvisioningGovernanceContext(String                     userId,
                                          String                     requestType,
@@ -114,7 +114,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(assetTypeName, properties, templateGUID);
+        return openMetadataStore.createMetadataElementInStore(assetTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
     }
 
 
@@ -147,7 +147,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(processTypeName,initialStatus, properties, templateGUID);
+        return openMetadataStore.createMetadataElementInStore(processTypeName,initialStatus, null, null, properties, templateGUID);
     }
 
 
@@ -198,9 +198,9 @@ public class ProvisioningGovernanceContext extends GovernanceContext
             properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portType.getOpenTypeSymbolicName());
         }
 
-        String portGUID = openMetadataStore.createMetadataElementInStore(portTypeName, properties, templateGUID);
+        String portGUID = openMetadataStore.createMetadataElementInStore(portTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
 
-        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, null);
+        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, null, null, null);
 
         return portGUID;
     }
@@ -233,6 +233,6 @@ public class ProvisioningGovernanceContext extends GovernanceContext
         propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
 
-        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, null);
+        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, null, null, null);
     }
 }

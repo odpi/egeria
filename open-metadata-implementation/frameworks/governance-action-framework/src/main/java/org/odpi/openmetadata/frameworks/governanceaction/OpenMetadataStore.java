@@ -120,9 +120,7 @@ public interface OpenMetadataStore
      *
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param matchProperties Optional list of relationship property conditions to match.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
+     * @param searchProperties Optional list of relationship property conditions to match.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
@@ -134,13 +132,12 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                           SearchProperties matchProperties,
-                                                                           Date             asOfTime,
-                                                                           String           sequencingProperty,
-                                                                           SequencingOrder  sequencingOrder,
-                                                                           int              startFrom,
-                                                                           int              pageSize) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException;
+    List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                          SearchProperties searchProperties,
+                                                                          String           sequencingProperty,
+                                                                          SequencingOrder  sequencingOrder,
+                                                                          int              startFrom,
+                                                                          int              pageSize) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException;
 }
