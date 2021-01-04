@@ -170,7 +170,7 @@ allprojects {
             implementation("org.springframework:spring-expression:5.3.1")
             implementation("org.springframework:spring-jdbc:5.3.1")
             implementation("org.springframework:spring-test:5.3.1")
-            implementation("org.springframework:spring-tx:5.3.1")
+            implementation("org.springframework:spring-tx:5.3.2")
             implementation("org.springframework:spring-web:5.3.1")
             implementation("org.springframework:spring-webmvc:5.3.1")
             // testng also used in our 'source' code to support unit tests
