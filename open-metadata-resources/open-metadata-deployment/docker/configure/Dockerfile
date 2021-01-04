@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM alpine:3.12.1
+FROM alpine:3.12.3
 ARG version=2.6-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
