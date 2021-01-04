@@ -103,6 +103,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
      * @throws UserNotAuthorizedException the userId associated with the connector is not authorized to
      *                                    access the asset properties.
      */
+    @Override
     public void refresh() throws PropertyServerException, UserNotAuthorizedException
     {
         final  String  methodName  = "refresh";

@@ -2157,7 +2157,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException probably the type of the entity is not correct
-     * @throws PropertyServerException there is a problem with hte repository
+     * @throws PropertyServerException there is a problem with the repository
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
     private void reEvaluateAnchorGUID(String targetGUID,

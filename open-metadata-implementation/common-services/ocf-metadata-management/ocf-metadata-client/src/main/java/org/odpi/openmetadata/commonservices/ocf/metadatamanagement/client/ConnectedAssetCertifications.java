@@ -100,6 +100,7 @@ class ConnectedAssetCertifications extends AssetCertifications
      * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
+    @Override
     protected  AssetCertifications cloneIterator(AssetDescriptor parentAsset)
     {
         return new ConnectedAssetCertifications(connectedAsset, this);
@@ -114,6 +115,7 @@ class ConnectedAssetCertifications extends AssetCertifications
      * @param template object to clone
      * @return new cloned object.
      */
+    @Override
     protected  AssetPropertyBase cloneElement(AssetDescriptor  parentAsset, AssetPropertyBase template)
     {
         return new AssetCertification(parentAsset, (AssetCertification)template);
@@ -128,6 +130,7 @@ class ConnectedAssetCertifications extends AssetCertifications
      * @return list of elements corresponding to the supplied cache pointers.
      * @throws PropertyServerException there is a problem retrieving elements from the property (metadata) server.
      */
+    @Override
     protected  List<AssetPropertyBase> getCachedList(int  cacheStartPointer,
                                                      int  maximumSize) throws PropertyServerException
     {
