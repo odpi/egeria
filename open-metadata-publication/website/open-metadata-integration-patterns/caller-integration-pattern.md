@@ -20,7 +20,7 @@ To use the caller integration pattern, go to the list of OMASs and select the on
 Note: The Open Metadata and Governance Client Package provides Java classes for using both the call or the messaging interfaces.
 
 ![Figure 1](caller-integration-pattern-level-1.png)
-> Figure 1: using hte caller integration pattern
+> Figure 1: using the caller integration pattern
 
 Figure 1 shows the caller pattern in operation.  The metadata tools connect to an open metadata and governance server that has the access layer enabled.  This access layer implements the OMASs.
 
