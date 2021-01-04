@@ -87,6 +87,7 @@ class CanonicalGlossaryOwlModelArchiveBuilder extends DesignModelArchiveBuilder 
      *
      * @return populated open metadata archive object
      */
+    @Override
     protected OpenMetadataArchive getOpenMetadataArchive() {
         Map<String, String> isDefinedByMap = model.getIsDefinedByMap();
         Map<String, Set<String>> conceptTermMemberMap = model.getConceptTermMemberMap();

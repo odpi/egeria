@@ -11204,7 +11204,7 @@ public class OpenMetadataTypesArchive1_2
 
 
     /**
-     * 0330 Terms brings in hte glossary term that captures a single semantic meaning.
+     * 0330 Terms brings in the glossary term that captures a single semantic meaning.
      */
     private void add0330Terms()
     {
@@ -21600,7 +21600,7 @@ public class OpenMetadataTypesArchive1_2
         TypeDefAttribute       property;
 
         final String attribute1Name            = "metamodelElementGUID";
-        final String attribute1Description     = "Element in hte metadata model that the attached element embodies.";
+        final String attribute1Description     = "Element in the metadata model that the attached element embodies.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,

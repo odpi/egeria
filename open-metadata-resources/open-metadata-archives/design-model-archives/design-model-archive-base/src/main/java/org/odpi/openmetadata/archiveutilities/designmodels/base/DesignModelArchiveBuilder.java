@@ -912,7 +912,9 @@ public class DesignModelArchiveBuilder
     protected OpenMetadataArchive getOpenMetadataArchive()
     {
         System.out.println("GUIDs map size: " + idToGUIDMap.getSize());
-        if (writeToFile) {
+
+        if (writeToFile)
+        {
             idToGUIDMap.saveGUIDs();
         }
 
