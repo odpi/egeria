@@ -681,6 +681,8 @@ public class OpenMetadataTypesArchive
                                                         attribute1DescriptionGUID);
         properties.add(property);
 
+        typeDefPatch.setPropertyDefinitions(properties);
+
         return typeDefPatch;
     }
 
@@ -708,6 +710,8 @@ public class OpenMetadataTypesArchive
                                                         attribute1DescriptionGUID);
         properties.add(property);
 
+        typeDefPatch.setPropertyDefinitions(properties);
+
         return typeDefPatch;
     }
 
@@ -734,6 +738,8 @@ public class OpenMetadataTypesArchive
                                                         attribute1Description,
                                                         attribute1DescriptionGUID);
         properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
