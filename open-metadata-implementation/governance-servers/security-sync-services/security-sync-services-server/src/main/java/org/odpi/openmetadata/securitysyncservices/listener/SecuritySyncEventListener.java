@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.securitysyncservices.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.GovernedAssetEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.securitysyncservices.processor.SecuritySyncEventProcessor;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class SecuritySyncEventListener implements OpenMetadataTopicListener {
         log.info("[Security Sync] Event Received");
 
         try {
-            GovernanceEngineEvent event = objectMapper.readValue(receivedEvent, GovernanceEngineEvent.class);
+            GovernedAssetEvent event = objectMapper.readValue(receivedEvent, GovernedAssetEvent.class);
             switch (event.getEventType()) {
                 case NEW_CLASSIFIED_ASSET:
                     securitySyncEventProcessor.processClassifiedGovernedAssetEvent(event.getGovernedAsset());

@@ -264,6 +264,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>engine-host-services-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>data-manager-spring</artifactId>
             <scope>runtime</scope>
         </dependency>

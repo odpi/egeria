@@ -1027,7 +1027,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, guidParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{2}";
 
         FileFolderResponse restResult = restClient.callFileFolderGetRESTCall(methodName,
                                                                              urlTemplate,
@@ -1063,7 +1063,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/by-name";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/by-name";
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
@@ -1109,7 +1109,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/{2}/folders?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/folders?startFrom={3}&pageSize={4}";
 
         FileFoldersResponse restResult = restClient.callFileFoldersGetRESTCall(methodName,
                                                                              urlTemplate,
@@ -1153,7 +1153,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/{2}/folders?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{2}/folders?startFrom={3}&pageSize={4}";
 
         FileFoldersResponse restResult = restClient.callFileFoldersGetRESTCall(methodName,
                                                                                urlTemplate,
@@ -1196,7 +1196,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/{2}/data-files?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/data-files?startFrom={3}&pageSize={4}";
 
         DataFilesResponse restResult = restClient.callDataFilesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -1240,7 +1240,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/{2}/data-files?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{2}/data-files?startFrom={3}&pageSize={4}";
 
         DataFilesResponse restResult = restClient.callDataFilesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -1278,7 +1278,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, guidParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/data-files/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/{2}";
 
         DataFileResponse restResult = restClient.callDataFileGetRESTCall(methodName,
                                                                          urlTemplate,
@@ -1314,7 +1314,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/data-files/by-path-name";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/by-path-name";
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
         
@@ -1360,20 +1360,20 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateName(pathName, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/data-files/by-search-path-name?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/by-search-path-name?startFrom={3}&pageSize={4}";
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
         requestBody.setFullPath(pathName);
 
         DataFilesResponse restResult = restClient.callDataFilesPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          pathName,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            pathName,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }

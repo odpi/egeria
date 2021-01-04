@@ -31,35 +31,6 @@ class AssetAnalysisInstanceHandler extends OMESServiceInstanceHandler
 
 
     /**
-     * Retrieve the status of each assigned discovery engines.
-     *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of discovery engine statuses
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    List<DiscoveryEngineSummary> getDiscoveryEngineStatuses(String userId,
-                                                            String serverName,
-                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
-    {
-        AssetAnalysisInstance instance = (AssetAnalysisInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getDiscoveryEngineStatuses();
-        }
-
-        return null;
-    }
-
-
-
-    /**
      * Retrieve the specific handler for the discovery engine.
      *
      * @param userId calling user

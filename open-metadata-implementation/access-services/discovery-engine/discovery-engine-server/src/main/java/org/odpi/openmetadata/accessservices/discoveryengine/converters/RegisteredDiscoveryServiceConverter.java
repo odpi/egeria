@@ -9,6 +9,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * RegisteredDiscoveryServiceConverter transfers the relevant properties from a DiscoveryServiceProperties bean
@@ -38,34 +42,52 @@ public class RegisteredDiscoveryServiceConverter
      * Request the bean is extracted from the repository entity.
      *
      * @param discoveryServiceProperties properties to convert
-     * @param relationship relationship for asset types
+     * @param relationships list of relationships with the request types
      * @return output bean
      */
     public RegisteredDiscoveryService getBean(DiscoveryServiceProperties discoveryServiceProperties,
-                                              Relationship               relationship)
+                                              List<Relationship>         relationships)
     {
         final String  methodName = "getBean";
 
         RegisteredDiscoveryService  bean = new RegisteredDiscoveryService(discoveryServiceProperties);
 
-        if (relationship != null)
+        if (relationships != null)
         {
-            /*
-             * The properties are removed from the instance properties and stowed in the bean.
-             * Any remaining properties are stored in extendedProperties.
-             */
-            InstanceProperties instanceProperties = relationship.getProperties();
+            Map<String, Map<String, String>> requestTypeMappings = new HashMap<>();
 
-            if (instanceProperties != null)
+            for (Relationship  relationship : relationships)
             {
-                bean.setDiscoveryRequestTypes(repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                      OpenMetadataAPIMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
-                                                                                      instanceProperties,
-                                                                                      methodName));
-                bean.setDefaultAnalysisParameters(repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                            OpenMetadataAPIMapper.DEFAULT_ANALYSIS_PARAMETERS_PROPERTY_NAME,
-                                                                                            instanceProperties,
-                                                                                            methodName));
+                if (relationship != null)
+                {
+                    /*
+                     * The properties are removed from the instance properties and stowed in the bean.
+                     * Any remaining properties are stored in extendedProperties.
+                     */
+                    InstanceProperties instanceProperties = relationship.getProperties();
+
+                    if (instanceProperties != null)
+                    {
+                        String requestType = repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                instanceProperties,
+                                                                                methodName);
+                        Map<String, String> analysisParameters = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                           OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                           instanceProperties,
+                                                                                                           methodName);
+
+                        if (requestType != null)
+                        {
+                            requestTypeMappings.put(requestType, analysisParameters);
+                        }
+                    }
+                }
+            }
+
+            if (!requestTypeMappings.isEmpty())
+            {
+                bean.setDiscoveryRequestTypes(requestTypeMappings);
             }
         }
 

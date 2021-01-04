@@ -3,17 +3,17 @@
 package org.odpi.openmetadata.adminservices;
 
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGEngineServiceRegistration;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.EngineHostServicesResponse;
 import org.odpi.openmetadata.adminservices.rest.EngineServiceConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody;
-import org.odpi.openmetadata.adminservices.rest.EngineServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
@@ -31,6 +31,9 @@ import java.util.List;
  */
 public class OMAGServerAdminForEngineServices
 {
+    private static final String serviceName    = GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName();
+    private static final String accessService  = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceName();
+
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForEngineServices.class),
                                                                       CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
     
@@ -50,17 +53,17 @@ public class OMAGServerAdminForEngineServices
 
     /**
      * Return the list of engine services that are configured for this server.  If you want to see the configuration for these services,
-     * use the getEngineServicesConfiguration.
+     * use the getEngineHostServicesConfiguration.
      *
      * @param userId calling user
      * @param serverName name of server
      *
      * @return list of engine service descriptions
      */
-    public RegisteredOMAGServicesResponse getRegisteredEngineServices(String userId,
+    public RegisteredOMAGServicesResponse getConfiguredEngineServices(String userId,
                                                                       String serverName)
     {
-        final String methodName = "getRegisteredEngineServices";
+        final String methodName = "getConfiguredEngineServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -79,7 +82,12 @@ public class OMAGServerAdminForEngineServices
             /*
              * Get the list of Engine Services configured in this server.
              */
-            List<EngineServiceConfig> engineServiceConfigs = serverConfig.getEngineServicesConfig();
+            List<EngineServiceConfig> engineServiceConfigs = null;
+            EngineHostServicesConfig  engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+            if (engineHostServicesConfig != null)
+            {
+                engineServiceConfigs = engineHostServicesConfig.getEngineServiceConfigs();
+            }
 
             /*
              * Set up the available view services.
@@ -129,21 +137,21 @@ public class OMAGServerAdminForEngineServices
 
 
     /**
-     * Return the list of engine services that are configured for this server.
+     * Return the engine host services configuration including the list of engine services that are configured for this server.
      *
      * @param userId calling user
      * @param serverName name of server
      *
-     * @return list of access service configurations
+     * @return engine host services configuration
      */
-    public EngineServicesResponse getEngineServicesConfiguration(String userId,
-                                                                 String serverName)
+    public EngineHostServicesResponse getEngineHostServicesConfiguration(String userId,
+                                                                         String serverName)
     {
-        final String methodName = "getEngineServicesConfiguration";
+        final String methodName = "getEngineHostServicesConfiguration";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        EngineServicesResponse response = new EngineServicesResponse();
+        EngineHostServicesResponse response = new EngineHostServicesResponse();
 
         try
         {
@@ -158,7 +166,7 @@ public class OMAGServerAdminForEngineServices
             /*
              * Get the list of Engine Services configured in this server.
              */
-            response.setServices(serverConfig.getEngineServicesConfig());
+            response.setServices(serverConfig.getEngineHostServicesConfig());
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -211,7 +219,12 @@ public class OMAGServerAdminForEngineServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<EngineServiceConfig> currentList = serverConfig.getEngineServicesConfig();
+            List<EngineServiceConfig> currentList = null;
+            EngineHostServicesConfig  engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+            if (engineHostServicesConfig != null)
+            {
+                currentList = engineHostServicesConfig.getEngineServiceConfigs();
+            }
 
             if (currentList != null)
             {
@@ -244,6 +257,100 @@ public class OMAGServerAdminForEngineServices
 
         return response;
     }
+
+
+
+    /**
+     * Set up the name and platform URL root for the metadata server running the Governance Engine OMAS that provides
+     * the governance engine definitions used by the engine services.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param clientConfig  URL root and server name for the metadata server.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse setEngineDefinitionsClientConfig(String                 userId,
+                                                         String                 serverName,
+                                                         OMAGServerClientConfig clientConfig)
+    {
+        final String methodName = "setEngineDefinitionsClientConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String accessServiceRootURL    = null;
+            String accessServiceServerName = null;
+
+            if (clientConfig != null)
+            {
+                accessServiceRootURL = clientConfig.getOMAGServerPlatformRootURL();
+                accessServiceServerName = clientConfig.getOMAGServerName();
+            }
+
+            errorHandler.validateAccessServiceRootURL(accessServiceRootURL, accessService, serverName, serviceName);
+            errorHandler.validateAccessServiceServerName(accessServiceServerName, accessService, serverName, serviceName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            if (accessServiceRootURL == null)
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " access service root url.");
+            }
+            else
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service root url to " + accessServiceRootURL + ".");
+            }
+
+            serverConfig.setAuditTrail(configAuditTrail);
+
+            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+            if (engineHostServicesConfig == null)
+            {
+                engineHostServicesConfig = new EngineHostServicesConfig();
+            }
+
+            engineHostServicesConfig.setOMAGServerPlatformRootURL(accessServiceRootURL);
+            engineHostServicesConfig.setOMAGServerName(accessServiceServerName);
+
+            serverConfig.setEngineHostServicesConfig(engineHostServicesConfig);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /**
@@ -287,21 +394,27 @@ public class OMAGServerAdminForEngineServices
 
             errorHandler.validateEngineServiceIsRegistered(registration, serviceURLMarker, serverName, methodName);
 
-            EngineServiceConfig serviceConfig = new EngineServiceConfig(registration);
+            EngineServiceConfig newEngineServiceConfig = new EngineServiceConfig(registration);
 
-            serviceConfig.setOMAGServerPlatformRootURL(requestBody.getOMAGServerPlatformRootURL());
-            serviceConfig.setOMAGServerName(requestBody.getOMAGServerName());
-            serviceConfig.setEngines(requestBody.getEngines());
-            serviceConfig.setEngineServiceOptions(requestBody.getEngineServiceOptions());
+            newEngineServiceConfig.setOMAGServerPlatformRootURL(requestBody.getOMAGServerPlatformRootURL());
+            newEngineServiceConfig.setOMAGServerName(requestBody.getOMAGServerName());
+            newEngineServiceConfig.setEngines(requestBody.getEngines());
+            newEngineServiceConfig.setEngineServiceOptions(requestBody.getEngineServiceOptions());
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<EngineServiceConfig> engineServiceConfigList = serverConfig.getEngineServicesConfig();
+            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+            List<EngineServiceConfig> existingEngineServices = null;
+
+            if (engineHostServicesConfig != null)
+            {
+                existingEngineServices = engineHostServicesConfig.getEngineServiceConfigs();
+            }
 
             response = this.storeEngineServicesConfig(userId,
                                                       serverName,
                                                       serviceURLMarker,
-                                                      updateEngineServiceConfig(serviceConfig, engineServiceConfigList),
+                                                      updateEngineServiceConfig(newEngineServiceConfig, existingEngineServices),
                                                       methodName);
         }
         catch (OMAGInvalidParameterException error)
@@ -355,6 +468,7 @@ public class OMAGServerAdminForEngineServices
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateOMAGServerClientConfig(serverName, serviceConfig, methodName);
             errorHandler.validatePropertyNotNull(serviceConfig, serviceConfigParameterName, serverName, methodName);
             errorHandler.validatePropertyNotNull(serviceConfig.getEngineServiceURLMarker(), serviceURLMarkerParameterName, serverName, methodName);
             errorHandler.validatePropertyNotNull(serviceConfig.getEngines(), engineNamesParameterName, serverName, methodName);
@@ -365,12 +479,18 @@ public class OMAGServerAdminForEngineServices
 
             errorHandler.validateEngineServiceIsRegistered(registration, serviceConfig.getEngineServiceURLMarker(), serverName, methodName);
 
-            List<EngineServiceConfig> engineServiceConfigList = serverConfig.getEngineServicesConfig();
+            List<EngineServiceConfig> existingEngineServices = null;
+            EngineHostServicesConfig  engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+            if (engineHostServicesConfig != null)
+            {
+                existingEngineServices = engineHostServicesConfig.getEngineServiceConfigs();
+            }
 
             response = this.storeEngineServicesConfig(userId,
                                                       serverName,
                                                       serviceConfig.getEngineServiceURLMarker(),
-                                                      updateEngineServiceConfig(serviceConfig, engineServiceConfigList),
+                                                      updateEngineServiceConfig(serviceConfig, existingEngineServices),
                                                       methodName);
         }
         catch (OMAGInvalidParameterException error)
@@ -395,14 +515,14 @@ public class OMAGServerAdminForEngineServices
     /**
      * Add/update the configuration for a single service in the configuration.
      *
-     * @param engineServiceConfig configuration to add/change
+     * @param newEngineServiceConfig configuration to add/change
      * @param currentList current config (may be null)
      * @return updated list
      */
-    private List<EngineServiceConfig>  updateEngineServiceConfig(EngineServiceConfig         engineServiceConfig,
+    private List<EngineServiceConfig>  updateEngineServiceConfig(EngineServiceConfig         newEngineServiceConfig,
                                                                  List<EngineServiceConfig>   currentList)
     {
-        if (engineServiceConfig == null)
+        if (newEngineServiceConfig == null)
         {
             return currentList;
         }
@@ -416,7 +536,7 @@ public class OMAGServerAdminForEngineServices
                 {
                     if (existingConfig != null)
                     {
-                        if (engineServiceConfig.getEngineServiceId() != existingConfig.getEngineServiceId())
+                        if (newEngineServiceConfig.getEngineServiceId() != existingConfig.getEngineServiceId())
                         {
                             newList.add(existingConfig);
                         }
@@ -424,7 +544,7 @@ public class OMAGServerAdminForEngineServices
                 }
             }
 
-            newList.add(engineServiceConfig);
+            newList.add(newEngineServiceConfig);
 
             if (newList.isEmpty())
             {
@@ -451,11 +571,189 @@ public class OMAGServerAdminForEngineServices
                                                 String                    serverName,
                                                 List<EngineServiceConfig> engineServicesConfig)
     {
-        final String methodName = "setEngineServicesConfig";
+        final String methodName = "setEngineHostServicesConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = storeEngineServicesConfig(userId, serverName, null, engineServicesConfig, methodName);
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Set up the configuration for an Engine Host OMAG Server in a single call.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param servicesConfig full configuration for the engine host server.
+     * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse setEngineHostServicesConfig(String userId, String serverName, EngineHostServicesConfig servicesConfig)
+    {
+        final String methodName                     = "setEngineHostServicesConfig";
+        final String serviceConfigParameterName     = "servicesConfig";
+        final String engineServicesParameterName    = "servicesConfig.engineServices";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(servicesConfig, serviceConfigParameterName, serverName, methodName);
+            errorHandler.validateOMAGServerClientConfig(serverName, servicesConfig, methodName);
+            errorHandler.validatePropertyNotNull(servicesConfig.getEngineServiceConfigs(), engineServicesParameterName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                serverConfig.setEngineHostServicesConfig(servicesConfig);
+
+                this.configStore.saveServerConfig(serverName, methodName, serverConfig);
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Remove the configuration for an Engine Host OMAG Server in a single call.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse clearEngineHostServicesConfig(String userId, String serverName)
+    {
+        final String methodName = "clearEngineHostServicesConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                serverConfig.setEngineHostServicesConfig(null);
+
+                this.configStore.saveServerConfig(serverName, methodName, serverConfig);
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the configuration for the Governance Engine OMAS Engine client configuration in a single call.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse clearEngineDefinitionsClientConfig(String userId, String serverName)
+    {
+        final String methodName = "clearEngineDefinitionsClientConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+                if (engineHostServicesConfig != null)
+                {
+                    engineHostServicesConfig.setOMAGServerPlatformRootURL(null);
+                    engineHostServicesConfig.setOMAGServerName(null);
+                }
+
+                serverConfig.setEngineHostServicesConfig(engineHostServicesConfig);
+
+                this.configStore.saveServerConfig(serverName, methodName, serverConfig);
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
@@ -518,7 +816,14 @@ public class OMAGServerAdminForEngineServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<EngineServiceConfig> currentList = serverConfig.getEngineServicesConfig();
+            List<EngineServiceConfig> currentList = null;
+            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+            if (engineHostServicesConfig != null)
+            {
+                currentList = engineHostServicesConfig.getEngineServiceConfigs();
+            }
+
             List<EngineServiceConfig> newList     = new ArrayList<>();
 
             if (currentList != null)
@@ -590,7 +895,7 @@ public class OMAGServerAdminForEngineServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (engineServicesConfig == null)
+            if ((engineServicesConfig == null) || (engineServicesConfig.isEmpty()))
             {
                 configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for engine services.");
             }
@@ -606,7 +911,33 @@ public class OMAGServerAdminForEngineServices
 
             serverConfig.setAuditTrail(configAuditTrail);
 
-            serverConfig.setEngineServicesConfig(engineServicesConfig);
+            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+            if ((engineServicesConfig == null) || (engineServicesConfig.isEmpty()))
+            {
+                if (engineHostServicesConfig != null)
+                {
+                    if ((engineHostServicesConfig.getOMAGServerPlatformRootURL() == null) && (engineHostServicesConfig.getOMAGServerName() == null))
+                    {
+                        serverConfig.setEngineHostServicesConfig(null);
+                    }
+                    else
+                    {
+                        engineHostServicesConfig.setEngineServiceConfigs(null);
+                        serverConfig.setEngineHostServicesConfig(engineHostServicesConfig);
+                    }
+                }
+            }
+            else /* services to save */
+            {
+                if (engineHostServicesConfig == null)
+                {
+                    engineHostServicesConfig = new EngineHostServicesConfig();
+                }
+
+                engineHostServicesConfig.setEngineServiceConfigs(engineServicesConfig);
+                serverConfig.setEngineHostServicesConfig(engineHostServicesConfig);
+            }
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }

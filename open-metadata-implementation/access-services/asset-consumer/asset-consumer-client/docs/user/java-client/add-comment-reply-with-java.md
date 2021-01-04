@@ -8,7 +8,7 @@
      * Adds a comment to another comment.
      *
      * @param userId        userId of user making request.
-     * @param assetGUID    unique identifier for the asset at the head of this comment chain.
+     * @param requestType    unique identifier for the asset at the head of this comment chain.
      * @param commentGUID   unique identifier for an existing comment.  Used to add a reply to a comment.
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
@@ -21,7 +21,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     String addCommentReply(String      userId,
-                           String      assetGUID,
+                           String      requestType,
                            String      commentGUID,
                            CommentType commentType,
                            String      commentText,

@@ -27,6 +27,7 @@ public class ConsoleAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBas
      * @return unique identifier assigned to the log record
      * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
      */
+    @Override
     public String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException
     {
         final String   methodName = "storeLogRecord";

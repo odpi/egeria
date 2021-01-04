@@ -1,10 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Remediation Engine
+# Open Remediation Service
 
 Monitors for RemediationRequest instances and runs the requested remediation service.
 Examples of remediation services are duplicate linking and consolidating.
+
+
+
+----
+* Return the [Governance Action Framework Overview](..)
 
 
 ----

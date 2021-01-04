@@ -60,10 +60,12 @@ public class IntegrationDaemonOperationalServices
      *
      * @param configuration config properties
      * @param auditLog destination for audit log messages.
+     *
+     * @return activated services list
      * @throws OMAGConfigurationErrorException error in configuration preventing startup
      */
-    public void initialize(List<IntegrationServiceConfig> configuration,
-                           AuditLog                       auditLog) throws OMAGConfigurationErrorException
+    public List<String> initialize(List<IntegrationServiceConfig> configuration,
+                                   AuditLog                       auditLog) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
         final String             methodName = "initialize";
@@ -94,6 +96,7 @@ public class IntegrationDaemonOperationalServices
              * Initialize each of the integration services and accumulate the integration connector handlers for the
              * integration daemon handler.
              */
+            List<String>                           activatedServicesList = new ArrayList<>();
             List<IntegrationConnectorHandler>      daemonConnectorHandlers = new ArrayList<>();
             Map<String, IntegrationServiceHandler> integrationServiceHandlerMap = new HashMap<>();
 
@@ -138,6 +141,7 @@ public class IntegrationDaemonOperationalServices
                     }
 
                     integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
+                    activatedServicesList.add(integrationServiceConfig.getIntegrationServiceFullName());
                 }
             }
 
@@ -147,6 +151,9 @@ public class IntegrationDaemonOperationalServices
             IntegrationDaemonThread integrationDaemonThread = new IntegrationDaemonThread(localServerName,
                                                                                           daemonConnectorHandlers,
                                                                                           auditLog);
+
+            integrationDaemonThread.start();
+
             /*
              * Create the integration daemon instance.
              */
@@ -158,8 +165,13 @@ public class IntegrationDaemonOperationalServices
                                                                       integrationDaemonThread,
                                                                       integrationServiceHandlerMap);
 
+
+
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
+            activatedServicesList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
+
+            return activatedServicesList;
         }
         catch (InvalidParameterException error)
         {

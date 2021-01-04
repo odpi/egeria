@@ -12,9 +12,16 @@ The open metadata archive for these types is built by the `OpenMetadataTypesArch
 It uses the Open Metadata Repository Services (OMRS) archive building
 classes `OMRSArchiveBuilder` and `OMRSArchiveHelper` found in the `repository-services-archive-utilities` module.
 
-The types for each release are managed in separate classes.
+The types for each release are managed in separate classes. For example:
  * `OpenMetadataTypesArchive` - new candidate types for current release 
- * `OpenMetadataTypesArchive1_3` - approved types added for 1.3 release
+ * `OpenMetadataTypesArchive2_5` - approved types added for [2.5 release](../../../release-notes/release-notes-2-5.md)
+ * `OpenMetadataTypesArchive2_4` - approved types added for [2.4 release](../../../release-notes/release-notes-2-4.md)
+ * `OpenMetadataTypesArchive2_0` - approved types added for [2.0 release](../../../release-notes/release-notes-2-0.md)
+ * `OpenMetadataTypesArchive1_7` - approved types added for [1.7 release](../../../release-notes/release-notes-1-7.md)
+ * `OpenMetadataTypesArchive1_6` - approved types added for [1.6 release](../../../release-notes/release-notes-1-6.md)
+ * `OpenMetadataTypesArchive1_5` - approved types added for [1.5 release](../../../release-notes/release-notes-1-5.md)
+ * `OpenMetadataTypesArchive1_4` - approved types added for [1.4 release](../../../release-notes/release-notes-1-4.md)
+ * `OpenMetadataTypesArchive1_3` - approved types added for [1.3 release](../../../release-notes/release-notes-1-3.md)
  * `OpenMetadataTypesArchive1_2` - approved types added for releases before 1.3
  
 The approved types can only be changed through official patches.
@@ -43,7 +50,7 @@ archive that your new archive depends on ...
 This approach is used in the `design-model-archives` that create archives with glossary and model content
 that follow the open metadata types.
 
-You can create an archive file containing the open metadata types by running the `OpenMetadataTypesArachiveWriter`.
+You can create a JSON formatted archive file containing the open metadata types by running the `OpenMetadataTypesArachiveWriter`.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -306,6 +306,13 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from RetrieveByName)");
             }
 
+            databaseList = client.getDatabasesByName(userId, databaseName, 1, maxPageSize);
+
+            if (databaseList != null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no Database for RetrieveByName)");
+            }
+
             return databaseGUID;
         }
         catch (FVTUnexpectedCondition testCaseError)

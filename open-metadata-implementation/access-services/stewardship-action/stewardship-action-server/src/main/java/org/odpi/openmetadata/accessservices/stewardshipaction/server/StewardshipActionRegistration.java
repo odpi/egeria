@@ -25,7 +25,7 @@ public class StewardshipActionRegistration
         AccessServiceDescription myDescription = AccessServiceDescription.STEWARDSHIP_ACTION_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 ServiceOperationalStatus.DISABLED,
                                                                                  StewardshipActionAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

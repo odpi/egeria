@@ -8,18 +8,17 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.securityofficer.server.admin.services.SecurityOfficerService;
+import org.odpi.openmetadata.accessservices.securityofficer.server.services.SecurityOfficerRESTService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/security-officer/users/{userId}")
 
-@Tag(name="Security Officer OMAS", description="The Security Officer OMAS provides APIs and events for tools and applications that are defining the data protection requirements and implementations for a governance program." +
-        "\n", externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"))
+@Tag(name="Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.", externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"))
 
 public class SecurityOfficerOMASResource {
 
-    private SecurityOfficerService service = new SecurityOfficerService();
+    private SecurityOfficerRESTService service = new SecurityOfficerRESTService();
 
     /**
      * Returns the security tag for the given schema element

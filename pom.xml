@@ -900,6 +900,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-lineage-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-lineage-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1404,7 +1411,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-connectors</artifactId>
+                <artifactId>discovery-engine-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1523,6 +1530,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-engine-topic-connectors</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>governance-engine-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1620,6 +1634,40 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-registration</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
@@ -2043,14 +2091,14 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-officer-server</artifactId>
+                <artifactId>security-officer-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-officer-services-server</artifactId>
+                <artifactId>security-officer-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2065,13 +2113,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>security-officer-tag-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-sync-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2293,25 +2334,9 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-
-
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>view-generator-connectors</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>virtualization-services-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>virtualization-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2346,13 +2371,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-services-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>server-author-view-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2379,6 +2397,12 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>virtualization-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
@@ -2386,21 +2410,25 @@
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-lineage-janus-connector</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-connector-archives</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-create-avro-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-create-csv-sample</artifactId>

@@ -8,7 +8,8 @@ import java.util.Map;
 
 
 /**
- * The Data platform config class provides the configuration properties for the data-platform-services.
+ * The Data platform config class provides the configuration properties for the deprecated data-platform-services.  This function
+ * is replaced by the new Data Integrator OMIS running in the Integration Daemon OMAG Server.
  */
 public class DataPlatformServicesConfig extends AdminServicesConfigHeader
 {

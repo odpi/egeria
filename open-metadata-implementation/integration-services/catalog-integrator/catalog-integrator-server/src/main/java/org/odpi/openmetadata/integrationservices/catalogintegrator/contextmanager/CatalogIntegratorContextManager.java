@@ -63,6 +63,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
+    @Override
     public void initializeContextManager(String   partnerOMASServerName,
                                          String   partnerOMASPlatformRootURL,
                                          String   userId,
@@ -84,6 +85,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
      *
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
+    @Override
     public void createClients() throws InvalidParameterException
     {
         AssetManagerRESTClient restClient;
@@ -214,6 +216,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
+    @Override
     public void setContext(String                   connectorId,
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
@@ -223,8 +226,30 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        final String  methodName = "setContext";
+
+        String permittedSynchronizationName = PermittedSynchronization.BOTH_DIRECTIONS.getName();
+        String serviceOptionsString = "null";
+
+        if (permittedSynchronization != null)
+        {
+            permittedSynchronizationName = permittedSynchronization.getName();
+        }
+
+        if (serviceOptions != null)
+        {
+            serviceOptionsString = serviceOptions.toString();
+        }
+
         if (integrationConnector instanceof CatalogIntegratorConnector)
         {
+            auditLog.logMessage(methodName,
+                                CatalogIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
+                                                                                                               connectorId,
+                                                                                                               metadataSourceQualifiedName,
+                                                                                                               permittedSynchronizationName,
+                                                                                                               serviceOptionsString));
+
             AssetManagerEventClient eventClient = new AssetManagerEventClient(partnerOMASServerName,
                                                                               partnerOMASPlatformRootURL,
                                                                               localServerUserId,
@@ -259,7 +284,6 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
         else
         {
             final String  parameterName = "integrationConnector";
-            final String  methodName = "setContext";
 
             throw new InvalidParameterException(
                     CatalogIntegratorErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorName,

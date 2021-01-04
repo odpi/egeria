@@ -9,16 +9,13 @@ import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryReques
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.engineservices.assetanalysis.rest.DiscoveryEngineStatusResponse;
 import org.slf4j.LoggerFactory;
 
 
@@ -36,116 +33,6 @@ public class AssetAnalysisRESTServices
                                                                       instanceHandler.getServiceName());
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
-
-    /**
-     * Request that the discovery engine refresh its configuration by calling the metadata server.
-     * This request is useful if the metadata server has an outage, particularly while the
-     * discovery server is initializing.  This request just ensures that the latest configuration
-     * is in use.
-     *
-     * @param serverName name of the discovery server.
-     * @param discoveryEngineName unique name of the discovery engine.
-     * @param userId identifier of calling user
-     *
-     * @return void or
-     *
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     *  DiscoveryEngineException there was a problem detected by the discovery engine.
-     */
-    public  VoidResponse refreshConfig(String                       serverName,
-                                       String                       discoveryEngineName,
-                                       String                       userId)
-    {
-        final String        methodName = "refreshConfig";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
-                                                                                       serverName,
-                                                                                       discoveryEngineName,
-                                                                                       methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.refreshConfig();
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Return a summary of each of the discovery engines' status.
-     *
-     * @param serverName discovery server name
-     * @param userId calling user
-     * @return list of statuses - on for each assigned discovery engines or
-     *
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     */
-    public DiscoveryEngineStatusResponse getDiscoveryEngineStatuses(String   serverName,
-                                                                    String   userId)
-    {
-        final String methodName = "getDiscoveryEngineStatuses";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        DiscoveryEngineStatusResponse response = new DiscoveryEngineStatusResponse();
-        AuditLog                      auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            response.setDiscoveryEngineSummaries(instanceHandler.getDiscoveryEngineStatuses(userId,
-                                                                                       serverName,
-                                                                                       methodName));
-        }
-        catch (InvalidParameterException error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
 
     /**
      * Request the execution of a discovery service to explore a specific asset.
@@ -204,10 +91,6 @@ public class AssetAnalysisRESTServices
         catch (PropertyServerException error)
         {
             restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (DiscoveryEngineException error)
-        {
-            this.captureDiscoveryEngineException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -278,10 +161,6 @@ public class AssetAnalysisRESTServices
         catch (PropertyServerException error)
         {
             restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (DiscoveryEngineException error)
-        {
-            this.captureDiscoveryEngineException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -536,22 +415,5 @@ public class AssetAnalysisRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureDiscoveryEngineException(FFDCResponseBase         response,
-                                                 DiscoveryEngineException error)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(PropertyServerException.class.getName());
-        response.setExceptionErrorMessage(error.getReportedErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
     }
 }

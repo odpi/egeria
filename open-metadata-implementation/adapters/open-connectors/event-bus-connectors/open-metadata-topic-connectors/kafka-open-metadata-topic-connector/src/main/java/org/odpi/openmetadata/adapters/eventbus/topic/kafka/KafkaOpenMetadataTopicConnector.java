@@ -52,7 +52,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     Thread                         producerThread;
 
 
-    /* mock up a a SingleThreadProducer with an overided afterExecute */
+    /* mock up a a SingleThreadProducer with an override for afterExecute */
     private class KafkaProducerExecutor extends ThreadPoolExecutor {
         KafkaProducerExecutor() {
             super(1, 1, Long.MAX_VALUE, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(1));
@@ -69,6 +69,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             executor.execute(producerThread);
         }
     }
+
+
     /**
      * Constructor sets up the default properties for the producer and consumer.  Any properties passed through
      * the connection's additional properties will override these values.  For most environments,
@@ -219,6 +221,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
 
@@ -227,7 +230,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         KafkaStatusChecker kafkaStatus = new KafkaStatusChecker();
 
         /*
-        *  compare the two lists of bootstrap server to ceck we only want one cluster's status checked
+        *  compare the two lists of bootstrap server to check we only want one cluster's status checked
         *  reliant on list being specified in the same order
          * This will need changing for single direction connector
          */
@@ -242,7 +245,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         if (!up) {
             final String actionDescription = "waitForThisBroker";
-            auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
+            if (auditLog != null)
+            {
+                auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
+            }
             throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_ATTEMPTING_KAFKA_INITIALIZATION.getMessageDefinition(kafkaStatus.getLastException().getClass().getName(),
                     topicName,
                     kafkaStatus.getLastException().getMessage()),
@@ -271,6 +277,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * @param event object containing the event properties.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
+    @Override
     public void sendEvent(String event) throws ConnectorCheckedException
     {
         if (producer != null)
@@ -322,6 +329,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         final String           actionDescription = "disconnect";

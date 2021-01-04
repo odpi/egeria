@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
@@ -13,7 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;

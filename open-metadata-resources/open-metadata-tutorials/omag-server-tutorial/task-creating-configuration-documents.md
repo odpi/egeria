@@ -734,7 +734,7 @@ which results in the final configuration (this is request **10.** in Postman).
             {
                 "class": "AccessServiceConfig",
                 "accessServiceId": 1008,
-                "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineAdmin",
+                "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.governanceengine.admin.GovernanceEngineAdmin",
                 "accessServiceName": "Governance Engine",
                 "accessServiceDescription": "Set up an operational governance engine",
                 "accessServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/",

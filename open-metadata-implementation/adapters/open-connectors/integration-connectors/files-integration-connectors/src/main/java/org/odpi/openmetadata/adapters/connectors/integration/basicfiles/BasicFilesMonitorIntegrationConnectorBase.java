@@ -80,6 +80,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -387,6 +388,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      *
      * @throws ConnectorCheckedException something failed in the super class
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         final String methodName = "disconnect";
