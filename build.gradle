@@ -161,7 +161,7 @@ allprojects {
             implementation("org.springframework.data:spring-data-jpa:2.4.1")
             implementation("org.springframework.security:spring-security-config:5.4.1")
             implementation("org.springframework.security:spring-security-core:5.4.1")
-            implementation("org.springframework.security:spring-security-ldap:5.4.1")
+            implementation("org.springframework.security:spring-security-ldap:5.4.2")
             implementation("org.springframework.security:spring-security-web:5.4.1")
             implementation("org.springframework:spring-aop:5.3.1")
             implementation("org.springframework:spring-beans:5.3.1")
