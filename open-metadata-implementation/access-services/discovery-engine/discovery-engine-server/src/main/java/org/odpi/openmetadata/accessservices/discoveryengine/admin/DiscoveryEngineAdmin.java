@@ -51,6 +51,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
      * @param serverUserName  user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
+    @Override
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
@@ -166,6 +167,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";
