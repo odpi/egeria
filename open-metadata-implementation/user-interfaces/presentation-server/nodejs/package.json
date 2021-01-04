@@ -46,7 +46,7 @@
     "sass": "^1.27.0",
     "sass-loader": "^8.0.2",
     "use-debounce": "^5.0.1",
-    "whatwg-fetch": "^3.2.0"
+    "whatwg-fetch": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
