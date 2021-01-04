@@ -180,7 +180,7 @@
         <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
         <spring.version>5.3.1</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
-        <spring-data.version>2.4.1</spring-data.version>
+        <spring-data.version>2.4.2</spring-data.version>
         <springdoc.version>1.4.6</springdoc.version>
         <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <servo-core.version>0.13.0</servo-core.version>
