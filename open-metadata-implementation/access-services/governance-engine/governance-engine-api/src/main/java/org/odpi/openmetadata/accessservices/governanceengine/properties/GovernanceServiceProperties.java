@@ -81,30 +81,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the fully qualified name.
-     *
-     * @param qualifiedName String name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
-    }
-
-
-    /**
-     * Returns the stored qualified name property for the metadata entity.
-     * If no qualified name is available then the empty string is returned.
-     *
-     * @return qualifiedName
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-
-    /**
      * Returns the stored display name property for the asset.
      * If no display name is available then null is returned.
      *
@@ -301,38 +277,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     public void setOtherOriginValues(Map<String, String> otherOriginValues)
     {
         this.otherOriginValues = otherOriginValues;
-    }
-
-    /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
     }
 
 

@@ -48,6 +48,7 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
+    @Override
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);

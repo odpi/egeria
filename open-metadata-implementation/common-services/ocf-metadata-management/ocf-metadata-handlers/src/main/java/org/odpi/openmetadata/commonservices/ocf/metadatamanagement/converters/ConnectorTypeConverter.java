@@ -42,6 +42,7 @@ public class ConnectorTypeConverter extends ReferenceableConverter
      *
      * @return output bean
      */
+    @Override
     public ConnectorType getBean()
     {
         final String  methodName = "getBean";

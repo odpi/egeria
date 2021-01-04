@@ -138,9 +138,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      *
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param matchProperties Optional list of relationship property conditions to match.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
+     * @param searchProperties Optional list of relationship property conditions to match.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
@@ -153,48 +151,25 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                                            SearchProperties matchProperties,
-                                                                                            Date             asOfTime,
-                                                                                            String           sequencingProperty,
-                                                                                            SequencingOrder  sequencingOrder,
-                                                                                            int              startFrom,
-                                                                                            int              pageSize) throws InvalidParameterException,
-                                                                                                                              UserNotAuthorizedException,
-                                                                                                                              PropertyServerException;
-
-
-
+    public  abstract List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                                           SearchProperties searchProperties,
+                                                                                           String           sequencingProperty,
+                                                                                           SequencingOrder  sequencingOrder,
+                                                                                           int              startFrom,
+                                                                                           int              pageSize) throws InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             PropertyServerException;
 
     /**
      * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
-     * This metadata element will be given an initial status of ACTIVE which is sufficient for most types of elements.
-     *
-     * @param metadataElementTypeName type name of the new metadata element
-     * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
-     *                     connection etc)
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException the type name, status or one of the properties is invalid
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    public abstract String createMetadataElementInStore(String            metadataElementTypeName,
-                                                        ElementProperties properties,
-                                                        String            templateGUID) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException;
-
-
-    /**
-     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
-     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
      *
      * @param metadataElementTypeName type name of the new metadata element
      * @param initialStatus initial status of the metadata element
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
      *                     connection etc)
@@ -207,6 +182,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      */
     public abstract String createMetadataElementInStore(String            metadataElementTypeName,
                                                         ElementStatus     initialStatus,
+                                                        Date              effectiveFrom,
+                                                        Date              effectiveTo,
                                                         ElementProperties properties,
                                                         String            templateGUID) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
@@ -236,19 +213,24 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
 
     /**
      * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
+     * assigned when it was created.  The effectivity dates control the visibility of the element
+     * through specific APIs.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param newElementStatus new status value
+     * @param newElementStatus new status value - or null to leave as is
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public abstract void updateMetadataElementStatusInStore(String        metadataElementGUID,
-                                                            ElementStatus newElementStatus) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException;
+                                                            ElementStatus newElementStatus,
+                                                            Date          effectiveFrom,
+                                                            Date          effectiveTo) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 
 
     /**
@@ -271,6 +253,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName name of the classification to add (if the classification is already present then use reclassify)
+     * @param effectiveFrom the date when this classification is active - null for active now
+     * @param effectiveTo the date when this classification becomes inactive - null for active until deleted
      * @param properties properties to store in the new classification.  These must conform to the valid properties associated with the
      *                   classification name
      *
@@ -281,6 +265,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      */
     public abstract void classifyMetadataElementInStore(String            metadataElementGUID,
                                                         String            classificationName,
+                                                        Date              effectiveFrom,
+                                                        Date              effectiveTo,
                                                         ElementProperties properties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException;
@@ -307,6 +293,26 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException;
 
+    /**
+     * Update the effectivity dates of a specific classification attached to a metadata element.
+     * The effectivity dates control the visibility of the classification through specific APIs.
+     *
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param classificationName unique name of the classification to update
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     *
+     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public abstract void updateClassificationStatusInStore(String metadataElementGUID,
+                                                           String classificationName,
+                                                           Date   effectiveFrom,
+                                                           Date   effectiveTo) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
+
 
     /**
      * Remove the named classification from a specific metadata element.
@@ -332,6 +338,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties the properties of the relationship
      *
      * @return unique identifier of the new relationship
@@ -344,6 +352,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
     public abstract String createRelatedElementsInStore(String            relationshipTypeName,
                                                         String            metadataElement1GUID,
                                                         String            metadataElement2GUID,
+                                                        Date              effectiveFrom,
+                                                        Date              effectiveTo,
                                                         ElementProperties properties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException;
@@ -368,6 +378,24 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException;
 
+
+    /**
+     * Update the effectivity dates of a specific relationship between metadata elements.
+     * The effectivity dates control the visibility of the classification through specific APIs.
+     *
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     *
+     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public abstract void updateRelatedElementsStatusInStore(String relationshipGUID,
+                                                            Date   effectiveFrom,
+                                                            Date   effectiveTo) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 
     /**
      * Delete a relationship between two metadata elements.
