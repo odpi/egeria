@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# 0238 Reports
+# 0239 Reports
 
-![UML](0238-Reports.png#pagewidth)
+![UML](0239-Reports.png#pagewidth)
 
 Return to [Area 2](Area-2-models.md).
 
