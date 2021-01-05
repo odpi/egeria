@@ -145,8 +145,8 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                       OMRSAuditLogRecordSeverity.STARTUP,
                       "The {0} engine service is disabled and will not be started",
                       "Although the engine service is not started, the initialization of the server continues.",
-                      "Engine services are typically disabled because the code is either incomplete or not working." +
-                              "It is necessary to connect with hte Egeria community to find out when the service will be enabled."),
+                      "Engine services are typically disabled because the code is either incomplete or not working. " +
+                              "It is necessary to connect with the Egeria community to find out when the service will be enabled."),
 
     SERVER_SHUTTING_DOWN("ENGINE-HOST-SERVICES-0017",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
@@ -331,6 +331,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -343,6 +344,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);

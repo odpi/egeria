@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
@@ -183,12 +184,12 @@ public class TriageGovernanceContext extends GovernanceContext
         properties = propertyHelper.addIntProperty(properties, priorityPropertyName, priority);
         properties = propertyHelper.addEnumProperty(properties, statusPropertyName, openEnumPropertyValue);
 
-        String todoGUID = openMetadataStore.createMetadataElementInStore(todoTypeName, properties, null);
+        String todoGUID = openMetadataStore.createMetadataElementInStore(todoTypeName, ElementStatus.ACTIVE, null, null, properties, null);
 
         /*
          * Link the "to do" and the person role
          */
-        openMetadataStore.createRelatedElementsInStore(actionAsignmentTypeName, personRoleGUID, todoGUID, null);
+        openMetadataStore.createRelatedElementsInStore(actionAsignmentTypeName, personRoleGUID, todoGUID, null, null, null);
 
         return todoGUID;
     }

@@ -78,7 +78,7 @@ public enum GAFErrorCode
     UNEXPECTED_EXCEPTION(500, "GAF-GOVERNANCE-SERVICE-500-001",
                          "Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.  The error message was {4}",
                          "The governance action service failed during its operation.",
-                         "This may be a configuration or a code error.  Look for other error messages and review the code of the governance action service." +
+                         "This may be a configuration or a code error.  Look for other error messages and review the code of the governance action service. " +
                                  "Once the cause is resolved, retry the governance request."),
 
 

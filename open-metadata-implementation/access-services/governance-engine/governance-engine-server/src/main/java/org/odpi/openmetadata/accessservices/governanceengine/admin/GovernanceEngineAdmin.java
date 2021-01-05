@@ -40,6 +40,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
      *                                             
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
+    @Override
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
@@ -155,6 +156,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";

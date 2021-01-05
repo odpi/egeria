@@ -214,6 +214,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @return serverName name of the server for this instance
      * @throws NewInstanceException a problem occurred during initialization
      */
+    @Override
     public String getServerName() throws NewInstanceException
     {
         final String methodName = "getServerName";

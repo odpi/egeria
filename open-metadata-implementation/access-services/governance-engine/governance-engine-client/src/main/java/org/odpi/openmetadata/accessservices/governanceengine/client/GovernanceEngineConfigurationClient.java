@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * GovernanceEngineConfigurationClient supports the configuration of governance engine and governance services.
+ */
 public class GovernanceEngineConfigurationClient
 {
     private String                     serverName;               /* Initialized in constructor */
