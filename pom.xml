@@ -165,7 +165,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.1</junit.version>
         <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
-        <mockito.version>3.6.28</mockito.version>
+        <mockito.version>3.7.0</mockito.version>
         <testng.version>7.3.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -244,8 +244,8 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.14.0</maven-pmd.version>
-        <owasp.version>6.0.3</owasp.version>
-        <spotbugs-maven.version>4.1.4</spotbugs-maven.version>
+        <owasp.version>6.0.4</owasp.version>
+        <spotbugs-maven.version>4.2.0</spotbugs-maven.version>
         <maven-download.version>1.6.0</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
