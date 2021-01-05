@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -96,9 +97,9 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     NULL_REPOSITORY_CONFIG(400, "OMAG-ADMIN-400-010",
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
-            "The system is unable to initialize the local server instance because all servers need at least and audit log which is supported by the" +
-                                   " repository services.",
-            "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server" +
+            "The system is unable to initialize the local server instance because all servers need at least and audit log which is supported by the " +
+                                   "repository services.",
+            "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server " +
                                    "is to be a cohort member, then there are choices to also configure the local repository, enterprise repository " +
                                    "services and the cohort services."),
 
@@ -213,8 +214,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "If the view service should be initialized then set up the appropriate view service admin class name and restart the View Server."),
 
     BAD_VIEW_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-030",
-            "The View server {0} has been passed an invalid admin services class name {1} for view service {2}",
-            "The system is unable to initialize this view service since it can nto find the view's admin class.",
+            "The View Server {0} has been passed an invalid admin services class name {1} for view service {2}",
+            "The system is unable to initialize this view service since it can not find the view's admin class.",
             "If the view service should be initialized then ensure that the view service's admin class is specified correctly and available on " +
                                          "the class path.  Then restart the View Server."),
 
@@ -255,7 +256,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                         "If you are not sure, issue the call to list the registered view services and verify the " +
                                         "values you are using.  If the name is right, but the view service should be registered," +
                                         "then the developer of the view service needs to add this registration to the code of the view " +
-                                        "service. An view service is registered in the " +
+                                        "service. A view service is registered in the " +
                                         "OMAG Server Platform by adding a description of the view service to the " +
                                         "view service registration. Once the view service being " +
                                         "requested is registered, retry the configuration request."),
@@ -279,10 +280,10 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                       " can operate correctly."),
 
     NULL_OMAG_SERVER_NAME(400, "OMAG-ADMIN-400-040",
-                          "The {0} service of server {1} has been configured with a null name for the remote server",
-                          "The system is unable to accept a null value for this property in the configuration document because the server would not" +
+                            "The {0} service of server {1} has been configured with a null name for the remote server",
+                            "The system is unable to accept a null value for this property in the configuration document because the server would not" +
                                   " be able to operate properly.",
-                          "The OMAG Server name is supplied by the caller to the OMAG server. This remote server name needs to be corrected before " +
+                            "The OMAG Server name is supplied by the caller to the OMAG server. This remote server name needs to be corrected before " +
                                   "the server can operate correctly."),
 
     BAD_CONNECTION(400, "OMAG-ADMIN-400-041",
@@ -298,6 +299,99 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                           "The {0} Open Metadata View Service (OMVS) has been passed an invalid configuration of {1} in the {2} property.",
                           "The view service has not been passed valid configuration.",
                           "Check whether the view service expects SolutionViewServiceConfiguration or IntegrationViewServiceConfiguration, correct the configuration and restart the server."),
+
+    RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED(400, "OMAG-ADMIN-400-043",
+                        "A retrieve all configurations has been attempted, but operation is not supported by the configuration store connector.",
+                        "The retrieve all server configurations operation is rejected.",
+                        "Check whether OMAG Server configuration connector supports retrieve all configurations."),
+
+    UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE(400, "OMAG-ADMIN-400-044",
+                                         "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred.",
+                                         "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
+                                         "Check that the OMAG Server configuration connector has been specified correctly."),
+
+    NULL_SERVICE_URL_MARKER(400, "OMAG-ADMIN-400-045",
+                            "The {0} service of server {1} has been configured with a null service URL marker",
+                            "The system is unable to accept a null value for this property because the admin services " +
+                                    "is not able determine which service to configure.",
+                            "The service URL marker is passed as a parameter of the request.  The valid URL markers can be " +
+                                    "retrieved by the platform services getRegisteredServices call.  Once you have the correct " +
+                                    "value for your service, ensure it is passed on the configuration request."),
+
+    ENGINE_SERVICE_NOT_RECOGNIZED(400, "OMAG-ADMIN-400-046",
+                                "Unable to configure server {0} since engine service {1} is not registered in this OMAG Server Platform",
+                                "The system is unable to add this engine service to the server's configuration document.",
+                                "Check that the name of the engine service is correctly specified in the configuration request.  " +
+                                        "If you are not sure, issue the call to list the registered engine services and verify the " +
+                                        "values you are using.  If the name is right, but the engine service should be registered," +
+                                        "then the developer of the engine service needs to add this registration to the code of the engine " +
+                                        "service. An engine service is registered in the " +
+                                        "OMAG Server Platform by adding a description of the engine service to the " +
+                                        "engine service registration. Once the engine service being " +
+                                        "requested is registered, retry the configuration request."),
+
+    ENGINE_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-047",
+                             "Unable to configure server {0} since engine service {1} is not enabled in this OMAG Server Platform",
+                             "The system is unable to configure the local server with this engine service.",
+                             "Validate and correct the name of the engine service URL marker or enable the engine service in this platform."),
+
+    BAD_ENGINE_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-048",
+                                 "The Engine Host Server {0} has been passed an invalid admin services class name {1} for engine service {2}",
+                                 "The system is unable to initialize this engine service since it can not find the engine's admin class.",
+                                 "If the engine service should be initialized then ensure that the engine service's admin class is specified correctly and available on " +
+                                         "the class path.  Then restart the Engine Host Server."),
+
+    NULL_ENGINE_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-049",
+                                  "The Engine Host Server {0} has been passed a null admin services class name for engine service {1}",
+                                  "The system is unable to initialize this engine service since it has no admin class to call.",
+                                  "If the engine service should be initialized then set up the appropriate engine service admin class name and restart the Engine Host Server."),
+
+    OLD_CONFIGURATION(400, "OMAG-ADMIN-400-050",
+                                    "The OMAG Server {0} has been passed configuration which contains the following obsolete section {1}",
+                                    "The system is unable to initialize this server since it no longer supports the requested subsystem.",
+                                    "Use information in the admin guide to update the configuration to request the replacement service " +
+                                            "and restart the server."),
+
+    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW(400, "OMAG-ADMIN-400-051",
+                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
+                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
+                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
+
+    NO_CONFIG_DOC(400,"OMAG-ADMIN-400-101",
+                  "An engine service for OMAG server {0} has been passed null configuration",
+                  "The engine service can not retrieve its configuration values.  " +
+                          "The Engine Host OMAG server fails to start.",
+                  "This is an internal logic error since the admin services should not have initialized this engine service " +
+                          "without this section of the configuration document filled in.  Raise an issue to get this fixed."),
+
+    NO_OMAS_SERVER_URL(400,"OMAG-ADMIN-400-102",
+                       "{0} in server {1} is not configured with the platform URL root for the {2}",
+                       "The engine service is not able to locate the metadata server to retrieve the configuration for " +
+                               "its governance engines.  The Engine Host server fails to start.",
+                       "To be successful the engine service needs both the platform URL root and the name of the metadata " +
+                               "server as well as the list of engines it is to host. Add the " +
+                               "configuration for the platform URL root to this server's configuration document and check that the " +
+                               "other required configuration properties are in place. Then restart this server."),
+
+    NO_OMAS_SERVER_NAME(400, "OMAG-ADMIN-400-103",
+                        "{0} in server {1} is not configured with the name for the server running the {2}",
+                        "The server is not able to retrieve its configuration from the metadata server.  It fails to start.",
+                        "Add the configuration for the metadata server name to this server's configuration document.  " +
+                                "Ensure that the platform URL root points to the platform where the metadata server is running and that" +
+                                "there is at least one engine listed.  Once the configuration document is set up correctly,  " +
+                                "restart this server."),
+
+    NO_ENGINES(400, "OMAG-ADMIN-400-104",
+               "{0} in server {1} is not configured with any engines",
+               "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
+                       "the server to fail too.",
+               "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
+                       "and then restart the server."),
+
+    NULL_PROPERTY_NAME(400, "OMAG-ADMIN-400-105",
+               "The {0} property in the configuration for server {1} is null",
+               "The server fails to start because this value is needed to operate successfully.",
+               "Add a value for this property to the configuration document and restart the server."),
 
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
@@ -361,6 +455,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -373,10 +468,25 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "OMAGAdminErrorCode{" +
+                       "messageDefinition=" + messageDefinition +
+                       '}';
     }
 }

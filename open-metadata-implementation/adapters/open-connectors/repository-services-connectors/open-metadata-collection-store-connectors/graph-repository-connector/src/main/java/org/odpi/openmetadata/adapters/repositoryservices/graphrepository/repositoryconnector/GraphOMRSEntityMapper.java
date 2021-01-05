@@ -333,17 +333,17 @@ public class GraphOMRSEntityMapper {
         }
 
         if (entity.getInstanceProvenanceType() != null) {
-            vertex.property(PROPERTY_KEY_ENTITY_PROVENANCE_TYPE, entity.getInstanceProvenanceType().getOrdinal());     // ** ordinal mapping
+            vertex.property(PROPERTY_KEY_ENTITY_INSTANCE_PROVENANCE_TYPE, entity.getInstanceProvenanceType().getOrdinal());     // ** ordinal mapping
         }
         else {
-            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_INSTANCE_PROVENANCE_TYPE);
         }
 
         if (entity.getStatus() != null) {
-            vertex.property(PROPERTY_KEY_ENTITY_STATUS, entity.getStatus().getOrdinal());                              // ** ordinal mapping
+            vertex.property(PROPERTY_KEY_ENTITY_CURRENT_STATUS, entity.getStatus().getOrdinal());                              // ** ordinal mapping
         }
         else {
-            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_STATUS);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_CURRENT_STATUS);
         }
 
         if (entity.getStatusOnDelete() != null) {
@@ -601,11 +601,11 @@ public class GraphOMRSEntityMapper {
 
         GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
 
-        Integer provenanceOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
+        Integer provenanceOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_INSTANCE_PROVENANCE_TYPE);
         InstanceProvenanceType instanceProvenanceType = mapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
         entity.setInstanceProvenanceType(instanceProvenanceType);
 
-        Integer statusOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_STATUS);
+        Integer statusOrdinal = (Integer) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_CURRENT_STATUS);
         InstanceStatus instanceStatus = mapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
         entity.setStatus(instanceStatus);
 

@@ -15,7 +15,7 @@ import java.util.Properties;
 public class KafkaOpenMetadataEventConsumerConfiguration
 {
 	private final Properties properties;
-	private       AuditLog   auditLog;
+	private final AuditLog   auditLog;
 
 	KafkaOpenMetadataEventConsumerConfiguration(Properties properties,
 												AuditLog   auditLog)

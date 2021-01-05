@@ -241,7 +241,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.publishAsset(userId, assetGUID);
+            dataAssetExchangeClient.publishAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
         }
         else
         {
@@ -277,7 +277,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.publishAsset(userId, assetGUID);
+            dataAssetExchangeClient.publishAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
         }
         else
         {
@@ -339,7 +339,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetGUID unique identifier of the metadata element to update
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -379,7 +379,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetGUID unique identifier of the metadata element to update
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid

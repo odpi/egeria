@@ -221,7 +221,7 @@ public class AssetRelatedAsset extends AssetReferenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetRelatedAsset))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -230,6 +230,21 @@ public class AssetRelatedAsset extends AssetReferenceable
             return false;
         }
         AssetRelatedAsset that = (AssetRelatedAsset) objectToCompare;
-        return Objects.equals(getAssetBean(), that.getAssetBean());
+        return Objects.equals(assetBean, that.assetBean) &&
+                       Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
+                       Objects.equals(relationshipAttributeName, that.relationshipAttributeName) &&
+                       Objects.equals(relatedAssetProperties, that.relatedAssetProperties);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), assetBean, relationshipTypeName, relationshipAttributeName, relatedAssetProperties);
     }
 }

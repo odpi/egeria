@@ -258,6 +258,33 @@ class AdminServicesRESTClient
         return restResult;
     }
 
+    /**
+     * Issue a GET REST call that returns a OMAGServerConfigsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return OMAGServerConfigResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    OMAGServerConfigsResponse callGetAllServerConfigurationsRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object... params) throws OMAGInvalidParameterException,
+                                                                                      OMAGNotAuthorizedException,
+                                                                                      OMAGConfigurationErrorException
+    {
+        OMAGServerConfigsResponse restResult = this.callGetRESTCall(methodName, OMAGServerConfigsResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
+
+
+
 
     /**
      * Issue a GET REST call that returns a ConnectionResponse object.
@@ -408,6 +435,58 @@ class AdminServicesRESTClient
                                                                                   OMAGConfigurationErrorException
     {
         AccessServicesResponse restResult = this.callGetRESTCall(methodName, AccessServicesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a EngineHostServicesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return EngineHostServicesResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    EngineHostServicesResponse callEngineHostServicesGetRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object... params) throws OMAGInvalidParameterException,
+                                                                                          OMAGNotAuthorizedException,
+                                                                                          OMAGConfigurationErrorException
+    {
+        EngineHostServicesResponse restResult = this.callGetRESTCall(methodName, EngineHostServicesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a EngineServiceConfigResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return EngineServiceConfigResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    EngineServiceConfigResponse callEngineServiceConfigGetRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object... params) throws OMAGInvalidParameterException,
+                                                                                            OMAGNotAuthorizedException,
+                                                                                            OMAGConfigurationErrorException
+    {
+        EngineServiceConfigResponse restResult = this.callGetRESTCall(methodName, EngineServiceConfigResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowAdminExceptions(restResult);
 

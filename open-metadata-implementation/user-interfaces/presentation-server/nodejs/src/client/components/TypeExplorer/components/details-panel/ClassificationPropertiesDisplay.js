@@ -7,6 +7,8 @@ import { TypesContext }           from "../../contexts/TypesContext";
 
 import { FocusContext }           from "../../contexts/FocusContext";
 
+import { RequestContext }         from "../../contexts/RequestContext";
+
 import PropTypes                  from "prop-types";
 
 import "./details-panel.scss";
@@ -19,6 +21,8 @@ export default function ClassificationPropertiesDisplay(props) {
   const typesContext       = useContext(TypesContext);
 
   const focusContext       = useContext(FocusContext);
+
+  const requestContext     = useContext(RequestContext);
 
   const explorer           = props.expl;
 
@@ -35,15 +39,39 @@ export default function ClassificationPropertiesDisplay(props) {
       attributeEntries[localProp.attributeName] = {};
       attributeEntries[localProp.attributeName].inherited = false;
       attributeEntries[localProp.attributeName].attributeTypeName = localProp.attributeType.name;
+      attributeEntries[localProp.attributeName].status = localProp.attributeStatus;
+      attributeEntries[localProp.attributeName].replacedBy = localProp.replacedByAttribute;
     });
   }
 
+
   const formatAttribute = (attributeName, attribute) => {
     let formattedAttribute;
+    const formattedAttributeName = formatAttributeName(attributeName, attribute);
     const formattedAttributeType = formatAttributeType(attributeName, attribute);
-    formattedAttribute = <div>{attributeName} : {formattedAttributeType}</div>;   
+    formattedAttribute = <div>{formattedAttributeName} : {formattedAttributeType}
+        {(attribute.status === "DEPRECATED_ATTRIBUTE")
+           ?   attribute.replacedBy ? "  (use "+attribute.replacedBy+")" : "  (no replacement)"
+           :   ""}
+    </div>;
     return formattedAttribute
   };
+
+  const formatAttributeName = (attributeName, attribute) => {
+    let formattedAttributeName;
+
+    if (attribute.status === "DEPRECATED_ATTRIBUTE") {
+      attributeName = "["+attributeName+"]";
+    }
+    if (attribute.inherited) {
+      formattedAttributeName = <span className="italic">{attributeName}</span> ;
+    }
+    else {
+      formattedAttributeName = attributeName ;
+    }
+    return formattedAttributeName;
+  }
+
 
   const formatAttributeType = (attributeName, attribute) => {
     const attributeTypeName = attribute.attributeTypeName;
@@ -59,34 +87,35 @@ export default function ClassificationPropertiesDisplay(props) {
     return formattedAttributeType;
   }
 
-const enumLinkHandler = (evt) => {
-  const typeName = evt.target.id;
-  focusContext.typeSelected("Enum",typeName);
-}
+  const enumLinkHandler = (evt) => {
+    const typeName = evt.target.id;
+    focusContext.typeSelected("Enum",typeName);
+  }
 
-
-  
 
 
   let properties;
 
-  
   
   const expandProperties = (attributeEntries) => {
 
     const attributeNamesUnsorted = Object.keys(attributeEntries);
     const attributeNamesSorted = attributeNamesUnsorted.sort();
 
-    let attributeList = attributeNamesSorted.map( (propName) => 
-      <li className="details-sublist-item" key={propName}>
-        {formatAttribute(propName,attributeEntries[propName])}
-      </li>
-    );
+    const showDeprecatedAttributes = requestContext.deprecatedAttributeOption;
+
+    let attributeList = attributeNamesSorted
+        .filter( (propName) => (showDeprecatedAttributes || (attributeEntries[propName].status !== "DEPRECATED_ATTRIBUTE")))
+        .map( propName => (
+          <li className="details-sublist-item" key={propName}>
+          {formatAttribute(propName,attributeEntries[propName])}
+        </li>
+        ));
 
     return attributeList;
   };
 
-  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length == 0) {
+  if (attributeEntries === undefined || attributeEntries === null || Object.keys(attributeEntries).length === 0) {
     properties = (
       <div>
         list is empty

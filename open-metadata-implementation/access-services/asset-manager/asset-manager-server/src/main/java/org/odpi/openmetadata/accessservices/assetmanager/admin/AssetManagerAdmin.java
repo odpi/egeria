@@ -153,6 +153,7 @@ public class AssetManagerAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";

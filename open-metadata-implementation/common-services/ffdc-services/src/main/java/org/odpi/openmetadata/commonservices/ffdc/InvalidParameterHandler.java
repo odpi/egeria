@@ -126,7 +126,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied GUID is null
      *
      * @param guid           unique identifier to validate
      * @param guidParameter  name of the parameter that passed the guid.
@@ -149,7 +149,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied name is null
      *
      * @param name           unique name to validate
      * @param nameParameter  name of the parameter that passed the name.
@@ -172,7 +172,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied search string is null
      *
      * @param searchString   searchString to validate
      * @param searchParameter  name of the parameter that passed the searchString.
@@ -196,7 +196,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied object is null
      *
      * @param object         object to validate
      * @param nameParameter  name of the parameter that passed the object.
@@ -373,13 +373,27 @@ public class InvalidParameterHandler
         {
             if (! anchorGUID.equals(anchorEntity.getGUID()))
             {
-                throw new InvalidParameterException(OMAGCommonErrorCode.BAD_ANCHOR_GUID.getMessageDefinition(elementTypeName,
-                                                                                                             elementGUID,
-                                                                                                             anchorGUID,
-                                                                                                             anchorEntity.getGUID()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    anchorGUIDParameterName);
+                if (anchorGUID.equals(elementGUID))
+                {
+                    throw new InvalidParameterException(OMAGCommonErrorCode.NOT_ANCHOR_ELEMENT.getMessageDefinition(elementTypeName,
+                                                                                                                    elementGUID,
+                                                                                                                    anchorEntity.getGUID(),
+                                                                                                                    methodName),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        anchorGUIDParameterName);
+                }
+                else
+                {
+                    throw new InvalidParameterException(OMAGCommonErrorCode.WRONG_ANCHOR_GUID.getMessageDefinition(elementTypeName,
+                                                                                                                   elementGUID,
+                                                                                                                   anchorGUID,
+                                                                                                                   anchorEntity.getGUID(),
+                                                                                                                   methodName),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        anchorGUIDParameterName);
+                }
             }
         }
     }

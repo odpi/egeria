@@ -42,7 +42,7 @@ Components included are:
  
  ## Checking what is running
  
- Use the docker command to checiners are running. You should have
+ Use the docker command to check containers are running. You should have
  * 1 Jupyter container to run the notebooks
  * 4 Egeria containers
  * Kafka and Zookeeper containers for messaging
@@ -51,11 +51,11 @@ Components included are:
  ```
 $ docker ps                                                                                                                                                                                                                                                                                                                            [10:43:05]
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                                             NAMES
-668a0cb4c603        odpi/jupyter:2.5-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
-dd0061d76740        odpi/egeria:2.5-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
-b4529b10242e        odpi/egeria:2.5-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
-9ca6fac8eeb4        odpi/egeria:2.5-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
-edd729d03841        odpi/egeria:2.5-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
+668a0cb4c603        odpi/jupyter:2.6-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
+dd0061d76740        odpi/egeria:2.6-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
+b4529b10242e        odpi/egeria:2.6-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
+9ca6fac8eeb4        odpi/egeria:2.6-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
+edd729d03841        odpi/egeria:2.6-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
 ea3884c6ceb8        bitnami/kafka:latest        "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        0.0.0.0:19092->9092/tcp                                           tutorials_kafka_1
 b076f6ddc67c        bitnami/zookeeper:latest    "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        2888/tcp, 3888/tcp, 8080/tcp, 0.0.0.0:12181->2181/tcp             tutorials_zookeeper_1
 
@@ -66,7 +66,7 @@ the containers.
 
 If this still fails, check the logs (below) and also consider if there is enough memory for docker. Finally follow any 
 debugging guides for the container environment itself (outside the scope of this readme) in case of some system
-issue or incompatability.
+issue or incompatibility.
 
  ## Logging
  
@@ -77,12 +77,12 @@ issue or incompatability.
  To look at the logs of individual containers, use the `docker log` command and either the container id, or name from the list 
  of running containers. See the docker documentation for more detail on this command.
  
- ie to see the state of the core container use:
+ For example, to see the state of the core container use:
  ```
 $ docker logs tutorials_core_1                                                                                                                                                                                                                                                                                                         [10:43:39]
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.5-SNAPSHOT.jar  
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.6-SNAPSHOT.jar  
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
@@ -98,7 +98,10 @@ INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRat
 Mon Sep 21 09:39:29 GMT 2020 No OMAG servers listed in startup configuration
 Mon Sep 21 09:39:51 GMT 2020 OMAG server platform ready for more configuration
 ```
-It is much easier to see any audit log messages produced - for example if you run this comyou manwill see output like
+It is much easier to see any audit log messages produced - for example if you run this command you will see messages that
+confirm which other cohort members are communicating with that server, the subsystems that are running
+and the events that are being exchanged.  For example:
+
 ```
 Mon Sep 21 09:49:00 GMT 2020 cocoMDS5 Startup OMRS-AUDIT-0032 The local repository outbound event manager is sending out the 548 type definition events that were generated and buffered during server initialization
 Mon Sep 21 09:49:00 GMT 2020 cocoMDS2 Information OMRS-AUDIT-0132 A new remote connector from server cocoMDS3 with metadata collection id 9d524bcf-e62a-4e42-8c41-ed6426387b05 has been deployed to enterprise connector for Project Management OMAS
@@ -108,6 +111,19 @@ Mon Sep 21 09:49:00 GMT 2020 cocoMDS2 Cohort OMRS-AUDIT-0110 A new registration 
 This can be quite verbose when the servers start up, since a lot of type information is exchanged between the servers. 
 
 To follow 'in real time' you can use `docker logs -f <container>` (-f for 'follow')
+
+## Persistence
+
+This docker-compose environment uses docker volumes to persist data. However they are bound to the lifecycle imposed by docker-compose. This means that when you issue the 'docker-compose -f ./egeria-tutorial.yaml down' they are deleted. To avoid this you will need to manually create the volumes and change their definition to external.
+
+To do this edit egeria-tutorial.yaml and change `external: false` to `external: true`.
+
+Then manually create each volume ie `docker volume create datalake-data` before running `docker-compose -f ./egeria-tutorial.yaml up`. Now when you subsequently do the down, the volumes will be left behind. Use `docker volume ls` to list & `docker volume rm <id>` to delete.
+
+Egeria is also set to use the local graph repository by default, which will write to data in these volumes
+
+Set the value of 'repositoryType' to 'in-memory-repository' in the .env file to not use the graph repository.
+
  ### Using the environment to extend notebooks or develop new ones
  
   - If you are using a notebook written to assume 'localhost:9443' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -78,13 +80,57 @@ public class GovernanceDefinitionMetric extends GovernanceMetric
      *
      * @return string containing the properties and their values
      */
-
+    @Override
+    public String toString()
+    {
+        return "GovernanceDefinitionMetric{" +
+                       "rationale='" + rationale + '\'' +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", measurement='" + getMeasurement() + '\'' +
+                       ", target='" + getTarget() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
+    }
 
 
     /**
-     * Test the properties of the DataStrategy to determine if the supplied object is equal to this one.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object
-     * @return boolean evaluation
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        GovernanceDefinitionMetric that = (GovernanceDefinitionMetric) objectToCompare;
+        return Objects.equals(rationale, that.rationale);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), rationale);
+    }
 }

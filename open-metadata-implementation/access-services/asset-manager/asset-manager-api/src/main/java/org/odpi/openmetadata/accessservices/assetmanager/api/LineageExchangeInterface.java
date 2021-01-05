@@ -200,6 +200,8 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * instance of the Asset Manager OMAS).
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to publish
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -207,6 +209,8 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void publishProcess(String userId,
+                        String assetManagerGUID,
+                        String assetManagerName,
                         String processGUID) throws InvalidParameterException,
                                                    UserNotAuthorizedException,
                                                    PropertyServerException;
@@ -215,9 +219,11 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     /**
      * Update the zones for the asset so that it is no longer visible to consumers.
      * (The zones are set to the list of zones in the defaultZones option configured for each
-     * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
+     * instance of the Asset Manager OMAS.  This is the setting when the process is first created).
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to withdraw
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -225,6 +231,8 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void withdrawProcess(String userId,
+                         String assetManagerGUID,
+                         String assetManagerName,
                          String processGUID) throws InvalidParameterException,
                                                     UserNotAuthorizedException,
                                                     PropertyServerException;
@@ -861,9 +869,11 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     /**
      * Retrieve the data flow relationship between two elements.  The qualifiedName is optional unless there
      * is more than one data flow relationships between these two elements since it is used to disambiguate
-     * the request.
+     * the request. This is often used in conjunction with update.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param qualifiedName unique identifier for this relationship
@@ -874,12 +884,14 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    DataFlowElement getDataFlow(String  userId,
-                                String  dataSupplierGUID,
-                                String  dataConsumerGUID,
-                                String  qualifiedName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException;
+    DataFlowElement getDataFlow(String userId,
+                                String assetManagerGUID,
+                                String assetManagerName,
+                                String dataSupplierGUID,
+                                String dataConsumerGUID,
+                                String qualifiedName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 
 
     /**
@@ -930,6 +942,50 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
 
 
     /**
+     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param dataSupplierGUID unique identifier of the data supplier
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<DataFlowElement> getDataFlowConsumers(String userId,
+                                               String assetManagerGUID,
+                                               String assetManagerName,
+                                               String dataSupplierGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param dataConsumerGUID unique identifier of the data consumer
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<DataFlowElement> getDataFlowSuppliers(String userId,
+                                               String assetManagerGUID,
+                                               String assetManagerName,
+                                               String dataConsumerGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
      * Link two elements to show that when one completes the next is started.
      *
      * @param userId calling user
@@ -964,9 +1020,11 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     /**
      * Retrieve the control flow relationship between two elements.  The qualifiedName is optional unless there
      * is more than one control flow relationships between these two elements since it is used to disambiguate
-     * the request.
+     * the request.  This is often used in conjunction with update.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param qualifiedName unique identifier for this relationship
@@ -978,6 +1036,8 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     ControlFlowElement getControlFlow(String userId,
+                                      String assetManagerGUID,
+                                      String assetManagerName,
                                       String currentStepGUID,
                                       String nextStepGUID,
                                       String qualifiedName) throws InvalidParameterException,
@@ -1031,6 +1091,50 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
 
 
     /**
+     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param currentStepGUID unique identifier of the current step
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<ControlFlowElement> getControlFlowNextSteps(String userId,
+                                                     String assetManagerGUID,
+                                                     String assetManagerName,
+                                                     String currentStepGUID) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param currentStepGUID unique identifier of the current step
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<ControlFlowElement> getControlFlowPreviousSteps(String userId,
+                                                         String assetManagerGUID,
+                                                         String assetManagerName,
+                                                         String currentStepGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
+
+
+    /**
      * Link two elements together to show a request-response call between them.
      *
      * @param userId calling user
@@ -1065,9 +1169,11 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     /**
      * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
      * is more than one process call relationships between these two elements since it is used to disambiguate
-     * the request.
+     * the request.  This is often used in conjunction with update.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param qualifiedName unique identifier for this relationship
@@ -1079,6 +1185,8 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     ProcessCallElement getProcessCall(String userId,
+                                      String assetManagerGUID,
+                                      String assetManagerName,
                                       String callerGUID,
                                       String calledGUID,
                                       String qualifiedName) throws InvalidParameterException,
@@ -1130,17 +1238,58 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
                                                          UserNotAuthorizedException,
                                                          PropertyServerException;
 
-
     /**
-     * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships match the DataFlow relationships.
-     * However, they may occur at less granular process definitions that the detailed data and control flows
-     * that have been captured.
+     * Retrieve the process call relationships linked from an specific element to the elements it calls.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param callerGUID unique identifier of the element that is making the call
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<ProcessCallElement> getProcessCalled(String userId,
+                                              String assetManagerGUID,
+                                              String assetManagerName,
+                                              String callerGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to its callers.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param calledGUID unique identifier of the element that is processing the call
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<ProcessCallElement> getProcessCallers(String userId,
+                                               String assetManagerGUID,
+                                               String assetManagerName,
+                                               String calledGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
+
+
+    /**
+     * Link two elements together to show that they are part of the lineage of the data that is moving
+     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * supported by different technologies.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
      *
@@ -1148,14 +1297,13 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupLineageMapping(String  userId,
-                             String  assetManagerGUID,
-                             String  assetManagerName,
-                             boolean assetManagerIsHome,
-                             String  sourceElementGUID,
-                             String  destinationElementGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    void setupLineageMapping(String userId,
+                             String assetManagerGUID,
+                             String assetManagerName,
+                             String sourceElementGUID,
+                             String destinationElementGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException;
 
 
     /**
@@ -1178,4 +1326,47 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
                              String destinationElementGUID) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException;
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param sourceElementGUID unique identifier of the source
+     *
+     * @return list of lineage mapping relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LineageMappingElement> getDestinationLineageMappings(String userId,
+                                                              String assetManagerGUID,
+                                                              String assetManagerName,
+                                                              String sourceElementGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param destinationElementGUID unique identifier of the destination
+     *
+     * @return list of lineage mapping relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LineageMappingElement> getSourceLineageMappings(String userId,
+                                                         String assetManagerGUID,
+                                                         String assetManagerName,
+                                                         String destinationElementGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
 }

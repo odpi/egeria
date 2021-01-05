@@ -8,6 +8,8 @@ import PropTypes                                      from "prop-types";
 
 import { RepositoryServerContext }                    from "./RepositoryServerContext";
 
+import { InteractionContext }                         from "./InteractionContext";
+
 
 /*
  * The InstancesContext holds the state for the instances that are retrieved from the 
@@ -24,7 +26,9 @@ export const InstancesContextConsumer = InstancesContext.Consumer;
 const InstancesContextProvider = (props) => {
 
 
-  const repositoryServerContext = useContext(RepositoryServerContext);
+  const repositoryServerContext    = useContext(RepositoryServerContext);
+
+  const interactionContext         = useContext(InteractionContext);
 
  
 
@@ -180,9 +184,9 @@ const InstancesContextProvider = (props) => {
   const processRetrievedEntity = (expEntity) => {
 
     const serverName = expEntity.serverName;
+    const platformName = expEntity.platformName;
     const entityGUID = expEntity.entityDigest.entityGUID;
 
-    
     let genId;
     if (guidToGenId[entityGUID] !== undefined) {
       /*
@@ -190,6 +194,12 @@ const InstancesContextProvider = (props) => {
        */
       genId = guidToGenId[entityGUID];
       expEntity.entityDigest.gen = genId;
+      // If the entity was originally loaded as a proxy restore its provenance...
+      let gen = gens[genId - 1];
+      let originalEntity = gen.entities[entityGUID];
+      if (originalEntity.provenance === "proxy") {
+        expEntity.entityDigest.provenance = "proxy";
+      }
     }
     else {
       /*
@@ -206,9 +216,9 @@ const InstancesContextProvider = (props) => {
       rexTraversal.relationships        = {};
       rexTraversal.entities[entityGUID] = expEntity.entityDigest;
       rexTraversal.serverName           = serverName;
+      rexTraversal.platformName         = platformName;
       rexTraversal.operation            = "getEntity";
-
-      guidToGenId[entityGUID] = genId;
+      rexTraversal.enterpriseOption     = expEntity.entityDigest.provenance === "ent";
       
       /*
        * Add the traversal to the sequence of gens in the graph.
@@ -229,10 +239,11 @@ const InstancesContextProvider = (props) => {
    */
   const processRetrievedRelationship = (expRelationship) => {  
 
+
     const serverName       = expRelationship.serverName;
+    const platformName     = expRelationship.platformName;
     const relationshipGUID = expRelationship.relationshipDigest.relationshipGUID;
 
-    
     let genId;
     if (guidToGenId[relationshipGUID] !== undefined) {
       /*
@@ -256,10 +267,10 @@ const InstancesContextProvider = (props) => {
       rexTraversal.relationships                    = {};
       rexTraversal.relationships[relationshipGUID]  = expRelationship.relationshipDigest;
       rexTraversal.serverName                       = serverName;
+      rexTraversal.platformName                     = platformName;
       rexTraversal.operation                        = "getRelationship";
+      rexTraversal.enterpriseOption                 = expRelationship.relationshipDigest.provenance === "ent";
 
-
-      guidToGenId[relationshipGUID] = genId;
 
       /*
        * We need to retrieve the end entity digests from the expRelationship and find out
@@ -314,11 +325,9 @@ const InstancesContextProvider = (props) => {
        */
       if (!entityOneKnown) {
         rexTraversal.entities[entityOneGUID] = entityOneDigest;
-        guidToGenId[entityOneGUID]           = e1gen;
       }
       if (!entityTwoKnown) {
         rexTraversal.entities[entityTwoGUID] = entityTwoDigest;
-        guidToGenId[entityTwoGUID]           = e2gen;
       }
       
       /*
@@ -397,20 +406,21 @@ const InstancesContextProvider = (props) => {
                * Update the new entity's gen
                */
               rexTraversal.entities[entityGUID].gen = genId;
-              guidToGenId[entityGUID] = genId;
           }
       });
 
 
       /*
        * Process relationships...
+       * These are in a map of RexExpandedRelationship objects, inside of
+       * which are the RexRelationshipDigest objects.
        * Anything that is known should be removed from the traversal.
        * Anything new can remain and should be assigned the next gen.
        */
       const relationships = rexTraversal.relationships;
       const rKeys = Object.keys(relationships);
       rKeys.forEach(rKey => {
-        const relationship = relationships[rKey];         
+        const relationship = relationships[rKey];
 
         const relationshipGUID = relationship.relationshipGUID;
 
@@ -433,7 +443,6 @@ const InstancesContextProvider = (props) => {
                * Update the new relationship's gen
                */
               rexTraversal.relationships[relationshipGUID].gen = genId;
-              guidToGenId[relationshipGUID] = genId;
           }
       });
 
@@ -486,29 +495,106 @@ const InstancesContextProvider = (props) => {
      */
 
     if (entityGUID === focus.instanceGUID) {
+
       clearFocusInstance();         
     }
 
     else {
-          
-      /*
-       * Check whether the entity is homed by the selected server (repo) - if so we know it
-       * can be retrieved. If not, then check enterprise flag is on and if not provide an alert
-       * to advise the user that the entity will only be retrieved if enterprise is set.
-       */
 
+      /*
+       * The entity was retrieved from the server identified by serverName in the gen.
+       * The setting of enterpriseOption at the time is also recorded in the gen.
+       * The home metadataCollection (Name and Id) are both recorded in the entityDigest (in the gen).
+       *
+       * The entity may have been a home entity or reference copy when it was retrieved - that
+       * doesn't matter, it should be retrieable from the same server used when the digest was
+       * originally loaded.
+       * The entity may be marked as 'ent' - which means it was an enterprise operation (this can be
+       * verified by looking at enterpriseOption in the gen) - in which case Rex does not know which server
+       * contributed it - but it shouldn't matter, it should be possible to retrieve it the same way - i.e.
+       * use the original server and set enterpriseOption.
+       * The entity could have been a proxy generated when a relationship was searched/retrieved. In
+       * this case it may or may not be accessible from the search used to retrieve the relationship.
+       * If it is (i.e. the server has a local or ref copy) then that should be loaded. If it is not
+       * then we should either:
+       *    * advise the user that it was only a proxy and we don't know where a real copy exists (hmmm)
+       *    * OR do something more helpful - but we are only armed with the mdcName and mdcId and do not
+       *    * necessarily know which server we should ask. Can we correlate servers and mdcs??????
+       *    * If not, maybe the best approach would be to (quietly)
+       *    * perform an enterprise get by GUID (using the original gen server) and if we find it great
+       *    * and if we don't find it, then advise the user....?
+       *    * Consider that the server list may not contain any server that has a copy - so an enterprise
+       *    * retrieval is the best we could hope for,
+       *
+       */
       if (guidToGenId[entityGUID] !== undefined) {
         const genId            = guidToGenId[entityGUID];
         const gen              = gens[genId-1];
         const entityDigest     = gen.entities[entityGUID];
-        const home             = entityDigest.metadataCollectionName;
-        const serverName       = repositoryServerContext.repositoryServerName;                 
-        const enterpriseOption = repositoryServerContext.getRepositoryServerEnterpriseOption();
-        if (enterpriseOption === true || serverName === home ) {
-          loadEntity(entityGUID);                  
-        }
-        else {
-          alert("The selected object is not local to the server being used and the enterprise option is not checked. You could retrieve it either by setting server to "+home+" or by enabling the enterprise option");
+        const provenance       = entityDigest.provenance;
+        const serverName       = gen.serverName;
+        const platformName     = gen.platformName;
+        const enterpriseOption = gen.enterpriseOption;
+
+        switch (provenance)
+        {
+          case "home":
+            /*
+             * This should be the 'easy' case - the original server was the home for the entity
+             * Issue a POST to the original server. That requires that we know the serverName and
+             * platformName. Whether or not enterprise option was used for the original operation,
+             * since we are going to ask the home repo server for the entity, we should be able to
+             * do so without enterprise operation. (It should no harm to enable enterprise, since any
+             * ref copy that is found must be at least the same version as the home instance. There
+             * seems little point using enterprise though when we think we know where to look...)
+             */
+            loadEntityFromSpecifiedServer(serverName, platformName, false, entityGUID);
+            break;
+
+          case "refCopy":
+            /*
+             * This should be another 'easy' case - the original server was not the home for the entity
+             * but it held a reference copy.
+             * Issue a POST to the original server. That requires that we know the serverName and
+             * platformName. We know whether enterprise option was used for the original operation and
+             * whilst it is tempting to unilaterally turn it on here, to ensure that the highest
+             * possible version of the instance is found, assuming that an enterprise load might retrieve
+             * an updated version of the home, which is newer than the ref copy on the server we asked
+             * previously..... Rex should not try to second guess what the user wants to do - the user
+             * may specifically want to see the copy on the specified server. Therefore leave enterprise
+             * as it was on the original operation.
+             */
+            loadEntityFromSpecifiedServer(serverName, platformName, enterpriseOption, entityGUID);
+            break;
+
+          case "proxy":
+            /*
+             * This case is more subtle than the others. The entity was 'found' as a result of it being
+             * a proxy in one end of a relationship. The entity might not actually have
+             * been retrieved until now, and might not even exist. If it does exist, the entity might not
+             * be on the same server as the one that returned the relationship, although that server *might*
+             * be holding the home or a reference copy of the entity. The best Rex can do here is to
+             * try to get the entity (using the original server) with the enterprise option enabled
+             * and provide an advisory message to the user if the entity is not found.
+             */
+            loadEntityFromSpecifiedServer(serverName, platformName, true, entityGUID);
+            break;
+
+          case "ent":
+            /*
+             * This case indicates that the entity was originally returned by the server and the
+             * enterprise option was enabled. This meant that it was not possible to know where
+             * the entity was homed and where the ref copies existed, or which was processed, because
+             * all the results were federated and made available by the enterprise metadata collection.
+             * It's not a problem, it just means that to stand the best chance of reloading the entity
+             * Rex should use the same server and set the enterprise option.
+             */
+            loadEntityFromSpecifiedServer(serverName, platformName, true, entityGUID);
+            break;
+
+          default:
+            console.log("Unknown value "+provenance+" for instance provenance was encountered");
+            break;
         }
       }
     }
@@ -518,32 +604,87 @@ const InstancesContextProvider = (props) => {
    * A component has requested that the focus is changed to the relationship with the specified GUID.
    */
   const changeFocusRelationship = (relationshipGUID) => {
+
+
     /*
-     * If the entity is the current focus - deselect it.
+     * If the relationship is the current focus - deselect it.
      */
+
     if (relationshipGUID === focus.instanceGUID) {
+
       clearFocusInstance();         
     }
 
     else {
-        
+
       /*
-       * Check whether the relationship is homed by the selected server (repo) - if so we know it
-       * can be retrieved. If not, then check enterprise flag is on and if not provide an alert
-       * to advise the user that the relationship will only be retrieved if enterprise is set.
+       * The relationship was retrieved from the server identified by serverName in the gen.
+       * The setting of enterpriseOption at the time is also recorded in the gen.
+       * The home metadataCollection (Name and Id) are both recorded in the relationshipDigest (in the gen).
+       *
+       * The relationship may have been a home relationship or reference copy when it was retrieved - that
+       * doesn't matter, it should be retrievable from the same server used when the digest was
+       * originally loaded.
+       * The relationship may be marked as 'ent' - which means it was an enterprise operation (this can be
+       * verified by looking at enterpriseOption in the gen) - in which case Rex does not know which server
+       * contributed it - but it shouldn't matter, it should be possible to retrieve it the same way - i.e.
+       * use the original server and set enterpriseOption.
        */
       if (guidToGenId[relationshipGUID] !== undefined) {
-        const genId             = guidToGenId[relationshipGUID];
-        const gen               = gens[genId-1];
-       const relationshipDigest = gen.relationships[relationshipGUID];
-        const home              = relationshipDigest.metadataCollectionName;
-        const serverName        = repositoryServerContext.repositoryServerName;              
-        const enterpriseOption  = repositoryServerContext.repositoryServerEnterpriseOption;
-        if (enterpriseOption === true || serverName === home ) {
-          loadRelationship(relationshipGUID);                  
-        }
-        else {
-          alert("The selected object is not local to the server being used and the enterprise option is not checked. You could retrieve it either by setting server to "+home+" or by enabling the enterprise option");
+        const genId              = guidToGenId[relationshipGUID];
+        const gen                = gens[genId-1];
+        const relationshipDigest = gen.relationships[relationshipGUID];
+        const provenance         = relationshipDigest.provenance;
+        const serverName         = gen.serverName;
+        const platformName       = gen.platformName;
+        const enterpriseOption   = gen.enterpriseOption;
+
+        switch (provenance)
+        {
+          case "home":
+            /*
+             * This should be the 'easy' case - the original server was the home for the relationship
+             * Issue a POST to the original server. That requires that we know the serverName and
+             * platformName. Whether or not enterprise option was used for the original operation,
+             * since we are going to ask the home repo server for the relationship, we should be able to
+             * do so without enterprise operation. (It should do no harm to enable enterprise, since any
+             * ref copy that is found must be at least the same version as the home instance. There
+             * seems little point using enterprise though when we think we know where to look...)
+             */
+            loadRelationshipFromSpecifiedServer(serverName, platformName, false, relationshipGUID);
+            break;
+
+          case "refCopy":
+            /*
+             * This should be another 'easy' case - the original server was not the home for the relationship
+             * but it held a reference copy.
+             * Issue a POST to the original server. That requires that we know the serverName and
+             * platformName. We know whether enterprise option was used for the original operation and
+             * whilst it is tempting to unilaterally turn it on here, to ensure that the highest
+             * possible version of the instance is found, assuming that an enterprise load might retrieve
+             * an updated version of the home, which is newer than the ref copy on the server we asked
+             * previously..... Rex should not try to second guess what the user wants to do - the user
+             * may specifically want to see the copy on the specified server. Therefore leave enterprise
+             * as it was on the original operation.
+             */
+            loadRelationshipFromSpecifiedServer(serverName, platformName, enterpriseOption, relationshipGUID);
+            break;
+
+          case "ent":
+            /*
+             * This case indicates that the relationship was originally returned by the server and the
+             * enterprise option was enabled. This meant that it was not possible to know where
+             * the relationship was homed and where the ref copies existed, or which was processed, because
+             * all the results were federated and made available by the enterprise metadata collection.
+             * It's not a problem, it just means that to stand the best chance of reloading the relationship
+             * Rex should use the same server and set the enterprise option.
+             */
+            loadRelationshipFromSpecifiedServer(serverName, platformName, true, relationshipGUID);
+            break;
+
+          default:
+            console.log("Unknown value "+provenance+" for instance provenance was encountered");
+            break;
         }
       }
     }
@@ -557,8 +698,11 @@ const InstancesContextProvider = (props) => {
    */  
   const setFocusEntity = (expEntity) => {    
 
-    const newFocus = { instanceCategory : "Entity", instanceGUID : expEntity.entityDetail.guid, instance : expEntity };
-   setFocus( newFocus );
+
+    const newFocus = { instanceCategory : "Entity",
+                       instanceGUID : expEntity.entityDetail.guid,
+                       instance : expEntity };
+    setFocus( newFocus );
   }
 
   /*
@@ -569,17 +713,39 @@ const InstancesContextProvider = (props) => {
    */  
   const setFocusRelationship = (expRelationship) => {  
 
-    setFocus( { instanceCategory : "Relationship", 
-                instanceGUID     : expRelationship.relationship.guid,
-                instance         : expRelationship });
+    const newFocus = { instanceCategory : "Relationship",
+                       instanceGUID     : expRelationship.relationship.guid,
+                       instance         : expRelationship };
+    setFocus( newFocus );
   }
 
   /*
    * Get the GUID of the focus instance
    */
-  const getFocusGUID = () => {    
+  const getFocusGUID = () => {
 
     return focus.instanceGUID;
+
+  };
+
+  /*
+   * Get the gen containing the focus instance
+   */
+  const getFocusGen = () => {
+
+    let focusGenId = guidToGenId[focus.instanceGUID];
+    let focusGen = gens[focusGenId - 1];
+    return focusGen;
+
+  };
+
+  /*
+   * Get the id of the gen containing the focus instance
+   */
+  const getFocusGenId = () => {
+
+    let focusGenId = guidToGenId[focus.instanceGUID];
+    return focusGenId;
 
   };
 
@@ -592,15 +758,27 @@ const InstancesContextProvider = (props) => {
    */  
   const clearFocusInstance = () => {
     
-    setFocus( { instanceCategory : "Entity", 
-                instanceGUID     : "",
-                instance         : null });
-   
+    const newFocus = { instanceCategory : "Entity",
+                       instanceGUID     : "",
+                       instance         : null };
+    setFocus( newFocus );
+
   }
 
 
   /*
-   * Function to get entity by GUID from the repository
+   * Function to get entity by GUID from the specified repository server
+   */
+  const loadEntityFromSpecifiedServer = (serverName, platformName, enterpriseOption, entityGUID) => {
+    repositoryServerContext.callPOST(serverName,
+                                     platformName,
+                                     "instances/entity",
+                                     { entityGUID : entityGUID , enterpriseOption : enterpriseOption},
+                                     _loadEntity);
+  };
+
+  /*
+   * Function to get entity by GUID from the currently selected repository server
    */
   const loadEntity = (entityGUID) => {
       
@@ -615,25 +793,34 @@ const InstancesContextProvider = (props) => {
     if (json !== null) {
       if (json.relatedHTTPCode === 200) {
         /*
-         * Should have an expandedEntityDetail
+         * Should have an expandedEntityDetail, if the entity was not found the response
+         * will have included a non 200 status code and an EntityNotKnownException
          */
         let expEntity = json.expandedEntityDetail;
-        if (expEntity !== null) {          
+        if (expEntity) {
           processRetrievedEntity(expEntity);        
           return;
         }
       }  
-      else {
-        /*
-         * Request failed
-         */     
-        alert("Attempt to retrieve entity from repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
-      }
     }   
     /*
-     * On failure ...  
+     * On failure ...
      */
-    alert("Could not get entity from repository server");
+    interactionContext.reportFailedOperation("get entity",json);
+
+  };
+
+
+
+  /*
+   * Function to get relationship by GUID from the specified repository server
+   */
+  const loadRelationshipFromSpecifiedServer = (serverName, platformName, enterpriseOption, relationshipGUID) => {
+    repositoryServerContext.callPOST(serverName,
+                                     platformName,
+                                     "instances/relationship",
+                                     { relationshipGUID : relationshipGUID , enterpriseOption : enterpriseOption},
+                                     _loadRelationship);
   };
 
   /*
@@ -641,7 +828,9 @@ const InstancesContextProvider = (props) => {
    */
   const loadRelationship = (relationshipGUID) => {
    
-    repositoryServerContext.repositoryPOST("instances/relationship", { relationshipGUID : relationshipGUID }, _loadRelationship); 
+    repositoryServerContext.repositoryPOST("instances/relationship",
+                                           { relationshipGUID : relationshipGUID },
+                                           _loadRelationship);
   };
 
   /*
@@ -652,7 +841,8 @@ const InstancesContextProvider = (props) => {
     if (json !== null) {
       if (json.relatedHTTPCode === 200) {
         /*
-         * Should have an expandedRelationship
+         * Should have an expandedRelationship, if the relationship was not found the response
+         * will have included a non 200 status code and a RelationshipNotKnownException
          */
         let expRelationship = json.expandedRelationship;
         if (expRelationship !== null) {          
@@ -660,17 +850,11 @@ const InstancesContextProvider = (props) => {
           return;
         }
       }  
-      else {
-        /*
-         * Request failed
-         */
-        alert("Attempt to load a relationship from the repository  got back status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
-      }
-    }   
+    }
     /*
      * On failure ...
      */
-    alert("Attempt to load a relationship from the repository got back nothing");
+    interactionContext.reportFailedOperation("get relationship",json);
   };
 
 
@@ -749,17 +933,11 @@ const InstancesContextProvider = (props) => {
           return;
         }
       }  
-      else {
-        /*
-         * Request failed
-         */     
-        alert("Traversal request to repository server returned status code "+json.relatedHTTPCode+" exception "+json.exceptionErrorMessage);
-      }
-    }   
+    }
     /*
      * On failure ...
      */
-    alert("Traversal request to repository server failed to get a response");  
+    interactionContext.reportFailedOperation("explore neighborhood around entity",json);
   };
 
 
@@ -769,21 +947,37 @@ const InstancesContextProvider = (props) => {
    */
   const removeGen = () => {
     /*
-     * Remove the most recent gen from the active gens. his should be noticed by the DiagramManager
+     * Remove the most recent gen from the active gens. This should be noticed by the DiagramManager
      * which will update the diagram data, and callback to the removeGenComplete callback.
      */    
     
+    /*
+     *  Check there is at least one gen.
+     */
+    if (gens.length <= 0)
+    {
+      return;
+    }
+
+    /*
+     * If the gen to be popped contains the focus instance, clear the focus.
+     */
+    let focusGenId = guidToGenId[focus.instanceGUID];
+    if (focusGenId === gens.length) {
+      clearFocusInstance();
+    }
  
     /*
      * Do not mutate the current array - replace for state update to register
      */
-    let newList = Object.assign(gens);
+    let newList = Object.assign([],gens);
     const removedGen = newList.pop();
+
     setGens( newList );
     setLatestActiveGenId(newList.length);
 
     /*
-     * Look for new instances in the removedGen, and remove then from the guidToGenId map.
+     * Look for instances that were added in the removedGen, and remove then from the guidToGenId map.
      * Because the map is immutable, corral the changes in a cloned map and apply them in one replace operation
      */
     
@@ -844,7 +1038,8 @@ const InstancesContextProvider = (props) => {
 
   
 
-    /* Each gen consists of the following:
+    /* 
+     * Each gen consists of the following:
      *
      *   private String               entityGUID;               -- must be non-null
      *   private List<String>         entityTypeGUIDs;          -- a list of type guids or null
@@ -882,6 +1077,8 @@ const InstancesContextProvider = (props) => {
 
       const serverName = genContent.serverName;
       let querySummary = "["+serverName+"]";
+      const enterpriseOption = genContent.enterpriseOption;
+      querySummary = querySummary.concat(enterpriseOption ? " Enterprise" : " Local");
 
       switch (genContent.operation) {
 
@@ -921,7 +1118,7 @@ const InstancesContextProvider = (props) => {
              */
             querySummary        = querySummary.concat(" Entity Type Filters: ");
             var entityTypeNames = genContent.entityTypeNames;
-            if (entityTypeNames != undefined && entityTypeNames != null) {
+            if (entityTypeNames !== undefined && entityTypeNames !== null) {
               let first = true;
               entityTypeNames.forEach(function(etn){
                 if (first) {
@@ -942,7 +1139,7 @@ const InstancesContextProvider = (props) => {
            */
           querySummary = querySummary.concat(" Relationship Type Filters: ");
           var relationshipTypeNames = genContent.relationshipTypeNames;
-          if (relationshipTypeNames != undefined && relationshipTypeNames != null) {
+          if (relationshipTypeNames !== undefined && relationshipTypeNames !== null) {
             let first = true;
             relationshipTypeNames.forEach(function(rtn){
               if (first) {
@@ -962,7 +1159,7 @@ const InstancesContextProvider = (props) => {
            */
           querySummary = querySummary.concat(" Classification Filters: ");
           var ClassificationNames = genContent.ClassificationNames;
-          if (ClassificationNames != undefined && ClassificationNames != null) {
+          if (ClassificationNames !== undefined && ClassificationNames !== null) {
             let first = true;
             ClassificationNames.forEach(function(rtn){
               if (first) {
@@ -982,11 +1179,21 @@ const InstancesContextProvider = (props) => {
 
         case "entitySearch":
           /*
-           * Format querySummary as "Entity retrieval \n GUID: <guid>"
-          */
-          querySummary = querySummary.concat(" Entity Search");
-          querySummary = querySummary.concat(" expression ["+genContent.searchText+"]");
+           * Format querySummary as "Entity Search Expression [<expr>] <guid>"
+           */
+          querySummary = querySummary.concat(" Entity Search: ");
+          querySummary = querySummary.concat(" Expression ["+genContent.searchText+"]");
           break;
+
+
+        case "relationshipSearch":
+          /*
+           * Format querySummary as "Relationship Search Expression [<expr>] <guid>"
+           */
+          querySummary = querySummary.concat(" Relationship Search: ");
+          querySummary = querySummary.concat(" Expression ["+genContent.searchText+"]");
+          break;
+
 
         default:
           /*
@@ -1004,13 +1211,19 @@ const InstancesContextProvider = (props) => {
       const entities = genContent.entities;
       for (let guid in entities) {
         const ent = entities[guid];
-        instanceList.push( { "category" : "Entity" , "label" : ent.label , "guid" : ent.entityGUID } );
+        instanceList.push( { "category" : "Entity",
+                             "label" : ent.label,
+                             "guid" : ent.entityGUID,
+                             "provenance" : ent.provenance } );
       }
 
       const relationships = genContent.relationships;
       for (let guid in relationships) {
         const rel = relationships[guid];
-        instanceList.push( { "category" : "Relationship" , "label" : rel.label , "guid" : rel.relationshipGUID } );
+        instanceList.push( { "category" : "Relationship",
+                             "label" : rel.label,
+                             "guid" : rel.relationshipGUID,
+                             "provenance" : rel.provenance } );
       }
       var historyItem = {  "gen" : gen , "query" : querySummary , "instances" : instanceList};
 
@@ -1026,9 +1239,15 @@ const InstancesContextProvider = (props) => {
   return (
     <InstancesContext.Provider
       value={{      
+        gens,
+        guidToGenId,
         focus,
+        latestActiveGenId,
+        setGuidToGenId,
         setFocus,
         getFocusGUID,
+        getFocusGen,
+        getFocusGenId,
         setFocusEntity,
         getFocusEntity,
         changeFocusEntity,
@@ -1052,7 +1271,7 @@ const InstancesContextProvider = (props) => {
         getLatestGen
      }}
     >      
-     {props.children}
+      {props.children}
     </InstancesContext.Provider>
   );
 };

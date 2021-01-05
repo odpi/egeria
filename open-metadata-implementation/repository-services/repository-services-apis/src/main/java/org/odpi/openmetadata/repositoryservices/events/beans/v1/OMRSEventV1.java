@@ -133,4 +133,25 @@ public class OMRSEventV1 extends OMRSEventBean
     {
         this.errorSection = errorSection;
     }
+
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventV1{" +
+                       "timestamp=" + timestamp +
+                       ", originator=" + originator +
+                       ", eventCategory=" + eventCategory +
+                       ", registryEventSection=" + registryEventSection +
+                       ", typeDefEventSection=" + typeDefEventSection +
+                       ", instanceEventSection=" + instanceEventSection +
+                       ", errorSection=" + errorSection +
+                       ", protocolVersionId='" + protocolVersionId + '\'' +
+                       ", protocolVersionId='" + getProtocolVersionId() + '\'' +
+                       '}';
+    }
 }

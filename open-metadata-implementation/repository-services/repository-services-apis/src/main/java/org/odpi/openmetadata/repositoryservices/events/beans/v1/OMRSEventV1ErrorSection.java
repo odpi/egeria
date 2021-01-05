@@ -172,4 +172,30 @@ public class OMRSEventV1ErrorSection implements Serializable
     {
         this.otherInstanceGUID = otherInstanceGUID;
     }
+
+
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventV1ErrorSection{" +
+                       "errorCode=" + errorCode +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", targetMetadataCollectionId='" + targetMetadataCollectionId + '\'' +
+                       ", targetRemoteConnection=" + targetRemoteConnection +
+                       ", targetTypeDefSummary=" + targetTypeDefSummary +
+                       ", targetAttributeTypeDef=" + targetAttributeTypeDef +
+                       ", targetInstanceGUID='" + targetInstanceGUID + '\'' +
+                       ", otherOrigin=" + otherOrigin +
+                       ", otherMetadataCollectionId='" + otherMetadataCollectionId + '\'' +
+                       ", otherTypeDefSummary=" + otherTypeDefSummary +
+                       ", otherTypeDef=" + otherTypeDef +
+                       ", otherAttributeTypeDef=" + otherAttributeTypeDef +
+                       ", otherInstanceGUID='" + otherInstanceGUID + '\'' +
+                       '}';
+    }
 }

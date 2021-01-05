@@ -8,7 +8,7 @@
      * Returns a comprehensive collection of properties about the requested asset.
      *
      * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
+     * @param requestType      unique identifier for asset.
      *
      * @return a comprehensive collection of properties about the asset.
      *
@@ -17,7 +17,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     AssetUniverse getAssetProperties(String userId,
-                                     String assetGUID) throws InvalidParameterException,
+                                     String requestType) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException;
 ```

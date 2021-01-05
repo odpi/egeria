@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProp
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import java.io.File;
 import java.util.List;
@@ -328,6 +329,8 @@ public class AvroFileReaderSample
         System.out.println("Running against server: " + serverName + " at " + serverURLRoot);
         System.out.println("Using userId: " + clientUserId);
         System.out.println();
+
+        HttpHelper.noStrictSSLIfConfigured();
 
         try
         {

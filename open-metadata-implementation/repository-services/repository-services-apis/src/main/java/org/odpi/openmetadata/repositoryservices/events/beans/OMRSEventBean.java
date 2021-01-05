@@ -72,4 +72,18 @@ public abstract class OMRSEventBean implements Serializable
     {
         this.protocolVersionId = protocolVersionId;
     }
+
+
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventBean{" +
+                       "protocolVersionId='" + protocolVersionId + '\'' +
+                       '}';
+    }
 }

@@ -31,6 +31,10 @@ import ServerSelector                           from "./components/resource-sele
 
 import EnterpriseControl                        from "./components/resource-selection/EnterpriseControl";
 
+import DeprecatedTypeControl                    from "./components/resource-selection/DeprecatedTypeControl";
+
+import DeprecatedAttributeControl               from "./components/resource-selection/DeprecatedAttributeControl";
+
 import FocusControls                            from "./components/focus-controls/FocusControls";
 
 import DetailsPanel                             from "./components/details-panel/DetailsPanel";
@@ -54,36 +58,54 @@ export default function TypeExplorer() {
 
   const containerDiv = useRef();
 
+
   /*
    * Height and width are stateful, so will cause a re-render.
    */
-  const [cltHeight, setCltHeight] = useState(document.documentElement.clientHeight);  
-  const [cltWidth, setCltWidth]   = useState(document.documentElement.clientWidth);  
+  const [dimensions, setDimensions] = useState({cltWidth  : document.documentElement.clientWidth,
+                                                cltHeight : document.documentElement.clientHeight });
 
   const [help, setHelp]             = useState( { markdown : '' } );
   const [helpStatus, setHelpStatus] = useState("idle");
 
-  
-
-  let workingHeight = cltHeight - 50;
-  let workingWidth  = cltWidth - 265;
+  let workingHeight = dimensions.cltHeight - 50;
+  let workingWidth  = dimensions.cltWidth - 265;
 
   /*
-   * Do not set the containerDiv dimensions until AFTER the cpt has rendered, as this creates the containerDiv
+   * Do not set the containerDiv dimensions until AFTER the cpt has first rendered, as this creates the containerDiv
+   */
+  if (containerDiv.current) {
+    containerDiv.current.style.width=""+workingWidth+"px";
+    containerDiv.current.style.height=""+workingHeight+"px";
+  }
+
+
+  /*
+   * Window resize event handler
    */
   const updateSize = () => {
 
     /*
-     * Determine client height, width and set container dimensions 
-     */    
-    setCltHeight(document.documentElement.clientHeight);
-    workingHeight = cltHeight - 50;
+     * Determine client height, width and set container and diagram dimensions then set dimensions.
+     * The setDimensions is to ensure that we trigger a re-render.
+     */
+    let newClientWidth  = document.documentElement.clientWidth;
+    let newClientHeight = document.documentElement.clientHeight;
+
+    let workingWidth  = newClientWidth - 265;
+    let workingHeight = newClientHeight - 50;
+
+    containerDiv.current.style.width=""+workingWidth+"px";
     containerDiv.current.style.height=""+workingHeight+"px";
 
-    setCltWidth(document.documentElement.clientWidth);
-    workingWidth = cltWidth - 265;
-    containerDiv.current.style.width=""+workingWidth+"px";
+    let newDimensions = {cltWidth  : newClientWidth,
+                         cltHeight : newClientHeight };
+
+    setDimensions(newDimensions);
+
   }
+
+
 
   const displayHelp = () => {
     setHelpStatus("complete");
@@ -97,20 +119,22 @@ export default function TypeExplorer() {
     setHelpStatus("idle");
   };
 
-  
+
   /*
    * useEffect to set size of container... 
    */
   useEffect(
     () => {
+
       /* Attach event listener for resize events */
       window.addEventListener('resize', updateSize);
-      /* Ensure the size gets updated on this load */
-      updateSize();
+
       /* On unmount, remove the event listener. */
       return () => window.removeEventListener('resize', updateSize);
-    }
+    },
+    [] /* run effect once only */
   )
+
 
    /*
     * useEffect to load markdown help file
@@ -149,6 +173,10 @@ export default function TypeExplorer() {
                                      onSubmit            = { submitHelpModal } />
 
                     <EnterpriseControl/>
+
+                    <DeprecatedTypeControl/>
+
+                    <DeprecatedAttributeControl/>
                  
                   </div>
 
@@ -169,7 +197,7 @@ export default function TypeExplorer() {
                   </div>
 
                   <div className="tex-rhs">
-                    <DiagramManager height={workingHeight-270} width={workingWidth-500}/>
+                    <DiagramManager height={workingHeight-270} width={workingWidth-450}/>
                   </div>
 
                 </div>

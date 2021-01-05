@@ -7,6 +7,7 @@ import com.google.crypto.tink.*;
 import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
+import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.slf4j.Logger;
@@ -20,23 +21,32 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.text.MessageFormat;
+import java.text.ParseException;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * EncryptedFileBasedServerConfigStoreConnector is the OCF connector for the encrypted file based server
  * configuration store.
  */
-public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase {
+public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase implements OMAGServerConfigStoreRetrieveAll {
 
+    private static final String KEYSTORE_FOLDER_BASEDIR = "data/platform/keys";
     private static final String KEYSTORE_FOLDER_PREFIX = "keystore_";
     private static final String KEY_FILE_EXTENSION = ".key";
     private static final int    RANDOM_NAME_LENGTH = 32;
 
     private static final String      KEY_ENV_VAR               = "EGERIA_CONFIG_KEYS";
-    private static final String      DEFAULT_FILENAME_TEMPLATE = "omag.server.{0}.config";
+    private static final String      DEFAULT_FILENAME_TEMPLATE = "data/servers/{0}/config/{0}.config";
     private static final KeyTemplate KEY_TEMPLATE              = AeadKeyTemplates.CHACHA20_POLY1305;
 
     private String configStoreName  = null;
@@ -63,14 +73,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
         final String methodName = "start";
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
-        String configStoreTemplateName = null;
-        if (endpoint != null) {
-            configStoreTemplateName = endpoint.getAddress();
-        }
-        if (configStoreTemplateName == null) {
-            configStoreTemplateName = DEFAULT_FILENAME_TEMPLATE;
-        }
+        String configStoreTemplateName = getStoreTemplateName();
 
         configStoreName = super.getStoreName(configStoreTemplateName, serverName);
 
@@ -82,6 +85,23 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                                                 methodName, e);
         }
 
+    }
+
+    /**
+     * Get the store template name
+     * @return the store template name
+     */
+    private String getStoreTemplateName()
+    {
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        String configStoreTemplateName = null;
+        if (endpoint != null) {
+            configStoreTemplateName = endpoint.getAddress();
+        }
+        if (configStoreTemplateName == null) {
+            configStoreTemplateName = DEFAULT_FILENAME_TEMPLATE;
+        }
+        return configStoreTemplateName;
     }
 
     /**
@@ -219,6 +239,54 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             }
         }
     }
+    @Override
+    public Set<OMAGServerConfig> retrieveAllServerConfigs() {
+        final String methodName = "retrieveAllServerConfigs";
+        Set<OMAGServerConfig> omagServerConfigSet = new HashSet<>();
+        try (Stream<Path> list = Files.list(Paths.get(".")))
+        {
+            // we need to use the configStoreTemplateName to pick up any files that match this shape.
+            // this template might have inserts in
+
+            String templateString = getStoreTemplateName();;
+              Set<String> fileNames = list.map(x -> x.toString())
+                    .filter(f -> isFileNameAConfig(f, templateString)).collect(Collectors.toSet());
+            for (String fileName:fileNames) {
+                configStoreName=fileName;
+                OMAGServerConfig config = retrieveServerConfig();
+                omagServerConfigSet.add(config);
+            }
+        } catch (IOException e) {
+            // the below message does not put out the file it is currently a
+            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage(), configStoreName),
+                                          this.getClass().getName(),
+                                          methodName, e);
+        }
+        return omagServerConfigSet;
+    }
+
+    /**
+     * Check whether the file name is an OMAG Server configuration name by checking it against the template.
+     * @param fileNameToCheck filename to check
+     * @param templateString
+     * @return true if the supplied file name is a valid configuration file name
+     */
+    static boolean isFileNameAConfig(String fileNameToCheck, String templateString) {
+        boolean isConfig= false;
+        // the file name comes through starting ./ on Mac. Remove this, so the compare to the template will work.
+        if (fileNameToCheck.startsWith("./") && fileNameToCheck.length() >2 ) {
+            fileNameToCheck = fileNameToCheck.substring(2);
+        }
+
+        MessageFormat mf = new MessageFormat(templateString);
+        try {
+            mf.parse(fileNameToCheck);
+            isConfig = true;
+        } catch (ParseException e) {
+            // the template did not successfully parse the file name, so is not a config file.
+        }
+        return isConfig;
+    }
 
     /**
      * {@inheritDoc}
@@ -254,6 +322,8 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     private File getConfigStoreFile() {
         return new File(getConfigStoreName());
     }
+
+
 
     /**
      * Retrieve the Authenticated Encryption with Associated Data handler.
@@ -371,7 +441,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         final String methodName = "getSecureDirectory";
 
         // Start by trying to identify any pre-existing keystore directory
-        File pwd = new File(".");
+        File pwd = new File(KEYSTORE_FOLDER_BASEDIR);
         File[] keystoreDirs = pwd.listFiles((dir, name) -> name.startsWith(KEYSTORE_FOLDER_PREFIX));
         File secureDir;
         if (keystoreDirs == null || keystoreDirs.length == 0) {
@@ -441,7 +511,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
         final String methodName = "createKeyStore";
         // If no directory was found with the prefix, we need to create one
-        String secureDirectory = KEYSTORE_FOLDER_PREFIX + getRandomString();
+        String secureDirectory = KEYSTORE_FOLDER_BASEDIR + '/' + KEYSTORE_FOLDER_PREFIX + getRandomString();
         File secureDir = new File(secureDirectory);
         // ... and we need to create a key file within it
         String keysetStoreName = getRandomString() + KEY_FILE_EXTENSION;

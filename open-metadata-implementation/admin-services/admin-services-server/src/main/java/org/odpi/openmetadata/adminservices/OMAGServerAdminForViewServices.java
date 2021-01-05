@@ -207,6 +207,7 @@ public class OMAGServerAdminForViewServices
      *
      * @param userId     calling user
      * @param serverName name of server
+     * @param serviceURLMarker server URL marker identifying the view service
      * @return view services response
      */
     public ViewServiceConfigResponse getViewServiceConfig(String userId,
@@ -230,7 +231,6 @@ public class OMAGServerAdminForViewServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-
             List<ViewServiceConfig> currentList = serverConfig.getViewServicesConfig();
 
             if (currentList != null)
@@ -246,7 +246,6 @@ public class OMAGServerAdminForViewServices
                     }
                 }
             }
-
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -403,7 +402,6 @@ public class OMAGServerAdminForViewServices
                         }
                     }
                 }
-
             }
 
             if (viewServiceConfigList.isEmpty())
@@ -453,6 +451,8 @@ public class OMAGServerAdminForViewServices
             IntegrationViewServiceConfig createdViewServiceConfig = new IntegrationViewServiceConfig(registration);
             createdViewServiceConfig.setResourceEndpoints(requestedIntegrationViewServiceConfig.getResourceEndpoints());
             viewServiceConfig = createdViewServiceConfig;
+            // some integration services require the OMAGServerPlatformRootURL
+            createdViewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
         }
         else if (requestedViewServiceConfig instanceof SolutionViewServiceConfig)
         {

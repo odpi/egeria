@@ -246,7 +246,7 @@ public class ConnectorTypeProperties extends AssetReferenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof ConnectorTypeProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -255,6 +255,18 @@ public class ConnectorTypeProperties extends AssetReferenceable
             return false;
         }
         ConnectorTypeProperties that = (ConnectorTypeProperties) objectToCompare;
-        return Objects.equals(getConnectorTypeBean(), that.getConnectorTypeBean());
+        return Objects.equals(connectorTypeBean, that.connectorTypeBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), connectorTypeBean);
     }
 }

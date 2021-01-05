@@ -2,10 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
+import org.odpi.openmetadata.accessservices.assetmanager.api.DataAssetExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.AssetManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.ProcessExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -29,7 +32,9 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 
     private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement>    assetManagerHandler;
     private ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
+    private DataAssetExchangeHandler                                            dataAssetExchangeHandler;
     private GlossaryExchangeHandler                                             glossaryExchangeHandler;
+    private ProcessExchangeHandler                                              processExchangeHandler;
 
 
     /**
@@ -46,13 +51,13 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetManagerServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                        List<String>           supportedZones,
-                                        List<String>           defaultZones,
-                                        List<String>           publishZones,
-                                        AuditLog               auditLog,
-                                        String                 localServerUserId,
-                                        int                    maxPageSize,
-                                        Connection             outTopicConnection) throws NewInstanceException
+                                        List<String>            supportedZones,
+                                        List<String>            defaultZones,
+                                        List<String>            publishZones,
+                                        AuditLog                auditLog,
+                                        String                  localServerUserId,
+                                        int                     maxPageSize,
+                                        Connection              outTopicConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
@@ -108,6 +113,18 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                          publishZones,
                                                                          auditLog);
 
+        this.dataAssetExchangeHandler = new DataAssetExchangeHandler(serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
+
         this.glossaryExchangeHandler = new GlossaryExchangeHandler(serviceName,
                                                                    serverName,
                                                                    invalidParameterHandler,
@@ -119,6 +136,18 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                    defaultZones,
                                                                    publishZones,
                                                                    auditLog);
+
+        this.processExchangeHandler = new ProcessExchangeHandler(serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
     }
 
 
@@ -155,7 +184,23 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 
 
     /**
-     * Return the handler for managing database  objects.
+     * Return the handler for managing asset objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    DataAssetExchangeHandler getDataAssetExchangeHandler() throws PropertyServerException
+    {
+        final String methodName = "getDataAssetExchangeHandler";
+
+        validateActiveRepository(methodName);
+
+        return dataAssetExchangeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing glossary objects.
      *
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
@@ -167,5 +212,21 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return glossaryExchangeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing process objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ProcessExchangeHandler getProcessExchangeHandler() throws PropertyServerException
+    {
+        final String methodName = "getProcessExchangeHandler";
+
+        validateActiveRepository(methodName);
+
+        return processExchangeHandler;
     }
 }

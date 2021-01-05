@@ -50,6 +50,17 @@ public class OpenMetadataAPIGenericHandler<B>
 
     protected AuditLog                           auditLog;
 
+    private final static String supplementaryPropertiesQualifiedNamePostFix = " Supplementary Properties";
+    private final static String supplementaryPropertiesQualifiedNameParameterName = "elementQualifiedName";
+    private final static String supplementaryPropertiesGlossaryName = "Supplementary Properties Glossary";
+    private final static String supplementaryPropertiesGlossaryParameterName = "supplementaryPropertiesGlossaryName";
+    private final static String supplementaryPropertiesGlossaryDescription =
+            "This glossary contains glossary terms containing the business-oriented descriptive names and related properties for " +
+                    "open metadata assets.";
+
+    private List<String> qualifiedNamePropertyNamesList;
+
+
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -103,6 +114,9 @@ public class OpenMetadataAPIGenericHandler<B>
         this.auditLog                = auditLog;
 
         this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+
+        this.qualifiedNamePropertyNamesList = new ArrayList<>();
+        this.qualifiedNamePropertyNamesList.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
     }
 
 
@@ -473,6 +487,7 @@ public class OpenMetadataAPIGenericHandler<B>
             InstanceProperties  confidentialityProperties = null;
             InstanceProperties  confidenceProperties      = null;
             InstanceProperties  criticalityProperties     = null;
+            InstanceProperties  impactProperties          = null;
             InstanceProperties  retentionProperties       = null;
             InstanceProperties  ownershipProperties       = null;
             InstanceProperties  zoneProperties            = null;
@@ -497,6 +512,10 @@ public class OpenMetadataAPIGenericHandler<B>
                             confidenceProperties = classification.getProperties();
                         }
                         else if (OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            criticalityProperties = classification.getProperties();
+                        }
+                        else if (OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
                         {
                             criticalityProperties = classification.getProperties();
                         }
@@ -530,6 +549,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                confidentialityProperties,
                                                confidenceProperties,
                                                criticalityProperties,
+                                               impactProperties,
                                                retentionProperties,
                                                ownershipProperties,
                                                zoneProperties,
@@ -579,6 +599,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param confidentialityProperties properties from the Confidentiality classification
      * @param confidenceProperties properties from the Confidence classification
      * @param criticalityProperties properties from the Criticality classification
+     * @param impactProperties properties from the Impact classification
      * @param retentionProperties properties from the Retention classification
      * @param ownershipProperties properties from the AssetOwnership classification
      * @param zoneProperties properties from the AssetZoneMembership classification
@@ -595,6 +616,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     InstanceProperties confidentialityProperties,
                                                     InstanceProperties confidenceProperties,
                                                     InstanceProperties criticalityProperties,
+                                                    InstanceProperties impactProperties,
                                                     InstanceProperties retentionProperties,
                                                     InstanceProperties ownershipProperties,
                                                     InstanceProperties zoneProperties,
@@ -730,6 +752,33 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.CRITICALITY_LEVEL_PROPERTY_NAME,
                                                                                criticalityProperties,
                                                                                methodName));
+        }
+
+        if (impactProperties != null)
+        {
+            ImpactGovernanceClassification classification = new ImpactGovernanceClassification();
+
+            classification.setStatus(this.getGovernanceClassificationStatus(impactProperties, methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        impactProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       impactProperties,
+                                                                       methodName));
+            classification.setImpactLevel(repositoryHelper.getIntProperty(serviceName,
+                                                                          OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME,
+                                                                          impactProperties,
+                                                                          methodName));
         }
 
         if (retentionProperties != null)
@@ -2108,7 +2157,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException probably the type of the entity is not correct
-     * @throws PropertyServerException there is a problem with hte repository
+     * @throws PropertyServerException there is a problem with the repository
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
     private void reEvaluateAnchorGUID(String targetGUID,
@@ -2446,6 +2495,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME, methodName),
+                                               newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.IMPACT_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, methodName),
                                                newObjectBuilder.getEntityClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, methodName),
@@ -2642,9 +2692,291 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             throw new PropertyServerException(error);
         }
+    }
+
+
+    /**
+     * Retrieve the supplementary properties glossary object.  This is the anchor of all the supplementary properties
+     * glossary terms.
+     *
+     * @param methodName calling method
+     *
+     * @return unique identifier of the supplementary properties glossary
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    private String getSupplementaryPropertiesGlossary(String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+
+        String glossaryGUID = this.getEntityGUIDByValue(localServerUserId,
+                                                        supplementaryPropertiesGlossaryName,
+                                                        supplementaryPropertiesGlossaryParameterName,
+                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                        qualifiedNamePropertyNamesList,
+                                                        methodName);
+
+        if (glossaryGUID == null)
+        {
+            InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                         null,
+                                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                         supplementaryPropertiesGlossaryName,
+                                                                                         methodName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      supplementaryPropertiesGlossaryDescription,
+                                                                      methodName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      supplementaryPropertiesGlossaryDescription,
+                                                                      methodName);
+
+            glossaryGUID = repositoryHandler.createEntity(localServerUserId,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                          null,
+                                                          null,
+                                                          properties,
+                                                          null,
+                                                          InstanceStatus.ACTIVE,
+                                                          methodName);
+        }
+
+        return glossaryGUID;
+    }
+
+
+    /**
+     * Set up the instance properties for a supplementary properties glossary term.
+     *
+     * @param existingProperties properties to add the new properties to
+     * @param displayName  display name for the term
+     * @param summary short description
+     * @param description description of the term
+     * @param abbreviation abbreviation used for the term
+     * @param usage illustrations of how the term is used
+     * @param methodName calling method
+     * @return properties object or null
+     */
+    private InstanceProperties getSupplementaryInstanceProperties(InstanceProperties existingProperties,
+                                                                  String             displayName,
+                                                                  String             summary,
+                                                                  String             description,
+                                                                  String             abbreviation,
+                                                                  String             usage,
+                                                                  String             methodName)
+    {
+        InstanceProperties properties = existingProperties;
+
+        if (displayName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      displayName,
+                                                                      methodName);
+        }
+
+        if (summary != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                      summary,
+                                                                      methodName);
+        }
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
+                                                                      methodName);
+        }
+
+        if (abbreviation != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                      abbreviation,
+                                                                      methodName);
+        }
+
+        if (usage != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                      displayName,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
 
 
 
+    /**
+     * Maintain the supplementary properties of a technical metadata element in a glossary term linked to the supplied element.
+     * The glossary term needs to be connected to a glossary which may need to be created.
+     *
+     * @param userId calling user
+     * @param elementGUID element for the
+     * @param elementQualifiedName qualified name of the linked element
+     * @param displayName  display name for the term
+     * @param summary short description
+     * @param description description of the term
+     * @param abbreviation abbreviation used for the term
+     * @param usage illustrations of how the term is used
+     * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    public void maintainSupplementaryProperties(String  userId,
+                                                String  elementGUID,
+                                                String  elementQualifiedName,
+                                                String  displayName,
+                                                String  summary,
+                                                String  description,
+                                                String  abbreviation,
+                                                String  usage,
+                                                boolean isMergeUpdate,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        if ((displayName != null) || (summary != null) || (description != null) || (abbreviation != null) || (usage != null))
+        {
+            EntityDetail glossaryTerm = this.getEntityByValue(localServerUserId,
+                                                              elementQualifiedName + supplementaryPropertiesQualifiedNamePostFix,
+                                                              supplementaryPropertiesQualifiedNameParameterName,
+                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                              qualifiedNamePropertyNamesList,
+                                                              methodName);
+
+            if (glossaryTerm == null)
+            {
+                String glossaryGUID = this.getSupplementaryPropertiesGlossary(methodName);
+
+                if (glossaryGUID != null)
+                {
+                    InstanceProperties glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
+                                                                                                        displayName,
+                                                                                                        summary,
+                                                                                                        description,
+                                                                                                        abbreviation,
+                                                                                                        usage,
+                                                                                                        methodName);
+
+                    /*
+                     * The glossary term is anchored to the element rather than the glossary.  This means that it deleted if/when
+                     * the element is deleted.
+                     */
+                    List<Classification> initialClassifications = new ArrayList<>();
+                    try
+                    {
+                        Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                              null,
+                                                                                              null,
+                                                                                              InstanceProvenanceType.LOCAL_COHORT,
+                                                                                              userId,
+                                                                                              OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                              ClassificationOrigin.ASSIGNED,
+                                                                                              null,
+                                                                                              repositoryHelper.addStringPropertyToInstance(
+                                                                                                      serviceName,
+                                                                                                      null,
+                                                                                                      OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                                                      elementGUID,
+                                                                                                      methodName));
+                        initialClassifications.add(classification);
+                    }
+                    catch (TypeErrorException error)
+                    {
+                        throw new PropertyServerException(error);
+                    }
+
+                    String glossaryTermGUID = repositoryHandler.createEntity(localServerUserId,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                             null,
+                                                                             null,
+                                                                             glossaryTermProperties,
+                                                                             initialClassifications,
+                                                                             InstanceStatus.ACTIVE,
+                                                                             methodName);
+
+                    repositoryHandler.createRelationship(userId,
+                                                         OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                         null,
+                                                         null,
+                                                         glossaryGUID,
+                                                         glossaryTermGUID,
+                                                         null,
+                                                         methodName);
+
+                    repositoryHandler.createRelationship(userId,
+                                                         OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
+                                                         null,
+                                                         null,
+                                                         elementGUID,
+                                                         glossaryTermGUID,
+                                                         null,
+                                                         methodName);
+                }
+            }
+            else
+            {
+                InstanceProperties glossaryTermProperties;
+
+                if (isMergeUpdate)
+                {
+                    glossaryTermProperties = this.getSupplementaryInstanceProperties(glossaryTerm.getProperties(),
+                                                                                     displayName,
+                                                                                     summary,
+                                                                                     description,
+                                                                                     abbreviation,
+                                                                                     usage,
+                                                                                     methodName);
+                }
+                else
+                {
+                    glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
+                                                                                     displayName,
+                                                                                     summary,
+                                                                                     description,
+                                                                                     abbreviation,
+                                                                                     usage,
+                                                                                     methodName);
+                }
+
+                repositoryHandler.updateEntityProperties(userId,
+                                                         null,
+                                                         null,
+                                                         glossaryTerm.getGUID(),
+                                                         glossaryTerm,
+                                                         null,
+                                                         null,
+                                                         glossaryTermProperties,
+                                                         methodName);
+            }
+        }
     }
 
 
@@ -3068,6 +3400,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4069,6 +4402,304 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         serverName,
                                                         methodName);
+        }
+    }
+
+
+    /**
+     * Classify as an Memento any entity if it is anchored to the anchor entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorEntity entity anchor to match against
+     * @param potentialAnchoredEntity entity to validate
+     * @param classificationOriginGUID original entity that the Memento classification  was attached to
+     * @param classificationProperties properties for the classification
+     * @param methodName calling method
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException calling user is not authorize to issue this request
+     */
+    private void archiveAnchoredEntity(String             userId,
+                                       String             externalSourceGUID,
+                                       String             externalSourceName,
+                                       EntityDetail       anchorEntity,
+                                       EntityProxy        potentialAnchoredEntity,
+                                       String             classificationOriginGUID,
+                                       InstanceProperties classificationProperties,
+                                       String             methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        /*
+         * Only need to progress if anchor entity exists.
+         */
+        if (anchorEntity != null)
+        {
+            final String guidParameterName = "potentialAnchoredEntity";
+
+            if ((potentialAnchoredEntity != null) && (potentialAnchoredEntity.getType() != null))
+            {
+                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                        potentialAnchoredEntity.getGUID(),
+                                                                        guidParameterName,
+                                                                        potentialAnchoredEntity.getType().getTypeDefName(),
+                                                                        methodName);
+
+                String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                if ((anchorGUID != null) && (anchorGUID.equals(anchorEntity.getGUID())))
+                {
+                    this.archiveBeanInRepository(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 entity.getGUID(),
+                                                 guidParameterName,
+                                                 potentialAnchoredEntity.getType().getTypeDefName(),
+                                                 ClassificationOrigin.PROPAGATED,
+                                                 classificationOriginGUID,
+                                                 classificationProperties,
+                                                 anchorEntity,
+                                                 methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
+     * been deleted or archived.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param classificationProperties properties for the classification
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void archiveBeanInRepository(String             userId,
+                                        String             externalSourceGUID,
+                                        String             externalSourceName,
+                                        String             entityGUID,
+                                        String             entityGUIDParameterName,
+                                        String             entityTypeName,
+                                        InstanceProperties classificationProperties,
+                                        String             methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        this.archiveBeanInRepository(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     entityGUID,
+                                     entityGUIDParameterName,
+                                     entityTypeName,
+                                     classificationProperties,
+                                     supportedZones,
+                                     methodName);
+    }
+
+
+    /**
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
+     * been deleted or archived. Note, this method is designed to work only on anchor entities or entities with no anchor.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param classificationProperties properties for the classification
+     * @param serviceSupportedZones supported zones for calling service
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void archiveBeanInRepository(String             userId,
+                                        String             externalSourceGUID,
+                                        String             externalSourceName,
+                                        String             entityGUID,
+                                        String             entityGUIDParameterName,
+                                        String             entityTypeName,
+                                        InstanceProperties classificationProperties,
+                                        List<String>       serviceSupportedZones,
+                                        String             methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
+                                                              entityGUID,
+                                                              entityGUIDParameterName,
+                                                              entityTypeName,
+                                                              false,
+                                                              serviceSupportedZones,
+                                                              methodName);
+
+        invalidParameterHandler.validateAnchorGUID(entityGUID,
+                                                   entityGUIDParameterName,
+                                                   anchorEntity,
+                                                   entityGUID,
+                                                   entityTypeName,
+                                                   methodName);
+
+        this.archiveBeanInRepository(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     entityGUID,
+                                     entityGUIDParameterName,
+                                     entityTypeName,
+                                     ClassificationOrigin.ASSIGNED,
+                                     entityGUID,
+                                     classificationProperties,
+                                     anchorEntity,
+                                     methodName);
+
+        /*
+         * Update the the LatestChange in the archived entity.
+         */
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+        {
+            final String actionDescriptionTemplate = "Classifying as Memento %s %s";
+
+            String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
+            int    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL;
+
+            this.addLatestChangeToAnchor(anchorEntity,
+                                         latestChangeTarget,
+                                         OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                         entityGUID,
+                                         entityTypeName,
+                                         null,
+                                         userId,
+                                         actionDescription,
+                                         methodName);
+        }
+    }
+
+
+    /**
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
+     * been deleted or archived.  Note that this classification is propagated to all elements with the same
+     * AnchorGUID.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName parameter name supplying entityGUID
+     * @param entityTypeName unique name of the entity's type
+     * @param classificationOrigin is this classification assigned or propagated?
+     * @param classificationOriginGUID which entity did a propagated classification originate from?
+     * @param classificationProperties properties for the classification
+     * @param anchorEntity anchor entity for the bean (can be null)
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repository.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private void archiveBeanInRepository(String               userId,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         String               entityGUID,
+                                         String               entityGUIDParameterName,
+                                         String               entityTypeName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties,
+                                         EntityDetail         anchorEntity,
+                                         String               methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        /*
+         * This is to pick up any errors in the iteration through the anchored elements.
+         */
+        invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        /*
+         * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.
+         * (This is why we explicitly delete the relationship to the parent element before calling this method).
+         */
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       entityGUID,
+                                                                                       entityTypeName,
+                                                                                       null,
+                                                                                       null,
+                                                                                       0,
+                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            this.archiveAnchoredEntity(userId,
+                                       externalSourceGUID,
+                                       externalSourceName,
+                                       anchorEntity,
+                                       repositoryHandler.getOtherEnd(entityGUID, entityTypeName, relationship, methodName),
+                                       classificationOriginGUID,
+                                       classificationProperties,
+                                       methodName);
+        }
+
+        /*
+         * This method explicitly removes all relationships attached to the entity before it deleted the entity.  This ensure that repository
+         * events are created for all of the relationships.  This is why the code above needs to deal with the nested entities first.
+         */
+        repositoryHandler.classifyEntity(userId,
+                                         null,
+                                         null,
+                                         entityGUID,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_GUID,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                         classificationOrigin,
+                                         classificationOriginGUID,
+                                         classificationProperties,
+                                         methodName);
+
+
+        /*
+         * Update the qualified name in the archived entity.
+         */
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+        {
+            String qualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                      anchorEntity.getProperties(),
+                                                                      methodName) + "_archivedOn_" + new Date().toString();
+
+            String entityTypeGUID = invalidParameterHandler.validateTypeName(entityTypeName,
+                                                                             OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                             serviceName,
+                                                                             methodName,
+                                                                             repositoryHelper);
+            this.updateBeanPropertyInRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                entityGUID,
+                                                entityGUIDParameterName,
+                                                entityTypeGUID,
+                                                entityTypeName,
+                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                qualifiedName,
+                                                methodName);
         }
     }
 
@@ -5259,7 +5890,6 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
-
     /**
      * Retrieve the requested element from the supplied relationship.
      *
@@ -5647,8 +6277,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                EntityDetail entity,
                                String       entityParameterName,
                                String       methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(entity, entityParameterName, methodName);
@@ -8401,13 +9031,13 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startingGUID              unique id for the starting element's entity
      * @param startingGUIDParameterName name of the parameter supplying the startingGUID
      * @param startingElementTypeName   type name of the starting element's entity
-     * @param attachedGUID             unique id of the entity for the element that is being attached
+     * @param attachedGUID              unique id of the entity for the element that is being detached
      * @param attachedGUIDParameterName name of the parameter supplying the attachedGUID
      * @param attachedElementTypeGUID   type GUID of the attaching element's entity
      * @param attachedElementTypeName   type name of the attaching element's entity
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
-     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
-     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to remove
+     * @param attachmentTypeName        unique name of type of the relationship to remove
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -8436,6 +9066,139 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachedGUID, attachedGUIDParameterName, methodName);
 
+        Relationship  relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
+                                                                                      startingGUID,
+                                                                                      startingElementTypeName,
+                                                                                      attachedGUID,
+                                                                                      attachmentTypeGUID,
+                                                                                      attachmentTypeName,
+                                                                                      methodName);
+
+
+        this.unlinkElementFromElement(userId,
+                                      onlyCreatorPermitted,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      startingGUID,
+                                      startingGUIDParameterName,
+                                      startingElementTypeName,
+                                      attachedGUID,
+                                      attachedGUIDParameterName,
+                                      attachedElementTypeGUID,
+                                      attachedElementTypeName,
+                                      suppliedSupportedZones,
+                                      attachmentTypeName,
+                                      relationship,
+                                      methodName);
+    }
+
+
+    /**
+     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
+     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
+     * as a schema or a comment conversation.
+     *
+     * @param userId                    userId of user making request
+     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachedGUID              unique id of the entity for the element that is being detached
+     * @param attachedGUIDParameterName name of the parameter supplying the attachedGUID
+     * @param attachedElementTypeGUID   type GUID of the attaching element's entity
+     * @param attachedElementTypeName   type name of the attaching element's entity
+     * @param attachmentTypeName        unique name of type of the relationship to remove
+     * @param relationship              specific relationship to remove
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating relationship in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void unlinkElementFromElement(String       userId,
+                                         boolean      onlyCreatorPermitted,
+                                         String       externalSourceGUID,
+                                         String       externalSourceName,
+                                         String       startingGUID,
+                                         String       startingGUIDParameterName,
+                                         String       startingElementTypeName,
+                                         String       attachedGUID,
+                                         String       attachedGUIDParameterName,
+                                         String       attachedElementTypeGUID,
+                                         String       attachedElementTypeName,
+                                         String       attachmentTypeName,
+                                         Relationship relationship,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        this.unlinkElementFromElement(userId,
+                                      onlyCreatorPermitted,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      startingGUID,
+                                      startingGUIDParameterName,
+                                      startingElementTypeName,
+                                      attachedGUID,
+                                      attachedGUIDParameterName,
+                                      attachedElementTypeGUID,
+                                      attachedElementTypeName,
+                                      supportedZones,
+                                      attachmentTypeName,
+                                      relationship,
+                                      methodName);
+    }
+
+
+    /**
+     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
+     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
+     * as a schema or a comment conversation.
+     *
+     * @param userId                    userId of user making request
+     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachedGUID              unique id of the entity for the element that is being detached
+     * @param attachedGUIDParameterName name of the parameter supplying the attachedGUID
+     * @param attachedElementTypeGUID   type GUID of the attaching element's entity
+     * @param attachedElementTypeName   type name of the attaching element's entity
+     * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
+     * @param attachmentTypeName        unique name of type of the relationship to remove
+     * @param relationship              specific relationship to remove
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating relationship in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void unlinkElementFromElement(String       userId,
+                                         boolean      onlyCreatorPermitted,
+                                         String       externalSourceGUID,
+                                         String       externalSourceName,
+                                         String       startingGUID,
+                                         String       startingGUIDParameterName,
+                                         String       startingElementTypeName,
+                                         String       attachedGUID,
+                                         String       attachedGUIDParameterName,
+                                         String       attachedElementTypeGUID,
+                                         String       attachedElementTypeName,
+                                         List<String> suppliedSupportedZones,
+                                         String       attachmentTypeName,
+                                         Relationship relationship,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(attachedGUID, attachedGUIDParameterName, methodName);
+
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                              startingGUID,
                                                                              startingGUIDParameterName,
@@ -8451,20 +9214,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               false,
                                                                               suppliedSupportedZones,
                                                                               methodName);
-
-        /*
-         * The calls above validate the existence of the two entities and that they are visible to the user.
-         * An exception is thrown if there are any problems.
-         * The anchor entities are returned if there are anchor entities associated with a specific end.
-         */
-
-        Relationship  relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
-                                                                                      startingGUID,
-                                                                                      startingElementTypeName,
-                                                                                      attachedGUID,
-                                                                                      attachmentTypeGUID,
-                                                                                      attachmentTypeName,
-                                                                                      methodName);
 
         /*
          * The unlink only occurs if there is a relationship.
@@ -8588,6 +9337,51 @@ public class OpenMetadataAPIGenericHandler<B>
                 }
             }
         }
+    }
+
+
+    /**
+     * Calls unlinkElementFromElement for all relationships of a certain type emanating from the requested element.
+     *
+     * @param userId                    userId of user making request
+     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
+     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating the relationships in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void unlinkAllElements(String       userId,
+                                  boolean      onlyCreatorPermitted,
+                                  String       externalSourceGUID,
+                                  String       externalSourceName,
+                                  String       startingGUID,
+                                  String       startingGUIDParameterName,
+                                  String       startingElementTypeName,
+                                  String       attachmentTypeGUID,
+                                  String       attachmentTypeName,
+                                  String       methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        this.unlinkAllElements(userId,
+                               onlyCreatorPermitted,
+                               externalSourceGUID,
+                               externalSourceName,
+                               startingGUID,
+                               startingGUIDParameterName,
+                               startingElementTypeName,
+                               supportedZones,
+                               attachmentTypeGUID,
+                               attachmentTypeName,
+                               methodName);
     }
 
 

@@ -9,7 +9,7 @@
      * is over-ridden.
      *
      * @param userId      userId of user making request.
-     * @param assetGUID   unique identifier for the asset where the like is to be attached.
+     * @param requestType   unique identifier for the asset where the like is to be attached.
      * @param isPublic    indicates whether the feedback should be shared or only be visible to the originating user
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -17,7 +17,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void   addLikeToAsset(String     userId,
-                          String     assetGUID,
+                          String     requestType,
                           boolean    isPublic) throws InvalidParameterException,
                                                       PropertyServerException,
                                                       UserNotAuthorizedException;

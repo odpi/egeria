@@ -16,6 +16,8 @@ capability around the data assets.
 * **[0507 External Schema Types](0507-External-Schema-Type.md)**
 * **[0511 Map Schema Element](0511-Map-Schema-Elements.md)**
 * **[0512 Derived Schema Elements](0512-Derived-Schema-Elements.md)**
+* **[0520 Process Schemas](0520-Process-Schemas.md)**
+* **[0525 Process Variables](0525-Process-Variables.md)**
 * **[0530 Tabular Schema](0530-Tabluar-Schemas.md)**
 * **[0531 Document Schemas](0531-Document-Schemas.md)**
 * **[0532 Object Schemas](0532-Object-Schemas.md)**
@@ -25,6 +27,7 @@ capability around the data assets.
 * **[0536 API Schemas](0536-API-Schemas.md)**
 * **[0540 Data Classes](0540-Data-Classes.md)**
 * **[0545 Reference Data](0545-Reference-Data.md)**
+* **[0550 Instance Metadata](0550-Instance-Metadata.md)**
 * **[0565 Design Model Elements](0565-Design-Model-Elements.md)**
 * **[0566 Design Model Organization](0566-Design-Model-Organization.md)**
 * **[0568 Design Model Scoping](0568-Design-Model-Scoping.md)**

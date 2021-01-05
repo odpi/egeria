@@ -20,11 +20,9 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import javax.net.ssl.*;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,13 +64,6 @@ public class SpringRESTClientConnector extends RESTClientConnector
         DefaultUriBuilderFactory builderFactory = new DefaultUriBuilderFactory();
         builderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
 
-
-        /* TODO: Disable SSL cert verification -- for now */
-        HttpsURLConnection.setDefaultHostnameVerifier(bypassVerifier);
-        SSLContext sc = SSLContext.getInstance("SSL");
-        sc.init(null, INSECURE_MANAGER, null);
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
         restTemplate = new RestTemplate();
 
         restTemplate.setUriTemplateHandler(builderFactory);
@@ -82,53 +73,6 @@ public class SpringRESTClientConnector extends RESTClientConnector
         converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
         converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
-
-    /**
-     * Dummy TrustManager that is happy with any cert
-     *
-     * @param hostname hostname
-     * @param sslSession ssl session
-     * @return boolean result
-     */
-    private static final TrustManager[] INSECURE_MANAGER = new TrustManager[]{new X509TrustManager() {
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
-
-        /**
-         * check client is trusted - it ALWAYS is in this dummy implementation
-         * (an exception would be caused if not)
-         *
-         * @param certs X509 certificates
-         * @param authType authtype
-         */
-        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-        }
-
-        /**
-         * check server is trusted - it ALWAYS is in this dummy implementation
-         * (an exception would be caused if not)
-         *
-         * @param certs X509 certificates
-         * @param authType authtype
-         */
-        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-        }
-    }
-    };
-
-    /**
-     * Dummy HostnameVerifier that is happy with any host (for the SSL host checking)
-     *
-     * @param hostname hostname
-     * @param sslSession ssl ession
-     * @return boolean result
-     */
-    private static final HostnameVerifier bypassVerifier = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession sslSession) {
-            return true;
-        }
-    };
 
     /**
      * Initialize the connector.
@@ -205,6 +149,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return response object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callGetRESTCallNoParams(String    methodName,
                                           Class<T>  returnClass,
                                           String    urlTemplate) throws RESTServerException
@@ -274,6 +219,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return response object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callGetRESTCall(String    methodName,
                                   Class<T>  returnClass,
                                   String    urlTemplate,
@@ -345,6 +291,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callPostRESTCallNoParams(String    methodName,
                                            Class<T>  returnClass,
                                            String    urlTemplate,
@@ -428,6 +375,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callPostRESTCall(String    methodName,
                                    Class<T>  returnClass,
                                    String    urlTemplate,
@@ -509,6 +457,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callPutRESTCall(String    methodName,
                                    Class<T>  returnClass,
                                    String    urlTemplate,
@@ -579,6 +528,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callDeleteRESTCallNoParams(String    methodName,
                                              Class<T>  returnClass,
                                              String    urlTemplate,
@@ -661,6 +611,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callDeleteRESTCall(String    methodName,
                                      Class<T>  returnClass,
                                      String    urlTemplate,

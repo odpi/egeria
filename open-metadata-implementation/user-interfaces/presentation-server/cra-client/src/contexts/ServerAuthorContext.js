@@ -12,6 +12,7 @@ import serverTypes from "../components/ServerAuthor/defaults/serverTypes";
 import viewServices from "../components/ServerAuthor/defaults/viewServices";
 import discoveryEngines from "../components/ServerAuthor/defaults/discoveryEngines";
 import stewardshipEngines from "../components/ServerAuthor/defaults/stewardshipEngines";
+import integrationServices from "../components/ServerAuthor/defaults/integrationServices";
 
 export const ServerAuthorContext = createContext();
 export const ServerAuthorContextConsumer = ServerAuthorContext.Consumer;
@@ -26,7 +27,7 @@ const ServerAuthorContextProvider = props => {
   const [newServerName, setNewServerName] = useState("");
   const [newServerLocalURLRoot, setNewServerLocalURLRoot] = useState("https://localhost:9443");
   const [newServerLocalServerType, setNewServerLocalServerType] = useState(serverTypes[0].label);
-  const [newServerOrganizationName, setNewServerOrganizationName] = useState(user.organizationName);
+  const [newServerOrganizationName, setNewServerOrganizationName] = useState(user ? user.organizationName || "" : "");
   const [newServerLocalUserId, setNewServerLocalUserId] = useState("");
   const [newServerLocalPassword, setNewServerLocalPassword] = useState("");
   const [newServerSecurityConnector, setNewServerSecurityConnector] = useState("");
@@ -58,6 +59,18 @@ const ServerAuthorContextProvider = props => {
   const [selectedStewardshipEngines, setSelectedStewardshipEngines] = useState([]);
   const [newServerStewardshipEngineRemoteServerName, setNewServerStewardshipEngineRemoteServerName] = useState("");
   const [newServerStewardshipEngineRemoteServerURLRoot, setNewServerStewardshipEngineRemoteServerURLRoot] = useState("");
+  // Integration Services
+  const [availableIntegrationServices, setAvailableIntegrationServices] = useState(integrationServices);
+  const [selectedIntegrationService, setSelectedIntegrationService] = useState("");
+  const [newServerIntegrationServiceRemoteServerName, setNewServerIntegrationServiceRemoteServerName] = useState("");
+  const [newServerIntegrationServiceRemoteServerURLRoot, setNewServerIntegrationServiceRemoteServerURLRoot] = useState("");
+  const [newServerIntegrationServiceConnectorName, setNewServerIntegrationServiceConnectorName] = useState("");
+  const [newServerIntegrationServiceConnectorUserId, setNewServerIntegrationServiceConnectorUserId] = useState("");
+  const [newServerIntegrationServiceConnection, setNewServerIntegrationServiceConnection] = useState("");
+  const [newServerIntegrationServiceMetadataSource, setNewServerIntegrationServiceMetadataSource] = useState("");
+  const [newServerIntegrationServiceRefreshTimeInterval, setNewServerIntegrationServiceRefreshTimeInterval] = useState(60);
+  const [newServerIntegrationServiceUsesBlockingCalls, setNewServerIntegrationServiceUsesBlockingCalls] = useState(false);
+  const [newServerIntegrationServicePermittedSynchronization, setNewServerIntegrationServicePermittedSynchronization] = useState("BOTH_DIRECTIONS");
   // Notifications
   const [notificationType, setNotificationType] = useState("error");
   const [notificationTitle, setNotificationTitle] = useState("");
@@ -69,9 +82,11 @@ const ServerAuthorContextProvider = props => {
   const [newServerConfig, setNewServerConfig] = useState(null);
   const [preventDeployment, setPreventDeployment] = useState(false);
 
+  // Refs
   const basicConfigFormStartRef = useRef(null);
   const discoveryEnginesFormStartRef = useRef(null);
   const stewardshipEnginesFormStartRef = useRef(null);
+  const integrationServicesFormStartRef = useRef(null);
   
   useEffect(() => {
     const fetchLists = async () => {
@@ -95,13 +110,13 @@ const ServerAuthorContextProvider = props => {
         timeout: 30000,
       });
       console.debug({fetchAccessServicesResponse});
-      if (fetchAccessServicesResponse.data.relatedHTTPCode == 200) {
+      if (fetchAccessServicesResponse.data.relatedHTTPCode === 200) {
         return fetchAccessServicesResponse.data.services;
       } else {
         throw new Error("Error in fetchAccessServicesResponse");
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
         console.error("Error fetching access services from platform", { error });
@@ -120,13 +135,13 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (fetchKnownServersResponse.data.relatedHTTPCode == 200) {
+      if (fetchKnownServersResponse.data.relatedHTTPCode === 200) {
         return fetchKnownServersResponse.data.serverList || [];
       } else {
         throw new Error(fetchKnownServersResponse.data.exceptionErrorMessage);
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
         console.error("Error fetching known servers.", { error });
@@ -146,13 +161,13 @@ const ServerAuthorContextProvider = props => {
         timeout: 30000,
       });
       console.debug({fetchServerConfigResponse});
-      if (fetchServerConfigResponse.data.relatedHTTPCode == 200) {
+      if (fetchServerConfigResponse.data.relatedHTTPCode === 200) {
         return fetchServerConfigResponse.data.omagserverConfig;
       } else {
         throw new Error("Error in fetchServerConfigResponse");
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");
       } else {
         console.error("Error fetching config from platform", { error });
@@ -163,27 +178,27 @@ const ServerAuthorContextProvider = props => {
 
   const generateBasicServerConfig = () => {
 
-    if (!newServerName || newServerName == "") {
+    if (!newServerName || newServerName === "") {
       throw new Error(`Cannot create OMAG server configuration without Server Name`);
     }
   
-    if (!newServerLocalURLRoot || newServerLocalURLRoot == "") {
+    if (!newServerLocalURLRoot || newServerLocalURLRoot === "") {
       throw new Error(`Cannot create OMAG server configuration without Local Server URL Root`);
     }
   
-    if (!newServerLocalServerType || newServerLocalServerType == "") {
+    if (!newServerLocalServerType || newServerLocalServerType === "") {
       throw new Error(`Cannot create OMAG server configuration without Local Server Type`);
     }
   
-    if (!newServerOrganizationName || newServerOrganizationName == "") {
+    if (!newServerOrganizationName || newServerOrganizationName === "") {
       throw new Error(`Cannot create OMAG server configuration without Organization Name`);
     }
   
-    if (!newServerLocalUserId || newServerLocalUserId == "") {
+    if (!newServerLocalUserId || newServerLocalUserId === "") {
       throw new Error(`Cannot create OMAG server configuration without Local Server User ID`);
     }
   
-    if (!newServerLocalPassword || newServerLocalPassword == "") {
+    if (!newServerLocalPassword || newServerLocalPassword === "") {
       throw new Error(`Cannot create OMAG server configuration without Local Server Password`);
     }
   
@@ -210,11 +225,11 @@ const ServerAuthorContextProvider = props => {
       }, {
         timeout: 30000,
       });
-      if (registerCohortResponse.data.relatedHTTPCode != 200) {
+      if (registerCohortResponse.data.relatedHTTPCode !== 200) {
         throw new Error("Error in registerCohortResponse");
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error registering OMAG Server with cohort", { error });
@@ -226,7 +241,7 @@ const ServerAuthorContextProvider = props => {
   const configureAccessServices = async (serviceURLMarker) => {
     console.log("called configureAccessServices", { serviceURLMarker });
     let configureAccessServicesURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/access-services`;
-    if (serviceURLMarker && serviceURLMarker != "") {
+    if (serviceURLMarker && serviceURLMarker !== "") {
       configureAccessServicesURL += `/${serviceURLMarker}`;
     }
     try {
@@ -238,11 +253,11 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (configureAccessServicesURLResponse.data.relatedHTTPCode != 200) {
+      if (configureAccessServicesURLResponse.data.relatedHTTPCode !== 200) {
         throw new Error(configureAccessServicesURLResponse.data.exceptionErrorMessage);
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error configuring access service(s).", error.message);
@@ -261,11 +276,11 @@ const ServerAuthorContextProvider = props => {
       }, {
         timeout: 30000,
       });
-      if (configureArchiveResponse.data.relatedHTTPCode != 200) {
+      if (configureArchiveResponse.data.relatedHTTPCode !== 200) {
         throw new Error("Error in configureArchiveResponse");
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error registering OMAG Server with cohort", { error });
@@ -276,7 +291,7 @@ const ServerAuthorContextProvider = props => {
 
   const configureRepositoryProxyConnector = async (className) => {
     console.log("called configureRepositoryProxyConnector", { className });
-    if (className != "") {
+    if (className !== "") {
       const configureRepositoryProxyConnectorURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/local-repository/mode/repository-proxy/details?connectorProvider=${className}`;
       try {
         const configureRepositoryProxyConnectorURLResponse = await axios.post(configureRepositoryProxyConnectorURL, {
@@ -287,11 +302,11 @@ const ServerAuthorContextProvider = props => {
           },
           timeout: 30000,
         });
-        if (configureRepositoryProxyConnectorURLResponse.data.relatedHTTPCode != 200) {
+        if (configureRepositoryProxyConnectorURLResponse.data.relatedHTTPCode !== 200) {
           throw new Error(configureRepositoryProxyConnectorURLResponse.data.exceptionErrorMessage);
         }
       } catch(error) {
-        if (error.code && error.code == 'ECONNABORTED') {
+        if (error.code && error.code === 'ECONNABORTED') {
           console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
         } else {
           console.error("Error configuring repository proxy connector.", error.message);
@@ -303,7 +318,7 @@ const ServerAuthorContextProvider = props => {
 
   const configureRepositoryEventMapperConnector = async (className, eventSource) => {
     console.log("called configureRepositoryEventMapperConnector", { className });
-    if (className != "" && eventSource != "") {
+    if (className !== "" && eventSource !== "") {
       const configureRepositoryEventMapperConnectorURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/local-repository/event-mapper-details?connectorProvider=${className}&eventSource=${eventSource}`;
       try {
         const configureRepositoryEventMapperConnectorURLResponse = await axios.post(configureRepositoryEventMapperConnectorURL, {
@@ -314,11 +329,11 @@ const ServerAuthorContextProvider = props => {
           },
           timeout: 30000,
         });
-        if (configureRepositoryEventMapperConnectorURLResponse.data.relatedHTTPCode != 200) {
-          throw new Error(configureRepositoryProxyConnectorURLResponse.data.exceptionErrorMessage);
+        if (configureRepositoryEventMapperConnectorURLResponse.data.relatedHTTPCode !== 200) {
+          throw new Error(configureRepositoryEventMapperConnectorURLResponse.data.exceptionErrorMessage);
         }
       } catch(error) {
-        if (error.code && error.code == 'ECONNABORTED') {
+        if (error.code && error.code === 'ECONNABORTED') {
           console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
         } else {
           console.error("Error configuring repository event mapper connector.", error.message);
@@ -331,7 +346,7 @@ const ServerAuthorContextProvider = props => {
   const configureViewServices = async (remoteServerURLRoot, remoteServerName, serviceURLMarker) => {
     console.log("called configureViewServices", { serviceURLMarker });
     let configureViewServicesURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/view-services`;
-    if (serviceURLMarker && serviceURLMarker != "") {
+    if (serviceURLMarker && serviceURLMarker !== "") {
       configureViewServicesURL += `/${serviceURLMarker}`;
     }
     try {
@@ -348,11 +363,11 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (configureViewServicesURLResponse.data.relatedHTTPCode != 200) {
+      if (configureViewServicesURLResponse.data.relatedHTTPCode !== 200) {
         throw new Error(configureViewServicesURLResponse.data.exceptionErrorMessage);
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error configuring view services.", error.message);
@@ -378,11 +393,11 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (configureDiscoveryEngineClientURLResponse.data.relatedHTTPCode != 200) {
+      if (configureDiscoveryEngineClientURLResponse.data.relatedHTTPCode !== 200) {
         throw new Error(configureDiscoveryEngineClientURLResponse.data.exceptionErrorMessage);
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error configuring discovery engine client (metadata server).", error.message);
@@ -404,11 +419,11 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (configureDiscoveryEnginesURLResponse.data.relatedHTTPCode != 200) {
+      if (configureDiscoveryEnginesURLResponse.data.relatedHTTPCode !== 200) {
         throw new Error(configureDiscoveryEnginesURLResponse.data.exceptionErrorMessage);
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error configuring discovery engines.", error.message);
@@ -434,11 +449,11 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (configureStewardshipEngineClientURLResponse.data.relatedHTTPCode != 200) {
+      if (configureStewardshipEngineClientURLResponse.data.relatedHTTPCode !== 200) {
         throw new Error(configureStewardshipEngineClientURLResponse.data.exceptionErrorMessage);
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error configuring stewardship engine client (metadata server).", error.message);
@@ -460,11 +475,11 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (configureStewardshipEnginesURLResponse.data.relatedHTTPCode != 200) {
+      if (configureStewardshipEnginesURLResponse.data.relatedHTTPCode !== 200) {
         throw new Error(configureStewardshipEnginesURLResponse.data.exceptionErrorMessage);
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error configuring stewardship engines.", error.message);
@@ -484,6 +499,10 @@ const ServerAuthorContextProvider = props => {
 
     switch(serverType) {
   
+      case "View Server":
+        steps.splice(steps.length - 1, 0, "Configure the Open Metadata View Services (OMVS)");
+        break;
+  
       case "Metadata Access Point":
       case "Metadata Server":
         steps.splice(2, 0, "Select access services");
@@ -501,20 +520,16 @@ const ServerAuthorContextProvider = props => {
         steps.splice(steps.length - 1, 0, "Register to a cohort");
         break;
   
-      case "View Server":
-        steps.splice(steps.length - 1, 0, "Configure the Open Metadata View Services (OMVS)");
-        break;
-  
       case "Discovery Server":
         steps.splice(steps.length - 1, 0, "Configure the discovery engine services");
         break;
   
-      case "Security Sync Server":
-        steps.splice(steps.length - 1, 0, "Configure the security sync services");
-        break;
-  
       case "Stewardship Server":
         steps.splice(steps.length - 1, 0, "Configure the stewardship engine services");
+        break;
+  
+      case "Integration Daemon":
+        steps.splice(steps.length - 1, 0, "Configure the Open Metadata Integration Services (OMIS)");
         break;
   
     }
@@ -532,11 +547,11 @@ const ServerAuthorContextProvider = props => {
       }, {
         timeout: 30000,
       });
-      if (setServerAttrResponse.data.relatedHTTPCode != 200) {
+      if (setServerAttrResponse.data.relatedHTTPCode !== 200) {
         throw new Error("Error in setServerAttrResponse");
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error configuring/updating property of OMAG Server", { error });
@@ -557,11 +572,11 @@ const ServerAuthorContextProvider = props => {
         },
         timeout: 30000,
       });
-      if (setServerConfigResponse.data.relatedHTTPCode != 200) {
+      if (setServerConfigResponse.data.relatedHTTPCode !== 200) {
         throw new Error("Error in setServerConfigResponse");
       }
     } catch(error) {
-      if (error.code && error.code == 'ECONNABORTED') {
+      if (error.code && error.code === 'ECONNABORTED') {
         console.error("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
       } else {
         console.error("Error updating configuration of OMAG Server", { error });
@@ -617,6 +632,17 @@ const ServerAuthorContextProvider = props => {
         selectedStewardshipEngines, setSelectedStewardshipEngines,
         newServerStewardshipEngineRemoteServerName, setNewServerStewardshipEngineRemoteServerName,
         newServerStewardshipEngineRemoteServerURLRoot, setNewServerStewardshipEngineRemoteServerURLRoot,
+        availableIntegrationServices, setAvailableIntegrationServices,
+        selectedIntegrationService, setSelectedIntegrationService,
+        newServerIntegrationServiceRemoteServerName, setNewServerIntegrationServiceRemoteServerName,
+        newServerIntegrationServiceRemoteServerURLRoot, setNewServerIntegrationServiceRemoteServerURLRoot,
+        newServerIntegrationServiceConnectorName, setNewServerIntegrationServiceConnectorName,
+        newServerIntegrationServiceConnectorUserId, setNewServerIntegrationServiceConnectorUserId,
+        newServerIntegrationServiceConnection, setNewServerIntegrationServiceConnection,
+        newServerIntegrationServiceMetadataSource, setNewServerIntegrationServiceMetadataSource,
+        newServerIntegrationServiceRefreshTimeInterval, setNewServerIntegrationServiceRefreshTimeInterval,
+        newServerIntegrationServiceUsesBlockingCalls, setNewServerIntegrationServiceUsesBlockingCalls,
+        newServerIntegrationServicePermittedSynchronization, setNewServerIntegrationServicePermittedSynchronization,
         notificationType, setNotificationType,
         notificationTitle, setNotificationTitle,
         notificationSubtitle, setNotificationSubtitle,
@@ -628,6 +654,7 @@ const ServerAuthorContextProvider = props => {
         basicConfigFormStartRef,
         discoveryEnginesFormStartRef,
         stewardshipEnginesFormStartRef,
+        integrationServicesFormStartRef,
         // Functions
         fetchAccessServices,
         fetchKnownServers,

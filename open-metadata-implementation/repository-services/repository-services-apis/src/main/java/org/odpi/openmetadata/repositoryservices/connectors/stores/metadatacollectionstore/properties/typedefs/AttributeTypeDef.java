@@ -284,42 +284,42 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
 
 
     /**
-     * Validated that the GUID, name and version number of a AttributeTypeDef are equal.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param object to test
-     * @return boolean flag to say object is the same TypeDefSummary
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
-    public boolean equals(Object object)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == object)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (object == null || getClass() != object.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        AttributeTypeDef that = (AttributeTypeDef) object;
+        AttributeTypeDef that = (AttributeTypeDef) objectToCompare;
         return version == that.version &&
-                Objects.equals(versionName, that.versionName) &&
-                category == that.category &&
-                Objects.equals(guid, that.guid) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(descriptionGUID, that.descriptionGUID);
+                       Objects.equals(versionName, that.versionName) &&
+                       category == that.category &&
+                       Objects.equals(guid, that.guid) &&
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(descriptionGUID, that.descriptionGUID);
     }
 
 
     /**
-     * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.
+     * Return a hash code based on the values of this object.
      *
-     * @return int hash code
+     * @return in hash code
      */
     @Override
     public int hashCode()
     {
-        return guid != null ? guid.hashCode() : 0;
+        return Objects.hash(version, versionName, category, guid, name, description, descriptionGUID);
     }
 }
 

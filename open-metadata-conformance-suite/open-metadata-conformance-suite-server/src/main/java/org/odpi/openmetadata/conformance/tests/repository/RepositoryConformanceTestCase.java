@@ -21,6 +21,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.*;
 
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE;
+
 /**
  * OpenMetadataTestCase is the superclass for an open metadata conformance test.  It manages the
  * test environment and reporting.
@@ -681,14 +683,21 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         }
 
         /*
-         * Add any properties defined for the current type, again using the known type from the repository helper
+         * Add any non-deprecated properties defined for the current type, again using the known type from the repository helper
          */
         TypeDef knownTypeDef = repositoryHelper.getTypeDefByName(userId, typeDef.getName());
         List<TypeDefAttribute> currentTypePropDefs = knownTypeDef.getPropertiesDefinition();
 
         if (currentTypePropDefs != null && !currentTypePropDefs.isEmpty())
         {
-            propDefs.addAll(currentTypePropDefs);
+            for (TypeDefAttribute tda : currentTypePropDefs)
+            {
+                if (tda.getAttributeStatus() != DEPRECATED_ATTRIBUTE)
+                {
+                    propDefs.add(tda);
+                }
+            }
+
         }
 
         return propDefs;

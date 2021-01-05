@@ -232,7 +232,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param displayName short display name for the category
      * @param description description of the governance category
      * @param additionalProperties additional properties for a governance category
-     * @param typeName type of term
+     * @param suppliedTypeName type of term
      * @param extendedProperties  properties for a governance category subtype
      * @param methodName calling method
      *
@@ -247,7 +247,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                          String              displayName,
                                          String              description,
                                          Map<String, String> additionalProperties,
-                                         String              typeName,
+                                         String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
@@ -258,6 +258,13 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
@@ -404,7 +411,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param searchStringParameterName name of parameter supplying hte search string
+     * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -441,6 +448,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary to query
+     * @param glossaryGUIDParameterName name of the parameter supplying glossaryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -586,6 +594,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param glossaryCategoryGUIDParameterName parameter name of the glossaryCategoryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return list of glossary category element
      *

@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthService authService;
@@ -25,16 +25,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling().and()
             .anonymous().and()
             .authorizeRequests()
-            .antMatchers("/api/css/**").permitAll()
-            .antMatchers("/api/js/**").permitAll()
+            .antMatchers("/api/public/**").permitAll()
+            .antMatchers("/api/public/css/**").permitAll()
+            .antMatchers("/api/public/js/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new LoggingRequestFilter("/api/auth/login"), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new LoginFilter("/api/auth/login", authenticationManager(), authService),
-                    UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(
+                    new LoginFilter("/api/auth/login",
+                            authenticationManager(),
+                            authService,
+                            getAuthenticationExceptionHandler()),UsernamePasswordAuthenticationFilter.class)
         ;
     }
 
@@ -48,4 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public InetOrgPersonContextMapper userContextMapper() {
         return new InetOrgPersonContextMapper();
     }
+
+    protected abstract AuthenticationExceptionHandler getAuthenticationExceptionHandler();
 }

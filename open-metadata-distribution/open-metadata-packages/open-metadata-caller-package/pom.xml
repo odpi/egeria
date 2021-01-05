@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-packages</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.5-SNAPSHOT</version>
+        <version>2.6-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Caller Package</name>
@@ -37,6 +37,14 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>analytics-modeling-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-analysis-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-spring</artifactId>
         </dependency>
         <dependency>
@@ -49,11 +57,19 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-manager-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>community-profile-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>digital-architecture-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-service-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

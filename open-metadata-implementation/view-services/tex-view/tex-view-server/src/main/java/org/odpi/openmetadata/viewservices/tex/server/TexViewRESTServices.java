@@ -168,6 +168,7 @@ public class TexViewRESTServices {
                                                                  requestBody.getServerName(),
                                                                  requestBody.getPlatformName(),
                                                                  requestBody.getEnterpriseOption(),
+                                                                 requestBody.getDeprecationOption(),
                                                                  methodName));
 
             }

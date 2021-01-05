@@ -17,7 +17,7 @@ public class TestOMRSErrorCode extends ExceptionMessageSetTest
     /**
      * Validated the values of the enum.
      */
-    @Test(enabled=false) public void testAllErrorCodeValues()
+    @Test public void testAllErrorCodeValues()
     {
         for (OMRSErrorCode errorCode : OMRSErrorCode.values())
         {

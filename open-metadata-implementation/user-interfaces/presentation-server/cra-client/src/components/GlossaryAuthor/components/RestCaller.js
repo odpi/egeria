@@ -1,6 +1,38 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
+function processErrorJson(operationName, json, response) {
+  const relatedHTTPCode = json.relatedHTTPCode;
+  let msg = operationName + "Unexpected response.";
+  if (relatedHTTPCode) {
+    if (json.exceptionUserAction) {
+      msg = json.exceptionUserAction;
+    } else if (relatedHTTPCode >= 300 && relatedHTTPCode <= 399) {
+      msg =
+        operationName +
+        "Client error.";
+    } else if (relatedHTTPCode >= 400 && relatedHTTPCode <= 499) {
+      msg = "Server error.";
+    } else {
+      msg = "Http error code " + relatedHTTPCode + ".";
+    }
+  } else if (response.errno) {
+    if (response.errno === "ECONNREFUSED") {
+      msg = "Connection refused to the view server.";
+    } else {
+      // TODO create nice messages for all the http codes we think are relevant
+      msg = "Http errno " + response.errno;
+    }
+  } else {
+    msg = "Unexpected response" + JSON.stringify(response);
+  }
+  msg =
+    operationName +
+    " failed. " +
+    msg +
+    " Contact your administrator to review the server logs.";
+  return msg;
+}
 export async function issueRestGet(url, onSuccessful, onError) {
   try {
     const response = await fetch(url, {
@@ -11,31 +43,22 @@ export async function issueRestGet(url, onSuccessful, onError) {
       },
     });
     const json = await response.json();
+    console.log("issueRestGet complete");
+    let msg;
 
-    if (json.relatedHTTPCode == 200) {
-      let msg;
+    if (json.relatedHTTPCode === 200 && json.result) {
       if (json.result) {
         onSuccessful(json);
-      } else if (json.relatedHTTPCode) {
-        if (json.exceptionUserAction) {
-          msg = "Get Failed: " + json.exceptionUserAction;
-        } else {
-          msg =
-            "Get Failed unexpected Egeria response: " + JSON.stringify(json);
-        }
-      } else if (response.errno) {
-        if (response.errno == "ECONNREFUSED") {
-          msg = "Connection refused to the view server.";
-        } else {
-          // TODO create nice messages for all the http codes we think are relevant
-          msg = "Get Failed with http errno " + response.errno;
-        }
       } else {
-        msg = "Get Failed - unexpected response" + JSON.stringify(json);
+        // got nothing
+        msg =
+          "Error. Get request succeded but there were no results. Contact your administrator to review the server logs for errors.";
       }
-      if (msg) {
-        onError(msg);
-      }
+    } else {
+      msg = processErrorJson("Get", json, response);
+    }
+    if (msg) {
+      onError(msg);
     }
   } catch (msg) {
     onError(msg);
@@ -54,25 +77,18 @@ export async function issueRestCreate(url, body, onSuccessful, onError) {
       body: JSON.stringify(body),
     });
     const json = await response.json();
+    const relatedHTTPCode = json.relatedHTTPCode;
     let msg;
-    if (json.relatedHTTPCode == 200 && json.result && json.result[0]) {
-      onSuccessful(json);
-    } else if (json.relatedHTTPCode) {
-      if (json.exceptionUserAction) {
-        msg = "Create Failed: " + json.exceptionUserAction;
+    if (relatedHTTPCode === 200 && json.result) {
+      if (json.result) {
+        onSuccessful(json);
       } else {
+        // got nothing
         msg =
-          "Create Failed unexpected Egeria response: " + JSON.stringify(json);
-      }
-    } else if (response.errno) {
-      if (response.errno == "ECONNREFUSED") {
-        msg = "Connection refused to the view server.";
-      } else {
-        // TODO create nice messages for all the http codes we think are relevant
-        msg = "Create Failed with http errno " + response.errno;
+          "Error. Create request succeded but there were no results. Contact your administrator to review the server logs for errors.";
       }
     } else {
-      msg = "Create Failed - unexpected response" + JSON.stringify(json);
+      msg = processErrorJson("Create", json, response);
     }
     if (msg) {
       onError(msg);
@@ -91,32 +107,9 @@ export async function issueRestDelete(deleteUrl, onSuccessful, onError) {
         "Content-Type": "application/json",
       },
     });
-    const json = await response.json();
-    // for delete there is no response
-    if (json.relatedHTTPCode == 200) {
-      let msg;
-
-      if (json.relatedHTTPCode) {
-        if (json.exceptionUserAction) {
-          msg = "Delete Failed: " + json.exceptionUserAction;
-        } else {
-          onSuccessful(json);
-        }
-      } else if (response.errno) {
-        if (response.errno == "ECONNREFUSED") {
-          msg = "Connection refused to the view server.";
-        } else {
-          // TODO create nice messages for all the http codes we think are relevant
-          msg = "Delete Failed with http errno " + response.errno;
-        }
-      } else {
-        msg =
-          "Delete Failed unexpected Egeria response: " + JSON.stringify(json);
-      }
-      if (msg) {
-        onError(msg);
-      }
-    }
+    await response.json();
+    // no response from a delete so no json to return or look for errors in 
+    onSuccessful();
   } catch (msg) {
     onError(msg);
   }
@@ -134,24 +127,17 @@ export async function issueRestUpdate(url, body, onSuccessful, onError) {
     });
     const json = await response.json();
     let msg;
-    if (json.relatedHTTPCode == 200 && json.result && json.result[0]) {
-      onSuccessful(json);
-    } else if (json.relatedHTTPCode) {
-      if (json.exceptionUserAction) {
-        msg = "Update Failed: " + json.exceptionUserAction;
+    const relatedHTTPCode = json.relatedHTTPCode;
+    if (relatedHTTPCode === 200 && json.result) {
+      if (json.result) {
+        onSuccessful(json);
       } else {
+        // got nothing
         msg =
-          "Update Failed unexpected Egeria response: " + JSON.stringify(json);
-      }
-    } else if (response.errno) {
-      if (response.errno == "ECONNREFUSED") {
-        msg = "Connection refused to the view server.";
-      } else {
-        // TODO create nice messages for all the http codes we think are relevant
-        msg = "Update Failed with http errno " + response.errno;
+          "Error. Update request succeded but there were no results. Contact your administrator to review the server logs for errors.";
       }
     } else {
-      msg = "Update Failed - unexpected response" + JSON.stringify(json);
+      msg = processErrorJson("Update", json, response);
     }
     if (msg) {
       onError(msg);

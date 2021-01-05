@@ -175,6 +175,7 @@ public class AssetExternalIdentifier extends AssetReferenceable
     }
 
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -188,7 +189,7 @@ public class AssetExternalIdentifier extends AssetReferenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetExternalIdentifier))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -197,6 +198,18 @@ public class AssetExternalIdentifier extends AssetReferenceable
             return false;
         }
         AssetExternalIdentifier that = (AssetExternalIdentifier) objectToCompare;
-        return Objects.equals(getExternalIdentifierBean(), that.getExternalIdentifierBean());
+        return Objects.equals(externalIdentifierBean, that.externalIdentifierBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), externalIdentifierBean);
     }
 }

@@ -26,6 +26,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.LoggerFactory;
 
@@ -1423,7 +1424,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(connection, serverName, methodName);
+            errorHandler.validateServerConnection(connection, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -1543,7 +1544,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(connection, serverName, methodName);
+            errorHandler.validateServerConnection(connection, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -2102,7 +2103,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(auditLogDestination, serverName, methodName);
+            errorHandler.validateServerConnection(auditLogDestination, serverName, methodName);
 
             if (auditLogDestination != null)
             {
@@ -2197,7 +2198,7 @@ public class OMAGServerAdminServices
             {
                 for (Connection connection : auditLogDestinations)
                 {
-                    errorHandler.validateConnection(connection, serverName, methodName);
+                    errorHandler.validateServerConnection(connection, serverName, methodName);
                 }
             }
 
@@ -3088,6 +3089,36 @@ public class OMAGServerAdminServices
 
         return response;
     }
+    /**
+     * Return the stored configuration documents stored on the platform
+     *
+     * @param userId  user that is issuing the request
+     * @return OMAGServerConfigs properties or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid parameter occurred while processing.
+     */
+    public OMAGServerConfigsResponse retrieveAllServerConfigs(String userId) {
+        final String methodName = "retrieveAllServerConfigs";
+
+        RESTCallToken token = restCallLogger.logRESTCall("", userId, methodName);
+        OMAGServerConfigsResponse response = new OMAGServerConfigsResponse();
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+            response.setOMAGServerConfigs(configStore.retrieveAllServerConfigs(userId, methodName));
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        } catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
     /**
@@ -3132,4 +3163,5 @@ public class OMAGServerAdminServices
 
         return response;
     }
+
 }

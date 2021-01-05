@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useContext } from "react";
+import React from "react";
 import "./app.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./auth/login";
 import Frame from "./Frame";
-import IdentificationContext  from "./contexts/IdentificationContext";
+import IdentificationContext from "./contexts/IdentificationContext";
 
 export default function App() {
   return (
@@ -14,7 +14,7 @@ export default function App() {
         <Router>
           <Switch>
             <Route path="/*/login" exact>
-              <Login />
+              <Login currentURL={window.location.href} />
             </Route>
             <Route path="/*/">
               <Frame />

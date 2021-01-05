@@ -79,12 +79,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param glossaryGUID unique identifier of the owning glossary
      * @param glossaryGUIDParameterName parameter supplying glossaryGUID
      * @param qualifiedName unique name for the category - used in other configuration
-     * @param displayName short display name for the term
-     * @param summary string text
-     * @param description description of the  term
-     * @param examples string text
-     * @param abbreviation string text
-     * @param usage string text
+     * @param displayName  display name for the term
+     * @param summary short description
+     * @param description description of the term
+     * @param examples examples of this term
+     * @param abbreviation abbreviation used for the term
+     * @param usage illustrations of how the term is used
      * @param additionalProperties additional properties for a term
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a term subtype
@@ -153,6 +153,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
+
+        builder.setAnchors(userId, glossaryGUID, methodName);
 
         String glossaryTermGUID = this.createBeanInRepository(userId,
                                                               null,
@@ -1121,6 +1123,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid

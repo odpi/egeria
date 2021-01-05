@@ -116,10 +116,36 @@ public enum GraphOMRSErrorCode implements ExceptionMessageSet
             "There is an already a relationship with GUID {0} so cannot honor request to create relationship in {1} method of class {2} to open metadata repository {3}",
             "The system is unable to perform the request because there is already a relationship with the same GUID.",
             "Correct the caller's code and retry the create request."),
-    INVALID_MATCH_PROPERTY(400, "OMRS-GRAPH-REPOSITORY-400-024",
-                           "The match property with name {0} is of type {1} instead of the correct type {2} - reported by the {3} method of class {4} to open metadata repository {5}",
-                           "The system is unable to perform the request because the match properties are not valid.",
-                           "Check the named match property is not deprecated and has the correct type, then retry the request."),
+    INVALID_MATCH_PROPERTY(
+            400, "OMRS-GRAPH-REPOSITORY-400-024",
+            "The match property with name {0} is of type {1} instead of the correct type {2} - reported by the {3} method of class {4} to open metadata repository {5}",
+            "The system is unable to perform the request because the match properties are not valid.",
+            "Check the named match property is not deprecated and has the correct type, then retry the request."),
+    INVALID_PROPERTY_CONDITION(
+            400, "OMRS-GRAPH-REPOSITORY-400-025",
+            "The search properties contains an invalid combination of property conditions - reported by the {0} method of class {1} to open metadata repository {2}",
+            "The system is unable to perform the request because the search properties is incorrect.",
+            "Correct the caller's code and retry the request."),
+    UNSUPPORTED_SEARCH_PROPERTY_OPERATOR(
+            400, "OMRS-GRAPH-REPOSITORY-400-026",
+            "The search properties contains a property condition with unsupported operator {0} - reported by the {1} method of class {2} to open metadata repository {3}",
+            "The system is unable to perform the request because the search properties operator is not supported.",
+            "Please use a different operator or raise an issue."),
+    INVALID_SEARCH_PROPERTY_VALUE(
+            400, "OMRS-GRAPH-REPOSITORY-400-027",
+            "The search properties contains an invalid value for property {0} - reported by the {1} method of class {2} to open metadata repository {3}",
+            "The system is unable to perform the request because the search property does not have a valid value.",
+            "Correct the caller's code and retry the request."),
+    INVALID_SEARCH_PROPERTY_NAME(
+            400, "OMRS-GRAPH-REPOSITORY-400-028",
+            "The search properties contains an unknown property {0} - reported by the {1} method of class {2} to open metadata repository {3}",
+            "The system is unable to perform the request because the search property is not known.",
+            "Correct the caller's code and retry the request."),
+    INVALID_SEARCH_PROPERTY_TYPE(
+            400, "OMRS-GRAPH-REPOSITORY-400-029",
+            "The search properties contains a values that do not match the type of property {0} - reported by the {1} method of class {2} to open metadata repository {3}",
+            "The system is unable to perform the request because the provided values do not match the type of the property.",
+            "Correct the caller's code and retry the request."),
 
     ;
 
@@ -154,6 +180,7 @@ public enum GraphOMRSErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -166,12 +193,14 @@ public enum GraphOMRSErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
     }
+
 
     /**
      * toString() JSON-style

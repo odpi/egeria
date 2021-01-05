@@ -1,0 +1,9 @@
+lineage-display-config:
+  rules:
+    -
+     edgeType: SemanticAssignment
+     destinationNodeType: GlossaryTerm
+     sourceNodeType: GlossaryCategory
+    -
+     edgeType : TermCategorization
+

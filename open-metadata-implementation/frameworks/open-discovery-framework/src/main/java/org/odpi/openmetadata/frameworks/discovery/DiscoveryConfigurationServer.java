@@ -309,7 +309,7 @@ public abstract class DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param discoveryRequestTypes list of discovery request types that this discovery service is able to process.
+     * @param discoveryRequestType discovery request type that this discovery service is able to process.
      * @param defaultAnalysisParameters list of analysis parameters that are passed the the discovery service (via
      *                                  the discovery context).  These values can be overridden on the actual discovery request.
      *
@@ -320,7 +320,7 @@ public abstract class DiscoveryConfigurationServer
     public abstract void  registerDiscoveryServiceWithEngine(String               userId,
                                                              String               discoveryEngineGUID,
                                                              String               discoveryServiceGUID,
-                                                             List<String>         discoveryRequestTypes,
+                                                             String               discoveryRequestType,
                                                              Map<String, String>  defaultAnalysisParameters) throws InvalidParameterException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     PropertyServerException;

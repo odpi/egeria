@@ -172,7 +172,7 @@ public class LineageIntegratorContext
                                                       UserNotAuthorizedException,
                                                       PropertyServerException
     {
-        dataAssetExchangeClient.publishAsset(userId, assetGUID);
+        dataAssetExchangeClient.publishAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
     }
 
 
@@ -191,8 +191,7 @@ public class LineageIntegratorContext
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
-        dataAssetExchangeClient.withdrawAsset(userId, assetGUID);
-
+        dataAssetExchangeClient.withdrawAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
     }
 
 
@@ -217,7 +216,7 @@ public class LineageIntegratorContext
     /**
      * Classify the asset to indicate that it can be used as reference data.
      *
-     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetGUID unique identifier of the metadata element to update
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -234,7 +233,7 @@ public class LineageIntegratorContext
     /**
      * Remove the reference data designation from the asset.
      *
-     * @param assetGUID unique identifier of the metadata element to remove
+     * @param assetGUID unique identifier of the metadata element to update
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -436,6 +435,8 @@ public class LineageIntegratorContext
     /**
      * Connect a schema type to a data asset, process or port.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -443,18 +444,27 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaTypeParent(String parentElementGUID,
-                                      String parentElementTypeName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void setupSchemaTypeParent(boolean assetManagerIsHome,
+                                      String  schemaTypeGUID,
+                                      String  parentElementGUID,
+                                      String  parentElementTypeName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        dataAssetExchangeClient.setupSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+        dataAssetExchangeClient.setupSchemaTypeParent(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      assetManagerIsHome,
+                                                      schemaTypeGUID,
+                                                      parentElementGUID,
+                                                      parentElementTypeName);
     }
 
 
     /**
      * Remove the relationship between a schema type and its parent data asset, process or port.
      *
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -462,12 +472,18 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaTypeParent(String parentElementGUID,
+    public void clearSchemaTypeParent(String schemaTypeGUID,
+                                      String parentElementGUID,
                                       String parentElementTypeName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        dataAssetExchangeClient.clearSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+        dataAssetExchangeClient.clearSchemaTypeParent(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      schemaTypeGUID,
+                                                      parentElementGUID,
+                                                      parentElementTypeName);
     }
 
 
@@ -529,7 +545,11 @@ public class LineageIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaTypeForElement(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+        return dataAssetExchangeClient.getSchemaTypeForElement(userId,
+                                                               assetManagerGUID,
+                                                               assetManagerName,
+                                                               parentElementGUID,
+                                                               parentElementTypeName);
     }
 
 
@@ -695,6 +715,7 @@ public class LineageIntegratorContext
      * Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.
      *
      * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param formula description of how the value is calculated
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -723,10 +744,7 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaElementAsCalculatedValue(String userId,
-                                                    String assetManagerGUID,
-                                                    String assetManagerName,
-                                                    String schemaElementGUID) throws InvalidParameterException,
+    public void clearSchemaElementAsCalculatedValue(String schemaElementGUID) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -1152,14 +1170,14 @@ public class LineageIntegratorContext
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        lineageExchangeClient.publishProcess(userId, processGUID);
+        lineageExchangeClient.publishProcess(userId, assetManagerGUID, assetManagerName, processGUID);
     }
 
 
     /**
      * Update the zones for the asset so that it is no longer visible to consumers.
      * (The zones are set to the list of zones in the defaultZones option configured for each
-     * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
+     * instance of the Asset Manager OMAS.  This is the setting when the process is first created).
      *
      * @param processGUID unique identifier of the metadata element to withdraw
      *
@@ -1171,7 +1189,7 @@ public class LineageIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        lineageExchangeClient.withdrawProcess(userId, processGUID);
+        lineageExchangeClient.withdrawProcess(userId, assetManagerGUID, assetManagerName, processGUID);
     }
 
 
@@ -1731,7 +1749,7 @@ public class LineageIntegratorContext
     /**
      * Retrieve the data flow relationship between two elements.  The qualifiedName is optional unless there
      * is more than one data flow relationships between these two elements since it is used to disambiguate
-     * the request.
+     * the request.  This is often used in conjunction with update.
      *
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
@@ -1749,7 +1767,7 @@ public class LineageIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        return lineageExchangeClient.getDataFlow(userId, dataSupplierGUID, dataConsumerGUID, qualifiedName);
+        return lineageExchangeClient.getDataFlow(userId, assetManagerGUID, assetManagerName, dataSupplierGUID, dataConsumerGUID, qualifiedName);
     }
 
 
@@ -1794,6 +1812,45 @@ public class LineageIntegratorContext
     }
 
 
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     *
+     * @param dataSupplierGUID unique identifier of the data supplier
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataFlowElement> getDataFlowConsumers(String dataSupplierGUID) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return lineageExchangeClient.getDataFlowConsumers(userId, assetManagerGUID, assetManagerName, dataSupplierGUID);
+    }
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     *
+     * @param dataConsumerGUID unique identifier of the data consumer
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return lineageExchangeClient.getDataFlowSuppliers(userId, assetManagerGUID, assetManagerName, dataConsumerGUID);
+    }
+
+
     /**
      * Link two elements to show that when one completes the next is started.
      *
@@ -1834,7 +1891,7 @@ public class LineageIntegratorContext
     /**
      * Retrieve the control flow relationship between two elements.  The qualifiedName is optional unless there
      * is more than one control flow relationships between these two elements since it is used to disambiguate
-     * the request.
+     * the request.  This is often used in conjunction with update.
      *
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
@@ -1852,7 +1909,7 @@ public class LineageIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getControlFlow(userId, currentStepGUID, nextStepGUID, qualifiedName);
+        return lineageExchangeClient.getControlFlow(userId, assetManagerGUID, assetManagerName, currentStepGUID, nextStepGUID, qualifiedName);
     }
 
 
@@ -1902,6 +1959,45 @@ public class LineageIntegratorContext
     }
 
 
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     *
+     * @param currentStepGUID unique identifier of the current step
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ControlFlowElement> getControlFlowNextSteps(String currentStepGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return lineageExchangeClient.getControlFlowNextSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID);
+    }
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     *
+     * @param currentStepGUID unique identifier of the current step
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ControlFlowElement> getControlFlowPreviousSteps(String currentStepGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        return lineageExchangeClient.getControlFlowPreviousSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID);
+    }
+
+
     /**
      * Link two elements together to show a request-response call between them.
      *
@@ -1942,7 +2038,7 @@ public class LineageIntegratorContext
     /**
      * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
      * is more than one process call relationships between these two elements since it is used to disambiguate
-     * the request.
+     * the request.  This is often used in conjunction with update.
      *
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
@@ -1960,7 +2056,7 @@ public class LineageIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getProcessCall(userId, callerGUID, calledGUID, qualifiedName);
+        return lineageExchangeClient.getProcessCall(userId, assetManagerGUID, assetManagerName, callerGUID, calledGUID, qualifiedName);
     }
 
 
@@ -2011,12 +2107,48 @@ public class LineageIntegratorContext
 
 
     /**
-     * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships match the DataFlow relationships.
-     * However, they may occur at less granular process definitions that the detailed data and control flows
-     * that have been captured.
+     * Retrieve the process call relationships linked from an specific element to the elements it calls.
      *
-     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param callerGUID unique identifier of the element that is making the call
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessCallElement> getProcessCalled(String callerGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return lineageExchangeClient.getProcessCalled(userId, assetManagerGUID, assetManagerName, callerGUID);
+    }
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to its callers.
+     *
+     * @param calledGUID unique identifier of the element that is processing the call
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessCallElement> getProcessCallers(String calledGUID) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return lineageExchangeClient.getProcessCallers(userId, assetManagerGUID, assetManagerName, calledGUID);
+    }
+
+
+    /**
+     * Link to elements together to show that they are part of the lineage of the data that is moving
+     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * supported by different technologies.
+     *
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
      *
@@ -2024,8 +2156,7 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupLineageMapping(boolean assetManagerIsHome,
-                                    String  sourceElementGUID,
+    public void setupLineageMapping(String  sourceElementGUID,
                                     String  destinationElementGUID) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -2033,7 +2164,6 @@ public class LineageIntegratorContext
         lineageExchangeClient.setupLineageMapping(userId,
                                                   assetManagerGUID,
                                                   assetManagerName,
-                                                  assetManagerIsHome,
                                                   sourceElementGUID,
                                                   destinationElementGUID);
     }

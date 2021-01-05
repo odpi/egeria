@@ -35,7 +35,14 @@ public enum ViewServiceDescription implements Serializable
                   "Dynamic Infrastructure and Operations OMVS",
                   "dino",
                   "Explore and operate an open metadata ecosystem.",
-                  "https://egeria.odpi.org/open-metadata-implementation/view-services/dino-view/");
+                  "https://egeria.odpi.org/open-metadata-implementation/view-services/dino-view/"),
+
+    SERVER_AUTHOR(5004,
+                 "Server Author",
+                 "Server Author OMVS",
+                 "server-author",
+                 "Author servers.",
+                 "https://egeria.odpi.org/open-metadata-implementation/view-services/server-author-view/");
 
     private static final long serialVersionUID = 1L;
 

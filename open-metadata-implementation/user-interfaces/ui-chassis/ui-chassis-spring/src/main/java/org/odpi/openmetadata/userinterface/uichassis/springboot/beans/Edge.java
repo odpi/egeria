@@ -13,6 +13,12 @@ public class Edge {
         this.to = to;
     }
 
+    public Edge(String from, String to, String label) {
+        this.from = from;
+        this.to = to;
+        this.label = label;
+    }
+
     public String getFrom() {
         return from;
     }

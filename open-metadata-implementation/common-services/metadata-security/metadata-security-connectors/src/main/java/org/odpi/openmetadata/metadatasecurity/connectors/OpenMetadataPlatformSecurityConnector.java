@@ -70,6 +70,11 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
     }
 
 
+    /**
+     * Set up the the URL Root for the platform where this is running.
+     *
+     * @param serverURLRoot url root
+     */
     public void setServerPlatformURL(String    serverURLRoot)
     {
         this.serverRootURL = serverURLRoot;
@@ -104,6 +109,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -120,6 +126,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
+    @Override
     public void  validateUserForNewServer(String   userId) throws UserNotAuthorizedException
     {
         final String methodName = "validateUserForNewServer";
@@ -135,6 +142,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this platform
      */
+    @Override
     public void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
         final String methodName = "validateUserAsOperatorForPlatform";
@@ -150,6 +158,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this platform
      */
+    @Override
     public void  validateUserAsInvestigatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
         final String methodName = "validateUserAsInvestigatorForPlatform";
@@ -163,6 +172,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

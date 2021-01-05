@@ -1,10 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
+# Usage: docker run -d -p 9443:9443 odpi/egeria
+# 
+# All dynamic data is stored under /deployments/data, so map a volume or k8s pvc to this 
+# to persist egeria configuration, local graph repo etc ie
+# docker run -v source=egeria-data,target=/deployments/data odpi/egeria:latest 
+#
+# See readme in source tree or on docker hub for more info
+
 # Based on RedHat UBI image.
 # https://catalog.redhat.com/software/containers/ubi8/openjdk-11/5dd6a4b45a13461646f677f4?container-tabs=gti&gti-tabs=unauthenticated
+
+
 FROM registry.access.redhat.com/ubi8/openjdk-11
-ARG version=2.5-SNAPSHOT
+ARG version=2.6-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown

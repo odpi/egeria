@@ -41,7 +41,7 @@ public class GovernanceZoneInAction extends GovernanceZoneDefinition
     {
         super(template);
 
-        if (template == null)
+        if (template != null)
         {
             this.zoneMembershipCount = template.getZoneMembershipCount();
         }

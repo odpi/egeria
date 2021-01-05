@@ -134,7 +134,7 @@ public class SimpleSchemaType extends SchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof SimpleSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -144,6 +144,18 @@ public class SimpleSchemaType extends SchemaType
         }
         SimpleSchemaType that = (SimpleSchemaType) objectToCompare;
         return Objects.equals(getDataType(), that.getDataType()) &&
-                Objects.equals(getDefaultValue(), that.getDefaultValue());
+                       Objects.equals(getDefaultValue(), that.getDefaultValue());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getDataType(), getDefaultValue());
     }
 }

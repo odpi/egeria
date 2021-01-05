@@ -58,17 +58,4 @@ public abstract class GovernanceProgramOMASAPIRequestBody implements java.io.Ser
     {
         return "GovernanceProgramOMASAPIRequestBody{}";
     }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        return (objectToCompare instanceof GovernanceProgramOMASAPIRequestBody);
-    }
 }

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * GlossaryExchangeRESTServices is the server-side implementation of the Asset Manager OMAS's
- * support for relational databases.  It matches the GlossaryExchangeClient.
+ * support for glossaries.  It matches the GlossaryExchangeClient.
  */
 public class GlossaryExchangeRESTServices
 {
@@ -64,7 +64,7 @@ public class GlossaryExchangeRESTServices
     {
         final String   methodName = "createGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
@@ -75,7 +75,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossary(userId,
                                                         requestBody.getMetadataCorrelationProperties(),
@@ -134,7 +134,7 @@ public class GlossaryExchangeRESTServices
     {
         final String methodName = "createGlossaryFromTemplate";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
@@ -145,7 +145,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryFromTemplate(userId,
                                                                     requestBody.getMetadataCorrelationProperties(),
@@ -212,7 +212,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.updateGlossary(userId,
                                        requestBody.getMetadataCorrelationProperties(),
@@ -278,7 +278,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.removeGlossary(userId, requestBody, glossaryGUID, methodName);
         }
@@ -341,7 +341,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.setGlossaryAsTaxonomy(userId,
                                               requestBody.getMetadataCorrelationProperties(),
@@ -406,7 +406,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearGlossaryAsTaxonomy(userId, requestBody, glossaryGUID, methodName);
         }
@@ -468,7 +468,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.setGlossaryAsCanonical(userId,
                                                requestBody.getMetadataCorrelationProperties(),
@@ -533,7 +533,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearGlossaryAsCanonical(userId, requestBody, glossaryGUID, methodName);
         }
@@ -566,9 +566,9 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -594,7 +594,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findGlossaries(userId,
                                                                requestBody.getAssetManagerGUID(),
@@ -639,9 +639,9 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -667,7 +667,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getGlossariesByName(userId,
                                                                     requestBody.getAssetManagerGUID(),
@@ -737,7 +737,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -810,7 +810,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -888,7 +888,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryCategory(userId,
                                                                 glossaryGUID,
@@ -955,7 +955,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryCategoryFromTemplate(userId,
                                                                             requestBody.getMetadataCorrelationProperties(),
@@ -1022,7 +1022,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.updateGlossaryCategory(userId,
                                                requestBody.getMetadataCorrelationProperties(),
@@ -1089,7 +1089,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1164,7 +1164,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1236,7 +1236,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.removeGlossaryCategory(userId, requestBody, glossaryCategoryGUID, methodName);
         }
@@ -1297,7 +1297,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findGlossaryCategories(userId,
                                                                        requestBody.getAssetManagerGUID(),
@@ -1369,7 +1369,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1449,7 +1449,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getGlossaryCategoriesByName(userId,
                                                                             requestBody.getAssetManagerGUID(),
@@ -1517,7 +1517,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1589,7 +1589,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1664,7 +1664,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1745,7 +1745,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryTerm(userId,
                                                             glossaryGUID,
@@ -1812,7 +1812,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createControlledGlossaryTerm(userId,
                                                                       glossaryGUID,
@@ -1880,7 +1880,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryTermFromTemplate(userId,
                                                                         requestBody.getMetadataCorrelationProperties(),
@@ -1947,7 +1947,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.updateGlossaryTerm(userId,
                                            requestBody.getMetadataCorrelationProperties(),
@@ -2015,7 +2015,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.updateGlossaryTermStatus(userId,
                                                  requestBody.getMetadataCorrelationProperties(),
@@ -2084,7 +2084,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.setupTermCategory(userId,
                                           requestBody.getAssetManagerGUID(),
@@ -2153,7 +2153,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2232,7 +2232,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.setupTermRelationship(userId,
                                                requestBody.getAssetManagerGUID(),
@@ -2306,7 +2306,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.updateTermRelationship(userId,
                                                glossaryTermOneGUID,
@@ -2376,7 +2376,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2452,7 +2452,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.setTermAsAbstractConcept(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -2508,7 +2508,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearTermAsAbstractConcept(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -2564,7 +2564,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.setTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -2620,7 +2620,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -2678,7 +2678,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.setTermAsActivity(userId,
                                           requestBody.getMetadataCorrelationProperties(),
@@ -2743,7 +2743,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearTermAsActivity(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -2801,7 +2801,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.setTermAsContext(userId,
                                          requestBody.getMetadataCorrelationProperties(),
@@ -2866,7 +2866,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearTermAsContext(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -2922,7 +2922,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.setTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -2978,7 +2978,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -3035,7 +3035,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.setTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -3091,7 +3091,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -3147,7 +3147,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.setTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -3203,7 +3203,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.clearTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -3259,7 +3259,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             handler.removeGlossaryTerm(userId, requestBody, glossaryTermGUID, methodName);
         }
@@ -3320,7 +3320,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findGlossaryTerms(userId,
                                                                   requestBody.getAssetManagerGUID(),
@@ -3392,7 +3392,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -3472,7 +3472,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -3552,7 +3552,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getGlossaryTermsByName(userId,
                                                                        requestBody.getAssetManagerGUID(),
@@ -3619,7 +3619,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -3699,7 +3699,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createExternalGlossaryLink(userId,
                                                                     requestBody.getAssetManagerGUID(),
@@ -3766,7 +3766,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.updateExternalGlossaryLink(userId,
                                                    requestBody.getAssetManagerGUID(),
@@ -3833,7 +3833,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -3906,7 +3906,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -3981,7 +3981,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -4056,7 +4056,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             response.setElementList(handler.getExternalLinksForGlossary(userId, glossaryGUID, startFrom, pageSize, methodName));
         }
@@ -4116,7 +4116,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -4196,7 +4196,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.attachExternalCategoryLink(userId,
                                                    requestBody.getAssetManagerGUID(),
@@ -4265,7 +4265,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -4343,7 +4343,7 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                 handler.attachExternalTermLink(userId,
                                                requestBody.getAssetManagerGUID(),
@@ -4412,7 +4412,7 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {

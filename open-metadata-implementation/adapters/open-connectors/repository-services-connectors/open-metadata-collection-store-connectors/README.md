@@ -25,13 +25,10 @@ provides a local repository that uses a graph store as its persistence store.
 
 * **[inmemory-repository-connector](inmemory-repository-connector)** -
 provides a local repository that is entirely in memory.  It is useful for
-testing/developing OMASs and demos.
-
-* **[read-only-repository-connector](readonly-repository-connector)** -
+testing/developing OMASs and demos.  This module also contains the  **read-only-repository-connector** that
 provides a read only in-memory repository that can be used to host fixed content from an
 [Open Metadata Archive](../../../../../open-metadata-resources/open-metadata-archives).
 The fact that it is read only means that no new content can be mastered in it.
-
 
 Finally there is  the **[omrs-rest-repository-connector](omrs-rest-repository-connector)**
 which  uses the OMRS REST API to call an open metadata-compliant repository.
