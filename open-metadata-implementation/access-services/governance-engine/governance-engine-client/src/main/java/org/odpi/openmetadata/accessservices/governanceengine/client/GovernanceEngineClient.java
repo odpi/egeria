@@ -918,15 +918,18 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
     public void recordCompletionStatus(CompletionStatus status,
-                                       List<String>     outputGuards) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                       List<String>     outputGuards,
+                                       List<String>     newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
 
     }
@@ -945,7 +948,6 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
      * @param requestType request type to identify the governance action service to run
-     * @param guards guards to pass on to the requested action
      * @param requestProperties properties to pass to the governance action service
      *
      * @return unique identifier of the governance action
@@ -962,7 +964,6 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                            List<String>        actionTargetGUIDs,
                                            Date                startTime,
                                            String              requestType,
-                                           String              guards,
                                            Map<String, String> requestProperties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
