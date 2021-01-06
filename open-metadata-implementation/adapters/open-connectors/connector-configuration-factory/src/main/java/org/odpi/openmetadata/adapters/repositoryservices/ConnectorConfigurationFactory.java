@@ -22,8 +22,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
-import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
@@ -613,80 +611,6 @@ public class ConnectorConfigurationFactory
 
         return connection;
     }
-
-
-    /**
-     * Return the connection.  This is using the RangerConnector.
-     *
-     * @param url  url for the Security Server
-     * @param configurationProperties name value pairs for the connection
-     * @return Connection object
-     */
-    public Connection getSecuritySyncServerConnection(String              url,
-                                                      Map<String, Object> configurationProperties)
-    {
-        Endpoint endpoint = new Endpoint();
-
-        endpoint.setAddress(url);
-
-        Connection connection = new Connection();
-
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(RangerSecurityServiceConnectorProvider.class.getName()));
-        connection.setConfigurationProperties(configurationProperties);
-
-        return connection;
-    }
-
-
-    /**
-     * Return the connection. This is used by view generator connectors
-     *
-     * @param connectorProviderClassName the class name of the
-     * @param virtualizationSolutionConfig related configuration
-     * @return connection object
-     */
-    public Connection getVirtualizationSolutionConnection (String              connectorProviderClassName,
-                                                           Map<String, Object> virtualizationSolutionConfig)
-    {
-        Connection connection = new Connection();
-        Map<String, String> additionalProperties = new HashMap<>();
-        Endpoint endpoint = new Endpoint();
-
-
-        if (ConnectorClassName.GAIAN_DB_CONNECTOR.equals(connectorProviderClassName))
-        {
-            endpoint.setAddress(virtualizationSolutionConfig.get("serverAddress").toString());
-
-            Map<String, String> endpointProperties = new HashMap<>();
-            endpointProperties.put("timeoutInSecond", virtualizationSolutionConfig.get("timeoutInSecond").toString());
-            endpointProperties.put("create", virtualizationSolutionConfig.get("create").toString());
-            endpointProperties.put("connectorProviderName", connectorProviderClassName);
-
-            endpoint.setAdditionalProperties(endpointProperties);
-
-            connection.setUserId(virtualizationSolutionConfig.get("username").toString());
-            connection.setClearPassword(virtualizationSolutionConfig.get("password").toString());
-            connection.setEndpoint(endpoint);
-
-            additionalProperties.put("gdbNode", virtualizationSolutionConfig.get("gdbNode").toString());
-            additionalProperties.put("logicTableName",virtualizationSolutionConfig.get("logicTableName").toString());
-            additionalProperties.put("logicTableDefinition", virtualizationSolutionConfig.get("logicTableDefinition").toString());
-            additionalProperties.put("getLogicTables", virtualizationSolutionConfig.get("getLogicTables").toString());
-            additionalProperties.put("frontendName", virtualizationSolutionConfig.get("frontendName").toString());
-            additionalProperties.put("dataSchema", virtualizationSolutionConfig.get("schema").toString());
-            additionalProperties.put("databaseName", virtualizationSolutionConfig.get("databaseName").toString());
-
-            connection.setAdditionalProperties(additionalProperties);
-        }
-        else
-        {
-            log.error("Provided connector class is not registered in virtualizer api or implemented.");
-        }
-
-        return connection;
-    }
-
 
 
     /**

@@ -32,6 +32,7 @@
     <modules>
         <module>security-officer-api</module>
         <module>security-officer-client</module>
+        <module>security-officer-topic-connectors</module>
         <module>security-officer-server</module>
         <module>security-officer-spring</module>
     </modules>

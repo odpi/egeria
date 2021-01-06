@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-api</artifactId>
+            <artifactId>security-officer-api</artifactId>
         </dependency>
 
         <dependency>

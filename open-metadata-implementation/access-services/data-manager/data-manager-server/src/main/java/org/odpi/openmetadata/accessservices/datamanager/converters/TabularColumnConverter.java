@@ -48,6 +48,7 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public <T> B getNewSchemaAttributeBean(Class<B>           beanClass,
                                            EntityDetail       schemaAttributeEntity,
                                            Class<T>           typeClass,

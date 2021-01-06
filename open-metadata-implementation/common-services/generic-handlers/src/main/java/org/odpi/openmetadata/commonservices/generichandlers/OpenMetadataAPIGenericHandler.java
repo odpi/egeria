@@ -2157,7 +2157,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException probably the type of the entity is not correct
-     * @throws PropertyServerException there is a problem with hte repository
+     * @throws PropertyServerException there is a problem with the repository
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
     private void reEvaluateAnchorGUID(String targetGUID,
@@ -9031,13 +9031,13 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startingGUID              unique id for the starting element's entity
      * @param startingGUIDParameterName name of the parameter supplying the startingGUID
      * @param startingElementTypeName   type name of the starting element's entity
-     * @param attachedGUID             unique id of the entity for the element that is being attached
+     * @param attachedGUID              unique id of the entity for the element that is being detached
      * @param attachedGUIDParameterName name of the parameter supplying the attachedGUID
      * @param attachedElementTypeGUID   type GUID of the attaching element's entity
      * @param attachedElementTypeName   type name of the attaching element's entity
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
-     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
-     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to remove
+     * @param attachmentTypeName        unique name of type of the relationship to remove
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -9066,6 +9066,139 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachedGUID, attachedGUIDParameterName, methodName);
 
+        Relationship  relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
+                                                                                      startingGUID,
+                                                                                      startingElementTypeName,
+                                                                                      attachedGUID,
+                                                                                      attachmentTypeGUID,
+                                                                                      attachmentTypeName,
+                                                                                      methodName);
+
+
+        this.unlinkElementFromElement(userId,
+                                      onlyCreatorPermitted,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      startingGUID,
+                                      startingGUIDParameterName,
+                                      startingElementTypeName,
+                                      attachedGUID,
+                                      attachedGUIDParameterName,
+                                      attachedElementTypeGUID,
+                                      attachedElementTypeName,
+                                      suppliedSupportedZones,
+                                      attachmentTypeName,
+                                      relationship,
+                                      methodName);
+    }
+
+
+    /**
+     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
+     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
+     * as a schema or a comment conversation.
+     *
+     * @param userId                    userId of user making request
+     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachedGUID              unique id of the entity for the element that is being detached
+     * @param attachedGUIDParameterName name of the parameter supplying the attachedGUID
+     * @param attachedElementTypeGUID   type GUID of the attaching element's entity
+     * @param attachedElementTypeName   type name of the attaching element's entity
+     * @param attachmentTypeName        unique name of type of the relationship to remove
+     * @param relationship              specific relationship to remove
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating relationship in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void unlinkElementFromElement(String       userId,
+                                         boolean      onlyCreatorPermitted,
+                                         String       externalSourceGUID,
+                                         String       externalSourceName,
+                                         String       startingGUID,
+                                         String       startingGUIDParameterName,
+                                         String       startingElementTypeName,
+                                         String       attachedGUID,
+                                         String       attachedGUIDParameterName,
+                                         String       attachedElementTypeGUID,
+                                         String       attachedElementTypeName,
+                                         String       attachmentTypeName,
+                                         Relationship relationship,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        this.unlinkElementFromElement(userId,
+                                      onlyCreatorPermitted,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      startingGUID,
+                                      startingGUIDParameterName,
+                                      startingElementTypeName,
+                                      attachedGUID,
+                                      attachedGUIDParameterName,
+                                      attachedElementTypeGUID,
+                                      attachedElementTypeName,
+                                      supportedZones,
+                                      attachmentTypeName,
+                                      relationship,
+                                      methodName);
+    }
+
+
+    /**
+     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
+     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
+     * as a schema or a comment conversation.
+     *
+     * @param userId                    userId of user making request
+     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachedGUID              unique id of the entity for the element that is being detached
+     * @param attachedGUIDParameterName name of the parameter supplying the attachedGUID
+     * @param attachedElementTypeGUID   type GUID of the attaching element's entity
+     * @param attachedElementTypeName   type name of the attaching element's entity
+     * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
+     * @param attachmentTypeName        unique name of type of the relationship to remove
+     * @param relationship              specific relationship to remove
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating relationship in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void unlinkElementFromElement(String       userId,
+                                         boolean      onlyCreatorPermitted,
+                                         String       externalSourceGUID,
+                                         String       externalSourceName,
+                                         String       startingGUID,
+                                         String       startingGUIDParameterName,
+                                         String       startingElementTypeName,
+                                         String       attachedGUID,
+                                         String       attachedGUIDParameterName,
+                                         String       attachedElementTypeGUID,
+                                         String       attachedElementTypeName,
+                                         List<String> suppliedSupportedZones,
+                                         String       attachmentTypeName,
+                                         Relationship relationship,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(attachedGUID, attachedGUIDParameterName, methodName);
+
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                              startingGUID,
                                                                              startingGUIDParameterName,
@@ -9081,20 +9214,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               false,
                                                                               suppliedSupportedZones,
                                                                               methodName);
-
-        /*
-         * The calls above validate the existence of the two entities and that they are visible to the user.
-         * An exception is thrown if there are any problems.
-         * The anchor entities are returned if there are anchor entities associated with a specific end.
-         */
-
-        Relationship  relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
-                                                                                      startingGUID,
-                                                                                      startingElementTypeName,
-                                                                                      attachedGUID,
-                                                                                      attachmentTypeGUID,
-                                                                                      attachmentTypeName,
-                                                                                      methodName);
 
         /*
          * The unlink only occurs if there is a relationship.
@@ -9218,6 +9337,51 @@ public class OpenMetadataAPIGenericHandler<B>
                 }
             }
         }
+    }
+
+
+    /**
+     * Calls unlinkElementFromElement for all relationships of a certain type emanating from the requested element.
+     *
+     * @param userId                    userId of user making request
+     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
+     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating the relationships in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void unlinkAllElements(String       userId,
+                                  boolean      onlyCreatorPermitted,
+                                  String       externalSourceGUID,
+                                  String       externalSourceName,
+                                  String       startingGUID,
+                                  String       startingGUIDParameterName,
+                                  String       startingElementTypeName,
+                                  String       attachmentTypeGUID,
+                                  String       attachmentTypeName,
+                                  String       methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        this.unlinkAllElements(userId,
+                               onlyCreatorPermitted,
+                               externalSourceGUID,
+                               externalSourceName,
+                               startingGUID,
+                               startingGUIDParameterName,
+                               startingElementTypeName,
+                               supportedZones,
+                               attachmentTypeGUID,
+                               attachmentTypeName,
+                               methodName);
     }
 
 

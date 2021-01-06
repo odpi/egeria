@@ -24,7 +24,7 @@ public class DataPlatformOMASRegistration {
     {
         AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 ServiceOperationalStatus.DISABLED,
                                                                                  DataPlatformAdmin.class.getName());
 
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

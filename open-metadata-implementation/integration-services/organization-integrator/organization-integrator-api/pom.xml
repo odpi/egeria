@@ -41,6 +41,11 @@
             <artifactId>integration-daemon-services-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

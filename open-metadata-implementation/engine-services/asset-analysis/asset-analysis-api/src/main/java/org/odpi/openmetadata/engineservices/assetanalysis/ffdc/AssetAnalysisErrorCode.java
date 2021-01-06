@@ -185,6 +185,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -197,6 +198,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);

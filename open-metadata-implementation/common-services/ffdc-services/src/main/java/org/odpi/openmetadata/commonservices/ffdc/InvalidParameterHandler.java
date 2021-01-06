@@ -126,7 +126,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied GUID is null
      *
      * @param guid           unique identifier to validate
      * @param guidParameter  name of the parameter that passed the guid.
@@ -149,7 +149,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied name is null
      *
      * @param name           unique name to validate
      * @param nameParameter  name of the parameter that passed the name.
@@ -172,7 +172,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied search string is null
      *
      * @param searchString   searchString to validate
      * @param searchParameter  name of the parameter that passed the searchString.
@@ -196,7 +196,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied object is null
      *
      * @param object         object to validate
      * @param nameParameter  name of the parameter that passed the object.

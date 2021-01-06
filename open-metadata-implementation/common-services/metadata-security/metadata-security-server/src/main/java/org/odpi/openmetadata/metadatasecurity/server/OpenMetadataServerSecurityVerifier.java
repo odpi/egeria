@@ -149,6 +149,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @throws InvalidParameterException one of the parameter values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Override
     public List<String> setSupportedZonesForUser(List<String>  supportedZones,
                                                  String        serviceName,
                                                  String        user) throws InvalidParameterException,
@@ -247,6 +248,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Override
     public List<String> setAssetZonesToDefault(List<String>  defaultZones,
                                                Asset         asset) throws InvalidParameterException,
                                                                            PropertyServerException
@@ -291,6 +293,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @throws PropertyServerException there is a problem calculating the zones
      */
     @Deprecated
+    @Override
     public List<String> verifyAssetZones(List<String>  defaultZones,
                                          List<String>  supportedZones,
                                          Asset         originalAsset,
@@ -372,6 +375,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Override
     public List<String> verifyAssetZones(List<String>  defaultZones,
                                          List<String>  supportedZones,
                                          List<String>  publishZones,
@@ -402,6 +406,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this function
      */
+    @Override
     public void  validateUserForServer(String   userId) throws UserNotAuthorizedException
     {
         if (connector != null)
@@ -418,6 +423,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws UserNotAuthorizedException the user is not authorized to change configuration
      */
+    @Override
     public void  validateUserAsServerAdmin(String   userId) throws UserNotAuthorizedException
     {
         if (connector != null)
@@ -434,6 +440,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this server
      */
+    @Override
     public void  validateUserAsServerOperator(String   userId) throws UserNotAuthorizedException
     {
         if (connector != null)
@@ -450,6 +457,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this server
      */
+    @Override
     public void  validateUserAsServerInvestigator(String   userId) throws UserNotAuthorizedException
     {
         if (connector != null)
@@ -467,6 +475,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public void  validateUserForService(String   userId,
                                         String   serviceName) throws UserNotAuthorizedException
     {
@@ -486,6 +495,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public void  validateUserForServiceOperation(String   userId,
                                                  String   serviceName,
                                                  String   serviceOperationName) throws UserNotAuthorizedException
@@ -504,6 +514,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param connection connection object
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public void  validateUserForConnection(String     userId,
                                            Connection connection) throws UserNotAuthorizedException
     {
@@ -524,6 +535,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @return selected connection or null (pretend there are no connections attached to the asset) or
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public Connection validateUserForAssetConnectionList(String           userId,
                                                          Asset            asset,
                                                          List<Connection> connections) throws UserNotAuthorizedException
@@ -597,6 +609,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param userId identifier of user
      * @throws UserNotAuthorizedException the user is not authorized to access this zone
      */
+    @Override
     public void  validateUserForAssetCreate(String     userId,
                                             Asset      asset) throws UserNotAuthorizedException
     {
@@ -613,6 +626,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param userId identifier of user
      * @throws UserNotAuthorizedException the user is not authorized to access this zone
      */
+    @Override
     public void  validateUserForAssetRead(String     userId,
                                           Asset      asset) throws UserNotAuthorizedException
     {
@@ -661,6 +675,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
+    @Override
     public void  validateUserForAssetDetailUpdate(String           userId,
                                                   Asset            originalAsset,
                                                   AssetAuditHeader originalAssetAuditHeader,
@@ -681,6 +696,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param asset original asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
+    @Override
     public void  validateUserForAssetAttachmentUpdate(String     userId,
                                                       Asset      asset) throws UserNotAuthorizedException
     {
@@ -699,6 +715,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param asset original asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
+    @Override
     public void  validateUserForAssetFeedback(String     userId,
                                               Asset      asset) throws UserNotAuthorizedException
     {
@@ -716,6 +733,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param asset asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
+    @Override
     public void  validateUserForAssetDelete(String     userId,
                                             Asset      asset) throws UserNotAuthorizedException
     {
@@ -739,6 +757,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeCreate(String  userId,
                                            String  metadataCollectionName,
                                            TypeDef typeDef) throws UserNotAuthorizedException
@@ -758,6 +777,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeCreate(String           userId,
                                            String           metadataCollectionName,
                                            AttributeTypeDef attributeTypeDef) throws UserNotAuthorizedException
@@ -777,6 +797,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve types
      */
+    @Override
     public void  validateUserForTypeRead(String     userId,
                                          String     metadataCollectionName,
                                          TypeDef    typeDef) throws UserNotAuthorizedException
@@ -796,6 +817,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve types
      */
+    @Override
     public void  validateUserForTypeRead(String              userId,
                                          String              metadataCollectionName,
                                          AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
@@ -816,6 +838,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param patch changes to the type
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeUpdate(String       userId,
                                            String       metadataCollectionName,
                                            TypeDef      typeDef,
@@ -836,6 +859,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeDelete(String     userId,
                                            String     metadataCollectionName,
                                            TypeDef    typeDef) throws UserNotAuthorizedException
@@ -855,6 +879,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeDelete(String              userId,
                                            String              metadataCollectionName,
                                            AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
@@ -876,6 +901,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newTypeDefName new name for this type.
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeReIdentify(String  userId,
                                                String  metadataCollectionName,
                                                TypeDef originalTypeDef,
@@ -899,6 +925,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newTypeDefName new name for this type.
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeReIdentify(String           userId,
                                                String           metadataCollectionName,
                                                AttributeTypeDef originalAttributeTypeDef,
@@ -936,6 +963,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityCreate(String                     userId,
                                              String                     metadataCollectionName,
                                              String                     entityTypeGUID,
@@ -963,6 +991,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntityRead(String          userId,
                                            String          metadataCollectionName,
                                            EntityDetail    instance) throws UserNotAuthorizedException
@@ -982,6 +1011,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntitySummaryRead(String        userId,
                                                   String        metadataCollectionName,
                                                   EntitySummary instance) throws UserNotAuthorizedException
@@ -1001,6 +1031,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntityProxyRead(String      userId,
                                                 String      metadataCollectionName,
                                                 EntityProxy instance) throws UserNotAuthorizedException
@@ -1020,6 +1051,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityUpdate(String          userId,
                                              String          metadataCollectionName,
                                              EntityDetail    instance) throws UserNotAuthorizedException
@@ -1042,6 +1074,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityClassificationAdd(String               userId,
                                                         String               metadataCollectionName,
                                                         EntityDetail         instance,
@@ -1070,6 +1103,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityClassificationUpdate(String               userId,
                                                            String               metadataCollectionName,
                                                            EntityDetail         instance,
@@ -1097,6 +1131,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param classificationName String name for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityClassificationDelete(String               userId,
                                                            String               metadataCollectionName,
                                                            EntityDetail         instance,
@@ -1120,6 +1155,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityDelete(String       userId,
                                              String       metadataCollectionName,
                                              EntityDetail instance) throws UserNotAuthorizedException
@@ -1139,6 +1175,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityRestore(String       userId,
                                               String       metadataCollectionName,
                                               String       deletedEntityGUID) throws UserNotAuthorizedException
@@ -1159,6 +1196,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newGUID the new guid for the instance.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityReIdentification(String       userId,
                                                        String       metadataCollectionName,
                                                        EntityDetail instance,
@@ -1180,6 +1218,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newTypeDefSummary details of this instance's new TypeDef.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityReTyping(String         userId,
                                                String         metadataCollectionName,
                                                EntityDetail   instance,
@@ -1202,6 +1241,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityReHoming(String         userId,
                                                String         metadataCollectionName,
                                                EntityDetail   instance,
@@ -1231,6 +1271,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipCreate(String               userId,
                                                    String               metadataCollectionName,
                                                    String               relationshipTypeGUID,
@@ -1260,6 +1301,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForRelationshipRead(String          userId,
                                                  String          metadataCollectionName,
                                                  Relationship    instance) throws UserNotAuthorizedException
@@ -1279,6 +1321,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipUpdate(String          userId,
                                                    String          metadataCollectionName,
                                                    Relationship    instance) throws UserNotAuthorizedException
@@ -1298,6 +1341,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipDelete(String       userId,
                                                    String       metadataCollectionName,
                                                    Relationship instance) throws UserNotAuthorizedException
@@ -1338,6 +1382,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newGUID the new guid for the instance.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipReIdentification(String       userId,
                                                              String       metadataCollectionName,
                                                              Relationship instance,
@@ -1359,6 +1404,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newTypeDefSummary details of this instance's new TypeDef.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipReTyping(String         userId,
                                                      String         metadataCollectionName,
                                                      Relationship   instance,
@@ -1381,6 +1427,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipReHoming(String         userId,
                                                      String         metadataCollectionName,
                                                      Relationship   instance,

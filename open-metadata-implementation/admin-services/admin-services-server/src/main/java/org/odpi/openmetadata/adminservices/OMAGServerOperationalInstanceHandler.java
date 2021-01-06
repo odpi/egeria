@@ -37,6 +37,7 @@ public class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInsta
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
+    @Override
     public OMAGOperationalServicesInstance getServerServiceInstance(String userId,
                                                                     String serverName,
                                                                     String serviceOperationName) throws InvalidParameterException,

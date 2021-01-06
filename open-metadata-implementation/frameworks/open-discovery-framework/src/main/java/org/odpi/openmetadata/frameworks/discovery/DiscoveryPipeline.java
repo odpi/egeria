@@ -29,6 +29,7 @@ public abstract class DiscoveryPipeline extends DiscoveryService implements Virt
      *
      * @param embeddedConnectors  list of embedded connectors that are hopefully discovery services
      */
+    @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
     {
         this.embeddedConnectors = embeddedConnectors;
@@ -40,6 +41,7 @@ public abstract class DiscoveryPipeline extends DiscoveryService implements Virt
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         final String methodName   = "start";
@@ -75,6 +77,7 @@ public abstract class DiscoveryPipeline extends DiscoveryService implements Virt
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

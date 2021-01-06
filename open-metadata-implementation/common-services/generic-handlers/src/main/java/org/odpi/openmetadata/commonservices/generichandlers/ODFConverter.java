@@ -289,9 +289,6 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
 
                 case OTHER:
                     return ElementStatus.OTHER;
-
-                case DELETED:
-                    return ElementStatus.DELETED;
             }
         }
 
