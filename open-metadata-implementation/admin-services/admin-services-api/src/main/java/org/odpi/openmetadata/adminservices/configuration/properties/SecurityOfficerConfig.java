@@ -16,7 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SecurityOfficerConfig provides the properties for the security-Officer-services.
+ * SecurityOfficerConfig provides the properties for the deprecated security-officer-services.  This function
+ * is replaced by the new services in the Engine Host OMAG Server and Integration Daemon OMAG Server.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -610,6 +610,76 @@ public class DataAssetExchangeRESTServices
 
 
     /**
+     * Step through the assets visible to this caller.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody search parameter and correlation properties
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public AssetElementsResponse scanAssets(String                             serverName,
+                                            String                             userId,
+                                            int                                startFrom,
+                                            int                                pageSize,
+                                            AssetManagerIdentifiersRequestBody requestBody)
+    {
+        final String methodName = "scanAssets";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.scanAssets(userId,
+                                                           requestBody.getAssetManagerGUID(),
+                                                           requestBody.getAssetManagerName(),
+                                                           startFrom,
+                                                           pageSize,
+                                                           methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Retrieve the list of asset metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *

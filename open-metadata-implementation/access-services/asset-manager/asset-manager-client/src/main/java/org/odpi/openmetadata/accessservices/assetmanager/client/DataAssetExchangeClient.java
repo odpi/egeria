@@ -581,6 +581,53 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
 
     /**
+     * Step through the assets visible to this caller.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<AssetElement> scanAssets(String userId,
+                                         String assetManagerGUID,
+                                         String assetManagerName,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String methodName = "scanAssets";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/scan?startFrom={2}&pageSize={3}";
+
+        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 requestBody,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 startFrom,
+                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
      * Retrieve the list of asset metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *

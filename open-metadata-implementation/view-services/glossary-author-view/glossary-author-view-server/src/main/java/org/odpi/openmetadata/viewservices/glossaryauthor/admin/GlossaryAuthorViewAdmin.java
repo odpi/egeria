@@ -57,7 +57,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
         }
         //TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
         if (maxPageSize < MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE) {
-            final String viewServiceFullName = viewServiceConfig.getViewServiceFullName();
+            final String viewServiceFullName = viewServiceConfigurationProperties.getViewServiceFullName();
             // There is a minimum max page size of this view service so that the UI can issue a paging call up to MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE-1 and
             // the view service will support that page size. This means tha UI javascript can issue a single rest call to get the users page of data.
 

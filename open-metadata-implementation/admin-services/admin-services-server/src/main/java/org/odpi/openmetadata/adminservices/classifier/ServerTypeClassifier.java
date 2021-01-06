@@ -19,7 +19,6 @@ import java.util.List;
 public class ServerTypeClassifier
 {
     private static final String ACCESS_SERVICES_NAME      = "Open Metadata Access Services (OMAS)";
-    private static final String ENGINE_SERVICES_NAME      = "Open Metadata Engine Services (OMES)";
     private static final String INTEGRATION_SERVICES_NAME = "Open Metadata Integration Services (OMIS)";
     private static final String VIEW_SERVICES_NAME        = "Open Metadata View Services (OMVS)";
 
@@ -58,29 +57,21 @@ public class ServerTypeClassifier
 
         RepositoryServicesConfig        repositoryServicesConfig        = configurationDocument.getRepositoryServicesConfig();
         List<AccessServiceConfig>       accessServiceConfigList         = configurationDocument.getAccessServicesConfig();
-        List<EngineServiceConfig>       engineServiceConfigList         = configurationDocument.getEngineServicesConfig();
         List<IntegrationServiceConfig>  integrationServiceConfigList    = configurationDocument.getIntegrationServicesConfig();
         List<ViewServiceConfig>         viewServiceConfigList           = configurationDocument.getViewServicesConfig();
         ConformanceSuiteConfig          conformanceSuiteConfig          = configurationDocument.getConformanceSuiteConfig();
+        EngineHostServicesConfig        engineHostServicesConfig        = configurationDocument.getEngineHostServicesConfig();
         OpenLineageServerConfig         openLineageServerConfig         = configurationDocument.getOpenLineageServerConfig();
-        SecuritySyncConfig              securitySyncConfig              = configurationDocument.getSecuritySyncConfig();
-        SecurityOfficerConfig           securityOfficerConfig           = configurationDocument.getSecurityOfficerConfig();
-        VirtualizationConfig            virtualizationConfig            = configurationDocument.getVirtualizationConfig();
         DataEngineProxyConfig           dataEngineProxyConfig           = configurationDocument.getDataEngineProxyConfig();
-        DataPlatformServicesConfig      dataPlatformServicesConfig      = configurationDocument.getDataPlatformServicesConfig();
 
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
-                (engineServiceConfigList == null) &&
+                (engineHostServicesConfig == null) &&
                 (integrationServiceConfigList == null) &&
                 (viewServiceConfigList == null) &&
                 (conformanceSuiteConfig == null) &&
                 (openLineageServerConfig == null) &&
-                (securitySyncConfig == null) &&
-                (securityOfficerConfig == null) &&
-                (virtualizationConfig == null) &&
-                (dataEngineProxyConfig == null) &&
-                (dataPlatformServicesConfig == null))
+                (dataEngineProxyConfig == null))
         {
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.EMPTY_CONFIGURATION.getMessageDefinition(serverName),
                                                       this.getClass().getName(),
@@ -132,33 +123,13 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
+                                                GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
+                                                engineHostServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -182,8 +153,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
+                                                GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
+                                                engineHostServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -202,28 +173,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
         }
 
         if (dataEngineProxyConfig != null)
@@ -237,8 +188,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
+                                                GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
+                                                engineHostServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -257,86 +208,11 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
         }
 
-        if (dataPlatformServicesConfig != null)
-        {
-            serverTypeClassification = ServerTypeClassification.DATA_PLATFORM_SERVER;
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ACCESS_SERVICES_NAME,
-                                                accessServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                VIEW_SERVICES_NAME,
-                                                viewServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
-        }
-
-        if (engineServiceConfigList != null)
+        if (engineHostServicesConfig != null)
         {
             serverTypeClassification = ServerTypeClassification.ENGINE_HOST;
 
@@ -367,28 +243,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
         }
 
         if (integrationServiceConfigList != null)
@@ -402,8 +258,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
+                                                GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
+                                                engineHostServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -422,28 +278,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
         }
 
         if (openLineageServerConfig != null)
@@ -457,8 +293,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
+                                                GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
+                                                engineHostServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -479,191 +315,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
                                                 dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
-        }
-
-        if (securitySyncConfig != null)
-        {
-            serverTypeClassification = ServerTypeClassification.SECURITY_SYNC_SERVER;
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ACCESS_SERVICES_NAME,
-                                                accessServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                VIEW_SERVICES_NAME,
-                                                viewServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
-        }
-
-        if (securityOfficerConfig != null)
-        {
-            serverTypeClassification = ServerTypeClassification.SECURITY_OFFICER_SERVER;
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ACCESS_SERVICES_NAME,
-                                                accessServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                VIEW_SERVICES_NAME,
-                                                viewServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
-        }
-
-        if (virtualizationConfig != null)
-        {
-            serverTypeClassification = ServerTypeClassification.VIRTUALIZER_SERVER;
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ACCESS_SERVICES_NAME,
-                                                accessServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                VIEW_SERVICES_NAME,
-                                                viewServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
         }
 
         if (viewServiceConfigList != null)
@@ -677,8 +328,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                ENGINE_SERVICES_NAME,
-                                                engineServiceConfigList);
+                                                GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
+                                                engineHostServicesConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -697,28 +348,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                dataPlatformServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                securitySyncConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                securityOfficerConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                virtualizationConfig);
         }
 
         if (serverTypeClassification == null)
@@ -756,7 +387,7 @@ public class ServerTypeClassifier
      * @param methodName calling method
      * @throws OMAGInvalidParameterException resulting exception if config document is null.
      */
-    @SuppressWarnings(value = "deprecated")
+    @SuppressWarnings(value = "deprecation")
     private void validateConfigurationDocumentNotNull(String            serverName,
                                                       OMAGServerConfig  configurationDocument,
                                                       String            methodName) throws  OMAGInvalidParameterException
@@ -764,6 +395,14 @@ public class ServerTypeClassifier
         if (configurationDocument == null)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_SERVER_CONFIG.getMessageDefinition(serverName),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        if (configurationDocument.getDataPlatformServicesConfig() != null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
+                                                                                                              configurationDocument.getDataPlatformServicesConfig().toString()),
                                                     this.getClass().getName(),
                                                     methodName);
         }
@@ -776,10 +415,34 @@ public class ServerTypeClassifier
                                                     methodName);
         }
 
+        if (configurationDocument.getSecurityOfficerConfig() != null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
+                                                                                                              configurationDocument.getSecurityOfficerConfig().toString()),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        if (configurationDocument.getSecuritySyncConfig() != null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
+                                                                                                              configurationDocument.getSecuritySyncConfig().toString()),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
         if (configurationDocument.getStewardshipEngineServicesConfig() != null)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
                                                                                                               configurationDocument.getStewardshipEngineServicesConfig().toString()),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        if (configurationDocument.getVirtualizationConfig() != null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
+                                                                                                              configurationDocument.getVirtualizationConfig().toString()),
                                                     this.getClass().getName(),
                                                     methodName);
         }

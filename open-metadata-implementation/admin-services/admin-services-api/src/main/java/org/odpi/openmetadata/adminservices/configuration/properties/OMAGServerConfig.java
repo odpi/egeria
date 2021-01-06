@@ -102,11 +102,11 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
     private List<IntegrationServiceConfig>  integrationServicesConfig       = null;
-    private List<EngineServiceConfig>       engineServicesConfig            = null;
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
     private DiscoveryEngineServicesConfig   discoveryEngineServicesConfig   = null;
+    private EngineHostServicesConfig        engineHostServicesConfig        = null;
     private OpenLineageServerConfig         openLineageServerConfig         = null;
     private StewardshipEngineServicesConfig stewardshipEngineServicesConfig = null;
     private SecuritySyncConfig              securitySyncConfig              = null;
@@ -150,7 +150,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
             integrationServicesConfig       = template.getIntegrationServicesConfig();
-            engineServicesConfig            = template.getEngineServicesConfig();
+            engineHostServicesConfig        = template.getEngineHostServicesConfig();
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();
@@ -461,28 +461,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for the registered Open Metadata Engine Services (OMESs).
-     *
-     * @return array of configuration properties, one for each OMES
-     */
-    public List<EngineServiceConfig> getEngineServicesConfig()
-    {
-        return engineServicesConfig;
-    }
-
-
-    /**
-     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).
-     *
-     * @param engineServicesConfig array of configuration properties, one for each OMIS
-     */
-    public void setEngineServicesConfig(List<EngineServiceConfig> engineServicesConfig)
-    {
-        this.engineServicesConfig = engineServicesConfig;
-    }
-
-
-    /**
      * Return the configuration for the registered Open Metadata View Services (OMVSs).
      *
      * @return array of configuration properties, one for each OMVS
@@ -545,6 +523,28 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setConformanceSuiteConfig(ConformanceSuiteConfig conformanceSuiteConfig)
     {
         this.conformanceSuiteConfig = conformanceSuiteConfig;
+    }
+
+
+    /**
+     * Return the configuration for the engine host services that control an engine host OMAG Server.
+     *
+     * @return properties for an engine host server
+     */
+    public EngineHostServicesConfig getEngineHostServicesConfig()
+    {
+        return engineHostServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the engine host services that control an engine host OMAG Server.
+     *
+     * @param engineHostServicesConfig properties for an engine host server
+     */
+    public void setEngineHostServicesConfig(EngineHostServicesConfig engineHostServicesConfig)
+    {
+        this.engineHostServicesConfig = engineHostServicesConfig;
     }
 
 
@@ -773,7 +773,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        ", eventBusConfig=" + eventBusConfig +
                        ", accessServicesConfig=" + accessServicesConfig +
                        ", integrationServicesConfig=" + integrationServicesConfig +
-                       ", engineServicesConfig=" + engineServicesConfig +
+                       ", engineHostServicesConfig=" + engineHostServicesConfig +
                        ", viewServicesConfig=" + viewServicesConfig +
                        ", repositoryServicesConfig=" + repositoryServicesConfig +
                        ", conformanceSuiteConfig=" + conformanceSuiteConfig +
@@ -821,7 +821,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
                        Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                        Objects.equals(getIntegrationServicesConfig(), that.getIntegrationServicesConfig()) &&
-                       Objects.equals(getEngineServicesConfig(), that.getEngineServicesConfig()) &&
+                       Objects.equals(getEngineHostServicesConfig(), that.getEngineHostServicesConfig()) &&
                        Objects.equals(getViewServicesConfig(), that.getViewServicesConfig()) &&
                        Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                        Objects.equals(getConformanceSuiteConfig(), that.getConformanceSuiteConfig()) &&
@@ -848,7 +848,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getVersionId(), getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(),
                             getLocalServerUserId(), getLocalServerPassword(), getMaxPageSize(), getServerSecurityConnection(), getEventBusConfig(),
-                            getAccessServicesConfig(), getIntegrationServicesConfig(), getEngineServicesConfig(), getViewServicesConfig(),
+                            getAccessServicesConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
                             getRepositoryServicesConfig(), getConformanceSuiteConfig(), getDiscoveryEngineServicesConfig(),
                             getOpenLineageServerConfig(),
                             getStewardshipEngineServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(), getVirtualizationConfig(),

@@ -11,6 +11,17 @@ implementation that "stores" metadata in hash maps within the JVM.
 It is used for testing, or for environments where metadata maintained in other repositories
 needs to be cached locally for performance/scalability reasons.
 
+# Read-only Repository Connector
+
+The read only repository connector provides a compliant implementation of a local repository
+that can be configured into a [Metadata Server](../../../../../admin-services/docs/concepts/metadata-server.md).
+It does not support the interfaces for
+create, update, delete.  However it does support the search interfaces and is able to cache metadata.
+
+This means it can be loaded with metadata from an
+[Open Metadata Archive](../../../../../../open-metadata-resources/open-metadata-archives) and connected
+to a cohort.  The content from the archive will be shared with other members of the cohort.
+
 
 
 ----

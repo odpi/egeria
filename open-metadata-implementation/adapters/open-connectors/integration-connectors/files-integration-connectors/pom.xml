@@ -21,9 +21,9 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Files Integration Connector</name>
+    <name>Files Integration Connectors</name>
     <description>
-        The files integration connector is able to catalog files from a particular directory (folder)
+        The files integration connectors are able to catalog files from a particular directory (folder)
         in a file system.
     </description>
 
