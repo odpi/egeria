@@ -22,7 +22,7 @@ public class DinoServiceRequestBody {
 
     private String                    serverName;                    // must be non-null
     private String                    platformName;                  // must be non-null
-    private String                    serverInstanceName;
+    private String                    serverInstanceName;  // TODO - not sure this is really needed - just for echo??
     private String                    serviceURLMarker;                   // must be non-null
     private String                    description;
 
