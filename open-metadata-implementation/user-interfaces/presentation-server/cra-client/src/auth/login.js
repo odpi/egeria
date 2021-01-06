@@ -83,10 +83,11 @@ const Login = () => {
             lg={{ span: 4, offset: 6 }}
           >
             <Form id="egeria-login-form">
-              <FormGroup>
+              <FormGroup legendText="">
                 <TextInput
                   type="text"
                   labelText="Username"
+                  id="login-user"
                   name="username"
                   value={userId}
                   onChange={handleOnChange}
@@ -96,6 +97,7 @@ const Login = () => {
                 <TextInput
                   type="password"
                   labelText="Password"
+                  id="login-password"
                   name="password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
