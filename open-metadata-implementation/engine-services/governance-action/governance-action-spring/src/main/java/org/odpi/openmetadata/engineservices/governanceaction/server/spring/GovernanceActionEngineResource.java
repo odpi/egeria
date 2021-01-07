@@ -4,8 +4,6 @@ package org.odpi.openmetadata.engineservices.governanceaction.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.engineservices.governanceaction.rest.EngineSummaryListResponse;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionRESTServices;
 import org.springframework.web.bind.annotation.*;
