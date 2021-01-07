@@ -27,6 +27,8 @@ public class RequestSummary {
     private String                          platformName;
     private String                          operation;
     private String                          serverName;
+    private String                          serverInstanceName;
+
 
 
     /**
@@ -39,10 +41,11 @@ public class RequestSummary {
          */
     }
 
-    public RequestSummary(String platformName, String serverName, String operation) {
+    public RequestSummary(String platformName, String serverName, String serverInstanceName, String operation) {
 
         this.platformName   = platformName;
         this.serverName     = serverName;
+        this.serverInstanceName = serverInstanceName;
         this.operation      = operation;
 
     }
@@ -57,6 +60,12 @@ public class RequestSummary {
 
     public void setServerName(String serverName) {
         this.serverName = serverName;
+    }
+
+    public String getServerInstanceName() {  return serverInstanceName;  }
+
+    public void setServerInstanceName(String serverInstanceName) {
+        this.serverInstanceName = serverInstanceName;
     }
 
     public String getOperation() {  return operation;  }
@@ -77,6 +86,7 @@ public class RequestSummary {
         return "RequestSummary{" +
                 "platformName='" + getPlatformName() + '\'' +
                 ", serverName='" + getServerName() + '\'' +
+                ", serverInstanceName='" + getServerInstanceName() + '\'' +
                 ", operation='" + getOperation() + '\'' +
                 '}';
     }

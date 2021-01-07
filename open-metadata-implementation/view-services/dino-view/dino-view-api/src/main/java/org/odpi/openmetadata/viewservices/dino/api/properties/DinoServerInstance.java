@@ -20,16 +20,17 @@ public class DinoServerInstance {
     private static final long    serialVersionUID = 1L;
 
     /*
-     * A ServerStatus object is passed back in response to a request to the platform to list its servers [active or known]. It conveys
-     * just enough information for the UI to be able to display the server's status and to identify the serverInstanceName (which is
-     * how server resource endpoints are configured into the VS); and to identify the serverName (which is how the server itself is
-     * configured and how it is identified/referred to by the platform hosting it).
-     * The serverInstanceName will generally be used as the key to a map of ServerStatus objects but for ease of handling the serverInstanceName
-     * is explicitly included in the ServerStatus object, alongside the serverName and active status.
+     * A DinoServerInstance is used to include a brief summary of a server to be included into the serverList in response to a request
+     * to the platform to list its servers [active or known]. A DinoServerInstance conveys just enough information for the UI to be able
+     * to display the server's status and to identify the serverInstanceName (which is how server resource endpoints are configured into
+     * the VS); and to identify the serverName (which is how the server itself is configured and how it is identified/referred to by the
+     * platform hosting it).
+     * The serverInstanceName will generally be used as the key to a map of DinoServerInstance objects but for ease of handling the
+     * serverInstanceName is explicitly included in the DinoServerInstance object, alongside the serverName and active status.
      */
 
     /*
-     * Include the server instance name - this is name used in the VS configuration as opposed to the serverName used in the server configuration
+     * Include the server instance name - this is the name used in the VS configuration as opposed to the serverName used in the server configuration
      * and reported by the platform. THe serverInstanceName has no real meaning in terms of the configuration or deployment of OMAG resources, it is
      * a purely logical name used between the VS and the admin UI, to identify the instance of the server as being available to the user to query.
      */
