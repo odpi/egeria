@@ -27,7 +27,6 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>data-platform-services-server</module>
         <module>data-platform-services-connector</module>
     </modules>
 </project>

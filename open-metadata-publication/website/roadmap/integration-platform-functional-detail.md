@@ -14,8 +14,7 @@ Figure 1 summarizes the function that belongs in Egeria's
 
 ## Egeria Integration User Interface
 
-Server and platform configuration; cohort monitoring; type explorer and repository explorer.
-
+Server and platform configuration; ecosystem monitoring; type explorer and repository explorer.
 
 ## Utilities and converters
 Support for different standard formats to load industry standard definitions, models, glossaries,
@@ -27,6 +26,10 @@ Popular metadata repositories, databases, data formats and platforms;
 data movement engines, data virtualization engines, dev ops tools,
 analytics/AI tools, data catalogs, MDM and user directories, CMDBs, SDLC tools, ...
 
+## Conformance Test Suite
+Supports the testing of third party connectors.  Each type of connector or service is supported
+by its own test workbench.  See [Conformance Test Suite Documentation](../../../open-metadata-conformance-suite)
+for more details.
 
 ----
 Return to [Status Overview](.)

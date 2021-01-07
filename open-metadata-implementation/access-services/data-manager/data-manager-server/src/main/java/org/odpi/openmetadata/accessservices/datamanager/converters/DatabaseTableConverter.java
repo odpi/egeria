@@ -47,6 +47,7 @@ public class DatabaseTableConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public <T> B getNewSchemaAttributeBean(Class<B>           beanClass,
                                            EntityDetail       schemaAttributeEntity,
                                            Class<T>           typeClass,
@@ -83,18 +84,6 @@ public class DatabaseTableConverter<B> extends DataManagerOMASConverter<B>
                     databaseTableProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     databaseTableProperties.setDescription(this.removeDescription(instanceProperties));
 
-                    databaseTableProperties.setElementPosition(this.removePosition(instanceProperties));
-                    databaseTableProperties.setMinCardinality(this.removeMinCardinality(instanceProperties));
-                    databaseTableProperties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
-                    databaseTableProperties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
-                    databaseTableProperties.setOrderedValues(this.removeOrderedValues(instanceProperties));
-                    databaseTableProperties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
-                    databaseTableProperties.setSortOrder(this.removeSortOrder(instanceProperties));
-                    databaseTableProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
-                    databaseTableProperties.setLength(this.removeLength(instanceProperties));
-                    databaseTableProperties.setPrecision(this.removePrecision(instanceProperties));
-                    databaseTableProperties.setIsNullable(this.removeIsNullable(instanceProperties));
-                    databaseTableProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                     databaseTableProperties.setAliases(this.removeAliases(instanceProperties));
 
                     /*
@@ -103,11 +92,6 @@ public class DatabaseTableConverter<B> extends DataManagerOMASConverter<B>
                      */
                     databaseTableProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     databaseTableProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    if (schemaType instanceof SchemaTypeElement)
-                    {
-                        databaseTableProperties.setSchemaType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
-                    }
 
                     bean.setDatabaseTableProperties(databaseTableProperties);
                 }

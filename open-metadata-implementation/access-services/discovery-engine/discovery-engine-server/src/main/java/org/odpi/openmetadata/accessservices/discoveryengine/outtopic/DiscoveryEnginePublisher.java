@@ -10,8 +10,6 @@ import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngi
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryServiceConfigurationEvent;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
-import java.util.List;
-
 /**
  * DiscoveryEnginePublisher is responsible for pushing events to the Discovery Engine OMAS's out topic.
  */
@@ -89,13 +87,13 @@ public class DiscoveryEnginePublisher
      * @param discoveryEngineGUID unique identifier for the discovery engine
      * @param discoveryEngineName unique name for the discovery engine
      * @param registeredDiscoveryServiceGUID unique identifier for the registered discovery service
-     * @param discoveryRequestTypes list of discovery request types that trigger the instantiation of the
+     * @param discoveryRequestType a discovery request type that triggers the instantiation of the
      *                              discovery service
      */
     void publishRefreshDiscoveryServiceEvent(String       discoveryEngineGUID,
                                              String       discoveryEngineName,
                                              String       registeredDiscoveryServiceGUID,
-                                             List<String> discoveryRequestTypes)
+                                             String       discoveryRequestType)
     {
         final String methodName = "publishRefreshDiscoveryServiceEvent";
 
@@ -109,7 +107,7 @@ public class DiscoveryEnginePublisher
                 newEvent.setDiscoveryEngineGUID(discoveryEngineGUID);
                 newEvent.setDiscoveryEngineName(discoveryEngineName);
                 newEvent.setRegisteredDiscoveryServiceGUID(registeredDiscoveryServiceGUID);
-                newEvent.setDiscoveryRequestTypes(discoveryRequestTypes);
+                newEvent.setDiscoveryRequestType(discoveryRequestType);
 
                 outTopicServerConnector.sendEvent(newEvent);
 
@@ -118,7 +116,7 @@ public class DiscoveryEnginePublisher
                     outTopicAuditLog.logMessage(actionDescription,
                                                 DiscoveryEngineAuditCode.REFRESH_DISCOVERY_SERVICE.getMessageDefinition(discoveryEngineName,
                                                                                                                         discoveryEngineGUID,
-                                                                                                                        discoveryRequestTypes.toString(),
+                                                                                                                        discoveryRequestType,
                                                                                                                         registeredDiscoveryServiceGUID));
                 }
             }

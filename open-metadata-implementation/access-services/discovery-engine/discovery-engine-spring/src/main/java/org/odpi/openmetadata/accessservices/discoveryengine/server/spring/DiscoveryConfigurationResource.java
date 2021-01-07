@@ -27,18 +27,20 @@ public class DiscoveryConfigurationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId identifier of calling user.
+     * @param callerId unique identifier of the caller
      *
      * @return connection object for the out topic or
      * InvalidParameterException one of the parameters is null or invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    @GetMapping(path = "topics/out-topic-connection")
+    @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String                        serverName,
-                                                    @PathVariable String                        userId)
+    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String callerId)
     {
-        return restAPI.getOutTopicConnection(serverName, userId);
+        return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }
 
 

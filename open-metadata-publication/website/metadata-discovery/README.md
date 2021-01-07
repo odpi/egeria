@@ -42,7 +42,7 @@ implemented by the
 
 Egeria is also able to host automated metadata discovery services
 that implement the ODF interfaces in its
-[Discovery Server](../../../open-metadata-implementation/governance-servers/discovery-engine-services).
+[Asset Analysis OMES](../../../open-metadata-implementation/engine-services/asset-analysis).
 
 
 

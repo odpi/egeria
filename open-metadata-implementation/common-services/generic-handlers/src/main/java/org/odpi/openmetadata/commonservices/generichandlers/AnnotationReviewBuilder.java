@@ -105,6 +105,7 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
+    @Override
     public InstanceProperties getInstanceProperties(String  methodName)
     {
         InstanceProperties properties = new InstanceProperties();

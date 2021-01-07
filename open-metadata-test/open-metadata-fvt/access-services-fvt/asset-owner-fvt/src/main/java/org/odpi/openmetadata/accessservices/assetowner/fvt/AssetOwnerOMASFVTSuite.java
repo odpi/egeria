@@ -23,6 +23,7 @@ public class AssetOwnerOMASFVTSuite extends FVTSuiteBase
      * @param userId calling user
      * @return combined results of running test
      */
+    @Override
     protected int performFVT(String   serverName,
                              String   serverPlatformRootURL,
                              String   userId)

@@ -101,10 +101,10 @@ public class TypeDefProperties extends TypeDefElementHeader
 
 
     /**
-     * Verify that supplied object has the same properties.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param objectToCompare object to test
-     * @return result
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -113,24 +113,23 @@ public class TypeDefProperties extends TypeDefElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof TypeDefProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         TypeDefProperties that = (TypeDefProperties) objectToCompare;
-        return Objects.equals(getTypeDefProperties(), that.getTypeDefProperties());
+        return Objects.equals(typeDefProperties, that.typeDefProperties);
     }
 
 
     /**
-     * Return hash code based on the stored properties
+     * Return a hash code based on the values of this object.
      *
-     * @return hash code
+     * @return in hash code
      */
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getTypeDefProperties());
+        return Objects.hash(typeDefProperties);
     }
 }

@@ -12,8 +12,8 @@ dependencies {
     implementation ("org.apache.httpcomponents:httpcore")
     implementation ("org.springframework:spring-web")
     testImplementation project (":open-metadata-distribution:open-metadata-assemblies")
-    testCompile ("org.junit.jupiter:junit-jupiter-api")
-    testCompile ("org.junit.jupiter:junit-jupiter-params:5.7.0")
+    testImplementation ("org.junit.jupiter:junit-jupiter-api")
+    testImplementation ("org.junit.jupiter:junit-jupiter-params:5.7.0")
 }
 
 description = 'Data Engine OMAS FVT'

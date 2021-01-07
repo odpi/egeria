@@ -91,10 +91,7 @@ public class DataManagerAdmin extends AccessServiceAdmin
                                                                auditLog,
                                                                serverUserName,
                                                                repositoryConnector.getMaxPageSize(),
-                                                               this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
-                                                                                          DataManagerOutTopicClientProvider.class.getName(),
-                                                                                          auditLog));
+                                                               accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
 
@@ -168,6 +165,7 @@ public class DataManagerAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";

@@ -9,8 +9,12 @@ about relevant data, systems, applications, software components, processes, ... 
 achieve their specific task.
 
 Each of these types of "things" that are being searched for are represented in open metadata as 
-**Assets**.  This page describes the different approaches to building an asset catalog
-offered by Egeria and the types of use cases and and business value they enable.
+**[Assets](../../../open-metadata-implementation/access-services/docs/concepts/assets)**.
+
+This page describes the different approaches to building a catalog of assets that are
+offered by Egeria.  For each approach there is a description of the types of use cases
+and and business value they enable as well as pointers to the services and configuration
+needed to get them working.
 
 There are three parts to this:
 
@@ -30,6 +34,11 @@ There are three parts to this:
 * The [Asset](../../../open-metadata-implementation/access-services/docs/concepts/assets)
   page provides more information on the different types of assets supported by open metadata.
   The asset types can be extended dynamically if needed.
+  
+* The type definition for the **Asset** entity is found in model [0010 Basic Model](../open-metadata-types/0010-Base-Model.md).
+
+* Examples of representing different types of assets using the open metadata types are found in
+  [Modelling Assets]().
   
 * The [Open Metadata Labs](../../../open-metadata-resources/open-metadata-labs) provide practical
   examples showing all of the techniques to manage an asset catalog, allowing you to try each of

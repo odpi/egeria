@@ -22,21 +22,21 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum LineageIntegratorAuditCode implements AuditLogMessageSet
 {
-    CONTEXT_INITIALIZING("LINEAGE-INTEGRATOR-0001",
+    CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
-                        "The catalog integrator context manager is being initialized for calls to server {0} on platform {1}",
-                        "The Catalog Integrator OMIS is initializing its context manager.",
+                        "The lineage integrator context manager is being initialized for calls to server {0} on platform {1}",
+                        "The Lineage Integrator OMIS is initializing its context manager.",
                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
-    CONNECTOR_CONTEXT_INITIALIZING("LINEAGE-INTEGRATOR-0002",
-                        OMRSAuditLogRecordSeverity.STARTUP,
-                        "The {0} is initializing in server {1}",
-                        "A new Open Metadata Integration Service (OMIS) is starting up in the integration daemon.  " +
-                                "It will begin to initialize its context manager and the integration connectors that will exchange metadata " +
-                                             "between the open metadata ecosystem and a third party technology.",
-                        "Verify that the start up sequence goes on to initialize the configured integration connectors."),
+    CONNECTOR_CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0002",
+                                   OMRSAuditLogRecordSeverity.STARTUP,
+                                   "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
+                                   "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
+                                           "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
+                                   "Verify that this connector is being started with the correct configuration."),
 
-    PERMITTED_SYNCHRONIZATION("LINEAGE-INTEGRATOR-0003",
+
+    PERMITTED_SYNCHRONIZATION("OMIS-LINEAGE-INTEGRATOR-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The context for connector {0} has its permitted synchronization set to {1}",
              "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
@@ -52,10 +52,10 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
 
 
     /**
-     * The constructor for IntegrationDaemonServicesAuditCode expects to be passed one of the enumeration rows defined in
-     * IntegrationDaemonServicesAuditCode above.   For example:
+     * The constructor for LineageIntegratorAuditCode expects to be passed one of the enumeration rows defined in
+     * LineageIntegratorAuditCode above.   For example:
      *
-     *     IntegrationDaemonServicesAuditCode   auditCode = IntegrationDaemonServicesAuditCode.SERVER_SHUTDOWN;
+     *     LineageIntegratorAuditCode   auditCode = LineageIntegratorAuditCode.SERVER_SHUTDOWN;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -84,6 +84,7 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -96,6 +97,7 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);
@@ -111,7 +113,7 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "IntegrationDaemonServicesAuditCode{" +
+        return "LineageIntegratorAuditCode{" +
                 "messageDefinition=" + messageDefinition +
                 '}';
     }

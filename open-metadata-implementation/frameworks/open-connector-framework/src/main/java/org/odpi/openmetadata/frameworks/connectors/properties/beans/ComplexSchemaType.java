@@ -136,7 +136,7 @@ public class ComplexSchemaType extends SchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof ComplexSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -145,6 +145,18 @@ public class ComplexSchemaType extends SchemaType
             return false;
         }
         ComplexSchemaType that = (ComplexSchemaType) objectToCompare;
-        return Objects.equals(getAttributeCount(), that.getAttributeCount());
+        return getAttributeCount() == that.getAttributeCount();
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getAttributeCount());
     }
 }

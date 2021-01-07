@@ -80,7 +80,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
 
 
     /**
-     * Return hte name of this workbench.
+     * Return the name of this workbench.
      *
      * @return name
      */

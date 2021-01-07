@@ -119,7 +119,7 @@ public class ConfigIntegrationServicesResource
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping(path = "/integration-services/{serviceURLMarker}/configuration")
+    @PostMapping(path = "/integration-services/configuration")
 
     public VoidResponse configureIntegrationService(@PathVariable String                   userId,
                                                     @PathVariable String                   serverName,
@@ -140,7 +140,7 @@ public class ConfigIntegrationServicesResource
      * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or integrationServicesConfig parameter.
      */
-    @PostMapping(path = "/integration-services/configuration")
+    @PostMapping(path = "/integration-services/configuration/all")
 
     public VoidResponse setIntegrationServicesConfig(@PathVariable String                         userId,
                                                      @PathVariable String                         serverName,

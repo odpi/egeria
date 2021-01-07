@@ -76,6 +76,9 @@ omag.server.*.auditlog/**
 *.testlab.results
 keystore_*/**
 
+# Dynamic data used by egeria
+data/**
+
 # other files
 .DS_Store
 *.swp

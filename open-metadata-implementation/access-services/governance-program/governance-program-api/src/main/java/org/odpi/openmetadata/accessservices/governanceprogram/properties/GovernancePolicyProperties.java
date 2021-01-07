@@ -190,12 +190,11 @@ public abstract class GovernancePolicyProperties extends GovernanceDefinitionPro
     }
 
 
-
     /**
-     * Test the properties of the DataStrategy to determine if the supplied object is equal to this one.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object
-     * @return boolean evaluation
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -204,7 +203,7 @@ public abstract class GovernancePolicyProperties extends GovernanceDefinitionPro
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernancePolicyProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -213,8 +212,20 @@ public abstract class GovernancePolicyProperties extends GovernanceDefinitionPro
             return false;
         }
         GovernancePolicyProperties that = (GovernancePolicyProperties) objectToCompare;
-        return Objects.equals(getGovernanceDrivers(), that.getGovernanceDrivers()) &&
-                Objects.equals(getRelatedGovernancePolicies(), that.getRelatedGovernancePolicies()) &&
-                Objects.equals(getGovernanceControls(), that.getGovernanceControls());
+        return Objects.equals(governanceDrivers, that.governanceDrivers) &&
+                       Objects.equals(relatedGovernancePolicies, that.relatedGovernancePolicies) &&
+                       Objects.equals(governanceControls, that.governanceControls);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), governanceDrivers, relatedGovernancePolicies, governanceControls);
     }
 }

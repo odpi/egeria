@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataFlowElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -44,12 +43,11 @@ public class DataFlowConverter<B> extends AssetManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewRelationshipBean(Class<B>     beanClass,
                                     Relationship relationship,
                                     String       methodName) throws PropertyServerException
     {
-        final String thisMethodName = "getNewRelationshipBean";
-        
         try
         {
             /*

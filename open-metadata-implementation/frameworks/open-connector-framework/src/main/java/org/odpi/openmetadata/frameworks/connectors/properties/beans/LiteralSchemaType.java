@@ -144,7 +144,9 @@ public class LiteralSchemaType extends SchemaType
                 '}';
     }
 
-    
+
+
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -158,7 +160,7 @@ public class LiteralSchemaType extends SchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof LiteralSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -168,6 +170,18 @@ public class LiteralSchemaType extends SchemaType
         }
         LiteralSchemaType that = (LiteralSchemaType) objectToCompare;
         return Objects.equals(getDataType(), that.getDataType()) &&
-                Objects.equals(getFixedValue(), that.getFixedValue());
+                       Objects.equals(getFixedValue(), that.getFixedValue());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getDataType(), getFixedValue());
     }
 }

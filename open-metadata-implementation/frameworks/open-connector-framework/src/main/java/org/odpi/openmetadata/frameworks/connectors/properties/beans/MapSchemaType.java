@@ -173,7 +173,7 @@ public class MapSchemaType extends SchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof MapSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -183,6 +183,18 @@ public class MapSchemaType extends SchemaType
         }
         MapSchemaType that = (MapSchemaType) objectToCompare;
         return Objects.equals(getMapFromElement(), that.getMapFromElement()) &&
-                Objects.equals(getMapToElement(), that.getMapToElement());
+                       Objects.equals(getMapToElement(), that.getMapToElement());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getMapFromElement(), getMapToElement());
     }
 }

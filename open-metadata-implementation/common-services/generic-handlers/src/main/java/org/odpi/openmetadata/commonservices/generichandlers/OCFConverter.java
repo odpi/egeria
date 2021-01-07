@@ -397,9 +397,6 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
                 case OTHER:
                     return ElementStatus.OTHER;
-
-                case DELETED:
-                    return ElementStatus.DELETED;
             }
         }
 

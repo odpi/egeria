@@ -102,10 +102,10 @@ public class CertificationType extends GovernanceDefinitionProperties
 
 
     /**
-     * Test the properties of the CertificationType to determine if the supplied object is equal to this one.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object
-     * @return boolean evaluation
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -114,7 +114,7 @@ public class CertificationType extends GovernanceDefinitionProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof CertificationType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -123,6 +123,18 @@ public class CertificationType extends GovernanceDefinitionProperties
             return false;
         }
         CertificationType that = (CertificationType) objectToCompare;
-        return Objects.equals(getDetails(), that.getDetails());
+        return Objects.equals(details, that.details);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), details);
     }
 }

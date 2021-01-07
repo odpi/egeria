@@ -25,7 +25,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 {
     OMRS_INITIALIZING("OMRS-AUDIT-0001",
                       OMRSAuditLogRecordSeverity.STARTUP,
-                      "The Open Metadata Repository Services (OMRS) is initializing the subsystems to support a metadata server",
+                      "The Open Metadata Repository Services (OMRS) is initializing the subsystems to support a new server",
                       "The local server has started up the OMRS subsystems for a metadata server.  The choices of subsystem to start, and their " +
                               "configuration is specified in the repository services section of this server's configuration document.",
                       "No action is required if this server is intended to support a metadata repository.  This metadata repository may be " +
@@ -1125,6 +1125,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -1137,6 +1138,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);

@@ -33,6 +33,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
      *
      * @param embeddedConnectors  list of connectors
      */
+    @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
     {
         if (embeddedConnectors != null)
@@ -65,6 +66,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
@@ -94,6 +96,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -129,6 +132,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

@@ -3,15 +3,13 @@
 package org.odpi.openmetadata.accessservices.digitalservice.builders;
 
 import org.odpi.openmetadata.accessservices.digitalservice.mappers.DigitalServiceMapper;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+
 
 /**
  * FileSystemBuilder creates the parts for an entity that represents a file system definition.
@@ -50,7 +48,7 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
      */
     public DigitalServiceBuilder(String                                 displayName,
                                  String                                 description,
-                                 String                                 versionNumer,
+                                 String                                 versionNumber,
                                  OMRSRepositoryHelper                   repositoryHelper,
                                  String                                 serviceName,
                                  String                                 serverName)
@@ -70,7 +68,8 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException {
+    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
+    {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         if (displayName != null)

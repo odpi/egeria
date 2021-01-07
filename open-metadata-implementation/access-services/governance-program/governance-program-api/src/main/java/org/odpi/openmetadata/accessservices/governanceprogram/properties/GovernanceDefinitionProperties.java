@@ -377,10 +377,11 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
     }
 
 
+
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object to compare
+     * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
     @Override
@@ -390,7 +391,7 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceDefinitionProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -399,14 +400,28 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
             return false;
         }
         GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
-        return Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getScope(), that.getScope()) &&
-                getStatus() == that.getStatus() &&
-                Objects.equals(getPriority(), that.getPriority()) &&
-                Objects.equals(getImplications(), that.getImplications()) &&
-                Objects.equals(getOutcomes(), that.getOutcomes()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getGovernanceMetrics(), that.getGovernanceMetrics()) &&
-                Objects.equals(getGovernanceZones(), that.getGovernanceZones());
+        return Objects.equals(title, that.title) &&
+                       Objects.equals(summary, that.summary) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(scope, that.scope) &&
+                       status == that.status &&
+                       Objects.equals(priority, that.priority) &&
+                       Objects.equals(implications, that.implications) &&
+                       Objects.equals(outcomes, that.outcomes) &&
+                       Objects.equals(governanceMetrics, that.governanceMetrics) &&
+                       Objects.equals(governanceZones, that.governanceZones);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), title, summary, description, scope, status, priority, implications, outcomes, governanceMetrics,
+                            governanceZones);
     }
 }

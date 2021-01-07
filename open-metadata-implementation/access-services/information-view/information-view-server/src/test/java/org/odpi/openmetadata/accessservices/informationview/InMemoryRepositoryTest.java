@@ -313,7 +313,7 @@ public class InMemoryRepositoryTest {
 //                derivedColumnEntity.getGUID(),
 //                derivedColumn.getSourceColumn().getBusinessTerms().getGuid(),
 //                Constants.INFORMATION_VIEW_OMAS_NAME,
-//                new InstanceProperties());
+//                new ElementProperties());
         omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                 tableTypeEntity.getGUID(),
                 derivedColumnEntity.getGUID(),

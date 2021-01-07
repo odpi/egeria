@@ -157,7 +157,7 @@ public enum AccessServiceDescription implements Serializable
                                       "Security Officer",
                                       "Security Officer OMAS",
                                       "security-officer",
-                                      "Set up rules to protect data",
+                                      "Set up rules and security tags to protect data",
                                       "https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"),
     SOFTWARE_DEVELOPER_OMAS          (1018,
                                       "Software Developer",

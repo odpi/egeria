@@ -45,8 +45,7 @@ public class CategoryFVT {
     private Set<String> createdCategoriesSet = new HashSet<>();
 
     public static void main(String[] args) {
-        SubjectArea subjectArea = null;
-        String url = null;
+        String url;
         try {
             url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);

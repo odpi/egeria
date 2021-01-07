@@ -112,7 +112,7 @@ export default function NodeTableView({nodeType, nodes, setSelected}) {
           {nodeType && nodeType.attributes.length > 3 && (
             <div className="search-item">
               <div className="bx--form-item">
-                <label forHtml="multiselect">Show more properties </label>
+                <label htmlFor="multiselect">Show more properties </label>
                 <div style={{ width: 150 }}>
                   <MultiSelect
                     id="multiselect"

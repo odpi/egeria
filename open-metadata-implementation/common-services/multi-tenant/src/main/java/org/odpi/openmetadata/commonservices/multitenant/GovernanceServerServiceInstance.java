@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
@@ -10,10 +11,13 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
  */
 public abstract class GovernanceServerServiceInstance extends AuditableServerServiceInstance
 {
-    private String        accessServiceRootURL      = null;
-    private String        accessServiceServerName   = null;
-    private String        accessServiceInTopicName  = null;
-    private String        accessServiceOutTopicName = null;
+    protected String        accessServiceRootURL      = null;
+    protected String        accessServiceServerName   = null;
+    protected String        accessServiceInTopicName  = null;
+    protected String        accessServiceOutTopicName = null;
+
+    protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
 
     /**
      * Constructor where many OMASs are used and so the partner OMAS information is managed by the subclass
@@ -31,6 +35,8 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
                                            int           maxPageSize)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
+
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
 
@@ -57,6 +63,8 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
 
         this.accessServiceRootURL = accessServiceRootURL;
         this.accessServiceServerName = accessServiceServerName;
+
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
 
@@ -89,5 +97,8 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
         this.accessServiceServerName = accessServiceServerName;
         this.accessServiceInTopicName = accessServiceInTopicName;
         this.accessServiceOutTopicName = accessServiceOutTopicName;
+
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
     }
 }

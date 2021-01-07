@@ -53,11 +53,11 @@ public class EntityPropertiesUtils {
         for (Map.Entry<String, InstancePropertyValue> property : properties2.getInstanceProperties().entrySet()) {
 
             if (!matchExactlyPropertiesValues(property.getValue(), properties1.getPropertyValue(property.getKey()))) {
-                log.info("InstanceProperties don't match");
+                log.info("ElementProperties don't match");
                 return false;
             }
         }
-        log.info("InstanceProperties match");
+        log.info("ElementProperties match");
         return true;
     }
 

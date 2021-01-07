@@ -172,6 +172,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String  getAssetForConnection(String   userId,
                                          String   connectionGUID) throws InvalidParameterException,
                                                                          PropertyServerException,
@@ -199,6 +200,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String  getAssetForConnectionName(String userId,
                                              String connectionName) throws InvalidParameterException,
                                                                            PropertyServerException,
@@ -233,6 +235,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public AssetUniverse getAssetProperties(String userId,
                                             String assetGUID) throws InvalidParameterException,
                                                                      PropertyServerException,
@@ -285,6 +288,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
+    @Override
     public List<String>  findAssets(String   userId,
                                     String   searchString,
                                     int      startFrom,
@@ -349,6 +353,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
+    @Override
     public List<String> getAssetsByName(String   userId,
                                         String   name,
                                         int      startFrom,
@@ -383,6 +388,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<String> getAssetsByToken(String userId,
                                          String assetToken,
                                          int    startFrom,
@@ -442,6 +448,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public Connector getConnectorByName(String userId,
                                         String connectionName) throws InvalidParameterException,
                                                                       ConnectionCheckedException,
@@ -478,6 +485,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public Connector getConnectorForAsset(String userId,
                                           String assetGUID) throws InvalidParameterException,
                                                                    ConnectionCheckedException,
@@ -514,6 +522,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public Connector getConnectorByGUID(String userId,
                                         String connectionGUID) throws InvalidParameterException,
                                                                       ConnectionCheckedException,
@@ -548,6 +557,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      */
+    @Override
     public Connector  getConnectorByConnection(String     userId,
                                                Connection connection) throws InvalidParameterException,
                                                                              ConnectionCheckedException,
@@ -581,6 +591,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   addRatingToAsset(String     userId,
                                    String     assetGUID,
                                    StarRating starRating,
@@ -621,6 +632,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void removeRatingFromAsset(String userId,
                                       String assetGUID) throws InvalidParameterException,
                                                                PropertyServerException,
@@ -654,6 +666,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void addLikeToAsset(String         userId,
                                  String       assetGUID,
                                  boolean      isPublic) throws InvalidParameterException,
@@ -689,6 +702,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   removeLikeFromAsset(String userId,
                                       String assetGUID) throws InvalidParameterException,
                                                                PropertyServerException,
@@ -726,6 +740,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String addCommentToAsset(String      userId,
                                     String      assetGUID,
                                     CommentType commentType,
@@ -774,6 +789,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String addCommentReply(String      userId,
                                   String      assetGUID,
                                   String      commentGUID,
@@ -820,6 +836,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   updateComment(String      userId,
                                 String      assetGUID,
                                 String      commentGUID,
@@ -864,6 +881,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
+    @Override
     public void removeComment(String     userId,
                               String     assetGUID,
                               String     commentGUID) throws InvalidParameterException,
@@ -909,6 +927,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public MeaningElement getMeaning(String userId,
                                      String guid) throws InvalidParameterException,
                                                          PropertyServerException,
@@ -944,6 +963,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<MeaningElement> getMeaningByName(String userId,
                                                  String term,
                                                  int    startFrom,
@@ -971,6 +991,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<MeaningElement> findMeanings(String userId,
                                              String term,
                                              int    startFrom,
@@ -1040,6 +1061,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<String> getAssetsByMeaning(String userId,
                                            String termGUID,
                                            int    startFrom,
@@ -1088,6 +1110,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException There is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void  addLogMessageToAsset(String userId,
                                       String assetGUID,
                                       String connectorInstanceId,
@@ -1185,6 +1208,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String createPublicTag(String userId,
                                   String tagName,
                                   String tagDescription) throws InvalidParameterException,
@@ -1211,6 +1235,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String createPrivateTag(String userId,
                                    String tagName,
                                    String tagDescription) throws InvalidParameterException,
@@ -1235,6 +1260,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   updateTagDescription(String userId,
                                        String tagGUID,
                                        String tagDescription) throws InvalidParameterException,
@@ -1273,6 +1299,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   deleteTag(String userId,
                             String tagGUID) throws InvalidParameterException,
                                                    PropertyServerException,
@@ -1306,6 +1333,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public InformalTagElement getTag(String userId,
                                      String guid) throws InvalidParameterException,
                                                          PropertyServerException,
@@ -1341,6 +1369,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<InformalTagElement> getTagsByName(String userId,
                                                   String tag,
                                                   int    startFrom,
@@ -1368,6 +1397,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<InformalTagElement> getMyTagsByName(String userId,
                                                     String tag,
                                                     int    startFrom,
@@ -1395,6 +1425,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<InformalTagElement> findTags(String userId,
                                              String tag,
                                              int    startFrom,
@@ -1422,6 +1453,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<InformalTagElement> findMyTags(String userId,
                                                String tag,
                                                int    startFrom,
@@ -1489,6 +1521,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   addTagToAsset(String  userId,
                                 String  assetGUID,
                                 String  tagGUID,
@@ -1530,6 +1563,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   addTagToElement(String  userId,
                                   String  elementGUID,
                                   String  tagGUID,
@@ -1571,6 +1605,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   removeTagFromAsset(String userId,
                                      String assetGUID,
                                      String tagGUID) throws InvalidParameterException,
@@ -1608,6 +1643,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void   removeTagFromElement(String userId,
                                        String elementGUID,
                                        String tagGUID) throws InvalidParameterException,
@@ -1649,6 +1685,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<String> getAssetsByTag(String userId,
                                        String tagGUID,
                                        int    startFrom,

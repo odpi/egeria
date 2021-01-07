@@ -42,13 +42,16 @@ The potential subsystems within an [OMAG Server](omag-server.md) are as follows:
   for metadata access and governance.  Each access service is its own subsystem and can be activated independently
   to match the the needs of the environment that the OMAG Server is supporting.
   
-* **[Discovery Engine Services](../../../governance-servers/discovery-engine-services)** for running automated metadata discovery services in a discovery engine.
-  These services are the principle services of the discovery server.
+* **[Open Metadata Engine Services (OMES)](../../../engine-services)** for supporting specialized governance engines that drive governance activity in the open metadata ecosystem.  
 
-* **[Stewardship Engine Services](../../../governance-servers/stewardship-engine-services)** for managing and resolving issues that are detected in the assets being governed by Egeria.
-  These services are the principle services of the stewardship server.
+* **[Open Metadata Integration Services (OMIS)](../../../integration-services)** for supporting specific types of integration connectors.  
+
+* **[Open Metadata View Services (OMVS)](../../../view-services)** for supporting services for a User Interface (UI).  
   
-* **[Security Sync Services](../../../governance-servers/security-sync-services)** for maintaining metadata and configuration in an security enforcement engine.
+* **[Integration Daemon Services](../../../governance-servers/integration-daemon-services)** for running integration connectors that exchange metadata with third party
+  technologies.
+  
+* **[Connected Asset Services](../../../common-services/ocf-metadata-management)** for supporting the ConnectedAsset interface of a connector.  
 
 
 ----

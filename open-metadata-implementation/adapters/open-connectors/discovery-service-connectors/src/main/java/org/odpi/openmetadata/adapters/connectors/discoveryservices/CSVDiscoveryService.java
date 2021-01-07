@@ -137,6 +137,7 @@ public class CSVDiscoveryService extends AuditableDiscoveryService
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         final String  methodName = "start";
