@@ -5,7 +5,7 @@
 
 
 dependencies {
-    implementation project(':open-metadata-implementation:access-services:governance-action:governance-action-api')
+    implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-api')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-server')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
