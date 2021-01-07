@@ -20,10 +20,11 @@ public class DinoServiceRequestBody {
      * The DinoServerRequestBody class provides a body for REST requests to the platform-oriented Dino REST APIs
      */
 
-    private String                    serverName;                    // must be non-null
-    private String                    platformName;                  // must be non-null
-    private String                    serverInstanceName;  // TODO - not sure this is really needed - just for echo??
-    private String                    serviceURLMarker;                   // must be non-null
+    private String                    serverName;             // mandatory
+    private String                    platformName;           // mandatory
+    private String                    serverInstanceName;
+    private String                    serviceFullName;        // At least one of full name and URL marker must be supplied
+    private String                    serviceURLMarker;       // See line above
     private String                    description;
 
 
@@ -42,6 +43,10 @@ public class DinoServiceRequestBody {
     public String getPlatformName() { return platformName; }
 
     public void setPlatformName(String platformName) { this.platformName = platformName; }
+
+    public String getServiceFullName() { return serviceFullName; }
+
+    public void setServiceFullName(String serviceFullName) { this.serviceFullName = serviceFullName; }
 
     public String getServiceURLMarker() { return serviceURLMarker; }
 
@@ -62,6 +67,7 @@ public class DinoServiceRequestBody {
                 ", serverName=" + serverName +
                 ", platformName=" + platformName +
                 ", serverInstanceName=" + serverInstanceName +
+                ", serviceFullName=" + serviceFullName +
                 ", serviceURLMarker=" + serviceURLMarker +
                 ", description=" + description +
                 '}';

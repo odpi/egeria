@@ -31,9 +31,9 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    ViewServerConfigurationClient(String adminUserId,
-                                  String serverName,
-                                  String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public ViewServerConfigurationClient(String adminUserId,
+                                         String serverName,
+                                         String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -51,11 +51,11 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    ViewServerConfigurationClient(String adminUserId,
-                                  String serverName,
-                                  String serverPlatformRootURL,
-                                  String connectionUserId,
-                                  String connectionPassword) throws OMAGInvalidParameterException
+    public ViewServerConfigurationClient(String adminUserId,
+                                         String serverName,
+                                         String serverPlatformRootURL,
+                                         String connectionUserId,
+                                         String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

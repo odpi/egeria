@@ -408,6 +408,26 @@ public class DinoViewRESTResource {
 
     }
 
+    /**
+     * Get a list of the view services on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the list of integration services or exception information
+     */
+
+    @PostMapping("/server/{serverName}/view-services")
+    public DinoServiceListResponse getServerViewServices(@PathVariable String                      viewServerName,
+                                                         @PathVariable String                      userId,
+                                                         @PathVariable String                      serverName,
+                                                         @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetViewServices(viewServerName, userId, requestBody);
+
+    }
+
 
     /**
      * Get the details of an integration service running on the server
@@ -446,6 +466,26 @@ public class DinoViewRESTResource {
                                                                     @PathVariable String                      serverName,
                                                                     @RequestBody DinoServiceRequestBody       requestBody  ) {
         return restAPI.serverGetAccessServiceDetails(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get the details of an view service running on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the service's details or exception information
+     */
+
+    @PostMapping("/server/{serverName}/view-service-details")
+    public DinoServiceDetailsResponse getServerViewServiceDetails(@PathVariable String                      viewServerName,
+                                                                  @PathVariable String                      userId,
+                                                                  @PathVariable String                      serverName,
+                                                                  @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetViewServiceDetails(viewServerName, userId, requestBody);
 
     }
 }
