@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * OpenMetadataClient provides access to metadata elements stored in the metadata repositories.  It is implemented by a
- * metadata repository provider. In Egeria, this class is implemented in the Governance Engine OMAS client.
+ * metadata repository provider. In Egeria, this class is implemented in the Governance Action OMES server.
  */
 public abstract class OpenMetadataClient implements OpenMetadataStore
 {
@@ -436,18 +436,21 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
     /**
      * Declare that all of the processing for the governance action service is finished and the status of the work.
      *
+     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public abstract void recordCompletionStatus(CompletionStatus status,
-                                                List<String>     outputGuards) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
-
-
+    public abstract void recordCompletionStatus(String           governanceActionGUID,
+                                                CompletionStatus status,
+                                                List<String>     outputGuards,
+                                                List<String>     newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 
 
     /**
@@ -461,9 +464,9 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param description description for this action
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param governanceEngineName name of the governance engine to run the request
      * @param startTime future start time or null for "as soon as possible".
      * @param requestType request type to identify the governance action service to run
-     * @param guards guards to pass on to the requested action
      * @param requestProperties properties to pass to the governance action service
      *
      * @return unique identifier of the governance action
@@ -478,8 +481,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
                                                     List<String>        requestSourceGUIDs,
                                                     List<String>        actionTargetGUIDs,
                                                     Date                startTime,
+                                                    String              governanceEngineName,
                                                     String              requestType,
-                                                    String              guards,
                                                     Map<String, String> requestProperties) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException;
@@ -544,18 +547,20 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * the interesting metadata types.  That is an event is only passed to the listener if it matches both
      * the interesting event types and the interesting metadata types.
      *
-     * If interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
+     * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
      * If the listener parameter is null, no more events are passed to the listener.
      *
      * @param listener listener object to receive events
      * @param interestingEventTypes types of events that should be passed to the listener
-     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types.
+     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
+     * @param specificInstance unique identifier of a specific instance to watch for
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
     public abstract void registerListener(WatchdogGovernanceListener listener,
                                           List<WatchdogEventType>    interestingEventTypes,
-                                          List<String>               interestingMetadataTypes) throws InvalidParameterException;
+                                          List<String>               interestingMetadataTypes,
+                                          String                     specificInstance) throws InvalidParameterException;
 
 
     /**

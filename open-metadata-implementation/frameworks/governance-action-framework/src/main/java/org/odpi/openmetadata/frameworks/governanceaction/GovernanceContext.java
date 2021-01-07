@@ -21,12 +21,15 @@ import java.util.Map;
 public class GovernanceContext
 {
     private String                     userId;
+    private String                     governanceActionGUID;
 
     private String                     requestType;
     private Map<String, String>        requestParameters;
 
     private List<RequestSourceElement> requestSourceElements;
     private List<ActionTargetElement>  actionTargetElements;
+
+    private volatile CompletionStatus  completionStatus = null;
 
     protected OpenMetadataClient       openMetadataStore;
     protected PropertyHelper           propertyHelper = new PropertyHelper();
@@ -35,6 +38,7 @@ public class GovernanceContext
      * Constructor sets up the key parameters for processing the request to the governance action service.
      *
      * @param userId calling user
+     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
@@ -42,6 +46,7 @@ public class GovernanceContext
      * @param openMetadataStore client to the metadata store for use by the governance action service
      */
     public GovernanceContext(String                     userId,
+                             String                     governanceActionGUID,
                              String                     requestType,
                              Map<String, String>        requestParameters,
                              List<RequestSourceElement> requestSourceElements,
@@ -49,6 +54,7 @@ public class GovernanceContext
                              OpenMetadataClient         openMetadataStore)
     {
         this.userId = userId;
+        this.governanceActionGUID = governanceActionGUID;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
         this.requestSourceElements = requestSourceElements;
@@ -146,17 +152,33 @@ public class GovernanceContext
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public void recordCompletionStatus(CompletionStatus status,
-                                       List<String>     outputGuards) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public synchronized  void recordCompletionStatus(CompletionStatus status,
+                                                     List<String>     outputGuards,
+                                                     List<String>     newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
-        openMetadataStore.recordCompletionStatus(status, outputGuards);
+        this.completionStatus = status;
+
+        openMetadataStore.recordCompletionStatus(governanceActionGUID, status, outputGuards, newActionTargetGUIDs);
+    }
+
+
+    /**
+     * Return any completion status from the governance action service.
+     *
+     * @return completion status enum
+     */
+    public synchronized CompletionStatus getCompletionStatus()
+    {
+        return completionStatus;
     }
 
 
@@ -174,7 +196,9 @@ public class GovernanceContext
                        ", requestParameters=" + requestParameters +
                        ", requestSourceElements=" + requestSourceElements +
                        ", actionTargetElements=" + actionTargetElements +
+                       ", completionStatus=" + completionStatus +
                        ", openMetadataStore=" + openMetadataStore +
+                       ", propertyHelper=" + propertyHelper +
                        '}';
     }
 }
