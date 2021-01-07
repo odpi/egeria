@@ -21,25 +21,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LineageEvent extends AssetLineageEventHeader {
 
-    Set<GraphContext> assetContext;
+    Set<GraphContext> context;
 
     /**
      * Gets asset context.
      *
      * @return the asset context
      */
-    public Set<GraphContext> getAssetContext() {
-        return assetContext;
+    public Set<GraphContext> getContext() {
+        return context;
     }
 
     /**
      * Sets asset context.
      *
-     * @param assetContext the asset context
+     * @param context the asset context
      */
-    public void setAssetContext(Set<GraphContext> assetContext) {
+    public void setContext(Set<GraphContext> context) {
 
-        this.assetContext = assetContext;
+        this.context = context;
     }
 
     @Override
@@ -47,18 +47,18 @@ public class LineageEvent extends AssetLineageEventHeader {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LineageEvent that = (LineageEvent) o;
-        return Objects.equals(assetContext, that.assetContext);
+        return Objects.equals(context, that.context);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assetContext);
+        return Objects.hash(context);
     }
 
     @Override
     public String toString() {
         return "LineageEvent{" +
-                "assetContext=" + assetContext +
+                "assetContext=" + context +
                 "} " + super.toString();
     }
 }

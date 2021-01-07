@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -31,6 +32,10 @@ public enum AssetLineageEventType implements Serializable {
     DELETE_RELATIONSHIP_EVENT(7, "DeleteRelationship", "Has the relationship to be deleted"),
     DECLASSIFIED_ENTITY_EVENT(8, "DeclassifiedEntityEvent", "All relevant lineage classifications for this entity have been removed"),
     RECLASSIFIED_ENTITY_EVENT(9, "ReclassifiedEntityEvent", "Has the full context for a classified element"),
+    SEMANTIC_ASSIGNMENTS_EVENT(10, "SemanticAssignmentsEvent", "Has the semantic assignments for a glossary term"),
+    TERM_CATEGORIZATIONS_EVENT(11, "TermCategorizationsEvent", "Has the term categorizations for a glossary term"),
+    TERM_ANCHOR_EVENT(12, "TermAnchorEvent", "Has the term anchor for a glossary term"),
+    GLOSSARY_CATEGORIES_EVENT(13, "GlossaryCategoriesEvent", "Has the categorizations for an anchor"),
     UNKNOWN_ASSET_LINEAGE_EVENT(100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers.");
 
     private static final long serialVersionUID = 1L;
@@ -70,5 +75,10 @@ public enum AssetLineageEventType implements Serializable {
      */
     public String getEventTypeDescription() {
         return eventTypeDescription;
+    }
+
+    public static AssetLineageEventType getByEventTypeName(String eventTypeName) {
+
+        return Arrays.stream(AssetLineageEventType.values()).filter(v -> v.eventTypeName.equals(eventTypeName)).findAny().orElse(null);
     }
 }

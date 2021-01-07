@@ -110,15 +110,26 @@ public class AssetLineagePublisher {
      */
     public Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail)
             throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> context = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
+        Map<String, Set<GraphContext>> contextMap = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
-        if (MapUtils.isEmpty(context)) {
+        if (MapUtils.isEmpty(contextMap)) {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
-        publishLineageEvents(context, AssetLineageEventType.GLOSSARY_TERM_CONTEXT_EVENT);
-        return context;
+
+        for (String eventType : contextMap.keySet()) {
+            Set<GraphContext> graphContexts = contextMap.get(eventType);
+
+            LineageEvent event = new LineageEvent();
+
+            event.setContext(graphContexts);
+            event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
+
+            publishEvent(event);
+        }
+
+        return contextMap;
     }
 
     /**
@@ -232,7 +243,7 @@ public class AssetLineagePublisher {
         for (String guid : context.keySet()) {
             LineageEvent event = new LineageEvent();
 
-            event.setAssetContext(context.get(guid));
+            event.setContext(context.get(guid));
             event.setAssetLineageEventType(lineageEventType);
 
             publishEvent(event);

@@ -5,15 +5,9 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class StoringServices {
 
@@ -29,7 +23,7 @@ public class StoringServices {
      * Delegates the call for the creation of entities and relationships to the connector
      */
     public void addEntity(LineageEvent lineageEvent) {
-        lineageGraph.storeToGraph(lineageEvent.getAssetContext());
+        lineageGraph.storeToGraph(lineageEvent.getContext());
     }
 
     /**
@@ -56,7 +50,7 @@ public class StoringServices {
      */
     public void updateClassification(LineageEvent lineageEvent){
         log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
-        lineageGraph.updateClassification(lineageEvent.getAssetContext());
+        lineageGraph.updateClassification(lineageEvent.getContext());
     }
 
     /**
@@ -86,6 +80,6 @@ public class StoringServices {
     public void deleteClassification(LineageEvent lineageEvent){
         log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
 
-        lineageGraph.deleteClassification(lineageEvent.getAssetContext());
+        lineageGraph.deleteClassification(lineageEvent.getContext());
     }
 }
