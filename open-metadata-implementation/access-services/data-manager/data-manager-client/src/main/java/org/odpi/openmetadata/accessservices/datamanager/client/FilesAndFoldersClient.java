@@ -1063,7 +1063,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/by-name";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/by-path-name";
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
