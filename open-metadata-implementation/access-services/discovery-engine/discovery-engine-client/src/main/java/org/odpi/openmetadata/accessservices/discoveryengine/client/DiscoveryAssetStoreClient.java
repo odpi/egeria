@@ -49,6 +49,7 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
+    @Override
     protected  Connection  getConnectionForAsset() throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
@@ -69,6 +70,7 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      */
+    @Override
     public Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
                                                                             ConnectionCheckedException,
                                                                             ConnectorCheckedException
@@ -86,6 +88,7 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public AssetUniverse getAssetProperties() throws InvalidParameterException,
                                                      PropertyServerException,
                                                      UserNotAuthorizedException
@@ -104,6 +107,7 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void logAssetAuditMessage(String   discoveryService,
                                      String   message) throws InvalidParameterException,
                                                               PropertyServerException,

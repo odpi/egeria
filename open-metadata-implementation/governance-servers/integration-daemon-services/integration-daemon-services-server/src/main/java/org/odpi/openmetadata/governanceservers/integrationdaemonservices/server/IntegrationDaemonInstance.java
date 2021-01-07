@@ -7,11 +7,10 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationDaemonHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ import java.util.Map;
  */
 public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 {
-    private IntegrationDaemonHandler               integrationDaemonHandler;
+    private IntegrationDaemonThread                integrationDaemonThread;
     private Map<String, IntegrationServiceHandler> integrationServiceHandlers;
 
 
@@ -34,7 +33,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
      * @param auditLog link to the repository responsible for servicing the REST calls.
      * @param localServerUserId userId to use for local server initiated actions
      * @param maxPageSize max number of results to return on single request.
-     * @param integrationDaemonHandler handler managing the threading for the active integration connectors in this server.
+     * @param integrationDaemonThread handler managing the threading for the active integration connectors in this server.
      * @param integrationServiceHandlers handler for all of the active integration services in this server.
      */
     IntegrationDaemonInstance(String                                 serverName,
@@ -42,12 +41,12 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
                               AuditLog                               auditLog,
                               String                                 localServerUserId,
                               int                                    maxPageSize,
-                              IntegrationDaemonHandler               integrationDaemonHandler,
+                              IntegrationDaemonThread                integrationDaemonThread,
                               Map<String, IntegrationServiceHandler> integrationServiceHandlers)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
 
-        this.integrationDaemonHandler   = integrationDaemonHandler;
+        this.integrationDaemonThread = integrationDaemonThread;
         this.integrationServiceHandlers = integrationServiceHandlers;
     }
 
@@ -111,6 +110,9 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
             {
                 if (handler != null)
                 {
+                    /*
+                     * This shuts down the connectors
+                     */
                     handler.shutdown();
                 }
             }
@@ -119,7 +121,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
         /*
          * Shutdown the threads running the connectors.
          */
-        integrationDaemonHandler.shutdown();
+        integrationDaemonThread.stop();
 
         super.shutdown();
     }

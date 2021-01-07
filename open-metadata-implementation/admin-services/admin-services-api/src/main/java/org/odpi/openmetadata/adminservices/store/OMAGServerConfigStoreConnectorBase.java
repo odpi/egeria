@@ -21,6 +21,7 @@ public abstract class OMAGServerConfigStoreConnectorBase extends ConnectorBase i
      *
      * @param serverName name of the server
      */
+    @Override
     public void setServerName(String  serverName)
     {
         this.serverName = serverName;

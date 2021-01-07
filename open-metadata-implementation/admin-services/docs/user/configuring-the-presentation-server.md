@@ -30,7 +30,7 @@ view services to retrieve information and perform operations relating to metadat
 
 ### Access UI using the browser. 
  * Enter 'https://localhost:8091/<tenant-name>/login' on the UI to access the tenanted UI (<tenant-name> is the serverName used by the presentation server). The Ui will prompt for a login; some of the 
- Coco Pharmaceutical personnas have been enabled here - use user 'faithbroker' and password 'admin'. If there is an environment variable :
+ Coco Pharmaceutical personas have been enabled here - use user 'faithbroker' and password 'admin'. If there is an environment variable :
   ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
   then the browser url to use to login is `https://localhost:8091/aaa`. All browser requests for this tenant will be issued using urls starting
   `https://localhost:8091/aaa`. 

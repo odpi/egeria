@@ -123,7 +123,7 @@ Once it is configured, the integration daemon can be started using the
 * Link to the [Egeria Solutions](../../../../open-metadata-publication/website/solutions) to see the integration
 daemon in action.
 * Link to the [Integration Daemon Services](../../../governance-servers/integration-daemon-services) to
-understand how the integration daemon is implemented
+understand how the integration daemon is implemented.
 
 ----
 * Return to the [Governance Server](governance-server-types.md) types.

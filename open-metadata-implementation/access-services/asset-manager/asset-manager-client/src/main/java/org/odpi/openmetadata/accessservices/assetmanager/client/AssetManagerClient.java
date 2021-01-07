@@ -197,6 +197,7 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
+    @Override
     public String createExternalAssetManager(String                 userId, 
                                              AssetManagerProperties assetManagerProperties) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
@@ -236,6 +237,7 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
+    @Override
     public String  getExternalAssetManagerGUID(String  userId,
                                                String  qualifiedName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -280,6 +282,7 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
+    @Override
     public void addExternalIdentifier(String                   userId,
                                       String                   assetManagerGUID,
                                       String                   assetManagerName,
@@ -354,6 +357,7 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
+    @Override
     public void updateExternalIdentifier(String                   userId,
                                          String                   assetManagerGUID,
                                          String                   assetManagerName,
@@ -429,6 +433,7 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
+    @Override
     public void removeExternalIdentifier(String                   userId,
                                          String                   assetManagerGUID,
                                          String                   assetManagerName,
@@ -497,6 +502,7 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
+    @Override
     public void confirmSynchronization(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,
@@ -551,6 +557,7 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
+    @Override
     public List<ElementHeader> getElementsForExternalIdentifier(String userId,
                                                                 String assetManagerGUID,
                                                                 String assetManagerName,

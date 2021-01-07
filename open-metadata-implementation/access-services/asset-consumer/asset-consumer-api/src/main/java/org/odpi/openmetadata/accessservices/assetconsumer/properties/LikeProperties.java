@@ -122,16 +122,24 @@ public class LikeProperties implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof LikeProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        LikeProperties like = (LikeProperties) objectToCompare;
-        return getIsPublic() == like.getIsPublic() &&
-                Objects.equals(getUser(), like.getUser());
+        LikeProperties that = (LikeProperties) objectToCompare;
+        return isPublic == that.isPublic &&
+                       Objects.equals(user, that.user);
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(user, isPublic);
     }
 }

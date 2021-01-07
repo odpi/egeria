@@ -139,13 +139,8 @@ const ResourcesContextProvider = (props) => {
     return guid;
   }
 
-  const genServiceGUID = (platformName, serverName, serviceName) => {
-    let guid = "SERVICE:"+serviceName+"@SERVER:"+serverName+"@PLATFORM:"+platformName;
-    return guid;
-  }
-
-  const genServiceHostGUID = (platformName, serverName, serviceName) => {
-    let guid = "SERVICE:"+serviceName+"-SERVER:"+serverName+"-PLATFORM:"+platformName;
+  const genServiceGUID = (serviceName) => {
+    let guid = "SERVICE_"+serviceName;
     return guid;
   }
 
@@ -240,11 +235,7 @@ const ResourcesContextProvider = (props) => {
     /*
      * Set the newly added platform to be the focus...
      */
-    setFocus( { category     : "platform", 
-                guid         : guid, 
-                platformName : platformOverview.platformName,
-                serverName   : "" ,
-                serviceName  : ""  } );    
+    setFocus( { category : "platform", guid : guid } );    
     /*
      * Clear any server configuration state
      */
@@ -750,8 +741,9 @@ const ResourcesContextProvider = (props) => {
             break;
               
           case "service":
-            setOperationState({state:"loading", name: resource.serviceName});
-            loadServiceFromGen(resource);
+            /*
+             * Not expecting a service to become the focus - if that changes, add code here
+             */
             break;
 
           case "cohort":
@@ -815,7 +807,7 @@ const ResourcesContextProvider = (props) => {
    * the category does not match the other aspects, they will be very confused.
    */  
   const clearFocusResource = () => {
-    setFocus( { category : "", guid     : "" , platformName : "", serverName : "", serviceName : "" });
+    setFocus( { category : "", guid     : ""  });
     /*
      * Ensure any server configuration state is cleared
      */
@@ -950,11 +942,7 @@ const ResourcesContextProvider = (props) => {
     /*
      * Set the newly added server to be the focus.
      */
-    setFocus({category     : "server", 
-              guid         : serverGUID,
-              platformName : platformName,
-              serverName   : serverName ,
-              serviceName  : ""  } );      
+    setFocus({category : "server", guid : serverGUID});   
     setServerConfig( { stored : null, active : null , matching : true, diffs : null, loading : "init" } );
     setOperationState({state:"inactive",name:""}); 
   
@@ -1293,29 +1281,247 @@ const ResourcesContextProvider = (props) => {
   };
 
 
-  const loadServiceFromGen = (service) => {
+//++++++++++++
+// TODO note that there is more than one way to identify the server - either from parameter or from focus
+// TODO - a key issue is the identification of the platform - what worked for server details does't nec work downstream
+// TODO - for now use the same SI selection platform approach - BUT PROBABLY NEEDS TO CHANGE
+const loadService = (serverName, serviceName) => {
 
-    let serverName = service.serverName;
-    let platformName = service.platformName;
-    let serviceName = service.serviceName;
+  let guid  = focus.guid;
+  let genId = guidToGenId[guid];
+  let gen   = gens[genId-1];
+  if (gen) {
+    let existingServer = gen.resources[guid];
+    if (existingServer) {
+      let serverName   = existingServer.serverName;
+      let platformList = existingServer.platforms;
+      if (!platformList || platformList.length === 0) {
+        alert("There are no platforms listed for the server "+serverName+" so details cannot be retrieved.");
+        return;
+      }
+      else {
+        /* Select the platform we are querying... */
+        let platformName = platformList[0];
 
-    loadService(platformName, serverName, serviceName);
-  
+        /* Retrieve BOTH the stored and running instance configuration for the server */
+        // TODO might rename URL tail to integration-service-details......
+        requestContext.callPOST("server", serverName,  "server/"+serverName+"/service-details",
+                                      { serverName   : serverName,
+                                        platformName : platformName,
+                                        serviceName  : serviceName },
+                                      _loadService);
+      }
+    }
   }
+};
 
-  //++++++++++++
-  // TODO note that there is more than one way to identify the server - either from parameter or from focus
-  // TODO - a key issue is the identification of the platform - what worked for server details does't nec work downstream
-  // TODO - for now use the same SI selection platform approach - BUT PROBABLY NEEDS TO CHANGE
+const _loadService = (json) => {
+  if (json) {
+    if (json.relatedHTTPCode === 200 ) {
+      let requestSummary = json.requestSummary;
+      let serverOverview = json.serverOverview;
+      if (requestSummary && serverOverview) {
+        processRetrievedServiceDetails(requestSummary, serverOverview);
+        return;
+      }
+    }
+  }
+   /*
+   * On failure ...
+   */
+  interactionContext.reportFailedOperation("load server",json);
+}
 
-  // Always keys off serviceName and look to the gens to get the serviceURLMarker.
-  const loadService = (platformName, serverName, serviceName) => {
+
+
+//++++++++++++
+
+  const OLDloadService = (serverName, serviceName) => {
+
 
     /*
-     * Need to map from the serviceName to the serviceURLMarker. Get the server details and 
-     * look in the integration server list (GENERALIZE by introducing a service cat TODO)
-     * to get the service's RegisteredOMAGService object which contains the URL marker.
+     * If the server is not found the operation will fail.
      */
+  
+    let serverGUID = genServerGUID(serverName);
+
+    /*
+     * Find the server entry in the gens
+     */
+    let serverGenId = guidToGenId[serverGUID];
+    if (serverGenId === undefined) {
+      /*
+       * Operation cannot proceed - we do not have the specified server.
+       */
+      alert("Cannot add service for unknown server "+serverName);
+      return;
+    }
+
+    /*
+     * Create a service object
+     */
+    let serviceGUID = genServiceGUID(serviceName);
+
+    let service                   = {};
+    service.category              = "service";
+    service.serviceName           = serviceName;    
+    service.guid                  = serviceGUID;
+
+    /*
+     * Create a relationship from the specified server to the cohort - if we do not already have one
+     * The relationship will need a guid, a source and target and a gen (which is assigned when the 
+     * gen is created)
+     */
+
+    let serverServiceName                         = serviceName+"@"+serverName;
+    let serverServiceGUID                         = "SERVER_SERVICE"+serverServiceName;
+
+    let serverServiceRelationship                 = {};
+    serverServiceRelationship.category            = "server-service";
+    serverServiceRelationship.serverCohortName    = serverServiceName;
+    serverServiceRelationship.guid                = serverServiceGUID;
+    serverServiceRelationship.serverName          = serverName;
+    serverServiceRelationship.cohortName          = serviceName;
+    /* 
+     * Server-Service relationships are always active - this is driven from the active server list.
+     */
+    serverServiceRelationship.active              = true;
+
+    /*
+     * Include graph navigation ids.
+     */
+    serverServiceRelationship.source              = serverGUID;
+    serverServiceRelationship.target              = serviceGUID;
+
+  
+    /*
+     * Create a map of the objects to be updated.
+     */
+    let update_objects                               = {};
+    update_objects.resources                         = {};
+    update_objects.relationships                     = {};
+    update_objects.resources[serviceGUID]            = service;
+    update_objects.relationships[serverServiceGUID]  = serverServiceRelationship; 
+
+    /*
+     * Include a request summary - since this was a local operation there is no request information 
+     * to be returned from the VS
+     */
+    let requestSummary             = {};
+    requestSummary.serverName      = serverName;
+    requestSummary.operation       = "TODO";
+    requestSummary.platformName    = null;
+
+    updateGens(update_objects, requestSummary);
+
+  };
+
+
+
+  const processRetrievedServiceDetails = (serviceDetails) => {
+
+    console.log("processRetrievedServiceDetails: - under development");
+
+
+    // TODO all the code below here needs an update....
+
+    ///*
+    // * Create a service object
+    // */
+    //let serviceGUID = genServiceGUID(serviceName);
+    //
+    //let service                   = {};
+    //service.category              = "service";
+    //service.serviceName           = serviceName;
+    //service.guid                  = serviceGUID;
+    //
+    ///*
+    // * Create a relationship from the specified server to the cohort - if we do not already have one
+    // * The relationship will need a guid, a source and target and a gen (which is assigned when the
+    // * gen is created)
+    // */
+    //
+    //let serverServiceName                         = serviceName+"@"+serverName;
+    //let serverServiceGUID                         = "SERVER_SERVICE"+serverServiceName;
+    //
+    //let serverServiceRelationship                 = {};
+    //serverServiceRelationship.category            = "server-service";
+    //serverServiceRelationship.serverCohortName    = serverServiceName;
+    //serverServiceRelationship.guid                = serverServiceGUID;
+    //serverServiceRelationship.serverName          = serverName;
+    //serverServiceRelationship.cohortName          = serviceName;
+    ///*
+    // * Server-Service relationships are always active - this is driven from the active server list.
+    // */
+    //serverServiceRelationship.active              = true;
+    //
+    ///*
+    // * Include graph navigation ids.
+    // */
+    //serverServiceRelationship.source              = serverGUID;
+    //serverServiceRelationship.target              = serviceGUID;
+    //
+    //
+    ///*
+    // * Create a map of the objects to be updated.
+    // */
+    //let update_objects                               = {};
+    //update_objects.resources                         = {};
+    //update_objects.relationships                     = {};
+    //update_objects.resources[serviceGUID]            = service;
+    //update_objects.relationships[serverServiceGUID]  = serverServiceRelationship;
+    //
+    ///*
+    // * Include a request summary - since this was a local operation there is no request information
+    // * to be returned from the VS
+    // */
+    //let requestSummary             = {};
+    //requestSummary.serverName      = serverName;
+    //requestSummary.operation       = "Expansion of service "+serviceName;
+    //requestSummary.platformName    = null;
+    //
+    //updateGens(update_objects, requestSummary);
+    //
+    ///*
+    // * Although we're adding a cohort, leave the focus as it was... so there is no need
+    // * to setFocus (since there is no change) nor to setOperationState (since there was no
+    // * remote operation)
+    // */
+  }
+
+
+
+  /*
+   * This function will load the integration services by asking the VS to retrieve them.
+   *
+   */
+  const loadIntegrationServices = (serverName) => {
+
+    /*
+     * If the server is not found the operation will fail.
+     */
+
+    let serverGUID = genServerGUID(serverName);
+
+    /*
+     * Find the server entry in the gens
+     */
+    let serverGenId = guidToGenId[serverGUID];
+    if (serverGenId === undefined) {
+      /*
+       * Operation cannot proceed - we do not have the specified server.
+       */
+      alert("Cannot add service for unknown server "+serverName);
+      return;
+    }
+
+    /*
+     * Check that the server is the focus resource
+     */
+    if (focus.category !== "server") {
+      return;
+    }
+
     let guid  = focus.guid;
     let genId = guidToGenId[guid];
     let gen   = gens[genId-1];
@@ -1332,254 +1538,42 @@ const ResourcesContextProvider = (props) => {
           /* Select the platform we are querying... */
           let platformName = platformList[0];
 
-          /* Work out the serviceURLMarker to use 
-          */
-       
-          // TODO - need to handle other cats of service and needs error handling.
-          let serviceList = existingServer.integrationServices;
-          let serviceURLMarker;
-          serviceList.forEach( svc => {
-            if (svc.serviceName === serviceName) {
-              serviceURLMarker = svc.serviceURLMarker;
-            }
-          });
-       
-
-          /* Retrieve BOTH the stored and running instance configuration for the server */
-          // TODO might rename URL tail to integration-service-details......
-          requestContext.callPOST("server", serverName,  "server/"+serverName+"/service-details",
-                                        { serverName        : serverName,
-                                          platformName      : platformName,
-                                          serviceURLMarker  : serviceURLMarker },
-                                        _loadService);
+          /* Retrieve a list of the integration services configured on the server */
+          requestContext.callPOST("server", serverName,  "server/"+serverName+"/integration-services",
+                                        { platformName : platformName  },
+                                        _loadIntegrationServices);
         }
       }
     }
-  };
+  }
 
-  const _loadService = (json) => {
+  const _loadIntegrationServices = (json) => {
+
     if (json) {
       if (json.relatedHTTPCode === 200 ) {
-        let requestSummary = json.requestSummary;
-        let serviceDetails = json.serviceDetails;
-        if (requestSummary && serviceDetails) {
-          processRetrievedServiceDetails(requestSummary, serviceDetails);
+
+        /*
+         * For known (stopped) servers you won't get an active config.
+         */
+        if (json.serviceList) {
+
+          let requestSummary = json.requestSummary;
+          let serverName = requestSummary.serverName;
+          let platformName = requestSummary.platformName;
+          processRetrievedIntegrationServiceList(platformName, serverName, json.serviceList);
+
           return;
+
         }
       }
     }
-     /*
+    /*
      * On failure ...
      */
-    interactionContext.reportFailedOperation("load server",json);
+    interactionContext.reportFailedOperation("list integration services",json);
   }
 
 
-
-  /*
-   * Process the receipt of service details. 
-   * The service will be added to the graph, with an edge connecting it to the server
-   * that is running it, and an edge to the partner OMAS it is using. 
-   * 
-   * You will also know which instance of the OMAS it is using because the IntegrationServiceConfig
-   * inherits (from OMAGServerClientConfig) the omagServerPlatformRootURL and omagServerName. Look 
-   * out for weird Jackson case conversion on these.
-   * 
-   * The integration service also has a list of integration connector configurations - and these
-   * will add things like refresh interval, whether calls are blocking, and the metadataSourceQualifiedName.
-   * 
-   * The details also add the service's full name and operational status and the permitted
-   * synchronisation directions. 
-   * 
-   */
-  const processRetrievedServiceDetails = (requestSummary, serviceDetails) => {
-
-    console.log("processRetrievedServiceDetails: - under development");
-
-    // TODO the following is specific to Integration Services. Incldue a service cat and switch to delegate.
-
-    /*
-     * From the request context make a note of the serverName and platformName.
-     */
-    let serverName = requestSummary.serverName;
-    let platformName = requestSummary.platformName;
-    /*
-     * Derive the serverGUID
-     */
-    let serverGUID = genServerGUID(serverName);
-    // TODO should be let serverGUID = genServerGUID(platformName, serverName);
-
-    let serviceConfig = serviceDetails.integrationServiceConfig;
-
-    let serviceName = serviceConfig.integrationServiceName;
-
-    /*
-     * Create a GUID
-     */
-    let serviceGUID = genServiceGUID(platformName, serverName, serviceName);
-
-    /*
-     * Create a service object
-     */
-
-    let service                   = {};
-    service.category              = "service";
-    service.serviceName           = serviceName;
-    service.serverName            = serverName;
-    service.platformName          = platformName;
-    service.guid                  = serviceGUID;
-    service.status                = serviceConfig.integrationServiceOperationalStatus;
-    service.partnerOMAS           = serviceConfig.integrationServicePartnerOMAS;
-
-    /*
-     * Create a relationship from the specified service to its hosting server - if we do not already have one
-     * The relationship will need a guid, a source and target and a gen (which is assigned when the
-     * gen is created)
-     */
-
-    let serviceHostName                             = "hosts-"+serviceName;  // just a display name - not necessarily unique
-    let serviceHostGUID                             = genServiceHostGUID(platformName, serverName, serviceName);
-
-    let serverServiceRelationship                   = {};
-    serverServiceRelationship.category              = "server-service";
-    serverServiceRelationship.serverCohortName      = serviceHostName;
-    serverServiceRelationship.guid                  = serviceHostGUID;
-    serverServiceRelationship.serverName            = serverName;
-    serverServiceRelationship.serviceName           = serviceName;
-    /*
-     * Server-Service relationships are always active - this is driven from the active server list.
-     */
-    serverServiceRelationship.active              = true;
-
-    /*
-     * Include graph navigation ids.
-     */
-    serverServiceRelationship.source              = serverGUID;
-    serverServiceRelationship.target              = serviceGUID;
-
-
-    /*
-     * Create a map of the objects to be updated.
-     */
-    let update_objects                               = {};
-    update_objects.resources                         = {};
-    update_objects.relationships                     = {};
-    update_objects.resources[serviceGUID]            = service;
-    update_objects.relationships[serviceHostGUID]    = serverServiceRelationship;
-
-    /*
-     * Include the request summary
-     */
-
-
-    updateGens(update_objects, requestSummary);
-
-
-    /*
-     * Set the newly added service to be the focus.
-     */
-    setFocus({category     : "service", 
-              guid         : serviceGUID,
-              platformName : platformName,
-              serverName   : serverName ,
-              serviceName  : serviceName  } );      
-  
-    setOperationState({state:"inactive", name:""}); 
-
-  }
-
-
-
-  /*
-   * This function will load the integration services by asking the VS to retrieve them.
-   *
-   */
-  //const loadIntegrationServices = (serverName) => {
-  //
-  //    /*
-  //     * If the server is not found the operation will fail.
-  //     */
-  //
-  //  let serverGUID = genServerGUID(serverName);
-  //
-  //  /*
-  //   * Find the server entry in the gens
-  //   */
-  //  let serverGenId = guidToGenId[serverGUID];
-  //  if (serverGenId === undefined) {
-  //    /*
-  //     * Operation cannot proceed - we do not have the specified server.
-  //     */
-  //    alert("Cannot add service for unknown server "+serverName);
-  //    return;
-  //  }
-  //
-  //  /*
-  //   * Check that the server is the focus resource
-  //   */
-  //  if (focus.category !== "server") {
-  //    return;
-  //  }
-  //
-  //  let guid  = focus.guid;
-  //  let genId = guidToGenId[guid];
-  //  let gen   = gens[genId-1];
-  //  if (gen) {
-  //    let existingServer = gen.resources[guid];
-  //    if (existingServer) {
-  //      let serverName   = existingServer.serverName;
-  //      let platformList = existingServer.platforms;
-  //      if (!platformList || platformList.length === 0) {
-  //        alert("There are no platforms listed for the server "+serverName+" so details cannot be retrieved.");
-  //        return;
-  //      }
-  //      else {
-  //        /* Select the platform we are querying... */
-  //        let platformName = platformList[0];
-  //
-  //        /* Retrieve a list of the integration services configured on the server */
-  //        requestContext.callPOST("server", serverName,  "server/"+serverName+"/integration-services",
-  //                                      { platformName : platformName  },
-  //                                      _loadIntegrationServices);
-  //      }
-  //    }
-  //  }
-  //}
-  //
-  //const _loadIntegrationServices = (json) => {
-  //
-  //  if (json) {
-  //    if (json.relatedHTTPCode === 200 ) {
-  //
-  //      /*
-  //       * For known (stopped) servers you won't get an active config.
-  //       */
-  //      if (json.serviceList) {
-  //      let requestSummary = json.requestSummary;
-  //        let serverName = requestSummary.serverName;
-  //        let platformName = requestSummary.platformName;
-  //        processRetrievedIntegrationServiceList(platformName, serverName, json.serviceList);
-  //
-  //        return;
-  //
-  //      }
-  //    }
-  //  }
-  //  /*
-  //   * On failure ...
-  //   */
-  //  interactionContext.reportFailedOperation("list integration services",json);
-  //}
-
-
-  /*
-   * When a service list is received, just display the listed services as short summaries in the 
-   * server details panel. They are not added to the graph at this stage. This is because there
-   * could be a lot of services listed (think of access services) and the user may not want all
-   * of them in the graph - it would become very busy. So let the user select (click) any service
-   * about which they want more details - when those details are returned the service is added to 
-   * the graph and can become the focus object
-   */
   const processRetrievedIntegrationServiceList = (platformName, serverName, serviceList) => {
 
     if (serviceList)
@@ -1597,7 +1591,7 @@ const ResourcesContextProvider = (props) => {
       serviceList.forEach( svc => {
 
         let serviceName = svc.serviceName;
-        let serviceGUID = genServiceGUID(platformName, serverName, serviceName);
+        let serviceGUID = genServiceGUID(serviceName);
 
         /*
          * Create service object
@@ -1705,7 +1699,7 @@ const ResourcesContextProvider = (props) => {
       /*
        * Clear the focus
        */
-      setFocus({ category  : "", guid  : "" , platformName : "", serverName : "", serviceName : "" } );
+      setFocus({ category  : "", guid  : "" } );
       /*
        * Clear any server configuration state
        */
@@ -1774,6 +1768,7 @@ const ResourcesContextProvider = (props) => {
         loadCohort,
         loadCohortFromServer,
         loadService,
+        loadIntegrationServices,
         loadConfiguredCohort,
         clear,
         removeGen,

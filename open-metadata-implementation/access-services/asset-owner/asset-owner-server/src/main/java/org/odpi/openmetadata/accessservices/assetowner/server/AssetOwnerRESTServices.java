@@ -1069,7 +1069,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.saveSemanticAssignment(userId,
                                            null,
@@ -1126,7 +1126,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.saveSemanticAssignment(userId,
                                            null,
@@ -1180,7 +1180,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSemanticAssignment(userId,
                                              null,
@@ -1234,7 +1234,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSemanticAssignment(userId,
                                              null,
@@ -1287,7 +1287,7 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement>  handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 handler.addAssetOrigin(userId,
                                        assetGUID,
@@ -1345,7 +1345,7 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 handler.removeAssetOrigin(userId, assetGUID, assetGUIDParameterName, methodName);
             }
@@ -1394,7 +1394,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.publishAsset(userId, assetGUID, assetGUIDParameterName, methodName);
         }
@@ -1438,7 +1438,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.withdrawAsset(userId, assetGUID, assetGUIDParameterName, methodName);
         }
@@ -1482,7 +1482,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.updateAssetZones(userId,
                                      assetGUID,
@@ -1531,7 +1531,7 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 int ownerType = OwnerType.USER_ID.getOpenTypeOrdinal();
 
@@ -2131,7 +2131,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.deleteBeanInRepository(userId,
                                            null,

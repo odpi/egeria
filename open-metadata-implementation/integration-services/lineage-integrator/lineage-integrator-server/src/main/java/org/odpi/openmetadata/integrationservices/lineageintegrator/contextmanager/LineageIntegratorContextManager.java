@@ -49,6 +49,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
+    @Override
     public void initializeContextManager(String   partnerOMASServerName,
                                          String   partnerOMASPlatformRootURL,
                                          String   userId,
@@ -70,6 +71,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      *
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
+    @Override
     public void createClients() throws InvalidParameterException
     {
         AssetManagerRESTClient restClient;
@@ -165,6 +167,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
+    @Override
     public void setContext(String                   connectorId,
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
@@ -174,8 +177,30 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        final String  methodName = "setContext";
+
+        String permittedSynchronizationName = PermittedSynchronization.BOTH_DIRECTIONS.getName();
+        String serviceOptionsString = "null";
+
+        if (permittedSynchronization != null)
+        {
+            permittedSynchronizationName = permittedSynchronization.getName();
+        }
+
+        if (serviceOptions != null)
+        {
+            serviceOptionsString = serviceOptions.toString();
+        }
+
         if (integrationConnector instanceof LineageIntegratorConnector)
         {
+            auditLog.logMessage(methodName,
+                                LineageIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
+                                                                                                               connectorId,
+                                                                                                               metadataSourceQualifiedName,
+                                                                                                               permittedSynchronizationName,
+                                                                                                               serviceOptionsString));
+
             LineageIntegratorConnector serviceSpecificConnector = (LineageIntegratorConnector)integrationConnector;
 
             String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
@@ -186,13 +211,12 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
                                                                              metadataSourceGUID,
                                                                              metadataSourceQualifiedName,
                                                                              connectorName,
-                                                                             IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
+                                                                             IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
                                                                              auditLog));
         }
         else
         {
             final String  parameterName = "integrationConnector";
-            final String  methodName = "setContext";
 
             throw new InvalidParameterException(
                     LineageIntegratorErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorName,

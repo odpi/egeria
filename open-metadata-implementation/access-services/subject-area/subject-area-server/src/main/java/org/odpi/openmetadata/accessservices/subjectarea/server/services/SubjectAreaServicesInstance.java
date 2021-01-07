@@ -27,6 +27,7 @@ public class SubjectAreaServicesInstance extends OMASServiceInstance
     private SubjectAreaCategoryHandler categoryHandler;
     private SubjectAreaRelationshipHandler relationshipHandler;
     private SubjectAreaGraphHandler graphHandler;
+    private SubjectAreaConfigHandler configHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -73,6 +74,8 @@ public class SubjectAreaServicesInstance extends OMASServiceInstance
             this.graphHandler= new SubjectAreaGraphHandler(oMRSAPIHelper, maxPageSize);
 
             this.relationshipHandler= new SubjectAreaRelationshipHandler(oMRSAPIHelper, maxPageSize);
+
+            this.configHandler = new SubjectAreaConfigHandler(oMRSAPIHelper, maxPageSize);
         }
         else
         {
@@ -131,5 +134,13 @@ public class SubjectAreaServicesInstance extends OMASServiceInstance
      */
     public SubjectAreaGraphHandler getGraphHandler() {
         return graphHandler;
+    }
+    /**
+     * Return the handler for config requests.
+     *
+     * @return handler object
+     */
+    public SubjectAreaConfigHandler getConfigHandler() {
+        return configHandler;
     }
 }

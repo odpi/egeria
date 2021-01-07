@@ -20,10 +20,10 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Governance Engine OMAS Common</name>
+    <name>Governance Engine OMAS API</name>
     <description>
-        Common library for the Governance Engine Open Metadata Access Service (OMAS).
-        This is required by both client and server
+        API library for the Governance Engine Open Metadata Access Service (OMAS).
+        This is required by both client and server.
     </description>
 
     <artifactId>governance-engine-api</artifactId>
@@ -48,6 +48,16 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-action-framework</artifactId>
         </dependency>
 
     </dependencies>

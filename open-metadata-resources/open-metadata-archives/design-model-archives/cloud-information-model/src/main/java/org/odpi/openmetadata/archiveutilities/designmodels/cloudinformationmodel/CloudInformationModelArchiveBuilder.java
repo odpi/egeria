@@ -72,6 +72,7 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
      *
      * @return populated open metadata archive object
      */
+    @Override
     protected OpenMetadataArchive getOpenMetadataArchive()
     {
         final String methodName = "getOpenMetadataArchive";

@@ -189,6 +189,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> createNestedFolders(String userId,
                                             String fileManagerCapabilityGUID,
                                             String fileManagerCapabilityName,
@@ -237,6 +238,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void attachTopLevelFolder(String userId,
                                      String fileManagerCapabilityGUID,
                                      String fileManagerCapabilityName,
@@ -282,6 +284,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void detachTopLevelFolder(String userId,
                                      String fileManagerCapabilityGUID,
                                      String fileManagerCapabilityName,
@@ -333,6 +336,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFileToCatalog(String             userId,
                                              String             fileManagerCapabilityGUID,
                                              String             fileManagerCapabilityName,
@@ -386,6 +390,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFileToCatalogFromTemplate(String             userId,
                                                          String             fileManagerCapabilityGUID,
                                                          String             fileManagerCapabilityName,
@@ -433,6 +438,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void updateDataFileInCatalog(String             userId,
                                         String             fileManagerCapabilityGUID,
                                         String             fileManagerCapabilityName,
@@ -481,6 +487,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void archiveDataFileInCatalog(String            userId,
                                          String            fileManagerCapabilityGUID,
                                          String            fileManagerCapabilityName,
@@ -525,6 +532,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void deleteDataFileFromCatalog(String userId,
                                           String fileManagerCapabilityGUID,
                                           String fileManagerCapabilityName,
@@ -579,6 +587,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFolderToCatalog(String               userId,
                                                String               fileManagerCapabilityGUID,
                                                String               fileManagerCapabilityName,
@@ -632,6 +641,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String> addDataFolderToCatalogFromTemplate(String             userId,
                                                            String             fileManagerCapabilityGUID,
                                                            String             fileManagerCapabilityName,
@@ -679,6 +689,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void updateDataFolderInCatalog(String               userId,
                                           String               fileManagerCapabilityGUID,
                                           String               fileManagerCapabilityName,
@@ -727,6 +738,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void archiveDataFolderInCatalog(String            userId,
                                            String            fileManagerCapabilityGUID,
                                            String            fileManagerCapabilityName,
@@ -769,6 +781,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void deleteDataFolderFromCatalog(String userId,
                                             String fileManagerCapabilityGUID,
                                             String fileManagerCapabilityName,
@@ -815,6 +828,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void attachDataFileAssetToFolder(String userId,
                                             String fileManagerCapabilityGUID,
                                             String fileManagerCapabilityName,
@@ -862,6 +876,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void detachDataFileAssetFromFolder(String userId,
                                               String fileManagerCapabilityGUID,
                                               String fileManagerCapabilityName,
@@ -908,6 +923,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void moveDataFileInCatalog(String userId,
                                       String fileManagerCapabilityGUID,
                                       String fileManagerCapabilityName,
@@ -954,6 +970,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void moveDataFolderInCatalog(String userId,
                                         String fileManagerCapabilityGUID,
                                         String fileManagerCapabilityName,
@@ -998,6 +1015,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public FileFolderElement getFolderByGUID(String   userId,
                                              String   folderGUID) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -1009,7 +1027,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, guidParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{2}";
 
         FileFolderResponse restResult = restClient.callFileFolderGetRESTCall(methodName,
                                                                              urlTemplate,
@@ -1033,6 +1051,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public FileFolderElement getFolderByPathName(String   userId,
                                                  String   pathName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -1044,7 +1063,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/by-name";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/by-name";
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
@@ -1075,6 +1094,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<FileFolderElement>  getTopLevelFolders(String userId,
                                                        String fileSystemGUID,
                                                        int    startFrom,
@@ -1089,7 +1109,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/{2}/folders?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/folders?startFrom={3}&pageSize={4}";
 
         FileFoldersResponse restResult = restClient.callFileFoldersGetRESTCall(methodName,
                                                                              urlTemplate,
@@ -1117,6 +1137,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<FileFolderElement>  getNestedFolders(String  userId,
                                                      String  parentFolderGUID,
                                                      int     startFrom,
@@ -1132,7 +1153,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/{2}/folders?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{2}/folders?startFrom={3}&pageSize={4}";
 
         FileFoldersResponse restResult = restClient.callFileFoldersGetRESTCall(methodName,
                                                                                urlTemplate,
@@ -1160,6 +1181,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<DataFileElement>  getTopLevelDataFiles(String userId,
                                                        String fileSystemGUID,
                                                        int    startFrom,
@@ -1174,7 +1196,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/{2}/data-files?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/data-files?startFrom={3}&pageSize={4}";
 
         DataFilesResponse restResult = restClient.callDataFilesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -1202,6 +1224,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<DataFileElement> getFolderFiles(String  userId,
                                                 String  folderGUID,
                                                 int     startFrom,
@@ -1217,7 +1240,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
 
-        final String urlTemplate = urlTemplatePrefix + "/folders/{2}/data-files?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{2}/data-files?startFrom={3}&pageSize={4}";
 
         DataFilesResponse restResult = restClient.callDataFilesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -1243,6 +1266,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public DataFileElement getFileByGUID(String userId,
                                          String fileGUID) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
@@ -1254,7 +1278,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, guidParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/data-files/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/{2}";
 
         DataFileResponse restResult = restClient.callDataFileGetRESTCall(methodName,
                                                                          urlTemplate,
@@ -1278,6 +1302,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public DataFileElement getFileByPathName(String   userId,
                                              String   pathName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
@@ -1289,7 +1314,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameterName, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/data-files/by-path-name";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/by-path-name";
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
         
@@ -1320,6 +1345,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<DataFileElement> findFilesByPathName(String userId,
                                                      String pathName,
                                                      int    startFrom,
@@ -1334,20 +1360,20 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         invalidParameterHandler.validateName(pathName, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/data-files/by-search-path-name?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/by-search-path-name?startFrom={3}&pageSize={4}";
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
         requestBody.setFullPath(pathName);
 
         DataFilesResponse restResult = restClient.callDataFilesPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          pathName,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            pathName,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }

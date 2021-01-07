@@ -33,7 +33,24 @@ public interface SubjectAreaNodeClient<E extends Node> extends SubjectAreaClient
                                 FindRequest findRequest) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException;
-
+    /**
+     * Request to search relationships for current node.
+     * @param userId unique identifier for requesting user, under which the request is performed.
+     * @param guid   unique identifier of the object to which the found objects should relate.
+     * @param findRequest information object for find calls.
+     * @param maximumPageSizeOnRestCall maximum page size to use on rest calls.
+     * @return list relationships relevant in the findRequest information.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    List<Line> getRelationships(String userId,
+                                String guid,
+                                FindRequest findRequest,
+                                Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException;
     /**
      * Request to search all relationships for current node.
      * @param userId unique identifier for requesting user, under which the request is performed.

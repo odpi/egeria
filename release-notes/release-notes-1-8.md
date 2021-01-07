@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.8 (May 2020)
+# Release 1.8 (June 2020)
 
 Below are the highlights of Release 1.8:
 
@@ -17,6 +17,17 @@ Below are the highlights of Release 1.8:
 * Many dependencies have been updated. The most relevant include:
     * Spring has been updated to 5.2.6
     * Spring Boot, Spring Security, Spring Security, Spring Data have been updated to 2.3.0
+
+## Egeria Implementation Status at Release 1.8
+ 
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-1.8.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+        
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

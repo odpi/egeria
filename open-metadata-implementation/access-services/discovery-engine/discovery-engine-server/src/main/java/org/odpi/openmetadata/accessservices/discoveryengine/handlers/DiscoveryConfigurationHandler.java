@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.converters.Registere
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -791,7 +792,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param discoveryRequestTypes list of discovery request types that this discovery service is able to process.
+     * @param discoveryRequestType list of discovery request types that this discovery service is able to process.
      * @param defaultAnalysisParameters list of analysis parameters that are passed the the discovery service (via
      *                                  the discovery context).  These values can be overridden on the actual discovery request.
      *
@@ -802,7 +803,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
     public  void  registerDiscoveryServiceWithEngine(String               userId,
                                                      String               discoveryEngineGUID,
                                                      String               discoveryServiceGUID,
-                                                     List<String>         discoveryRequestTypes,
+                                                     String               discoveryRequestType,
                                                      Map<String, String>  defaultAnalysisParameters) throws InvalidParameterException,
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException
@@ -810,34 +811,108 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final String methodName = "registerDiscoveryServiceWithEngine";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
-        final String discoveryRequestTypesParameter = "discoveryRequestTypes";
+        final String discoveryRequestTypeParameter = "discoveryRequestType";
 
-        invalidParameterHandler.validateStringArray(discoveryRequestTypes, discoveryRequestTypesParameter, methodName);
+        invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
+        invalidParameterHandler.validateName(discoveryRequestType, discoveryRequestTypeParameter, methodName);
+
+        /*
+         * First check if this request type has already been registered.
+         */
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       discoveryEngineGUID,
+                                                                                       OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       0,
+                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       methodName);
+
+
+        while (iterator.moreToReceive())
+        {
+            Relationship supportedDiscoveryService = iterator.getNext();
+
+            if (supportedDiscoveryService != null)
+            {
+                String existingRequestType = repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                supportedDiscoveryService.getProperties(),
+                                                                                methodName);
+
+                if (discoveryRequestType.equals(existingRequestType))
+                {
+                    /*
+                     * The request type is already registered.  Is it registered to the same discovery service?
+                     */
+                    EntityProxy existingDiscoveryServiceProxy = supportedDiscoveryService.getEntityTwoProxy();
+
+                    if ((existingDiscoveryServiceProxy != null) && (discoveryServiceGUID.equals(existingDiscoveryServiceProxy.getGUID())))
+                    {
+                        /*
+                         * The existing registration is for the requested discovery service.  All that needs to be done
+                         * is to set the request parameters to match the supplied values.
+                         */
+                        InstanceProperties properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                                        supportedDiscoveryService.getProperties(),
+                                                                                                        OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                        defaultAnalysisParameters,
+                                                                                                        methodName);
+
+                        repositoryHandler.updateRelationshipProperties(userId,
+                                                                       null,
+                                                                       null,
+                                                                       supportedDiscoveryService,
+                                                                       properties,
+                                                                       methodName);
+                        return;
+                    }
+                    else
+                    {
+                        /*
+                         * Delete the service registration and when this drops out of the loop, the new registration will be added.
+                         */
+                        repositoryHandler.removeRelationship(userId,
+                                                             null,
+                                                             null,
+                                                             supportedDiscoveryService,
+                                                             methodName);
+                    }
+                }
+            }
+        }
+
+        /*
+         * If this code executes it means that the discovery service can be registered with the discovery engine
+         * using the supplied request type.
+         */
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
-        repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                          instanceProperties,
-                                                          OpenMetadataAPIMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
-                                                          discoveryRequestTypes,
-                                                          methodName);
+        repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                     instanceProperties,
+                                                     OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                     discoveryRequestType,
+                                                     methodName);
         repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                         instanceProperties,
-                                                        OpenMetadataAPIMapper.DEFAULT_ANALYSIS_PARAMETERS_PROPERTY_NAME,
+                                                        OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
                                                         defaultAnalysisParameters,
                                                         methodName);
 
         discoveryEngineHandler.linkElementToElement(userId,
                                                     null,
                                                     null,
-                                                    discoveryServiceGUID,
-                                                    discoveryServiceGUIDParameter,
-                                                    OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                     discoveryEngineGUID,
                                                     discoveryEngineGUIDParameter,
                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
+                                                    discoveryServiceGUID,
+                                                    discoveryServiceGUIDParameter,
+                                                    OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                     instanceProperties,
                                                     methodName);
     }
@@ -862,7 +937,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        final String methodName = "getRegisteredDiscoveryService";
+        final String methodName = "getRegisteredGovernanceService";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
 
@@ -870,17 +945,23 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
 
-        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
-                                                                                     discoveryServiceGUID,
-                                                                                     OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                     discoveryEngineGUID,
-                                                                                     OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                                                                     OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                     methodName);
+        List<Relationship> relationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
+                                                                                             discoveryServiceGUID,
+                                                                                             OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                                             discoveryEngineGUID,
+                                                                                             OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                                                             OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                             methodName);
 
-        RegisteredDiscoveryServiceConverter converter = new RegisteredDiscoveryServiceConverter(repositoryHelper, serviceName);
 
-        return converter.getBean(this.getDiscoveryServiceByGUID(userId, discoveryServiceGUID), relationship);
+        if (relationships != null)
+        {
+            RegisteredDiscoveryServiceConverter converter = new RegisteredDiscoveryServiceConverter(repositoryHelper, serviceName);
+
+            return converter.getBean(this.getDiscoveryServiceByGUID(userId, discoveryServiceGUID), relationships);
+        }
+
+        return null;
     }
 
 
@@ -912,8 +993,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                               discoveryEngineGUID,
                                                               discoveryEngineGUIDParameter,
                                                               OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                               OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                               startingFrom,
                                                               maximumResults,
@@ -957,8 +1038,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                         discoveryServiceGUIDParameter,
                                                         OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                        OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                         methodName);
     }
 }

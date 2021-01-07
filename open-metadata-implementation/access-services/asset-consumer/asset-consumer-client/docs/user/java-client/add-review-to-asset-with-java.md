@@ -9,7 +9,7 @@
      * a rating then the original one is over-ridden.
      *
      * @param userId      userId of user making request.
-     * @param assetGUID   unique identifier for the asset.
+     * @param requestType   unique identifier for the asset.
      * @param starRating  StarRating enumeration for not recommended, one to five stars.
      * @param review      user review of asset.  This can be null.
      * @param isPublic    indicates whether the feedback should be shared or only be visible to the originating user
@@ -19,7 +19,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void addRatingToAsset(String     userId,
-                          String     assetGUID,
+                          String     requestType,
                           StarRating starRating,
                           String     review,
                           boolean    isPublic) throws InvalidParameterException,

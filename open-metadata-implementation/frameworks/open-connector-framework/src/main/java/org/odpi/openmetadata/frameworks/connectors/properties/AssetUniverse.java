@@ -289,6 +289,7 @@ public class AssetUniverse extends AssetDetail
                 '}';
     }
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -302,7 +303,7 @@ public class AssetUniverse extends AssetDetail
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetUniverse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -311,11 +312,23 @@ public class AssetUniverse extends AssetDetail
             return false;
         }
         AssetUniverse that = (AssetUniverse) objectToCompare;
-        return Objects.equals(getMeanings(), that.getMeanings()) &&
-                Objects.equals(getSchema(), that.getSchema()) &&
-                Objects.equals(getFeedback(), that.getFeedback()) &&
-                Objects.equals(getKnownLocations(), that.getKnownLocations()) &&
-                Objects.equals(getLineage(), that.getLineage()) &&
-                Objects.equals(getRelatedAssets(), that.getRelatedAssets());
+        return Objects.equals(meanings, that.meanings) &&
+                       Objects.equals(schema, that.schema) &&
+                       Objects.equals(feedback, that.feedback) &&
+                       Objects.equals(knownLocations, that.knownLocations) &&
+                       Objects.equals(lineage, that.lineage) &&
+                       Objects.equals(relatedAssets, that.relatedAssets);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), meanings, schema, feedback, knownLocations, lineage, relatedAssets);
     }
 }

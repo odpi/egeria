@@ -166,7 +166,7 @@ public class Note extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof Note))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -176,7 +176,19 @@ public class Note extends Referenceable
         }
         Note note = (Note) objectToCompare;
         return Objects.equals(getText(), note.getText()) &&
-                Objects.equals(getLastUpdate(), note.getLastUpdate()) &&
-                Objects.equals(getUser(), note.getUser());
+                       Objects.equals(getLastUpdate(), note.getLastUpdate()) &&
+                       Objects.equals(getUser(), note.getUser());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getText(), getLastUpdate(), getUser());
     }
 }

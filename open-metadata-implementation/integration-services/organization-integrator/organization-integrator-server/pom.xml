@@ -21,7 +21,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Organization Integrator Server-side</name>
+    <name>Organization Integrator OMIS Server-side</name>
     <description>
         Context and context manager implementation for this integration service.
     </description>
@@ -29,6 +29,11 @@
     <artifactId>organization-integrator-server</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>

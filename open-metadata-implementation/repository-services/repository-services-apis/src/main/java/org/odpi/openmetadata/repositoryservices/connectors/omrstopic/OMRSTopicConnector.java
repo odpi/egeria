@@ -88,6 +88,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @param embeddedConnectors  list of connectors
      */
+    @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
     {
         this.embeddedConnectors = embeddedConnectors;
@@ -100,6 +101,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog   auditLog)
     {
         this.auditLog = auditLog;
@@ -111,6 +113,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @param eventProtocolVersion version enum
      */
+    @Override
     public void setEventProtocolLevel(OMRSEventProtocolVersion eventProtocolVersion)
     {
         if (eventProtocolVersion != null)
@@ -127,6 +130,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param topicListener object implementing the OMRSTopicListener interface
      */
     @Deprecated
+    @Override
     public void registerListener(OMRSTopicListener  topicListener)
     {
         if (topicListener != null)
@@ -151,6 +155,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param topicListener object implementing the OMRSTopicListener interface
      * @param serviceName name os service that the listener is from
      */
+    @Override
     public void registerListener(OMRSTopicListener topicListener,
                                  String            serviceName)
     {
@@ -177,6 +182,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -286,6 +292,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param registryEvent  properties of the event to send
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
+    @Override
     public void sendRegistryEvent(OMRSRegistryEvent registryEvent) throws ConnectorCheckedException
     {
         final String methodName = "sendRegistryEvent";
@@ -307,6 +314,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param typeDefEvent  properties of the event to send
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
+    @Override
     public void sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent) throws ConnectorCheckedException
     {
         final String methodName = "sendTypeDefEvent";
@@ -329,6 +337,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param instanceEvent  properties of the event to send
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
+    @Override
     public void sendInstanceEvent(OMRSInstanceEvent instanceEvent) throws ConnectorCheckedException
     {
         final String methodName = "sendInstanceEvent";
@@ -403,6 +412,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @param event inbound event
      */
+    @Override
     public void processEvent(String event)
     {
         final String actionDescription = "Process an OMRS Event";
@@ -543,6 +553,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

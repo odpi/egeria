@@ -37,6 +37,7 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
      * @return unique identifier assigned to the log record
      * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
      */
+    @Override
     public String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException
     {
         final String   methodName = "storeLogRecord";
@@ -103,6 +104,7 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -125,6 +127,7 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         /*

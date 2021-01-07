@@ -17,6 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-server')
     implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-server')
     implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-server')
+    implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-server')
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }

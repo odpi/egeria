@@ -271,6 +271,32 @@ public class DataAssetExchangeResource
 
 
     /**
+     * Step through the assets visible to this caller.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody search parameter and correlation properties
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/scan")
+
+    public AssetElementsResponse scanAssets(@PathVariable String                             serverName,
+                                            @PathVariable String                             userId,
+                                            @RequestParam int                                startFrom,
+                                            @RequestParam int                                pageSize,
+                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    {
+        return restAPI.scanAssets(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
      * Retrieve the list of asset metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *

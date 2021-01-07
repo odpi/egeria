@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,16 +20,18 @@ public class ServiceDetails {
 
     public enum ServiceCat {
         IntegrationService,
-        AccessService
-        // TODO - others to be added...
+        AccessService,
+        ViewService
+        // TODO - other service categories to be added...
     }
 
     private static final long    serialVersionUID = 1L;
 
 
-    private ServiceCat serviceCat;
+    private ServiceCat               serviceCat;
     private IntegrationServiceConfig integrationServiceConfig;
-    private AccessServiceConfig accessServiceConfig;
+    private AccessServiceConfig      accessServiceConfig;
+    private ViewServiceConfig        viewServiceConfig;
 
 
     /**
@@ -49,7 +52,13 @@ public class ServiceDetails {
 
         this.integrationServiceConfig = template.getIntegrationServiceConfig();
         this.accessServiceConfig      = template.getAccessServiceConfig();
+        this.viewServiceConfig        = template.getViewServiceConfig();
+    }
 
+    public ServiceCat getServiceCat() {  return serviceCat;  }
+
+    public void setServiceCat(ServiceCat serviceCat) {
+        this.serviceCat = serviceCat;
     }
 
     public IntegrationServiceConfig getIntegrationServiceConfig() {  return integrationServiceConfig;  }
@@ -64,9 +73,11 @@ public class ServiceDetails {
         this.accessServiceConfig = accessServiceConfig;
     }
 
-    public ServiceCat getServiceCat() {  return serviceCat;  }
+    public ViewServiceConfig getViewServiceConfig() {  return viewServiceConfig;  }
 
-    public void setServiceCat(ServiceCat serviceCat) {
-        this.serviceCat = serviceCat;
+    public void setViewServiceConfig(ViewServiceConfig viewServiceConfig) {
+        this.viewServiceConfig = viewServiceConfig;
     }
+
+
 }

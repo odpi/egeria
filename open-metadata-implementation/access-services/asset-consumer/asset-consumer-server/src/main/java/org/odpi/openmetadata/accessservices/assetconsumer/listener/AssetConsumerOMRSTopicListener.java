@@ -77,6 +77,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      *
      * @param instanceEvent event to unpack
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
     {
         log.debug("Processing instance event: " + instanceEvent);

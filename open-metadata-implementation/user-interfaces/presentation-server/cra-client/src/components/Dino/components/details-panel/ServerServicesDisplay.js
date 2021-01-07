@@ -48,7 +48,7 @@ export default function ServerServicesDisplay(props) {
     }
 
     if (requestService) {
-      resourcesContext.loadService(platformName, serverName, serviceName);
+      resourcesContext.loadService(serverName, serviceName);
     }
 
   };
@@ -142,7 +142,6 @@ export default function ServerServicesDisplay(props) {
 }
 
 ServerServicesDisplay.propTypes = {
-  platformName : PropTypes.string,
   serverName : PropTypes.string,
   serviceList: PropTypes.array,
   serviceCat : PropTypes.string

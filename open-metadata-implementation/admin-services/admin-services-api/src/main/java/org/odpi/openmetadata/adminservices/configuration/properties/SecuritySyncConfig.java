@@ -14,7 +14,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * SecuritySyncConfig provides the properties for the security-sync-services.
+ * SecuritySyncConfig provides the properties for the deprecated security-sync-services.  This function
+ * is replaced by the Security Integrator OMIS that runs in the Integration Daemon OMAG Server.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

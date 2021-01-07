@@ -135,7 +135,7 @@ public class AssetLike extends AssetElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetLike))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -143,7 +143,19 @@ public class AssetLike extends AssetElementHeader
         {
             return false;
         }
-        AssetLike that = (AssetLike) objectToCompare;
-        return Objects.equals(getLikeBean(), that.getLikeBean());
+        AssetLike assetLike = (AssetLike) objectToCompare;
+        return Objects.equals(likeBean, assetLike.likeBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), likeBean);
     }
 }
