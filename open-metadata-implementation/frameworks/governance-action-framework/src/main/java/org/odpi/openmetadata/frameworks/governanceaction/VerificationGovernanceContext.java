@@ -24,6 +24,7 @@ public class VerificationGovernanceContext extends GovernanceContext
      * Constructor sets up the key parameters for processing the request to the governance action service.
      *
      * @param userId calling user
+     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
@@ -31,12 +32,13 @@ public class VerificationGovernanceContext extends GovernanceContext
      * @param openMetadataStore client to the metadata store for use by the governance action service
      */
     public VerificationGovernanceContext(String                     userId,
+                                         String                     governanceActionGUID,
                                          String                     requestType,
                                          Map<String, String>        requestParameters,
                                          List<RequestSourceElement> requestSourceElements,
                                          List<ActionTargetElement>  actionTargetElements,
                                          OpenMetadataClient openMetadataStore)
     {
-        super(userId, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
+        super(userId, governanceActionGUID, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
     }
 }

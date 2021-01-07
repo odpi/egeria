@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.governanceservers.enginehostservices.client;
+package org.odpi.openmetadata.governanceservers.enginehostservices.client.rest;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -14,7 +14,7 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.rest.Governanc
 /**
  * EngineHostRESTClient is responsible for issuing the REST API calls
  */
-class EngineHostRESTClient extends FFDCRESTClient
+public class EngineHostRESTClient extends FFDCRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -26,9 +26,9 @@ class EngineHostRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    EngineHostRESTClient(String   serverName,
-                         String   serverPlatformURLRoot,
-                         AuditLog auditLog) throws InvalidParameterException
+    public EngineHostRESTClient(String   serverName,
+                                String   serverPlatformURLRoot,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -42,8 +42,8 @@ class EngineHostRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    EngineHostRESTClient(String serverName,
-                         String serverPlatformURLRoot) throws InvalidParameterException
+    public EngineHostRESTClient(String serverName,
+                                String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -60,11 +60,11 @@ class EngineHostRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    EngineHostRESTClient(String   serverName,
-                         String   serverPlatformURLRoot,
-                         String   userId,
-                         String   password,
-                         AuditLog auditLog) throws InvalidParameterException
+    public EngineHostRESTClient(String   serverName,
+                                String   serverPlatformURLRoot,
+                                String   userId,
+                                String   password,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -80,10 +80,10 @@ class EngineHostRESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    EngineHostRESTClient(String serverName,
-                         String serverPlatformURLRoot,
-                         String userId,
-                         String password) throws InvalidParameterException
+    public EngineHostRESTClient(String serverName,
+                                String serverPlatformURLRoot,
+                                String userId,
+                                String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -101,11 +101,11 @@ class EngineHostRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    GovernanceEngineSummariesResponse callGovernanceEngineSummariesGetRESTCall(String    methodName,
-                                                                               String    urlTemplate,
-                                                                               Object... params) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public GovernanceEngineSummariesResponse callGovernanceEngineSummariesGetRESTCall(String    methodName,
+                                                                                      String    urlTemplate,
+                                                                                      Object... params) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
     {
         GovernanceEngineSummariesResponse restResult = this.callGetRESTCall(methodName,
                                                                             GovernanceEngineSummariesResponse.class,
@@ -130,11 +130,11 @@ class EngineHostRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    GovernanceEngineSummaryResponse callGovernanceEngineSummaryGetRESTCall(String    methodName,
-                                                                           String    urlTemplate,
-                                                                           Object... params) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public GovernanceEngineSummaryResponse callGovernanceEngineSummaryGetRESTCall(String    methodName,
+                                                                                  String    urlTemplate,
+                                                                                  Object... params) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         GovernanceEngineSummaryResponse restResult = this.callGetRESTCall(methodName,
                                                                           GovernanceEngineSummaryResponse.class,

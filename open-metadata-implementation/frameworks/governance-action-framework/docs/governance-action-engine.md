@@ -4,7 +4,7 @@
 # Governance Action Engine
 
 The governance action engine describes a set of related
-[governance action services](goverance-action-service.md).
+[governance action services](governance-action-service.md).
 It is hosted in an [Open Metadata Engine Service (OMES)](../../../engine-services)
 running on one or more
 [Engine Host OMAG Servers](../../../admin-services/docs/concepts/engine-host.md).

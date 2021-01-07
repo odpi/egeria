@@ -27,8 +27,18 @@ public enum GovernanceEngineEventType implements Serializable
                                          "Refresh Governance Engine Configuration",
                                          "The configuration for a governance engine has changed."),
     REFRESH_GOVERNANCE_SERVICE_EVENT     (2,
-                                         "Refresh Governance Service Configuration",
-                                         "The configuration for a governance service has changed.");
+                                          "Refresh Governance Service Configuration",
+                                          "The configuration for a governance service has changed."),
+
+    WATCHDOG_GOVERNANCE_SERVICE_EVENT    (3,
+                                          "Metadata change event",
+                                          "Metadata change event for watchdog governance action services."),
+
+    NEW_GOVERNANCE_ACTION_EVENT          (4,
+                                          "New Governance Action",
+                                          "New request to run a governance service."),
+
+    ;
 
     private static final long     serialVersionUID = 1L;
 

@@ -16602,7 +16602,7 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Description     = "Format or description of the measurements captured for this metric.";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "target";
-        final String attribute4Description     = "Definition of the measurement values that the goverance definitions are trying to achieve..";
+        final String attribute4Description     = "Definition of the measurement values that the governance definitions are trying to achieve.";
         final String attribute4DescriptionGUID = null;
 
 

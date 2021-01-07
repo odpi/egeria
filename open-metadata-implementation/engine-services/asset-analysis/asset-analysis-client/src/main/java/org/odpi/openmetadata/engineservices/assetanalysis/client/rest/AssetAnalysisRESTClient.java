@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.engineservices.assetanalysis.client;
+package org.odpi.openmetadata.engineservices.assetanalysis.client.rest;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 /**
  * AssetAnalysisRESTClient is responsible for issuing the REST API calls
  */
-class AssetAnalysisRESTClient extends ODFRESTClient
+public class AssetAnalysisRESTClient extends ODFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -22,9 +22,9 @@ class AssetAnalysisRESTClient extends ODFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetAnalysisRESTClient(String    serverName,
-                            String    serverPlatformURLRoot,
-                            AuditLog auditLog) throws InvalidParameterException
+    public AssetAnalysisRESTClient(String    serverName,
+                                   String    serverPlatformURLRoot,
+                                   AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -38,8 +38,8 @@ class AssetAnalysisRESTClient extends ODFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetAnalysisRESTClient(String serverName,
-                            String serverPlatformURLRoot) throws InvalidParameterException
+    public AssetAnalysisRESTClient(String serverName,
+                                   String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -56,11 +56,11 @@ class AssetAnalysisRESTClient extends ODFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetAnalysisRESTClient(String   serverName,
-                            String   serverPlatformURLRoot,
-                            String   userId,
-                            String   password,
-                            AuditLog auditLog) throws InvalidParameterException
+    public AssetAnalysisRESTClient(String   serverName,
+                                   String   serverPlatformURLRoot,
+                                   String   userId,
+                                   String   password,
+                                   AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -76,10 +76,10 @@ class AssetAnalysisRESTClient extends ODFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetAnalysisRESTClient(String serverName,
-                            String serverPlatformURLRoot,
-                            String userId,
-                            String password) throws InvalidParameterException
+    public AssetAnalysisRESTClient(String serverName,
+                                   String serverPlatformURLRoot,
+                                   String userId,
+                                   String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }

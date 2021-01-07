@@ -8,8 +8,8 @@ A governance action process defines a prescribed sequence of
 Its definition consists of a linked set of
 [governance action types](governance-action-type.md).
 Each governance action type describes which
-[governance action service](goverance-action-service.md)
-to run from which [governance action engine](goverance-action-engine.md)
+[governance action service](governance-action-service.md)
+to run from which [governance action engine](governance-action-engine.md)
 along with the [request type](governance-action-request-type.md) and
 [request parameters](governance-action-request-parameters.md) to pass.
 The linkage between the the governance action types shows the
@@ -32,8 +32,8 @@ so it can support comments and have [governance actions](governance-action.md) l
 * Governance action processes are defined using the [Governance Engine OMAS](../../../access-services/governance-engine).
 
 * The [Open Metadata Engine Services (OMES)](../../../engine-services) provide the mechanisms
-  that support the different types of [governance action engines](goverance-action-engine.md).  These engines
-  run the [governance action services](goverance-action-service.md) that execute the
+  that support the different types of [governance action engines](governance-action-engine.md).  These engines
+  run the [governance action services](governance-action-service.md) that execute the
   [governance actions](governance-action.md) defined by the governance action process.
  
  
