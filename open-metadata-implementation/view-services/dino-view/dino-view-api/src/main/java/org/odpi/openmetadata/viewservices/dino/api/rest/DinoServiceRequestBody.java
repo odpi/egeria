@@ -20,10 +20,11 @@ public class DinoServiceRequestBody {
      * The DinoServerRequestBody class provides a body for REST requests to the platform-oriented Dino REST APIs
      */
 
-    private String                    serverName;                    // must be non-null
-    private String                    platformName;                  // must be non-null
+    private String                    serverName;             // mandatory
+    private String                    platformName;           // mandatory
     private String                    serverInstanceName;
-    private String                    serviceName;                   // must be non-null
+    private String                    serviceFullName;        // At least one of full name and URL marker must be supplied
+    private String                    serviceURLMarker;       // See line above
     private String                    description;
 
 
@@ -43,9 +44,13 @@ public class DinoServiceRequestBody {
 
     public void setPlatformName(String platformName) { this.platformName = platformName; }
 
-    public String getServiceName() { return serviceName; }
+    public String getServiceFullName() { return serviceFullName; }
 
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceFullName(String serviceFullName) { this.serviceFullName = serviceFullName; }
+
+    public String getServiceURLMarker() { return serviceURLMarker; }
+
+    public void setServiceURLMarker(String serviceURLMarker) { this.serviceURLMarker = serviceURLMarker; }
 
     public String getServerInstanceName() { return serverInstanceName; }
 
@@ -62,7 +67,8 @@ public class DinoServiceRequestBody {
                 ", serverName=" + serverName +
                 ", platformName=" + platformName +
                 ", serverInstanceName=" + serverInstanceName +
-                ", serviceName=" + serviceName +
+                ", serviceFullName=" + serviceFullName +
+                ", serviceURLMarker=" + serviceURLMarker +
                 ", description=" + description +
                 '}';
     }
