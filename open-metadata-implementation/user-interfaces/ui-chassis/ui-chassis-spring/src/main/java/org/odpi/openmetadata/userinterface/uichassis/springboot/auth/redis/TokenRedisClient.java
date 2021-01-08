@@ -4,6 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 
@@ -31,6 +32,11 @@ public class TokenRedisClient {
 
     public String set(String key, String value){
         return commands.set(key, value);
+    }
+
+    public String setKeepTTL(String key, String value){
+        SetArgs setArgs = new SetArgs();
+        return commands.set(key, value, setArgs.keepttl());
     }
 
     public Boolean expire(String key, long seconds){

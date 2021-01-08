@@ -16,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 public class RedisAuthService extends  TokenSettings implements AuthService{
@@ -33,7 +34,7 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
         String token = this.createTokenForUser(tokenUser.getUser(), tokenSecret);
         response.addHeader(AUTH_HEADER_NAME, token);
         tokenRedisClient.set(token,
-                tokenAbsoluteTimeout * 60 * 1000,
+                tokenAbsoluteTimeout.longValue() * 60 ,
                 LocalDateTime.now().plusMinutes(tokenTimeout).toString()
                 );
         return tokenUser.getUser();
@@ -45,7 +46,7 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
 
             validateToken(token);
 
-            tokenRedisClient.set(token, LocalDateTime.now().plusMinutes(tokenTimeout).toString());
+            tokenRedisClient.setKeepTTL(token, LocalDateTime.now().plusMinutes(tokenTimeout).toString());
 
             final TokenUser user = parseUserFromToken(token, tokenSecret);
             if (user != null) {
@@ -76,6 +77,7 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
      */
     public String createTokenForUser(User user, String secret) {
         return Jwts.builder()
+                .setId(UUID.randomUUID().toString())
                 .setSubject(toJSON(user))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
