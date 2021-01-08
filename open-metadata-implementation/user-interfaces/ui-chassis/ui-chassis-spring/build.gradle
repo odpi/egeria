@@ -8,6 +8,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:ospring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-test'
     implementation 'org.springframework.security:spring-security-ldap'
@@ -48,6 +49,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.apache.commons:commons-collections4'
     implementation 'commons-io:commons-io'
+    implementation 'io.lettuce:lettuce-core'
     implementation 'jakarta.annotation:jakarta.annotation-api'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-client')
