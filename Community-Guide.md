@@ -42,8 +42,8 @@ Follow the link above and register with the LF AI & Data slack service using you
 Once signed in you can see all of the active slack channels.
 The main slack channel for the Egeria project is called `#egeria-discussion`
 
-Additional channels are added from time to time as new workgroups and discussion topics are established. For egeria these
-channel names will begin with '#egeria', you can also view slack channels from other LF AI & Data projects.
+Additional channels are added from time to time as new workgroups and discussion topics are established. For Egeria these
+channel names will begin with '#egeria'. You can also view slack channels from other LF AI & Data projects.
 
 
 More information about slack is available in the [developer-resources/tools](developer-resources/tools/Slack.md) pages.
