@@ -42,7 +42,6 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessHandler(logoutSuccessHandler())
-//                .logoutSuccessUrl("/login?logoutSuccessful")
                 .and()
             .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new LoggingRequestFilter("/api/auth/login"), UsernamePasswordAuthenticationFilter.class)
