@@ -284,7 +284,7 @@ public class FilesRESTServices
                                                  String              userId,
                                                  DataFileRequestBody requestBody)
     {
-        final String methodName = "addFileToCatalog";
+        final String methodName = "addDataFileToCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
