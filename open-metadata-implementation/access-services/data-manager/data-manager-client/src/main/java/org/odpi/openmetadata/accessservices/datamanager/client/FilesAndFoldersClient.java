@@ -1073,8 +1073,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
                                                                               urlTemplate,
                                                                               requestBody,
                                                                               serverName,
-                                                                              userId,
-                                                                              pathName);
+                                                                              userId);
 
         return restResult.getFolder();
     }

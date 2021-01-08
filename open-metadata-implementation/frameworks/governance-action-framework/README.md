@@ -6,7 +6,7 @@
 # Governance Action Framework (GAF)
   
 The Governance Action Framework (GAF) provides the interfaces
-and base implementations for components (called [Governance Action Services](docs/goverance-action-service.md)) that
+and base implementations for components (called [Governance Action Services](docs/governance-action-service.md)) that
 take action to:
 
 * detect, report and eventually correct a situation that is harmful to the data
@@ -71,7 +71,7 @@ Open Metadata Access Services (OMASs).
 
 ## Configuring the governance action services in open metadata
 
-[Governance Action Engines](docs/goverance-action-engine.md) are
+[Governance Action Engines](docs/governance-action-engine.md) are
 defined in open metadata as a collection of [governance action request
 types](docs/governance-action-request-type.md) linked to descriptions of
 governance action services.

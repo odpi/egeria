@@ -50,7 +50,7 @@ The Engine Host runs one-to-many [Open Metadata Engine Services (OMES)](../open-
 Each engine services hosts a specific type of governance engine. The first engine service called
 [Asset Analysis OMES](../open-metadata-implementation/engine-services/asset-analysis) will be for
 [discovery engines](../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
-and others for the different types of [governance action engines](../open-metadata-implementation/frameworks/governance-action-framework/docs/goverance-action-engine.md).
+and others for the different types of [governance action engines](../open-metadata-implementation/frameworks/governance-action-framework/docs/governance-action-engine.md).
 from the 
 [Governance Action Framework (GAF)](../open-metadata-implementation/frameworks/governance-action-framework).
 
