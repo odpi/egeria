@@ -55,6 +55,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewSchemaTypeBean(Class<B>             beanClass,
                                   InstanceHeader       schemaRootHeader,
                                   String               schemaTypeTypeName,

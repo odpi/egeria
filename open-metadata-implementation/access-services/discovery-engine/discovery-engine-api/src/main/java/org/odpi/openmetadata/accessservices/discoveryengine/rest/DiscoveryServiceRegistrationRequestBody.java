@@ -24,7 +24,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     private static final long    serialVersionUID = 1L;
 
     private String              discoveryServiceGUID      = null;
-    private List<String>        discoveryRequestTypes     = null;
+    private String              discoveryRequestType      = null;
     private Map<String, String> defaultAnalysisParameters = null;
 
     /**
@@ -48,7 +48,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
         if (template != null)
         {
             discoveryServiceGUID  = template.getDiscoveryServiceGUID();
-            discoveryRequestTypes = template.getDiscoveryRequestTypes();
+            discoveryRequestType = template.getDiscoveryRequestType();
             defaultAnalysisParameters = template.getDefaultAnalysisParameters();
         }
     }
@@ -77,24 +77,24 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
 
 
     /**
-     * Return the list of asset types that this discovery service supports.
+     * Return the new request that this discovery service supports.
      *
-     * @return list of asset type names
+     * @return name of the request
      */
-    public List<String> getDiscoveryRequestTypes()
+    public String getDiscoveryRequestType()
     {
-        if (discoveryRequestTypes == null)
-        {
-            return null;
-        }
-        else if (discoveryRequestTypes.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(discoveryRequestTypes);
-        }
+        return discoveryRequestType;
+    }
+
+
+    /**
+     * Set up the new request that this discovery service supports.
+     *
+     * @param discoveryRequestType name of the request
+     */
+    public void setDiscoveryRequestType(String discoveryRequestType)
+    {
+        this.discoveryRequestType = discoveryRequestType;
     }
 
 
@@ -133,16 +133,6 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     }
 
 
-    /**
-     * Set up the list of asset types that this discovery service supports.
-     *
-     * @param discoveryRequestTypes list of asset type names
-     */
-    public void setDiscoveryRequestTypes(List<String> discoveryRequestTypes)
-    {
-        this.discoveryRequestTypes = discoveryRequestTypes;
-    }
-
 
     /**
      * JSON-style toString.
@@ -154,7 +144,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     {
         return "DiscoveryServiceRegistrationRequestBody{" +
                 "discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
-                ", discoveryRequestTypes=" + discoveryRequestTypes +
+                ", discoveryRequestType=" + discoveryRequestType +
                 ", defaultAnalysisParameters=" + defaultAnalysisParameters +
                 '}';
     }
@@ -179,7 +169,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
         }
         DiscoveryServiceRegistrationRequestBody that = (DiscoveryServiceRegistrationRequestBody) objectToCompare;
         return Objects.equals(discoveryServiceGUID, that.discoveryServiceGUID) &&
-                Objects.equals(discoveryRequestTypes, that.discoveryRequestTypes) &&
+                Objects.equals(discoveryRequestType, that.discoveryRequestType) &&
                 Objects.equals(defaultAnalysisParameters, that.defaultAnalysisParameters);
     }
 
@@ -192,6 +182,6 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
     @Override
     public int hashCode()
     {
-        return Objects.hash(discoveryServiceGUID, discoveryRequestTypes, defaultAnalysisParameters);
+        return Objects.hash(discoveryServiceGUID, discoveryRequestType, defaultAnalysisParameters);
     }
 }

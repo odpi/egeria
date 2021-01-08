@@ -202,6 +202,7 @@ public class AssetBuilder extends ReferenceableBuilder
     }
 
 
+
     /**
      * Set up the AssetOwnership classification for this entity.
      * This method overrides an previously defined AssetOwnership classification for this entity.
@@ -444,6 +445,7 @@ public class AssetBuilder extends ReferenceableBuilder
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
+    @Override
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);

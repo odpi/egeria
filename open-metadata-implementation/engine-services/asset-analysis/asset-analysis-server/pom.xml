@@ -21,7 +21,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Asset Analysis Engine Services Server-side</name>
+    <name>Asset Analysis OMES Server-side</name>
     <description>
         Server side implementation of the asset analysis engine services (heart of the automated metadata discovery services).
     </description>
@@ -57,7 +57,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-registration</artifactId>
+            <artifactId>engine-host-services-registration</artifactId>
         </dependency>
 
         <dependency>
@@ -71,8 +71,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-client</artifactId>
         </dependency>
 
         <dependency>
@@ -81,13 +86,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>multi-tenant</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-service-connectors</artifactId>
+            <artifactId>multi-tenant</artifactId>
         </dependency>
 
     </dependencies>

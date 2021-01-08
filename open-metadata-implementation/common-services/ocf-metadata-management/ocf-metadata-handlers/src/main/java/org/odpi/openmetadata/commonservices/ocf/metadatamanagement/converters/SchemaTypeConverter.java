@@ -82,6 +82,7 @@ public class SchemaTypeConverter extends ReferenceableConverter
      *
      * @return output bean
      */
+    @Override
     public SchemaType getBean()
     {
 

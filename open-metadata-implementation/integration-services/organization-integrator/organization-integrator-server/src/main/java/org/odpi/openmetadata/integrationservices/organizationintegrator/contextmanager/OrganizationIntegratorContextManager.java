@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.organizationintegrator.contextmanager;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.context
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.organizationintegrator.connector.OrganizationIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.organizationintegrator.connector.OrganizationIntegratorContext;
+import org.odpi.openmetadata.integrationservices.organizationintegrator.ffdc.OrganizationIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.organizationintegrator.ffdc.OrganizationIntegratorErrorCode;
 
 import java.util.Map;
@@ -34,10 +36,38 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
 
 
     /**
+     * Initialize server properties for the context manager.
+     *
+     * @param partnerOMASServerName name of the server to connect to
+     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum number of results that can be returned on a single REST call
+     * @param auditLog logging destination
+     */
+    @Override
+    public void initializeContextManager(String   partnerOMASServerName,
+                                         String   partnerOMASPlatformRootURL,
+                                         String   userId,
+                                         String   password,
+                                         int      maxPageSize,
+                                         AuditLog auditLog)
+    {
+        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+
+        final String methodName = "initializeContextManager";
+
+        auditLog.logMessage(methodName,
+                            OrganizationIntegratorAuditCode.CONTEXT_INITIALIZING.getMessageDefinition(partnerOMASServerName, partnerOMASPlatformRootURL));
+    }
+
+
+    /**
      * Suggestion for subclass to create client(s) to partner OMAS.
      *
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
+    @Override
     public  void createClients() throws InvalidParameterException
     {
 
@@ -58,6 +88,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
+    @Override
     public void setContext(String                   connectorId,
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
@@ -67,33 +98,30 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        final String  methodName = "setContext";
 
-    }
+        String permittedSynchronizationName = PermittedSynchronization.BOTH_DIRECTIONS.getName();
+        String serviceOptionsString = "null";
 
+        if (permittedSynchronization != null)
+        {
+            permittedSynchronizationName = permittedSynchronization.getName();
+        }
 
-    /**
-     * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
-     *
-     * @param connectorId unique identifier of the connector (used to configure the event listener)
-     * @param connectorName name of connector from config
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
-     * @param integrationConnector connector created from connection integration service configuration
-     * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
-     *
-     * @throws InvalidParameterException the connector is not of the correct type
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public void setContext(String                   connectorId,
-                           String                   connectorName,
-                           String                   metadataSourceQualifiedName,
-                           IntegrationConnector     integrationConnector,
-                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
+        if (serviceOptions != null)
+        {
+            serviceOptionsString = serviceOptions.toString();
+        }
+
         if (integrationConnector instanceof OrganizationIntegratorConnector)
         {
+            auditLog.logMessage(methodName,
+                                OrganizationIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
+                                                                                                                    connectorId,
+                                                                                                                    metadataSourceQualifiedName,
+                                                                                                                    permittedSynchronizationName,
+                                                                                                                    serviceOptionsString));
+
             OrganizationIntegratorConnector serviceSpecificConnector = (OrganizationIntegratorConnector)integrationConnector;
 
             if (context == null)
@@ -105,7 +133,6 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
         else
         {
             final String  parameterName = "integrationConnector";
-            final String  methodName = "setContext";
 
             throw new InvalidParameterException(OrganizationIntegratorErrorCode.INVALID_CONNECTOR.
                     getMessageDefinition(connectorName,

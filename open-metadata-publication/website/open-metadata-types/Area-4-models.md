@@ -35,6 +35,7 @@ that the governance program has a positive effect.
 * **[0462 Governance Action Types](0462-Governance-Action-Types.md)**
 * **[0463 Governance Actions](0463-Governance-Actions.md)**
 * **[0465 Duplicate Processing](0465-Duplicate-Processing.md)**
+* **[0470 Incident Reporting](0470-Incident-Reporting.md)**
 * **[0481 Licenses](0481-Licenses.md)**
 * **[0482 Certifications](0482-Certifications.md)**
 * **[0485 Data Processing Purposes](0485-Data-Processing-Purposes.md)**

@@ -23,14 +23,14 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum AssetAnalysisAuditCode implements AuditLogMessageSet
 {
-    SERVER_INITIALIZING("OMES-ASSET-ANALYSIS-0001",
-                        OMRSAuditLogRecordSeverity.STARTUP,
-                        "The Asset Analysis engine services are initializing in server {0}",
-                        "A new OMAG server has been started that is configured to run the Asset Analysis OMES.  " +
+    ENGINE_SERVICE_INITIALIZING("OMES-ASSET-ANALYSIS-0001",
+                                OMRSAuditLogRecordSeverity.STARTUP,
+                                "The Asset Analysis engine services are initializing in server {0}",
+                                "A new OMAG server has been started that is configured to run the Asset Analysis OMES.  " +
                                  "Within this engine service are one or more discovery engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +
                                 "discovery engines is retrieved from the metadata server and the discovery engines are initialized.",
-                        "Verify that the start up sequence goes on to initialize the configured discovery engines."),
+                                "Verify that the start up sequence goes on to initialize the configured discovery engines."),
 
     ENGINE_INITIALIZING("OMES-ASSET-ANALYSIS-0005",
                         OMRSAuditLogRecordSeverity.STARTUP,
@@ -100,13 +100,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                     "The local administrator has requested shut down of this engine service.",
                     "Verify that this server is no longer needed and the shutdown is expected."),
 
-    ENGINE_SHUTDOWN("OMES-ASSET-ANALYSIS-0015",
-                    OMRSAuditLogRecordSeverity.SHUTDOWN,
-                    "The discovery engine {0} in server {1} is shutting down",
-                    "The local administrator has requested shut down of this discovery engine.  No more discovery requests will be processed by this engine.",
-                    "Verify that this shutdown is intended and the discovery engine is no longer needed."),
-
-    SERVER_SHUTDOWN("OMES-ASSET-ANALYSIS-0016",
+   SERVER_SHUTDOWN("OMES-ASSET-ANALYSIS-0016",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
                          "The Asset Analysis OMES in server {0} has completed shutdown",
                          "The local administrator has requested shut down of this engine service and the operation has completed.",
@@ -227,7 +221,21 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                         " the discovery service."),
 
 
-
+    INVALID_DISCOVERY_SERVICE( "OMES-ASSET-ANALYSIS-0029",
+                               OMRSAuditLogRecordSeverity.EXCEPTION,
+                               "The discovery service {0} linked to discovery request type {1} can not be started.  " +
+                                      "The {2} exception was returned with message {3}",
+                              "The discovery request is not run and an error is returned to the caller.",
+                              "This may be an error in the discovery services's logic or the discovery service may not be properly deployed or " +
+                                      "there is a configuration error related to the discovery engine.  " +
+                                      "The configuration that defines the discovery request type in the discovery engine and links " +
+                                      "it to the discovery service is maintained in the metadata server by the Discovery " +
+                                      "Engine OMAS's configuration API." +
+                                      "Verify that this configuration is correct.  If it is then validate that the jar file containing the " +
+                                      "discovery service's implementation has been deployed so the Asset Analysis OMES can load it.  If all this is " +
+                                      "true this it is likely to be a code error in the discovery service in which case, " +
+                                      "raise an issue with the author of the discovery service to get it fixed.  Once the cause is resolved, " +
+                                      "retry the discovery request."),
     ;
 
 
@@ -268,6 +276,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -280,6 +289,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);

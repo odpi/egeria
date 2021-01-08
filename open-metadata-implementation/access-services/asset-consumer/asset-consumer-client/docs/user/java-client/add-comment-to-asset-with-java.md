@@ -8,7 +8,7 @@
      * Adds a comment to the asset.
      *
      * @param userId        userId of user making request.
-     * @param assetGUID     unique identifier for the asset.
+     * @param requestType     unique identifier for the asset.
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
      * @param isPublic      indicates whether the feedback should be shared or only be visible to the originating user
@@ -20,7 +20,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     String addCommentToAsset(String      userId,
-                             String      assetGUID,
+                             String      requestType,
                              CommentType commentType,
                              String      commentText,
                              boolean     isPublic) throws InvalidParameterException,

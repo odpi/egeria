@@ -12,7 +12,6 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-api')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
-    implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation 'org.springframework:spring-web'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
@@ -20,7 +19,7 @@ dependencies {
 
 }
 
-description = 'Asset Analysis Client'
+description = 'Asset Analysis OMES Client'
 
 java {
     withJavadocJar()

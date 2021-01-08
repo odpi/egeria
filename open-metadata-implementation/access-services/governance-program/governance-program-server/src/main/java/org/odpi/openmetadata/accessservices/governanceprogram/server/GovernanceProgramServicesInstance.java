@@ -101,29 +101,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 
 
     /**
-     * Return the server name.
-     *
-     * @return serverName name of the server for this instance
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    public String getServerName() throws NewInstanceException
-    {
-        final String methodName = "getServerName";
-
-        if (serverName != null)
-        {
-            return serverName;
-        }
-        else
-        {
-           throw new NewInstanceException(GovernanceProgramErrorCode.OMRS_NOT_AVAILABLE.getMessageDefinition(methodName),
-                                           this.getClass().getName(),
-                                           methodName);
-        }
-    }
-
-
-    /**
      * Return the governance officer handler
      *
      * @return handler

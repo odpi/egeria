@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -20,10 +22,22 @@ import java.util.List;
  * Some discovery services manage the invocation of other discovery services.  These discovery services are called
  * discovery pipelines.
  */
-public abstract class DiscoveryService extends ConnectorBase
+public abstract class DiscoveryService extends ConnectorBase implements AuditLoggingComponent
 {
     protected String           discoveryServiceName = "<Unknown>";
     protected DiscoveryContext discoveryContext = null;
+    protected AuditLog         auditLog = null;
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
+    }
 
 
     /**
@@ -111,9 +125,14 @@ public abstract class DiscoveryService extends ConnectorBase
 
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
+     * This is where the function of the discovery service is implemented.
      *
-     * @throws DiscoveryServiceException there is a problem within the discovery service.
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() in your version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -149,10 +168,13 @@ public abstract class DiscoveryService extends ConnectorBase
 
 
     /**
-     * Free up any resources held since the connector is no longer needed.
+     * Free up any resources held since the connector is no longer needed.  This is a standard
+     * method from the Open Connector Framework (OCF).  If you need to override this method
+     * be sure to call super.disconnect() in your version.
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         final String methodName = "disconnect";

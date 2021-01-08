@@ -6,9 +6,6 @@ package org.odpi.openmetadata.engineservices.assetanalysis.client;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.engineservices.assetanalysis.rest.DiscoveryEngineStatusResponse;
 
 /**
  * AssetAnalysisRESTClient is responsible for issuing the REST API calls
@@ -85,34 +82,5 @@ class AssetAnalysisRESTClient extends ODFRESTClient
                             String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a DiscoveryEnginePropertiesResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return DiscoveryEnginePropertiesResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    DiscoveryEngineStatusResponse callDiscoveryEngineStatusGetRESTCall(String    methodName,
-                                                                       String    urlTemplate,
-                                                                       Object... params) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
-    {
-        DiscoveryEngineStatusResponse restResult = this.callGetRESTCall(methodName,
-                                                                        DiscoveryEngineStatusResponse.class,
-                                                                        urlTemplate,
-                                                                        params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
     }
 }

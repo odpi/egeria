@@ -53,6 +53,11 @@ public enum GovernanceServicesDescription implements Serializable
                                       null,
                                       "Host one or more integration services that are exchanging metadata with third party technologies",
                                       "https://egeria.odpi.org/open-metadata-implementation/governance-servers/integration-daemon-services/"),
+    ENGINE_HOST_SERVICES             (2010,
+                                      "Engine Host Services",
+                                      null,
+                                      "Host one or more engine services that are actively managing governance of open metadata and the digital landscape",
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/engine-host-services/"),
     ;
 
 

@@ -59,13 +59,13 @@
                 <include>org.odpi.egeria:avro-file-connector:*</include>
                 <include>org.odpi.egeria:basic-file-connector:*</include>
                 <include>org.odpi.egeria:cassandra-data-store-connector:*</include>
-                <include>org.odpi.egeria:cassandra-metadata-extractor-connector:*</include>
                 <include>org.odpi.egeria:cohort-registry-file-store-connector:*</include>
                 <include>org.odpi.egeria:configuration-encrypted-file-store-connector:*</include>
                 <include>org.odpi.egeria:configuration-file-store-connector:*</include>
                 <include>org.odpi.egeria:csv-file-connector:*</include>
                 <include>org.odpi.egeria:data-folder-connector:*</include>
                 <include>org.odpi.egeria:discovery-service-connectors:*</include>
+                <include>org.odpi.egeria:governance-action-connectors:*</include>
                 <include>org.odpi.egeria:files-integration-connectors:*</include>
                 <!--include>org.odpi.egeria:gaian-connector:*</include-->
                 <include>org.odpi.egeria:graph-repository-connector:*</include>
@@ -77,7 +77,6 @@
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
                 <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>
-                <include>org.odpi.egeria:readonly-repository-connector:*</include>
                 <!--include>org.odpi.egeria:security-officer-tag-connector:*</include-->
                 <include>org.odpi.egeria:spring-rest-client-connector:*</include>
                 <!--include>org.odpi.egeria:ranger-connector:*</include-->

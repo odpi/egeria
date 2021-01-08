@@ -68,10 +68,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cassandra-metadata-extractor-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>cohort-registry-file-store-connector</artifactId>
         </dependency>
         <dependency>
@@ -136,10 +132,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>readonly-repository-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>spring-rest-client-connector</artifactId>
         </dependency>
         <dependency>
@@ -185,6 +177,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-lineage-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -236,10 +232,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>information-view-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>project-management-client</artifactId>
         </dependency>
         <dependency>
@@ -249,10 +241,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>software-developer-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>stewardship-action-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

@@ -62,7 +62,7 @@ public enum IntegrationServiceDescription implements Serializable
                                       "security-integrator",
                                       "Distribute security properties to security enforcement points.",
                                       "https://egeria.odpi.org/open-metadata-implementation/integration-services/security-integrator/",
-                                      "Governance Engine OMAS",
+                                      "Security Officer OMAS",
                                       PermittedSynchronization.TO_THIRD_PARTY),
     ;
 

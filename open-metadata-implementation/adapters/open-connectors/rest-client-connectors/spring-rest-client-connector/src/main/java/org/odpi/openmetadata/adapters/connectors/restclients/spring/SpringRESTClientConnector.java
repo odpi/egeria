@@ -20,11 +20,9 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import javax.net.ssl.*;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -151,6 +149,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return response object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callGetRESTCallNoParams(String    methodName,
                                           Class<T>  returnClass,
                                           String    urlTemplate) throws RESTServerException
@@ -220,6 +219,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return response object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callGetRESTCall(String    methodName,
                                   Class<T>  returnClass,
                                   String    urlTemplate,
@@ -291,6 +291,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callPostRESTCallNoParams(String    methodName,
                                            Class<T>  returnClass,
                                            String    urlTemplate,
@@ -374,6 +375,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callPostRESTCall(String    methodName,
                                    Class<T>  returnClass,
                                    String    urlTemplate,
@@ -455,6 +457,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callPutRESTCall(String    methodName,
                                    Class<T>  returnClass,
                                    String    urlTemplate,
@@ -525,6 +528,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callDeleteRESTCallNoParams(String    methodName,
                                              Class<T>  returnClass,
                                              String    urlTemplate,
@@ -607,6 +611,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callDeleteRESTCall(String    methodName,
                                      Class<T>  returnClass,
                                      String    urlTemplate,

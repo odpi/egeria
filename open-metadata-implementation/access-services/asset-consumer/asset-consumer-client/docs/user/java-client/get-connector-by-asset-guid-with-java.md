@@ -8,7 +8,7 @@
      * Returns the connector corresponding to the supplied asset GUID.
      *
      * @param userId       userId of user making request.
-     * @param assetGUID   the unique id for the asset within the metadata repository.
+     * @param requestType   the unique id for the asset within the metadata repository.
      *
      * @return Connector   connector instance.
      *
@@ -20,7 +20,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     Connector getConnectorForAsset(String userId,
-                                   String assetGUID) throws InvalidParameterException,
+                                   String requestType) throws InvalidParameterException,
                                                             ConnectionCheckedException,
                                                             ConnectorCheckedException,
                                                             PropertyServerException,

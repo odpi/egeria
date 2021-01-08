@@ -195,6 +195,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      * @param topicListener object implementing the OMRSTopicListener interface
      * @return topic name
      */
+    @Override
     public String registerListener(OpenMetadataTopicListener  topicListener)
     {
         if (topicListener != null)
@@ -227,6 +228,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -266,6 +268,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
