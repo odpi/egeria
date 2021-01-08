@@ -192,7 +192,6 @@ distributions {
             }
         }
     }
-    // presentation-server distribution is single component, so has moved to open-metadata-implementation/user-interfaces/presentation-server
 }
 // Override the distribution filenames to match what we use with maven (replaces baseName above)
 egeriaomagDistTar.compression = Compression.GZIP
