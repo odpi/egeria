@@ -15,7 +15,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
     implementation 'io.jsonwebtoken:jjwt'
     implementation 'com.h2database:h2'
-    implementation 'io.lettuce:lettuce-core:5.3.3'
+    implementation 'io.lettuce:lettuce-core'
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation 'ch.qos.logback:logback-classic'
