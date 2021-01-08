@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClie
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.RedisAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
@@ -76,9 +77,11 @@ public class EgeriaUIPlatform {
     }
 
     @Bean
-    public AuthService getAuthService(@Value("${authentication.mode}") String authenticationMode)  {
-        if(null == authenticationMode || authenticationMode.isEmpty() || "token".equals(authenticationMode)){
+    public AuthService getAuthService(@Value("${authentication.mode:token}") String authenticationMode)  {
+        if( "token".equals(authenticationMode) ){
             return new TokenAuthService();
+        }else if( "redis".equals(authenticationMode) ){
+            return new RedisAuthService();
         }
         return new SessionAuthService();
     }

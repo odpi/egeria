@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis.TokenRedisClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,9 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    TokenRedisClient tokenRedisClient;
 
     public SecurityConfig() {
         super(true);
@@ -37,8 +41,8 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessHandler(logoutSuccessHandler())
-                .logoutSuccessUrl("/login?logoutSuccessful")
+                .logoutSuccessHandler(logoutSuccessHandler())
+//                .logoutSuccessUrl("/login?logoutSuccessful")
                 .and()
             .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new LoggingRequestFilter("/api/auth/login"), UsernamePasswordAuthenticationFilter.class)
@@ -51,7 +55,7 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public LogoutSuccessHandler logoutSuccessHandler() {
-        return new TokenLogoutSuccessHandler();
+        return new TokenLogoutSuccessHandler(tokenRedisClient);
     }
 
     @Bean
