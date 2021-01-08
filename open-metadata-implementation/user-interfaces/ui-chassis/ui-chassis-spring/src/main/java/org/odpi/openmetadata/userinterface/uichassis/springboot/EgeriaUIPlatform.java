@@ -29,7 +29,7 @@ import javax.annotation.PostConstruct;
 
 @EnableZuulProxy
 @SpringBootApplication
-@ComponentScan({"org.odpi.openmetadata.*"})
+@ComponentScan(basePackages = {"${scan.packages}"})
 @Configuration
 @EnableConfigurationProperties({ComponentService.class, LineageGraphDisplayRulesService.class})
 public class EgeriaUIPlatform {

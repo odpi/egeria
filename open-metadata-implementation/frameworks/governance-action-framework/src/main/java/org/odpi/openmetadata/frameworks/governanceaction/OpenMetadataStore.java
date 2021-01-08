@@ -55,8 +55,8 @@ public interface OpenMetadataStore
     List<OpenMetadataElement> findMetadataElementsWithString(String searchString,
                                                              int    startFrom,
                                                              int    pageSize) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException;
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**

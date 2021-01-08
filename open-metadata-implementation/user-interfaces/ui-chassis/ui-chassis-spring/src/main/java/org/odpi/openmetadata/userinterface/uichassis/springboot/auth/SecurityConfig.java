@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -25,13 +27,19 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling().and()
             .anonymous().and()
             .authorizeRequests()
-            .antMatchers("/api/public/**").permitAll()
-            .antMatchers("/api/public/css/**").permitAll()
-            .antMatchers("/api/public/js/**").permitAll()
+                .antMatchers("/logout").permitAll()
+                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/api/public/css/**").permitAll()
+                .antMatchers("/api/public/js/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/**").permitAll()
             .anyRequest().authenticated()
             .and()
+            .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessHandler(logoutSuccessHandler())
+                .logoutSuccessUrl("/login?logoutSuccessful")
+                .and()
             .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new LoggingRequestFilter("/api/auth/login"), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(
@@ -40,6 +48,10 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
                             authService,
                             getAuthenticationExceptionHandler()),UsernamePasswordAuthenticationFilter.class)
         ;
+    }
+
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new TokenLogoutSuccessHandler();
     }
 
     @Bean

@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
@@ -11,6 +13,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
@@ -31,7 +35,7 @@ public abstract class GovernanceEngineHandler
     protected AuditLog auditLog;                 /* Initialized in constructor */
     protected int      maxPageSize;              /* Initialized in constructor */
 
-    protected String                     governanceEngineName;              /* Initialized in constructor */
+    protected String                     governanceEngineName;   /* Initialized in constructor */
     protected String                     governanceEngineGUID       = null;
     protected GovernanceEngineProperties governanceEngineProperties = null;
     private   GovernanceEngineElement    governanceEngineElement    = null;
@@ -40,8 +44,10 @@ public abstract class GovernanceEngineHandler
     private List<String>  governanceEngineSuperTypeNames = null;
 
 
-    private GovernanceEngineConfigurationClient configurationClient;      /* Initialized in constructor */
-    private GovernanceServiceCacheMap           governanceServiceLookupTable = new GovernanceServiceCacheMap();
+    private GovernanceEngineConfigurationClient configurationClient;        /* Initialized in constructor */
+
+
+    private GovernanceServiceCacheMap  governanceServiceLookupTable = new GovernanceServiceCacheMap();
 
 
     /**
@@ -73,6 +79,8 @@ public abstract class GovernanceEngineHandler
         this.auditLog = auditLog;
         this.maxPageSize = maxPageSize;
     }
+
+
 
 
     /**
@@ -381,6 +389,30 @@ public abstract class GovernanceEngineHandler
             return new ArrayList<>(governanceServiceLookupTable.keySet());
         }
     }
+
+
+    /**
+     * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
+     *
+     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param requestParameters name-value properties to control the governance action service
+     * @param requestSourceElements metadata elements associated with the request to the governance action service
+     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
+     *
+     * @return service handler for this request
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the governance action engine.
+     */
+    public abstract GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
+                                                                  String                     requestType,
+                                                                  Map<String, String>        requestParameters,
+                                                                  List<RequestSourceElement> requestSourceElements,
+                                                                  List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          PropertyServerException;
 
 
     /**
