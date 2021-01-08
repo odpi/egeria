@@ -41,6 +41,10 @@ public class TokenRedisClient {
         return commands.get(key);
     }
 
+    public Long ttl(String key){
+        return commands.ttl(key);
+    }
+
     public Long exists(String... keys){
         return commands.exists(keys);
     }

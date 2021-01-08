@@ -24,7 +24,7 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
     TokenRedisClient tokenRedisClient;
 
     @Value("${token.absolute.timeout}")
-    Integer absoluteTimeout;
+    Integer tokenAbsoluteTimeout;
 
     public User addAuthentication(HttpServletRequest request,
                                   HttpServletResponse response,
@@ -33,9 +33,9 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
         String token = this.createTokenForUser(tokenUser.getUser(), tokenSecret);
         response.addHeader(AUTH_HEADER_NAME, token);
         tokenRedisClient.set(token,
+                tokenAbsoluteTimeout * 60 * 1000,
                 LocalDateTime.now().plusMinutes(tokenTimeout).toString()
                 );
-        tokenRedisClient.expire(token,absoluteTimeout * 60);
         return tokenUser.getUser();
     }
 
@@ -65,8 +65,8 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
             tokenRedisClient.del(token);
             throw new JwtException("redis token is expired");
         }
-
     }
+
 
     /**
      * {@inheritDoc}
