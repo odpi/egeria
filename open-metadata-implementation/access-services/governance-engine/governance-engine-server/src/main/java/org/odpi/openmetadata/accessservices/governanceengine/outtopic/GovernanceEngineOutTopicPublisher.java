@@ -4,10 +4,12 @@
 package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceActionEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineConfigurationEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineEventType;
 import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceServiceConfigurationEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
@@ -19,7 +21,7 @@ public class GovernanceEngineOutTopicPublisher
     private AuditLog                                outTopicAuditLog;
     private String                                  outTopicName;
 
-    private final String actionDescription = "Out topic configuration refresh event publishing";
+    private final String actionDescription = "Out topic event publishing";
 
     /**
      * Constructor for the publisher.
@@ -50,7 +52,7 @@ public class GovernanceEngineOutTopicPublisher
      * @param governanceEngineName unique name for the governance engine
      */
     void publishRefreshGovernanceEngineEvent(String governanceEngineGUID,
-                                            String governanceEngineName)
+                                             String governanceEngineName)
     {
         final String methodName = "publishRefreshGovernanceEngineEvent";
 
@@ -75,7 +77,7 @@ public class GovernanceEngineOutTopicPublisher
             }
             catch (Exception error)
             {
-                logUnexpectedPublishingException(governanceEngineGUID, governanceEngineName, error, methodName);
+                logUnexpectedPublishingException(error, methodName);
             }
         }
     }
@@ -91,9 +93,9 @@ public class GovernanceEngineOutTopicPublisher
      *                              governance service
      */
     void publishRefreshGovernanceServiceEvent(String       governanceEngineGUID,
-                                             String       governanceEngineName,
-                                             String       registeredGovernanceServiceGUID,
-                                             String       governanceRequestType)
+                                              String       governanceEngineName,
+                                              String       registeredGovernanceServiceGUID,
+                                              String       governanceRequestType)
     {
         final String methodName = "publishRefreshGovernanceServiceEvent";
 
@@ -122,7 +124,42 @@ public class GovernanceEngineOutTopicPublisher
             }
             catch (Exception error)
             {
-                logUnexpectedPublishingException(governanceEngineGUID, governanceEngineName, error, methodName);
+                logUnexpectedPublishingException(error, methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Publish an event to notify listeners that there is a new governance action available for processing.
+     *
+     * @param governanceActionElement element to send
+     */
+    void publishNewGovernanceAction(GovernanceActionElement governanceActionElement)
+    {
+        final String methodName = "publishRefreshGovernanceServiceEvent";
+
+        if (outTopicServerConnector != null)
+        {
+            try
+            {
+                GovernanceActionEvent newEvent = new GovernanceActionEvent();
+
+                newEvent.setEventType(GovernanceEngineEventType.NEW_GOVERNANCE_ACTION_EVENT);
+                newEvent.setGovernanceActionElement(governanceActionElement);
+
+                outTopicServerConnector.sendEvent(newEvent);
+
+                if (outTopicAuditLog != null)
+                {
+                    // todo
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                GovernanceEngineAuditCode.REFRESH_GOVERNANCE_SERVICE.getMessageDefinition());
+                }
+            }
+            catch (Exception error)
+            {
+                logUnexpectedPublishingException(error, methodName);
             }
         }
     }
@@ -131,23 +168,19 @@ public class GovernanceEngineOutTopicPublisher
     /**
      * Log any exceptions that have come from the publishing process.
      *
-     * @param governanceEngineGUID unique identifier for the governance engine
-     * @param governanceEngineName unique name for the governance engine
      * @param error this is the exception that was thrown
      * @param methodName this is the calling method
      */
-    private void logUnexpectedPublishingException(String     governanceEngineGUID,
-                                                  String     governanceEngineName,
-                                                  Throwable  error,
+    private void logUnexpectedPublishingException(Throwable  error,
                                                   String     methodName)
     {
 
         if (outTopicAuditLog != null)
         {
-            outTopicAuditLog.logException(actionDescription,
+            outTopicAuditLog.logException(methodName,
                                           GovernanceEngineAuditCode.OUT_TOPIC_FAILURE.getMessageDefinition(outTopicName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          error.getMessage()),
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
                                           error);
         }
     }

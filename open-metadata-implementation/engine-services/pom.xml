@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>asset-analysis</module>
+        <module>governance-action</module>
     </modules>
 
 </project>

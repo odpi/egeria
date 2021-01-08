@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * AssetAnalysisRESTServices provides the external service implementation for a discovery engine.
- * Each method contains the discovery server name and the discovery engine identifier (guid).
+ * Each method contains the engine host server name and the discovery engine identifier (guid).
  * The AssetAnalysisRESTServices locates the correct discovery engine instance within the correct
- * discovery server instance and delegates the request.
+ * engine host server instance and delegates the request.
  */
 public class AssetAnalysisRESTServices
 {
@@ -37,7 +37,7 @@ public class AssetAnalysisRESTServices
     /**
      * Request the execution of a discovery service to explore a specific asset.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
@@ -110,7 +110,7 @@ public class AssetAnalysisRESTServices
     /**
      * Request the execution of a discovery service to explore a specific asset.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId identifier of calling user
      * @param discoveryRequestType identifier of the type of asset to analyze - this determines which discovery service to run.
@@ -180,7 +180,7 @@ public class AssetAnalysisRESTServices
     /**
      * Request the discovery report for a discovery request that has completed.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
@@ -237,7 +237,7 @@ public class AssetAnalysisRESTServices
     /**
      * Return the annotations linked direction to the report.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
@@ -298,7 +298,7 @@ public class AssetAnalysisRESTServices
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
@@ -362,7 +362,7 @@ public class AssetAnalysisRESTServices
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.

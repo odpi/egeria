@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * DiscoveryEngineResource provides the server-side catcher for REST calls using Spring that target a specific
- * discovery engine hosted in a discovery server.
- * The discovery server routes these requests to the named discovery engine.
+ * discovery engine hosted in a engine host server.
+ * The engine host server routes these requests to the named discovery engine.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/engine-services/asset-analysis/users/{userId}/discovery-engines/{discoveryEngineName}")
@@ -32,7 +32,7 @@ public class DiscoveryEngineResource
     /**
      * Request the execution of a discovery service to explore a specific asset.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
@@ -66,7 +66,7 @@ public class DiscoveryEngineResource
     /**
      * Request the execution of a discovery service for each asset that is stored in the asset catalog.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId identifier of calling user
      * @param discoveryRequestType identifier of the type of discovery request to run - this determines which discovery service to run.
@@ -97,7 +97,7 @@ public class DiscoveryEngineResource
     /**
      * Request the discovery report for a discovery request that has completed.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
@@ -120,7 +120,7 @@ public class DiscoveryEngineResource
     /**
      * Return the annotations linked direction to the report.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
@@ -152,7 +152,7 @@ public class DiscoveryEngineResource
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
@@ -188,7 +188,7 @@ public class DiscoveryEngineResource
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *
-     * @param serverName name of the discovery server.
+     * @param serverName name of the engine host server.
      * @param discoveryEngineName unique name of the discovery engine.
      * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
