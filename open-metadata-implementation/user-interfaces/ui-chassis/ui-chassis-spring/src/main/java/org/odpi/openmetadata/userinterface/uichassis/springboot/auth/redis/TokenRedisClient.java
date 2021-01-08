@@ -35,8 +35,7 @@ public class TokenRedisClient {
     }
 
     public String setKeepTTL(String key, String value){
-        SetArgs setArgs = new SetArgs();
-        return commands.set(key, value, setArgs.keepttl());
+        return commands.set(key, value, SetArgs.Builder.keepttl());
     }
 
     public Boolean expire(String key, long seconds){
