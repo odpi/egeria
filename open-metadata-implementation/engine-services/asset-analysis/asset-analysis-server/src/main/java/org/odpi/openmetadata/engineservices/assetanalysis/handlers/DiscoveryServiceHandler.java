@@ -12,13 +12,14 @@ import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.Date;
 
 /**
  * DiscoveryServiceHandler provides the thread to run a discovery service.  A new instance is created for each request.
  */
-public class DiscoveryServiceHandler implements Runnable
+public class DiscoveryServiceHandler extends GovernanceServiceHandler
 {
     private GovernanceEngineProperties discoveryEngineProperties;
     private String                     discoveryEngineGUID;
@@ -26,6 +27,7 @@ public class DiscoveryServiceHandler implements Runnable
     private String                     discoveryServiceName;
     private DiscoveryService           discoveryService;
     private DiscoveryContext           discoveryContext;
+    private String                     discoveryReportGUID;
     private AuditLog                   auditLog;
 
 
@@ -40,21 +42,33 @@ public class DiscoveryServiceHandler implements Runnable
      * @param discoveryServiceName name of this discovery service - used for message logging
      * @param discoveryServiceConnector connector that does the work
      * @param discoveryContext context for the connector
+     * @param discoveryReportGUID unique identifier of the report for this discovery request
      * @param auditLog destination for log messages
      */
     DiscoveryServiceHandler(GovernanceEngineProperties discoveryEngineProperties,
                             String                     discoveryEngineGUID,
+                            String                     governanceActionGUID,
                             String                     assetDiscoveryType,
                             String                     discoveryServiceName,
                             Connector                  discoveryServiceConnector,
                             DiscoveryContext           discoveryContext,
+                            String                     discoveryReportGUID,
                             AuditLog                   auditLog) throws InvalidParameterException
     {
+        super(discoveryEngineProperties,
+              discoveryEngineGUID,
+              governanceActionGUID,
+              assetDiscoveryType,
+              discoveryServiceName,
+              discoveryServiceConnector,
+              auditLog);
+
         this.discoveryEngineProperties = discoveryEngineProperties;
         this.discoveryEngineGUID       = discoveryEngineGUID;
         this.assetDiscoveryType        = assetDiscoveryType;
         this.discoveryServiceName      = discoveryServiceName;
         this.discoveryContext          = discoveryContext;
+        this.discoveryReportGUID       = discoveryReportGUID;
         this.auditLog                  = auditLog;
 
         try
@@ -81,6 +95,17 @@ public class DiscoveryServiceHandler implements Runnable
                                                 error,
                                                 discoveryServiceConnectorParameterName);
         }
+    }
+
+
+    /**
+     * Return the unique identifier of the discovery analysis report for this discovery request.
+     *
+     * @return string guid
+     */
+    String getDiscoveryReportGUID()
+    {
+        return discoveryReportGUID;
     }
 
 

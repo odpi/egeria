@@ -22,16 +22,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = GovernanceEngineConfigurationEvent.class, name = "GovernanceEngineConfigurationEvent")
+                      @JsonSubTypes.Type(value = GovernanceEngineConfigurationEvent.class, name = "GovernanceEngineConfigurationEvent"),
+                      @JsonSubTypes.Type(value = WatchdogGovernanceServiceEvent.class, name = "WatchdogGovernanceServiceEvent"),
+                      @JsonSubTypes.Type(value = GovernanceActionEvent.class, name = "GovernanceActionEvent")
 })
 public abstract class GovernanceEngineEvent implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-
     private long                      eventVersionId = 1L;
     private GovernanceEngineEventType eventType      = null;
-
 
 
     /**

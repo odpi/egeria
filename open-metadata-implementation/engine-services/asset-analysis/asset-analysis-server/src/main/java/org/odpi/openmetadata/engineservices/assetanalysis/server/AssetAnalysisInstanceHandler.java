@@ -8,9 +8,6 @@ import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryEngi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.engineservices.assetanalysis.properties.DiscoveryEngineSummary;
-
-import java.util.List;
 
 /**
  * AssetAnalysisInstanceHandler retrieves information from the instance map for the
