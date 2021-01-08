@@ -24,8 +24,10 @@ You only need the JRE but select the JDK if you expect to also write some Java c
 Start the OMAG server platform as follows - the `-Dserver.port` option is needed if you want multiple instances running
 on different ports, as required by the tutorials.
 
+You should be in the main distribution directory as setup when installing the server. 
+
 ```bash
-$ java -Dserver.port=9443 -jar server-chassis-spring-2.6-SNAPSHOT.jar
+$ java -Dserver.port=9443 -jar server/server-chassis-spring-2.6-SNAPSHOT.jar
 ```
 
 The OMAG server platform first displays this banner and then initializes itself.
