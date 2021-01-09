@@ -360,6 +360,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         requestBody.setConnectorProviderClassName(connectorProviderName);
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
+        requestBody.setQualifiedName(dataFileProperties.getQualifiedName());
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
                                                                           urlTemplate,
