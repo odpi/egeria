@@ -419,6 +419,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     DataFileProperties properties = new DataFileProperties();
 
                     properties.setModifiedTime(new Date(file.lastModified()));
+                    properties.setQualifiedName(dataFileInCatalog.getDataFileProperties().getQualifiedName());
 
                     context.updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
 
