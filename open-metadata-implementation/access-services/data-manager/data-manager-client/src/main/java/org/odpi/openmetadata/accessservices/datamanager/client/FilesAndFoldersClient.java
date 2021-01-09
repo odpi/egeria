@@ -464,6 +464,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         DataFileRequestBody requestBody = new DataFileRequestBody(dataFileProperties);
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
+        requestBody.setQualifiedName(dataFileProperties.getQualifiedName());
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -612,6 +613,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
         requestBody.setConnectorProviderClassName(connectorProviderName);
+        requestBody.setQualifiedName(fileFolderProperties.getQualifiedName());
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
                                                                           urlTemplate,
@@ -664,6 +666,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
+        requestBody.setQualifiedName(templateProperties.getQualifiedName());
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
                                                                           urlTemplate,
@@ -715,6 +718,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
         DataFolderRequestBody requestBody = new DataFolderRequestBody(fileFolderProperties);
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
+        requestBody.setQualifiedName(fileFolderProperties.getQualifiedName());
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
