@@ -22,7 +22,7 @@ mailing_list:
     tag: ''
 realtime_discussion:
     type: 'slack'
-    url: 'https://slack.odpi.org'
+    url: 'https://lfaifoundation.slack.com'
 meetings:
     - type: 'zoom'
       agenda: 'https://github.com/odpi/egeria/wiki'
