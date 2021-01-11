@@ -31,9 +31,9 @@ service:
   type: ClusterIP
   #type: NodePort
   nodeport:
-    egeria: 31080
+    platform: 31080
     presentation: 31091
-    egeria-debug: 31005
+    platformdebug: 31005
 
 # --- Docker image sources ---
 

@@ -9,8 +9,8 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria
-  name: {{ .Release.Name }}-egeria
+    app.kubernetes.io/component: platform
+  name: {{ .Release.Name }}-platform
 
 spec:
   type: {{ .Values.service.type }}
@@ -18,49 +18,49 @@ spec:
     - port: 9443
       targetPort: 9443
       {{- if ( eq  .Values.service.type "NodePort" ) -}}
-      nodePort: {{ .Values.service.nodeport.core }}
+      nodePort: {{ .Values.service.nodeport.platform }}
       {{- end }}
   {{ if .Values.egeria.debug }}
     - name: debug
       port: 5005
       targetPort: 5005
       {{- if ( eq  .Values.service.type "NodePort" ) -}}
-      nodePort: {{ .Values.service.nodeport.debug.core }}
+      nodePort: {{ .Values.service.nodeport.platformdebug }}
       {{- end }}
   {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: core
+    app.kubernetes.io/component: platform
 ...
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-core
+  name: {{ include "myapp.name" . }}-platform
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: core
+    app.kubernetes.io/component: platform
 
 spec:
   replicas: 1
-  serviceName: {{ .Release.Name }}-core
+  serviceName: {{ .Release.Name }}-platform
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: core
+      app.kubernetes.io/component: platform
   template:
     metadata:
       creationTimestamp: null
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: core
+        app.kubernetes.io/component: platform
     spec:
     {{- include "egeria.security" . | nindent 6 }}
       containers:

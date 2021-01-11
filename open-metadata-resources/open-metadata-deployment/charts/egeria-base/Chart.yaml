@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
-name: odpi-egeria-lab
+name: egeria-base
 description: Egeria simple deployment to Kubernetes
 apiVersion: v1
 version: 1.0.0
