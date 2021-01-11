@@ -49,7 +49,7 @@ EXPOSE 9443 5005
 # By default, we run the server chassis
 ENV JAVA_APP_JAR=server/server-chassis-spring-${version}.jar
 ENV JAVA_LIBDIR=${JAVA_APP_DIR}/server/lib
-ENV LOADER_PATH=${LOADER_PATH}
+ENV LOADER_PATH=${JAVA_LIBDIR}
 
 # Joloka will be removed shortly. For now disable to avoid errors
 ENV AB_JOLOKIA_OFF=true
