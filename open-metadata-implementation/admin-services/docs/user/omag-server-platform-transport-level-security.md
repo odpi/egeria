@@ -100,7 +100,7 @@ not use spring conventions.
 ## Other clients
 
 Similar principles to those documented for java should apply. If you need further assistance please
-contact the team on our slack channel at slack.odpi.org . A Pull Request (or issue) with contributed documentation
+contact the team on our slack channel at http://slack.lfai.foundation . A Pull Request (or issue) with contributed documentation
 is very welcome !
 
 ## Example script to launch Egeria
