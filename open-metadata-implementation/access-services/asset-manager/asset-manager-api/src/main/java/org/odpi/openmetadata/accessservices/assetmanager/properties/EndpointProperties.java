@@ -218,7 +218,7 @@ public class EndpointProperties extends SupplementaryProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof EndpointProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -226,12 +226,23 @@ public class EndpointProperties extends SupplementaryProperties
         {
             return false;
         }
-        EndpointProperties endpoint = (EndpointProperties) objectToCompare;
-        return Objects.equals(getTechnicalName(), endpoint.getTechnicalName()) &&
-                Objects.equals(getTechnicalDescription(), endpoint.getTechnicalDescription()) &&
-                Objects.equals(getAddress(), endpoint.getAddress()) &&
-                Objects.equals(getProtocol(), endpoint.getProtocol()) &&
-                Objects.equals(getEncryptionMethod(), endpoint.getEncryptionMethod());
+        EndpointProperties that = (EndpointProperties) objectToCompare;
+        return Objects.equals(technicalName, that.technicalName) &&
+                       Objects.equals(technicalDescription, that.technicalDescription) &&
+                       Objects.equals(address, that.address) &&
+                       Objects.equals(protocol, that.protocol) &&
+                       Objects.equals(encryptionMethod, that.encryptionMethod);
     }
 
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), technicalName, technicalDescription, address, protocol, encryptionMethod);
+    }
 }

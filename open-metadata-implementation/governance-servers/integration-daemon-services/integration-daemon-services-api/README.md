@@ -3,7 +3,7 @@
 
 # Integration Daemon Services API
 
-The integration services API provides the property structures and
+The integration daemon services API provides the property structures and
 REST structures used to manage an integration daemon.
 
 It also supports the abstract interface for all

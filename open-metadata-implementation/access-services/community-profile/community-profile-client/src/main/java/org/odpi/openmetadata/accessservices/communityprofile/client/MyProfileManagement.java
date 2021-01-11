@@ -89,6 +89,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public PersonalProfile getMyProfile(String userId) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
@@ -119,6 +120,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public long getMyKarmaPoints(String userId) throws InvalidParameterException,
                                                        NoProfileForUserException,
                                                        PropertyServerException,
@@ -155,6 +157,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void setUpMyProfile(String              userId,
                                String              qualifiedName,
                                String              fullName,
@@ -203,6 +206,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void      deleteMyProfile(String              userId,
                                      String              qualifiedName) throws InvalidParameterException,
                                                                                NoProfileForUserException,
@@ -242,43 +246,13 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public List<ContactMethod> getMyContactDetails(String UserId) throws InvalidParameterException,
                                                                          NoProfileForUserException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
         return null;
-    }
-
-
-    /**
-     * Create or update the profile for the requesting user.  This is only permitted if the profile is not locked
-     * to (managed by) an external system.
-     *
-     * @param userId the name of the calling user.
-     * @param qualifiedName personnel/serial/unique employee number of the individual.
-     * @param fullName full name of the person.
-     * @param knownName known name or nickname of the individual.
-     * @param jobTitle job title of the individual.
-     * @param jobRoleDescription job description of the individual.
-     * @param contactDetails list of contact methods for the person.
-     * @param additionalProperties  additional properties about the individual.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void  setUpMyProfile(String              userId,
-                                String              qualifiedName,
-                                String              fullName,
-                                String              knownName,
-                                String              jobTitle,
-                                String              jobRoleDescription,
-                                List<ContactMethod> contactDetails,
-                                Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
-    {
     }
 
 
@@ -297,6 +271,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String addMyContactMethod(String              userId,
                                      ContactMethodType   type,
                                      String              service,
@@ -321,6 +296,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void deleteMyContactMethod(String            userId,
                                       String            contactMethodGUID,
                                       ContactMethodType type) throws InvalidParameterException,

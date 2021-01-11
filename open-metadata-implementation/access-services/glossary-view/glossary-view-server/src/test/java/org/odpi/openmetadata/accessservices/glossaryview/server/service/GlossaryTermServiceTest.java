@@ -74,7 +74,7 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBaseTest{
 
     @Test
     public void getTermsViaTermAnchorRelationships() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(TERM_TYPE_NAME),
+        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
                 eq(TERM_ANCHOR_RELATIONSHIP_GUID), eq(TERM_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),
                 eq("getTermsViaTermAnchorRelationships"))).thenReturn(terms);
 
@@ -98,7 +98,7 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBaseTest{
 
     @Test
     public void getTermsViaTermCategorizationRelationships() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(TERM_TYPE_NAME),
+        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
                 eq(TERM_CATEGORIZATION_RELATIONSHIP_GUID), eq(TERM_CATEGORIZATION_RELATIONSHIP_NAME), anyInt(), anyInt(),
                 eq("getTermsViaTermCategorizationRelationships"))).thenReturn(Arrays.asList(terms.get(0), terms.get(1), terms.get(2)));
 

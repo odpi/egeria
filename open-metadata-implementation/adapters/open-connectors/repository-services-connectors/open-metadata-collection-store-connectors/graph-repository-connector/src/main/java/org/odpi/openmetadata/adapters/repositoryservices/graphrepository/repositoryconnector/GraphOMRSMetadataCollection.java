@@ -17,6 +17,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
@@ -113,6 +115,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // verifyTypeDef will always return result from superclass because all knowledge of types is delegated to the RCM.
+    @Override
     public boolean verifyTypeDef(String  userId,
                                  TypeDef typeDef)
             throws
@@ -147,6 +150,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public EntityDetail addEntity(String                userId,
                                   String                entityTypeGUID,
                                   InstanceProperties    initialProperties,
@@ -204,6 +208,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addExternalEntity
+    @Override
     public EntityDetail addExternalEntity(String                userId,
                                           String                entityTypeGUID,
                                           String                externalSourceGUID,
@@ -261,6 +266,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addEntityProxy
+    @Override
     public void addEntityProxy(String       userId,
                                EntityProxy  entityProxy)
             throws
@@ -286,6 +292,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // isEntityKnown
+    @Override
     public EntityDetail isEntityKnown(String     userId,
                                       String     guid)
             throws
@@ -318,6 +325,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // isRelationshipKnown
+    @Override
     public Relationship  isRelationshipKnown(String     userId,
                                              String     guid)
             throws
@@ -349,6 +357,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // getEntitySummary
+    @Override
     public EntitySummary getEntitySummary(String     userId,
                                           String     guid)
             throws
@@ -377,6 +386,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // getEntityDetail
+    @Override
     public EntityDetail getEntityDetail(String     userId,
                                         String     guid)
             throws
@@ -408,6 +418,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addRelationship
+    @Override
     public Relationship addRelationship(String               userId,
                                         String               relationshipTypeGUID,
                                         InstanceProperties   initialProperties,
@@ -484,6 +495,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addExternalRelationship
+    @Override
     public Relationship addExternalRelationship(String               userId,
                                                 String               relationshipTypeGUID,
                                                 String               externalSourceGUID,
@@ -564,6 +576,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // getRelationship
+    @Override
     public Relationship getRelationship(String    userId,
                                         String    guid)
             throws
@@ -592,6 +605,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // updateEntityStatus
+    @Override
     public EntityDetail updateEntityStatus(String           userId,
                                            String           entityGUID,
                                            InstanceStatus   newStatus)
@@ -690,6 +704,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // updateEntityProperties
+    @Override
     public EntityDetail updateEntityProperties(String               userId,
                                                String               entityGUID,
                                                InstanceProperties   properties)
@@ -787,6 +802,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // updateRelationshipStatus
+    @Override
     public Relationship updateRelationshipStatus(String           userId,
                                                  String           relationshipGUID,
                                                  InstanceStatus   newStatus)
@@ -870,6 +886,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      *                                characteristics in the TypeDef for this relationship's type.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public Relationship updateRelationshipProperties(String               userId,
                                                      String               relationshipGUID,
                                                      InstanceProperties   properties)
@@ -938,6 +955,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // purgeEntity
+    @Override
     public void purgeEntity(String    userId,
                             String    typeDefGUID,
                             String    typeDefName,
@@ -1033,6 +1051,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // purgeRelationship
+    @Override
     public void purgeRelationship(String    userId,
                                   String    typeDefGUID,
                                   String    typeDefName,
@@ -1077,6 +1096,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // getRelationshipsForEntity
+    @Override
     public List<Relationship> getRelationshipsForEntity(String                     userId,
                                                         String                     entityGUID,
                                                         String                     relationshipTypeGUID,
@@ -1166,6 +1186,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findEntitiesByProperty
+    @Override
     public List<EntityDetail> findEntitiesByProperty(String                 userId,
                                                      String                 entityTypeGUID,
                                                      InstanceProperties     matchProperties,
@@ -1285,6 +1306,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findRelationshipsByProperty
+    @Override
     public  List<Relationship> findRelationshipsByProperty(String                    userId,
                                                            String                    relationshipTypeGUID,
                                                            InstanceProperties        matchProperties,
@@ -1422,8 +1444,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
 
-
-
     public  void validateTypeGUID(String sourceName,
                                   String guidParameterName,
                                   String guid,
@@ -1445,6 +1465,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findEntitiesByPropertyValue
+    @Override
     public  List<EntityDetail> findEntitiesByPropertyValue(String                userId,
                                                            String                entityTypeGUID,
                                                            String                searchCriteria,
@@ -1567,6 +1588,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findRelationshipsByPropertyValue
+    @Override
     public  List<Relationship> findRelationshipsByPropertyValue(String                    userId,
                                                                 String                    relationshipTypeGUID,
                                                                 String                    searchCriteria,
@@ -1695,8 +1717,439 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param matchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize)
+
+    throws InvalidParameterException,
+           RepositoryErrorException,
+           TypeErrorException,
+           PropertyErrorException,
+           PagingErrorException,
+           UserNotAuthorizedException,
+           FunctionNotSupportedException
+
+
+    {
+
+        final String methodName = "findEntities";
+        final String entityTypeGUIDParameterName = "entityTypeGUID";
+
+
+        /*
+         * Validate parameters
+         */
+        super.findEntitiesParameterValidation(userId,
+                                              entityTypeGUID,
+                                              entitySubtypeGUIDs,
+                                              matchProperties,
+                                              fromEntityElement,
+                                              limitResultsByStatus,
+                                              matchClassifications,
+                                              asOfTime,
+                                              sequencingProperty,
+                                              sequencingOrder,
+                                              pageSize);
+
+
+        if (asOfTime != null)
+        {
+            log.error("{} does not support asOfTime searches", methodName);
+
+            super.reportUnsupportedOptionalFunction(methodName);
+        }
+
+
+        /*
+         * Perform operation
+         */
+
+        ArrayList<EntityDetail> returnEntities = null;
+
+
+        String specifiedTypeName = null;
+        if (entityTypeGUID != null)
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
+            specifiedTypeName = typeDef.getName();
+        }
+
+        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
+        List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
+
+        for (TypeDef typeDef : allTypeDefs)
+        {
+            if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)
+            {
+
+                String actualTypeName = typeDef.getName();
+
+                /*
+                 * If entityTypeGUID parameter is not null there is an expected type, so check whether the
+                 * current type matches the expected type or is one of its sub-types.
+                 */
+                if (specifiedTypeName != null)
+                {
+
+                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
+                    if (!typeMatch)
+                    {
+                        /*
+                         * Established that the caller wants type filtering but this (actual) type is neither the
+                         * specified type nor one of its subtypes. It will be skipped.
+                         */
+                        continue;
+                    }
+                    else
+                    {
+                        /*
+                         * Established that the caller wants type filtering and that this (actual) type is either the
+                         * specified type or one of its subtypes. If there is also a list of subtypeGUIDs, need to
+                         * check that if the typeDef is a subtype (ONLY - not the specified type) that it is
+                         * in the entitySubTypeGUIDs list. If it is present, it will be searched. If it is not present it
+                         * will not be searched.
+                         */
+                        if (entitySubtypeGUIDs != null)
+                        {
+                            String actualTypeGUID = typeDef.getGUID();
+                            /*
+                             * Although the repository helper provides a method to get the subtypes it is based on type
+                             * names so rather than convert back and forth between GUIDs and names, it is more straightforward
+                             * to decide if the type is strictly a subtype by comparing the typeGUID against the specified
+                             * type's GUID.
+                             */
+                            if (!actualTypeGUID.equals(entityTypeGUID))
+                            {
+                                /*
+                                 * The actual type is a strict subtype of the specified type. Check it is in the list,
+                                 * otherwise skip it.
+                                 */
+                                if (!entitySubtypeGUIDs.contains(actualTypeGUID))
+                                {
+                                    /*
+                                     * This subtype is not in the list, skip it
+                                     */
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * Invoke a type specific search. The search will expect the regexp to match fully to the value.
+                 */
+                List<EntityDetail> entitiesForCurrentType = graphStore.findEntities(actualTypeName, matchProperties, true);
+
+                if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty())
+                {
+                    if (returnEntities == null)
+                    {
+                        returnEntities = new ArrayList<>();
+                    }
+                    log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
+                    returnEntities.addAll(entitiesForCurrentType);
+                }
+                else
+                {
+                    log.info("{}: for type {} found no entities", methodName, typeDef.getName());
+                }
+
+            }
+        }
+
+        /*
+         * Eliminate soft deleted entities and apply status and classification filtering if any was requested
+         */
+        if (returnEntities == null)
+        {
+            return null;
+        }
+        else
+        {
+            List<EntityDetail> retainedEntities = new ArrayList<>();
+            for (EntityDetail entity : returnEntities)
+            {
+                if (entity != null)
+                {
+                    if ((entity.getStatus() != InstanceStatus.DELETED)
+                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
+                            && (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)))
+                    {
+                        retainedEntities.add(entity);
+                    }
+                }
+            }
+
+            return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        }
+
+
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize)
+
+    throws InvalidParameterException,
+           TypeErrorException,
+           RepositoryErrorException,
+           PropertyErrorException,
+           PagingErrorException,
+           FunctionNotSupportedException,
+           UserNotAuthorizedException
+    {
+
+        final String methodName = "findRelationships";
+        final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
+
+
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+
+        /*
+         * Perform operation
+         */
+
+        if (asOfTime != null)
+        {
+            log.error("{} does not support asOfTime searches", methodName);
+
+            super.reportUnsupportedOptionalFunction(methodName);
+        }
+
+
+        /*
+         * Perform operation
+         */
+
+        ArrayList<Relationship> returnRelationships = null;
+
+
+        String specifiedTypeName = null;
+        if (relationshipTypeGUID != null)
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, relationshipTypeGUIDParameterName, relationshipTypeGUID, methodName);
+            specifiedTypeName = typeDef.getName();
+        }
+
+        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
+        List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
+
+        for (TypeDef typeDef : allTypeDefs)
+        {
+            if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)
+            {
+
+                String actualTypeName = typeDef.getName();
+
+                /*
+                 * If relationshipTypeGUID parameter is not null there is an expected type, so check whether the
+                 * current type matches the expected type or is one of its sub-types.
+                 */
+                if (specifiedTypeName != null)
+                {
+
+                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
+                    if (!typeMatch)
+                    {
+                        /*
+                         * Established that the caller wants type filtering but this (actual) type is neither the
+                         * specified type nor one of its subtypes. It will be skipped.
+                         */
+                        continue;
+                    }
+                    else
+                    {
+                        /*
+                         * Established that the caller wants type filtering and that this (actual) type is either the
+                         * specified type or one of its subtypes. If there is also a list of subtype GUIDs, need to
+                         * check that if the typeDef is a subtype (ONLY - not the specified type) that it is
+                         * in the relationshipSubtypeGUIDs list. If it is present, it will be searched. If it is not present it
+                         * will not be searched.
+                         */
+                        if (relationshipSubtypeGUIDs != null)
+                        {
+                            String actualTypeGUID = typeDef.getGUID();
+                            /*
+                             * Although the repository helper provides a method to get the subtypes it is based on type
+                             * names so rather than convert back and forth between GUIDs and names, it is more straightforward
+                             * to decide if the type is strictly a subtype by comparing the typeGUID against the specified
+                             * type's GUID.
+                             */
+                            if (!actualTypeGUID.equals(relationshipTypeGUID))
+                            {
+                                /*
+                                 * The actual type is a strict subtype of the specified type. Check it is in the list,
+                                 * otherwise skip it.
+                                 */
+                                if (!relationshipSubtypeGUIDs.contains(actualTypeGUID))
+                                {
+                                    /*
+                                     * This subtype is not in the list, skip it
+                                     */
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * Invoke a type specific search. The search will expect the regexp to match fully to the value.
+                 */
+                List<Relationship> relationshipsForCurrentType = graphStore.findRelationships(actualTypeName, matchProperties, true);
+
+                if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty())
+                {
+                    if (returnRelationships == null)
+                    {
+                        returnRelationships = new ArrayList<>();
+                    }
+                    log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
+                    returnRelationships.addAll(relationshipsForCurrentType);
+                }
+                else
+                {
+                    log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
+                }
+
+            }
+        }
+
+        /*
+         * Eliminate soft deleted relationships and apply status filtering if any was requested
+         */
+        if (returnRelationships == null)
+        {
+            return null;
+        }
+        else
+        {
+            List<Relationship> retainedRelationships = new ArrayList<>();
+            for (Relationship relationship : returnRelationships)
+            {
+                if (relationship != null)
+                {
+                    if ( (relationship.getStatus() != InstanceStatus.DELETED)
+                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))
+                            )
+                    {
+                        retainedRelationships.add(relationship);
+                    }
+                }
+            }
+
+            return repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
+        }
+
+
+    }
+
+
+
 
     // classifyEntity
+    @Override
     public EntityDetail classifyEntity(String               userId,
                                        String               entityGUID,
                                        String               classificationName,
@@ -1804,6 +2257,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // classifyEntity
+    @Override
     public   EntityDetail classifyEntity(String               userId,
                                          String               entityGUID,
                                          String               classificationName,
@@ -1932,6 +2386,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // declassifyEntity
+    @Override
     public EntityDetail declassifyEntity(String  userId,
                                          String  entityGUID,
                                          String  classificationName)
@@ -1990,6 +2445,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findEntitiesByClassification
+    @Override
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                             String                    entityTypeGUID,
                                                             String                    classificationName,
@@ -2113,6 +2569,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // deleteEntity
+    @Override
      public EntityDetail deleteEntity(String    userId,
                                       String    typeDefGUID,
                                       String    typeDefName,
@@ -2216,6 +2673,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // restoreEntity
+    @Override
     public EntityDetail restoreEntity(String    userId,
                                       String    deletedEntityGUID)
         throws
@@ -2271,6 +2729,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // deleteRelationship
+    @Override
     public Relationship deleteRelationship(String    userId,
                                            String    typeDefGUID,
                                            String    typeDefName,
@@ -2314,6 +2773,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // restoreRelationship
+    @Override
     public Relationship restoreRelationship(String    userId,
                                             String    deletedRelationshipGUID)
             throws
@@ -2358,6 +2818,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reIdentifyEntity
+    @Override
     public EntityDetail reIdentifyEntity(String     userId,
                                          String     typeDefGUID,
                                          String     typeDefName,
@@ -2423,6 +2884,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reHomeEntity
+    @Override
     public EntityDetail reHomeEntity(String         userId,
                                      String         entityGUID,
                                      String         typeDefGUID,
@@ -2492,6 +2954,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reTypeEntity
+    @Override
     public EntityDetail reTypeEntity(String         userId,
                                      String         entityGUID,
                                      TypeDefSummary currentTypeDefSummary,
@@ -2577,6 +3040,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reIdentifyRelationship
+    @Override
     public Relationship reIdentifyRelationship(String     userId,
                                                String     typeDefGUID,
                                                String     typeDefName,
@@ -2629,6 +3093,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reTypeRelationship
+    @Override
     public Relationship reTypeRelationship(String         userId,
                                            String         relationshipGUID,
                                            TypeDefSummary currentTypeDefSummary,
@@ -2697,6 +3162,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reHomeRelationship
+    @Override
     public Relationship reHomeRelationship(String   userId,
                                            String   relationshipGUID,
                                            String   typeDefGUID,
@@ -2751,6 +3217,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // updateEntityClassification
+    @Override
     public EntityDetail updateEntityClassification(String               userId,
                                                    String               entityGUID,
                                                    String               classificationName,
@@ -2821,6 +3288,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      * Reference Copies
      */
 
+    @Override
     public void saveEntityReferenceCopy(String         userId,
                                         EntityDetail   entity)
             throws
@@ -2849,6 +3317,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public List<Classification> getHomeClassifications(String userId,
                                                        String entityGUID)
             throws InvalidParameterException,
@@ -2901,6 +3370,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      * Removal of proxy entities: if a proxy entity existed prior to the ref copy being saved, it was replaced by the
      * ref copy - so when we now purge the ref copy there is no need to remove any proxy - it has already been subsumed.
      */
+    @Override
     public void purgeEntityReferenceCopy(String   userId,
                                          String   entityGUID,
                                          String   typeDefGUID,
@@ -2953,6 +3423,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public void saveClassificationReferenceCopy(String         userId,
                                                 EntityDetail   entity,
                                                 Classification classification)
@@ -3036,6 +3507,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
 
+    @Override
     public  void purgeClassificationReferenceCopy(String         userId,
                                                   EntityDetail   entity,
                                                   Classification classification)
@@ -3091,6 +3563,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
 
+    @Override
     public void saveRelationshipReferenceCopy(String         userId,
                                               Relationship   relationship)
             throws
@@ -3120,6 +3593,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public void purgeRelationshipReferenceCopy(String   userId,
                                                String   relationshipGUID,
                                                String   typeDefGUID,
@@ -3157,6 +3631,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // getEntityNeighborhood
+    @Override
     public InstanceGraph getEntityNeighborhood(String               userId,
                                                String               entityGUID,
                                                List<String>         entityTypeGUIDs,
@@ -3243,6 +3718,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     // The specified entityType, status and classification filters are passed through to getEntityNeighbourhood.
     //
 
+    @Override
     public  List<EntityDetail> getRelatedEntities(String               userId,
                                                   String               startEntityGUID,
                                                   List<String>         entityTypeGUIDs,
@@ -3305,6 +3781,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+    @Override
     public  InstanceGraph getLinkingEntities(String                    userId,
                                              String                    startEntityGUID,
                                              String                    endEntityGUID,

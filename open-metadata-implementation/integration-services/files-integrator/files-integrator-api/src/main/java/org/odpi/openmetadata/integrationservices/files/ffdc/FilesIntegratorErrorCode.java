@@ -28,7 +28,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum FilesIntegratorErrorCode implements ExceptionMessageSet
 {
 
-    INVALID_CONNECTOR(400,"FILES-INTEGRATOR-400-001",
+    INVALID_CONNECTOR(400,"OMIS-FILES-INTEGRATOR-400-001",
                   "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
                   "The integration service fails to start and this in turn causes the integration daemon to fail.",
                   "The connector was configured through the administration calls for the integration service." +
@@ -70,6 +70,7 @@ public enum FilesIntegratorErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -82,10 +83,25 @@ public enum FilesIntegratorErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "FileIntegratorErrorCode{" +
+                       "messageDefinition=" + messageDefinition +
+                       '}';
     }
 }

@@ -8,17 +8,12 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
-import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
+import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
-import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
-import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
-import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,15 +30,10 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
     private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
-    private DiscoveryServerOperationalServices   operationalDiscoveryServer          = null;
+    private EngineHostOperationalServices        operationalEngineHost               = null;
     private IntegrationDaemonOperationalServices operationalIntegrationDaemon        = null;
     private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
-    private StewardshipOperationalServices       operationalStewardshipServices      = null;
-    private SecuritySyncOperationalServices      operationalSecuritySyncServices     = null;
-    private SecurityOfficerOperationalServices   operationalSecurityOfficerService   = null;
-    private VirtualizationOperationalServices    operationalVirtualizationServices   = null;
     private DataEngineProxyOperationalServices   operationalDataEngineProxyServices  = null;
-    private DataPlatformOperationalServices      operationalDataPlatformServices     = null;
     private OMRSAuditLog                         auditLog                            = null;
 
 
@@ -148,6 +138,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
     }
 
+
     /**
      * Return the list of references to the admin object for each active Open Metadata View Service (OMVS).
      *
@@ -190,26 +181,26 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     {
         this.operationalConformanceSuiteServices = operationalConformanceSuiteServices;
     }
-
+    
 
     /**
-     * Return the running instance of the discovery engine.
+     * Return the running instance of the integration daemon.
      *
-     * @return DiscoveryServerOperationalServices object
+     * @return IntegrationDaemonOperationalServices object
      */
-    DiscoveryServerOperationalServices getOperationalDiscoveryServer() {
-        return operationalDiscoveryServer;
+    EngineHostOperationalServices getOperationalEngineHost() {
+        return operationalEngineHost;
     }
 
 
     /**
-     * Set up the running instance of the discovery engine.
+     * Set up the running instance of the integration daemon.
      *
-     * @param operationalDiscoveryServer DiscoveryServerOperationalServices object
+     * @param operationalEngineHost IntegrationDaemonOperationalServices object
      */
-    void setOperationalDiscoveryServer(DiscoveryServerOperationalServices operationalDiscoveryServer)
+    void setOperationalEngineHost(EngineHostOperationalServices operationalEngineHost)
     {
-        this.operationalDiscoveryServer = operationalDiscoveryServer;
+        this.operationalEngineHost = operationalEngineHost;
     }
 
 
@@ -256,89 +247,6 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
-     * Return the running instance of the stewardship services.
-     *
-     * @return StewardshipOperationalServices object
-     */
-    StewardshipOperationalServices getOperationalStewardshipServices() {
-        return operationalStewardshipServices;
-    }
-
-
-    /**
-     * Set up running instance of the stewardship services.
-     *
-     * @param operationalStewardshipServices StewardshipOperationalServices object
-     */
-    void setOperationalStewardshipServices(StewardshipOperationalServices operationalStewardshipServices)
-    {
-        this.operationalStewardshipServices = operationalStewardshipServices;
-    }
-
-
-    /**
-     * Return the running instance of the Security Sync
-     *
-     * @return SecuritySyncOperationalServices object
-     */
-    SecuritySyncOperationalServices getOperationalSecuritySyncServices()
-    {
-        return operationalSecuritySyncServices;
-    }
-
-
-    /**
-     * Set up the running instance of the Security Sync
-     *
-     * @param operationalSecuritySyncServices SecuritySyncOperationalServices object
-     */
-    void setOperationalSecuritySyncServices(SecuritySyncOperationalServices operationalSecuritySyncServices)
-    {
-        this.operationalSecuritySyncServices = operationalSecuritySyncServices;
-    }
-
-    /**
-     * Return the running instance of the Security Officer Server
-     *
-     * @return SecurityOfficerOperationalServices object
-     */
-    SecurityOfficerOperationalServices getOperationalSecurityOfficerService()
-    {
-        return operationalSecurityOfficerService;
-    }
-
-    /**
-     * Set up the running instance of the Security Officer Server
-     *
-     * @param operationalSecurityOfficerService SecurityOfficerOperationalServices object
-     */
-    void setOperationalSecurityOfficerService(SecurityOfficerOperationalServices operationalSecurityOfficerService)
-    {
-        this.operationalSecurityOfficerService = operationalSecurityOfficerService;
-    }
-
-    /**
-     * Return the running instance of Virtualizer
-     *
-     * @return VirtualizationOperationalServices object
-     */
-    VirtualizationOperationalServices getOperationalVirtualizationServices()
-    {
-        return operationalVirtualizationServices;
-    }
-
-
-    /**
-     * Set up the running instance of Virtualizer
-     *
-     * @param operationalVirtualizationServices VirtualizationOperationalServices object
-     */
-    void setOperationalVirtualizationServices(VirtualizationOperationalServices operationalVirtualizationServices)
-    {
-        this.operationalVirtualizationServices = operationalVirtualizationServices;
-    }
-
-    /**
      * Return the running instance of Data Engine proxy
      *
      * @return DataEngineProxyOperationalServices
@@ -357,27 +265,6 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalDataEngineProxyServices(DataEngineProxyOperationalServices operationalDataEngineProxyServices)
     {
         this.operationalDataEngineProxyServices = operationalDataEngineProxyServices;
-    }
-
-
-    /**
-     * Return the running instance of Data Platform Service
-     *
-     * @return DataPlatformOperationalServices
-     */
-    DataPlatformOperationalServices getOperationalDataPlatformServices() {
-        return operationalDataPlatformServices;
-    }
-
-
-    /**
-     * Set up the running instance of Data Platform Service
-     *
-     * @param operationalDataPlatformServices DataPlatformOperationalServices
-     */
-    void setOperationalDataPlatformServices(DataPlatformOperationalServices operationalDataPlatformServices)
-    {
-        this.operationalDataPlatformServices = operationalDataPlatformServices;
     }
 
 

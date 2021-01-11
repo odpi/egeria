@@ -443,7 +443,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param searchStringParameterName name of parameter supplying hte search string
+     * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method

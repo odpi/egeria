@@ -21,7 +21,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Asset Manager Integrator Server-side</name>
+    <name>Catalog Integrator OMIS Server-side</name>
     <description>
         Context and context manager implementation for this integration service.
     </description>

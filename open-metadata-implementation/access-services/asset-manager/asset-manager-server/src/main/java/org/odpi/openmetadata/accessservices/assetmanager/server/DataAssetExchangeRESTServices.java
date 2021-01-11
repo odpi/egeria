@@ -74,7 +74,7 @@ public class DataAssetExchangeRESTServices
 
             if (requestBody != null)
             {
-                DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createAsset(userId,
                                                      requestBody.getMetadataCorrelationProperties(),
@@ -142,7 +142,7 @@ public class DataAssetExchangeRESTServices
 
             if (requestBody != null)
             {
-                DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createAssetFromTemplate(userId,
                                                                  requestBody.getMetadataCorrelationProperties(),
@@ -211,7 +211,7 @@ public class DataAssetExchangeRESTServices
 
             if (requestBody != null)
             {
-                DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
                 handler.updateAsset(userId,
                                     requestBody.getMetadataCorrelationProperties(),
@@ -280,7 +280,7 @@ public class DataAssetExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
             handler.publishAsset(userId, assetGUID, methodName);
         }
@@ -339,7 +339,7 @@ public class DataAssetExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
             handler.withdrawAsset(userId, assetGUID, methodName);
         }
@@ -396,7 +396,7 @@ public class DataAssetExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
             handler.removeAsset(userId, requestBody, assetGUID, methodName);
         }
@@ -453,7 +453,7 @@ public class DataAssetExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
             handler.setAssetAsReferenceData(userId, assetGUID, methodName);
         }
@@ -510,7 +510,7 @@ public class DataAssetExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
             handler.clearAssetAsReferenceData(userId, assetGUID, methodName);
         }
@@ -571,12 +571,82 @@ public class DataAssetExchangeRESTServices
 
             if (requestBody != null)
             {
-                DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findAssets(userId,
                                                            requestBody.getAssetManagerGUID(),
                                                            requestBody.getAssetManagerName(),
                                                            requestBody.getSearchString(),
+                                                           startFrom,
+                                                           pageSize,
+                                                           methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Step through the assets visible to this caller.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody search parameter and correlation properties
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public AssetElementsResponse scanAssets(String                             serverName,
+                                            String                             userId,
+                                            int                                startFrom,
+                                            int                                pageSize,
+                                            AssetManagerIdentifiersRequestBody requestBody)
+    {
+        final String methodName = "scanAssets";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.scanAssets(userId,
+                                                           requestBody.getAssetManagerGUID(),
+                                                           requestBody.getAssetManagerName(),
                                                            startFrom,
                                                            pageSize,
                                                            methodName));
@@ -641,7 +711,7 @@ public class DataAssetExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -714,7 +784,7 @@ public class DataAssetExchangeRESTServices
 
             if (requestBody != null)
             {
-                DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getAssetsForAssetManager(userId,
                                                                          requestBody.getAssetManagerGUID(),
@@ -780,7 +850,7 @@ public class DataAssetExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataAssetExchangeHandler handler = instanceHandler.getDataAsseExchangeHandler(userId, serverName, methodName);
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {

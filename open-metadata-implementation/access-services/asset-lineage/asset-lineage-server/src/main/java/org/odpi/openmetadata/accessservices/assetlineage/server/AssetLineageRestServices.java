@@ -7,11 +7,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.PredicateUtils;
+import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -64,22 +66,30 @@ public class AssetLineageRestServices {
         String methodName = "publishEntities";
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
+            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesByTypeName(userId, entityType);
-            if (CollectionUtils.isEmpty(entitiesByTypeName)) {
+            if (entitiesByTypeName == null || CollectionUtils.isEmpty(entitiesByTypeName)) {
+                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_NOT_FOUND", entityType, "0"));
                 return response;
             }
-            log.info("Asset Lineage OMAS found {} entities with type {}", entitiesByTypeName.size(), entityType);
+
+            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType, String.valueOf(entitiesByTypeName.size())));
+            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES", entityType,
+                    String.valueOf(entitiesByTypeName.stream().map(e->e.getGUID()).collect(Collectors.joining(",")))));
 
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
             if (publisher == null) {
-                log.debug("Asset Lineage Publisher is not available. " +
-                        "The context event for {} could not be published on the Asset Lineage OMAS Out Topic.", entityType);
+                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISHER_NOT_AVAILABLE_ERROR.getMessageDefinition());
                 return response;
             }
 
-            List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher);
-            log.info("Asset Lineage OMAS finished publishing the entity context for {} entities with type {}", entitiesByTypeName.size(), entityType);
+            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType, String.valueOf(entitiesByTypeName.size())));
+            List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher, auditLog);
             response.setGUIDs(publishedEntitiesContext);
+            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType, String.valueOf(publishedEntitiesContext.size())));
+
+
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
@@ -96,23 +106,28 @@ public class AssetLineageRestServices {
         GUIDListResponse response = new GUIDListResponse();
 
         String methodName = "publishEntity";
+
         try {
+
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
+            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             EntityDetail entityByTypeAndGuid = assetContextHandler.getEntityByTypeAndGuid(userId, guid, entityType);
+
             if (entityByTypeAndGuid == null) {
+                auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("ENTITY_NOT_FOUND", entityType, guid));
                 return response;
             }
-            log.info("Asset Lineage OMAS found the entity with guid {} and type {}", guid, entityType);
 
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("ENTITY_FOUND", entityType, guid));
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
             if (publisher == null) {
-                log.debug("Asset Lineage Publisher is not available. " +
-                        "The context event for {} could not be published on the Asset Lineage OMAS Out Topic.", entityType);
+                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISHER_NOT_AVAILABLE_ERROR.getMessageDefinition());
                 return response;
             }
-            String publishedEntitiesContext = publishEntityContext(publisher, entityByTypeAndGuid);
-            log.info("Asset Lineage OMAS finished publishing the entity context for guid {} with type {}", guid, entityType);
+
+            String publishedEntitiesContext = publishEntityContext(publisher, entityByTypeAndGuid, auditLog);
             response.setGUIDs(Collections.singletonList(publishedEntitiesContext));
+
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
@@ -132,10 +147,13 @@ public class AssetLineageRestServices {
      * @return the list of entity GUIDs published on the Asset Lineage Out Topic
      */
     private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType,
-                                                AssetLineagePublisher publisher) {
+                                                AssetLineagePublisher publisher, AuditLog auditLog) {
+
         List<String> publishedGUIDs = entitiesByType.parallelStream().map(entityDetail ->
-                        publishEntityContext(publisher, entityDetail)).collect(Collectors.toList());
+                publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList());
+
         CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
+
         return publishedGUIDs;
     }
 
@@ -147,13 +165,17 @@ public class AssetLineageRestServices {
      *
      * @return the GUID published on the Asset Lineage Out Topic
      */
-    private String publishEntityContext(AssetLineagePublisher publisher, EntityDetail entityDetail) {
+    private String publishEntityContext(AssetLineagePublisher publisher, EntityDetail entityDetail, AuditLog auditLog) {
+        String methodName="publishEntityContext";
+
         try {
-            log.info("Asset Lineage OMAS published the context for entity with guid {}", entityDetail.getGUID());
-            return publishContext(entityDetail, publisher);
-        } catch (JsonProcessingException | OCFCheckedExceptionBase e) {
-            log.error("Failed to publish context for entity of type " + entityDetail.getType() + " and guid "
-                    + entityDetail.getGUID());
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("BUILDING_CONTEXT_STARTED", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            String result =  publishContext(entityDetail, publisher);
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("PUBLISHED", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            return result;
+        } catch (Exception e) {
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("FAILED_TO_PUBLISH", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            auditLog.logException(methodName, AssetLineageAuditCode.ENTITY_ERROR.getMessageDefinition(entityDetail.getType().getTypeDefName(),entityDetail.getGUID()), e);
         }
         return null;
     }

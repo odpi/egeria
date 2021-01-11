@@ -44,7 +44,7 @@ public enum IntegrationServiceDescription implements Serializable
                           "lineage-integrator",
                           "Manage capture of lineage from a third party tool.",
                           "https://egeria.odpi.org/open-metadata-implementation/integration-services/lineage-integrator/",
-                          "Data Engine OMAS",
+                          "Asset Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
     ORGANIZATION_INTEGRATOR_OMIS     (4007,
@@ -55,6 +55,15 @@ public enum IntegrationServiceDescription implements Serializable
                                       "https://egeria.odpi.org/open-metadata-implementation/integration-services/organization-integrator/",
                                       "Community Profile OMAS",
                                       PermittedSynchronization.FROM_THIRD_PARTY),
+
+    SECURITY_INTEGRATOR_OMIS(4008,
+                                      "Security Integrator",
+                                      "Security Integrator OMIS",
+                                      "security-integrator",
+                                      "Distribute security properties to security enforcement points.",
+                                      "https://egeria.odpi.org/open-metadata-implementation/integration-services/security-integrator/",
+                                      "Security Officer OMAS",
+                                      PermittedSynchronization.TO_THIRD_PARTY),
     ;
 
     private static final long     serialVersionUID    = 1L;

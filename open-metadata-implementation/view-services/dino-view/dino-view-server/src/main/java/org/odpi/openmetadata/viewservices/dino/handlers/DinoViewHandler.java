@@ -4,9 +4,17 @@ package org.odpi.openmetadata.viewservices.dino.handlers;
 
 
 
+import org.odpi.openmetadata.adminservices.client.EngineHostConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.IntegrationDaemonConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.ViewServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -32,6 +40,7 @@ import org.odpi.openmetadata.viewservices.dino.api.properties.PlatformOverview;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ServerCohortDetails;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ServerOverview;
+import org.odpi.openmetadata.viewservices.dino.api.properties.ServiceDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -357,6 +366,142 @@ public class DinoViewHandler {
         }
     }
 
+
+
+    /**
+     * getIntegrationDaemonConfigurationClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * Repository Services Audit Log Services interface.
+     *
+     * @param userId - name of the user performing the operation
+     * @param serverName - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
+     */
+    private IntegrationDaemonConfigurationClient getIntegrationDaemonConfigurationClient(String userId,
+                                                                                         String serverName,
+                                                                                         String platformRootURL)
+
+    throws DinoViewServiceException
+
+
+
+    {
+
+        String methodName = "getIntegrationDaemonConfigurationClient";
+
+        try
+        {
+
+            return new IntegrationDaemonConfigurationClient(userId, serverName, platformRootURL);
+
+        }
+        catch(OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+    }
+
+    /**
+     * getEngineHostConfigurationClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * Repository Services Audit Log Services interface.
+     *
+     * @param userId - name of the user performing the operation
+     * @param serverName - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
+     */
+    private EngineHostConfigurationClient getEngineHostConfigurationClient(String userId,
+                                                                                  String serverName,
+                                                                                  String platformRootURL)
+
+    throws DinoViewServiceException
+
+    {
+
+        String methodName = "getEngineHostConfigurationClient";
+
+        try
+        {
+
+            return new EngineHostConfigurationClient(userId, serverName, platformRootURL);
+
+        }
+        catch(OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+    }
+
+
+    /**
+     * getMetadataAccessPointConfigurationClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * Repository Services Audit Log Services interface.
+     *
+     * @param userId - name of the user performing the operation
+     * @param serverName - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
+     */
+    private MetadataAccessPointConfigurationClient getMetadataAccessPointConfigurationClient(String userId,
+                                                                                             String serverName,
+                                                                                             String platformRootURL)
+
+    throws DinoViewServiceException
+
+    {
+
+        String methodName = "getMetadataAccessPointConfigurationClient";
+
+        try
+        {
+
+            return new MetadataAccessPointConfigurationClient(userId, serverName, platformRootURL);
+
+        }
+        catch(OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+    }
+
+    /**
+     * getViewServerConfigurationClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * Repository Services Audit Log Services interface.
+     *
+     * @param userId - name of the user performing the operation
+     * @param serverName - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
+     */
+    private ViewServerConfigurationClient getViewServerConfigurationClient(String userId,
+                                                                                    String serverName,
+                                                                                    String platformRootURL)
+
+    throws DinoViewServiceException
+
+    {
+
+        String methodName = "getViewServerConfigurationClient";
+
+        try
+        {
+
+            return new ViewServerConfigurationClient(userId, serverName, platformRootURL);
+
+        }
+        catch(OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+    }
 
 
     /*
@@ -945,11 +1090,29 @@ public class DinoViewHandler {
             ServerStatus serverStatus = platformServicesClient.getServerStatus(userId, serverName);
             serverOverview.setServerStatus(serverStatus);
 
+            ///*
+            // * Get the active services running on the server....
+            // */
+            //List<String> serverList = platformServicesClient.getActiveServices(userId, serverName);
+            //serverOverview.setServerServicesList(serverList);
+
             /*
-             * Get the active services running on the server....
+             * Get the integration services running on the server....
              */
-            List<String> serverList = platformServicesClient.getActiveServices(userId, serverName);
-            serverOverview.setServerServicesList(serverList);
+            List<RegisteredOMAGService> integrationServices = this.serverGetIntegrationServices(userId, serverName, platformName, methodName);
+            serverOverview.setIntegrationServices(integrationServices);
+
+            /*
+             * Get the access services running on the server....
+             */
+            List<RegisteredOMAGService> accessServices = this.serverGetAccessServices(userId, serverName, platformName, methodName);
+            serverOverview.setAccessServices(accessServices);
+
+            /*
+             * Get the view services running on the server....
+             */
+            List<RegisteredOMAGService> viewServices = this.serverGetViewServices(userId, serverName, platformName, methodName);
+            serverOverview.setViewServices(viewServices);
 
             /*
              * Fechez la vache
@@ -1352,4 +1515,686 @@ public class DinoViewHandler {
 
     }
 
+
+    /*
+     * Retrieve a list of integration services for a specified service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public List<RegisteredOMAGService>  serverGetIntegrationServices(String    userId,
+                                                  String    serverName,
+                                                  String    platformName,
+                                                  String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            IntegrationDaemonConfigurationClient integrationDaemonConfigurationClient =
+                    this.getIntegrationDaemonConfigurationClient(userId, serverName, platformRootURL);
+
+            /*
+             * Get a list of the integration services that are configured on the server
+             *
+             */
+
+            List<RegisteredOMAGService> serviceList = integrationDaemonConfigurationClient.getConfiguredIntegrationServices();
+
+            return serviceList;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
+
+
+
+    /*
+     * Retrieve a list of engine services for a specified service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public List<RegisteredOMAGService>  serverGetEngineServices(String    userId,
+                                                                String    serverName,
+                                                                String    platformName,
+                                                                String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            EngineHostConfigurationClient engineHostConfigurationClient =
+                    this.getEngineHostConfigurationClient(userId, serverName, platformRootURL);
+
+            /*
+             * Get a list of the integration services that are configured on the server
+             *
+             */
+
+            List<RegisteredOMAGService> serviceList = engineHostConfigurationClient.getConfiguredEngineServices();
+
+            return serviceList;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
+
+    /*
+     * Retrieve a list of access services for a specified service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public List<RegisteredOMAGService>  serverGetAccessServices(String    userId,
+                                                                String    serverName,
+                                                                String    platformName,
+                                                                String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            MetadataAccessPointConfigurationClient metadataAccessPointConfigurationClient =
+                    this.getMetadataAccessPointConfigurationClient(userId, serverName, platformRootURL);
+
+            /*
+             * Get a list of the integration services that are configured on the server
+             *
+             */
+
+            List<RegisteredOMAGService> serviceList = metadataAccessPointConfigurationClient.getConfiguredAccessServices();
+
+            return serviceList;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
+
+
+    /*
+     * Retrieve a list of view services for a specified service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public List<RegisteredOMAGService>  serverGetViewServices(String    userId,
+                                                              String    serverName,
+                                                              String    platformName,
+                                                              String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            ViewServerConfigurationClient viewServerConfigurationClient =
+                    this.getViewServerConfigurationClient(userId, serverName, platformRootURL);
+
+            /*
+             * Get a list of the integration services that are configured on the server
+             *
+             */
+
+            List<RegisteredOMAGService> serviceList = viewServerConfigurationClient.getConfiguredViewServices();
+
+            return serviceList;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
+
+
+
+
+    /*
+     * Retrieve the service details for a specified integration service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param serviceName The name of the service to be retrieved
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public ServiceDetails serverGetIntegrationServiceDetails(String    userId,
+                                                             String    serverName,
+                                                             String    platformName,
+                                                             String    serviceURLMarker,
+                                                             String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            IntegrationDaemonConfigurationClient integrationDaemonConfigurationClient =
+                    this.getIntegrationDaemonConfigurationClient(userId, serverName, platformRootURL);
+
+
+            /*
+             * Get the configuration of the integration service that has been requested. This can throw
+             * OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
+             *
+             */
+            IntegrationServiceConfig serviceConfig = integrationDaemonConfigurationClient.getIntegrationServiceConfiguration(serviceURLMarker);
+
+            ServiceDetails serviceDetails = new ServiceDetails();
+            serviceDetails.setServiceCat(ServiceDetails.ServiceCat.IntegrationService);
+            serviceDetails.setIntegrationServiceConfig(serviceConfig);
+
+            return serviceDetails;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
+
+
+    /*
+     * Retrieve the service details for a specified engine service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param serviceName The name of the service to be retrieved
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public ServiceDetails serverGetEngineServiceDetails(String    userId,
+                                                        String    serverName,
+                                                        String    platformName,
+                                                        String    serviceURLMarker,
+                                                        String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            EngineHostConfigurationClient engineHostConfigurationClient =
+                    this.getEngineHostConfigurationClient(userId, serverName, platformRootURL);
+
+
+            /*
+             * Get the configuration of the integration service that has been requested. This can throw
+             * OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
+             *
+             */
+            EngineServiceConfig serviceConfig = engineHostConfigurationClient.getEngineServiceConfiguration(serviceURLMarker);
+
+            ServiceDetails serviceDetails = new ServiceDetails();
+            serviceDetails.setServiceCat(ServiceDetails.ServiceCat.EngineService);
+            serviceDetails.setEngineServiceConfig(serviceConfig);
+
+            return serviceDetails;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
+
+    /*
+     * Retrieve the service details for a specified access service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param serviceName The name of the service to be retrieved
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public ServiceDetails serverGetAccessServiceDetails(String    userId,
+                                                        String    serverName,
+                                                        String    platformName,
+                                                        String    serviceFullName,
+                                                        String    serviceURLMarker,
+                                                        String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            MetadataAccessPointConfigurationClient metadataAccessPointConfigurationClient =
+                    this.getMetadataAccessPointConfigurationClient(userId, serverName, platformRootURL);
+
+
+            /*
+             * Get the configuration of the integration service that has been requested. This can throw
+             * OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
+             *
+             */
+            List<AccessServiceConfig> accessServices = metadataAccessPointConfigurationClient.getAccessServicesConfiguration();
+            AccessServiceConfig serviceConfig = null;
+            for (int i=0; i<accessServices.size(); i++) {
+                AccessServiceConfig svc = accessServices.get(i);
+                if (  serviceFullName.equals(svc.getAccessServiceFullName()) ||
+                      serviceURLMarker.equals(svc.getAccessServiceURLMarker()))
+                    serviceConfig = svc;
+            }
+            if (serviceConfig == null) {
+                throw new DinoViewServiceException(
+                        DinoViewErrorCode.COULD_NOT_RETRIEVE_SERVER_CONFIGURATION.getMessageDefinition(
+                                methodName,
+                                serverName),
+                        this.getClass().getName(),
+                        methodName);
+            }
+
+            ServiceDetails serviceDetails = new ServiceDetails();
+            serviceDetails.setServiceCat(ServiceDetails.ServiceCat.AccessService);
+            serviceDetails.setAccessServiceConfig(serviceConfig);
+
+            return serviceDetails;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
+
+
+    /*
+     * Retrieve the service details for a specified view service
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param serviceName The name of the service to be retrieved
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public ServiceDetails serverGetViewServiceDetails(String    userId,
+                                                      String    serverName,
+                                                      String    platformName,
+                                                      String    serviceURLMarker,
+                                                      String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+            ViewServerConfigurationClient viewServerConfigurationClient =
+                    this.getViewServerConfigurationClient(userId, serverName, platformRootURL);
+
+
+            /*
+             * Get the configuration of the integration service that has been requested. This can throw
+             * OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
+             *
+             */
+            List<ViewServiceConfig> viewServices = viewServerConfigurationClient.getViewServicesConfiguration();
+            ViewServiceConfig serviceConfig = null;
+            for (int i=0; i<viewServices.size(); i++) {
+                ViewServiceConfig svc = viewServices.get(i);
+                if (serviceURLMarker.equals(svc.getViewServiceURLMarker()))
+                    serviceConfig = svc;
+            }
+            if (serviceConfig == null) {
+                throw new DinoViewServiceException(
+                        DinoViewErrorCode.COULD_NOT_RETRIEVE_SERVER_CONFIGURATION.getMessageDefinition(
+                                methodName,
+                                serverName),
+                        this.getClass().getName(),
+                        methodName);
+            }
+
+            ServiceDetails serviceDetails = new ServiceDetails();
+            serviceDetails.setServiceCat(ServiceDetails.ServiceCat.ViewService);
+            serviceDetails.setViewServiceConfig(serviceConfig);
+
+            return serviceDetails;
+
+        }
+        catch (OMAGInvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapOMAGInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (OMAGNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapOMAGNotAuthorizedException(this.getClass().getName(), methodName, userId, e);
+        }
+        catch (OMAGConfigurationErrorException e)
+        {
+            /*
+             * You may get this exception if the server is not running - and has been asked for its instance configuration
+             * In this case you will get an exception in which the 'cause' has a reportedErrorMessageId of OMAG-MULTI-TENANT-404-001.
+             * In this specific case ONLY, tolerate the error and pass back a null in the response for activeConfig. For any other error codes
+             * report the exception.
+             */
+
+            if (e.getCause() != null && e.getCause() instanceof OCFCheckedExceptionBase)
+            {
+                OCFCheckedExceptionBase cause = (OCFCheckedExceptionBase) (e.getCause());
+                if (cause.getReportedErrorMessageId().equals("OMAG-MULTI-TENANT-404-001"))
+                {
+                    /* In this specific circumstance, tolerate the exception... */
+                    return null;
+                }
+            }
+            /* If the OMAGConfigurationErrorException was for a different reason, do not tolerate.... */
+            throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
+        }
+
+    }
 }

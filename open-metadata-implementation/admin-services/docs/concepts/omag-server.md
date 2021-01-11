@@ -41,24 +41,14 @@ More detail about each type of OMAG Server can be found by following the links b
 * [View Server](view-server.md) - manages specialist services for user interfaces.
 
 * [Governance Server](governance-server-types.md) - supports the use of metadata in the broader IT landscape.
-  * [Engine Host](engine-host.md) - provides a runtime for a specific type of governance engine.
-     * [Discovery Server](discovery-server.md) - hosts discovery engines that manage automated metadata discovery.
-     * [Stewardship Server](stewardship-server.md) - hosts stewardship engines that manage requests for action and
-       their remediation.
+  * [Engine Host](engine-host.md) - provides a runtime for a specific type of [governance engine](../../../engine-services).  
   * [Integration Daemon](integration-daemon.md) - manages the synchronization with third party technology that
     can not call the access services directly.
-     * [Data Platform Server](data-platform-server.md) - manages retrieval of metadata from a data platform such as
-     a database server, Apache Cassandra and Apache Hive.
-     * [Virtualizer](virtualizer.md) - Supports the configuration of data virtualization platforms based on
-     the data sources stored in open metadata.
-     * [Data Engine Proxy](data-engine-proxy.md) - Supports the capture of metadata from a data engine.  This includes
-     details of the processing of data that it is doing which is valuable when piecing together lineage.
-     * [Security Sync Server](security-sync-server.md) - Supports the configuration of a data access endpoint with information
-     to control access to the data.
-   * [Open Lineage Server](open-lineage-server.md) - Manages the collation of lineage information am maintains it in a format for reporting.
-     This includes the state of the lineage at different points in time.
-   * [Security Officer Server](security-officer-server.md)  - Supports a Security Officer in setting up security classifications (Security Tags)
-     for assets based on a variety of metadata.
+  * [Data Engine Proxy](data-engine-proxy.md) - Supports the capture of metadata from a data engine.  This includes
+    details of the processing of data that it is doing which is valuable when piecing together lineage.
+  * [Open Lineage Server](open-lineage-server.md) - Manages the collation of lineage information am maintains it in a format for reporting.
+    This includes the state of the lineage at different points in time.
+
   
 The different types of OMAG Servers connect together as shown in Figure 2.  There is an inner
 ring of cohort members communicating via the cohort.  Each cohort member is sharing the metadata

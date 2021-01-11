@@ -17,6 +17,7 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 
 }
 

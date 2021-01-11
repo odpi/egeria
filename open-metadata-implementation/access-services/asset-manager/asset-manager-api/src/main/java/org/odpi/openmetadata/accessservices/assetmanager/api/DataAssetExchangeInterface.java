@@ -285,6 +285,30 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
 
 
     /**
+     * Step through the assets visible to this caller.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<AssetElement> scanAssets(String userId,
+                                  String assetManagerGUID,
+                                  String assetManagerName,
+                                  int    startFrom,
+                                  int    pageSize) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
+
+
+    /**
      * Retrieve the list of asset metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *

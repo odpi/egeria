@@ -150,6 +150,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public String  createValidValueSet(String              userId,
                                        String              qualifiedName,
                                        String              displayName,
@@ -210,6 +211,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public String  createValidValueDefinition(String              userId,
                                               String              setGUID,
                                               String              qualifiedName,
@@ -276,6 +278,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    updateValidValue(String              userId,
                                     String              validValueGUID,
                                     String              qualifiedName,
@@ -333,6 +336,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    deleteValidValue(String   userId,
                                     String   validValueGUID,
                                     String   qualifiedName) throws InvalidParameterException,
@@ -370,6 +374,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    attachValidValueToSet(String   userId,
                                          String   setGUID,
                                          String   validValueGUID) throws InvalidParameterException,
@@ -407,6 +412,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    detachValidValueFromSet(String   userId,
                                            String   setGUID,
                                            String   validValueGUID) throws InvalidParameterException,
@@ -448,6 +454,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void  linkValidValueToImplementation(String              userId,
                                                 String              validValueGUID,
                                                 String              assetGUID,
@@ -494,6 +501,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void  classifyAssetAsReferenceData(String  userId,
                                               String  assetGUID) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
@@ -527,6 +535,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void  unlinkValidValueFromImplementation(String   userId,
                                                     String   validValueGUID,
                                                     String   assetGUID) throws InvalidParameterException,
@@ -564,6 +573,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void  declassifyAssetAsReferenceData(String  userId,
                                                 String  assetGUID) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -599,6 +609,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    assignValidValueToConsumer(String   userId,
                                               String   validValueGUID,
                                               String   consumerGUID,
@@ -640,6 +651,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    unassignValidValueFromConsumer(String   userId,
                                                   String   validValueGUID,
                                                   String   consumerGUID) throws InvalidParameterException,
@@ -681,6 +693,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    assignReferenceValueToItem(String   userId,
                                               String   validValueGUID,
                                               String   referenceableGUID,
@@ -726,6 +739,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    unassignReferenceValueFromItem(String   userId,
                                                   String   validValueGUID,
                                                   String   referenceableGUID) throws InvalidParameterException,
@@ -768,6 +782,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    mapValidValues(String   userId,
                                   String   validValue1GUID,
                                   String   validValue2GUID,
@@ -816,6 +831,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    unmapValidValues(String   userId,
                                     String   validValue1GUID,
                                     String   validValue2GUID) throws InvalidParameterException,
@@ -856,6 +872,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public ValidValueElement getValidValueByGUID(String   userId,
                                                  String   validValueGUID) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -893,6 +910,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement>   getValidValueByName(String   userId,
                                                          String   validValueName,
                                                          int      startFrom,
@@ -935,6 +953,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement> findValidValues(String   userId,
                                                    String   searchString,
                                                    int      startFrom,
@@ -978,6 +997,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement> getValidValueSetMembers(String   userId,
                                                            String   validValueSetGUID,
                                                            int      startFrom,
@@ -1019,6 +1039,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement> getSetsForValidValue(String   userId,
                                                         String   validValueGUID,
                                                         int      startFrom,
@@ -1060,6 +1081,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueAssignmentConsumerElement> getValidValuesAssignmentConsumers(String   userId,
                                                                                        String   validValueGUID,
                                                                                        int      startFrom,
@@ -1103,6 +1125,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueAssignmentDefinitionElement> getValidValuesAssignmentDefinition(String   userId,
                                                                                           String   referenceableGUID,
                                                                                           int      startFrom,
@@ -1145,6 +1168,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueImplAssetElement> getValidValuesImplementationAssets(String   userId,
                                                                                String   validValueGUID,
                                                                                int      startFrom,
@@ -1189,6 +1213,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueImplDefinitionElement> getValidValuesImplementationDefinitions(String       userId,
                                                                                          String       assetGUID,
                                                                                          int          startFrom,
@@ -1233,6 +1258,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueMappingElement> getValidValueMappings(String       userId,
                                                                 String       validValueGUID,
                                                                 int          startFrom,
@@ -1278,6 +1304,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValuesMappingElement> getValidValuesMappings(String       userId,
                                                                   String       validValueGUID,
                                                                   int          startFrom,
@@ -1321,6 +1348,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ReferenceValueAssignmentItemElement> getReferenceValueAssignedItems(String       userId,
                                                                                     String       validValueGUID,
                                                                                     int          startFrom,
@@ -1365,6 +1393,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ReferenceValueAssignmentDefinitionElement> getReferenceValueAssignments(String       userId,
                                                                                         String       referenceableGUID,
                                                                                         int          startFrom,

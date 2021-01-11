@@ -411,7 +411,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param searchStringParameterName name of parameter supplying hte search string
+     * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -448,6 +448,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary to query
+     * @param glossaryGUIDParameterName name of the parameter supplying glossaryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -593,6 +594,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param glossaryCategoryGUIDParameterName parameter name of the glossaryCategoryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return list of glossary category element
      *

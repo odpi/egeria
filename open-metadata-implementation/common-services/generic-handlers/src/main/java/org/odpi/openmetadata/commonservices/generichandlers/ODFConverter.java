@@ -289,9 +289,6 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
 
                 case OTHER:
                     return ElementStatus.OTHER;
-
-                case DELETED:
-                    return ElementStatus.DELETED;
             }
         }
 
@@ -735,8 +732,8 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                                                                                       methodName);
 
             annotation.setDataSourceProperties(this.removeDataSourceProperties(remainingProperties));
-            annotation.setCreateTime(this.removeCreateTime(remainingProperties));
-            annotation.setModifiedTime(this.removeModifiedTime(remainingProperties));
+            annotation.setCreateTime(this.removeSourceCreateTime(remainingProperties));
+            annotation.setModifiedTime(this.removeSourceUpdateTime(remainingProperties));
             annotation.setSize(this.removeSize(remainingProperties));
             annotation.setEncoding(this.removeEncoding(remainingProperties));
 

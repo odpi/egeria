@@ -151,11 +151,13 @@ public class HandlerHelper {
      * @param entityDetailGUID the entity identifier
      * @param entityTypeName the entity type name
      * @return the entity
-     * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
      */
     public EntityDetail getEntityDetails(String userId,
                                          String entityDetailGUID,
-                                         String entityTypeName) throws OCFCheckedExceptionBase {
+                                         String entityTypeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityDetails";
 
         return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
@@ -240,14 +242,22 @@ public class HandlerHelper {
     }
 
     private void enhanceGraphContext(Relationship relationship, AssetContext graph, LineageEntity startVertex, LineageEntity endVertex) {
-        GraphContext graphContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
-        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))
-                || !graph.getNeighbors().containsKey(graphContext.getRelationshipGuid())) {
-            graph.addVertex(startVertex);
-            graph.addVertex(endVertex);
-            graph.addGraphContext(graphContext);
+        GraphContext relationshipContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
+
+        if (graph.getNeighbors().containsKey(relationshipContext.getRelationshipGuid())) {
+            return;
         }
+        for (GraphContext context : graph.getGraphContexts()) {
+            if (relationshipContext.getRelationshipGuid().equals(context.getRelationshipGuid())) {
+                return;
+            }
+        }
+
+        graph.addVertex(startVertex);
+        graph.addVertex(endVertex);
+        graph.addGraphContext(relationshipContext);
+
     }
 
     /**

@@ -8,8 +8,8 @@ holding and managing the configuration needed by the
 [discovery servers](discovery-server.md) and
 the [discovery engines](discovery-engine.md) within them.
 
-This configuration consists of defining which [discovery request
-types] are supported and which [discovery ]
+This configuration consists of defining which [discovery request types](discovery-request-type.md) are supported and
+which [discovery services](discovery-service.md) they map to.
 
 ## Implementation in Egeria
 

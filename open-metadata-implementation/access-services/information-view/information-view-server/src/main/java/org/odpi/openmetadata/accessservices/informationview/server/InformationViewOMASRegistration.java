@@ -15,7 +15,7 @@ class InformationViewOMASRegistration {
 
         AccessServiceDescription myDescription = AccessServiceDescription.INFORMATION_VIEW_OMAS;
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 ServiceOperationalStatus.DISABLED,
                                                                                  InformationViewAdmin.class.getName()
 
         );
