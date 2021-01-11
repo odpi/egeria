@@ -36,6 +36,8 @@ public enum AssetLineageEventType implements Serializable {
     TERM_CATEGORIZATIONS_EVENT(11, "TermCategorizationsEvent", "Has the term categorizations for a glossary term"),
     TERM_ANCHOR_EVENT(12, "TermAnchorEvent", "Has the term anchor for a glossary term"),
     GLOSSARY_CATEGORIES_EVENT(13, "GlossaryCategoriesEvent", "Has the categorizations for an anchor"),
+    COLUMN_CONTEXT_EVENT(14, "ColumnContextEvent", "Has the context for a column"),
+    ASSET_CONTEXT_EVENT(15, "AssetContextEvent", "Has the context for an asset"),
     UNKNOWN_ASSET_LINEAGE_EVENT(100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers.");
 
     private static final long serialVersionUID = 1L;

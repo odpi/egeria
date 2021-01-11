@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -19,10 +18,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CATEGORY_ANCHOR;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
@@ -39,7 +40,6 @@ public class GlossaryContextHandler {
 
     private RepositoryHandler repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
-    private AssetContextHandler assetContextHandler;
     private HandlerHelper handlerHelper;
 
     /**
@@ -56,7 +56,6 @@ public class GlossaryContextHandler {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
-        this.assetContextHandler = assetContextHandler;
     }
 
     /**
@@ -93,33 +92,34 @@ public class GlossaryContextHandler {
         String glossaryTermGUID = glossaryTerm.getGUID();
         invalidParameterHandler.validateGUID(glossaryTermGUID, GUID_PARAMETER, methodName);
 
-        Map<String, Set<GraphContext>> context = new HashMap<>();
-
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTermGUID, GLOSSARY_TERM);
-        context.put(AssetLineageEventType.SEMANTIC_ASSIGNMENTS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTerm,
-                semanticAssignments));
-
         List<Relationship> termCategorizations = getTermCategorizations(userId, glossaryTermGUID, GLOSSARY_TERM);
-        context.put(AssetLineageEventType.TERM_CATEGORIZATIONS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTerm,
-                termCategorizations));
-
         List<Relationship> glossary = getTermAnchor(userId, glossaryTermGUID, GLOSSARY_TERM);
-        context.put(AssetLineageEventType.TERM_ANCHOR_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTerm, glossary));
+
+        if (Stream.of(semanticAssignments, termCategorizations, glossary).allMatch(CollectionUtils::isEmpty)) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, Set<GraphContext>> context = new HashMap<>();
+        context.put(AssetLineageEventType.SEMANTIC_ASSIGNMENTS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
+                semanticAssignments));
+        context.put(AssetLineageEventType.TERM_CATEGORIZATIONS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
+                termCategorizations));
+        context.put(AssetLineageEventType.TERM_ANCHOR_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossary));
 
         List<Relationship> glossariesForCategories = getGlossariesForCategories(userId, glossaryTermGUID, termCategorizations);
-        context.put(AssetLineageEventType.GLOSSARY_CATEGORIES_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTerm, glossariesForCategories));
+        context.put(AssetLineageEventType.GLOSSARY_CATEGORIES_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
+                glossariesForCategories));
 
-        // handlerHelper.addLineageClassificationToContext(glossaryTerm, glossaryContext);
 
-//        Set<EntityDetail> schemaElements = handlerHelper.getSchemaElements(userId, glossaryTerm, semanticAssignments);
-//        for (EntityDetail schemaElement : schemaElements) {
-//            context.put(schemaElement.getGUID(), buildSchemaElementsContext(userId, schemaElement));
-//        }
+        context.put(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(),
+                handlerHelper.buildContextForLineageClassifications(glossaryTerm));
+
         return context;
     }
 
     private List<Relationship> getGlossariesForCategories(String userId, String glossaryTermGUID, List<Relationship> termCategorization) throws
-                                                                                                                                    OCFCheckedExceptionBase {
+                                                                                                                                         OCFCheckedExceptionBase {
         List<Relationship> categories = new ArrayList<>();
 
         for (Relationship relationship : termCategorization) {
@@ -131,23 +131,6 @@ public class GlossaryContextHandler {
         }
         return categories;
     }
-
-
-    /**
-     * Add Schema Elements entities to the Glossary Term context
-     *
-     * @param userId the user of user making request.
-     *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
-     */
-    private Set<GraphContext> buildSchemaElementsContext(String userId,
-                                                         EntityDetail schemaElement) throws OCFCheckedExceptionBase {
-
-        AssetContext schemaElementContext = assetContextHandler.getAssetContext(userId, schemaElement);
-        return schemaElementContext.getGraphContexts();
-
-    }
-
 
     /**
      * Fetch the Semantic Assignments Relationships for an entity
@@ -278,5 +261,15 @@ public class GlossaryContextHandler {
         }
 
         return CollectionUtils.isNotEmpty(getTermCategorizations(userId, entityDetailGUID, entityDetail.getType().getTypeDefGUID()));
+    }
+
+    public Set<EntityDetail> getSchemaElementsAttached(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
+        List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTerm.getGUID(), GLOSSARY_TERM);
+
+        Set<EntityDetail> schemaElements = new HashSet<>();
+        for (Relationship semanticAssignment : semanticAssignments) {
+            schemaElements.add(handlerHelper.getEntityAtTheEnd(userId, glossaryTerm.getGUID(), semanticAssignment));
+        }
+        return schemaElements;
     }
 }

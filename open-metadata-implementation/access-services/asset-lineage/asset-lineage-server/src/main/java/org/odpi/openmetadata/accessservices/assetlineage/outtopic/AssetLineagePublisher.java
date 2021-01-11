@@ -5,12 +5,14 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
@@ -47,6 +49,7 @@ public class AssetLineagePublisher {
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
     private GlossaryContextHandler glossaryHandler;
+    private AssetContextHandler assetContextHandler;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -65,6 +68,7 @@ public class AssetLineagePublisher {
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
+        this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
     }
 
     /**
@@ -108,28 +112,39 @@ public class AssetLineagePublisher {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    public Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail)
-            throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> contextMap = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
+    public Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+        Map<String, Set<GraphContext>> glossaryTermContext = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
-        if (MapUtils.isEmpty(contextMap)) {
+        if (MapUtils.isEmpty(glossaryTermContext)) {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
+        publishLineageEvents(glossaryTermContext);
 
+        Set<EntityDetail> schemaElementsAttached = glossaryHandler.getSchemaElementsAttached(serverUserName, entityDetail);
+        for (EntityDetail schemaElement : schemaElementsAttached) {
+            publishLineageEvents(assetContextHandler.buildSchemaElementContext(serverUserName, schemaElement));
+        }
+
+        return glossaryTermContext;
+    }
+
+    private void publishLineageEvents(Map<String, Set<GraphContext>> contextMap) throws JsonProcessingException, ConnectorCheckedException {
         for (String eventType : contextMap.keySet()) {
             Set<GraphContext> graphContexts = contextMap.get(eventType);
 
             LineageEvent event = new LineageEvent();
+
+            if (CollectionUtils.isEmpty(graphContexts)) {
+                continue;
+            }
 
             event.setContext(graphContexts);
             event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
 
             publishEvent(event);
         }
-
-        return contextMap;
     }
 
     /**

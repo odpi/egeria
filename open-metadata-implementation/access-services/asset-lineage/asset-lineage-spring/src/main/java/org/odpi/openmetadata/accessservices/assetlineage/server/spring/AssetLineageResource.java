@@ -48,10 +48,10 @@ public class AssetLineageResource {
      * @return a list of unique identifiers (guids) of the available entity with the given type provided as a response
      */
     @GetMapping(path = "/publish-entity/{entityType}/{guid}")
-    public GUIDListResponse publishEntitiesTest(@PathVariable String serverName,
-                                            @PathVariable String userId,
-                                            @PathVariable String guid,
-                                            @PathVariable String entityType) {
+    public GUIDListResponse publishEntity(@PathVariable String serverName,
+                                          @PathVariable String userId,
+                                          @PathVariable String guid,
+                                          @PathVariable String entityType) {
         return restAPI.publishEntity(serverName, userId, entityType, guid);
     }
 }

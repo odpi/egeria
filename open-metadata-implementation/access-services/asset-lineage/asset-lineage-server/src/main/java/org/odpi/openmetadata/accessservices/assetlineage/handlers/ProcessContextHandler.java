@@ -185,9 +185,15 @@ public class ProcessContextHandler {
         Set<String> superTypes = superTypesRetriever.getSuperTypes(userId, entity.getType().getTypeDefName());
 
         if (superTypes.contains(TABULAR_COLUMN)) {
-            AssetContext assetContext = assetContextHandler.getAssetContext(userId, entity);
-            graph.getGraphContexts().addAll(assetContext.getGraphContexts());
-            assetContext.getNeighbors().forEach(this::mergeGraphNeighbors);
+            Map<String, Set<GraphContext>> assetContext = assetContextHandler.buildSchemaElementContext(userId, entity);
+
+            for(String eventType : assetContext.keySet()) {
+                Set<GraphContext> graphContext = assetContext.get(eventType);
+                graph.getGraphContexts().addAll(graphContext);
+                //TODO test if neighbors is necessary
+               // assetContext.getNeighbors().forEach(this::mergeGraphNeighbors);
+            }
+
         }
     }
 
