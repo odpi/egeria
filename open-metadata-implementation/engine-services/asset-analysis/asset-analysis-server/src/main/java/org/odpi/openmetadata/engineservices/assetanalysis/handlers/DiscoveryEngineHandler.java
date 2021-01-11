@@ -9,8 +9,11 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.discovery.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.*;
 
@@ -21,15 +24,16 @@ import java.util.*;
  */
 public class DiscoveryEngineHandler extends GovernanceEngineHandler
 {
-    private DiscoveryEngineClient        discoveryEngineClient;    /* Initialized in constructor */
+    private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
     private static final String supportGovernanceEngineType = "OpenDiscoveryEngine";
+    private static final String assetTypeName = "Asset";
 
     /**
      * Create a client-side object for calling a discovery engine.
      *
      * @param engineConfig the unique identifier of the discovery engine.
-     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverName the name of the engine host server where the discovery engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
      * @param discoveryEngineClient REST client for direct REST Calls
@@ -80,7 +84,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
         if (discoveryServiceCache != null)
         {
-            return runDiscoveryService(assetGUID, discoveryRequestType, analysisParameters, annotationTypes, discoveryServiceCache);
+            return runDiscoveryService(assetGUID, discoveryRequestType, analysisParameters, annotationTypes, null, discoveryServiceCache);
         }
 
         return null;
@@ -131,6 +135,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                 discoveryRequestType,
                                                 analysisParameters,
                                                 annotationTypes,
+                                                null,
                                                 discoveryServiceCache);
                         }
                     }
@@ -154,12 +159,80 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
 
     /**
+     * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
+     *
+     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param requestParameters name-value properties to control the governance action service
+     * @param requestSourceElements metadata elements associated with the request to the governance action service
+     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
+     *
+     * @return service handler for this request
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the governance action engine.
+     */
+    @Override
+    public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
+                                                         String                     requestType,
+                                                         Map<String, String>        requestParameters,
+                                                         List<RequestSourceElement> requestSourceElements,
+                                                         List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
+    {
+        final String methodName = "runGovernanceService";
+
+        super.validateGovernanceEngineInitialized(supportGovernanceEngineType, methodName);
+
+        GovernanceServiceCache governanceServiceCache = super.getServiceCache(requestType);
+
+        if ((governanceServiceCache != null) && (actionTargetElements != null) && (! actionTargetElements.isEmpty()))
+        {
+            String assetGUID = null;
+
+            for (ActionTargetElement actionTargetElement : actionTargetElements)
+            {
+                if ((actionTargetElement != null)
+                            && (actionTargetElement.getTargetElement() != null)
+                            && (actionTargetElement.getTargetElement().getElementType() != null))
+                {
+                    String       typeName       = actionTargetElement.getTargetElement().getElementType().getElementTypeName();
+                    List<String> superTypeNames = actionTargetElement.getTargetElement().getElementType().getElementSuperTypeNames();
+
+                    if ((assetTypeName.equals(typeName)) || ((superTypeNames != null) && (superTypeNames.contains(assetTypeName))))
+                    {
+                        assetGUID = actionTargetElement.getTargetElement().getElementGUID();
+                    }
+                }
+            }
+
+            DiscoveryServiceHandler discoveryServiceHandler = this.getDiscoveryServiceHandler(assetGUID,
+                                                                                              requestType,
+                                                                                              requestParameters,
+                                                                                              null,
+                                                                                              governanceActionGUID,
+                                                                                              governanceServiceCache);
+
+            Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
+            thread.start();
+
+            return discoveryServiceHandler;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Run an instance of a discovery service in its own thread.
      *
      * @param assetGUID unique identifier of the asset to analyse
      * @param discoveryRequestType type of discovery
      * @param suppliedAnalysisParameters parameters for the discovery
      * @param annotationTypes types of annotations that can be returned
+     * @param governanceActionGUID unique identifier of the associated governance action entity
      * @param governanceServiceCache factory for discovery services.
      *
      * @return unique identifier for this request.
@@ -172,9 +245,50 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                        String                 discoveryRequestType,
                                        Map<String, String>    suppliedAnalysisParameters,
                                        List<String>           annotationTypes,
+                                       String                 governanceActionGUID,
                                        GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
+    {
+        DiscoveryServiceHandler discoveryServiceHandler = this.getDiscoveryServiceHandler(assetGUID,
+                                                                                          discoveryRequestType,
+                                                                                          suppliedAnalysisParameters,
+                                                                                          annotationTypes,
+                                                                                          governanceActionGUID,
+                                                                                          governanceServiceCache);
+
+        Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
+        thread.start();
+
+        return discoveryServiceHandler.getDiscoveryReportGUID();
+    }
+
+
+
+    /**
+     * Create an instance of a discovery service handler.
+     *
+     * @param assetGUID unique identifier of the asset to analyse
+     * @param discoveryRequestType type of discovery
+     * @param suppliedAnalysisParameters parameters for the discovery
+     * @param annotationTypes types of annotations that can be returned
+     * @param governanceActionGUID unique identifier of the associated governance action entity
+     * @param governanceServiceCache factory for discovery services
+     *
+     * @return unique identifier for this request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the discovery engine.
+     */
+    private DiscoveryServiceHandler getDiscoveryServiceHandler(String                 assetGUID,
+                                                               String                 discoveryRequestType,
+                                                               Map<String, String>    suppliedAnalysisParameters,
+                                                               List<String>           annotationTypes,
+                                                               String                 governanceActionGUID,
+                                                               GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
     {
         Date                creationTime = new Date();
         Map<String, String> analysisParameters = suppliedAnalysisParameters;
@@ -187,9 +301,9 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
         String reportQualifiedName = "DiscoveryAnalysisReport:" + discoveryRequestType + ":" + assetGUID + ":" + creationTime.toString();
         String reportDisplayName   = "Discovery Analysis Report for " + assetGUID;
         String reportDescription   = "This is the " + discoveryRequestType + " discovery analysis report for asset " + assetGUID + " generated at " +
-                creationTime.toString() +
-                " by the " + governanceServiceCache.getGovernanceServiceName() + " discovery service running on discovery engine " +
-                governanceEngineProperties.getDisplayName() + " (" + governanceEngineName + ").";
+                                             creationTime.toString() +
+                                             " by the " + governanceServiceCache.getGovernanceServiceName() + " discovery service running on discovery engine " +
+                                             governanceEngineProperties.getDisplayName() + " (" + governanceEngineName + ").";
 
         DiscoveryAnalysisReportClient discoveryAnalysisReportClient = new DiscoveryAnalysisReportClient(engineUserId,
                                                                                                         DiscoveryRequestStatus.WAITING,
@@ -223,17 +337,16 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                  annotationStore,
                                                                  assetCatalogStore);
 
-        DiscoveryServiceHandler discoveryServiceHandler = new DiscoveryServiceHandler(governanceEngineProperties,
-                                                                                      governanceEngineGUID,
-                                                                                      discoveryRequestType,
-                                                                                      governanceServiceCache.getGovernanceServiceName(),
-                                                                                      governanceServiceCache.getNextGovernanceService(),
-                                                                                      discoveryContext,
-                                                                                      auditLog);
-        Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
-        thread.start();
+        return new DiscoveryServiceHandler(governanceEngineProperties,
+                                           governanceEngineGUID,
+                                           governanceActionGUID,
+                                           discoveryRequestType,
+                                           governanceServiceCache.getGovernanceServiceName(),
+                                           governanceServiceCache.getNextGovernanceService(),
+                                           discoveryContext,
+                                           discoveryAnalysisReportClient.getDiscoveryReportGUID(),
+                                           auditLog);
 
-        return discoveryAnalysisReportClient.getDiscoveryReportGUID();
     }
 
 

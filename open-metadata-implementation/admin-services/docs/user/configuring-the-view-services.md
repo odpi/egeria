@@ -9,7 +9,7 @@ The [Open Metadata View Services (OMVSs)](../../../view-services) run in a [View
 View services provide task oriented, domain-specific services
 for user interfaces that integrate with open metadata. View services are part of a multi-tier architecture for 
 the provision of multi-tenant user interfaces. The front tier consists of web components that are rendered in a 
-Web browser, served by web application called the `Presentation Server`. The `Presentation Server` in turn delegates
+Web browser, served by web application called the [Presentation Server](https://github.com/odpi/egeria-react-ui). The Presentation Server in turn delegates
 requests to a set of `View Services` that form a second tier running in the `View Server`.
 Each view service exposes a REST API that supports the domain-specific operations relevant to the service and 
 issues queries and commands to other OMAG Servers, as described in [Configuring an OMAG Server](configuring-an-omag-server.md).
