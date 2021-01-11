@@ -35,7 +35,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    EngineHostConfigurationClient(String adminUserId,
+    public EngineHostConfigurationClient(String adminUserId,
                                   String serverName,
                                   String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
@@ -55,7 +55,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    EngineHostConfigurationClient(String adminUserId,
+    public EngineHostConfigurationClient(String adminUserId,
                                   String serverName,
                                   String serverPlatformRootURL,
                                   String connectionUserId,
