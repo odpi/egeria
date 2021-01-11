@@ -16,7 +16,7 @@ value from data whilst ensuring it is properly governed.
 
 * [Egeria Home Page](https://egeria.odpi.org)
 * [Github](https://github.com/odpi/egeria)
-* [Slack discussions](https://odpi.slack.com)
+* [Slack discussions](https://http://slack.lfai.foundation)
 
 ## Image: egeria
 
