@@ -1,0 +1,12 @@
+ODPi Egeria
+---
+
+Egeria tutorials has now been deployed to Kubernetes.
+It may take a minute or so for everything to start up.
+
+Please provide any feeback via a github issue at https://github.com/odpi/egeria or 
+join us on slack via https://http://slack.lfai.foundation
+
+- The ODPi Egeria team
+
+
