@@ -1,0 +1,83 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+
+# --- General Egeria configuration ---
+egeria:
+  #logging: OFF
+  version: "2.6-SNAPSHOT"
+  repositoryType: "local-graph-repository"
+  debug: false
+  persistence: true
+  # The userid used for admin ops (no security enabled by default)
+  user: garygeeke
+  # The name of the servers to provision on the platform
+  serverName: mds1
+  viewServerName: view1
+  # Organization name for multi-tenant UI
+  viewOrg: org
+  # Set to override the k8s storage class for persistent volume claim
+  #storageClass:
+  # Default to 8GB
+  storageSize: 8Gi
+
+# --- Exposing/setup of network services ---
+service:
+  # Change this to 'NodePort' if you want externalized addresses for our services via a k8s NodePort.
+  # If not, expose the service manually after deployment ie using a LoadBalancer
+  #
+  # For example to expose the egeria lab stateful set you might use:
+  # kubectl expose odpi-egeria-lab-dev --name egeria-dev
+  type: ClusterIP
+  #type: NodePort
+  nodeport:
+    egeria: 31080
+    presentation: 31091
+    egeria-debug: 31005
+
+# --- Docker image sources ---
+
+# Defaults for the images (can be overridden here or individually, see comment below)
+# Note for egeria provided images we use the version specified above
+imageDefaults:
+  registry: docker.io
+  namespace: odpi
+  tag: latest
+  pullPolicy: Always
+
+# The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
+# but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
+# these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
+# 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
+# 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
+#
+#  To build from egeria source - (example)
+#  mvn clean install -Ddocker -Ddocker.registry=localhost:5000 -Ddocker.repo=odpi
+image:
+  egeria:
+    name: egeria
+  presentation:
+    name: egeria-presentation-server
+    tag: latest
+  configure:
+    name: egeria-configure
+
+# --- Kafka Configuration ---
+
+# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
+# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
+kafka:
+    #volumePermissions:
+    #enabled: true
+    securityContext:
+        enabled: false
+    zookeeper:
+        persistence: 
+            enabled: true
+    persistence: 
+        enabled: true
+    logpersistence: 
+        enabled: true
+    #can be enabled if external kafka access is required
+    #service:
+        #nodeport: 30092
