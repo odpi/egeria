@@ -86,7 +86,7 @@ directory, or navigate to it in the web ui. (this is automatic when using the ot
 
 ## Help
 
-For additional help refer to our slack channels at `http://odpi.slack.com`
+For additional help refer to our slack channels at http://slack.lfai.foundation
 
 
 ----

@@ -254,7 +254,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             if (tokens.length > 1)
             {
                 int startingToken = 0;
-                if (this.getFileSystemName(pathName) != null)
+
+                if ("".equals(tokens[startingToken]))
+                {
+                    startingToken = 1;
+                }
+                else if (this.getFileSystemName(pathName) != null)
                 {
                     startingToken = 2;
                 }
@@ -632,6 +637,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
+        final String localMethodName = "->createFolderStructureInCatalog";
+
         List<String>  folderGUIDs = new ArrayList<>();
 
         if ((folderNames != null) && (! folderNames.isEmpty()))
@@ -677,7 +684,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               nextConnectToGUID,
                                                               pathName,
                                                               folderName,
-                                                              methodName);
+                                                              methodName + localMethodName);
 
                     folderGUIDs.add(folderGUID);
                     nextConnectToGUID = folderGUID;
@@ -1619,7 +1626,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (fileType != null)
         {
-            this.getFileType(fullPath);
+            fileType = this.getFileType(fullPath);
         }
 
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,

@@ -35,16 +35,16 @@ There are two regular online meetings using Zoom each week, both on a Tuesday. A
 
 ### Connecting to Slack
 
-Egeria uses the [ODPi's Slack community](http://slack.odpi.org/) to provide an ongoing dialogue between members.
+Egeria uses the [LF AI & Data Slack community](http://slack.lfai.foundation) to provide an ongoing dialogue between members.
 This creates a recorded discussion of design decisions and discussions that complement the project meetings.
 
-Follow the link above and register with the ODPi slack service using your email address.
+Follow the link above and register with the LF AI & Data slack service using your email address.
 Once signed in you can see all of the active slack channels.
-The main slack channel for the Egeria project is called `#egeria-project`:
+The main slack channel for the Egeria project is called `#egeria-discussion`
 
-[https://odpi.slack.com/messages/CAZDMLTFF](https://odpi.slack.com/messages/CAZDMLTFF]).
+Additional channels are added from time to time as new workgroups and discussion topics are established. For Egeria these
+channel names will begin with '#egeria'. You can also view slack channels from other LF AI & Data projects.
 
-Additional channels are added from time to time as new workgroups and discussion topics are established.
 
 More information about slack is available in the [developer-resources/tools](developer-resources/tools/Slack.md) pages.
 

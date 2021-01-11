@@ -80,7 +80,7 @@ There are 2 types of capabilities exposed in the Presentation Server.
  * The Kubernetes tutorial 'odpi-egeria-lab' has also been updated similarly, with the Presentation Server UI being acessible via port 30091 - ie access via https:<<address-of-k8s-node>/coco.login
  * For the lab environment it is recommended to use user 'garygeeke' and password 'admin' since this environment has security setup, and other users including faithbroker will not have access to all capabilities. 
  * This is still work in progress. For example if the session times out you will need to go to the UI URL again manually.
- * Contact us via Slack on odpi.slack.com to get additional guidance.
+ * Contact us via Slack on http://slack.lfai.foundation to get additional guidance.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
