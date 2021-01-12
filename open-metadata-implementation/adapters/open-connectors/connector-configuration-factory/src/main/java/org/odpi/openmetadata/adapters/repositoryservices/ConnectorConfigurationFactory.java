@@ -50,9 +50,6 @@ public class ConnectorConfigurationFactory
     private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
     private static final String OMRSREST_REPOSITORY_CONNECTOR_PROVIDER                     = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
     private static final String OMRS_TOPIC_PROVIDER                                        = "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider";
-    private static final String RANGER_SECURITY_SERVICE_CONNECTOR_PROVIDER                 = "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider";
-
-    private static final String GAIAN_DB_CONNECTOR = "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby";
 
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
