@@ -157,7 +157,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
             AuditLog auditLog = null;
@@ -247,7 +247,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -336,7 +336,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -425,7 +425,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -514,7 +514,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -601,7 +601,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -690,7 +690,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -781,7 +781,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -870,7 +870,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
 
@@ -966,7 +966,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
             AuditLog auditLog = null;
@@ -1053,7 +1053,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1145,7 +1145,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
             AuditLog auditLog = null;
@@ -1232,7 +1232,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1321,7 +1321,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1435,7 +1435,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1526,7 +1526,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1594,100 +1594,656 @@ public class DinoViewRESTServices {
         return response;
     }
 
+    /**
+     * Retrieve list of engine services for a specified server
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoServiceListResponse serverGetEngineServices(String serverName, String userId, DinoServiceRequestBody requestBody) {
+
+        final String methodName = "serverGetEngineServices";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DinoServiceListResponse response = new DinoServiceListResponse();
+
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                if (handler == null)
+                {
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
+
+                }
+
+                response.setServiceList(handler.serverGetEngineServices(userId,
+                                                                        requestBody.getServerName(),
+                                                                        requestBody.getPlatformName(),
+                                                                        methodName));
+
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
 
 
     /**
-         * Retrieve service details for a specified service
-         *
-         * @param serverName    name of the local view server.
-         * @param userId        userId under which the request is performed
-         * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
-         * @return response     the configuration for the server.
-         *
-         */
-        public DinoServiceDetailsResponse serverGetServiceDetails(String serverName, String userId, DinoServiceRequestBody requestBody) {
+     * Retrieve list of access services for a specified server
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoServiceListResponse serverGetAccessServices(String serverName, String userId, DinoServiceRequestBody requestBody) {
 
-            final String methodName = "serverGetServiceDetails";
+        final String methodName = "serverGetAccessServices";
 
-            RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-            DinoServiceDetailsResponse response = new DinoServiceDetailsResponse();
+        DinoServiceListResponse response = new DinoServiceListResponse();
 
-            if (requestBody != null)
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
             {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                // The serverName parameter to the RequestSummary is the target server not the server running the VS
-                RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), methodName);
-                response.setRequestSummary(request);
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
 
-
-                AuditLog auditLog = null;
-                DinoViewHandler handler;
-
-                try
+                if (handler == null)
                 {
-                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-                    handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
-
-                    if (handler == null)
-                    {
-                        throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
-                                                           this.getClass().getName(),
-                                                           methodName);
-
-                    }
-
-                    response.setServiceDetails(handler.serverGetServiceDetails(userId,
-                                                                   requestBody.getServerName(),
-                                                                   requestBody.getPlatformName(),
-                                                                   requestBody.getServiceName(),
-                                                                   methodName));
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
 
                 }
-                catch (PropertyServerException error)
-                {
-                    restExceptionHandler.capturePropertyServerException(response, error);
-                }
-                catch (InvalidParameterException error)
-                {
-                    restExceptionHandler.captureInvalidParameterException(response, error);
-                }
-                catch (UserNotAuthorizedException error)
-                {
-                    restExceptionHandler.captureUserNotAuthorizedException(response, error);
-                }
-                catch (DinoViewServiceException error)
-                {
-                    DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
-                }
-                catch (Throwable error)
-                {
-                    restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-                }
+
+                response.setServiceList(handler.serverGetAccessServices(userId,
+                                                                        requestBody.getServerName(),
+                                                                        requestBody.getPlatformName(),
+                                                                        methodName));
 
             }
-            else
+            catch (PropertyServerException error)
             {
-                /*
-                 * Raise (and immediately capture) a RexViewServicesException
-                 */
-                DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
-                                                                              this.getClass().getName(),
-                                                                              methodName);
-
-                DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
             }
 
-            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
 
-            restCallLogger.logRESTCallReturn(token, response.toString());
-
-            return response;
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
+        return response;
     }
+
+
+
+    /**
+     * Retrieve list of view services for a specified server
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoServiceListResponse serverGetViewServices(String serverName, String userId, DinoServiceRequestBody requestBody) {
+
+        final String methodName = "serverGetViewServices";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DinoServiceListResponse response = new DinoServiceListResponse();
+
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                if (handler == null)
+                {
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
+
+                }
+
+                response.setServiceList(handler.serverGetViewServices(userId,
+                                                                      requestBody.getServerName(),
+                                                                      requestBody.getPlatformName(),
+                                                                      methodName));
+
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+
+
+    /**
+     * Retrieve service details for a specified integration service
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoServiceDetailsResponse serverGetIntegrationServiceDetails(String serverName, String userId, DinoServiceRequestBody requestBody) {
+
+        final String methodName = "serverGetIntegrationServiceDetails";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DinoServiceDetailsResponse response = new DinoServiceDetailsResponse();
+
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
+                                                        requestBody.getServerName(),
+                                                        requestBody.getServerInstanceName(),
+                                                        methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                if (handler == null)
+                {
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
+
+                }
+
+                response.setServiceDetails(handler.serverGetIntegrationServiceDetails(userId,
+                                                                                      requestBody.getServerName(),
+                                                                                      requestBody.getPlatformName(),
+                                                                                      requestBody.getServiceURLMarker(),
+                                                                                      methodName));
+
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /**
+     * Retrieve service details for a specified engine service
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoServiceDetailsResponse serverGetEngineServiceDetails(String serverName, String userId, DinoServiceRequestBody requestBody) {
+
+        final String methodName = "serverGetEngineServiceDetails";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DinoServiceDetailsResponse response = new DinoServiceDetailsResponse();
+
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
+                                                        requestBody.getServerName(),
+                                                        requestBody.getServerInstanceName(),
+                                                        methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                if (handler == null)
+                {
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
+
+                }
+
+                response.setServiceDetails(handler.serverGetEngineServiceDetails(userId,
+                                                                                 requestBody.getServerName(),
+                                                                                 requestBody.getPlatformName(),
+                                                                                 requestBody.getServiceURLMarker(),
+                                                                                 methodName));
+
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /**
+     * Retrieve service details for a specified access service
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoServiceDetailsResponse serverGetAccessServiceDetails(String serverName, String userId, DinoServiceRequestBody requestBody) {
+
+        final String methodName = "serverGetAccessServiceDetails";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DinoServiceDetailsResponse response = new DinoServiceDetailsResponse();
+
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
+                                                        requestBody.getServerName(),
+                                                        requestBody.getServerInstanceName(),
+                                                        methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                if (handler == null)
+                {
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
+
+                }
+
+                response.setServiceDetails(handler.serverGetAccessServiceDetails(userId,
+                                                                                 requestBody.getServerName(),
+                                                                                 requestBody.getPlatformName(),
+                                                                                 requestBody.getServiceFullName(),
+                                                                                 requestBody.getServiceURLMarker(),
+                                                                                 methodName));
+
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve service details for a specified view service
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoServiceDetailsResponse serverGetViewServiceDetails(String serverName, String userId, DinoServiceRequestBody requestBody) {
+
+        final String methodName = "serverGetViewServiceDetails";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DinoServiceDetailsResponse response = new DinoServiceDetailsResponse();
+
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
+                                                        requestBody.getServerName(),
+                                                        requestBody.getServerInstanceName(),
+                                                        methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                if (handler == null)
+                {
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
+
+                }
+
+                response.setServiceDetails(handler.serverGetViewServiceDetails(userId,
+                                                                                 requestBody.getServerName(),
+                                                                                 requestBody.getPlatformName(),
+                                                                                 requestBody.getServiceURLMarker(),
+                                                                                 methodName));
+
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+}

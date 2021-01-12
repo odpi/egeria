@@ -95,11 +95,11 @@ public class OpenMetadataAPIMapper
 
     public static final String MEMENTO_CLASSIFICATION_TYPE_GUID                  = "ecdcd472-6701-4303-8dec-267bcb54feb9";
     public static final String MEMENTO_CLASSIFICATION_TYPE_NAME                  = "Memento";
-    public static final String ARCHIVE_DATE_PROPERTY_NAME                        = "archivedDate";
-    public static final String ARCHIVE_USER_PROPERTY_NAME                        = "archivedUser";
-    public static final String ARCHIVE_PROCESS_PROPERTY_NAME                     = "archivedProcess";
-    public static final String ARCHIVE_SERVICE_PROPERTY_NAME                     = "archivedService";
-    public static final String ARCHIVE_METHOD_PROPERTY_NAME                      = "archivedMethod";
+    public static final String ARCHIVE_DATE_PROPERTY_NAME                        = "archiveDate";
+    public static final String ARCHIVE_USER_PROPERTY_NAME                        = "archiveUser";
+    public static final String ARCHIVE_PROCESS_PROPERTY_NAME                     = "archiveProcess";
+    public static final String ARCHIVE_SERVICE_PROPERTY_NAME                     = "archiveService";
+    public static final String ARCHIVE_METHOD_PROPERTY_NAME                      = "archiveMethod";
     public static final String ARCHIVE_PROPERTIES_PROPERTY_NAME                  = "archiveProperties";
 
 

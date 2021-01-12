@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.engineservices.assetanalysis.client.rest.AssetAnalysisRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -40,7 +41,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * Create a client-side object for calling a discovery engine.
      *
      * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
-     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverName the name of the engine host server where the discovery engine is running
      * @param discoveryEngineName the unique name of the discovery engine.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
@@ -60,7 +61,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * Create a client-side object for calling a discovery engine.
      *
      * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
-     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverName the name of the engine host server where the discovery engine is running
      * @param discoveryEngineName the unique name of the discovery engine.
      * @param userId user id for the HTTP request
      * @param password password for the HTTP request

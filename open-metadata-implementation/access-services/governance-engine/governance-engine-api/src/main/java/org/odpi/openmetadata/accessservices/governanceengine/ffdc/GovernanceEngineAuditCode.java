@@ -120,18 +120,39 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                                      "It should be possible to trace the source of the update to correct it."),
 
     REFRESH_GOVERNANCE_SERVICE("OMAS-GOVERNANCE-ENGINE-0013",
-                              OMRSAuditLogRecordSeverity.INFO,
-                              "The Governance Engine Open Metadata Access Service (OMAS) sent notification that governance engine {0} ({1}) had a " +
-                                      "configuration change for governance request type {2} mapped to registered governance service {3}",
-                              "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
-                                      "configuration about the governance service.",
-                              "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
-                                      " the affected governance engines are updated with the latest governance services information.  If the change " +
-                                      "is unexpected, use the " +
-                                      "Governance Engine OMAS configuration interface to query the status of the registered governance services for " +
-                                      "the affected governance engine.  It should be possible to trace the source of the update to correct it."),
+                               OMRSAuditLogRecordSeverity.INFO,
+                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification that governance engine {0} ({1}) had a " +
+                                       "configuration change for governance request type {2} mapped to registered governance service {3}",
+                               "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
+                                       "configuration about the governance service.",
+                               "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
+                                       " the affected governance engines are updated with the latest governance services information.  If the change " +
+                                       "is unexpected, use the " +
+                                       "Governance Engine OMAS configuration interface to query the status of the registered governance services for " +
+                                       "the affected governance engine.  It should be possible to trace the source of the update to correct it."),
 
-    OUT_TOPIC_FAILURE("OMAS-GOVERNANCE-ENGINE-0014",
+    NEW_GOVERNANCE_ACTION("OMAS-GOVERNANCE-ENGINE-0014",
+                               OMRSAuditLogRecordSeverity.INFO,
+                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification that a new governance engine {0} ({1}) had a " +
+                                       "configuration change for governance request type {2} mapped to registered governance service {3}",
+                               "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
+                                       "configuration about the governance service.",
+                               "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
+                                       " the affected governance engines are updated with the latest governance services information.  If the change " +
+                                       "is unexpected, use the " +
+                                       "Governance Engine OMAS configuration interface to query the status of the registered governance services for " +
+                                       "the affected governance engine.  It should be possible to trace the source of the update to correct it."),
+
+    WATCHDOG_EVENT("OMAS-GOVERNANCE-ENGINE-0015",
+                          OMRSAuditLogRecordSeverity.INFO,
+                          "The Governance Engine Open Metadata Access Service (OMAS) sent a metadata change event to listening Open Watchdog Governance Action Services: ",
+                          "The access service sends out metadata change events when metadata instances change (with the exception of metadata " +
+                                  "associated with processing governance services).  These events are passed to listening Open Watchdog Governance Action Services " +
+                                  "as long as the event matches the criteria that where specified when the listener was registered.",
+                          "This is part of the normal operation of the service.  Verify that these events are being received by the " +
+                                  "watchdog governance action services."),
+
+    OUT_TOPIC_FAILURE("OMAS-GOVERNANCE-ENGINE-0018",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "The Governance Engine Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
                               "error message: {2}",
@@ -139,7 +160,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                       "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
                               "bus.  Once this is resolved, restart the server."),
 
-    OUT_TOPIC_EVENT("OMAS-GOVERNANCE-ENGINE-0015",
+    OUT_TOPIC_EVENT("OMAS-GOVERNANCE-ENGINE-0019",
                     OMRSAuditLogRecordSeverity.EVENT,
                     "The Governance Engine Open Metadata Access Service (OMAS) has sent event: {0}",
                     "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
@@ -148,7 +169,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                             "Check that each connected governance server receives this event and updates its configuration if " +
                             "the change affects their operation."),
 
-    ASSET_AUDIT_LOG("OMAS-GOVERNANCE-ENGINE-0016",
+    ASSET_AUDIT_LOG("OMAS-GOVERNANCE-ENGINE-0020",
                     OMRSAuditLogRecordSeverity.INFO,
                     "Log message for asset {0} from governance service {1}: {2}",
                     "A governance service has logged a message about an asset.",
