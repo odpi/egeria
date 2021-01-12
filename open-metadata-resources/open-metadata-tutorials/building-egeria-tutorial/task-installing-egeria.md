@@ -64,7 +64,8 @@ open metadata and governance services.
 Change to the OMAG server platform's directory.
 
 ```bash
-$ cd server/omag-server*
+$ cd server
+$ ls
 $ resources				server-chassis-spring-2.6-SNAPSHOT.jar
 ```
 

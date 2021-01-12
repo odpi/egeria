@@ -1,20 +1,18 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-# Note
+# Egeria helm charts for Kubernetes
 
-This directory contains 'index.yaml' and charts in .tgz format as created by:
-* helm package lab
-* helm repo index --url https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts .
+This directory contains the 'lab' helm chart which creates a tutorial environment intended to show how
+Egeria can be used to support the metadata needs of a small, hypothetical, pharmaceutical company known
+as Coco Pharmecuticals
 
-This should ideally be done automatically as part of the build process, however this is not yet the case
+Please refer to [odpi-egeria-lab/README.md] for more detailed information
 
-Any consumers of these charts can do
+Other helm charts can be found in the new egeria-samples respository at https://github.com/odpi/egeria-samples/helm-charts
 
-```
-helm repo add https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts
-helm install lab
-```
+See also the https://github.com/odpi/egeria-k8s-operator repository for an alternative approach to kubernetes deployment
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

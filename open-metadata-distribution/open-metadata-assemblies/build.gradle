@@ -78,7 +78,6 @@ dependencies {
     implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
-    implementation project(':open-metadata-implementation:user-interfaces:presentation-server')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
@@ -192,7 +191,6 @@ distributions {
             }
         }
     }
-    // presentation-server distribution is single component, so has moved to open-metadata-implementation/user-interfaces/presentation-server
 }
 // Override the distribution filenames to match what we use with maven (replaces baseName above)
 egeriaomagDistTar.compression = Compression.GZIP
