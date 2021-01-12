@@ -36,8 +36,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
@@ -58,11 +56,15 @@
     <profiles>
         <profile>
             <id>full-platform</id>
+
             <activation>
                 <property>
                     <name>!adminChassisOnly</name>
                 </property>
             </activation>
+
+            <dependencies>
+
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>audit-log-file-connector</artifactId>
@@ -142,6 +144,7 @@
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>virtualization-services-api</artifactId>
                 </dependency>
+
             </dependencies>
         </profile>
     </profiles>
