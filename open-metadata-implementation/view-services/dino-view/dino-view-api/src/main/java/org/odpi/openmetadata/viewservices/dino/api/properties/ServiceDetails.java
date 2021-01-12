@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 
@@ -20,9 +21,9 @@ public class ServiceDetails {
 
     public enum ServiceCat {
         IntegrationService,
+        EngineService,
         AccessService,
         ViewService
-        // TODO - other service categories to be added...
     }
 
     private static final long    serialVersionUID = 1L;
@@ -30,6 +31,7 @@ public class ServiceDetails {
 
     private ServiceCat               serviceCat;
     private IntegrationServiceConfig integrationServiceConfig;
+    private EngineServiceConfig      engineServiceConfig;
     private AccessServiceConfig      accessServiceConfig;
     private ViewServiceConfig        viewServiceConfig;
 
@@ -51,6 +53,7 @@ public class ServiceDetails {
     public ServiceDetails(ServiceDetails template) {
 
         this.integrationServiceConfig = template.getIntegrationServiceConfig();
+        this.engineServiceConfig      = template.getEngineServiceConfig();
         this.accessServiceConfig      = template.getAccessServiceConfig();
         this.viewServiceConfig        = template.getViewServiceConfig();
     }
@@ -65,6 +68,12 @@ public class ServiceDetails {
 
     public void setIntegrationServiceConfig(IntegrationServiceConfig integrationServiceConfig) {
         this.integrationServiceConfig = integrationServiceConfig;
+    }
+
+    public EngineServiceConfig getEngineServiceConfig() {  return engineServiceConfig;  }
+
+    public void setEngineServiceConfig(EngineServiceConfig engineServiceConfig) {
+        this.engineServiceConfig = engineServiceConfig;
     }
 
     public AccessServiceConfig getAccessServiceConfig() {  return accessServiceConfig;  }

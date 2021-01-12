@@ -389,6 +389,25 @@ public class DinoViewRESTResource {
     }
 
     /**
+     * Get a list of the engine services on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the list of integration services or exception information
+     */
+
+    @PostMapping("/server/{serverName}/engine-services")
+    public DinoServiceListResponse getServerEngineServices(@PathVariable String                      viewServerName,
+                                                           @PathVariable String                      userId,
+                                                           @PathVariable String                      serverName,
+                                                           @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetEngineServices(viewServerName, userId, requestBody);
+
+    }
+    /**
      * Get a list of the access services on the server
      *
      *
@@ -450,6 +469,26 @@ public class DinoViewRESTResource {
     }
 
     /**
+     * Get the details of an engine service running on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the service's details or exception information
+     */
+
+    @PostMapping("/server/{serverName}/engine-service-details")
+    public DinoServiceDetailsResponse getServerEngineServiceDetails(@PathVariable String                      viewServerName,
+                                                                    @PathVariable String                      userId,
+                                                                    @PathVariable String                      serverName,
+                                                                    @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetEngineServiceDetails(viewServerName, userId, requestBody);
+
+    }
+
+    /**
      * Get the details of an access service running on the server
      *
      *
@@ -470,7 +509,7 @@ public class DinoViewRESTResource {
     }
 
     /**
-     * Get the details of an view service running on the server
+     * Get the details of a view service running on the server
      *
      *
      * @param viewServerName   name of the server running the view-service.
