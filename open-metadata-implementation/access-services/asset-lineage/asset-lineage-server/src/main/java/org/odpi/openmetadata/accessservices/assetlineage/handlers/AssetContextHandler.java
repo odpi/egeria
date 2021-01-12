@@ -130,39 +130,25 @@ public class AssetContextHandler {
         switch (typeDefName) {
 
             case TABULAR_COLUMN:
-                List<Relationship> attributeForSchemaRelationship = handlerHelper.addContextForRelationships(userId, entityDetail,
-                        ATTRIBUTE_FOR_SCHEMA, columnContext);
-                if (CollectionUtils.isEmpty(attributeForSchemaRelationship)) {
-                    //no AttributeForSchema found, context for column will be empty
-                    return Collections.emptyMap();
-                }
-                EntityDetail schemaType = handlerHelper.getEntityAtTheEnd(userId, entityDetail.getGUID(), attributeForSchemaRelationship.get(0));
+                EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
 
-                List<Relationship> assetSchemaType = handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
+                EntityDetail dataFile = addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
 
                 context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), columnContext);
 
-                if (CollectionUtils.isNotEmpty(assetSchemaType)) {
-                    //build the context for DataFile only if AssetSchemaType relationship is found
-                    EntityDetail dataFile = handlerHelper.getEntityAtTheEnd(userId, schemaType.getGUID(), assetSchemaType.get(0));
+                if (dataFile != null) {
                     context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, dataFile));
                 }
                 break;
 
             case RELATIONAL_COLUMN:
-                List<Relationship> nestedSchema = handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE,
-                        columnContext);
-
-                if (CollectionUtils.isEmpty(nestedSchema)) {
-                    //no NestedSchemaAttribute found, context for column will be empty
-                    return Collections.emptyMap();
-                }
-
-                EntityDetail relationalTable = handlerHelper.getEntityAtTheEnd(userId, entityDetail.getGUID(), nestedSchema.get(0));
+                EntityDetail relationalTable = addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
 
                 context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), columnContext);
-                context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
 
+                if (relationalTable != null) {
+                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
+                }
                 break;
         }
 
@@ -172,53 +158,29 @@ public class AssetContextHandler {
     private Set<GraphContext> buildRelationalTableContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> context = new HashSet<>();
 
-        List<Relationship> attributeForSchemaRelationship = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA,
-                context);
-        if (CollectionUtils.isEmpty(attributeForSchemaRelationship)) {
-            //no AttributeForSchema found, context for table will be empty
-            return context;
-        }
+        EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, context);
 
-        EntityDetail schemaType = handlerHelper.getEntityAtTheEnd(userId, entityDetail.getGUID(), attributeForSchemaRelationship.get(0));
-        List<Relationship> assetSchemaTypeRelationship = handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE,
-                context);
-        if (CollectionUtils.isEmpty(assetSchemaTypeRelationship)) {
-            return context;
-        }
+        EntityDetail deployedSchemaType = addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, context);
 
-        EntityDetail deployedSchemaType = handlerHelper.getEntityAtTheEnd(userId, schemaType.getGUID(), assetSchemaTypeRelationship.get(0));
-        List<Relationship> dataContentForDataSetRelationship = handlerHelper.addContextForRelationships(userId, deployedSchemaType,
-                DATA_CONTENT_FOR_DATA_SET, context);
-        if (CollectionUtils.isEmpty(dataContentForDataSetRelationship)) {
-            return context;
-        }
+        EntityDetail database = addContextForRelationships(userId, deployedSchemaType, DATA_CONTENT_FOR_DATA_SET, context);
 
-        EntityDetail database = handlerHelper.getEntityAtTheEnd(userId, deployedSchemaType.getGUID(), dataContentForDataSetRelationship.get(0));
-        addConnectionToAssetContext(userId, database, context);
+        if (database != null) {
+            addConnectionToAssetContext(userId, entityDetail, context);
+        }
 
         return context;
     }
 
-    private void addConnectionToAssetContext(String userId, EntityDetail asset, Set<GraphContext> context) throws OCFCheckedExceptionBase {
-        List<Relationship> contentToAssetRelationship = handlerHelper.addContextForRelationships(userId, asset, CONNECTION_TO_ASSET, context);
+    private void addConnectionToAssetContext(String userId, EntityDetail entityDetail, Set<GraphContext> context) throws OCFCheckedExceptionBase {
+        EntityDetail connection = addContextForRelationships(userId, entityDetail, CONNECTION_TO_ASSET, context);
 
-        if (CollectionUtils.isEmpty(contentToAssetRelationship)) {
-            return;
-        }
-
-        EntityDetail connection = handlerHelper.getEntityAtTheEnd(userId, asset.getGUID(), contentToAssetRelationship.get(0));
-        handlerHelper.addContextForRelationships(userId, connection, CONNECTION_ENDPOINT, context);
+        addContextForRelationships(userId, connection, CONNECTION_ENDPOINT, context);
     }
 
     private Set<GraphContext> buildDataFileContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> context = new HashSet<>();
 
-        List<Relationship> nestedFileRelationship = handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_FILE, context);
-
-        if (CollectionUtils.isEmpty(nestedFileRelationship)) {
-            return context;
-        }
-        EntityDetail fileFolder = handlerHelper.getEntityAtTheEnd(userId, entityDetail.getGUID(), nestedFileRelationship.get(0));
+        EntityDetail fileFolder = addContextForRelationships(userId, entityDetail, NESTED_FILE, context);
 
         context.addAll(buildContextForFileFolder(userId, fileFolder));
 
@@ -232,11 +194,11 @@ public class AssetContextHandler {
             return context;
         }
 
-        List<Relationship> folderHierarchyRelationship = handlerHelper.addContextForRelationships(userId, entityDetail, FOLDER_HIERARCHY, context);
-        if (CollectionUtils.isNotEmpty(folderHierarchyRelationship)) {
+        EntityDetail fileFolder = addContextForRelationships(userId, entityDetail, FOLDER_HIERARCHY, context);
+
+        if (fileFolder != null) {
             //recursively build the nested folder structure
-            buildContextForFileFolder(userId, handlerHelper.getEntityAtTheEnd(userId, entityDetail.getGUID(),
-                    folderHierarchyRelationship.get(0)));
+            buildContextForFileFolder(userId, fileFolder);
         } else {
             // build the context for the Connection
             addConnectionToAssetContext(userId, entityDetail, context);
@@ -245,6 +207,21 @@ public class AssetContextHandler {
         return context;
     }
 
+    private EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
+                                                    Set<GraphContext> context) throws OCFCheckedExceptionBase {
+        if (startEntity == null) {
+            return null;
+        }
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipTypeName,
+                startEntity.getType().getTypeDefName());
+        if (CollectionUtils.isEmpty(relationships)) {
+            //no relationships found, context will not be updated and no end entity will be returned
+            return null;
+        }
+        context.addAll(handlerHelper.buildContextForRelationships(userId, relationships));
+
+        return handlerHelper.getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
+    }
 
     /**
      * Build the context for the asset

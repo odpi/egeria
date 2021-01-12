@@ -319,23 +319,6 @@ public class HandlerHelper {
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
     }
 
-    public List<Relationship> addContextForRelationships(String userId, EntityDetail entityDetail, String relationshipType,
-                                                        Set<GraphContext> context) throws OCFCheckedExceptionBase {
-
-        if(entityDetail == null) {
-            return null;
-        }
-
-       if(context == null) context = new HashSet<>();
-
-        List<Relationship> relationships = getRelationshipsByType(userId, entityDetail.getGUID(), relationshipType,
-                entityDetail.getType().getTypeDefName());
-
-        addRelationshipsToContext(userId, context, relationships);
-
-        return relationships;
-    }
-
     public Set<GraphContext> buildContextForRelationships(String userId, List<Relationship> semanticAssignments) throws InvalidParameterException,
                                                                                                                         PropertyServerException,
                                                                                                                         UserNotAuthorizedException {
