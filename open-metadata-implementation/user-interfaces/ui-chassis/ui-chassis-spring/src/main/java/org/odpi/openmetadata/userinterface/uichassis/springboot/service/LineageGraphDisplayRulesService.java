@@ -65,18 +65,14 @@ public class LineageGraphDisplayRulesService {
     }
 
     private void applyRuleWithBothNodeTypes(List<Node> nodes, Edge edge, Rule rule) {
-        boolean findSource = false;
-        boolean findDestination = false;
-        for (Node node : nodes) {
+         for (Node node : nodes) {
             if (node.getId().equals(edge.getFrom()) && node.getGroup().equals(rule.getSourceNodeType())) {
-                findSource = true;
-            }
-
-            if (node.getId().equals(edge.getTo()) && node.getGroup().equals(rule.getDestinationNodeType())) {
-                findDestination = true;
-            }
-            if (findSource && findDestination) {
-                invertEdgeDirection(edge);
+                for (Node secondNode : nodes) {
+                    if (secondNode.getId().equals(edge.getTo()) && secondNode.getGroup().equals(rule.getDestinationNodeType())) {
+                        invertEdgeDirection(edge);
+                        break;
+                    }
+                }
             }
         }
     }
