@@ -160,6 +160,7 @@ public class AssetInformalTag extends AssetElementHeader
     }
 
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -173,7 +174,7 @@ public class AssetInformalTag extends AssetElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetInformalTag))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -182,6 +183,18 @@ public class AssetInformalTag extends AssetElementHeader
             return false;
         }
         AssetInformalTag that = (AssetInformalTag) objectToCompare;
-        return Objects.equals(getInformalTagBean(), that.getInformalTagBean());
+        return Objects.equals(informalTagBean, that.informalTagBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), informalTagBean);
     }
 }

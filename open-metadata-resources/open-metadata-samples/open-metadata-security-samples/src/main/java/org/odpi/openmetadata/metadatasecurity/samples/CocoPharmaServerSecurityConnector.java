@@ -489,6 +489,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @return selected connection or null (pretend there are no connections attached to the asset) or
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public Connection validateUserForAssetConnectionList(String           userId,
                                                          Asset            asset,
                                                          List<Connection> connections) throws UserNotAuthorizedException
@@ -844,6 +845,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @throws InvalidParameterException one of the parameter values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Override
     public List<String> setSupportedZonesForUser(List<String>  supportedZones,
                                                  String        serviceName,
                                                  String        user) throws InvalidParameterException,

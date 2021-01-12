@@ -2,35 +2,18 @@
 # Copyright Contributors to the ODPi Egeria project.
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/open-metadata-implementation/user-interfaces/presentation-server/nodejs"
-  schedule:
-    interval: monthly
-  open-pull-requests-limit: 5
-  reviewers:
-  - grahamwallis
-  - davidradl
-- package-ecosystem: docker
-  directory: "/open-metadata-resources/open-metadata-deployment/docker/presentation-server"
-  schedule:
-    interval: monthly
-  open-pull-requests-limit: 5
-  reviewers:
-  - planetf1
-  - grahamwallis
-  - davidradl
 - package-ecosystem: gradle
   directory: "/"
   schedule:
     interval: monthly
-  open-pull-requests-limit: 75
+  open-pull-requests-limit: 100
   reviewers:
   - planetf1
 - package-ecosystem: maven
   directory: "/"
   schedule:
     interval: monthly
-  open-pull-requests-limit: 75
+  open-pull-requests-limit: 100
   reviewers:
   - planetf1
 - package-ecosystem: docker

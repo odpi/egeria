@@ -32,8 +32,6 @@ import java.util.UUID;
  */
 public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProviderBase
 {
-    private        final int hashCode = UUID.randomUUID().hashCode();
-
     private static final Logger log = LoggerFactory.getLogger(EnterpriseOMRSConnectorProvider.class);
 
     private  OMRSConnectorManager         connectorManager;
@@ -148,16 +146,5 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
         log.debug(methodName + " returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
 
         return connector;
-    }
-
-
-    /**
-     * Simple hashCode implementation
-     *
-     * @return hashCode
-     */
-    public int hashCode()
-    {
-        return hashCode;
     }
 }

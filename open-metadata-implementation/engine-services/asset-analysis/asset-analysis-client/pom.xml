@@ -20,7 +20,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Asset Analysis Client</name>
+    <name>Asset Analysis OMES Client</name>
     <description>
         Provides a Java client for the asset analysis engine services (heart of the open metadata discovery services).
     </description>
@@ -47,11 +47,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-analysis-api</artifactId>
         </dependency>
 
         <dependency>

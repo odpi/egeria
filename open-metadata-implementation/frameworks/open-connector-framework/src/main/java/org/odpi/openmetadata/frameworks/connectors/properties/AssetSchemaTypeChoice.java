@@ -213,7 +213,7 @@ public class AssetSchemaTypeChoice extends AssetSchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetSchemaTypeChoice))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -222,6 +222,18 @@ public class AssetSchemaTypeChoice extends AssetSchemaType
             return false;
         }
         AssetSchemaTypeChoice that = (AssetSchemaTypeChoice) objectToCompare;
-        return Objects.equals(getSchemaTypeChoiceBean(), that.getSchemaTypeChoiceBean());
+        return Objects.equals(schemaTypeChoiceBean, that.schemaTypeChoiceBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), schemaTypeChoiceBean);
     }
 }

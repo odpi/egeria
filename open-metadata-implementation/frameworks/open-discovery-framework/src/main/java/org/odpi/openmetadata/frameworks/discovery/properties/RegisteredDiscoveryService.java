@@ -21,8 +21,7 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
 {
     private static final long   serialVersionUID = 1L;
 
-    private List<String>        discoveryRequestTypes     = null;
-    private Map<String, String> defaultAnalysisParameters = null;
+    private Map<String, Map<String, String>> discoveryRequestTypes = null; /* a map from request types to analysis parameters */
 
 
     /**
@@ -46,7 +45,6 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
         if (template != null)
         {
             discoveryRequestTypes = template.getDiscoveryRequestTypes();
-            defaultAnalysisParameters = template.getDefaultAnalysisParameters();
         }
     }
 
@@ -65,9 +63,9 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
     /**
      * Return the list of asset discovery types that this discovery service supports.
      *
-     * @return list of asset discovery type names
+     * @return Map of request types to analysis parameters
      */
-    public List<String> getDiscoveryRequestTypes()
+    public Map<String, Map<String, String>> getDiscoveryRequestTypes()
     {
         if (discoveryRequestTypes == null)
         {
@@ -79,7 +77,7 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
         }
         else
         {
-            return new ArrayList<>(discoveryRequestTypes);
+            return new HashMap<>(discoveryRequestTypes);
         }
     }
 
@@ -87,47 +85,11 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
     /**
      * Set up the list of asset types that this discovery service supports.
      *
-     * @param discoveryRequestTypes list of asset type names
+     * @param discoveryRequestTypes Map of request types to analysis parameters
      */
-    public void setDiscoveryRequestTypes(List<String> discoveryRequestTypes)
+    public void setDiscoveryRequestTypes(Map<String, Map<String, String>> discoveryRequestTypes)
     {
         this.discoveryRequestTypes = discoveryRequestTypes;
-    }
-
-
-
-    /**
-     * Return the list of analysis parameters that are passed the the discovery service (via
-     * the discovery context).  These values can be overridden on the actual discovery request.
-     *
-     * @return map of parameter name to parameter value
-     */
-    public Map<String, String> getDefaultAnalysisParameters()
-    {
-        if (defaultAnalysisParameters == null)
-        {
-            return null;
-        }
-        else if (defaultAnalysisParameters.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(defaultAnalysisParameters);
-        }
-    }
-
-
-    /**
-     * Set up the  list of analysis parameters that are passed the the discovery service (via
-     * the discovery context).  These values can be overridden on the actual discovery request.
-     *
-     * @param defaultAnalysisParameters map of parameter name to parameter value
-     */
-    public void setDefaultAnalysisParameters(Map<String, String> defaultAnalysisParameters)
-    {
-        this.defaultAnalysisParameters = defaultAnalysisParameters;
     }
 
 
@@ -141,7 +103,6 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
     {
         return "RegisteredDiscoveryService{" +
                 "discoveryRequestTypes=" + discoveryRequestTypes +
-                ", defaultAnalysisParameters=" + defaultAnalysisParameters +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
@@ -183,8 +144,7 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
             return false;
         }
         RegisteredDiscoveryService that = (RegisteredDiscoveryService) objectToCompare;
-        return Objects.equals(discoveryRequestTypes, that.discoveryRequestTypes) &&
-                Objects.equals(defaultAnalysisParameters, that.defaultAnalysisParameters);
+        return Objects.equals(discoveryRequestTypes, that.discoveryRequestTypes);
     }
 
     /**
@@ -195,6 +155,6 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), discoveryRequestTypes, defaultAnalysisParameters);
+        return Objects.hash(super.hashCode(), discoveryRequestTypes);
     }
 }

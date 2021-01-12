@@ -155,7 +155,7 @@ public class VirtualConnection extends Connection
         {
             return true;
         }
-        if (!(objectToCompare instanceof VirtualConnection))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -165,5 +165,17 @@ public class VirtualConnection extends Connection
         }
         VirtualConnection that = (VirtualConnection) objectToCompare;
         return Objects.equals(getEmbeddedConnections(), that.getEmbeddedConnections());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getEmbeddedConnections());
     }
 }

@@ -8,9 +8,6 @@ import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryEngi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.engineservices.assetanalysis.properties.DiscoveryEngineSummary;
-
-import java.util.List;
 
 /**
  * AssetAnalysisInstanceHandler retrieves information from the instance map for the
@@ -28,35 +25,6 @@ class AssetAnalysisInstanceHandler extends OMESServiceInstanceHandler
 
         AssetAnalysisRegistration.registerEngineService();
     }
-
-
-    /**
-     * Retrieve the status of each assigned discovery engines.
-     *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of discovery engine statuses
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    List<DiscoveryEngineSummary> getDiscoveryEngineStatuses(String userId,
-                                                            String serverName,
-                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
-    {
-        AssetAnalysisInstance instance = (AssetAnalysisInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getDiscoveryEngineStatuses();
-        }
-
-        return null;
-    }
-
 
 
     /**

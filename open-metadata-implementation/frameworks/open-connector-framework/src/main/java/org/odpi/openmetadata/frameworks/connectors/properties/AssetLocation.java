@@ -132,7 +132,7 @@ public class AssetLocation extends AssetReferenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetLocation))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -141,6 +141,18 @@ public class AssetLocation extends AssetReferenceable
             return false;
         }
         AssetLocation that = (AssetLocation) objectToCompare;
-        return Objects.equals(getLocationBean(), that.getLocationBean());
+        return Objects.equals(locationBean, that.locationBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), locationBean);
     }
 }

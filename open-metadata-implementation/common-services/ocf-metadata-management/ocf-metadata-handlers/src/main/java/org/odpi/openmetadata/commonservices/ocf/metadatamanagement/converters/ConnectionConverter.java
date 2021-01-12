@@ -62,6 +62,7 @@ public class ConnectionConverter extends ReferenceableConverter
      *
      * @return output bean
      */
+    @Override
     public Connection getBean()
     {
         final String  methodName = "getBean";

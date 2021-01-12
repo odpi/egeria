@@ -10,10 +10,37 @@ Release 2.6 adds support for:
    
  * Extensions to Open Metadata Types for lineage, duplicate processing, governance actions,
    the software development lifecycle and analytics models.
+   
+The release also changes the default location of some important files in order to facilitate deployment
+and seperate program files from writeable data. 
 
 Details of these changes are in the sections that follow.
 
 ## Description of Changes
+
+### Changes to data files created/used by Egeria
+
+Up to and including release 2.5, various data files were created in the current working directory when Egeria was run. This included
+configuration files, cohort information, graph repositories etc.  This made it difficult to manage Egeria in a container environment
+where we want to manage persistent data explicitly - for example via a docker volume, or a kubernetes persistent volume (claim).
+
+Because of this the default locations of a number of files have changed, so when deploying release 2.6 make sure you copy any existing
+files you need to preserve over to their new locations. If this is not done server configs and repository data may not
+be found, or configuration files may not be decrytable.
+
+| usage                | old | new | variables |
+| -------------------- | ------------------------- | ------------------------------------------ | -------------------------------- |
+| Server configuration | omag.server.{0}.config    | data/servers/{0}/config/{0}.config         | 0 = server Name                  |
+| File based audit log | omag.server.{0}.auditlog/ | data/servers/{0}/logs/auditlog/            | 0 = server Name                  |
+| cohort registry      | {0}.{1}.registrystore     | data/servers/{0}/cohorts/{1}.registrystore | 0 = server Name, 1 = cohort name |
+| Graph repository     | {0}-graph-repository/     | data/servers/{0}/repository/graph/         | 0 = server Name                  |
+| Encrypted config key | keystore_*                | data/platform/keys/keystore_*              |                                  |
+
+The result of this is that all the dynamic data created by egeria locally in the filesystem is restricted to the 'data' directory
+so this can be mapped to a volume easily.
+
+If you have already explicitly configured the relevant connector yourself there will be no change. this updates the defaults only.
+
 
 ### Removal of the Discovery Server and Stewardship Server
  
@@ -23,7 +50,7 @@ The Engine Host runs one-to-many [Open Metadata Engine Services (OMES)](../open-
 Each engine services hosts a specific type of governance engine. The first engine service called
 [Asset Analysis OMES](../open-metadata-implementation/engine-services/asset-analysis) will be for
 [discovery engines](../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
-and others for the different types of [governance action engines](../open-metadata-implementation/frameworks/governance-action-framework/docs/goverance-action-engine.md).
+and others for the different types of [governance action engines](../open-metadata-implementation/frameworks/governance-action-framework/docs/governance-action-engine.md).
 from the 
 [Governance Action Framework (GAF)](../open-metadata-implementation/frameworks/governance-action-framework).
 
@@ -58,27 +85,6 @@ types allow these elements to be linked together.
 ### New Metadata Types for the Software Development Lifecycle and Analytics Models
 
 *Details to follow...*
-
-### Changes to data files created/used by Egeria
-
-Up to and including release 2.5, various data files were created in the current working directory when Egeria was run. This included
-configuration files, cohort information, graph repositories etc.  This made it difficult to manage Egeria in a container environment 
-where we want to manage persistent data explicitly - for example via a docker volume, or a kubernetes persistent volume (claim).
-
-Because of this the default locations of a number of files have changed, so when deploying release 2.6 make sure you copy any existing
-files you need to preserve over to their new locations:
-
-| usage                | old | new | variables |
-| -------------------- | ------------------------- | ------------------------------------------ | -------------------------------- |
-| Server configuration | omag.server.{0}.config    | data/servers/{0}/config/{0}.config         | 0 = server Name                  |
-| File based audit log | omag.server.{0}.auditlog/ | data/servers/{0}/logs/auditlog/            | 0 = server Name                  |
-| cohort registry      | {0}.{1}.registrystore     | data/servers/{0}/cohorts/{1}.registrystore | 0 = server Name, 1 = cohort name |
-| Graph repository     | {0}-graph-repository/     | data/servers/{0}/repository/graph/         | 0 = server Name                  |
-
-The result of this is that all the dynamic data created by egeria locally in the filesystem is restricted to the 'data' directory
-so this can be mapped to a volume easily.
-
-If you have already explicitly configured the relevant connector yourself there will be no change. this updates the defaults only.
 
 ## Egeria Implementation Status at Release 2.6
 

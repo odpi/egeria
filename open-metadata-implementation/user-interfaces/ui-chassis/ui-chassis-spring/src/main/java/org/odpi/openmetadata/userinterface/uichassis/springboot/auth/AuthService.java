@@ -17,8 +17,6 @@ import java.util.Date;
 
 public interface AuthService {
 
-    //30 minutes in millis
-    long VALIDITY_TIME_MS = 30 * 60 * 1000;
     String AUTH_HEADER_NAME = "x-auth-token";
 
     Authentication getAuthentication(HttpServletRequest request);
@@ -61,11 +59,23 @@ public interface AuthService {
         return new TokenUser(fromJSON(userJSON));
     }
 
+    /**
+     *
+     * @param user
+     * @param secret
+     * @return jwt token
+     */
     default String createTokenForUser(User user, String secret) {
         return Jwts.builder()
-                .setExpiration(new Date(System.currentTimeMillis() + VALIDITY_TIME_MS))
+                .setExpiration(new Date(System.currentTimeMillis() + getTokenTimeout()))
                 .setSubject(toJSON(user))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
+
+    /**
+     *
+     * @return milliseconds until expiration
+     */
+     long getTokenTimeout();
 }

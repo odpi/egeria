@@ -4,7 +4,6 @@ package org.odpi.openmetadata.viewservices.serverauthor.server.spring;/* SPDX-Li
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.services.ServerAuthorViewRESTServices;

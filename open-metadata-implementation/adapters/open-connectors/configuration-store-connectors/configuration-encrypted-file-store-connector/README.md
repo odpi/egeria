@@ -25,7 +25,8 @@ order of precedence (the higher in the list, the higher the precedence):
     injected into the environment, for example at runtime of a Kubernetes
     pod, and is never actually persisted inside the system itself.
 1. If a single directory with a name starting with `keystore_` exists
-    in the current working directory of the OMAG Server Platform,
+    in the `data/platform/keys` directory,relative to the current 
+    working directory, of the OMAG Server Platform,
     and has within it a single file with a `.key` extension, the contents
     of this file are used as the keyset for encryption. This allows an
     operator to define and manage their own keyset, for example using Google's
@@ -34,7 +35,8 @@ order of precedence (the higher in the list, the higher the precedence):
 1. If not, a new encryption key is generated and stored in a randomly-
     generated filename with a pre-defined extension (`.key`) under a
     randomly-generated directory name with a pre-defined prefix
-    (`keystore_`). These are generated in the working directory from
+    (`keystore_`). These are generated in the `data/platform/keys` working 
+    directory relative to
     which the OMAG Server Platform is run, and are made accessible only
     to the OS-level account under which the OMAG Server Platform runs.
     The randomly-generated directory and file names ensure that the file
@@ -51,8 +53,8 @@ To read an encrypted configuration file, again in precedence order:
 1. The connector checks if an environment variable named `EGERIA_CONFIG_KEYS`
     is set. If it is, this is used as the keyset for decryption.
 1. If not, the connector searches for exactly one `...key` file (under exactly
-    one `keystore_...` directory). If found, the contents of this file are used
-    as the keyset for decryption.
+    one `keystore_...` directory) under `data/platform/keys`. 
+    If found, the contents of this file are used as the keyset for decryption.
 
 Note that if neither of these is found, any pre-existing configuration cannot be
 decrypted. **To ensure the encryption is secure, there is no mechanism to recover

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -302,12 +303,11 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED(400, "OMAG-ADMIN-400-043",
                         "A retrieve all configurations has been attempted, but operation is not supported by the configuration store connector.",
                         "The retrieve all server configurations operation is rejected.",
-                        "Check whether OMAG Server configuration store connector supports retrieve all configurations."),
+                        "Check whether OMAG Server configuration connector supports retrieve all configurations."),
 
     UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE(400, "OMAG-ADMIN-400-044",
-                                         "User {0} has attempted to obtain a server config store to be able to retrieve an OMAG server's " +
-                                                 "configuration document but an error occurred.",
-                                         "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be opened.",
+                                         "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred.",
+                                         "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
                                          "Check that the OMAG Server configuration connector has been specified correctly."),
 
     NULL_SERVICE_URL_MARKER(400, "OMAG-ADMIN-400-045",
@@ -351,6 +351,11 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                     "The system is unable to initialize this server since it no longer supports the requested subsystem.",
                                     "Use information in the admin guide to update the configuration to request the replacement service " +
                                             "and restart the server."),
+
+    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW(400, "OMAG-ADMIN-400-051",
+                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
+                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
+                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
 
     NO_CONFIG_DOC(400,"OMAG-ADMIN-400-101",
                   "An engine service for OMAG server {0} has been passed null configuration",
@@ -450,6 +455,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -462,10 +468,25 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "OMAGAdminErrorCode{" +
+                       "messageDefinition=" + messageDefinition +
+                       '}';
     }
 }

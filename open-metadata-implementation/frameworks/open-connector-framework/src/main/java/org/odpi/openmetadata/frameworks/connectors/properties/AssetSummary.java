@@ -294,39 +294,4 @@ public class AssetSummary extends AssetDescriptor
     {
         return assetBean.toString();
     }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof AssetSummary))
-        {
-            return false;
-        }
-
-        AssetSummary that = (AssetSummary) objectToCompare;
-        return assetBean.equals(that.getAssetBean());
-    }
-
-
-    /**
-     * Create a hash code for this element type.
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return assetBean.hashCode();
-    }
 }

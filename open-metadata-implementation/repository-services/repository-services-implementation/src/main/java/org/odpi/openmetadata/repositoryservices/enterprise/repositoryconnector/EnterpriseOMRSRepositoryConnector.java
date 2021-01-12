@@ -69,6 +69,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @param metadataCollectionId String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
         super.metadataCollectionId = metadataCollectionId;
@@ -112,6 +113,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -143,6 +145,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @throws ConnectorCheckedException there is a problem disconnecting the connector.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
@@ -435,6 +438,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param metadataCollectionId Unique identifier for the metadata collection.
      * @param localConnector OMRSRepositoryConnector object for the local repository.
      */
+    @Override
     public void setLocalConnector(String                       metadataCollectionId,
                                   LocalOMRSRepositoryConnector localConnector)
     {
@@ -454,6 +458,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param metadataCollectionId Unique identifier for the metadata collection.
      * @param remoteConnector OMRSRepositoryConnector object providing access to the remote repository.
      */
+    @Override
     public void addRemoteConnector(String                  metadataCollectionId,
                                    OMRSRepositoryConnector remoteConnector)
     {
@@ -496,6 +501,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @param metadataCollectionId identifier of the metadata collection that is no longer available.
      */
+    @Override
     public void removeRemoteConnector(String  metadataCollectionId)
     {
         Iterator<FederatedConnector> iterator = remoteCohortConnectors.iterator();
@@ -527,6 +533,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * Call disconnect on all registered remote connectors and stop calling them.
      * There is no need to disconnect the local connector - that is handled by the EnterpriseConnectorManager
      */
+    @Override
     public void disconnectAllConnectors()
     {
         try

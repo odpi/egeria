@@ -276,21 +276,28 @@ public class OMAGServerAdminStoreServices
     }
 
     /**
-     * Get hte OMAG Server Config store for retrieving all the server configurations associated with this platform
+     * Get the OMAG Server Config store for retrieving all the server configurations associated with this platform.
+     *
      * @param serverConfigStore the server config store- note this may not support this operations
      * @param methodName current operation
      * @return the store to use for the retrieve all server configurations
      * @throws OMAGConfigurationErrorException the store does not support the retrieve all configured servers for this platform operation
      */
-    OMAGServerConfigStoreRetrieveAll getOMAGServerConfigStoreRetrieveAll(OMAGServerConfigStore serverConfigStore, String  methodName) throws OMAGConfigurationErrorException {
+    OMAGServerConfigStoreRetrieveAll getOMAGServerConfigStoreRetrieveAll(OMAGServerConfigStore serverConfigStore, String  methodName) throws OMAGConfigurationErrorException
+    {
         OMAGServerConfigStoreRetrieveAll omagServerConfigStoreRetrieveAll;
-        if (serverConfigStore instanceof  OMAGServerConfigStoreRetrieveAll) {
+
+        if (serverConfigStore instanceof  OMAGServerConfigStoreRetrieveAll)
+        {
             omagServerConfigStoreRetrieveAll = (OMAGServerConfigStoreRetrieveAll) serverConfigStore;
-        } else {
+        }
+        else
+        {
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED.getMessageDefinition(),
                                                       this.getClass().getName(),
                                                       methodName);
         }
+
         return omagServerConfigStoreRetrieveAll;
     }
 

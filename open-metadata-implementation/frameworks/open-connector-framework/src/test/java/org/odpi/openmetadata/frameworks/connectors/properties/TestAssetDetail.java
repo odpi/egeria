@@ -92,7 +92,6 @@ public class TestAssetDetail
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,

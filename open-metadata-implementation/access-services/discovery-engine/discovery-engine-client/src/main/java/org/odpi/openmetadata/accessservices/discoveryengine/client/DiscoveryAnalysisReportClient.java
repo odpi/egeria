@@ -19,6 +19,24 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
 {
     private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
+
+    /**
+     * Constructor for this client
+     *
+     * @param userId calling user
+     * @param discoveryRequestStatus current status
+     * @param assetGUID linked asset
+     * @param analysisParameters parameters that configured the analysis
+     * @param reportQualifiedName qualified name of report
+     * @param reportDisplayName display name of report
+     * @param reportDescription description of report
+     * @param discoveryEngineGUID hosting discovery engine
+     * @param discoveryServiceGUID executing discovery service
+     * @param discoveryEngineClient calling engine client
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
+     */
     public DiscoveryAnalysisReportClient(String                 userId,
                                          DiscoveryRequestStatus discoveryRequestStatus,
                                          String                 assetGUID,
@@ -62,6 +80,7 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
      */
+    @Override
     public DiscoveryRequestStatus getDiscoveryRequestStatus() throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -80,6 +99,7 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
      */
+    @Override
     public void setDiscoveryRequestStatus(DiscoveryRequestStatus discoveryRequestStatus) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException

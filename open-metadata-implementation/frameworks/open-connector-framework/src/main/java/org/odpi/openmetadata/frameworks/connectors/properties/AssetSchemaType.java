@@ -309,6 +309,18 @@ public abstract class AssetSchemaType extends AssetSchemaElement
             return false;
         }
         AssetSchemaType that = (AssetSchemaType) objectToCompare;
-        return Objects.equals(getSchemaTypeBean(), that.getSchemaTypeBean());
+        return Objects.equals(schemaTypeBean, that.schemaTypeBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), schemaTypeBean);
     }
 }

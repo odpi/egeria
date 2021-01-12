@@ -132,7 +132,7 @@ Since the Open Discovery Framework (ODF) defines most of the
 interfaces for the Discovery Engine OMAS, this module only needs to provide the
 interfaces associated with the out topic.
 
-* [discovery-engine-connectors](discovery-engine-connectors) supports the 
+* [discovery-engine-topic-connectors](discovery-engine-topic-connectors) supports the 
 connector implementations for the out topic - both client side and server side.
 
 * [discovery-engine-server](discovery-engine-server) supports in implementation of the metadata interfaces

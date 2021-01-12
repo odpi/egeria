@@ -81,4 +81,21 @@ public class OMRSEventV1RegistrySection implements Serializable
     {
         this.remoteConnection = remoteConnection;
     }
+
+
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventV1RegistrySection{" +
+                       "registryEventType=" + registryEventType +
+                       ", registrationTimestamp=" + registrationTimestamp +
+                       ", metadataCollectionName='" + metadataCollectionName + '\'' +
+                       ", remoteConnection=" + remoteConnection +
+                       '}';
+    }
 }

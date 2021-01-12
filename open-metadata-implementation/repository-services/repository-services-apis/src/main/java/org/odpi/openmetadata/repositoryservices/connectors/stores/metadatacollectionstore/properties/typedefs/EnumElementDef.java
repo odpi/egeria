@@ -143,38 +143,38 @@ public class EnumElementDef extends TypeDefElementHeader
 
 
     /**
-     * Verify that supplied object has the same properties.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param o object to test
-     * @return result
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof EnumElementDef))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        EnumElementDef that = (EnumElementDef) o;
-        return getOrdinal() == that.getOrdinal() &&
-                Objects.equals(getValue(), that.getValue()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getDescriptionGUID(), that.getDescriptionGUID());
+        EnumElementDef that = (EnumElementDef) objectToCompare;
+        return ordinal == that.ordinal &&
+                       Objects.equals(value, that.value) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(descriptionGUID, that.descriptionGUID);
     }
 
 
     /**
-     * Integer useful for hashmaps
+     * Return a hash code based on the values of this object.
      *
-     * @return int hash number
+     * @return in hash code
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(getOrdinal(), getValue(), getDescription(), getDescriptionGUID());
+        return Objects.hash(ordinal, value, description, descriptionGUID);
     }
 }

@@ -14,11 +14,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * VirtualizationConfig caches the properties that are used to setup up the connector to the virtualisation
- * solutions in the server. The configurations contain the name of the connector provider and the corresponding
- * additional properties.
- *
- * This configuration class should support various types of the virtualisation connectors
+ * VirtualizationConfig is the configuration for the deprecated Virtualizer OMAG Server.  This function
+ * is replaced by the new Database Integrator OMIS that runs in the Integration Daemon OMAG Server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

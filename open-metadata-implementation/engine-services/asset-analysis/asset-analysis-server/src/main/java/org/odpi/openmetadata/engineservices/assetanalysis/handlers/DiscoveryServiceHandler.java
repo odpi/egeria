@@ -2,27 +2,33 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
+import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisAuditCode;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.Date;
 
 /**
- * DiscoveryServiceHandler provides the thread to run a discovery service.
+ * DiscoveryServiceHandler provides the thread to run a discovery service.  A new instance is created for each request.
  */
-public class DiscoveryServiceHandler implements Runnable
+public class DiscoveryServiceHandler extends GovernanceServiceHandler
 {
-    private DiscoveryEngineProperties discoveryEngineProperties;
-    private String                    assetDiscoveryType;
-    private String                    discoveryServiceName;
-    private DiscoveryService          discoveryService;
-    private DiscoveryContext          discoveryContext;
-    private AuditLog                  auditLog;
+    private GovernanceEngineProperties discoveryEngineProperties;
+    private String                     discoveryEngineGUID;
+    private String                     assetDiscoveryType;
+    private String                     discoveryServiceName;
+    private DiscoveryService           discoveryService;
+    private DiscoveryContext           discoveryContext;
+    private String                     discoveryReportGUID;
+    private AuditLog                   auditLog;
 
 
     /**
@@ -31,25 +37,75 @@ public class DiscoveryServiceHandler implements Runnable
      * The action happens in the run() method.
      *
      * @param discoveryEngineProperties properties of the discovery engine - used for message logging
+     * @param discoveryEngineGUID unique Identifier of the discovery engine - used for message logging
      * @param assetDiscoveryType type of asset to analyse - used for message logging
      * @param discoveryServiceName name of this discovery service - used for message logging
-     * @param discoveryService connector that does the work
+     * @param discoveryServiceConnector connector that does the work
      * @param discoveryContext context for the connector
+     * @param discoveryReportGUID unique identifier of the report for this discovery request
      * @param auditLog destination for log messages
      */
-    DiscoveryServiceHandler(DiscoveryEngineProperties discoveryEngineProperties,
-                            String                    assetDiscoveryType,
-                            String                    discoveryServiceName,
-                            DiscoveryService          discoveryService,
-                            DiscoveryContext          discoveryContext,
-                            AuditLog                  auditLog)
+    DiscoveryServiceHandler(GovernanceEngineProperties discoveryEngineProperties,
+                            String                     discoveryEngineGUID,
+                            String                     governanceActionGUID,
+                            String                     assetDiscoveryType,
+                            String                     discoveryServiceName,
+                            Connector                  discoveryServiceConnector,
+                            DiscoveryContext           discoveryContext,
+                            String                     discoveryReportGUID,
+                            AuditLog                   auditLog) throws InvalidParameterException
     {
+        super(discoveryEngineProperties,
+              discoveryEngineGUID,
+              governanceActionGUID,
+              assetDiscoveryType,
+              discoveryServiceName,
+              discoveryServiceConnector,
+              auditLog);
+
         this.discoveryEngineProperties = discoveryEngineProperties;
+        this.discoveryEngineGUID       = discoveryEngineGUID;
         this.assetDiscoveryType        = assetDiscoveryType;
         this.discoveryServiceName      = discoveryServiceName;
-        this.discoveryService          = discoveryService;
         this.discoveryContext          = discoveryContext;
+        this.discoveryReportGUID       = discoveryReportGUID;
         this.auditLog                  = auditLog;
+
+        try
+        {
+            this.discoveryService = (DiscoveryService) discoveryServiceConnector;
+        }
+        catch (Exception error)
+        {
+            final String discoveryServiceConnectorParameterName = "discoveryServiceConnector";
+            final String actionDescription = "Cast connector to DiscoveryService";
+
+            auditLog.logException(actionDescription,
+                                  AssetAnalysisAuditCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(discoveryServiceName,
+                                                                                                        assetDiscoveryType,
+                                                                                                        error.getClass().getName(),
+                                                                                                        error.getMessage()),
+                                  error);
+            throw new InvalidParameterException(AssetAnalysisErrorCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(discoveryServiceName,
+                                                                                                                      assetDiscoveryType,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
+                                                this.getClass().getName(),
+                                                actionDescription,
+                                                error,
+                                                discoveryServiceConnectorParameterName);
+        }
+    }
+
+
+    /**
+     * Return the unique identifier of the discovery analysis report for this discovery request.
+     *
+     * @return string guid
+     */
+    String getDiscoveryReportGUID()
+    {
+        return discoveryReportGUID;
     }
 
 
@@ -77,7 +133,7 @@ public class DiscoveryServiceHandler implements Runnable
                                                                                                        discoveryContext.getAssetGUID(),
                                                                                                        assetDiscoveryType,
                                                                                                        discoveryEngineProperties.getQualifiedName(),
-                                                                                                       discoveryEngineProperties.getElementHeader().getGUID(),
+                                                                                                       discoveryEngineGUID,
                                                                                                        discoveryReport.getDiscoveryReportGUID()));
 
 
@@ -109,7 +165,7 @@ public class DiscoveryServiceHandler implements Runnable
                                                                                                        discoveryContext.getAssetGUID(),
                                                                                                        assetDiscoveryType,
                                                                                                        discoveryEngineProperties.getQualifiedName(),
-                                                                                                       discoveryEngineProperties.getElementHeader().getGUID(),
+                                                                                                       discoveryEngineGUID,
                                                                                                        error.getMessage()),
                                   error.toString(),
                                   error);

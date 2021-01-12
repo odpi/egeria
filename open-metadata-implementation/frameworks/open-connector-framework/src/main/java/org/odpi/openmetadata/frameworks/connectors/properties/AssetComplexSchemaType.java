@@ -206,6 +206,19 @@ public  class AssetComplexSchemaType extends AssetSchemaType
             return false;
         }
         AssetComplexSchemaType that = (AssetComplexSchemaType) objectToCompare;
-        return Objects.equals(getSchemaAttributes(), that.getSchemaAttributes());
+        return Objects.equals(complexSchemaTypeBean, that.complexSchemaTypeBean) &&
+                       Objects.equals(schemaAttributes, that.schemaAttributes);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), complexSchemaTypeBean, schemaAttributes);
     }
 }

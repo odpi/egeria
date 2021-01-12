@@ -118,4 +118,25 @@ public class OMRSEventV1TypeDefSection implements Serializable
     {
         this.originalAttributeTypeDef = originalAttributeTypeDef;
     }
+
+
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventV1TypeDefSection{" +
+                       "typeDefEventType=" + typeDefEventType +
+                       ", typeDefGUID='" + typeDefGUID + '\'' +
+                       ", typeDefName='" + typeDefName + '\'' +
+                       ", attributeTypeDef=" + attributeTypeDef +
+                       ", typeDef=" + typeDef +
+                       ", typeDefPatch=" + typeDefPatch +
+                       ", originalTypeDefSummary=" + originalTypeDefSummary +
+                       ", originalAttributeTypeDef=" + originalAttributeTypeDef +
+                       '}';
+    }
 }

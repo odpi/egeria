@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerR
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.context
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
+import org.odpi.openmetadata.integrationservices.database.ffdc.DatabaseIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.database.ffdc.DatabaseIntegratorErrorCode;
 
 import java.util.Map;
@@ -42,10 +44,38 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
 
 
     /**
+     * Initialize server properties for the context manager.
+     *
+     * @param partnerOMASServerName name of the server to connect to
+     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum number of results that can be returned on a single REST call
+     * @param auditLog logging destination
+     */
+    @Override
+    public void initializeContextManager(String   partnerOMASServerName,
+                                         String   partnerOMASPlatformRootURL,
+                                         String   userId,
+                                         String   password,
+                                         int      maxPageSize,
+                                         AuditLog auditLog)
+    {
+        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+
+        final String methodName = "initializeContextManager";
+
+        auditLog.logMessage(methodName,
+                            DatabaseIntegratorAuditCode.CONTEXT_INITIALIZING.getMessageDefinition(partnerOMASServerName, partnerOMASPlatformRootURL));
+    }
+
+
+    /**
      * Suggestion for subclass to create client(s) to partner OMAS.
      *
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
+    @Override
     public void createClients() throws InvalidParameterException
     {
         if (localServerPassword == null)
@@ -131,6 +161,7 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
+    @Override
     public void setContext(String                   connectorId,
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
@@ -140,8 +171,30 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        final String  methodName = "setContext";
+
+        String permittedSynchronizationName = PermittedSynchronization.BOTH_DIRECTIONS.getName();
+        String serviceOptionsString = "null";
+
+        if (permittedSynchronization != null)
+        {
+            permittedSynchronizationName = permittedSynchronization.getName();
+        }
+
+        if (serviceOptions != null)
+        {
+            serviceOptionsString = serviceOptions.toString();
+        }
+
         if (integrationConnector instanceof DatabaseIntegratorConnector)
         {
+            auditLog.logMessage(methodName,
+                                DatabaseIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
+                                                                                                                connectorId,
+                                                                                                                metadataSourceQualifiedName,
+                                                                                                                permittedSynchronizationName,
+                                                                                                                serviceOptionsString));
+
             DatabaseIntegratorConnector serviceSpecificConnector = (DatabaseIntegratorConnector)integrationConnector;
 
             String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
@@ -161,7 +214,6 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
         else
         {
             final String  parameterName = "integrationConnector";
-            final String  methodName = "setContext";
 
             throw new InvalidParameterException(DatabaseIntegratorErrorCode.INVALID_CONNECTOR.
                     getMessageDefinition(connectorName,
