@@ -851,7 +851,7 @@ public class PropertyHelper
     {
         if (properties != null)
         {
-            Map<String, PropertyValue> propertyValues = properties.getPropertyValues();
+            Map<String, PropertyValue> propertyValues = properties.getInstanceProperties();
             Map<String, Object>                resultingMap      = new HashMap<>();
 
             if (propertyValues != null)

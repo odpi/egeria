@@ -98,7 +98,7 @@ public class ElementProperties implements Serializable
      *
      * @return  instance properties map.
      */
-    public Map<String, PropertyValue> getPropertyValues()
+    public Map<String, PropertyValue> getInstanceProperties()
     {
         if (instanceProperties == null)
         {
@@ -235,7 +235,7 @@ public class ElementProperties implements Serializable
             return false;
         }
         ElementProperties that = (ElementProperties) objectToCompare;
-        return Objects.equals(getPropertyValues(), that.getPropertyValues());
+        return Objects.equals(getInstanceProperties(), that.getInstanceProperties());
     }
 
 
@@ -248,7 +248,7 @@ public class ElementProperties implements Serializable
     public int hashCode()
     {
 
-        return Objects.hash(getPropertyValues());
+        return Objects.hash(getInstanceProperties());
     }
 }
 
