@@ -107,11 +107,6 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
-                    <artifactId>omrs-rest-repository-connector</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>kafka-open-metadata-topic-connector</artifactId>
                 </dependency>
 
@@ -127,7 +122,7 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
-                    <artifactId>virtualization-services-api</artifactId>
+                    <artifactId>open-metadata-archive-file-connector</artifactId>
                 </dependency>
 
             </dependencies>
