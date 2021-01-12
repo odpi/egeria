@@ -69,7 +69,7 @@ public class StructPropertyValue extends PropertyValue
      */
     public String valueAsString()
     {
-        return mapValuesAsString(attributes.getPropertyValues()).toString();
+        return mapValuesAsString(attributes.getInstanceProperties()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class StructPropertyValue extends PropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(attributes.getPropertyValues());
+        return mapValuesAsObject(attributes.getInstanceProperties());
     }
 
 
