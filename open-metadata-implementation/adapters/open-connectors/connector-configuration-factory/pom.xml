@@ -107,11 +107,6 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
-                    <artifactId>readonly-repository-connector</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>omrs-rest-repository-connector</artifactId>
                 </dependency>
 
@@ -128,16 +123,6 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>configuration-encrypted-file-store-connector</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.odpi.egeria</groupId>
-                    <artifactId>open-metadata-archive-file-connector</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.odpi.egeria</groupId>
-                    <artifactId>ranger-connector</artifactId>
                 </dependency>
 
                 <dependency>
