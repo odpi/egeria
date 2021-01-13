@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.context;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.GovernanceEngineEventListener;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineEvent;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
-import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
+import org.odpi.openmetadata.frameworks.governanceaction.events.*;
+import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,31 +19,35 @@ import java.util.Map;
  * out topic.  This approach is used to enable the rapid changing list of watchdog listeners and their listening specification
  * without pushing that churn to the event bus.
  */
-public class GovernanceListenerManager extends GovernanceEngineEventListener
+public class GovernanceListenerManager
 {
-    private GovernanceEngineEventClient eventClient;
-
     private volatile Map<String, WatchdogListener> listenerMap = new HashMap<>();
 
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+    private AuditLog auditLog;
+    private String   governanceEngineName;
 
     /**
      * Create a governance listener manager for watchdog listeners.
      *
-     * @param eventClient access to the out topic
+     * @param auditLog audit log for the listener manager
      */
-    public GovernanceListenerManager(GovernanceEngineEventClient eventClient)
+    public GovernanceListenerManager(AuditLog auditLog,
+                                     String   governanceEngineName)
     {
-        this.eventClient = eventClient;
+        this.auditLog = auditLog;
+        this.governanceEngineName = governanceEngineName;
     }
 
 
     /**
-     * Process an event that was published by the Governance Engine OMAS.
+     * Process a watchdog event that was published by the Governance Engine OMAS.
      *
      * @param event event object - call getEventType to find out what type of event.
+     * @throws InvalidParameterException the event is incomplete
      */
-    @Override
-    public synchronized void processEvent(GovernanceEngineEvent event)
+    public synchronized void processEvent(WatchdogGovernanceEvent event) throws InvalidParameterException
     {
         if ((listenerMap != null) && (event != null))
         {
@@ -55,7 +59,7 @@ public class GovernanceListenerManager extends GovernanceEngineEventListener
 
                     if (watchdogListener != null)
                     {
-                        watchdogListener.processEvent(event);
+                        watchdogListener.processWatchdogEvent(event);
                     }
                 }
             }
@@ -119,48 +123,168 @@ public class GovernanceListenerManager extends GovernanceEngineEventListener
      */
     private class WatchdogListener
     {
-        private WatchdogGovernanceListener listener = null;
-        private List<WatchdogEventType>    interestingEventTypes = null;
-        private List<String>               interestingMetadataType = null;
-        private String                     specificInstance = null;
+        private WatchdogGovernanceListener listener                 = null;
+        private List<WatchdogEventType>    interestingEventTypes    = null;
+        private List<String>               interestingMetadataTypes = null;
+        private String                     specificInstance         = null;
 
-        public WatchdogListener()
+        WatchdogListener()
         {
         }
 
 
-        public void setListenerSpec(WatchdogGovernanceListener listener,
-                                    List<WatchdogEventType>    interestingEventTypes,
-                                    List<String>               interestingMetadataType,
-                                    String                     specificInstance)
+        void setListenerSpec(WatchdogGovernanceListener listener,
+                             List<WatchdogEventType>    interestingEventTypes,
+                             List<String>               interestingMetadataType,
+                             String                     specificInstance)
         {
             this.listener = listener;
             this.interestingEventTypes = interestingEventTypes;
-            this.interestingMetadataType = interestingMetadataType;
+            this.interestingMetadataTypes = interestingMetadataType;
             this.specificInstance = specificInstance;
         }
 
 
         /**
-         * Process an event that was published by the Governance Engine OMAS for a specific listener.
+         * Process a the watchdog event that was published by the Governance Engine OMAS for a specific listener.
          *
          * @param event event object - call getEventType to find out what type of event.
+         * @throws InvalidParameterException the event is incomplete
          */
-        public void processEvent(GovernanceEngineEvent event)
+        void processWatchdogEvent(WatchdogGovernanceEvent event) throws InvalidParameterException
         {
+            final String methodName             = "WatchdogListener.processWatchdogEvent";
+            final String eventParameterName     = "event";
+            final String eventTypeParameterName = "eventType";
+
+            invalidParameterHandler.validateObject(event, eventParameterName, methodName);
+            invalidParameterHandler.validateEnum(event.getEventType(), eventTypeParameterName, methodName);
+
             if (listener != null)
             {
-                // todo
+                if ((interestingEventTypes == null) || (interestingEventTypes.contains(event.getEventType())))
+                {
+                    /*
+                     * The event type is of interest, cast the event to its specific type and call the registered listener if
+                     * the event is interesting.
+                     */
+                    if (event instanceof WatchdogClassificationEvent)
+                    {
+                        final String elementParameterName = "watchdogClassificationEvent.getMetadataElement()";
+                        final String classificationParameterName = "watchdogClassificationEvent.getChangedClassification()";
+                        final String elementGUIDParameterName = "watchdogClassificationEvent.getMetadataElement().getElementGUID()";
+                        final String typeNameParameterName    = "watchdogClassificationEvent.getChangedClassification().getClassificationName()";
+
+                        WatchdogClassificationEvent watchdogClassificationEvent = (WatchdogClassificationEvent)event;
+
+                        invalidParameterHandler.validateObject(watchdogClassificationEvent.getMetadataElement(), elementParameterName, methodName);
+                        invalidParameterHandler.validateObject(watchdogClassificationEvent.getChangedClassification(), classificationParameterName, methodName);
+                        invalidParameterHandler.validateGUID(watchdogClassificationEvent.getMetadataElement().getElementGUID(), elementGUIDParameterName, methodName);
+                        invalidParameterHandler.validateName(watchdogClassificationEvent.getChangedClassification().getClassificationName(), typeNameParameterName, methodName);
+
+                        if (this.elementIsInteresting(watchdogClassificationEvent.getMetadataElement().getElementGUID(),
+                                                      watchdogClassificationEvent.getChangedClassification().getClassificationName(),
+                                                      null))
+                        {
+                            this.callListener(event);
+                        }
+                    }
+                    else if (event instanceof WatchdogMetadataElementEvent)
+                    {
+                        final String elementParameterName     = "watchdogMetadataElementEvent.getMetadataElement()";
+                        final String elementTypeParameterName = "watchdogMetadataElementEvent.getElementType()";
+                        final String elementGUIDParameterName = "watchdogMetadataElementEvent.getMetadataElement().getElementGUID()";
+                        final String typeNameParameterName    = "watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementTypeName()";
+
+                        WatchdogMetadataElementEvent watchdogMetadataElementEvent = (WatchdogMetadataElementEvent)event;
+
+                        invalidParameterHandler.validateObject(watchdogMetadataElementEvent.getMetadataElement(), elementParameterName, methodName);
+                        invalidParameterHandler.validateObject(watchdogMetadataElementEvent.getMetadataElement().getElementType(), elementTypeParameterName, methodName);
+                        invalidParameterHandler.validateGUID(watchdogMetadataElementEvent.getMetadataElement().getElementGUID(), elementGUIDParameterName, methodName);
+                        invalidParameterHandler.validateName(watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementTypeName(), typeNameParameterName, methodName);
+
+                        if (this.elementIsInteresting(watchdogMetadataElementEvent.getMetadataElement().getElementGUID(),
+                                                      watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementTypeName(),
+                                                      watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementSuperTypeNames()))
+                        {
+                            this.callListener(event);
+                        }
+                    }
+                    else if (event instanceof WatchdogRelatedElementsEvent)
+                    {
+                        WatchdogRelatedElementsEvent relatedElementsEvent = (WatchdogRelatedElementsEvent)event;
+
+                        if (this.elementIsInteresting(relatedElementsEvent.getRelatedMetadataElements().getRelationshipGUID(),
+                                                      relatedElementsEvent.getRelatedMetadataElements().getRelationshipType().getElementTypeName(),
+                                                      relatedElementsEvent.getRelatedMetadataElements().getRelationshipType().getElementSuperTypeNames()))
+                        {
+                            this.callListener(event);
+                        }
+                    }
+                }
             }
         }
-    }
 
 
-    /**
-     * Ensure the topic connector is disconnected
-     */
-    public void shutdown()
-    {
-        // todo
+        /**
+         * Determine if the element(s) passed in the event is interesting to this listener.
+         *
+         * @param elementGUID unique identifier of principle metadata element
+         * @param elementTypeName type name of event subject
+         * @param elementSuperTypeNames super type names of event subject (or null)
+         * @return boolean flag
+         */
+        private boolean elementIsInteresting(String       elementGUID,
+                                             String       elementTypeName,
+                                             List<String> elementSuperTypeNames)
+        {
+            if ((specificInstance != null) && (specificInstance.equals(elementGUID)))
+            {
+                return true;
+            }
+            else if ((interestingMetadataTypes == null) || (interestingMetadataTypes.contains(elementTypeName)))
+            {
+                return true;
+            }
+            else if ((elementSuperTypeNames != null) && (! elementSuperTypeNames.isEmpty()))
+            {
+                for (String typeName : elementSuperTypeNames)
+                {
+                    if (typeName != null)
+                    {
+                        if (interestingMetadataTypes.contains(typeName))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        /**
+         * The event is interesting, call the listener.  Exceptions are logged.
+         *
+         * @param event event to publish to the watchdog listener
+         */
+        private void callListener(WatchdogGovernanceEvent event)
+        {
+            try
+            {
+                listener.processEvent(event);
+            }
+            catch (Exception error)
+            {
+                final String actionDescription = "publish watchdog event to listener";
+
+                auditLog.logMessage(actionDescription,
+                                    EngineHostServicesAuditCode.WATCHDOG_LISTENER_EXCEPTION.getMessageDefinition(governanceEngineName,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 error.getMessage()),
+                                    event.toString());
+            }
+        }
     }
 }

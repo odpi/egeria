@@ -72,6 +72,7 @@ public abstract class TriageGovernanceActionService extends GovernanceActionServ
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
+        governanceContext = null;
         super.disconnect();
     }
 }

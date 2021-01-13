@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ElementPropertie
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.Date;
 import java.util.List;
@@ -20,20 +21,36 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * GovernanceEngineClient sits in the governance context of a governance action service when it is running in the engine host OMAG server.
- * It is however shared by all of the governance action services running in an engine service so that we only need one connector to the topic
- * listener for the watchdog governance services.
+ * OpenMetadataClient is created for each instance of the governance service.  It interfaces between the governance
+ * context of each governance service instance and the clients and handlers of Governance Action Open Metadata Engine Service (OMES).
+ *
+ * The governanceServiceHandler is also tied to the governance service instance.  The governanceListenerManager and
+ * the governanceEngineClient are shared by all services instances running in the Governance Action OMES.
+ *
+ * There are three groups of methods:
+ *
+ * <ul>
+ *     <li>Methods for working with metadata that are driven by the logic in the governance service.
+ *         This is implemented with calls to the Governance Engine OMAS client that is calling the partner OMAS
+ *         for Governance Action OMES.</li>
+ *
+ *     <li>Methods for managing the Governance Actions that drive calls to the governance services.
+ *         These methods are passed to the governanceServiceHandler to be handled by the engine host services.
+ *         The engine host services may have a different partner OMAS and so they have their own client to Governance Engine OMAS.</li>
+ *
+ *     <li>Methods for managing Open Watchdog Governance Service's listeners that are passed to the governance listener manager.</li>
+ * </ul>
+ *
  */
 public class OpenMetadataStoreClient extends OpenMetadataClient
 {
 
-    private String userId;                   /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private String                    engineUserId;              /* Initialized in constructor */
 
     private String                    connectorId = UUID.randomUUID().toString();
     private GovernanceEngineClient    governanceEngineClient;    /* Initialized in constructor */
     private GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
+    private GovernanceServiceHandler  governanceServiceHandler;  /* Initialized in constructor */
 
 
     /**
@@ -43,25 +60,29 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param governanceEngineClient client that does all of the work
      * @param governanceListenerManager governance listener manager
-     * @param userId caller's userId
+     * @param engineUserId engine userId
      * @throws InvalidParameterException the server name of platform URL root is null.
      */
     public OpenMetadataStoreClient(String                    serverName,
                                    String                    serverPlatformURLRoot,
                                    GovernanceEngineClient    governanceEngineClient,
                                    GovernanceListenerManager governanceListenerManager,
-                                   String                    userId) throws InvalidParameterException
+                                   GovernanceServiceHandler  governanceServiceHandler,
+                                   String                    engineUserId) throws InvalidParameterException
     {
         super(serverPlatformURLRoot, serverName);
 
         final String methodName = "Constructor (no security)";
 
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateUserId(engineUserId, methodName);
 
         this.governanceEngineClient = governanceEngineClient;
         this.governanceListenerManager = governanceListenerManager;
-        this.userId = userId;
+        this.governanceServiceHandler = governanceServiceHandler;
+        this.engineUserId = engineUserId;
     }
 
 
@@ -80,7 +101,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return governanceEngineClient.getMetadataElementByGUID(userId, elementGUID);
+        return governanceEngineClient.getMetadataElementByGUID(engineUserId, elementGUID);
     }
 
 
@@ -103,7 +124,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return governanceEngineClient.findMetadataElementsWithString(userId, searchString, startFrom, pageSize);
+        return governanceEngineClient.findMetadataElementsWithString(engineUserId, searchString, startFrom, pageSize);
     }
 
 
@@ -129,7 +150,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return governanceEngineClient.getRelatedMetadataElements(userId, elementGUID, relationshipTypeName, startFrom, pageSize);
+        return governanceEngineClient.getRelatedMetadataElements(engineUserId, elementGUID, relationshipTypeName, startFrom, pageSize);
     }
 
 
@@ -167,7 +188,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return governanceEngineClient.findMetadataElements(userId,
+        return governanceEngineClient.findMetadataElements(engineUserId,
                                                            metadataElementTypeName,
                                                            metadataElementSubtypeName,
                                                            searchProperties,
@@ -207,7 +228,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     PropertyServerException
     {
-        return governanceEngineClient.findRelationshipsBetweenMetadataElements(userId,
+        return governanceEngineClient.findRelationshipsBetweenMetadataElements(engineUserId,
                                                                                relationshipTypeName,
                                                                                searchProperties,
                                                                                sequencingProperty,
@@ -247,7 +268,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return governanceEngineClient.createMetadataElementInStore(userId,
+        return governanceEngineClient.createMetadataElementInStore(engineUserId,
                                                                    metadataElementTypeName,
                                                                    initialStatus,
                                                                    effectiveFrom,
@@ -278,7 +299,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        governanceEngineClient.updateMetadataElementInStore(userId, metadataElementGUID, replaceProperties, properties);
+        governanceEngineClient.updateMetadataElementInStore(engineUserId, metadataElementGUID, replaceProperties, properties);
     }
 
 
@@ -304,7 +325,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        governanceEngineClient.updateMetadataElementStatusInStore(userId, metadataElementGUID, newElementStatus, effectiveFrom, effectiveTo);
+        governanceEngineClient.updateMetadataElementStatusInStore(engineUserId, metadataElementGUID, newElementStatus, effectiveFrom, effectiveTo);
     }
 
 
@@ -322,7 +343,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        governanceEngineClient.deleteMetadataElementInStore(userId, metadataElementGUID);
+        governanceEngineClient.deleteMetadataElementInStore(engineUserId, metadataElementGUID);
     }
 
 
@@ -351,7 +372,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        governanceEngineClient.classifyMetadataElementInStore(userId, metadataElementGUID, classificationName, effectiveFrom, effectiveTo, properties);
+        governanceEngineClient.classifyMetadataElementInStore(engineUserId, metadataElementGUID, classificationName, effectiveFrom, effectiveTo, properties);
     }
 
 
@@ -377,7 +398,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        governanceEngineClient.reclassifyMetadataElementInStore(userId, metadataElementGUID, classificationName, replaceProperties, properties);
+        governanceEngineClient.reclassifyMetadataElementInStore(engineUserId, metadataElementGUID, classificationName, replaceProperties, properties);
     }
 
 
@@ -402,7 +423,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        governanceEngineClient.updateClassificationStatusInStore(userId, metadataElementGUID, classificationName, effectiveFrom, effectiveTo);
+        governanceEngineClient.updateClassificationStatusInStore(engineUserId, metadataElementGUID, classificationName, effectiveFrom, effectiveTo);
     }
 
 
@@ -422,7 +443,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        governanceEngineClient.unclassifyMetadataElementInStore(userId, metadataElementGUID, classificationName);
+        governanceEngineClient.unclassifyMetadataElementInStore(engineUserId, metadataElementGUID, classificationName);
     }
 
 
@@ -455,7 +476,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return governanceEngineClient.createRelatedElementsInStore(userId, relationshipTypeName, metadataElement1GUID, metadataElement2GUID, effectiveFrom, effectiveTo, properties);
+        return governanceEngineClient.createRelatedElementsInStore(engineUserId, relationshipTypeName, metadataElement1GUID, metadataElement2GUID, effectiveFrom, effectiveTo, properties);
     }
 
 
@@ -479,7 +500,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        governanceEngineClient.updateRelatedElementsInStore(userId, relationshipGUID, replaceProperties, properties);
+        governanceEngineClient.updateRelatedElementsInStore(engineUserId, relationshipGUID, replaceProperties, properties);
     }
 
 
@@ -502,7 +523,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        governanceEngineClient.updateRelatedElementsStatusInStore(userId, relationshipGUID, effectiveFrom, effectiveTo);
+        governanceEngineClient.updateRelatedElementsStatusInStore(engineUserId, relationshipGUID, effectiveFrom, effectiveTo);
     }
 
 
@@ -520,7 +541,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        governanceEngineClient.deleteRelatedElementsInStore(userId, relationshipGUID);
+        governanceEngineClient.deleteRelatedElementsInStore(engineUserId, relationshipGUID);
     }
 
 
@@ -547,14 +568,13 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        governanceEngineClient.updateActionTargetStatus(userId, actionTargetGUID, status, startDate, completionDate);
+        governanceEngineClient.updateActionTargetStatus(engineUserId, actionTargetGUID, status, startDate, completionDate);
     }
 
 
     /**
      * Declare that all of the processing for the governance action service is finished and the status of the work.
      *
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
@@ -564,14 +584,13 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public void recordCompletionStatus(String           governanceActionGUID,
-                                       CompletionStatus status,
+    public void recordCompletionStatus(CompletionStatus status,
                                        List<String>     outputGuards,
                                        List<String>     newActionTargetGUIDs) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        governanceEngineClient.recordCompletionStatus(userId, governanceActionGUID, status, outputGuards, newActionTargetGUIDs);
+        governanceServiceHandler.recordCompletionStatus(status, outputGuards, newActionTargetGUIDs);
     }
 
 
@@ -610,7 +629,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return governanceEngineClient.initiateGovernanceAction(userId,
+        return governanceEngineClient.initiateGovernanceAction(engineUserId,
                                                                qualifiedName,
                                                                domainIdentifier,
                                                                displayName,
@@ -645,7 +664,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return governanceEngineClient.initiateGovernanceActionProcess(userId, processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime);
+        return governanceEngineClient.initiateGovernanceActionProcess(engineUserId, processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime);
     }
 
 
@@ -677,7 +696,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return governanceEngineClient.createIncidentReport(userId,
+        return governanceEngineClient.createIncidentReport(engineUserId,
                                                            qualifiedName,
                                                            domainIdentifier,
                                                            background,
@@ -715,5 +734,14 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                   String                     specificInstance) throws InvalidParameterException
     {
         governanceListenerManager.registerListener(connectorId, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+    }
+
+
+    /**
+     * Called during the disconnect processing of the watchdog governance action service.
+     */
+    public void disconnectListener()
+    {
+        governanceListenerManager.removeListener(connectorId);
     }
 }

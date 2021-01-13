@@ -6,7 +6,9 @@ package org.odpi.openmetadata.accessservices.governanceengine.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -27,28 +29,28 @@ public class GovernanceActionProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                 qualifiedName          = null;
-    private int                    domainIdentifier       = 0;
-    private String                 displayName            = null;
-    private String                 description            = null;
+    private String                     qualifiedName          = null;
+    private int                        domainIdentifier       = 0;
+    private String                     displayName            = null;
+    private String                     description            = null;
 
-    private List<String>           receivedGuards         = null;
+    private List<String>               receivedGuards         = null;
 
-    private String                 governanceEngineGUID   = null;
-    private String                 requestType            = null;
-    private Map<String, String>    requestProperties      = null;
-    private List<String>           requestSourceGUIDs     = null;
-    private List<String>           actionTargetGUIDs      = null;
+    private String                     governanceEngineGUID  = null;
+    private String                     requestType           = null;
+    private Map<String, String>        requestProperties     = null;
+    private List<RequestSourceElement> requestSourceElements = null;
+    private List<ActionTargetElement>  actionTargetElements  = null;
 
-    private GovernanceActionStatus actionStatus           = null;
+    private GovernanceActionStatus     actionStatus           = null;
 
-    private Date                   startTime              = null;
-    private String                 processingEngineUserId = null;
+    private Date                       startTime              = null;
+    private String                     processingEngineUserId = null;
 
-    private Date                   completionTime         = null;
-    private List<String>           completionGuards       = null;
+    private Date                       completionTime         = null;
+    private List<String>               completionGuards       = null;
 
-    private Map<String, String>    additionalProperties   = null;
+    private Map<String, String>        additionalProperties   = null;
 
 
     /**
@@ -79,8 +81,8 @@ public class GovernanceActionProperties implements Serializable
             governanceEngineGUID = template.getGovernanceEngineGUID();
             requestType = template.getRequestType();
             requestProperties = template.getRequestProperties();
-            requestSourceGUIDs = template.getRequestSourceGUIDs();
-            actionTargetGUIDs = template.getActionTargetGUIDs();
+            requestSourceElements = template.getRequestSourceElements();
+            actionTargetElements = template.getActionTargetElements();
 
             actionStatus = template.getActionStatus();
 
@@ -274,64 +276,64 @@ public class GovernanceActionProperties implements Serializable
     /**
      * Return the list of elements that triggered this request.
      *
-     * @return list of string guids
+     * @return list of elements
      */
-    public List<String> getRequestSourceGUIDs()
+    public List<RequestSourceElement> getRequestSourceElements()
     {
-        if (requestSourceGUIDs == null)
+        if (requestSourceElements == null)
         {
             return null;
         }
 
-        if (requestSourceGUIDs.isEmpty())
+        if (requestSourceElements.isEmpty())
         {
             return null;
         }
 
-        return requestSourceGUIDs;
+        return requestSourceElements;
     }
 
 
     /**
      * Set up the list of elements that triggered this request.
      *
-     * @param requestSourceGUIDs list of string guids
+     * @param requestSourceElements list of elements
      */
-    public void setRequestSourceGUIDs(List<String> requestSourceGUIDs)
+    public void setRequestSourceElements(List<RequestSourceElement> requestSourceElements)
     {
-        this.requestSourceGUIDs = requestSourceGUIDs;
+        this.requestSourceElements = requestSourceElements;
     }
 
 
     /**
      * Return the list of elements that the governance action will work on.
      *
-     * @return list of string guids
+     * @return list of elements
      */
-    public List<String> getActionTargetGUIDs()
+    public List<ActionTargetElement> getActionTargetElements()
     {
-        if (actionTargetGUIDs == null)
+        if (actionTargetElements == null)
         {
             return null;
         }
 
-        if (actionTargetGUIDs.isEmpty())
+        if (actionTargetElements.isEmpty())
         {
             return null;
         }
 
-        return actionTargetGUIDs;
+        return actionTargetElements;
     }
 
 
     /**
      * Set up the list of elements that the governance action will work on.
      *
-     * @param actionTargetGUIDs list of string guids
+     * @param actionTargetElements list of elements
      */
-    public void setActionTargetGUIDs(List<String> actionTargetGUIDs)
+    public void setActionTargetElements(List<ActionTargetElement> actionTargetElements)
     {
-        this.actionTargetGUIDs = actionTargetGUIDs;
+        this.actionTargetElements = actionTargetElements;
     }
 
 
@@ -514,8 +516,8 @@ public class GovernanceActionProperties implements Serializable
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", requestType='" + requestType + '\'' +
                        ", requestProperties=" + requestProperties +
-                       ", requestSourceGUIDs=" + requestSourceGUIDs +
-                       ", actionTargetGUIDs=" + actionTargetGUIDs +
+                       ", requestSourceElements=" + requestSourceElements +
+                       ", actionTargetElements=" + actionTargetElements +
                        ", actionStatus=" + actionStatus +
                        ", startTime=" + startTime +
                        ", processingEngineUserId='" + processingEngineUserId + '\'' +
@@ -552,8 +554,8 @@ public class GovernanceActionProperties implements Serializable
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(requestProperties, that.requestProperties) &&
-                       Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
-                       Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs) &&
+                       Objects.equals(requestSourceElements, that.requestSourceElements) &&
+                       Objects.equals(actionTargetElements, that.actionTargetElements) &&
                        actionStatus == that.actionStatus &&
                        Objects.equals(startTime, that.startTime) &&
                        Objects.equals(processingEngineUserId, that.processingEngineUserId) &&
@@ -573,7 +575,7 @@ public class GovernanceActionProperties implements Serializable
     public int hashCode()
     {
         return Objects.hash(qualifiedName, domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, requestType,
-                            requestProperties, requestSourceGUIDs, actionTargetGUIDs, actionStatus, startTime, processingEngineUserId, completionTime,
+                            requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime, processingEngineUserId, completionTime,
                             completionGuards, additionalProperties);
     }
 }
