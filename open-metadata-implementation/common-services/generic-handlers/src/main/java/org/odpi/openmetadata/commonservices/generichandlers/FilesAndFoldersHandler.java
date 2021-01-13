@@ -2030,7 +2030,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                                null,
                                                                                                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID,
                                                                                                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
-                                                                                               extendedProperties,
+                                                                                               null,
                                                                                                repositoryHelper,
                                                                                                serviceName,
                                                                                                serverName);
@@ -2050,17 +2050,17 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                     schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
 
                     schemaAttributeHandler.createNestedSchemaAttribute(userId,
-                                                                    externalSourceGUID,
-                                                                    externalSourceName,
-                                                                    schemaTypeGUID,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       schemaTypeGUID,
                                                                        schemaTypeGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                    columnQualifiedName,
-                                                                    qualifiedNameParameterName,
-                                                                    schemaAttributeBuilder,
-                                                                    methodName);
+                                                                       OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       columnQualifiedName,
+                                                                       qualifiedNameParameterName,
+                                                                       schemaAttributeBuilder,
+                                                                       methodName);
                 }
             }
         }

@@ -148,7 +148,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param annotationGUID anchor annotation
+     * @param annotationGUID parent annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
      *
@@ -165,7 +165,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return discoveryEngineClient.getExtendedAnnotations(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID, startingFrom, maximumResults);
+        return discoveryEngineClient.getExtendedAnnotations(userId, annotationGUID, startingFrom, maximumResults);
     }
 
 
@@ -183,7 +183,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return discoveryEngineClient.getAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID);
+        return discoveryEngineClient.getAnnotation(userId, annotationGUID);
     }
 
 
@@ -208,7 +208,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
     /**
      * Add a new annotation and link it to an existing annotation.
      *
-     * @param anchorAnnotationGUID unique identifier of the annotation that this new one is to be attached to
+     * @param parentAnnotationGUID unique identifier of the annotation that this new one is to be attached to
      * @param annotation annotation object
      * @return unique identifier of new annotation
      * @throws InvalidParameterException one of the parameters is invalid
@@ -216,12 +216,12 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem saving annotations in the annotation store.
      */
     @Override
-    public String addAnnotationToAnnotation(String     anchorAnnotationGUID,
+    public String addAnnotationToAnnotation(String     parentAnnotationGUID,
                                             Annotation annotation) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return discoveryEngineClient.addAnnotationToAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), anchorAnnotationGUID, annotation);
+        return discoveryEngineClient.addAnnotationToAnnotation(userId, parentAnnotationGUID, annotation);
     }
 
 
@@ -239,7 +239,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        discoveryEngineClient.updateAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), annotation);
+        discoveryEngineClient.updateAnnotation(userId, annotation);
     }
 
 
@@ -252,11 +252,11 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem deleting the annotation from the annotation store.
      */
     @Override
-    public  void  deleteAnnotation(String   annotationGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public  void  deleteAnnotation(String annotationGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
-        discoveryEngineClient.deleteAnnotation(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID);
+        discoveryEngineClient.deleteAnnotation(userId, annotationGUID);
     }
 
 
@@ -271,10 +271,10 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem retrieving data fields from the annotation store.
      */
     @Override
-    public  List<DataField>  getPreviousDataFieldsForAsset(int              startingFrom,
-                                                           int              maximumResults) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public  List<DataField>  getPreviousDataFieldsForAsset(int startingFrom,
+                                                           int maximumResults) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         return discoveryEngineClient.getPreviousDataFieldsForAsset(userId, discoveryReport.getDiscoveryReportGUID(), startingFrom, maximumResults);
     }
@@ -291,10 +291,10 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem retrieving data fields from the annotation store.
      */
     @Override
-    public  List<Annotation>  getNewDataFieldsForAsset(int       startingFrom,
-                                                       int       maximumResults) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public  List<DataField>  getNewDataFieldsForAsset(int       startingFrom,
+                                                      int       maximumResults) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         return discoveryEngineClient.getNewDataFieldsForAsset(userId, discoveryReport.getDiscoveryReportGUID(), startingFrom, maximumResults);
     }
@@ -303,7 +303,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param anchorDataFieldGUID anchor data field identifier
+     * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
      *
@@ -314,13 +314,13 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     @Override
-    public  List<DataField>  getNestedDataFields(String   anchorDataFieldGUID,
+    public  List<DataField>  getNestedDataFields(String   parentDataFieldGUID,
                                                  int      startingFrom,
                                                  int      maximumResults) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return discoveryEngineClient.getNestedDataFields(userId, discoveryReport.getDiscoveryReportGUID(), anchorDataFieldGUID, startingFrom, maximumResults);
+        return discoveryEngineClient.getNestedDataFields(userId, parentDataFieldGUID, startingFrom, maximumResults);
     }
 
 
@@ -338,7 +338,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return discoveryEngineClient.getDataField(userId, discoveryReport.getDiscoveryReportGUID(), dataFieldGUID);
+        return discoveryEngineClient.getDataField(userId, dataFieldGUID);
     }
 
 
@@ -359,14 +359,14 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return discoveryEngineClient.addDataFieldToDiscoveryReport(userId, discoveryReport.getDiscoveryReportGUID(), annotationGUID, dataField);
+        return discoveryEngineClient.addDataFieldToDiscoveryReport(userId, annotationGUID, dataField);
     }
 
 
     /**
      * Add a new data field and link it to an existing data field.
      *
-     * @param anchorDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
      * @param dataField data field object
      * @return unique identifier of new data field
      * @throws InvalidParameterException one of the parameters is invalid
@@ -374,19 +374,19 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem saving data fields in the annotation store.
      */
     @Override
-    public  String  addDataFieldToDataField(String     anchorDataFieldGUID,
+    public  String  addDataFieldToDataField(String    parentDataFieldGUID,
                                             DataField dataField) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        return discoveryEngineClient.addDataFieldToDataField(userId, discoveryReport.getDiscoveryReportGUID(), anchorDataFieldGUID, dataField);
+        return discoveryEngineClient.addDataFieldToDataField(userId, parentDataFieldGUID, dataField);
     }
 
 
     /**
      * Add a new annotation and link it to an existing data field.
      *
-     * @param anchorDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
      * @param annotation data field object
      * @return unique identifier of annotation
      * @throws InvalidParameterException one of the parameters is invalid
@@ -394,12 +394,12 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem saving data fields in the annotation store.
      */
     @Override
-    public  String  addAnnotationToDataField(String     anchorDataFieldGUID,
+    public  String  addAnnotationToDataField(String     parentDataFieldGUID,
                                              Annotation annotation) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return discoveryEngineClient.addAnnotationToDataField(userId, discoveryReport.getDiscoveryReportGUID(), anchorDataFieldGUID, annotation);
+        return discoveryEngineClient.addAnnotationToDataField(userId, parentDataFieldGUID, annotation);
 
     }
 
@@ -408,18 +408,16 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * Replace the current properties of a data field.
      *
      * @param dataField new properties
-     *
-     * @return fully filled out data field
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating the data field in the annotation store.
      */
     @Override
-    public  DataField  updateDataField(DataField dataField) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void updateDataField(DataField dataField) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
-        return discoveryEngineClient.updateDataField(userId, discoveryReport.getDiscoveryReportGUID(), dataField);
+        discoveryEngineClient.updateDataField(userId, dataField);
     }
 
 
@@ -432,10 +430,10 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem deleting the data field from the annotation store.
      */
     @Override
-    public  void  deleteDataField(String   dataFieldGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void deleteDataField(String   dataFieldGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        discoveryEngineClient.deleteDataField(userId, discoveryReport.getDiscoveryReportGUID(), dataFieldGUID);
+        discoveryEngineClient.deleteDataField(userId, dataFieldGUID);
     }
 }

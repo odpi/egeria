@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
+import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,22 +45,20 @@ public class DiscoveryMetadataStoreResource
      * @param userId calling user
      * @param startFrom starting point of the query
      * @param pageSize maximum number of results to return
-     * @param requestBody null request body
      * @return list of unique identifiers for located assets or
      *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @PostMapping(path = "/assets")
+    @GetMapping(path = "/assets")
 
-    public GUIDListResponse getAssets(@PathVariable String          serverName,
-                                      @PathVariable String          userId,
-                                      @RequestParam int             startFrom,
-                                      @RequestParam int             pageSize,
-                                      @RequestBody  NullRequestBody requestBody)
+    public GUIDListResponse getAssets(@PathVariable String serverName,
+                                      @PathVariable String userId,
+                                      @RequestParam int    startFrom,
+                                      @RequestParam int    pageSize)
     {
-        return restAPI.getAssets(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getAssets(serverName, userId, startFrom, pageSize);
     }
 
 
@@ -80,11 +79,11 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/assets/by-qualified-name")
 
-    public GUIDListResponse getAssetsByQualifiedName(@PathVariable String          serverName,
-                                                     @PathVariable String          userId,
-                                                     @RequestBody  String          name,
-                                                     @RequestParam int             startFrom,
-                                                     @RequestParam int             pageSize)
+    public GUIDListResponse getAssetsByQualifiedName(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @RequestBody  String name,
+                                                     @RequestParam int    startFrom,
+                                                     @RequestParam int    pageSize)
     {
         return restAPI.getAssetsByQualifiedName(serverName, userId, name, startFrom, pageSize);
     }
@@ -107,11 +106,11 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/assets/by-name")
 
-    public GUIDListResponse  getAssetsByName(@PathVariable String          serverName,
-                                             @PathVariable String          userId,
-                                             @RequestBody  String          name,
-                                             @RequestParam int             startFrom,
-                                             @RequestParam int             pageSize)
+    public GUIDListResponse  getAssetsByName(@PathVariable String serverName,
+                                             @PathVariable String userId,
+                                             @RequestBody  String name,
+                                             @RequestParam int    startFrom,
+                                             @RequestParam int    pageSize)
     {
         return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
     }
@@ -135,11 +134,11 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/assets/by-search-string")
 
-    public GUIDListResponse  findAssets(@PathVariable String          serverName,
-                                        @PathVariable String          userId,
-                                        @RequestBody  String          searchString,
-                                        @RequestParam int             startFrom,
-                                        @RequestParam int             pageSize)
+    public GUIDListResponse  findAssets(@PathVariable String serverName,
+                                        @PathVariable String userId,
+                                        @RequestBody  String searchString,
+                                        @RequestParam int    startFrom,
+                                        @RequestParam int    pageSize)
     {
         return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
     }
@@ -161,13 +160,13 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/assets/by-endpoint-address")
 
-    public  GUIDListResponse getAssetsByEndpoint(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @RequestBody  String          networkAddress,
-                                                 @RequestParam int             startFrom,
-                                                 @RequestParam int             pageSize)
+    public  GUIDListResponse findAssetsByEndpoint(@PathVariable String serverName,
+                                                  @PathVariable String userId,
+                                                  @RequestBody  String networkAddress,
+                                                  @RequestParam int    startFrom,
+                                                  @RequestParam int    pageSize)
     {
-        return restAPI.getAssetsByEndpoint(serverName, userId, networkAddress, startFrom, pageSize);
+        return restAPI.findAssetsByEndpoint(serverName, userId, networkAddress, startFrom, pageSize);
     }
 
 
@@ -186,11 +185,11 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/assets/{assetGUID}/log-records/{discoveryService}")
 
-    public VoidResponse logAssetAuditMessage(@PathVariable String    serverName,
-                                             @PathVariable String    userId,
-                                             @PathVariable String    assetGUID,
-                                             @PathVariable String    discoveryService,
-                                             @RequestBody  String    message)
+    public VoidResponse logAssetAuditMessage(@PathVariable String serverName,
+                                             @PathVariable String userId,
+                                             @PathVariable String assetGUID,
+                                             @PathVariable String discoveryService,
+                                             @RequestBody  String message)
     {
         return restAPI.logAssetAuditMessage(serverName, userId, assetGUID, discoveryService, message);
     }
@@ -380,7 +379,7 @@ public class DiscoveryMetadataStoreResource
      *
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
-     * @param annotationGUID anchor annotation
+     * @param annotationGUID parent annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
      *
@@ -463,7 +462,7 @@ public class DiscoveryMetadataStoreResource
      *
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
-     * @param anchorAnnotationGUID unique identifier of the annotation that this new one os to be attached to
+     * @param parentAnnotationGUID unique identifier of the annotation that this new one os to be attached to
      * @param requestBody annotation object
      *
      * @return unique identifier of new annotation or
@@ -472,16 +471,16 @@ public class DiscoveryMetadataStoreResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving annotations in the annotation store.
      */
-    @PostMapping(path = "/annotations/{anchorAnnotationGUID}/extended-annotations")
+    @PostMapping(path = "/annotations/{parentAnnotationGUID}/extended-annotations")
 
     public  GUIDResponse  addAnnotationToAnnotation(@PathVariable String     serverName,
                                                     @PathVariable String     userId,
-                                                    @PathVariable String     anchorAnnotationGUID,
+                                                    @PathVariable String     parentAnnotationGUID,
                                                     @RequestBody  Annotation requestBody)
     {
         return restAPI.addAnnotationToAnnotation(serverName,
                                                  userId,
-                                                 anchorAnnotationGUID,
+                                                 parentAnnotationGUID,
                                                  requestBody);
     }
 
@@ -500,7 +499,7 @@ public class DiscoveryMetadataStoreResource
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem updating the annotation in the annotation store.
      */
-    @PostMapping(path = "/annotations/{annotationGUID}")
+    @PostMapping(path = "/annotations/{annotationGUID}/update")
 
     public VoidResponse updateAnnotation(@PathVariable String     serverName,
                                          @PathVariable String     userId,
@@ -530,12 +529,240 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/annotations/{annotationGUID}/delete")
 
-    public VoidResponse  deleteAnnotation(@PathVariable String          serverName,
-                                          @PathVariable String          userId,
-                                          @PathVariable String          annotationGUID,
-                                          @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  deleteAnnotation(@PathVariable                   String          serverName,
+                                          @PathVariable                   String          userId,
+                                          @PathVariable                   String          annotationGUID,
+                                          @RequestBody (required = false) NullRequestBody requestBody)
     {
         return restAPI.deleteAnnotation(serverName, userId, annotationGUID, requestBody);
+    }
+
+
+
+
+    /**
+     * Return the list of data fields from previous runs of the discovery service.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param discoveryReportGUID unique identifier of the discovery analysis report
+     * @param startingFrom starting position in the list.
+     * @param maximumResults maximum number of elements that can be returned
+     *
+     * @return list of data fields (or null if none are registered) or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem retrieving data fields from the annotation store.
+     */
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}/data-fields/previous")
+
+    public DataFieldListResponse getPreviousDataFieldsForAsset(@PathVariable String serverName,
+                                                               @PathVariable String userId,
+                                                               @PathVariable String discoveryReportGUID,
+                                                               @RequestParam int    startingFrom,
+                                                               @RequestParam int    maximumResults)
+    {
+        return restAPI.getPreviousDataFieldsForAsset(serverName, userId, discoveryReportGUID, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Return the current list of data fields for this discovery run.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param discoveryReportGUID unique identifier of the discovery analysis report
+     * @param startingFrom starting position in the list.
+     * @param maximumResults maximum number of elements that can be returned
+     *
+     * @return list of data fields (or null if none are registered) or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem retrieving data fields from the annotation store.
+     */
+    @GetMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}/data-fields")
+
+    public DataFieldListResponse getNewDataFieldsForAsset(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String discoveryReportGUID,
+                                                          @RequestParam int    startingFrom,
+                                                          @RequestParam int    maximumResults)
+    {
+        return restAPI.getNewDataFieldsForAsset(serverName, userId, discoveryReportGUID, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Return any annotations attached to this annotation.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param parentDataFieldGUID parent data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of annotations that can be returned.
+     *
+     * @return list of DataField objects or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @GetMapping(path = "/data-fields/{parentDataFieldGUID}/nested-data-fields")
+
+    public DataFieldListResponse getNestedDataFields(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String parentDataFieldGUID,
+                                                     @RequestParam int    startingFrom,
+                                                     @RequestParam int    maximumResults)
+    {
+        return restAPI.getNestedDataFields(serverName, userId, parentDataFieldGUID, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Return a specific data field stored in the annotation store (previous or new).
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID unique identifier of the data field
+     *
+     * @return data field object or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem retrieving the data field from the annotation store.
+     */
+    @GetMapping(path = "/data-fields/{dataFieldGUID}")
+
+    public DataFieldResponse  getDataField(@PathVariable String serverName,
+                                           @PathVariable String userId,
+                                           @PathVariable String dataFieldGUID)
+    {
+        return restAPI.getDataField(serverName, userId, dataFieldGUID);
+    }
+
+
+    /**
+     * Add a new data field to the Annotation store linked off of an annotation (typically SchemaAnalysisAnnotation).
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param annotationGUID unique identifier of the annotation that the data field is to be linked to
+     * @param dataField dataField object
+     *
+     * @return unique identifier of new data field or
+     *
+     *  InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
+     *                                   that can not be associated with a data field.
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem  adding the data field to the Annotation store.
+     */
+    @PostMapping(path = "/annotations/{annotationGUID}/data-fields")
+
+    public GUIDResponse  addDataFieldToDiscoveryReport(@PathVariable String    serverName,
+                                                       @PathVariable String    userId,
+                                                       @PathVariable String    annotationGUID,
+                                                       @RequestBody  DataField dataField)
+    {
+        return restAPI.addDataFieldToDiscoveryReport(serverName, userId, annotationGUID, dataField);
+    }
+
+
+    /**
+     * Add a new data field and link it to an existing data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param dataField data field object
+     *
+     * @return unique identifier of new data field or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    @PostMapping(path = "/data-fields/{parentDataFieldGUID}/nested-data-fields")
+
+    public GUIDResponse  addDataFieldToDataField(@PathVariable String    serverName,
+                                                 @PathVariable String    userId,
+                                                 @PathVariable String    parentDataFieldGUID,
+                                                 @RequestBody  DataField dataField)
+    {
+        return restAPI.addDataFieldToDataField(serverName, userId, parentDataFieldGUID, dataField);
+    }
+
+
+    /**
+     * Add a new annotation and link it to an existing data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param annotation data field object
+     *
+     * @return unique identifier of new annotation or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    @PostMapping(path = "/data-fields/{parentDataFieldGUID}/annotations")
+
+    public GUIDResponse addAnnotationToDataField(@PathVariable String     serverName,
+                                                 @PathVariable String     userId,
+                                                 @PathVariable String     parentDataFieldGUID,
+                                                 @RequestBody  Annotation annotation)
+    {
+        return restAPI.addAnnotationToDataField(serverName, userId, parentDataFieldGUID, annotation);
+    }
+
+
+    /**
+     * Replace the current properties of a data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID unique identifier of data field
+     * @param dataField new properties
+     *
+     * @return fully filled out data field or
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem updating the data field in the annotation store.
+     */
+    @PostMapping(path = "/data-fields/{dataFieldGUID}/update")
+
+    public VoidResponse updateDataField(@PathVariable String    serverName,
+                                        @PathVariable String    userId,
+                                        @PathVariable String    dataFieldGUID,
+                                        @RequestBody  DataField dataField)
+    {
+        return restAPI.updateDataField(serverName, userId, dataFieldGUID, dataField);
+    }
+
+
+    /**
+     * Remove a data field from the annotation store.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID unique identifier of the data field
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is invalid or
+     *  UserNotAuthorizedException the user id not authorized to issue this request or
+     *  PropertyServerException there was a problem deleting the data field from the annotation store.
+     */
+    @PostMapping(path = "/data-fields/{dataFieldGUID}/delete")
+
+    public VoidResponse  deleteDataField(@PathVariable                  String          serverName,
+                                         @PathVariable                  String          userId,
+                                         @PathVariable                  String          dataFieldGUID,
+                                         @RequestBody(required = false) NullRequestBody requestBody)
+    {
+        return restAPI.deleteDataField(serverName, userId, dataFieldGUID, requestBody);
     }
 }
 
