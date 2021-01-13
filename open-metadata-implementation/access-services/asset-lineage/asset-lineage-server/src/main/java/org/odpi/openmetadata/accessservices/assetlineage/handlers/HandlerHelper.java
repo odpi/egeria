@@ -319,12 +319,12 @@ public class HandlerHelper {
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
     }
 
-    public Set<GraphContext> buildContextForRelationships(String userId, List<Relationship> semanticAssignments) throws InvalidParameterException,
+    public Set<GraphContext> buildContextForRelationships(String userId, List<Relationship> relationships) throws InvalidParameterException,
                                                                                                                         PropertyServerException,
                                                                                                                         UserNotAuthorizedException {
         Set<GraphContext> context = new HashSet<>();
 
-        addRelationshipsToContext(userId, context, semanticAssignments);
+        addRelationshipsToContext(userId, context, relationships);
 
         return context;
     }

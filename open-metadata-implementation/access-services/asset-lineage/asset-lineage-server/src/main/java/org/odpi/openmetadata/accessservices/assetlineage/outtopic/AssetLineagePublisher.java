@@ -134,16 +134,14 @@ public class AssetLineagePublisher {
         for (String eventType : contextMap.keySet()) {
             Set<GraphContext> graphContexts = contextMap.get(eventType);
 
-            LineageEvent event = new LineageEvent();
+            if (CollectionUtils.isNotEmpty(graphContexts)) {
+                LineageEvent event = new LineageEvent();
 
-            if (CollectionUtils.isEmpty(graphContexts)) {
-                continue;
+                event.setContext(graphContexts);
+                event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
+
+                publishEvent(event);
             }
-
-            event.setContext(graphContexts);
-            event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
-
-            publishEvent(event);
         }
     }
 

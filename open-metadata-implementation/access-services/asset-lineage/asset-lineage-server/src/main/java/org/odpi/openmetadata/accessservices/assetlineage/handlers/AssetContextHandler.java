@@ -125,10 +125,9 @@ public class AssetContextHandler {
         Map<String, Set<GraphContext>> context = new HashMap<>();
         Set<GraphContext> columnContext = new HashSet<>();
 
+        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), buildLineageMappings(userId, entityDetail));
         final String typeDefName = entityDetail.getType().getTypeDefName();
-
         switch (typeDefName) {
-
             case TABULAR_COLUMN:
                 EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
 
@@ -153,6 +152,13 @@ public class AssetContextHandler {
         }
 
         return context;
+    }
+
+    private Set<GraphContext> buildLineageMappings(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING,
+                entityDetail.getType().getTypeDefName());
+
+        return handlerHelper.buildContextForRelationships(userId, relationships);
     }
 
     private Set<GraphContext> buildRelationalTableContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
@@ -215,7 +221,6 @@ public class AssetContextHandler {
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipTypeName,
                 startEntity.getType().getTypeDefName());
         if (CollectionUtils.isEmpty(relationships)) {
-            //no relationships found, context will not be updated and no end entity will be returned
             return null;
         }
         context.addAll(handlerHelper.buildContextForRelationships(userId, relationships));
