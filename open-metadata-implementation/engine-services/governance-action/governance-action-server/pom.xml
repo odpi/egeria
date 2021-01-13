@@ -57,11 +57,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>engine-host-services-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>engine-host-services-registration</artifactId>
         </dependency>
 

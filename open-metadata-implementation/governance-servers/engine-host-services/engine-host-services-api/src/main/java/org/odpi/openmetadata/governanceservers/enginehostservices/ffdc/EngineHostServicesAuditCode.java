@@ -298,14 +298,6 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                 "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
                                         "retry the governance action by updating its status back to REQUESTED status."),
 
-    WATCHDOG_LISTENER_EXCEPTION("ENGINE-HOST-SERVICES-0033",
-                             OMRSAuditLogRecordSeverity.ERROR,
-                             "Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.  The exception was {1} with error message {2}",
-                             "An open watchdog governance action service has raised an exception while processing an incoming " +
-                                     "watchdog event.  The exception explains the reason.",
-                             "Review the error messages and resolve the cause of the problem if needed."),
-
-
     NO_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0150",
                        OMRSAuditLogRecordSeverity.ERROR,
                        "{0} in server {1} is not configured with the platform URL root for the {2}",

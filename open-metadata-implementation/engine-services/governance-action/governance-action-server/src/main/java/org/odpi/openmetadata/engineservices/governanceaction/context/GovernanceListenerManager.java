@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.engineservices.governanceaction.context;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
-import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -280,9 +280,9 @@ public class GovernanceListenerManager
                 final String actionDescription = "publish watchdog event to listener";
 
                 auditLog.logMessage(actionDescription,
-                                    EngineHostServicesAuditCode.WATCHDOG_LISTENER_EXCEPTION.getMessageDefinition(governanceEngineName,
-                                                                                                                 error.getClass().getName(),
-                                                                                                                 error.getMessage()),
+                                    GovernanceActionAuditCode.WATCHDOG_LISTENER_EXCEPTION.getMessageDefinition(governanceEngineName,
+                                                                                                               error.getClass().getName(),
+                                                                                                               error.getMessage()),
                                     event.toString());
             }
         }
