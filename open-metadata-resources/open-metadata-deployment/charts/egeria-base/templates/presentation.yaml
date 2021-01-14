@@ -63,7 +63,7 @@ spec:
           imagePullPolicy: {{ .Values.image.presentation.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ include "myapp.fullname" . }}-configmap
+                name: {{ .Release.Name }}-env
           ports:
             - containerPort: 8091
           readinessProbe:

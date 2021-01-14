@@ -16,6 +16,8 @@ egeria:
   viewServerName: view1
   # Organization name for multi-tenant UI
   viewOrg: org
+  # Cohort name
+  cohort: mds
   # Set to override the k8s storage class for persistent volume claim
   #storageClass:
   # Default to 8GB
@@ -81,3 +83,9 @@ kafka:
     #can be enabled if external kafka access is required
     #service:
         #nodeport: 30092
+
+# Additional configuration notes:
+#
+# -- We assume we are always providing our own kafka/zookeeper (the VDC chart is an example of this being configurable)
+# -- the kafka topic root is not configurable - may be needed to be configurable if we change the above
+# -- always uses graph repo - inmemory doesn't make sense for a persistent environment
