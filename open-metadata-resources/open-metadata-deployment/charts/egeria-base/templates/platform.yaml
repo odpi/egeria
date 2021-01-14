@@ -72,7 +72,7 @@ spec:
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ include "myapp.fullname" . }}-configmap
+                name: {{ .Release.Name }}-env
           env:
             {{ if .Values.egeria.debug }}
             - name: JAVA_DEBUG
