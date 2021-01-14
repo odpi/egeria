@@ -379,7 +379,7 @@ public class ODFRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a POST REST call that returns an AnnotationResponse object.
+     * Issue a POST REST call that returns an AnnotationListResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -458,4 +458,85 @@ public class ODFRESTClient extends OCFRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a DataFieldListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DataFieldListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DataFieldListResponse callDataFieldListGetRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object... params) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        DataFieldListResponse restResult = this.callGetRESTCall(methodName, DataFieldListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a DataFieldResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DataFieldResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DataFieldResponse callDataFieldGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        DataFieldResponse restResult = this.callGetRESTCall(methodName, DataFieldResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns an DataFieldResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DataFieldResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DataFieldResponse callDataFieldPostRESTCall(String    methodName,
+                                                       String    urlTemplate,
+                                                       Object    requestBody,
+                                                       Object... params) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        DataFieldResponse restResult = this.callPostRESTCall(methodName, DataFieldResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
 }

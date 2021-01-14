@@ -70,6 +70,7 @@ public abstract class ProvisioningGovernanceActionService extends GovernanceActi
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
+        governanceContext = null;
         super.disconnect();
     }
 }
