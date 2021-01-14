@@ -2009,9 +2009,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                 if (columnName != null)
                 {
                     String columnQualifiedName = fullPath + "::" + columnName + "::" + columnCount;
+                    String columnDisplayName = columnName + "::" + columnCount;
 
                     SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(columnQualifiedName,
-                                                                                               columnQualifiedName,
+                                                                                               columnDisplayName,
                                                                                                null,
                                                                                                columnCount,
                                                                                                1,
