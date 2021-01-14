@@ -1392,9 +1392,11 @@ public class AssetCatalogHandler {
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
         primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
-        matchProperties.setProperty(NAME, primitivePropertyValue);
-        matchProperties.setProperty(DISPLAY_NAME, primitivePropertyValue);
-
+        if (TYPES_WITH_DISPLAY_NAME.contains(entityTypeGUID)) {
+            matchProperties.setProperty(DISPLAY_NAME, primitivePropertyValue);
+        } else {
+            matchProperties.setProperty(NAME, primitivePropertyValue);
+        }
         List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByProperty(userId,
                 entityTypeGUID,
                 matchProperties,
@@ -1406,6 +1408,7 @@ public class AssetCatalogHandler {
                 searchParameters.getSequencingProperty(),
                 searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
                 searchParameters.getPageSize());
+
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;
         }

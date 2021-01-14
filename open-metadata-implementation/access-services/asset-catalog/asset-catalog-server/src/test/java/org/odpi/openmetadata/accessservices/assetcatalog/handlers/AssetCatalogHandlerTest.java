@@ -51,7 +51,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DISPLAY_NAME;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NAME;
 
@@ -752,7 +751,6 @@ public class AssetCatalogHandlerTest {
         primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
         matchProperties.setProperty(NAME, primitivePropertyValue);
-        matchProperties.setProperty(DISPLAY_NAME, primitivePropertyValue);
         return matchProperties;
     }
 
