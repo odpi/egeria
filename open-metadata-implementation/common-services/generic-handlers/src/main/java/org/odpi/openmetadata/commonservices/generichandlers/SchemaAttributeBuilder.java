@@ -177,7 +177,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
                                                                                   OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                                                                                  schemaTypeBuilder.getTypeName(),
+                                                                                  typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
                                                                                   schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName));

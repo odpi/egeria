@@ -13,7 +13,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * GovernanceEngineEventType describes the different types of events produced by the Governance Engine OMAS.
- * Events are used to configure the Open Metadata Engine Services (OMES) - client of the Governance Engine OMAS).
+ * Events are used to configure the governance servers supporting governance engines (in Egeria these are
+ * Open Metadata Engine Services (OMES) running in an Engine Host OMAG Server).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -34,8 +35,8 @@ public enum GovernanceEngineEventType implements Serializable
                                           "Metadata change event",
                                           "Metadata change event for watchdog governance action services."),
 
-    NEW_GOVERNANCE_ACTION_EVENT          (4,
-                                          "New Governance Action",
+    REQUESTED_GOVERNANCE_ACTION_EVENT    (4,
+                                          "Requested Governance Action",
                                           "New request to run a governance service."),
 
     ;

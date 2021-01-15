@@ -1614,12 +1614,16 @@ public class OpenMetadataAPIMapper
     public static final String DATA_FIELD_DESCRIPTION_PROPERTY_NAME        = "dataFieldDescription"; /* from DataField entity */
     public static final String DATA_FIELD_ALIASES_PROPERTY_NAME            = "dataFieldAliases";     /* from DataField entity */
     public static final String DATA_FIELD_SORT_ORDER_PROPERTY_NAME         = "dataFieldName";        /* from DataField entity */
-    public static final String DATA_FIELD_DEFAULT_VALUE_PROPERTY_NAME      = "defaultValue";         /* from DataField entity */
 
     /* For DiscoveredDataField relationship */
     public static final String DISCOVERED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e22222cd54";
     public static final String DISCOVERED_DATA_FIELD_TYPE_NAME    = "DiscoveredDataField";
     /* End1 = SchemaAnalysisAnnotation; End 2 = DataField */
+
+    /* For DiscoveredDataField relationship */
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME    = "DiscoveredNestedDataField";
+    /* End1 = (parent)DataField; End 2 = DataField */
 
     public static final String DATA_FIELD_POSITION_PROPERTY_NAME  = "dataFieldPosition"; /* from DiscoveredDataField and
                                                                                             DiscoveredNestedDataField relationship */
@@ -1628,6 +1632,11 @@ public class OpenMetadataAPIMapper
     public static final String DATA_FIELD_ANNOTATION_TYPE_GUID = "72ed6de6-79d9-4e7d-aefc-b969382fc4b0";
     public static final String DATA_FIELD_ANNOTATION_TYPE_NAME = "DataFieldAnnotation";
     /* Annotation */
+
+    /* For DataFieldAnalysis relationship */
+    public static final String DATA_FIELD_ANALYSIS_TYPE_GUID    = "833e849d-eda2-40bb-9e6b-c3ca0b56d581";
+    public static final String DATA_FIELD_ANALYSIS_TYPE_NAME    = "DataFieldAnalysis";
+    /* End1 = DataFieldAnnotation; End 2 = DataField */
 
     /* For ClassificationAnnotation entity */
     public static final String CLASSIFICATION_ANNOTATION_TYPE_GUID = "23e8287f-5c7e-4e03-8bd3-471fc7fc029c";

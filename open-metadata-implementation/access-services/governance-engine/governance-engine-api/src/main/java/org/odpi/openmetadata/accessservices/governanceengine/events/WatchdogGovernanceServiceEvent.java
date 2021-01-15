@@ -82,6 +82,8 @@ public class WatchdogGovernanceServiceEvent extends GovernanceEngineEvent
                        "watchdogGovernanceEvent=" + watchdogGovernanceEvent +
                        ", eventVersionId=" + getEventVersionId() +
                        ", eventType=" + getEventType() +
+                       ", governanceEngineGUID='" + getGovernanceEngineGUID() + '\'' +
+                       ", governanceEngineName='" + getGovernanceEngineName() + '\'' +
                        '}';
     }
 

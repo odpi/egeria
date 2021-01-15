@@ -377,7 +377,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * Return any annotations attached to this annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -389,7 +388,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public  List<Annotation>  getExtendedAnnotations(String   userId,
-                                                     String   discoveryRequestGUID,
                                                      String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
@@ -398,8 +396,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
     {
         final String methodName                  = "getExtendedAnnotations";
         final String annotationGUIDParameterName = "annotationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3" +
-                "}/annotations/{4}/extended-annotations?startingFrom={5}&maximumResults={6}";
+        final String urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{4}/extended-annotations?startingFrom={5}&maximumResults={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
@@ -412,7 +409,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
                                                                                          serverName,
                                                                                          userId,
                                                                                          discoveryEngineName,
-                                                                                         discoveryRequestGUID,
                                                                                          annotationGUID,
                                                                                          Integer.toString(startingFrom),
                                                                                          Integer.toString(maximumResults));
@@ -436,7 +432,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * for an annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -445,16 +440,14 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  Annotation        getAnnotation(String   userId,
-                                            String   discoveryRequestGUID,
-                                            String   annotationGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            DiscoveryEngineException
+    public  Annotation getAnnotation(String   userId,
+                                     String   annotationGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     DiscoveryEngineException
     {
         final String   methodName = "getAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3" +
-                "}/annotations/{4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
@@ -466,7 +459,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
                                                                                  serverName,
                                                                                  userId,
                                                                                  discoveryEngineName,
-                                                                                 discoveryRequestGUID,
                                                                                  annotationGUID);
 
             exceptionHandler.detectAndThrowInvalidParameterException(restResult);

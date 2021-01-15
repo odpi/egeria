@@ -70,7 +70,7 @@ public class ArrayPropertyValue extends PropertyValue
      * @return string value
      */
     public String valueAsString() {
-        return mapValuesAsString(arrayValues.getPropertyValues()).toString();
+        return mapValuesAsString(arrayValues.getInstanceProperties()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class ArrayPropertyValue extends PropertyValue
      * @return object value
      */
     public Object valueAsObject() {
-        return mapValuesAsObject(arrayValues.getPropertyValues());
+        return mapValuesAsObject(arrayValues.getInstanceProperties());
     }
 
 

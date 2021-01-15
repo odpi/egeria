@@ -20,13 +20,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -1380,9 +1384,23 @@ public class AssetCatalogHandler {
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException, RepositoryErrorException {
 
-        List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByPropertyValue(userId,
+        InstanceProperties matchProperties = new InstanceProperties();
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(searchCriteria);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+        if (TYPES_WITH_DISPLAY_NAME.contains(entityTypeGUID)) {
+            matchProperties.setProperty(DISPLAY_NAME, primitivePropertyValue);
+        } else {
+            matchProperties.setProperty(NAME, primitivePropertyValue);
+        }
+        List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByProperty(userId,
                 entityTypeGUID,
-                searchCriteria,
+                matchProperties,
+                MatchCriteria.ANY,
                 searchParameters.getFrom(),
                 Collections.singletonList(InstanceStatus.ACTIVE),
                 searchParameters.getLimitResultsByClassification(),
@@ -1390,6 +1408,7 @@ public class AssetCatalogHandler {
                 searchParameters.getSequencingProperty(),
                 searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
                 searchParameters.getPageSize());
+
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;
         }
