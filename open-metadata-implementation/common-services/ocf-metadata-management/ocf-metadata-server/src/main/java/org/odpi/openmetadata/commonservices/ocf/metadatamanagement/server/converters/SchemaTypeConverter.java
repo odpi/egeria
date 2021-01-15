@@ -131,7 +131,6 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
                         super.setUpElementHeader(returnBean,
                                                  schemaRootHeader,
                                                  schemaRootClassifications,
-                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                  methodName);
 
                         InstanceProperties classificationProperties =
