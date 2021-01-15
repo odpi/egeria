@@ -25,7 +25,7 @@ public class LogoutController {
     @GetMapping
     public void logout(HttpServletRequest request) throws HttpClientErrorException {
         String token = request.getHeader(AuthService.AUTH_HEADER_NAME);
-        if(tokenRedisClient != null && token !=null){
+        if(tokenRedisClient != null && token != null){
            tokenRedisClient.del(token);
         }
     }
