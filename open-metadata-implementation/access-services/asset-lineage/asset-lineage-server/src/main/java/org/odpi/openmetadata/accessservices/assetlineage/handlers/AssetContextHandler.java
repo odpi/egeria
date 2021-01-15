@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
@@ -53,6 +53,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetContextHandler {
 
     private final RepositoryHandler repositoryHandler;
+    private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final HandlerHelper handlerHelper;
     private final List<String> supportedZones;
@@ -69,6 +70,7 @@ public class AssetContextHandler {
                                RepositoryHandler repositoryHandler, List<String> supportedZones, Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
+        this.repositoryHelper = repositoryHelper;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.supportedZones = supportedZones;
     }
@@ -125,7 +127,7 @@ public class AssetContextHandler {
         Map<String, Set<GraphContext>> context = new HashMap<>();
         Set<GraphContext> columnContext = new HashSet<>();
 
-        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), buildLineageMappings(userId, entityDetail));
+        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), buildLineageMappingsContext(userId, entityDetail));
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
             case TABULAR_COLUMN:
@@ -154,7 +156,7 @@ public class AssetContextHandler {
         return context;
     }
 
-    private Set<GraphContext> buildLineageMappings(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    private Set<GraphContext> buildLineageMappingsContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING,
                 entityDetail.getType().getTypeDefName());
 
@@ -171,7 +173,7 @@ public class AssetContextHandler {
         EntityDetail database = addContextForRelationships(userId, deployedSchemaType, DATA_CONTENT_FOR_DATA_SET, context);
 
         if (database != null) {
-            addConnectionToAssetContext(userId, entityDetail, context);
+            addConnectionToAssetContext(userId, database, context);
         }
 
         return context;
@@ -188,29 +190,26 @@ public class AssetContextHandler {
 
         EntityDetail fileFolder = addContextForRelationships(userId, entityDetail, NESTED_FILE, context);
 
-        context.addAll(buildContextForFileFolder(userId, fileFolder));
+        addContextForFileFolder(userId, fileFolder, context);
 
         return context;
     }
 
-    private Set<GraphContext> buildContextForFileFolder(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
-        Set<GraphContext> context = new HashSet<>();
+    private void addContextForFileFolder(String userId, EntityDetail entityDetail, Set<GraphContext> context) throws OCFCheckedExceptionBase {
 
         if (entityDetail == null) {
-            return context;
+            return;
         }
 
         EntityDetail fileFolder = addContextForRelationships(userId, entityDetail, FOLDER_HIERARCHY, context);
 
         if (fileFolder != null) {
             //recursively build the nested folder structure
-            buildContextForFileFolder(userId, fileFolder);
+            addContextForFileFolder(userId, fileFolder, context);
         } else {
             // build the context for the Connection
             addConnectionToAssetContext(userId, entityDetail, context);
         }
-
-        return context;
     }
 
     private EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
@@ -223,6 +222,15 @@ public class AssetContextHandler {
         if (CollectionUtils.isEmpty(relationships)) {
             return null;
         }
+
+        if (startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
+            relationships = relationships.stream().filter(relationship ->
+                    relationship.getEntityTwoProxy().getGUID().equals(startEntity.getGUID())).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(relationships)) {
+                return null;
+            }
+        }
+
         context.addAll(handlerHelper.buildContextForRelationships(userId, relationships));
 
         return handlerHelper.getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
@@ -248,7 +256,7 @@ public class AssetContextHandler {
             tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, typeDefName, assetContext);
         }
         for (EntityDetail schemaTypeEntity : tableTypeEntities) {
-            if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName())) {
+            if (isComplexSchemaType(schemaTypeEntity.getType().getTypeDefName())) {
                 setAssetDetails(userId, schemaTypeEntity, assetContext);
             } else {
                 Optional<EntityDetail> first = tableTypeEntities.stream().findFirst();
@@ -424,20 +432,22 @@ public class AssetContextHandler {
     /**
      * Checks if the type is a Complex Schema Type
      *
-     * @param userId      the user id
      * @param typeDefName the type name
      *
      * @return true if the given type is a complex schema type
      *
-     * @throws RepositoryErrorException                                                           there is a problem communicating with the
-     *                                                                                            metadata repository
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException  one of the parameters is invalid
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the user is not authorized to issue this request
      */
-    private boolean isComplexSchemaType(String userId, String typeDefName) throws RepositoryErrorException,
-                                                                                  org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                                  org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
-        TypeDefGallery allTypes = repositoryHandler.getMetadataCollection().getAllTypes(userId);
-        return allTypes.getTypeDefs().stream().anyMatch(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE));
+    private boolean isComplexSchemaType(String typeDefName)  {
+
+        if (repositoryHelper.getKnownTypeDefGallery() == null
+                || CollectionUtils.isEmpty(repositoryHelper.getKnownTypeDefGallery().getTypeDefs())) {
+            return false;
+        }
+
+        List<TypeDef> allTypes = repositoryHelper.getKnownTypeDefGallery().getTypeDefs();
+        Optional<TypeDef> typeDef = allTypes.stream()
+                .filter(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE))
+                .findAny();
+        return typeDef.isPresent();
     }
 }
