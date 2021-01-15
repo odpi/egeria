@@ -217,6 +217,9 @@ public class AssetContextHandler {
         if (startEntity == null) {
             return null;
         }
+
+        context.addAll(handlerHelper.buildContextForLineageClassifications(startEntity));
+
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipTypeName,
                 startEntity.getType().getTypeDefName());
         if (CollectionUtils.isEmpty(relationships)) {

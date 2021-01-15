@@ -2,16 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,20 +38,16 @@ public class ClassificationHandler {
      * Gets asset context from the entity by classification type.
      *
      * @param entityDetail the entity for retrieving the classifications attached to it
+     * @param assetLineageEventType
      * @return the asset context by classification
      */
-    public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType) throws OCFCheckedExceptionBase {
         String methodName = "buildClassificationContext";
         invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
 
-        List<Classification> classifications = handlerHelper.filterLineageClassifications(entityDetail.getClassifications());
-        if (CollectionUtils.isEmpty(classifications)) {
-            return null;
-        }
+        Map<String, Set<GraphContext>> context = new HashMap<>();
 
-        AssetContext assetContext = new AssetContext();
-        handlerHelper.addLineageClassificationToContext(entityDetail, assetContext);
-
-        return assetContext.getNeighbors();
+       context.put(assetLineageEventType.getEventTypeName(), handlerHelper.buildContextForLineageClassifications(entityDetail));
+        return context;
     }
 }

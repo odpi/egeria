@@ -154,14 +154,14 @@ public class AssetLineagePublisher {
      */
     public void publishClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType)
             throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> classificationContext = classificationHandler.buildClassificationContext(entityDetail);
+        Map<String, Set<GraphContext>> classificationContext = classificationHandler.buildClassificationContext(entityDetail, assetLineageEventType);
 
         if (MapUtils.isEmpty(classificationContext)) {
             log.debug("Lineage classifications not found for the entity {} ", entityDetail.getGUID());
             return;
         }
 
-        publishLineageEvents(classificationContext, assetLineageEventType);
+        publishLineageEvents(classificationContext);
     }
 
 
