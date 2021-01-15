@@ -105,7 +105,7 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
 
 
     /**
-     * Return the properties that will guide the remediation action.
+     * Return the properties that will guide the governance action.
      *
      * @return map of property names to property values
      */

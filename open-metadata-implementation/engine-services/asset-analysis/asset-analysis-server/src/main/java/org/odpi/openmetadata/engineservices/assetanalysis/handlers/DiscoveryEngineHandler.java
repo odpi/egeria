@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -36,7 +37,8 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @param serverName the name of the engine host server where the discovery engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param discoveryEngineClient REST client for direct REST Calls
+     * @param serverClient client used by the engine host services to control the execution of governance action requests
+     * @param discoveryEngineClient REST client for direct REST Calls to Discovery Engine OMAS - used by discovery services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -44,11 +46,12 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                   String                              serverName,
                                   String                              serverUserId,
                                   GovernanceEngineConfigurationClient configurationClient,
+                                  GovernanceEngineClient              serverClient,
                                   DiscoveryEngineClient               discoveryEngineClient,
                                   AuditLog                            auditLog,
                                   int                                 maxPageSize)
     {
-        super(engineConfig, serverName, serverUserId, configurationClient, auditLog, maxPageSize);
+        super(engineConfig, serverName, serverUserId, configurationClient, serverClient, auditLog, maxPageSize);
 
         this.discoveryEngineClient = discoveryEngineClient;
     }
@@ -84,7 +87,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
         if (discoveryServiceCache != null)
         {
-            return runDiscoveryService(assetGUID, discoveryRequestType, analysisParameters, annotationTypes, null, discoveryServiceCache);
+            return runDiscoveryService(assetGUID, discoveryRequestType, analysisParameters, annotationTypes, discoveryServiceCache);
         }
 
         return null;
@@ -135,7 +138,6 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                 discoveryRequestType,
                                                 analysisParameters,
                                                 annotationTypes,
-                                                null,
                                                 discoveryServiceCache);
                         }
                     }
@@ -232,7 +234,6 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @param discoveryRequestType type of discovery
      * @param suppliedAnalysisParameters parameters for the discovery
      * @param annotationTypes types of annotations that can be returned
-     * @param governanceActionGUID unique identifier of the associated governance action entity
      * @param governanceServiceCache factory for discovery services.
      *
      * @return unique identifier for this request.
@@ -245,7 +246,6 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                        String                 discoveryRequestType,
                                        Map<String, String>    suppliedAnalysisParameters,
                                        List<String>           annotationTypes,
-                                       String                 governanceActionGUID,
                                        GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
@@ -254,7 +254,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                                           discoveryRequestType,
                                                                                           suppliedAnalysisParameters,
                                                                                           annotationTypes,
-                                                                                          governanceActionGUID,
+                                                                                          null,
                                                                                           governanceServiceCache);
 
         Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
@@ -339,7 +339,9 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
         return new DiscoveryServiceHandler(governanceEngineProperties,
                                            governanceEngineGUID,
+                                           serverUserId,
                                            governanceActionGUID,
+                                           serverClient,
                                            discoveryRequestType,
                                            governanceServiceCache.getGovernanceServiceName(),
                                            governanceServiceCache.getNextGovernanceService(),
@@ -398,7 +400,6 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -409,15 +410,13 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
-    public  List<Annotation>  getExtendedAnnotations(String   discoveryRequestGUID,
-                                                     String   annotationGUID,
+    public  List<Annotation>  getExtendedAnnotations(String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
         return discoveryEngineClient.getExtendedAnnotations(engineUserId,
-                                                            discoveryRequestGUID,
                                                             annotationGUID,
                                                             startingFrom,
                                                             maximumResults);
@@ -428,7 +427,6 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -437,11 +435,10 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
-    public  Annotation        getAnnotation(String   discoveryRequestGUID,
-                                            String   annotationGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public  Annotation getAnnotation(String annotationGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        return discoveryEngineClient.getAnnotation(engineUserId, discoveryRequestGUID, annotationGUID);
+        return discoveryEngineClient.getAnnotation(engineUserId, annotationGUID);
     }
 }

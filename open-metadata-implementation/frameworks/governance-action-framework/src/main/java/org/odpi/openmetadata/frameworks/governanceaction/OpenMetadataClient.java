@@ -436,7 +436,6 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
     /**
      * Declare that all of the processing for the governance action service is finished and the status of the work.
      *
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
@@ -445,8 +444,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public abstract void recordCompletionStatus(String           governanceActionGUID,
-                                                CompletionStatus status,
+    public abstract void recordCompletionStatus(CompletionStatus status,
                                                 List<String>     outputGuards,
                                                 List<String>     newActionTargetGUIDs) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
@@ -561,6 +559,12 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
                                           List<WatchdogEventType>    interestingEventTypes,
                                           List<String>               interestingMetadataTypes,
                                           String                     specificInstance) throws InvalidParameterException;
+
+
+    /**
+     * Unregister the listener from the event infrastructure.
+     */
+    public abstract void disconnectListener();
 
 
     /**

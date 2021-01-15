@@ -66,6 +66,7 @@ public abstract class RemediationGovernanceActionService extends GovernanceActio
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
+        governanceContext = null;
         super.disconnect();
     }
 }
