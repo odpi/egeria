@@ -472,7 +472,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 for (EnumElementDef enumElementDef : enumElementDefs)
                 {
-                    if ((enumElementDef != null) && (enumElementDef.equals(symbolicName)))
+                    if ((enumElementDef != null) && (symbolicName.equals(enumElementDef.getValue())))
                     {
                         omrsPropertyValue =
                                 new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue();
