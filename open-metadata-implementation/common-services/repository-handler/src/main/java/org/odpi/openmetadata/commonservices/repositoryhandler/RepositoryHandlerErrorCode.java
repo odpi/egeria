@@ -105,9 +105,9 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The system is unable to process a request because multiple relationships have been discovered and it is unsure which relationship to follow.",
             "Investigate why multiple relationships exist.  Then retry the request once the issue is resolved."),
     UNKNOWN_ENTITY(404, "OMAG-REPOSITORY-HANDLER-404-007",
-            "The {0} with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
-            "The system is unable to update information associated with the asset because none of the connected open metadata repositories recognize the asset's unique identifier.",
-            "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
+            "The {0} entity with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
+            "The system is unable to update information associated with the entity because none of the connected open metadata repositories recognize the entity's unique identifier.",
+            "The unique identifier of the entity is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
     NO_RELATIONSHIPS_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-008",
             "No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}",
             "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all of the information it needs.",
@@ -130,6 +130,11 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The system is unable to process a request because it can not find the requested entity to update.",
             "This may be a logic error or a configuration error (such as the cohort does not contain the correct members.  Look for errors in the " +
                                                     "server's audit log and console to understand and correct the source of any error."),
+    UNKNOWN_RELATIONSHIP(404, "OMAG-REPOSITORY-HANDLER-404-012",
+                   "The {0} relationship with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
+                   "The system is unable to update information associated with the relationship because none of the connected open metadata repositories recognize the relationship's unique identifier.",
+                   "The unique identifier of the relationship is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
+
     PROPERTY_SERVER_ERROR(500, "OMAG-REPOSITORY-HANDLER-500-001",
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service " +
                                   "{2} on server {3}; message was {0}",

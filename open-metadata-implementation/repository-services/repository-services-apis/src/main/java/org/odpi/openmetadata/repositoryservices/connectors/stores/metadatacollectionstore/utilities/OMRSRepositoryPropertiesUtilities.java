@@ -61,6 +61,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return string property value or null
      */
+    @Override
     public String getStringProperty(String             sourceName,
                                     String             propertyName,
                                     InstanceProperties properties,
@@ -114,6 +115,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName  method of caller
      * @return string property value or null
      */
+    @Override
     public String removeStringProperty(String             sourceName,
                                        String             propertyName,
                                        InstanceProperties properties,
@@ -146,6 +148,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return int ordinal or -1 if not found
      */
+    @Override
     public int getEnumPropertyOrdinal(String             sourceName,
                                       String             propertyName,
                                       InstanceProperties properties,
@@ -173,6 +176,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return int ordinal or -1 if not found
      */
+    @Override
     public int removeEnumPropertyOrdinal(String             sourceName,
                                          String             propertyName,
                                          InstanceProperties properties,
@@ -202,6 +206,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return string property value or null
      */
+    @Override
     public InstanceProperties getMapProperty(String             sourceName,
                                              String             propertyName,
                                              InstanceProperties properties,
@@ -247,6 +252,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param callingMethodName method of caller
      * @return array property value or null
      */
+    @Override
     public List<String> getStringArrayProperty(String             sourceName,
                                                String             propertyName,
                                                InstanceProperties properties,
@@ -307,6 +313,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return array property value or null
      */
+    @Override
     public List<String> removeStringArrayProperty(String             sourceName,
                                                   String             propertyName,
                                                   InstanceProperties properties,
@@ -397,6 +404,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, String> getStringMapFromProperty(String             sourceName,
                                                         String             propertyName,
                                                         InstanceProperties properties,
@@ -439,6 +447,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, String> removeStringMapFromProperty(String             sourceName,
                                                            String             propertyName,
                                                            InstanceProperties properties,
@@ -471,6 +480,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Boolean> getBooleanMapFromProperty(String             sourceName,
                                                           String             propertyName,
                                                           InstanceProperties properties,
@@ -513,6 +523,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Boolean> removeBooleanMapFromProperty(String             sourceName,
                                                              String             propertyName,
                                                              InstanceProperties properties,
@@ -545,6 +556,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Long> getLongMapFromProperty(String             sourceName,
                                                     String             propertyName,
                                                     InstanceProperties properties,
@@ -587,6 +599,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Long> removeLongMapFromProperty(String             sourceName,
                                                        String             propertyName,
                                                        InstanceProperties properties,
@@ -611,7 +624,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
 
-
     /**
      * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
      *
@@ -621,6 +633,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Integer> getIntegerMapFromProperty(String             sourceName,
                                                           String             propertyName,
                                                           InstanceProperties properties,
@@ -663,6 +676,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Integer> removeIntegerMapFromProperty(String             sourceName,
                                                              String             propertyName,
                                                              InstanceProperties properties,
@@ -695,6 +709,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Object> getMapFromProperty(String             sourceName,
                                                   String             propertyName,
                                                   InstanceProperties properties,
@@ -742,6 +757,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return map property value or null
      */
+    @Override
     public Map<String, Object> removeMapFromProperty(String             sourceName,
                                                      String             propertyName,
                                                      InstanceProperties properties,
@@ -772,6 +788,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param instanceProperties packed properties
      * @return properties stored in Java map
      */
+    @Override
     public Map<String, Object> getInstancePropertiesAsMap(InstanceProperties    instanceProperties)
     {
         if (instanceProperties != null)
@@ -825,6 +842,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return string property value or null
      */
+    @Override
     public int    getIntProperty(String             sourceName,
                                  String             propertyName,
                                  InstanceProperties properties,
@@ -879,6 +897,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName  method of caller
      * @return string property value or null
      */
+    @Override
     public int    removeIntProperty(String             sourceName,
                                     String             propertyName,
                                     InstanceProperties properties,
@@ -909,6 +928,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return string property value or null
      */
+    @Override
     public Date getDateProperty(String             sourceName,
                                 String             propertyName,
                                 InstanceProperties properties,
@@ -965,6 +985,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName  method of caller
      * @return string property value or null
      */
+    @Override
     public Date    removeDateProperty(String             sourceName,
                                       String             propertyName,
                                       InstanceProperties properties,
@@ -996,6 +1017,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName method of caller
      * @return string property value or null
      */
+    @Override
     public boolean getBooleanProperty(String             sourceName,
                                       String             propertyName,
                                       InstanceProperties properties,
@@ -1050,6 +1072,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName  method of caller
      * @return string property value or null
      */
+    @Override
     public boolean removeBooleanProperty(String             sourceName,
                                          String             propertyName,
                                          InstanceProperties properties,
@@ -1081,6 +1104,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addStringPropertyToInstance(String             sourceName,
                                                           InstanceProperties properties,
                                                           String             propertyName,
@@ -1135,6 +1159,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addIntPropertyToInstance(String             sourceName,
                                                        InstanceProperties properties,
                                                        String             propertyName,
@@ -1181,6 +1206,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName  calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addLongPropertyToInstance(String             sourceName,
                                                         InstanceProperties properties,
                                                         String             propertyName,
@@ -1225,6 +1251,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName  calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addFloatPropertyToInstance(String             sourceName,
                                                          InstanceProperties properties,
                                                          String             propertyName,
@@ -1269,6 +1296,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName  calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addDatePropertyToInstance(String             sourceName,
                                                         InstanceProperties properties,
                                                         String             propertyName,
@@ -1319,6 +1347,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addBooleanPropertyToInstance(String             sourceName,
                                                            InstanceProperties properties,
                                                            String             propertyName,
@@ -1367,6 +1396,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addEnumPropertyToInstance(String             sourceName,
                                                         InstanceProperties properties,
                                                         String             propertyName,
@@ -1415,6 +1445,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addStringArrayPropertyToInstance(String              sourceName,
                                                                InstanceProperties  properties,
                                                                String              propertyName,
@@ -1474,6 +1505,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addMapPropertyToInstance(String              sourceName,
                                                        InstanceProperties  properties,
                                                        String              propertyName,
@@ -1540,6 +1572,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addStringMapPropertyToInstance(String              sourceName,
                                                              InstanceProperties  properties,
                                                              String              propertyName,
@@ -1607,6 +1640,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addBooleanMapPropertyToInstance(String               sourceName,
                                                               InstanceProperties   properties,
                                                               String               propertyName,
@@ -1674,6 +1708,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addLongMapPropertyToInstance(String             sourceName,
                                                            InstanceProperties properties,
                                                            String             propertyName,
@@ -1742,6 +1777,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addIntMapPropertyToInstance(String               sourceName,
                                                           InstanceProperties   properties,
                                                           String               propertyName,
@@ -1808,6 +1844,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addPropertyMapToInstance(String              sourceName,
                                                        InstanceProperties  properties,
                                                        Map<String, Object> mapValues,
@@ -1960,7 +1997,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }
-                else
+                else if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
@@ -1997,6 +2034,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addStringPropertyMapToInstance(String              sourceName,
                                                              InstanceProperties  properties,
                                                              String              propertyName,
@@ -2058,6 +2096,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addBooleanPropertyMapToInstance(String               sourceName,
                                                               InstanceProperties   properties,
                                                               String               propertyName,
@@ -2120,6 +2159,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addLongPropertyMapToInstance(String              sourceName,
                                                            InstanceProperties  properties,
                                                            String              propertyName,
@@ -2181,6 +2221,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    @Override
     public InstanceProperties addIntPropertyMapToInstance(String               sourceName,
                                                           InstanceProperties   properties,
                                                           String               propertyName,

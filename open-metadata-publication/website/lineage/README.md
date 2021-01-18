@@ -86,10 +86,39 @@ Figure 7 shows lineage across multiple technologies.
 ![Figure 7](complex-lineage-mapping.png#pagewidth)
 > **Figure 6:** Lineage mapping between the data fields
 
+## Lineage for Dynamic landscapes
+
+When an asset is deleted from the open metadata repositories, all of its
+relationships with other elements are also deleted.
+This includes the lineage relationships.
+
+It is possible to move assets out of the
+[governance zones](../../../open-metadata-implementation/access-services/docs/concepts/governance-zones) where
+active users are working with assets.  This ensures the assets are no longer
+visible to these users.  However it also means they are not visible for the lineage graph.
+
+There is an option to mark assets as deleted whilst sill keeping them in the
+active governance zones.
+This involves adding the [Memento](../open-metadata-types/0010-Base-Model.md) 
+classification to the asset.  With this classification in place, the
+asset is only returned on lineage queries.
+The Memento classification is set in APIs such as the
+`archiveDataFileInCatalog()` methods on the 
+[Data Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/data-manager)
+and
+[Files Integrator Open Metadata Integration Service (OMIS)](../../../open-metadata-implementation/integration-services/files-integrator).
+
+
 ## Further reading
 
+* [Modeling technology using open metadata types](../modelling-technology)
+
+APIs for capturing lineage
+* [Asset Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/asset-manager)
 * [Lineage Integrator Open Metadata Integration Server (OMIS)](../../../open-metadata-implementation/integration-services/lineage-integrator)
 
+APIs for retrieving lineage
+* [Open Lineage Services](../../../open-metadata-implementation/governance-servers/open-lineage-services)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -219,14 +219,14 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                                  SearchProperties searchProperties,
-                                                                                  String           sequencingProperty,
-                                                                                  SequencingOrder  sequencingOrder,
-                                                                                  int              startFrom,
-                                                                                  int              pageSize) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public  List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                                   SearchProperties searchProperties,
+                                                                                   String           sequencingProperty,
+                                                                                   SequencingOrder  sequencingOrder,
+                                                                                   int              startFrom,
+                                                                                   int              pageSize) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
     {
         return governanceEngineClient.findRelationshipsBetweenMetadataElements(engineUserId,
                                                                                relationshipTypeName,
@@ -486,7 +486,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
-     * @param properties new properties for the classification
+     * @param properties new properties for the relationship
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship

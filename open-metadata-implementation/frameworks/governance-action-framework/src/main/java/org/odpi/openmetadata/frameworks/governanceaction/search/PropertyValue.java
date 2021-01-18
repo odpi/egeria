@@ -36,8 +36,6 @@ public abstract class PropertyValue implements Serializable
     /*
      * Common type information that is this is augmented by the subclasses
      */
-    private PropertyCategory propertyCategory = null;
-    private String           typeGUID         = null;
     private String           typeName         = null;
 
 
@@ -49,17 +47,6 @@ public abstract class PropertyValue implements Serializable
     }
 
     /**
-     * Typical constructor initializes the instance property value to nulls.
-     *
-     * @param propertyCategory PropertyCategory Enum
-     */
-    protected PropertyValue(PropertyCategory propertyCategory)
-    {
-        this.propertyCategory = propertyCategory;
-    }
-
-
-    /**
      * Copy/clone constructor initializes the instance property value from the supplied template.
      *
      * @param template PropertyValue
@@ -68,8 +55,6 @@ public abstract class PropertyValue implements Serializable
     {
         if (template != null)
         {
-            this.propertyCategory = template.getPropertyCategory();
-            this.typeGUID = template.getTypeGUID();
             this.typeName = template.getTypeName();
         }
     }
@@ -152,47 +137,6 @@ public abstract class PropertyValue implements Serializable
 
 
     /**
-     * Return the category of this instance property's type.
-     *
-     * @return TypeDefCategory enum value
-     */
-    public PropertyCategory getPropertyCategory() {
-        return propertyCategory;
-    }
-
-
-    /**
-     * Set up the category for this instance property.  This is used on the JSON deserialization.
-     *
-     * @param propertyCategory new category
-     */
-    public void setPropertyCategory(PropertyCategory propertyCategory)
-    {
-        this.propertyCategory = propertyCategory;
-    }
-
-
-    /**
-     * Return the unique GUID for the type.
-     *
-     * @return String unique identifier
-     */
-    public String getTypeGUID() {
-        return typeGUID;
-    }
-
-
-    /**
-     * Set up the unique GUID of the type.
-     *
-     * @param typeGUID String unique identifier
-     */
-    public void setTypeGUID(String typeGUID) {
-        this.typeGUID = typeGUID;
-    }
-
-
-    /**
      * Return the name of the type.
      *
      * @return String type name
@@ -221,8 +165,6 @@ public abstract class PropertyValue implements Serializable
     public String toString()
     {
         return "PropertyValue{" +
-                "propertyCategory=" + propertyCategory +
-                ", typeGUID='" + typeGUID + '\'' +
                 ", typeName='" + typeName + '\'' +
                 '}';
     }
@@ -246,9 +188,7 @@ public abstract class PropertyValue implements Serializable
             return false;
         }
         PropertyValue that = (PropertyValue) objectToCompare;
-        return getPropertyCategory() == that.getPropertyCategory() &&
-                Objects.equals(getTypeGUID(), that.getTypeGUID()) &&
-                Objects.equals(getTypeName(), that.getTypeName());
+        return Objects.equals(getTypeName(), that.getTypeName());
     }
 
 
@@ -260,6 +200,6 @@ public abstract class PropertyValue implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getPropertyCategory(), getTypeGUID(), getTypeName());
+        return Objects.hash(getTypeName());
     }
 }

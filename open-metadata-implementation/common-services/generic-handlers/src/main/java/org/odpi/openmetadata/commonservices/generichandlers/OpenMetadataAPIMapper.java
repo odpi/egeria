@@ -290,6 +290,14 @@ public class OpenMetadataAPIMapper
     public static final String USE_TYPE_PROPERTY_NAME                    = "useType";                         /* from ServerAssetUse relationship */
     /* public static final String DESCRIPTION_PROPERTY_NAME              = "description";                        from ServerAssetUse relationship */
 
+    public static final String SERVER_ASSET_USE_TYPE_TYPE_GUID          = "09439481-9489-467c-9ae5-178a6e0b6b5a";  /* from Area 0 */
+    public static final String SERVER_ASSET_USE_TYPE_TYPE_NAME          = "ServerAssetUseType";
+    public static final int SERVER_ASSET_USE_TYPE_OWNS_ORDINAL          = 0;
+    public static final int SERVER_ASSET_USE_TYPE_GOVERNS_ORDINAL       = 1;
+    public static final int SERVER_ASSET_USE_TYPE_MAINTAINS_ORDINAL     = 2;
+    public static final int SERVER_ASSET_USE_TYPE_USES_ORDINAL          = 3;
+    public static final int SERVER_ASSET_USE_TYPE_OTHER_ORDINAL         = 99;
+
 
     public static final String CLOUD_SERVICE_CLASSIFICATION_GUID     = "337e7b1a-ad4b-4818-aa3e-0ff3307b2fbe6";
     public static final String CLOUD_SERVICE_CLASSIFICATION_NAME     = "CloudService";

@@ -130,7 +130,7 @@ public class GovernanceEngineClient
     {
         final String methodName = "getMetadataElementByGUID";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/elements/{2}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -167,7 +167,7 @@ public class GovernanceEngineClient
     {
         final String methodName = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/elements/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-search-string?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -215,19 +215,20 @@ public class GovernanceEngineClient
         final String methodName = "getRelatedMetadataElements";
         final String guidParameterName = "elementGUID";
         final String typeNameParameterName = "relationshipTypeName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/type/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/type/{3}?startFrom={4}&pageSize={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
-        RelatedMetadataElementsResponse restResult = restClient.callRelatedMetadataElementsGetRESTCall(methodName,
-                                                                                                       serverPlatformURLRoot + urlTemplate,
-                                                                                                       serverName,
-                                                                                                       userId,
-                                                                                                       relationshipTypeName,
-                                                                                                       Integer.toString(startFrom),
-                                                                                                       Integer.toString(pageSize));
+        RelatedMetadataElementListResponse restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
+                                                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                                                               serverName,
+                                                                                                               userId,
+                                                                                                               elementGUID,
+                                                                                                               relationshipTypeName,
+                                                                                                               Integer.toString(startFrom),
+                                                                                                               Integer.toString(pageSize));
 
         return restResult.getElementList();
     }
@@ -269,7 +270,7 @@ public class GovernanceEngineClient
                                                                                                  PropertyServerException
     {
         final String methodName = "findMetadataElements";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/elements/by-search-specification?startFrom={2}&pageSize={3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-search-specification?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -313,15 +314,15 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public  List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           userId,
-                                                                                  String           relationshipTypeName,
-                                                                                  SearchProperties searchProperties,
-                                                                                  String           sequencingProperty,
-                                                                                  SequencingOrder  sequencingOrder,
-                                                                                  int              startFrom,
-                                                                                  int              pageSize) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public  List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           userId,
+                                                                                   String           relationshipTypeName,
+                                                                                   SearchProperties searchProperties,
+                                                                                   String           sequencingProperty,
+                                                                                   SequencingOrder  sequencingOrder,
+                                                                                   int              startFrom,
+                                                                                   int              pageSize) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/by-search-specification?startFrom={2}&pageSize={3}";
@@ -335,13 +336,13 @@ public class GovernanceEngineClient
         requestBody.setSequencingProperty(sequencingProperty);
         requestBody.setSequencingOrder(sequencingOrder);
 
-        RelatedMetadataElementsResponse restResult = restClient.callRelatedMetadataElementsPostRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                                                  requestBody,
-                                                                                                  serverName,
-                                                                                                  userId,
-                                                                                                  Integer.toString(startFrom),
-                                                                                                  Integer.toString(pageSize));
+        RelatedMetadataElementsListResponse restResult = restClient.callRelatedMetadataElementsListPostRESTCall(methodName,
+                                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                                requestBody,
+                                                                                                                serverName,
+                                                                                                                userId,
+                                                                                                                Integer.toString(startFrom),
+                                                                                                                Integer.toString(pageSize));
 
         return restResult.getElementList();
     }
@@ -770,7 +771,7 @@ public class GovernanceEngineClient
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
-     * @param properties new properties for the classification
+     * @param properties new properties for the relationship
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
@@ -1109,7 +1110,30 @@ public class GovernanceEngineClient
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return null;
+        final String methodName = "createIncidentReport";
+        final String qualifiedNameParameterName = "qualifiedName";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/incident-reports";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        IncidentReportRequestBody requestBody = new IncidentReportRequestBody();
+
+        requestBody.setQualifiedName(qualifiedName);
+        requestBody.setDomainIdentifier(domainIdentifier);
+        requestBody.setBackground(background);
+        requestBody.setImpactedResources(impactedResources);
+        requestBody.setPreviousIncidents(previousIncidents);
+        requestBody.setIncidentClassifiers(incidentClassifiers);
+        requestBody.setAdditionalProperties(additionalProperties);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
     }
 
 
@@ -1131,7 +1155,20 @@ public class GovernanceEngineClient
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return null;
+        final String methodName = "getGovernanceAction";
+        final String guidParameterName = "governanceActionGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceActionGUID, guidParameterName, methodName);
+
+        GovernanceActionElementResponse restResult = restClient.callGovernanceActionGetRESTCall(methodName,
+                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                serverName,
+                                                                                                userId,
+                                                                                                governanceActionGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -1150,7 +1187,19 @@ public class GovernanceEngineClient
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
+        final String methodName = "claimGovernanceAction";
+        final String guidParameterName = "governanceActionGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/claim";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceActionGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        governanceActionGUID);
     }
 
 
@@ -1175,6 +1224,21 @@ public class GovernanceEngineClient
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return null;
+        final String methodName = "getActiveClaimedGovernanceActions";
+        final String guidParameterName = "governanceEngineGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/active-governance-actions?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
+
+        GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
+                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  serverName,
+                                                                                                  userId,
+                                                                                                  governanceEngineGUID,
+                                                                                                  Integer.toString(startFrom),
+                                                                                                  Integer.toString(pageSize));
+
+        return restResult.getElements();
     }
 }
