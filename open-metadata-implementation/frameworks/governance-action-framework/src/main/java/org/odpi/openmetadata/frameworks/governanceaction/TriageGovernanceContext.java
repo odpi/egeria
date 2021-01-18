@@ -52,6 +52,7 @@ public class TriageGovernanceContext extends GovernanceContext
 
 
     /**
+     * Create a To Do request for someone to work on.
      *
      * @param toDoQualifiedName unique name for the to do.  (Could be the engine name and a guid?)
      * @param title short meaningful phrase for the person receiving the request
@@ -75,9 +76,9 @@ public class TriageGovernanceContext extends GovernanceContext
     {
         final String methodName = "openToDo";
 
-        final String todoTypeName            = "ToDo";
-        final String personRoleTypeName      = "PersonRole";
-        final String actionAsignmentTypeName = "ActionAssignment";
+        final String todoTypeName             = "ToDo";
+        final String personRoleTypeName       = "PersonRole";
+        final String actionAssignmentTypeName = "ActionAssignment";
 
         final String qualifiedNamePropertyName = "qualifiedName";
         final String titlePropertyName         = "name";
@@ -101,7 +102,6 @@ public class TriageGovernanceContext extends GovernanceContext
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         primitivePropertyValue.setPrimitiveValue(assignTo);
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
         condition.setProperty(qualifiedNamePropertyName);
         condition.setOperator(PropertyComparisonOperator.EQ);
@@ -191,7 +191,7 @@ public class TriageGovernanceContext extends GovernanceContext
         /*
          * Link the "to do" and the person role
          */
-        openMetadataStore.createRelatedElementsInStore(actionAsignmentTypeName, personRoleGUID, todoGUID, null, null, null);
+        openMetadataStore.createRelatedElementsInStore(actionAssignmentTypeName, personRoleGUID, todoGUID, null, null, null);
 
         return todoGUID;
     }

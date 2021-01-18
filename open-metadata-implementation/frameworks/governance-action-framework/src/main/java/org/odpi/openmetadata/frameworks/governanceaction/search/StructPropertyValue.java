@@ -31,7 +31,7 @@ public class StructPropertyValue extends PropertyValue
      */
     public StructPropertyValue()
     {
-        super(PropertyCategory.STRUCT);
+        super();
     }
 
 
@@ -120,8 +120,6 @@ public class StructPropertyValue extends PropertyValue
     {
         return "StructPropertyValue{" +
                 "attributes=" + attributes +
-                ", instancePropertyCategory=" + getPropertyCategory() +
-                ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }
