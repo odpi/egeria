@@ -1,9 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog.util;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Constants for Open Metadata Types (names and guid)
  */
@@ -15,7 +12,7 @@ public final class Constants {
     public static final String SCHEMA_ELEMENT_GUID = "718d4244-8559-49ed-ad5a-10e5c305a656";
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
-    public static final String GLOSSARY_TERM_GUID = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
+    public static final String GLOSSARY_TERM_TYPE_GUID = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String ASSET = "Asset";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
@@ -88,14 +85,6 @@ public final class Constants {
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
     public static final String ATTRIBUTE_FOR_SCHEMA_GUID = "86b176a2-015c-44a6-8106-54d5d69ba661";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
-    public static final String DATA_FILE_GUID = "10752b4a-4b5d-4519-9eae-fdd6d162122f";
-    public static final String GLOSSARY_CATEGORY_TYPE_GUID = "e507485b-9b5a-44c9-8a28-6967f7ff3672";
-    public static final String GLOSSARY_TYPE_GUID = "36f66863-9726-4b41-97ee-714fd0dc6fe4";
-    public static final String RELATIONAL_COLUMN_TYPE_GUID = "aa8d5470-6dbc-4648-9e2f-045e5df9d2f9";
-    public static final String RELATIONAL_DB_TYPE_GUID = "f20f5f45-1afb-41c1-9a09-34d8812626a4";
-    public static final String RELATIONAL_TABLE_TYPE_GUID = "ce7e72b8-396a-4013-8688-f9d973067425";
-    public static final String TABULAR_COLUMN_TYPE_GUID = "d81a0425-4e9b-4f31-bc1c-e18c3566da10";
-    public static final String TABULAR_SCHEMA_TYPE_GUID = "248975ec-8019-4b8a-9caf-084c8b724233";
     //Instance Properties fields
     public static final String TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
@@ -106,13 +95,6 @@ public final class Constants {
     public static final String GUID_PARAMETER = "GUID";
     public static final String SEARCH_PARAMETER = "searchParameter";
     public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME = "additionalProperties";
-
-    public static final List<String> TYPES_WITH_DISPLAY_NAME = Arrays.asList(
-            GLOSSARY_TERM_GUID, GLOSSARY_CATEGORY_TYPE_GUID, GLOSSARY_TYPE_GUID,
-            RELATIONAL_COLUMN_TYPE_GUID, RELATIONAL_DB_TYPE_GUID, RELATIONAL_TABLE_TYPE_GUID,
-            SCHEMA_ATTRIBUTE_TYPE_GUID, SCHEMA_ELEMENT_GUID,
-            TABULAR_COLUMN_TYPE_GUID, TABULAR_SCHEMA_TYPE_GUID);
-
     private Constants() {
     }
 }
