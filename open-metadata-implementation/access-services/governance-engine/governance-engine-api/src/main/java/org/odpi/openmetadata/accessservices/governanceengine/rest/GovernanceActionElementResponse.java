@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.governanceengine.rest;
@@ -6,35 +6,34 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * RelatedMetadataElementsResponse is a response object for passing back a a list of GAF RelatedMetadataElements
- * or an exception if the request failed.
+ * GovernanceActionElementResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
+ * GovernanceAction element object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelatedMetadataElementsResponse extends GovernanceEngineOMASAPIResponse
+public class GovernanceActionElementResponse extends GovernanceEngineOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<RelatedMetadataElement> elementList = null;
-
+    private GovernanceActionElement element = null;
 
     /**
      * Default constructor
      */
-    public RelatedMetadataElementsResponse()
+    public GovernanceActionElementResponse()
     {
+        super();
     }
 
 
@@ -43,47 +42,43 @@ public class RelatedMetadataElementsResponse extends GovernanceEngineOMASAPIResp
      *
      * @param template object to copy
      */
-    public RelatedMetadataElementsResponse(RelatedMetadataElementsResponse template)
+    public GovernanceActionElementResponse(GovernanceActionElementResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            this.element = template.getElement();
         }
     }
 
 
     /**
-     * Return the list of metadata elements.
+     * Return the properties object.
      *
-     * @return result object
+     * @return properties object
      */
-    public List<RelatedMetadataElement> getElementList()
+    public GovernanceActionElement getElement()
     {
-        if (elementList == null)
-        {
-            return null;
-        }
-        else if (elementList.isEmpty())
+        if (element == null)
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(elementList);
+            return element;
         }
     }
 
 
     /**
-     * Set up the metadata element to return.
+     * Set up the properties object.
      *
-     * @param elementList result object
+     * @param element  properties object
      */
-    public void setElementList(List<RelatedMetadataElement> elementList)
+    public void setElement(GovernanceActionElement element)
     {
-        this.elementList = elementList;
+        this.element = element;
     }
 
 
@@ -95,8 +90,8 @@ public class RelatedMetadataElementsResponse extends GovernanceEngineOMASAPIResp
     @Override
     public String toString()
     {
-        return "OpenMetadataElementsResponse{" +
-                "elementList=" + elementList +
+        return "GovernanceActionElementResponse{" +
+                "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -132,11 +127,11 @@ public class RelatedMetadataElementsResponse extends GovernanceEngineOMASAPIResp
         {
             return false;
         }
-        RelatedMetadataElementsResponse that = (RelatedMetadataElementsResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        GovernanceActionElementResponse that = (GovernanceActionElementResponse) objectToCompare;
+        return Objects.equals(getElement(), that.getElement());
     }
 
-
+    
     /**
      * Return hash code for this object
      *
@@ -145,6 +140,6 @@ public class RelatedMetadataElementsResponse extends GovernanceEngineOMASAPIResp
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), getElement());
     }
 }
