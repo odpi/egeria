@@ -240,6 +240,30 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                              "requests targeted to this governance engine.",
                                      "This is a configuration error.  Update the configuration for the engine host service to ensure governance engines are correctly " +
                                              "matched to the engine services.  Once the cause is resolved, restart the server."),
+
+    NO_OMAS_SERVER_URL(400,"ENGINE-HOST-SERVICES-400-102",
+                       "{0} in server {1} is not configured with the platform URL root for the {2}",
+                       "The engine service is not able to locate the metadata server to retrieve the configuration for " +
+                               "its governance engines.  The Engine Host server fails to start.",
+                       "To be successful the engine service needs both the platform URL root and the name of the metadata " +
+                               "server as well as the list of engines it is to host. Add the " +
+                               "configuration for the platform URL root to this server's configuration document and check that the " +
+                               "other required configuration properties are in place. Then restart this server."),
+
+    NO_OMAS_SERVER_NAME(400, "ENGINE-HOST-SERVICES-400-103",
+                        "{0} in server {1} is not configured with the name for the server running the {2}",
+                        "The server is not able to retrieve its configuration from the metadata server.  It fails to start.",
+                        "Add the configuration for the metadata server name to this server's configuration document.  " +
+                                "Ensure that the platform URL root points to the platform where the metadata server is running and that" +
+                                "there is at least one engine listed.  Once the configuration document is set up correctly,  " +
+                                "restart this server."),
+
+    NO_ENGINES(400, "ENGINE-HOST-SERVICES-400-104",
+               "{0} in server {1} is not configured with any engines",
+               "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
+                       "the server to fail too.",
+               "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
+                       "and then restart the server."),
  ;
 
 

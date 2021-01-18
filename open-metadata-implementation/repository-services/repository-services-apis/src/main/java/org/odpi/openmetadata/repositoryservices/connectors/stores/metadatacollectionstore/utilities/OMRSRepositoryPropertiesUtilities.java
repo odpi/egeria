@@ -1595,6 +1595,207 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     }
 
 
+    /**
+     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addBooleanMapPropertyToInstance(String               sourceName,
+                                                              InstanceProperties   properties,
+                                                              String               propertyName,
+                                                              Map<String, Boolean> mapValues,
+                                                              String               methodName)
+    {
+        if (mapValues != null)
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (! mapValues.isEmpty())
+            {
+                InstanceProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new InstanceProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+
+                /*
+                 * The values of a map property are stored as an embedded InstanceProperties object.
+                 */
+                InstanceProperties  mapInstanceProperties  = this.addBooleanPropertyMapToInstance(sourceName,
+                                                                                                 null,
+                                                                                                 propertyName,
+                                                                                                 mapValues,
+                                                                                                 methodName);
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapInstanceProperties != null)
+                {
+                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+                    mapPropertyValue.setMapValues(mapInstanceProperties);
+                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addLongMapPropertyToInstance(String             sourceName,
+                                                           InstanceProperties properties,
+                                                           String             propertyName,
+                                                           Map<String, Long>  mapValues,
+                                                           String             methodName)
+    {
+        if (mapValues != null)
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (! mapValues.isEmpty())
+            {
+                InstanceProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new InstanceProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+
+                /*
+                 * The values of a map property are stored as an embedded InstanceProperties object.
+                 */
+                InstanceProperties  mapInstanceProperties  = this.addLongPropertyMapToInstance(sourceName,
+                                                                                               null,
+                                                                                               propertyName,
+                                                                                               mapValues,
+                                                                                               methodName);
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapInstanceProperties != null)
+                {
+                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+                    mapPropertyValue.setMapValues(mapInstanceProperties);
+                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+
+    /**
+     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addIntMapPropertyToInstance(String               sourceName,
+                                                          InstanceProperties   properties,
+                                                          String               propertyName,
+                                                          Map<String, Integer> mapValues,
+                                                          String               methodName)
+    {
+        if (mapValues != null)
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (! mapValues.isEmpty())
+            {
+                InstanceProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new InstanceProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+
+                /*
+                 * The values of a map property are stored as an embedded InstanceProperties object.
+                 */
+                InstanceProperties  mapInstanceProperties  = this.addIntPropertyMapToInstance(sourceName,
+                                                                                               null,
+                                                                                               propertyName,
+                                                                                               mapValues,
+                                                                                               methodName);
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapInstanceProperties != null)
+                {
+                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+                    mapPropertyValue.setMapValues(mapInstanceProperties);
+                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
@@ -1828,6 +2029,190 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                 primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
                 primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                return resultingProperties;
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addBooleanPropertyMapToInstance(String               sourceName,
+                                                              InstanceProperties   properties,
+                                                              String               propertyName,
+                                                              Map<String, Boolean> mapValues,
+                                                              String               methodName)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            InstanceProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Boolean mapPropertyValue = mapValues.get(mapPropertyName);
+
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
+                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                return resultingProperties;
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addLongPropertyMapToInstance(String              sourceName,
+                                                           InstanceProperties  properties,
+                                                           String              propertyName,
+                                                           Map<String, Long>   mapValues,
+                                                           String              methodName)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            InstanceProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Long mapPropertyValue = mapValues.get(mapPropertyName);
+
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
+                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                return resultingProperties;
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addIntPropertyMapToInstance(String               sourceName,
+                                                          InstanceProperties   properties,
+                                                          String               propertyName,
+                                                          Map<String, Integer> mapValues,
+                                                          String               methodName)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            InstanceProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                int mapPropertyValue = mapValues.get(mapPropertyName);
+
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
                 resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                 propertyCount++;
             }
