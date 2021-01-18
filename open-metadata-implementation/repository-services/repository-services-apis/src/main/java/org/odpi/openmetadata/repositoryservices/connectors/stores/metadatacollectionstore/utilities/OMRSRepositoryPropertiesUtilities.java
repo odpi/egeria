@@ -1960,7 +1960,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }
-                else
+                else if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
