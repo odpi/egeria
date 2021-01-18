@@ -12,7 +12,9 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
-    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    # "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+
 spec:
   template:
     metadata:
@@ -50,9 +52,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-env
-          env:
           command: [ "/bin/bash" ]
-          args: [ "/scripts-dir/config-egeria.sh" ]
+          args: [ "/scripts/config-egeria.sh" ]
           volumeMounts:
           - name: scripts-vol
             mountPath: /scripts
@@ -60,3 +61,5 @@ spec:
         - name: scripts-vol
           configMap:
             name: {{ .Release.Name }}-scripts-configmap
+  # Keep trying quite a few times to aid in debugging
+  backoffLimit: 60

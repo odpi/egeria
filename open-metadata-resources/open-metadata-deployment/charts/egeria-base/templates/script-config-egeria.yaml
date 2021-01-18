@@ -11,4 +11,4 @@ metadata:
     app.kubernetes.io/component: scripts
   name: {{ .Release.Name }}-scripts-configmap
 data:
-{{ (.Files.Glob "../scripts/config-egeria.sh").AsConfig | indent 2 }}
+{{ (.Files.Glob "scripts/config-egeria.sh").AsConfig | indent 2 }}
