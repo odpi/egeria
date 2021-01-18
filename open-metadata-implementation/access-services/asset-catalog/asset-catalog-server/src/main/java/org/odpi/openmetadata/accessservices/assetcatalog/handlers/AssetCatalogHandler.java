@@ -68,7 +68,7 @@ public class AssetCatalogHandler {
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
     private AssetConverter assetConverter;
-    private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
+    private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_TYPE_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
     private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
     private List<String> supportedZones;
@@ -552,7 +552,7 @@ public class AssetCatalogHandler {
                                                              List<String> types)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, PropertyErrorException,
-            TypeErrorException, PagingErrorException, RepositoryErrorException {
+            TypeErrorException, PagingErrorException, RepositoryErrorException, InvalidParameterException {
         List<EntityDetail> result = new ArrayList<>();
 
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
@@ -1382,7 +1382,7 @@ public class AssetCatalogHandler {
                                                       SearchParameters searchParameters, OMRSMetadataCollection metadataCollection)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, RepositoryErrorException {
+            PropertyErrorException, TypeErrorException, PagingErrorException, RepositoryErrorException, InvalidParameterException {
 
         InstanceProperties matchProperties = new InstanceProperties();
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
@@ -1392,7 +1392,7 @@ public class AssetCatalogHandler {
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
         primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
-        if (TYPES_WITH_DISPLAY_NAME.contains(entityTypeGUID)) {
+        if (commonHandler.hasDisplayName(userId, entityTypeGUID)) {
             matchProperties.setProperty(DISPLAY_NAME, primitivePropertyValue);
         } else {
             matchProperties.setProperty(NAME, primitivePropertyValue);
