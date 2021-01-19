@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,8 +23,10 @@ public class RelatedMetadataElements extends ElementControlHeader
 {
     private static final long serialVersionUID = 1L;
 
-    private String            relationshipGUID       = null;
-    private ElementType       relationshipType       = null;
+    private String            relationshipGUID  = null;
+    private ElementType       relationshipType  = null;
+    private Date              effectiveFromTime = null;
+    private Date              effectiveToTime   = null;
     private ElementProperties relationshipProperties = null;
     private String            elementGUIDAtEnd1      = null;
     private String            elementGUIDAtEnd2      = null;
@@ -49,11 +52,13 @@ public class RelatedMetadataElements extends ElementControlHeader
 
         if (template != null)
         {
-            relationshipType = template.getRelationshipType();
-            relationshipGUID = template.getRelationshipGUID();
+            relationshipType       = template.getRelationshipType();
+            relationshipGUID       = template.getRelationshipGUID();
+            effectiveFromTime      = template.getEffectiveFromTime();
+            effectiveToTime        = template.getEffectiveToTime();
             relationshipProperties = template.getRelationshipProperties();
-            elementGUIDAtEnd1 = template.getElementGUIDAtEnd1();
-            elementGUIDAtEnd2 = template.getElementGUIDAtEnd2();
+            elementGUIDAtEnd1      = template.getElementGUIDAtEnd1();
+            elementGUIDAtEnd2      = template.getElementGUIDAtEnd2();
         }
     }
 
@@ -99,6 +104,47 @@ public class RelatedMetadataElements extends ElementControlHeader
     public void setRelationshipType(ElementType relationshipType)
     {
         this.relationshipType = relationshipType;
+    }
+
+
+    /**
+     * Return the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @return Date object
+     */
+    public Date getEffectiveFromTime() { return effectiveFromTime; }
+
+
+    /**
+     * Set up the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @param effectiveFromTime Date object
+     */
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+
+
+    /**
+     * Return the date/time that this instance should no longer be used.
+     *
+     * @return Date object
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+
+
+    /**
+     * Set up the date/time that this instance should no longer be used.
+     *
+     * @param effectiveToTime Date object
+     */
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
     }
 
 
@@ -170,12 +216,14 @@ public class RelatedMetadataElements extends ElementControlHeader
     @Override
     public String toString()
     {
-        return "RelatedMetadataElement{" +
+        return "RelatedMetadataElements{" +
                        "relationshipGUID='" + relationshipGUID + '\'' +
                        ", relationshipType=" + relationshipType +
+                       ", effectiveFromTime=" + effectiveFromTime +
+                       ", effectiveToTime=" + effectiveToTime +
                        ", relationshipProperties=" + relationshipProperties +
-                       ", elementGUIDAtEnd1=" + elementGUIDAtEnd1 +
-                       ", elementGUIDAtEnd2=" + elementGUIDAtEnd2 +
+                       ", elementGUIDAtEnd1='" + elementGUIDAtEnd1 + '\'' +
+                       ", elementGUIDAtEnd2='" + elementGUIDAtEnd2 + '\'' +
                        ", headerVersion=" + getHeaderVersion() +
                        ", elementSourceServer='" + getElementSourceServer() + '\'' +
                        ", elementOriginCategory=" + getElementOriginCategory() +
@@ -218,6 +266,8 @@ public class RelatedMetadataElements extends ElementControlHeader
         RelatedMetadataElements that = (RelatedMetadataElements) objectToCompare;
         return Objects.equals(relationshipGUID, that.relationshipGUID) &&
                        Objects.equals(relationshipType, that.relationshipType) &&
+                       Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
+                       Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
                        Objects.equals(elementGUIDAtEnd1, that.elementGUIDAtEnd1) &&
                        Objects.equals(elementGUIDAtEnd2, that.elementGUIDAtEnd2);
@@ -232,6 +282,7 @@ public class RelatedMetadataElements extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipGUID, relationshipType, relationshipProperties, elementGUIDAtEnd1, elementGUIDAtEnd1);
+        return Objects.hash(super.hashCode(), relationshipGUID, relationshipType, effectiveFromTime, effectiveToTime,
+                            relationshipProperties, elementGUIDAtEnd1, elementGUIDAtEnd1);
     }
 }

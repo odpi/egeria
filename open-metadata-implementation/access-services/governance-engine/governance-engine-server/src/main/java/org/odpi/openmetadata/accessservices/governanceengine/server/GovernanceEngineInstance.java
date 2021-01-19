@@ -4,13 +4,17 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.governanceengine.converters.MetadataElementConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.GovernanceConfigurationHandler;
+import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -25,6 +29,7 @@ public class GovernanceEngineInstance extends OMASServiceInstance
     private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
     private GovernanceConfigurationHandler governanceConfigurationHandler;
+    private MetadataElementHandler<OpenMetadataElement> metadataElementHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -68,16 +73,30 @@ public class GovernanceEngineInstance extends OMASServiceInstance
         if (repositoryHandler != null)
         {
             this.governanceConfigurationHandler = new GovernanceConfigurationHandler(serviceName,
-                                                                                   serverName,
-                                                                                   invalidParameterHandler,
-                                                                                   repositoryHandler,
-                                                                                   repositoryHelper,
-                                                                                   localServerUserId,
-                                                                                   securityVerifier,
-                                                                                   supportedZones,
-                                                                                   defaultZones,
-                                                                                   publishZones,
-                                                                                   auditLog);
+                                                                                     serverName,
+                                                                                     invalidParameterHandler,
+                                                                                     repositoryHandler,
+                                                                                     repositoryHelper,
+                                                                                     localServerUserId,
+                                                                                     securityVerifier,
+                                                                                     supportedZones,
+                                                                                     defaultZones,
+                                                                                     publishZones,
+                                                                                     auditLog);
+
+            this.metadataElementHandler = new MetadataElementHandler<>(new MetadataElementConverter<>(repositoryHelper, serviceName, serverName),
+                                                                       OpenMetadataElement.class,
+                                                                       serviceName,
+                                                                       serverName,
+                                                                       invalidParameterHandler,
+                                                                       repositoryHandler,
+                                                                       repositoryHelper,
+                                                                       localServerUserId,
+                                                                       securityVerifier,
+                                                                       supportedZones,
+                                                                       defaultZones,
+                                                                       publishZones,
+                                                                       auditLog);
         }
         else
         {
@@ -98,4 +117,14 @@ public class GovernanceEngineInstance extends OMASServiceInstance
         return governanceConfigurationHandler;
     }
 
+
+    /**
+     * Return the handler for open metadata store requests.
+     *
+     * @return handler object
+     */
+    MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler()
+    {
+        return metadataElementHandler;
+    }
 }

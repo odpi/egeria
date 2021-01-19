@@ -140,12 +140,12 @@ public class GovernanceEngineOMASResource
      */
     @GetMapping(path = "/open-metadata-store/related-elements/{elementGUID}/type/{relationshipTypeName}")
 
-    public RelatedMetadataElementsListResponse getRelatedMetadataElements(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String elementGUID,
-                                                                          @PathVariable String relationshipTypeName,
-                                                                          @RequestParam int    startFrom,
-                                                                          @RequestParam int    pageSize)
+    public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String elementGUID,
+                                                                         @PathVariable String relationshipTypeName,
+                                                                         @RequestParam int    startFrom,
+                                                                         @RequestParam int    pageSize)
     {
         return restAPI.getRelatedMetadataElements(serverName, userId, elementGUID, relationshipTypeName, startFrom, pageSize);
     }

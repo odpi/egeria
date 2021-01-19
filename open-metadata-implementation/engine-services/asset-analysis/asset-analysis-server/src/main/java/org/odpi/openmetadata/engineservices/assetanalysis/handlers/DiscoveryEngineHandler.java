@@ -343,6 +343,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                            governanceActionGUID,
                                            serverClient,
                                            discoveryRequestType,
+                                           governanceServiceCache.getGovernanceServiceGUID(),
                                            governanceServiceCache.getGovernanceServiceName(),
                                            governanceServiceCache.getNextGovernanceService(),
                                            discoveryContext,

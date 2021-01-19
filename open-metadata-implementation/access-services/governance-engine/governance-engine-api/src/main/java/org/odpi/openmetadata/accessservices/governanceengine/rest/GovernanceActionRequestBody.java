@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionRequestBody implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
 
     private String              qualifiedName = null;
     private int                 domainIdentifier = 0;
@@ -35,7 +35,8 @@ public class GovernanceActionRequestBody implements Serializable
     private Date                startTime = null;
     private String              requestType = null;
     private Map<String, String> requestProperties = null;
-
+    private String              originatorGUID       = null;
+    private String              originatorEngineName = null;
 
     /**
      * Default constructor
@@ -64,7 +65,8 @@ public class GovernanceActionRequestBody implements Serializable
             startTime = template.getStartTime();
             requestType = template.getRequestType();
             requestProperties = template.getRequestProperties();
-        }
+            originatorGUID = template.getOriginatorGUID();
+            originatorEngineName = template.getOriginatorEngineName();}
     }
 
 
@@ -297,6 +299,51 @@ public class GovernanceActionRequestBody implements Serializable
 
 
     /**
+     * Return the unique identifier of the person or process that created the incident.
+     * This this is typically an ActorProfile or Process.
+     *
+     * @return string guid
+     */
+    public String getOriginatorGUID()
+    {
+        return originatorGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the person or process that created the incident.
+     *
+     * @param originatorGUID string guid
+     */
+    public void setOriginatorGUID(String originatorGUID)
+    {
+        this.originatorGUID = originatorGUID;
+    }
+
+
+    /**
+     * Return the qualified name of the governance engine that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getOriginatorEngineName()
+    {
+        return originatorEngineName;
+    }
+
+
+    /**
+     * Set up the qualified name of the governance engine that originated this request (if any).
+     *
+     * @param originatorEngineName string name
+     */
+    public void setOriginatorEngineName(String originatorEngineName)
+    {
+        this.originatorEngineName = originatorEngineName;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -314,6 +361,8 @@ public class GovernanceActionRequestBody implements Serializable
                        ", startTime=" + startTime +
                        ", requestType='" + requestType + '\'' +
                        ", requestProperties=" + requestProperties +
+                       ", originatorGUID=" + originatorGUID +
+                       ", originatorEngineName=" + originatorEngineName +
                        '}';
     }
 
@@ -344,6 +393,8 @@ public class GovernanceActionRequestBody implements Serializable
                        Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs) &&
                        Objects.equals(startTime, that.startTime) &&
                        Objects.equals(requestType, that.requestType) &&
+                       Objects.equals(originatorGUID, that.originatorGUID) &&
+                       Objects.equals(originatorEngineName, that.originatorEngineName) &&
                        Objects.equals(requestProperties, that.requestProperties);
     }
 
@@ -357,6 +408,6 @@ public class GovernanceActionRequestBody implements Serializable
     public int hashCode()
     {
         return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargetGUIDs, startTime, requestType,
-                            requestProperties);
+                            requestProperties, originatorGUID, originatorEngineName);
     }
 }
