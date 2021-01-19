@@ -31,7 +31,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public MapPropertyValue()
     {
-        super(PropertyCategory.MAP);
+        super();
     }
 
 
@@ -158,8 +158,6 @@ public class MapPropertyValue extends PropertyValue
         return "MapPropertyValue{" +
                 "mapValues=" + mapValues +
                 ", mapElementCount=" + getMapElementCount() +
-                ", instancePropertyCategory=" + getPropertyCategory() +
-                ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }

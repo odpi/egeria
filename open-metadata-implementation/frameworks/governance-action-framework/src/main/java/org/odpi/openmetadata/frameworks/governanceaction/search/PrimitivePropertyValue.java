@@ -37,7 +37,7 @@ public class PrimitivePropertyValue extends PropertyValue
      */
     public PrimitivePropertyValue()
     {
-        super(PropertyCategory.PRIMITIVE);
+        super();
     }
 
 
@@ -155,8 +155,6 @@ public class PrimitivePropertyValue extends PropertyValue
         return "PrimitivePropertyValue{" +
                 "primitiveValue=" + primitiveValue +
                 ", primitiveDefCategory=" + primitiveDefCategory +
-                ", instancePropertyCategory=" + getPropertyCategory() +
-                ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }

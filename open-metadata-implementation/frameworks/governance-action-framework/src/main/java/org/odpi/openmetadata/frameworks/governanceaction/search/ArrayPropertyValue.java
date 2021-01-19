@@ -32,8 +32,9 @@ public class ArrayPropertyValue extends PropertyValue
     /**
      * Default constructor sets the array to empty.
      */
-    public ArrayPropertyValue() {
-        super(PropertyCategory.ARRAY);
+    public ArrayPropertyValue()
+    {
+        super();
     }
 
 
@@ -59,7 +60,8 @@ public class ArrayPropertyValue extends PropertyValue
      *
      * @return subclass of PropertyValue
      */
-    public PropertyValue cloneFromSubclass() {
+    public PropertyValue cloneFromSubclass()
+    {
         return new ArrayPropertyValue(this);
     }
 
@@ -172,8 +174,6 @@ public class ArrayPropertyValue extends PropertyValue
         return "ArrayPropertyValue{" +
                 "arrayCount=" + arrayCount +
                 ", arrayValues=" + arrayValues +
-                ", instancePropertyCategory=" + getPropertyCategory() +
-                ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }
