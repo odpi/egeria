@@ -28,7 +28,7 @@ public class EntityDetailToGlossaryViewEntityDetail implements Function<EntityDe
                 .setUpdateTime(entityDetail.getUpdateTime())
                 .setVersion(entityDetail.getVersion())
                 .setGuid(entityDetail.getGUID())
-                .setStatus(entityDetail.getStatus().getName());
+                .setStatus(entityDetail.getStatus() == null ? null : entityDetail.getStatus().getName());
 
         /*Encountered a case where an entity did not have properties. However, this should not be possible in non-dev envs*/
         if(optionalProperties.isPresent()){
