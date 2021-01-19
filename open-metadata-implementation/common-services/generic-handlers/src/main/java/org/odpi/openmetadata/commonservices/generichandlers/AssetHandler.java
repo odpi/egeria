@@ -1469,7 +1469,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                 if (end1 != null)
                 {
-                    final String connectionGUIDParameterName = "";
+                    final String connectionGUIDParameterName = "relationshipToConnection.getEntityOneProxy().getGUID()";
 
                     connectionEntity = this.getEntityFromRepository(userId,
                                                                     end1.getGUID(),

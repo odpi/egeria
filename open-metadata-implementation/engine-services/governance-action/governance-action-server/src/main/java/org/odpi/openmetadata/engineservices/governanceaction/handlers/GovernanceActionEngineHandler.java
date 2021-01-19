@@ -125,6 +125,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                requestParameters,
                                                                                                                requestSourceElements,
                                                                                                                actionTargetElements,
+                                                                                                               governanceServiceCache.getGovernanceServiceGUID(),
                                                                                                                governanceServiceCache.getGovernanceServiceName(),
                                                                                                                governanceServiceCache.getNextGovernanceService(),
                                                                                                                partnerServerName,
