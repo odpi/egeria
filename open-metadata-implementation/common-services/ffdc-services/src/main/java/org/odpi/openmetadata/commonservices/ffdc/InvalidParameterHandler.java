@@ -434,7 +434,7 @@ public class InvalidParameterHandler
      * Throw an exception if the supplied type name is not of the correct subclass
      *
      * @param typeName name of type
-     * @param superTypeName name of expected supertype
+     * @param superTypeName name of expected supertype (or null if no super type)
      * @param serviceName calling service
      * @param methodName calling method
      * @param repositoryHelper helper class that can return information about type
@@ -451,15 +451,17 @@ public class InvalidParameterHandler
     {
         final String parameterName = "typeName";
 
-        TypeDef typeDef;
-        if (typeName == null)
-        {
-            typeDef = repositoryHelper.getTypeDefByName(serviceName, superTypeName);
-        }
-        else
+        TypeDef typeDef = null;
+
+        if (typeName != null)
         {
             typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
         }
+        else if (superTypeName != null)
+        {
+            typeDef = repositoryHelper.getTypeDefByName(serviceName, superTypeName);
+        }
+
 
         if (typeDef == null)
         {

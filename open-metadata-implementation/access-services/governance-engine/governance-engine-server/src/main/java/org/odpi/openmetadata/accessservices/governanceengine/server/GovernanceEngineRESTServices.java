@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -40,9 +41,10 @@ public class GovernanceEngineRESTServices
      * @param callerId unique identifier of the caller
      *
      * @return connection object for the out topic or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem retrieving the governance engine definition.
+     * 
+     *   InvalidParameterException one of the parameters is null or invalid or
+     *   UserNotAuthorizedException user not authorized to issue this request or
+     *   PropertyServerException problem retrieving the governance engine definition.
      */
     public ConnectionResponse getOutTopicConnection(String serverName,
                                                     String userId,
@@ -79,17 +81,18 @@ public class GovernanceEngineRESTServices
      * @param assetGUID      unique identifier for asset.
      * @param governanceService name of governance service
      * @param message        message to log
+     *                       
      * @return void or
      *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    public VoidResponse logAssetAuditMessage(String    serverName,
-                                             String    userId,
-                                             String    assetGUID,
-                                             String    governanceService,
-                                             String    message)
+    public VoidResponse logAssetAuditMessage(String serverName,
+                                             String userId,
+                                             String assetGUID,
+                                             String governanceService,
+                                             String message)
     {
         final String   methodName = "logAssetAuditMessage";
 
@@ -113,4 +116,832 @@ public class GovernanceEngineRESTServices
         return response;
     }
 
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the metadata element
+     *
+     * @return metadata element properties or
+     * 
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementResponse getMetadataElementByGUID(String serverName,
+                                                                String userId,
+                                                                String elementGUID)
+    {
+        final String methodName = "getMetadataElementByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        OpenMetadataElementResponse response = new OpenMetadataElementResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the metadata elements that contain the requested string.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody searchString  to retrieve
+     *
+     * @return list of matching metadata elements (or null if no elements match the name) or
+     *
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementsResponse findMetadataElementsWithString(String                 serverName,
+                                                                       String                  userId,
+                                                                       int                     startFrom,
+                                                                       int                     pageSize,
+                                                                       SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findMetadataElementsWithString";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        OpenMetadataElementsResponse response = new OpenMetadataElementsResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the metadata elements connected to the supplied element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the starting metadata element
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public RelatedMetadataElementsListResponse getRelatedMetadataElements(String serverName,
+                                                                          String userId,
+                                                                          String elementGUID,
+                                                                          String relationshipTypeName,
+                                                                          int    startFrom,
+                                                                          int    pageSize)
+    {
+        final String methodName = "getRelatedMetadataElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog                            auditLog = null;
+        RelatedMetadataElementsListResponse response = new RelatedMetadataElementsListResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody properties defining the search criteria
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementsResponse findMetadataElements(String          serverName,
+                                                             String          userId,
+                                                             int             startFrom,
+                                                             int             pageSize,
+                                                             FindRequestBody requestBody)
+    {
+        final String methodName = "findMetadataElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        OpenMetadataElementsResponse response = new OpenMetadataElementsResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody properties defining the search criteria
+     *
+     * @return a list of relationships - null means no matching relationships - or
+     *
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public RelatedMetadataElementsListResponse findRelationshipsBetweenMetadataElements(String          serverName,
+                                                                                        String          userId,
+                                                                                        int             startFrom,
+                                                                                        int             pageSize,
+                                                                                        FindRequestBody requestBody)
+    {
+        final String methodName = "findRelationshipsBetweenMetadataElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog                            auditLog = null;
+        RelatedMetadataElementsListResponse response = new RelatedMetadataElementsListResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody properties for the new element
+     *
+     * @return unique identifier of the new metadata element
+     *
+     *  InvalidParameterException the type name, status or one of the properties is invalid
+     *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public GUIDResponse createMetadataElementInStore(String                        serverName,
+                                                     String                        userId,
+                                                     NewMetadataElementRequestBody requestBody)
+    {
+        final String methodName = "createMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * the value used in the replaceProperties flag.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new properties
+     *
+     * @return void or
+     *
+     *  InvalidParameterException either the unique identifier or the properties are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse updateMetadataElementInStore(String                      serverName,
+                                                     String                      userId,
+                                                     String                      metadataElementGUID,
+                                                     UpdatePropertiesRequestBody requestBody)
+    {
+        final String methodName = "updateMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+     * assigned when it was created.  The effectivity dates control the visibility of the element
+     * through specific APIs.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse updateMetadataElementStatusInStore(String                  serverName,
+                                                           String                  userId,
+                                                           String                  metadataElementGUID,
+                                                           UpdateStatusRequestBody requestBody)
+    {
+        final String methodName = "updateMetadataElementStatusInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Delete a specific metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the unique identifier is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to delete this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public  VoidResponse deleteMetadataElementInStore(String serverName,
+                                                      String userId,
+                                                      String metadataElementGUID,
+                                                      NullRequestBody requestBody)
+    {
+        final String methodName = "deleteMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
+     * a metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param classificationName name of the classification to add (if the classification is already present then use reclassify)
+     * @param requestBody properties to store in the new classification.  These must conform to the valid properties associated with the
+     *                   classification name
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
+     *                                   valid properties associated with the classification's type definition
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse classifyMetadataElementInStore(String                       serverName,
+                                                       String                       userId,
+                                                       String                       metadataElementGUID,
+                                                       String                       classificationName,
+                                                       NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "classifyMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a classification that is currently attached to a specific metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param classificationName unique name of the classification to update
+     * @param requestBody new properties for the classification
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
+     *                                   valid properties associated with the classification's type definition
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse reclassifyMetadataElementInStore(String                      serverName,
+                                                         String                      userId,
+                                                         String                      metadataElementGUID,
+                                                         String                      classificationName,
+                                                         UpdatePropertiesRequestBody requestBody)
+    {
+        final String methodName = "reclassifyMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the effectivity dates of a specific classification attached to a metadata element.
+     * The effectivity dates control the visibility of the classification through specific APIs.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param classificationName unique name of the classification to update
+     * @param requestBody the dates when this element is active / inactive - null for no restriction
+     *
+     * @return void or
+     *
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse updateClassificationStatusInStore(String                            serverName,
+                                                          String                            userId,
+                                                          String                            metadataElementGUID,
+                                                          String                            classificationName,
+                                                          UpdateEffectivityDatesRequestBody requestBody)
+    {
+        final String methodName = "updateClassificationStatusInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the named classification from a specific metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param classificationName unique name of the classification to remove
+     * @param requestBody null request body
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the unique identifier or classification name is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse unclassifyMetadataElementInStore(String          serverName,
+                                                         String          userId,
+                                                         String          metadataElementGUID,
+                                                         String          classificationName,
+                                                         NullRequestBody requestBody)
+    {
+        final String methodName = "unclassifyMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
+     * according to the type definition since this will affect how the relationship is interpreted.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody the properties of the relationship
+     *
+     * @return unique identifier of the new relationship or
+     *
+     *  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public GUIDResponse createRelatedElementsInStore(String                        serverName,
+                                                     String                        userId,
+                                                     NewRelatedElementsRequestBody requestBody)
+    {
+        final String methodName = "createRelatedElementsInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the properties associated with a relationship.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param requestBody new properties for the relationship
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     *  UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse updateRelatedElementsInStore(String                      serverName,
+                                                     String                      userId,
+                                                     String                      relationshipGUID,
+                                                     UpdatePropertiesRequestBody requestBody)
+    {
+        final String methodName = "updateRelatedElementsInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the effectivity dates of a specific relationship between metadata elements.
+     * The effectivity dates control the visibility of the classification through specific APIs.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param requestBody the dates when this element is active / inactive - null for no restriction
+     *
+     * @return void or
+     *
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse updateRelatedElementsStatusInStore(String                            serverName,
+                                                           String                            userId,
+                                                           String                            relationshipGUID,
+                                                           UpdateEffectivityDatesRequestBody requestBody)
+    {
+        final String methodName = "updateRelatedElementsStatusInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Delete a relationship between two metadata elements.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier of the relationship to delete
+     * @param requestBody null request body
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse deleteRelatedElementsInStore(String          serverName,
+                                                     String          userId,
+                                                     String          relationshipGUID,
+                                                     NullRequestBody requestBody)
+    {
+        final String methodName = "deleteRelatedElementsInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the status of a specific action target. By default, these values are derived from
+     * the values for the governance action service.  However, if the governance action service has to process name
+     * target elements, then setting the status on each individual target will show the progress of the
+     * governance action service.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the action target GUID is not recognized
+     *  UserNotAuthorizedException the governance action service is not authorized to update the action target properties
+     *  PropertyServerException there is a problem connecting to the metadata store
+     */
+    public VoidResponse updateActionTargetStatus(String                        serverName,
+                                                 String                        userId,
+                                                 ActionTargetStatusRequestBody requestBody)
+    {
+        final String methodName = "updateActionTargetStatus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param governanceActionGUID unique identifier of the governance action to update
+     * @param requestBody completion status enum value, optional guard strings for triggering subsequent action(s) plus
+     *                    a list of additional elements to add to the action targets for the next phase
+     *
+     * @return void or
+     *
+     *  InvalidParameterException the completion status is null
+     *  UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
+     *  PropertyServerException there is a problem connecting to the metadata store
+     */
+    public VoidResponse recordCompletionStatus(String                      serverName,
+                                               String                      userId,
+                                               String                      governanceActionGUID,
+                                               CompletionStatusRequestBody requestBody)
+    {
+        final String methodName = "recordCompletionStatus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a governance action in the metadata store which will trigger the governance action service
+     * associated with the supplied request type.  The governance action remains to act as a record
+     * of the actions taken for auditing.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param governanceEngineName name of the governance engine that should execute the request
+     * @param requestBody properties for the governance action and to pass to the governance action service
+     *
+     * @return unique identifier of the governance action or
+     *
+     *  InvalidParameterException null qualified name
+     *  UserNotAuthorizedException this governance action service is not authorized to create a governance action
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public GUIDResponse initiateGovernanceAction(String                      serverName,
+                                                 String                      userId,
+                                                 String                      governanceEngineName,
+                                                 GovernanceActionRequestBody requestBody)
+    {
+        final String methodName = "initiateGovernanceAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Using the named governance action process as a template, initiate a chain of governance actions.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody properties to initiate the new instance of the process
+     *
+     * @return unique identifier of the first governance action of the process or
+     *
+     *  InvalidParameterException null or unrecognized qualified name of the process
+     *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public GUIDResponse initiateGovernanceActionProcess(String                             serverName,
+                                                        String                             userId,
+                                                        GovernanceActionProcessRequestBody requestBody)
+    {
+        final String methodName = "initiateGovernanceAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create an incident report to capture the situation detected by this governance action service.
+     * This incident report will be processed by other governance activities.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody properties for the new incident report
+     *
+     * @return unique identifier of the resulting incident report or
+     *
+     *  InvalidParameterException null or non-unique qualified name for the incident report
+     *  UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public GUIDResponse createIncidentReport(String                    serverName,
+                                             String                    userId,
+                                             IncidentReportRequestBody requestBody)
+    {
+        final String methodName = "createIncidentReport";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Request the status and properties of an executing governance action request.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param governanceActionGUID identifier of the governance action request.
+     *
+     * @return governance action properties and status or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public GovernanceActionElementResponse getGovernanceAction(String serverName,
+                                                               String userId,
+                                                               String governanceActionGUID)
+    {
+        final String methodName = "getGovernanceAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GovernanceActionElementResponse response = new GovernanceActionElementResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Request that execution of a governance action is allocated to the caller.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param governanceActionGUID identifier of the governance action request.
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public VoidResponse claimGovernanceAction(String          serverName,
+                                              String          userId,
+                                              String          governanceActionGUID,
+                                              NullRequestBody requestBody)
+    {
+        final String methodName = "claimGovernanceAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the governance actions that are still in process and that have been claimed by this caller's userId.
+     * This call is used when the caller restarts.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId userId of caller
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     *
+     * @return list of governance action elements or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public GovernanceActionElementsResponse getActiveClaimedGovernanceActions(String serverName,
+                                                                              String userId,
+                                                                              String governanceEngineGUID,
+                                                                              int    startFrom,
+                                                                              int    pageSize)
+    {
+        final String methodName = "getActiveClaimedGovernanceActions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GovernanceActionElementsResponse response = new GovernanceActionElementsResponse();
+
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 }
