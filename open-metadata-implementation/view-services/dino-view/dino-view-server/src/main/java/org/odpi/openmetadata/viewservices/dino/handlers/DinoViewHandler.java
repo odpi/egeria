@@ -2325,6 +2325,18 @@ public class DinoViewHandler {
 
             GovernanceEngineElement governanceEngineElement = gecc.getGovernanceEngineByName(userId, engineQualifiedName);
 
+            if (governanceEngineElement == null) {
+                /*
+                 * Could not retrieve the engine - throw an exception
+                 */
+                throw new DinoViewServiceException(
+                        DinoViewErrorCode.COULD_NOT_RETRIEVE_GOVERNANCE_ENGINE.getMessageDefinition(
+                                methodName,
+                                engineQualifiedName),
+                        this.getClass().getName(),
+                        methodName);
+            }
+
             /*
              * Fill out the EngineDetails to be returned to the caller.
              * Includes:
