@@ -45,6 +45,8 @@ public class HandlerHelper {
     private InvalidParameterHandler invalidParameterHandler;
 
     /**
+     * Construct the handler information needed to interact with the repository services
+     *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
@@ -58,11 +60,11 @@ public class HandlerHelper {
     }
 
     /**
-     * Query about the relationships of an entity based on the type of the relationship
+     * Fetch the relationships of an entity based on the type of the relationship
      *
-     * @param userId               String - userId of user making request.
-     * @param assetGuid            guid of the asset we need to retrieve the relationships
-     * @param relationshipTypeName the type of the relationship
+     * @param userId               the unique identifier for the user
+     * @param entityGUID           the unique identifier of the entity for which the relationships are retrieved
+     * @param relationshipTypeName the type of the relationships to be retrieved
      * @param entityTypeName       the type of the entity
      *
      * @return List of the relationships if found, empty list if not found
@@ -71,18 +73,18 @@ public class HandlerHelper {
      * @throws PropertyServerException    the property server exception
      * @throws InvalidParameterException  the invalid parameter exception
      */
-    List<Relationship> getRelationshipsByType(String userId, String assetGuid, String relationshipTypeName,
-                                              String entityTypeName) throws OCFCheckedExceptionBase {
+    List<Relationship> getRelationshipsByType(String userId, String entityGUID, String relationshipTypeName, String entityTypeName) throws
+                                                                                                                                    OCFCheckedExceptionBase {
 
         final String methodName = "getRelationshipsByType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, GUID_PARAMETER, methodName);
 
         String typeGuid = getTypeByName(userId, relationshipTypeName);
 
-        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, assetGuid, entityTypeName, typeGuid, relationshipTypeName,
-                methodName);
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, entityGUID, entityTypeName, typeGuid,
+                relationshipTypeName, methodName);
 
         if (relationships != null) {
             return relationships;
@@ -319,15 +321,37 @@ public class HandlerHelper {
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
     }
 
+    /**
+     * Builds the context for the relationships
+     *
+     * @param userId        the unique identifier for the user
+     * @param relationships the list of relationships for which the context is built
+     *
+     * @return a set of {@link GraphContext} containing the lineage context for the relationships
+     *
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws PropertyServerException    the property server exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     */
     public Set<GraphContext> buildContextForRelationships(String userId, List<Relationship> relationships) throws InvalidParameterException,
-                                                                                                                        PropertyServerException,
-                                                                                                                        UserNotAuthorizedException {
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException {
         Set<GraphContext> context = new HashSet<>();
 
         addRelationshipsToContext(userId, context, relationships);
 
         return context;
     }
+
+    /**
+     * @param userId        the unique identifier for the user
+     * @param context       the context to be updated
+     * @param relationships the list of relationships for which the context is updated
+     *
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws PropertyServerException    the property server exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     */
     private void addRelationshipsToContext(String userId, Set<GraphContext> context, List<Relationship> relationships) throws
                                                                                                                        InvalidParameterException,
                                                                                                                        PropertyServerException,
@@ -351,6 +375,13 @@ public class HandlerHelper {
         }
     }
 
+    /**
+     * Builds the classification context for an entity
+     *
+     * @param entityDetail the entity for retrieving the classifications attached to it
+     *
+     * @return a set of {@link GraphContext} containing the lineage context for the classifications
+     */
     public Set<GraphContext> buildContextForLineageClassifications(EntityDetail entityDetail) {
         List<Classification> classifications = filterLineageClassifications(entityDetail.getClassifications());
 

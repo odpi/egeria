@@ -72,7 +72,6 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    assetContextHandler,
                     lineageClassificationTypes);
 
             classificationHandler = new ClassificationHandler(

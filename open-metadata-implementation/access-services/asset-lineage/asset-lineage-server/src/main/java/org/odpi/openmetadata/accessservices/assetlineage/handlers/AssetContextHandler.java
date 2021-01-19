@@ -38,7 +38,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
- * The Asset Context handler provides methods to build graph context for assets that has been created.
+ * The Asset Context Handler provides methods to build graph context for schema elements.
  */
 public class AssetContextHandler {
 
@@ -49,6 +49,8 @@ public class AssetContextHandler {
 
 
     /**
+     * Construct the handler information needed to interact with the repository services
+     *
      * @param invalidParameterHandler    handler for invalid parameters
      * @param repositoryHelper           helper used by the converters
      * @param repositoryHandler          handler for calling the repository services
@@ -64,7 +66,7 @@ public class AssetContextHandler {
     }
 
     /**
-     * @param userId         the user id
+     * @param userId         the unique identifier for the user
      * @param entityTypeName the name of the entity type
      *
      * @return the existing list of glossary terms available in the repository
@@ -81,7 +83,7 @@ public class AssetContextHandler {
     }
 
     /**
-     * @param userId         the user id
+     * @param userId         the unique identifier for the user
      * @param guid           the guid of the entity
      * @param entityTypeName the name of the entity type
      *
@@ -98,12 +100,14 @@ public class AssetContextHandler {
     }
 
     /**
-     * Gets asset context.
+     * Builds the context for a schema element.
      *
-     * @param userId       the user id
+     * @param userId       the unique identifier for the user
      * @param entityDetail the entity for which the context is build
      *
-     * @return the asset context
+     * @return the context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     public Map<String, Set<GraphContext>> buildSchemaElementContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "buildSchemaElementContext";
@@ -144,6 +148,16 @@ public class AssetContextHandler {
         return context;
     }
 
+    /**
+     * Builds the lineage mappings context for a schema element.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the lineage mappings context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private Set<GraphContext> buildLineageMappingsContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING,
                 entityDetail.getType().getTypeDefName());
@@ -151,6 +165,16 @@ public class AssetContextHandler {
         return handlerHelper.buildContextForRelationships(userId, relationships);
     }
 
+    /**
+     * Builds the relational table context for a relational column.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the relational table context of the relational column
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private Set<GraphContext> buildRelationalTableContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> context = new HashSet<>();
 
@@ -167,12 +191,31 @@ public class AssetContextHandler {
         return context;
     }
 
+    /**
+     * Adds the connection to asset context for an asset.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     * @param context      the context to be updated
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private void addConnectionToAssetContext(String userId, EntityDetail entityDetail, Set<GraphContext> context) throws OCFCheckedExceptionBase {
         EntityDetail connection = addContextForRelationships(userId, entityDetail, CONNECTION_TO_ASSET, context);
 
         addContextForRelationships(userId, connection, CONNECTION_ENDPOINT, context);
     }
 
+    /**
+     * Builds the data file context for a tabular column.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the data file context of the tabular column
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private Set<GraphContext> buildDataFileContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> context = new HashSet<>();
 
@@ -183,6 +226,15 @@ public class AssetContextHandler {
         return context;
     }
 
+    /**
+     * Adds the file folder context for a data file.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     * @param context      the context to be updated
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private void addContextForFileFolder(String userId, EntityDetail entityDetail, Set<GraphContext> context) throws OCFCheckedExceptionBase {
 
         if (entityDetail == null) {
@@ -200,6 +252,16 @@ public class AssetContextHandler {
         }
     }
 
+    /**
+     * Adds the relationships context for an entity, based on the relationship type.
+     *
+     * @param userId               the unique identifier for the user
+     * @param startEntity          the start entity for the relationships
+     * @param relationshipTypeName the type of the relationship for which the context is built
+     * @param context              the context to be updated
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
                                                     Set<GraphContext> context) throws OCFCheckedExceptionBase {
         if (startEntity == null) {

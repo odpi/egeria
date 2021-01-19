@@ -59,10 +59,10 @@ public class AssetLineagePublisher {
      * @param serverName        name of the user of the server instance
      * @param serverUserName    name of this server instance
      */
-    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector,
-                                 String serverName, String serverUserName)
-            throws OCFCheckedExceptionBase {
+    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName) throws
+                                                                                                                         OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
+
         this.outTopicConnector = outTopicConnector;
         this.serverUserName = serverUserName;
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
@@ -79,8 +79,7 @@ public class AssetLineagePublisher {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail)
-            throws OCFCheckedExceptionBase, JsonProcessingException {
+    public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(processContext)) {
@@ -107,8 +106,10 @@ public class AssetLineagePublisher {
 
     /***
      * Build the context for a Glossary Term and publishes the event to the out topic
+     *
      * @param entityDetail glossary term to get context
      * @return the Glossary Term context
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -130,6 +131,14 @@ public class AssetLineagePublisher {
         return glossaryTermContext;
     }
 
+    /**
+     * Publishes a {@link LineageEvent} for each entry from the context map
+     *
+     * @param contextMap the context map to be published
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
     private void publishLineageEvents(Map<String, Set<GraphContext>> contextMap) throws JsonProcessingException, ConnectorCheckedException {
         for (String eventType : contextMap.keySet()) {
             Set<GraphContext> graphContexts = contextMap.get(eventType);
@@ -242,7 +251,7 @@ public class AssetLineagePublisher {
     }
 
     /**
-     * Publishes a lineage event for each entry from the context map
+     * Publishes a {@link LineageEvent} for each entry from the context map
      *
      * @param context          the context of the lineage entity
      * @param lineageEventType the lineage event type
@@ -250,8 +259,8 @@ public class AssetLineagePublisher {
      * @throws JsonProcessingException   exception parsing the event json
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    private void publishLineageEvents(Map<String, Set<GraphContext>> context, AssetLineageEventType lineageEventType)
-            throws JsonProcessingException, ConnectorCheckedException {
+    private void publishLineageEvents(Map<String, Set<GraphContext>> context, AssetLineageEventType lineageEventType) throws JsonProcessingException,
+                                                                                                                             ConnectorCheckedException {
 
         for (String guid : context.keySet()) {
             LineageEvent event = new LineageEvent();

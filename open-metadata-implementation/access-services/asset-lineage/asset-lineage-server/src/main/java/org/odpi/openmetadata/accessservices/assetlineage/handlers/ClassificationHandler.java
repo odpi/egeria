@@ -16,7 +16,7 @@ import java.util.Set;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 
 /**
- * The classification handler maps classifications attached with an entity to an lineage entity.
+ * The Classification Handler maps classifications attached with an entity to an lineage entity.
  */
 public class ClassificationHandler {
 
@@ -28,26 +28,30 @@ public class ClassificationHandler {
      *
      * @param invalidParameterHandler the invalid parameter handler
      */
-    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, Set<String> lineageClassificationTypes, OMRSRepositoryHelper repositoryHelper) {
+    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, Set<String> lineageClassificationTypes,
+                                 OMRSRepositoryHelper repositoryHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, null, lineageClassificationTypes);
     }
 
 
     /**
+     * Builds the classification context for an entity.
      * Gets asset context from the entity by classification type.
      *
-     * @param entityDetail the entity for retrieving the classifications attached to it
-     * @param assetLineageEventType
-     * @return the asset context by classification
+     * @param entityDetail          the entity for retrieving the classifications attached to it
+     * @param assetLineageEventType the event type to be published
+     *
+     * @return the classification context of the entity
      */
-    public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType) throws OCFCheckedExceptionBase {
+    public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType) throws
+                                                                                                                                             OCFCheckedExceptionBase {
         String methodName = "buildClassificationContext";
         invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
 
         Map<String, Set<GraphContext>> context = new HashMap<>();
 
-       context.put(assetLineageEventType.getEventTypeName(), handlerHelper.buildContextForLineageClassifications(entityDetail));
+        context.put(assetLineageEventType.getEventTypeName(), handlerHelper.buildContextForLineageClassifications(entityDetail));
         return context;
     }
 }

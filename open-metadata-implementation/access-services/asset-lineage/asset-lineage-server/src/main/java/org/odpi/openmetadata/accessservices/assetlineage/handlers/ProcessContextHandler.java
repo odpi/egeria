@@ -47,8 +47,7 @@ public class ProcessContextHandler {
     private AssetContext graph;
 
     /**
-     * Construct the discovery engine configuration handler caching the objects
-     * needed to operate within a single server instance.
+     * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
