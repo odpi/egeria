@@ -29,7 +29,7 @@ public class EnumPropertyValue extends PropertyValue
      */
     public EnumPropertyValue()
     {
-        super(PropertyCategory.ENUM);
+        super();
     }
 
 
@@ -108,8 +108,6 @@ public class EnumPropertyValue extends PropertyValue
     {
         return "EnumPropertyValue{" +
                 "symbolicName='" + symbolicName + '\'' +
-                ", propertyCategory=" + getPropertyCategory() +
-                ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }

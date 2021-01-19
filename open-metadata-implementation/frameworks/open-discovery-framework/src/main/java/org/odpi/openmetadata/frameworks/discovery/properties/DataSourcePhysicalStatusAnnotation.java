@@ -56,7 +56,7 @@ public class DataSourcePhysicalStatusAnnotation extends DataSourceMeasurementAnn
 
 
     /**
-     * Return the date of the review.
+     * Return the date and time that the data source was created.
      *
      * @return date time
      */
@@ -67,7 +67,7 @@ public class DataSourcePhysicalStatusAnnotation extends DataSourceMeasurementAnn
 
 
     /**
-     * Set up the date and time that the data source was created
+     * Set up the date and time that the data source was created.
      *
      * @param createTime date time
      */

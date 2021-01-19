@@ -26,8 +26,8 @@ public class SearchProperties implements Serializable
 
     private static final long    serialVersionUID = 1L;
 
-    private List<PropertyCondition> conditions;
-    private MatchCriteria matchCriteria;
+    private List<PropertyCondition> conditions    = null;
+    private MatchCriteria           matchCriteria = MatchCriteria.ALL;
 
     /**
      * Typical constructor
@@ -35,9 +35,8 @@ public class SearchProperties implements Serializable
     public SearchProperties()
     {
         super();
-        // Setup defaults
-        matchCriteria = MatchCriteria.ALL;
     }
+
 
     /**
      * Copy/clone constructor.
@@ -56,6 +55,7 @@ public class SearchProperties implements Serializable
             this.conditions.addAll(templateProperties.getConditions());
         }
     }
+
 
     /**
      * Retrieve the conditions against which to match.

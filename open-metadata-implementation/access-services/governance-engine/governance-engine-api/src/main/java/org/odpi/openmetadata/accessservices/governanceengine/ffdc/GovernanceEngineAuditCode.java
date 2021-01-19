@@ -123,7 +123,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                                OMRSAuditLogRecordSeverity.INFO,
                                "The Governance Engine Open Metadata Access Service (OMAS) sent notification that governance engine {0} ({1}) had a " +
                                        "configuration change for governance request type {2} mapped to registered governance service {3}",
-                               "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
+                               "The access service sends out configuration notifications to ensure connected governance engine servers have the most up to-date " +
                                        "configuration about the governance service.",
                                "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
                                        " the affected governance engines are updated with the latest governance services information.  If the change " +
@@ -133,19 +133,15 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
 
     NEW_GOVERNANCE_ACTION("OMAS-GOVERNANCE-ENGINE-0014",
                                OMRSAuditLogRecordSeverity.INFO,
-                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification that a new governance engine {0} ({1}) had a " +
-                                       "configuration change for governance request type {2} mapped to registered governance service {3}",
-                               "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
-                                       "configuration about the governance service.",
-                               "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
-                                       " the affected governance engines are updated with the latest governance services information.  If the change " +
-                                       "is unexpected, use the " +
-                                       "Governance Engine OMAS configuration interface to query the status of the registered governance services for " +
-                                       "the affected governance engine.  It should be possible to trace the source of the update to correct it."),
+                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification that a new governance action {0}",
+                               "The access service sends out notifications about new governance actions to governance engines so " +
+                                       "they can claim it and execute the requested governance service.",
+                               "This is part of the normal operation of the service.  No action is required if this action is expected " +
+                                       "beyond verifying that the requested action is picked up and executed."),
 
     WATCHDOG_EVENT("OMAS-GOVERNANCE-ENGINE-0015",
                           OMRSAuditLogRecordSeverity.INFO,
-                          "The Governance Engine Open Metadata Access Service (OMAS) sent a metadata change event to listening Open Watchdog Governance Action Services: ",
+                          "The Governance Engine Open Metadata Access Service (OMAS) sent a metadata change event to listening Open Watchdog Governance Action Services: {0}",
                           "The access service sends out metadata change events when metadata instances change (with the exception of metadata " +
                                   "associated with processing governance services).  These events are passed to listening Open Watchdog Governance Action Services " +
                                   "as long as the event matches the criteria that where specified when the listener was registered.",

@@ -132,12 +132,12 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                          SearchProperties searchProperties,
-                                                                          String           sequencingProperty,
-                                                                          SequencingOrder  sequencingOrder,
-                                                                          int              startFrom,
-                                                                          int              pageSize) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException;
+    List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                           SearchProperties searchProperties,
+                                                                           String           sequencingProperty,
+                                                                           SequencingOrder  sequencingOrder,
+                                                                           int              startFrom,
+                                                                           int              pageSize) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException;
 }

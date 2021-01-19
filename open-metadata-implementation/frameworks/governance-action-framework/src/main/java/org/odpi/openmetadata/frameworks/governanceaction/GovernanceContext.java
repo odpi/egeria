@@ -21,7 +21,6 @@ import java.util.Map;
 public class GovernanceContext
 {
     private String                     userId;
-    private String                     governanceActionGUID;
 
     private String                     requestType;
     private Map<String, String>        requestParameters;
@@ -54,7 +53,6 @@ public class GovernanceContext
                              OpenMetadataClient         openMetadataStore)
     {
         this.userId = userId;
-        this.governanceActionGUID = governanceActionGUID;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
         this.requestSourceElements = requestSourceElements;
@@ -167,7 +165,7 @@ public class GovernanceContext
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(governanceActionGUID, status, outputGuards, newActionTargetGUIDs);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, newActionTargetGUIDs);
     }
 
 

@@ -323,9 +323,9 @@ public class RelationalDataHandler<DATABASE,
                 InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                        null,
                                                                                                        OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
-                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                                                                       0,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
                                                                                                        methodName);
 
                 databaseHandler.linkElementToElement(userId,
@@ -3425,6 +3425,7 @@ public class RelationalDataHandler<DATABASE,
                                                                parentElementGUIDParameterName,
                                                                OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
                                                                properties,
+                                                               false,
                                                                methodName);
     }
 

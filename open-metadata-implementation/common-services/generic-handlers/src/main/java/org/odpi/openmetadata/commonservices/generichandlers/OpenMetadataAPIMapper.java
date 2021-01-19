@@ -290,6 +290,14 @@ public class OpenMetadataAPIMapper
     public static final String USE_TYPE_PROPERTY_NAME                    = "useType";                         /* from ServerAssetUse relationship */
     /* public static final String DESCRIPTION_PROPERTY_NAME              = "description";                        from ServerAssetUse relationship */
 
+    public static final String SERVER_ASSET_USE_TYPE_TYPE_GUID          = "09439481-9489-467c-9ae5-178a6e0b6b5a";  /* from Area 0 */
+    public static final String SERVER_ASSET_USE_TYPE_TYPE_NAME          = "ServerAssetUseType";
+    public static final int SERVER_ASSET_USE_TYPE_OWNS_ORDINAL          = 0;
+    public static final int SERVER_ASSET_USE_TYPE_GOVERNS_ORDINAL       = 1;
+    public static final int SERVER_ASSET_USE_TYPE_MAINTAINS_ORDINAL     = 2;
+    public static final int SERVER_ASSET_USE_TYPE_USES_ORDINAL          = 3;
+    public static final int SERVER_ASSET_USE_TYPE_OTHER_ORDINAL         = 99;
+
 
     public static final String CLOUD_SERVICE_CLASSIFICATION_GUID     = "337e7b1a-ad4b-4818-aa3e-0ff3307b2fbe6";
     public static final String CLOUD_SERVICE_CLASSIFICATION_NAME     = "CloudService";
@@ -1614,12 +1622,16 @@ public class OpenMetadataAPIMapper
     public static final String DATA_FIELD_DESCRIPTION_PROPERTY_NAME        = "dataFieldDescription"; /* from DataField entity */
     public static final String DATA_FIELD_ALIASES_PROPERTY_NAME            = "dataFieldAliases";     /* from DataField entity */
     public static final String DATA_FIELD_SORT_ORDER_PROPERTY_NAME         = "dataFieldName";        /* from DataField entity */
-    public static final String DATA_FIELD_DEFAULT_VALUE_PROPERTY_NAME      = "defaultValue";         /* from DataField entity */
 
     /* For DiscoveredDataField relationship */
     public static final String DISCOVERED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e22222cd54";
     public static final String DISCOVERED_DATA_FIELD_TYPE_NAME    = "DiscoveredDataField";
     /* End1 = SchemaAnalysisAnnotation; End 2 = DataField */
+
+    /* For DiscoveredDataField relationship */
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME    = "DiscoveredNestedDataField";
+    /* End1 = (parent)DataField; End 2 = DataField */
 
     public static final String DATA_FIELD_POSITION_PROPERTY_NAME  = "dataFieldPosition"; /* from DiscoveredDataField and
                                                                                             DiscoveredNestedDataField relationship */
@@ -1628,6 +1640,11 @@ public class OpenMetadataAPIMapper
     public static final String DATA_FIELD_ANNOTATION_TYPE_GUID = "72ed6de6-79d9-4e7d-aefc-b969382fc4b0";
     public static final String DATA_FIELD_ANNOTATION_TYPE_NAME = "DataFieldAnnotation";
     /* Annotation */
+
+    /* For DataFieldAnalysis relationship */
+    public static final String DATA_FIELD_ANALYSIS_TYPE_GUID    = "833e849d-eda2-40bb-9e6b-c3ca0b56d581";
+    public static final String DATA_FIELD_ANALYSIS_TYPE_NAME    = "DataFieldAnalysis";
+    /* End1 = DataFieldAnnotation; End 2 = DataField */
 
     /* For ClassificationAnnotation entity */
     public static final String CLASSIFICATION_ANNOTATION_TYPE_GUID = "23e8287f-5c7e-4e03-8bd3-471fc7fc029c";
