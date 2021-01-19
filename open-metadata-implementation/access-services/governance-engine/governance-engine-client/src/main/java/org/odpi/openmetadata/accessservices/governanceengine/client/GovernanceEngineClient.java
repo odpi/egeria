@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.Go
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -32,9 +31,6 @@ public class GovernanceEngineClient
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private NullRequestBody         nullRequestBody         = new NullRequestBody();
-
-    private AuditLog auditLog = null;
-
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -91,14 +87,12 @@ public class GovernanceEngineClient
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
     public GovernanceEngineClient(String                     serverName,
                                   String                     serverPlatformURLRoot,
                                   GovernanceEngineRESTClient restClient,
-                                  int                        maxPageSize,
-                                  AuditLog                   auditLog) throws InvalidParameterException
+                                  int                        maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -108,7 +102,6 @@ public class GovernanceEngineClient
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient = restClient;
-        this.auditLog = auditLog;
     }
 
 
@@ -983,6 +976,8 @@ public class GovernanceEngineClient
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestType request type to identify the governance action service to run
      * @param requestProperties properties to pass to the governance action service
+     * @param originatorGUID unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
      * @return unique identifier of the governance action
      * @throws InvalidParameterException null qualified name
@@ -999,9 +994,11 @@ public class GovernanceEngineClient
                                            Date                startTime,
                                            String              governanceEngineName,
                                            String              requestType,
-                                           Map<String, String> requestProperties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+                                           Map<String, String> requestProperties,
+                                           String              originatorGUID,
+                                           String              originatorEngineName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "initiateGovernanceAction";
         final String qualifiedNameParameterName = "qualifiedName";
@@ -1023,6 +1020,8 @@ public class GovernanceEngineClient
         requestBody.setStartTime(startTime);
         requestBody.setRequestType(requestType);
         requestBody.setRequestProperties(requestProperties);
+        requestBody.setOriginatorGUID(originatorGUID);
+        requestBody.setOriginatorEngineName(originatorEngineName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
@@ -1043,6 +1042,8 @@ public class GovernanceEngineClient
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
+     * @param originatorGUID unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
      * @return unique identifier of the first governance action of the process
      * @throws InvalidParameterException null or unrecognized qualified name of the process
@@ -1053,9 +1054,11 @@ public class GovernanceEngineClient
                                                   String       processQualifiedName,
                                                   List<String> requestSourceGUIDs,
                                                   List<String> actionTargetGUIDs,
-                                                  Date         startTime) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                  Date         startTime,
+                                                  String       originatorGUID,
+                                                  String       originatorEngineName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "initiateGovernanceAction";
         final String qualifiedNameParameterName = "processQualifiedName";
@@ -1070,6 +1073,8 @@ public class GovernanceEngineClient
         requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
         requestBody.setActionTargetGUIDs(actionTargetGUIDs);
         requestBody.setStartTime(startTime);
+        requestBody.setOriginatorGUID(originatorGUID);
+        requestBody.setOriginatorEngineName(originatorEngineName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
@@ -1093,6 +1098,7 @@ public class GovernanceEngineClient
      * @param previousIncidents links to previous incident reports covering this situation
      * @param incidentClassifiers initial classifiers for the incident report
      * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param originatorGUID the unique identifier of the person or process that created the incident
      *
      * @return unique identifier of the resulting incident report
      * @throws InvalidParameterException null or non-unique qualified name for the incident report
@@ -1106,7 +1112,8 @@ public class GovernanceEngineClient
                                         List<IncidentImpactedElement> impactedResources,
                                         List<IncidentDependency>      previousIncidents,
                                         Map<String, Integer>          incidentClassifiers,
-                                        Map<String, String>           additionalProperties) throws InvalidParameterException,
+                                        Map<String, String>           additionalProperties,
+                                        String                        originatorGUID) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
@@ -1126,6 +1133,7 @@ public class GovernanceEngineClient
         requestBody.setPreviousIncidents(previousIncidents);
         requestBody.setIncidentClassifiers(incidentClassifiers);
         requestBody.setAdditionalProperties(additionalProperties);
+        requestBody.setOriginatorGUID(originatorGUID);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,

@@ -40,6 +40,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for processing governance actions
      * @param requestType requestType - used for message logging
+     * @param discoveryServiceGUID name of this discovery service - used for message logging
      * @param discoveryServiceName name of this discovery service - used for message logging
      * @param discoveryServiceConnector connector that does the work
      * @param discoveryContext context for the connector
@@ -52,6 +53,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
                             String                     governanceActionGUID,
                             GovernanceEngineClient     governanceActionClient,
                             String                     requestType,
+                            String                     discoveryServiceGUID,
                             String                     discoveryServiceName,
                             Connector                  discoveryServiceConnector,
                             DiscoveryContext           discoveryContext,
@@ -64,6 +66,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
               governanceActionGUID,
               governanceActionClient,
               requestType,
+              discoveryServiceGUID,
               discoveryServiceName,
               discoveryServiceConnector,
               auditLog);

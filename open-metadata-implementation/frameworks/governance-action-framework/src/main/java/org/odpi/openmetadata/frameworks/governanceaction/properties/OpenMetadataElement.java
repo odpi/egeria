@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.*;
 
@@ -24,7 +25,7 @@ public class OpenMetadataElement extends ElementControlHeader
     private Date                        effectiveFromTime = null;
     private Date                        effectiveToTime   = null;
     private List<ElementClassification> classifications   = null;
-    private Map<String, Object>         elementProperties = null;
+    private ElementProperties           elementProperties = null;
 
 
     /**
@@ -180,20 +181,9 @@ public class OpenMetadataElement extends ElementControlHeader
      *
      * @return property map
      */
-    public Map<String, Object> getElementProperties()
+    public ElementProperties getElementProperties()
     {
-        if (elementProperties == null)
-        {
-            return null;
-        }
-        else if (elementProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(elementProperties);
-        }
+        return elementProperties;
     }
 
 
@@ -203,7 +193,7 @@ public class OpenMetadataElement extends ElementControlHeader
      *
      * @param elementProperties property map
      */
-    public void setElementProperties(Map<String, Object> elementProperties)
+    public void setElementProperties(ElementProperties elementProperties)
     {
         this.elementProperties = elementProperties;
     }

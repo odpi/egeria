@@ -1457,11 +1457,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             EntityDetail connectionEntity = null;
             Relationship relationshipToConnection = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                                     assetEntity.getGUID(),
-                                                                                     assetEntity.getType().getTypeDefName(),
-                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                     methodName);
+                                                                                                  assetEntity.getGUID(),
+                                                                                                  assetEntity.getType().getTypeDefName(),
+                                                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  methodName);
 
             if (relationshipToConnection != null)
             {

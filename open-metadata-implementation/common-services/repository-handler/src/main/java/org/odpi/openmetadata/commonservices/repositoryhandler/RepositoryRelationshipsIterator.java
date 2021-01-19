@@ -10,7 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.List;
 
 /**
- * RepositoryRelationshipsIterator is an iterator class for iteratively retrieving relationships for an anchor entity (possibly restricting
+ * RepositoryRelationshipsIterator is an iterator class for iteratively retrieving relationships for a starting entity (possibly restricting
  * the type of relationships returned).  It is used where the caller needs to filter the results coming from the repository and may need to
  * make more than one call to the repository in order to accumulate the number of requested results.
  *

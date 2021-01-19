@@ -29,6 +29,9 @@ public class GovernanceActionProcessRequestBody implements Serializable
     private List<String> requestSourceGUIDs   = null;
     private List<String> actionTargetGUIDs    = null;
     private Date         startTime            = null;
+    private String       originatorGUID       = null;
+    private String       originatorEngineName = null;
+
 
     /**
      * Default constructor
@@ -52,6 +55,8 @@ public class GovernanceActionProcessRequestBody implements Serializable
             requestSourceGUIDs = template.getRequestSourceGUIDs();
             actionTargetGUIDs = template.getActionTargetGUIDs();
             startTime = template.getStartTime();
+            originatorGUID = template.getOriginatorGUID();
+            originatorEngineName = template.getOriginatorEngineName();
         }
     }
 
@@ -147,6 +152,51 @@ public class GovernanceActionProcessRequestBody implements Serializable
 
 
     /**
+     * Return the unique identifier of the person or process that created the incident.
+     * This this is typically an ActorProfile or Process.
+     *
+     * @return string guid
+     */
+    public String getOriginatorGUID()
+    {
+        return originatorGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the person or process that created the incident.
+     *
+     * @param originatorGUID string guid
+     */
+    public void setOriginatorGUID(String originatorGUID)
+    {
+        this.originatorGUID = originatorGUID;
+    }
+
+
+    /**
+     * Return the qualified name of the governance engine that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getOriginatorEngineName()
+    {
+        return originatorEngineName;
+    }
+
+
+    /**
+     * Set up the qualified name of the governance engine that originated this request (if any).
+     *
+     * @param originatorEngineName string name
+     */
+    public void setOriginatorEngineName(String originatorEngineName)
+    {
+        this.originatorEngineName = originatorEngineName;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -159,6 +209,8 @@ public class GovernanceActionProcessRequestBody implements Serializable
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
                        ", actionTargetGUIDs=" + actionTargetGUIDs +
                        ", startTime=" + startTime +
+                       ", originatorGUID=" + originatorGUID +
+                       ", originatorEngineName=" + originatorEngineName +
                        '}';
     }
 
@@ -184,6 +236,8 @@ public class GovernanceActionProcessRequestBody implements Serializable
         return Objects.equals(processQualifiedName, that.processQualifiedName) &&
                        Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
                        Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs) &&
+                       Objects.equals(originatorGUID, that.originatorGUID) &&
+                       Objects.equals(originatorEngineName, that.originatorEngineName) &&
                        Objects.equals(startTime, that.startTime);
     }
 
@@ -196,6 +250,7 @@ public class GovernanceActionProcessRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime);
+        return Objects.hash(processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime,
+                            originatorGUID, originatorEngineName);
     }
 }

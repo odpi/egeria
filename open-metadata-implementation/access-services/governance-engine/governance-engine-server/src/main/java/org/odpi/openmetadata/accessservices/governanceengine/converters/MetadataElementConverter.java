@@ -2,18 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
 /**
- * GovernanceEnginePropertiesConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a GovernanceEngineProperties bean.
+ * MetadataElementConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a OpenMetadataElement bean.
  */
 public class MetadataElementConverter<B> extends GovernanceEngineOMASConverter<B>
 {
@@ -30,6 +28,8 @@ public class MetadataElementConverter<B> extends GovernanceEngineOMASConverter<B
     {
         super(repositoryHelper, serviceName, serverName);
     }
+
+
 
 
     /**
@@ -54,39 +54,11 @@ public class MetadataElementConverter<B> extends GovernanceEngineOMASConverter<B
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof GovernanceEngineElement)
+            if (returnBean instanceof OpenMetadataElement)
             {
-                GovernanceEngineElement    bean = (GovernanceEngineElement) returnBean;
-                GovernanceEngineProperties properties = new GovernanceEngineProperties();
+                OpenMetadataElement bean = (OpenMetadataElement) returnBean;
 
-                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
-
-                InstanceProperties instanceProperties = null;
-
-                /*
-                 * The initial set of values come from the entity definition.
-                 */
-                if (entity != null)
-                {
-                    instanceProperties = new InstanceProperties(entity.getProperties());
-                }
-
-                properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                properties.setDisplayName(this.removeName(instanceProperties));
-                properties.setDescription(this.removeDescription(instanceProperties));
-                properties.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                properties.setVersion(this.removeVersion(instanceProperties));
-                properties.setPatchLevel(this.removePatchLevel(instanceProperties));
-                properties.setSource(this.removeSource(instanceProperties));
-
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                properties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                bean.setProperties(properties);
+                super.fillOpenMetadataElement(bean, entity);
             }
 
             return returnBean;
