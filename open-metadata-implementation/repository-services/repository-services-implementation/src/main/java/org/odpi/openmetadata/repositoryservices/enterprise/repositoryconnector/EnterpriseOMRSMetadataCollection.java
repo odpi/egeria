@@ -3090,32 +3090,17 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         EntitySummary entity = this.getEntitySummary(userId, entityGUID);
 
         /*
-         * Validation complete, ok to continue with request
-         *
-         * The list of cohort connectors are retrieved for each request to ensure that any changes in
-         * the shape of the cohort are reflected immediately.
+         * Validation complete, ok to make changes
          */
-        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getHomeLocalRemoteConnectors(entity, methodName);
-
-        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
-        ClassifyEntityExecutor executor = new ClassifyEntityExecutor(userId,
-                                                                     entityGUID,
-                                                                     classificationName,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     classificationProperties,
-                                                                     methodName);
-
-        /*
-         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
-         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
-         * there are no positive results from any repository.
-         */
-        federationControl.executeCommand(executor);
-
-        return executor.getUpdatedEntity();
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(entity,
+                                                                                                        methodName);
+        if (metadataCollection != null) {
+            return metadataCollection.classifyEntity(userId,
+                                                     entityGUID,
+                                                     classificationName,
+                                                     classificationProperties);
+        }
+        return null;
     }
 
 
