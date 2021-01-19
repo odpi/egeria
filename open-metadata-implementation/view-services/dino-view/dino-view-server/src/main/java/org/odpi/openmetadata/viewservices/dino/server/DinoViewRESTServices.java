@@ -16,20 +16,7 @@ import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
 import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException;
 import org.odpi.openmetadata.viewservices.dino.api.properties.RequestSummary;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoPlatformOverviewResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoPlatformRequestBody;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoResourceEndpointListResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerAuditLogResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerConfigResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerDoubleConfigResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerListResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerOverviewResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerRequestBody;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerTypeResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServiceDetailsResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServiceListResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServiceRequestBody;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoStringResponse;
+import org.odpi.openmetadata.viewservices.dino.api.rest.*;
 import org.odpi.openmetadata.viewservices.dino.handlers.DinoViewHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,7 +144,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
             AuditLog auditLog = null;
@@ -247,7 +234,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -336,7 +323,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -425,7 +412,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -514,7 +501,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -601,7 +588,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -690,7 +677,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -781,7 +768,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -870,7 +857,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -966,7 +953,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
             AuditLog auditLog = null;
@@ -1053,7 +1040,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1145,7 +1132,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
             AuditLog auditLog = null;
@@ -1232,7 +1219,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1321,7 +1308,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1435,7 +1422,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1526,7 +1513,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1615,7 +1602,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1707,7 +1694,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1798,7 +1785,7 @@ public class DinoViewRESTServices {
         {
 
             // The serverName parameter to the RequestSummary is the target server not the server running the VS
-            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, methodName);
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(), requestBody.getServerName(), null, null, methodName);
             response.setRequestSummary(request);
 
 
@@ -1894,6 +1881,7 @@ public class DinoViewRESTServices {
             RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
                                                         requestBody.getServerName(),
                                                         requestBody.getServerInstanceName(),
+                                                        null,
                                                         methodName);
             response.setRequestSummary(request);
 
@@ -1987,6 +1975,7 @@ public class DinoViewRESTServices {
             RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
                                                         requestBody.getServerName(),
                                                         requestBody.getServerInstanceName(),
+                                                        null,
                                                         methodName);
             response.setRequestSummary(request);
 
@@ -2080,6 +2069,7 @@ public class DinoViewRESTServices {
             RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
                                                         requestBody.getServerName(),
                                                         requestBody.getServerInstanceName(),
+                                                        null,
                                                         methodName);
             response.setRequestSummary(request);
 
@@ -2175,6 +2165,7 @@ public class DinoViewRESTServices {
             RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
                                                         requestBody.getServerName(),
                                                         requestBody.getServerInstanceName(),
+                                                        null,
                                                         methodName);
             response.setRequestSummary(request);
 
@@ -2244,6 +2235,103 @@ public class DinoViewRESTServices {
         return response;
     }
 
+
+
+    /**
+     * Retrieve engine details for a specified engine
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @param requestBody   body containing serverName of the server and serviceName of the service to be queried.
+     * @return response     the configuration for the server.
+     *
+     */
+    public DinoEngineDetailsResponse serverGetEngineDetails(String                serverName,
+                                                            String                userId,
+                                                            DinoEngineRequestBody requestBody) {
+
+        final String methodName = "serverGetEngineDetails";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DinoEngineDetailsResponse response = new DinoEngineDetailsResponse();
+
+        if (requestBody != null)
+        {
+
+            // The serverName parameter to the RequestSummary is the target server not the server running the VS
+            RequestSummary request = new RequestSummary(requestBody.getPlatformName(),
+                                                        requestBody.getServerName(),
+                                                        null,
+                                                        requestBody.getRequestContextCorrelator(),  // OMES instance GUID
+                                                        methodName);
+            response.setRequestSummary(request);
+
+
+            AuditLog auditLog = null;
+            DinoViewHandler handler;
+
+            try
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                handler = instanceHandler.getDinoViewHandler(userId, serverName, methodName);
+
+                if (handler == null)
+                {
+                    throw new DinoViewServiceException(DinoViewErrorCode.COULD_NOT_CREATE_HANDLER.getMessageDefinition(methodName),
+                                                       this.getClass().getName(),
+                                                       methodName);
+
+                }
+
+                response.setEngineDetails(handler.serverGetEngineDetails(userId,
+                                                                         requestBody.getServerName(),
+                                                                         requestBody.getPlatformName(),
+                                                                         requestBody.getEngineQualifiedName(),
+                                                                         methodName));
+
+            }
+            catch (PropertyServerException error)
+            {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            }
+            catch (InvalidParameterException error)
+            {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+            catch (DinoViewServiceException error)
+            {
+                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            }
+            catch (Throwable error)
+            {
+                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            }
+
+        }
+        else
+        {
+            /*
+             * Raise (and immediately capture) a RexViewServicesException
+             */
+            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+                                                                          this.getClass().getName(),
+                                                                          methodName);
+
+            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
 }

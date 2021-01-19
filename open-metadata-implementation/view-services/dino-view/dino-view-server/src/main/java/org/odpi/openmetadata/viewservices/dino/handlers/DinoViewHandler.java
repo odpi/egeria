@@ -4,6 +4,14 @@ package org.odpi.openmetadata.viewservices.dino.handlers;
 
 
 
+import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
 import org.odpi.openmetadata.adminservices.client.EngineHostConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.IntegrationDaemonConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurationClient;
@@ -24,6 +32,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
@@ -36,11 +45,13 @@ import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoExceptionHandler;
 import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
 import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException;
 import org.odpi.openmetadata.viewservices.dino.api.properties.DinoServerInstance;
+import org.odpi.openmetadata.viewservices.dino.api.properties.EngineDetails;
 import org.odpi.openmetadata.viewservices.dino.api.properties.PlatformOverview;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ServerCohortDetails;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ServerOverview;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ServiceDetails;
+import org.odpi.openmetadata.viewservices.dino.api.properties.ServicePropertiesAndRequests;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +60,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -162,7 +174,8 @@ public class DinoViewHandler {
      * @param methodName The name of the method being invoked
      * @return The resource endpoints that have been configured for the view service
      */
-    public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
+    public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId,
+                                                                    String methodName)
 
     {
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
@@ -415,8 +428,8 @@ public class DinoViewHandler {
      * @throws DinoViewServiceException - an invalid parameter was detected and reported
      */
     private EngineHostConfigurationClient getEngineHostConfigurationClient(String userId,
-                                                                                  String serverName,
-                                                                                  String platformRootURL)
+                                                                           String serverName,
+                                                                           String platformRootURL)
 
     throws DinoViewServiceException
 
@@ -482,8 +495,8 @@ public class DinoViewHandler {
      * @throws DinoViewServiceException - an invalid parameter was detected and reported
      */
     private ViewServerConfigurationClient getViewServerConfigurationClient(String userId,
-                                                                                    String serverName,
-                                                                                    String platformRootURL)
+                                                                           String serverName,
+                                                                           String platformRootURL)
 
     throws DinoViewServiceException
 
@@ -503,6 +516,73 @@ public class DinoViewHandler {
         }
     }
 
+    /**
+     * getDiscoveryConfigurationClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * Repository Services Audit Log Services interface.
+     *
+     * @param userId - name of the user performing the operation
+     * @param serverName - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
+     */
+    private DiscoveryConfigurationClient getDiscoveryConfigurationClient(String userId,
+                                                                         String serverName,
+                                                                         String platformRootURL)
+
+    throws DinoViewServiceException
+
+    {
+
+        String methodName = "getDiscoveryConfigurationClient";
+
+        try
+        {
+
+            return new DiscoveryConfigurationClient(serverName, platformRootURL, userId );
+
+        }
+        catch(InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+    }
+
+
+
+    /**
+     * getGovernanceEngineConfigurationClient
+     *
+     * This method will get the above client object, which then provides access to all the methods of the
+     * Repository Services Audit Log Services interface.
+     *
+     * @param userId - name of the user performing the operation
+     * @param serverName - name of the server to connect to
+     * @param platformRootURL - the root URL to connect to the server
+     * @throws DinoViewServiceException - an invalid parameter was detected and reported
+     */
+    private GovernanceEngineConfigurationClient getGovernanceEngineConfigurationClient(String userId,
+                                                                                       String serverName,
+                                                                                       String platformRootURL)
+
+    throws DinoViewServiceException
+
+    {
+
+        String methodName = "getGovernanceEngineConfigurationClient";
+
+        try
+        {
+
+            return new GovernanceEngineConfigurationClient(serverName, platformRootURL );
+
+        }
+        catch(InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+    }
 
     /*
      * Retrieve the platform overview
@@ -1101,6 +1181,12 @@ public class DinoViewHandler {
              */
             List<RegisteredOMAGService> integrationServices = this.serverGetIntegrationServices(userId, serverName, platformName, methodName);
             serverOverview.setIntegrationServices(integrationServices);
+
+            /*
+             * Get the engine services running on the server....
+             */
+            List<RegisteredOMAGService> engineServices = this.serverGetEngineServices(userId, serverName, platformName, methodName);
+            serverOverview.setEngineServices(engineServices);
 
             /*
              * Get the access services running on the server....
@@ -1937,7 +2023,6 @@ public class DinoViewHandler {
     throws
     DinoViewServiceException
 
-
     {
 
         try {
@@ -1951,8 +2036,7 @@ public class DinoViewHandler {
              */
             EngineHostConfigurationClient engineHostConfigurationClient =
                     this.getEngineHostConfigurationClient(userId, serverName, platformRootURL);
-
-
+            
             /*
              * Get the configuration of the integration service that has been requested. This can throw
              * OMAGNotAuthorizedException, OMAGInvalidParameterException, OMAGConfigurationErrorException
@@ -2196,5 +2280,129 @@ public class DinoViewHandler {
             throw DinoExceptionHandler.mapOMAGConfigurationErrorException(this.getClass().getName(), methodName, serverName, e);
         }
 
+    }
+
+
+
+
+
+    /*
+     * Retrieve the engine details for a specified engine
+     * @param userId  userId under which the request is performed
+     * @param serverName The name of the server to interrogate
+     * @param platformName The name of the platform hosting the server
+     * @param serviceName The name of the service to be retrieved
+     * @param methodName The name of the method being invoked
+     * @return the server type as a String
+     *
+     * Exceptions returned by the server
+     * @throws DinoViewServiceException    an error was detected and reported
+     *
+     */
+    public EngineDetails serverGetEngineDetails(String    userId,
+                                                String    serverName,
+                                                String    platformName,
+                                                String    engineQualifiedName,
+                                                String    methodName)
+
+    throws
+    DinoViewServiceException
+
+
+    {
+
+        try {
+
+            String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
+            /*
+             *  Use admin services client - need to speculatively choose one of the concrete admin clients, since type classification method is in the abstract superclass.
+             *
+             * Can throw OMAGInvalidParameterException
+             */
+
+            GovernanceEngineConfigurationClient gecc = this.getGovernanceEngineConfigurationClient(userId, serverName, platformRootURL);
+
+            GovernanceEngineElement governanceEngineElement = gecc.getGovernanceEngineByName(userId, engineQualifiedName);
+
+            /*
+             * Fill out the EngineDetails to be returned to the caller.
+             * Includes:
+             *   Engine:
+             *      engineDisplayName     ==> GovernanceEngineElement.properties.displayName
+             *      engineQualifiedName   ==> GovernanceEngineElement.properties.qualifiedName
+             *      engineDescription     ==> GovernanceEngineElement.properties.description
+             *      engineTypeDescription ==> GovernanceEngineElement.properties.typeDescription
+             *      engineVersion         ==> GovernanceEngineElement.properties.version
+             *      engineGUID      ==> GovernanceEngineElement.elementHeader.guid
+             * Services, for each Service:
+             *      for each requestType:
+             *          requestType (string) : { parameter : value , parameter : value, etc. }
+             *                       => RegisteredGovernanceService.requestTypes
+             */
+
+            EngineDetails engineDetails = new EngineDetails();
+            engineDetails.setEngineDisplayName(governanceEngineElement.getProperties().getDisplayName());
+            engineDetails.setEngineQualifiedName(governanceEngineElement.getProperties().getQualifiedName());
+            engineDetails.setEngineDescription(governanceEngineElement.getProperties().getDescription());
+            engineDetails.setEngineTypeDescription(governanceEngineElement.getProperties().getTypeDescription());
+            engineDetails.setEngineVersion(governanceEngineElement.getProperties().getVersion());
+            engineDetails.setEngineGUID(governanceEngineElement.getElementHeader().getGUID());
+
+            String governanceEngineGUID = governanceEngineElement.getElementHeader().getGUID();
+
+            /*
+             * The following call will return a list of governance service GUIDs.
+             * For each of the GUIDs, call getGovernanceServiceByGUID to get the governance service properties (including
+             * qualifiedName, description, zones etc).
+             * Also call the getRegisteredGovernanceService method to get the requestTtypes and requestParameters
+             * with which the service was registered with the engine.
+             */
+
+            List<String> governanceServices = gecc.getRegisteredGovernanceServices(userId, governanceEngineGUID, 0, 100);
+
+            if (governanceServices != null && governanceServices.size()>0) {
+
+                Map<String, ServicePropertiesAndRequests> serviceMap = new HashMap<>();
+
+                for (int i=0; i<governanceServices.size(); i++) {
+
+                    String governanceServiceGUID = governanceServices.get(i);
+
+                    GovernanceServiceElement gse = gecc.getGovernanceServiceByGUID(userId, governanceServiceGUID);
+
+                    GovernanceServiceProperties gsp = gse.getProperties();
+
+                    String governanceServiceQualifiedName = gsp.getQualifiedName();
+
+                    RegisteredGovernanceServiceElement rgse = gecc.getRegisteredGovernanceService(userId, governanceEngineGUID, governanceServiceGUID);
+
+                    RegisteredGovernanceService rgs = rgse.getProperties();
+
+                    Map<String, Map<String, String>> requestTypes = rgs.getRequestTypes();
+
+                    ServicePropertiesAndRequests spar = new ServicePropertiesAndRequests(gsp, requestTypes);
+
+                    serviceMap.put(governanceServiceQualifiedName, spar);
+
+                }
+                engineDetails.setServiceMap(serviceMap);
+            }
+
+            return engineDetails;
+
+        }
+        catch (InvalidParameterException e)
+        {
+            throw DinoExceptionHandler.mapInvalidParameterException(this.getClass().getName(), methodName, e);
+        }
+        catch (UserNotAuthorizedException e)
+        {
+            throw DinoExceptionHandler.mapUserNotAuthorizedException(this.getClass().getName(), methodName, e);
+        }
+        catch (PropertyServerException e)
+        {
+            throw DinoExceptionHandler.mapOCFPropertyServerException(this.getClass().getName(), methodName, platformName, e);
+        }
     }
 }

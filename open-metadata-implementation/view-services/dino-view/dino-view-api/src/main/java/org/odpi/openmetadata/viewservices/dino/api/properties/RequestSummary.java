@@ -24,10 +24,11 @@ public class RequestSummary {
      * It is stored in the gen into which the response is stored.
      */
 
-    private String                          platformName;
-    private String                          operation;
-    private String                          serverName;
-    private String                          serverInstanceName;
+    private String              platformName;
+    private String              operation;
+    private String              serverName;
+    private String              serverInstanceName;
+    private String              requestContextCorrelator;
 
 
 
@@ -41,12 +42,13 @@ public class RequestSummary {
          */
     }
 
-    public RequestSummary(String platformName, String serverName, String serverInstanceName, String operation) {
+    public RequestSummary(String platformName, String serverName, String serverInstanceName, String requestContextCorrelator, String operation) {
 
-        this.platformName   = platformName;
-        this.serverName     = serverName;
-        this.serverInstanceName = serverInstanceName;
-        this.operation      = operation;
+        this.platformName                = platformName;
+        this.serverName                  = serverName;
+        this.requestContextCorrelator    = requestContextCorrelator;
+        this.serverInstanceName          = serverInstanceName;
+        this.operation                   = operation;
 
     }
 
@@ -60,6 +62,12 @@ public class RequestSummary {
 
     public void setServerName(String serverName) {
         this.serverName = serverName;
+    }
+
+    public String getRequestContextCorrelator() {  return requestContextCorrelator;  }
+
+    public void setRequestContextCorrelator(String requestContextCorrelator) {
+        this.requestContextCorrelator = requestContextCorrelator;
     }
 
     public String getServerInstanceName() {  return serverInstanceName;  }
@@ -86,6 +94,7 @@ public class RequestSummary {
         return "RequestSummary{" +
                 "platformName='" + getPlatformName() + '\'' +
                 ", serverName='" + getServerName() + '\'' +
+                ", requestContextCorrelator='" + getRequestContextCorrelator() + '\'' +
                 ", serverInstanceName='" + getServerInstanceName() + '\'' +
                 ", operation='" + getOperation() + '\'' +
                 '}';
