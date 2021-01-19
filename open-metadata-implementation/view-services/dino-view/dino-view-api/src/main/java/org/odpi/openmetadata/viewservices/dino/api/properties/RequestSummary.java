@@ -27,7 +27,6 @@ public class RequestSummary {
     private String              platformName;
     private String              operation;
     private String              serverName;
-    private String              serverInstanceName;
     private String              requestContextCorrelator;
 
 
@@ -42,12 +41,11 @@ public class RequestSummary {
          */
     }
 
-    public RequestSummary(String platformName, String serverName, String serverInstanceName, String requestContextCorrelator, String operation) {
+    public RequestSummary(String platformName, String serverName, String requestContextCorrelator, String operation) {
 
         this.platformName                = platformName;
         this.serverName                  = serverName;
         this.requestContextCorrelator    = requestContextCorrelator;
-        this.serverInstanceName          = serverInstanceName;
         this.operation                   = operation;
 
     }
@@ -70,12 +68,6 @@ public class RequestSummary {
         this.requestContextCorrelator = requestContextCorrelator;
     }
 
-    public String getServerInstanceName() {  return serverInstanceName;  }
-
-    public void setServerInstanceName(String serverInstanceName) {
-        this.serverInstanceName = serverInstanceName;
-    }
-
     public String getOperation() {  return operation;  }
 
     public void setOperation(String operation) {
@@ -95,7 +87,6 @@ public class RequestSummary {
                 "platformName='" + getPlatformName() + '\'' +
                 ", serverName='" + getServerName() + '\'' +
                 ", requestContextCorrelator='" + getRequestContextCorrelator() + '\'' +
-                ", serverInstanceName='" + getServerInstanceName() + '\'' +
                 ", operation='" + getOperation() + '\'' +
                 '}';
     }
