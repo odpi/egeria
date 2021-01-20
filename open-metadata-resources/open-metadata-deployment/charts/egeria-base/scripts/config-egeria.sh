@@ -49,7 +49,158 @@ echo -e '\n\n > Starting the server:\n'
 curl -f -k --verbose --basic admin:admin -X POST --max-time 900 \
                 "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance"
 
-#Configure autostarting of the servers
-#
-# tbd !
+# --- Now the view server
+
+=# Set the URL root
+echo -e '\n\n > Setting view server URL root:\n'
+curl -f -k --verbose --basic admin:admin -X POST \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}"
+
+# Setup the event bus
+echo -e '\n\n > Setting up event bus:\n'
+
+curl -f -k --verbose --basic admin:admin \
+  --header "Content-Type: application/json" \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/event-bus" \
+  --data '{"producer": {"bootstrap.servers": "'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers": "'"${KAFKA_ENDPOINT}"'"} }'
+
+# Set as view server
+echo -e '\n\n > Set as view server:\n'
+
+curl -f -k --verbose --basic admin:admin -X POST \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/server-type?typeName=View%20Server"
+
+# Configure the view server cohort membership
+echo -e '\n\n > configuring cohort membership:\n'
+
+curl -f -k --verbose --basic admin:admin -X POST \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/cohorts/${EGERIA_COHORT}"
+
+# Configure the view services
+echo -e '\n\n > Setting up TEX:\n'
+
+curl -f -k --verbose --basic admin:admin \
+  --header "Content-Type: application/json" \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/tex" \
+  --data '{
+            "class":"IntegrationViewServiceConfig",
+            "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.tex.admin.TexViewAdmin",
+            "viewServiceFullName":"Type Explorer",
+            "viewServiceOperationalStatus":"ENABLED",
+            "omagserverPlatformRootURL": "UNUSED",
+            "omagserverName" : "UNUSED",
+            "resourceEndpoints" : [
+                {
+                    "class"              : "ResourceEndpointConfig",
+                    "resourceCategory"   : "Platform",
+                    "description"        : "Platform",
+                    "platformName"       : "platform",
+                    "platformRootURL"    : "https://{{ .Release.Name }}-platform:9443"
+                },
+                {
+                    "class"              : "ResourceEndpointConfig",
+                    "resourceCategory"   : "Server",
+                    "serverInstanceName" : "{{ .Values.egeria.serverName }}",
+                    "description"        : "Server",
+                    "platformName"       : "platform",
+                    "serverName"         : "{{ .Values.egeria.serverName }}"
+                }
+            ]
+          }'
+
+echo -e '\n\n > Setting up REX:\n'
+
+curl -f -k --verbose --basic admin:admin \
+  --header "Content-Type: application/json" \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/rex" \
+  --data '{
+            "class":"IntegrationViewServiceConfig",
+            "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.rex.admin.RexViewAdmin",
+            "viewServiceFullName":"Repository Explorer",
+            "viewServiceOperationalStatus":"ENABLED",
+            "omagserverPlatformRootURL": "UNUSED",
+            "omagserverName" : "UNUSED",
+            "resourceEndpoints" : [
+                {
+                    "class"              : "ResourceEndpointConfig",
+                    "resourceCategory"   : "Platform",
+                    "description"        : "Platform",
+                    "platformName"       : "platform",
+                    "platformRootURL"    : "https://{{ .Release.Name }}-platform:9443"
+                },
+                              {
+                    "class"              : "ResourceEndpointConfig",
+                    "resourceCategory"   : "Server",
+                    "serverInstanceName" : "{{ .Values.egeria.serverName }}",
+                    "description"        : "Server",
+                    "platformName"       : "platform",
+                    "serverName"         : "{{ .Values.egeria.serverName }}"
+                }
+             ]
+          }'
+
+echo -e '\n\n > Setting up DINO:\n'
+
+curl -f -k --verbose --basic admin:admin \
+  --header "Content-Type: application/json" \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/dino" \
+  --data '{
+            "class":"IntegrationViewServiceConfig",
+            "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin",
+            "viewServiceFullName":"Dino",
+            "viewServiceOperationalStatus":"ENABLED",
+            "omagserverPlatformRootURL": "UNUSED",
+            "omagserverName" : "UNUSED",
+            "resourceEndpoints" : [
+                {
+                    "class"              : "ResourceEndpointConfig",
+                    "resourceCategory"   : "Platform",
+                    "description"        : "Platform",
+                    "platformName"       : "platform",
+                    "platformRootURL"    : "https://{{ .Release.Name }}-platform:9443"
+                },
+                              {
+                    "class"              : "ResourceEndpointConfig",
+                    "resourceCategory"   : "Server",
+                    "serverInstanceName" : "{{ .Values.egeria.serverName }}",
+                    "description"        : "Server",
+                    "platformName"       : "platform",
+                    "serverName"         : "{{ .Values.egeria.serverName }}"
+                }
+              ]
+          }'
+# Start up the view server
+echo -e '\n\n > Starting the view server:\n'
+
+curl -f -k --verbose --basic admin:admin -X POST --max-time 900 \
+                "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/instance"
+
+# Enabling autostart by updating the configmap
+# This can only be done AFTER the server is correctly configured, otherwise it will prevent platform startup
+
+echo -e '\n\n > Enabling auto-start for the configured servers'
+
+token="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+namespace="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
+cacert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+curl -k \
+    -X PATCH \
+    -d @- \
+    -H "Authorization: Bearer $token" \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/strategic-merge-patch+json' \
+    https://kubernetes.default.svc/api/v1/namespaces/$namespace/configmaps/$STARTUP_CONFIGMAP <<EOF
+{
+  "kind": "ConfigMap",
+  "apiVersion": "v1",
+  "data":
+  {
+    "STARTUP_SERVER_LIST": "$POSTCONFIG_STARTUP_SERVER_LIST"
+  }
+} 
+EOF
+
+sleep 10000
+
 echo '-- End of configuration'
