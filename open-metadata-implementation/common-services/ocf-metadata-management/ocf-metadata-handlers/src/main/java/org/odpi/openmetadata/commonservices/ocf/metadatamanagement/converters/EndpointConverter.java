@@ -42,6 +42,7 @@ public class EndpointConverter extends ReferenceableConverter
      *
      * @return output bean
      */
+    @Override
     public Endpoint getBean()
     {
         final String  methodName = "getBean";

@@ -126,7 +126,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied GUID is null
      *
      * @param guid           unique identifier to validate
      * @param guidParameter  name of the parameter that passed the guid.
@@ -149,7 +149,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied name is null
      *
      * @param name           unique name to validate
      * @param nameParameter  name of the parameter that passed the name.
@@ -172,7 +172,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied search string is null
      *
      * @param searchString   searchString to validate
      * @param searchParameter  name of the parameter that passed the searchString.
@@ -196,7 +196,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied userId is null
+     * Throw an exception if the supplied object is null
      *
      * @param object         object to validate
      * @param nameParameter  name of the parameter that passed the object.
@@ -434,7 +434,7 @@ public class InvalidParameterHandler
      * Throw an exception if the supplied type name is not of the correct subclass
      *
      * @param typeName name of type
-     * @param superTypeName name of expected supertype
+     * @param superTypeName name of expected supertype (or null if no super type)
      * @param serviceName calling service
      * @param methodName calling method
      * @param repositoryHelper helper class that can return information about type
@@ -451,15 +451,17 @@ public class InvalidParameterHandler
     {
         final String parameterName = "typeName";
 
-        TypeDef typeDef;
-        if (typeName == null)
-        {
-            typeDef = repositoryHelper.getTypeDefByName(serviceName, superTypeName);
-        }
-        else
+        TypeDef typeDef = null;
+
+        if (typeName != null)
         {
             typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
         }
+        else if (superTypeName != null)
+        {
+            typeDef = repositoryHelper.getTypeDefByName(serviceName, superTypeName);
+        }
+
 
         if (typeDef == null)
         {

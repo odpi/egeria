@@ -156,6 +156,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void registerListener(String                       userId,
                                  DiscoveryEngineEventListener listener) throws InvalidParameterException,
                                                                                ConnectionCheckedException,
@@ -235,6 +236,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery engine definition.
      */
+    @Override
     public  String  createDiscoveryEngine(String  userId,
                                           String  qualifiedName,
                                           String  displayName,
@@ -279,6 +281,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
+    @Override
     public  DiscoveryEngineProperties getDiscoveryEngineByGUID(String    userId,
                                                                String    guid) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -316,6 +319,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
+    @Override
     public  DiscoveryEngineProperties getDiscoveryEngineByName(String    userId,
                                                                String    name) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -354,6 +358,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definitions.
      */
+    @Override
     public  List<DiscoveryEngineProperties> getAllDiscoveryEngines(String  userId,
                                                                    int     startingFrom,
                                                                    int     maximumResults) throws InvalidParameterException,
@@ -402,6 +407,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery engine definition.
      */
+    @Override
     public  void    updateDiscoveryEngine(String                userId,
                                           String                guid,
                                           String                qualifiedName,
@@ -461,6 +467,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
+    @Override
     public  void    deleteDiscoveryEngine(String  userId,
                                           String  guid,
                                           String  qualifiedName) throws InvalidParameterException,
@@ -508,6 +515,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery service definition.
      */
+    @Override
     public  String  createDiscoveryService(String     userId,
                                            String     qualifiedName,
                                            String     displayName,
@@ -557,6 +565,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service definition.
      */
+    @Override
     public  DiscoveryServiceProperties getDiscoveryServiceByGUID(String    userId,
                                                                  String    guid) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
@@ -595,6 +604,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
+    @Override
     public  DiscoveryServiceProperties getDiscoveryServiceByName(String    userId,
                                                                  String    name) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
@@ -634,6 +644,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service definitions.
      */
+    @Override
     public  List<DiscoveryServiceProperties> getAllDiscoveryServices(String  userId,
                                                                      int     startingFrom,
                                                                      int     maximumResults) throws InvalidParameterException,
@@ -673,6 +684,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
+    @Override
     public  List<String>  getDiscoveryServiceRegistrations(String   userId,
                                                            String   discoveryServiceGUID) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
@@ -717,6 +729,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery service definition.
      */
+    @Override
     public  void    updateDiscoveryService(String                userId,
                                            String                guid,
                                            String                qualifiedName,
@@ -773,6 +786,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service definition.
      */
+    @Override
     public  void    deleteDiscoveryService(String  userId,
                                            String  guid,
                                            String  qualifiedName) throws InvalidParameterException,
@@ -810,7 +824,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
-     * @param discoveryRequestTypes list of discovery request types that this discovery service is able to process.
+     * @param discoveryRequestType discovery request type that this discovery service is able to process.
      * @param defaultAnalysisParameters list of analysis parameters that are passed the the discovery service (via
      *                                  the discovery context).  These values can be overridden on the actual discovery request.
      *
@@ -818,10 +832,11 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
+    @Override
     public  void  registerDiscoveryServiceWithEngine(String               userId,
                                                      String               discoveryEngineGUID,
                                                      String               discoveryServiceGUID,
-                                                     List<String>         discoveryRequestTypes,
+                                                     String               discoveryRequestType,
                                                      Map<String, String>  defaultAnalysisParameters) throws InvalidParameterException,
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException
@@ -829,17 +844,17 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
         final String methodName = "registerDiscoveryServiceWithEngine";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
-        final String discoveryRequestTypesParameter = "discoveryRequestTypes";
+        final String discoveryRequestTypesParameter = "discoveryRequestType";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
-        invalidParameterHandler.validateStringArray(discoveryRequestTypes, discoveryRequestTypesParameter, methodName);
+        invalidParameterHandler.validateName(discoveryRequestType, discoveryRequestTypesParameter, methodName);
 
         DiscoveryServiceRegistrationRequestBody requestBody = new DiscoveryServiceRegistrationRequestBody();
         requestBody.setDiscoveryServiceGUID(discoveryServiceGUID);
-        requestBody.setDiscoveryRequestTypes(discoveryRequestTypes);
+        requestBody.setDiscoveryRequestType(discoveryRequestType);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
@@ -867,13 +882,14 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
+    @Override
     public RegisteredDiscoveryService getRegisteredDiscoveryService(String  userId,
                                                                     String  discoveryEngineGUID,
                                                                     String  discoveryServiceGUID) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        final String methodName = "getRegisteredDiscoveryService";
+        final String methodName = "getRegisteredGovernanceService";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services/{3}";
@@ -911,6 +927,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
+    @Override
     public  List<String>  getRegisteredDiscoveryServices(String  userId,
                                                          String  discoveryEngineGUID,
                                                          int     startingFrom,
@@ -953,6 +970,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer i
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
+    @Override
     public  void  unregisterDiscoveryServiceFromEngine(String        userId,
                                                        String        discoveryEngineGUID,
                                                        String        discoveryServiceGUID) throws InvalidParameterException,

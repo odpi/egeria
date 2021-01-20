@@ -14,7 +14,9 @@ public class TokenUser extends org.springframework.security.core.userdetails.Use
     private User user;
 
     public TokenUser(User user) {
-        super(user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getRoles().toArray(new String[]{})));
+        super(user.getUsername(),
+                user.getPassword(),
+                AuthorityUtils.createAuthorityList(user.getRoles().toArray(new String[]{})));
         this.user = user;
     }
 

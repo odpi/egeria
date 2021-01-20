@@ -21,7 +21,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Lineage Integrator Server-side</name>
+    <name>Lineage Integrator OMIS Server-side</name>
     <description>
         Context and context manager implementation for this integration service.
     </description>

@@ -127,6 +127,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void addElementToSubjectArea(String userId,
                                         String assetManagerGUID,
                                         String assetManagerName,
@@ -155,6 +156,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeElementFromSubjectArea(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,

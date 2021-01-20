@@ -81,6 +81,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @return properties including the name of the connector type, the connector provider class
      * and any specific connection properties that are recognized by this connector.
      */
+    @Override
     public ConnectorTypeProperties getConnectorTypeProperties()
     {
         return connectorTypeProperties;
@@ -93,6 +94,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @return properties including the name of the connector type, the connector provider class
      * and any specific connection properties that are recognized by this connector.
      */
+    @Override
     public ConnectorType getConnectorType()
     {
         return connectorType;
@@ -107,6 +109,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
+    @Override
     public synchronized Connector getConnector(Connection realLocalConnection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         return this.getConnector(new ConnectionProperties(realLocalConnection));
@@ -122,6 +125,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
+    @Override
     public synchronized Connector getConnector(ConnectionProperties realLocalConnection) throws ConnectionCheckedException,
                                                                                                 ConnectorCheckedException
     {

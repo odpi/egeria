@@ -57,7 +57,6 @@ public class EngineConfig extends AdminServicesConfigHeader
             engineId            = template.getEngineId();
             engineQualifiedName = template.getEngineQualifiedName();
             engineUserId        = template.getEngineUserId();
-
         }
     }
 
@@ -165,12 +164,10 @@ public class EngineConfig extends AdminServicesConfigHeader
             return false;
         }
         EngineConfig that = (EngineConfig) objectToCompare;
-        return getEngineId() == that.getEngineId() &&
-                       Objects.equals(getEngineQualifiedName(), that.getEngineQualifiedName()) &&
-                       Objects.equals(getEngineUserId(), that.getEngineUserId())
-                ;
+        return Objects.equals(engineId, that.engineId) &&
+                       Objects.equals(engineQualifiedName, that.engineQualifiedName) &&
+                       Objects.equals(engineUserId, that.engineUserId);
     }
-
 
 
     /**

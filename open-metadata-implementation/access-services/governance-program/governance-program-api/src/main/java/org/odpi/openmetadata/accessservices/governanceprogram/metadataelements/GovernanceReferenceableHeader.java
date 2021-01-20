@@ -130,6 +130,18 @@ public class GovernanceReferenceableHeader extends ElementHeader
         }
         GovernanceReferenceableHeader that = (GovernanceReferenceableHeader) objectToCompare;
         return Objects.equals(externalReferences, that.externalReferences) &&
-                Objects.equals(additionalProperties, that.additionalProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), externalReferences, additionalProperties);
     }
 }

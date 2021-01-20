@@ -156,6 +156,7 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  createGovernanceZone(String               userId,
                                       String               qualifiedName,
                                       String               displayName,
@@ -205,6 +206,7 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public GovernanceZoneElement getGovernanceZone(String   userId,
                                                    String   qualifiedName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -241,6 +243,7 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<GovernanceZoneElement> getGovernanceZones(String   userId,
                                                           int      startingFrom,
                                                           int      maximumResults) throws InvalidParameterException,

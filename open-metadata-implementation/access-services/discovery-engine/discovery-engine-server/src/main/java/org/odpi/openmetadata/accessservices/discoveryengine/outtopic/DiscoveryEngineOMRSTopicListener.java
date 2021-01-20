@@ -95,7 +95,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME))
+                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
                 {
                     EntityProxy end2 = relationship.getEntityTwoProxy();
 
@@ -107,10 +107,10 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                               end2.getUniqueProperties(),
                                                                                                               methodName),
                                                                            relationship.getGUID(),
-                                                                           repositoryHelper.getStringArrayProperty(sourceName,
-                                                                                                                   OpenMetadataAPIMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
-                                                                                                                   relationship.getProperties(),
-                                                                                                                   methodName));
+                                                                           repositoryHelper.getStringProperty(sourceName,
+                                                                                                              OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                              relationship.getProperties(),
+                                                                                                              methodName));
                     }
                 }
             }
@@ -130,6 +130,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the new entity
      */
+    @Override
     public void processNewEntityEvent(String       sourceName,
                                       String       originatorMetadataCollectionId,
                                       String       originatorServerName,
@@ -156,6 +157,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param oldEntity                      original values for the entity.
      * @param newEntity                      details of the new version of the entity.
      */
+    @Override
     public void processUpdatedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -182,6 +184,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the version of the entity that has been restored.
      */
+    @Override
     public void processUndoneEntityEvent(String       sourceName,
                                          String       originatorMetadataCollectionId,
                                          String       originatorServerName,
@@ -208,6 +211,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
      * @param classification new classification
      */
+    @Override
     public void processClassifiedEntityEvent(String         sourceName,
                                              String         originatorMetadataCollectionId,
                                              String         originatorServerName,
@@ -235,6 +239,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
      * @param originalClassification classification that was removed
      */
+    @Override
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -249,19 +254,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
     }
 
 
-    /**
-     * A classification has been removed from an entity.
-     *
-     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
-     *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName  name of the server that the event came from.
-     * @param originatorServerType  type of server that the event came from.
-     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
-     * @param originalClassification classification that was removed
-     */
+
     /**
      * An existing classification has been changed on an entity.
      *
@@ -276,6 +269,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
+    @Override
     public void processReclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -310,6 +304,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         deleted entity
      */
+    @Override
     public void processDeletedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -339,6 +334,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  deleted entity
      */
+    @Override
     public void processDeletePurgedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -364,6 +360,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the version of the entity that has been restored.
      */
+    @Override
     public void processRestoredEntityEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
                                            String       originatorServerName,
@@ -390,6 +387,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the new relationship
      */
+    @Override
     public void processNewRelationshipEvent(String       sourceName,
                                             String       originatorMetadataCollectionId,
                                             String       originatorServerName,
@@ -416,6 +414,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param oldRelationship                original details of the relationship.
      * @param newRelationship                details of the new version of the relationship.
      */
+    @Override
     public void processUpdatedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -442,6 +441,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the version of the relationship that has been restored.
      */
+    @Override
     public void processUndoneRelationshipEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -471,6 +471,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   deleted relationship
      */
+    @Override
     public void processDeletedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -496,6 +497,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  deleted relationship
      */
+    @Override
     public void processDeletePurgedRelationshipEvent(String       sourceName,
                                                      String       originatorMetadataCollectionId,
                                                      String       originatorServerName,
@@ -521,6 +523,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the version of the relationship that has been restored.
      */
+    @Override
     public void processRestoredRelationshipEvent(String       sourceName,
                                                  String       originatorMetadataCollectionId,
                                                  String       originatorServerName,
@@ -547,6 +550,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param instances multiple entities and relationships for sharing.
      */
+    @Override
     public void processInstanceBatchEvent(String        sourceName,
                                           String        originatorMetadataCollectionId,
                                           String        originatorServerName,

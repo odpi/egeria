@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -302,12 +303,11 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED(400, "OMAG-ADMIN-400-043",
                         "A retrieve all configurations has been attempted, but operation is not supported by the configuration store connector.",
                         "The retrieve all server configurations operation is rejected.",
-                        "Check whether OMAG Server configuration store connector supports retrieve all configurations."),
+                        "Check whether OMAG Server configuration connector supports retrieve all configurations."),
 
     UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE(400, "OMAG-ADMIN-400-044",
-                                         "User {0} has attempted to obtain a server config store to be able to retrieve an OMAG server's " +
-                                                 "configuration document but an error occurred.",
-                                         "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be opened.",
+                                         "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred.",
+                                         "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
                                          "Check that the OMAG Server configuration connector has been specified correctly."),
 
     NULL_SERVICE_URL_MARKER(400, "OMAG-ADMIN-400-045",
@@ -352,36 +352,17 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                     "Use information in the admin guide to update the configuration to request the replacement service " +
                                             "and restart the server."),
 
+    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW(400, "OMAG-ADMIN-400-051",
+                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
+                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
+                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
+
     NO_CONFIG_DOC(400,"OMAG-ADMIN-400-101",
                   "An engine service for OMAG server {0} has been passed null configuration",
                   "The engine service can not retrieve its configuration values.  " +
                           "The Engine Host OMAG server fails to start.",
                   "This is an internal logic error since the admin services should not have initialized this engine service " +
                           "without this section of the configuration document filled in.  Raise an issue to get this fixed."),
-
-    NO_OMAS_SERVER_URL(400,"OMAG-ADMIN-400-102",
-                       "{0} in server {1} is not configured with the platform URL root for the {2}",
-                       "The engine service is not able to locate the metadata server to retrieve the configuration for " +
-                               "its governance engines.  The Engine Host server fails to start.",
-                       "To be successful the engine service needs both the platform URL root and the name of the metadata " +
-                               "server as well as the list of engines it is to host. Add the " +
-                               "configuration for the platform URL root to this server's configuration document and check that the " +
-                               "other required configuration properties are in place. Then restart this server."),
-
-    NO_OMAS_SERVER_NAME(400, "OMAG-ADMIN-400-103",
-                        "{0} in server {1} is not configured with the name for the server running the {2}",
-                        "The server is not able to retrieve its configuration from the metadata server.  It fails to start.",
-                        "Add the configuration for the metadata server name to this server's configuration document.  " +
-                                "Ensure that the platform URL root points to the platform where the metadata server is running and that" +
-                                "there is at least one engine listed.  Once the configuration document is set up correctly,  " +
-                                "restart this server."),
-
-    NO_ENGINES(400, "OMAG-ADMIN-400-104",
-               "{0} in server {1} is not configured with any engines",
-               "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
-                       "the server to fail too.",
-               "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
-                       "and then restart the server."),
 
     NULL_PROPERTY_NAME(400, "OMAG-ADMIN-400-105",
                "The {0} property in the configuration for server {1} is null",
@@ -450,6 +431,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -462,10 +444,25 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "OMAGAdminErrorCode{" +
+                       "messageDefinition=" + messageDefinition +
+                       '}';
     }
 }

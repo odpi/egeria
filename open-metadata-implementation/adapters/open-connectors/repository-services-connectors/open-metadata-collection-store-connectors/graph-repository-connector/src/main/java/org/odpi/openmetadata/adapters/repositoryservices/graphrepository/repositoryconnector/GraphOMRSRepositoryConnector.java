@@ -28,6 +28,7 @@ public class GraphOMRSRepositoryConnector extends OMRSRepositoryConnector
      *
      * @param metadataCollectionId String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String metadataCollectionId)
     {
         String methodName = "setMetadataCollectionId";

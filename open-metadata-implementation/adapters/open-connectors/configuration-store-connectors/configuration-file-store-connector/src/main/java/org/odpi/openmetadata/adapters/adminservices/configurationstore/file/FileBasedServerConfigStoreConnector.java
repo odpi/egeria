@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.apache.commons.io.FileUtils;
@@ -26,12 +25,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * FileBasedServerConfigStoreConnector provides a connector that manages a configuration document for an OMAG Server in a file
+ */
 public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase implements OMAGServerConfigStoreRetrieveAll
 {
     /*
      * This is the name of the configuration file that is used if there is no file name in the connection.
      */
-    private static final String defaultFilenameTemplate = "omag.server.{0}.config";
+    private static final String defaultFilenameTemplate = "data/servers/{0}/config/{0}.config";
 
     /*
      * Variables used in writing to the file.
@@ -94,6 +96,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      *
      * @param omagServerConfig - configuration properties to save
      */
+    @Override
     public void saveServerConfig(OMAGServerConfig omagServerConfig)
     {
         File    configStoreFile = new File(configStoreName);
@@ -127,6 +130,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      *
      * @return server configuration
      */
+    @Override
     public OMAGServerConfig  retrieveServerConfig()
     {
         File             configStoreFile     = new File(configStoreName);
@@ -159,6 +163,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     /**
      * Remove the server configuration.
      */
+    @Override
     public void removeServerConfig()
     {
         File    configStoreFile = new File(configStoreName);
@@ -208,7 +213,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      * Check whether the file name is an OMAG Server configuration name by checking it against the template.
      *
      * @param textToCheck filename to check
-     * @param templateString
+     * @param templateString string containing the template to fill out
      *
      * @return true if the supplied file name is a valid configuration file name
      */

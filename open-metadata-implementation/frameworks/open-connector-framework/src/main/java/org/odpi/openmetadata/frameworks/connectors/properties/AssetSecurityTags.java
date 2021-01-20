@@ -147,6 +147,9 @@ public class AssetSecurityTags extends AssetPropertyBase
     }
 
 
+
+
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -160,15 +163,23 @@ public class AssetSecurityTags extends AssetPropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetSecurityTags))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         AssetSecurityTags that = (AssetSecurityTags) objectToCompare;
-        return Objects.equals(getSecurityTags(), that.getSecurityTags());
+        return Objects.equals(securityTags, that.securityTags);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(securityTags);
     }
 }

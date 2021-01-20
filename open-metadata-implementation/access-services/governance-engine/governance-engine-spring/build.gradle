@@ -10,9 +10,6 @@ dependencies {
     implementation 'org.springframework:spring-web'
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'io.swagger.core.v3:swagger-annotations'
-    testImplementation 'org.mockito:mockito-core'
-    testImplementation 'org.mockito:mockito-junit-jupiter'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

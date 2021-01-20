@@ -216,10 +216,11 @@ public class GovernanceOfficerProperties extends ReferenceableProperties
     }
 
 
+
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object to compare
+     * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
     @Override
@@ -238,11 +239,23 @@ public class GovernanceOfficerProperties extends ReferenceableProperties
             return false;
         }
         GovernanceOfficerProperties that = (GovernanceOfficerProperties) objectToCompare;
-        return getGovernanceDomain() == that.getGovernanceDomain() &&
-                Objects.equals(getAppointmentId(), that.getAppointmentId()) &&
-                Objects.equals(getAppointmentContext(), that.getAppointmentContext()) &&
-                Objects.equals(getAppointee(), that.getAppointee()) &&
-                Objects.equals(predecessors, that.predecessors) &&
-                Objects.equals(successors, that.successors);
+        return governanceDomain == that.governanceDomain &&
+                       Objects.equals(appointmentId, that.appointmentId) &&
+                       Objects.equals(appointmentContext, that.appointmentContext) &&
+                       Objects.equals(appointee, that.appointee) &&
+                       Objects.equals(predecessors, that.predecessors) &&
+                       Objects.equals(successors, that.successors);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), governanceDomain, appointmentId, appointmentContext, appointee, predecessors, successors);
     }
 }

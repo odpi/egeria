@@ -31,14 +31,14 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
      * Invalid configuration document - these errors need the server to be restarted to resolve.
      */
 
-    DISCOVERY_ENGINE_INSTANCE_FAILURE(400, "ASSET-ANALYSIS-OMES-400-007 ",
+    DISCOVERY_ENGINE_INSTANCE_FAILURE(400, "OMES-ASSET-ANALYSIS-400-007 ",
                          "The Asset Analysis OMES are unable to initialize a new instance of discovery engine {0}; error message is {1}",
                          "The Asset Analysis OMES detected an error during the start up of a specific discovery engine instance.  " +
                                               "Its discovery services are not available in the Asset Analysis OMES.",
                          "Review the error message and any other reported failures to determine the cause of the problem.  " +
                                               "Once this is resolved, restart the server."),
 
-    SERVICE_INSTANCE_FAILURE(400, "ASSET-ANALYSIS-OMES-400-008 ",
+    SERVICE_INSTANCE_FAILURE(400, "OMES-ASSET-ANALYSIS-400-008 ",
                              "The Asset Analysis OMES are unable to initialize a new instance in server {0}; error message is {1}",
                              "The Asset Analysis OMES detected an error during the start up of a specific server instance.  " +
                                      "No discovery services are available in the server.",
@@ -51,7 +51,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
      * The problem is transient - once the configuration is available in the metadata server and the server has retrieved the
      * configuration, the discovery engines will operate successfully.
      */
-    CONFIGURATION_LISTENER_INSTANCE_FAILURE(400, "ASSET-ANALYSIS-OMES-400-010 ",
+    CONFIGURATION_LISTENER_INSTANCE_FAILURE(400, "OMES-ASSET-ANALYSIS-400-010 ",
              "The Asset Analysis OMES are unable to retrieve the connection for the configuration " +
                                   "listener for server {0} from metadata server {1}. " +
                                   "Exception returned was {2} with error message {3}",
@@ -67,7 +67,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
                                   "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
                                   "refresh-config command or wait for the Asset Analysis OMES to retry the configuration request."),
 
-    UNKNOWN_DISCOVERY_ENGINE_CONFIG_AT_STARTUP(400, "ASSET-ANALYSIS-OMES-400-011 ",
+    UNKNOWN_DISCOVERY_ENGINE_CONFIG_AT_STARTUP(400, "OMES-ASSET-ANALYSIS-400-011 ",
              "Properties for discovery engine called {0} have not been returned by open metadata server {1}.  Exception {2} " +
                                             "with message {3} returned to server {4}",
              "The Asset Analysis OMES is not able to initialize the discovery engine and so it will not de able to support discovery " +
@@ -75,19 +75,19 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
              "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
                                           "configuration of the Asset Analysis OMES.  Once the cause is resolved, restart the server."),
 
-    NO_DISCOVERY_ENGINES_STARTED(400,"ASSET-ANALYSIS-OMES-400-012 ",
+    NO_DISCOVERY_ENGINES_STARTED(400,"OMES-ASSET-ANALYSIS-400-012 ",
              "Asset Analysis OMES in server {0} is unable to start any discovery engines",
              "The server is not able to run any discovery requests.  It fails to start.",
              "Add the configuration for at least one discovery engine to this Asset Analysis OMES."),
 
-    NO_DISCOVERY_ENGINE_CLIENT(400,"ASSET-ANALYSIS-OMES-400-013 ",
+    NO_DISCOVERY_ENGINE_CLIENT(400,"OMES-ASSET-ANALYSIS-400-013 ",
                                  "Asset Analysis OMES in server {0} is unable to start a client to the Discovery Engine OMAS for discovery engine {1}.  The " +
                                          "exception was {2} and the error message was {3}",
                                  "The server is not able to run any discovery requests.  It fails to start.",
                                  "Using the information in the error message, correct the server configuration and restart the server."),
 
 
-    UNKNOWN_DISCOVERY_ENGINE_CONFIG(400, "ASSET-ANALYSIS-OMES-400-014 ",
+    UNKNOWN_DISCOVERY_ENGINE_CONFIG(400, "OMES-ASSET-ANALYSIS-400-014 ",
              "Properties for discovery engine called {0} have not been returned by open metadata server {1} to Asset Analysis OMES in server {2}",
              "The Asset Analysis OMES is not able to initialize the discovery engine and so it will not de able to support discovery " +
                                             "requests targeted to this discovery engine.",
@@ -97,7 +97,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
     /*
      * Errors when running requests
      */
-    UNKNOWN_DISCOVERY_ENGINE(400, "ASSET-ANALYSIS-OMES-400-020 ",
+    UNKNOWN_DISCOVERY_ENGINE(400, "OMES-ASSET-ANALYSIS-400-020 ",
                              "Discovery engine {0} is not running in the Asset Analysis OMES in server {1}",
                              "The discovery engine requested on a request is not known to the Asset Analysis OMES.",
                              "This may be a configuration error in the Asset Analysis OMES or an error in the caller.  " +
@@ -109,7 +109,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
                                      "correct then it may be a code error in the Asset Analysis OMES and you need to raise an issue to get " +
                                      "it fixed.  Once the cause is resolved, retry the discovery request."),
 
-    UNKNOWN_DISCOVERY_REQUEST_TYPE(400, "ASSET-ANALYSIS-OMES-400-021 ",
+    UNKNOWN_DISCOVERY_REQUEST_TYPE(400, "OMES-ASSET-ANALYSIS-400-021 ",
              "The discovery request type {0} is not recognized by discovery engine {1} hosted by server {2}",
              "The discovery request is not run and an error is returned to the caller.",
              "This may be an error in the caller's logic, a configuration error related to the discovery engine or the metadata server" +
@@ -122,7 +122,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
                                            "consistent with this configuration then it may be a code error in the Asset Analysis OMES in which case, " +
                                            "raise an issue to get it fixed.  Once the cause is resolved, retry the discovery request."),
 
-    INVALID_DISCOVERY_SERVICE(400, "ASSET-ANALYSIS-OMES-400-022 ",
+    INVALID_DISCOVERY_SERVICE(400, "OMES-ASSET-ANALYSIS-400-022 ",
              "The discovery service {0} linked to discovery request type {1} can not be started.  " +
                      "The {2} exception was returned with message {3}",
              "The discovery request is not run and an error is returned to the caller.",
@@ -137,14 +137,14 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
                                       "raise an issue with the author of the discovery service to get it fixed.  Once the cause is resolved, " +
                                       "retry the discovery request."),
 
-    NULL_DISCOVERY_SERVICE(400, "ASSET-ANALYSIS-OMES-400-023 ",
+    NULL_DISCOVERY_SERVICE(400, "OMES-ASSET-ANALYSIS-400-023 ",
                               "Method {0} can not execute in the discovery engine {1} hosted by Asset Analysis OMES in server {2} because the associated " +
                                       "discovery service properties are null",
                               "The discovery request is not run and an error is returned to the caller.",
                               "This may be an error in the discovery engine's logic or the Discovery Engine OMAS may have returned " +
                                    "invalid configuration.  Raise an issue to get help to fix it"),
 
-    DISCOVERY_ENGINE_NOT_INITIALIZED(400,"ASSET-ANALYSIS-OMES-400-024 ",
+    DISCOVERY_ENGINE_NOT_INITIALIZED(400,"OMES-ASSET-ANALYSIS-400-024 ",
              "Asset Analysis OMES in server {0} is unable to pass a discovery request to discovery engine {1} because this discovery engine has not " +
                                              "retrieved its configuration from the metadata server",
                                      "The discovery engine is not able to run any discovery requests until it is able to retrieve its configuration.",
@@ -185,6 +185,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -197,6 +198,7 @@ public enum AssetAnalysisErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);

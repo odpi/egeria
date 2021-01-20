@@ -5,7 +5,6 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -49,6 +48,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
@@ -65,6 +65,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param repositoryHelper helper object for building and querying TypeDefs and metadata instances.
      */
+    @Override
     public void setRepositoryHelper(OMRSRepositoryHelper repositoryHelper)
     {
         this.repositoryHelper = repositoryHelper;
@@ -87,6 +88,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param repositoryValidator validator object to check the validity of TypeDefs and metadata instances.
      */
+    @Override
     public void setRepositoryValidator(OMRSRepositoryValidator repositoryValidator)
     {
         this.repositoryValidator = repositoryValidator;
@@ -109,6 +111,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @return String name
      */
+    @Override
     public String  getRepositoryName()
     {
         return this.repositoryName;
@@ -120,6 +123,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param repositoryName String name
      */
+    @Override
     public void  setRepositoryName(String      repositoryName)
     {
         this.repositoryName = repositoryName;
@@ -131,6 +135,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @return String name
      */
+    @Override
     public String getServerName() { return serverName; }
 
 
@@ -139,6 +144,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param serverName String name
      */
+    @Override
     public void  setServerName(String      serverName)
     {
         this.serverName = serverName;
@@ -151,6 +157,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @return String name
      */
+    @Override
     public String getServerType() { return serverType; }
 
 
@@ -160,6 +167,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param serverType String server type
      */
+    @Override
     public void setServerType(String serverType)
     {
         this.serverType = serverType;
@@ -171,6 +179,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @return String name
      */
+    @Override
     public String getOrganizationName() { return organizationName; }
 
 
@@ -179,6 +188,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param organizationName String organization name
      */
+    @Override
     public void setOrganizationName(String organizationName)
     {
         this.organizationName = organizationName;
@@ -191,6 +201,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @return user id
      */
+    @Override
     public String getServerUserId()
     {
         return serverUserId;
@@ -203,6 +214,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param localServerUserId string user id
      */
+    @Override
     public void setServerUserId(String localServerUserId)
     {
         this.serverUserId = localServerUserId;
@@ -214,6 +226,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @return String unique Id
      */
+    @Override
     public String getMetadataCollectionId()
     {
         return this.metadataCollectionId;
@@ -225,6 +238,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param metadataCollectionId String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String metadataCollectionId)
     {
         this.metadataCollectionId = metadataCollectionId;
@@ -266,6 +280,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @return maximum number of elements that can be retrieved on a request.
      */
+    @Override
     public int getMaxPageSize()
     {
         return this.maxPageSize;
@@ -277,6 +292,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param maxPageSize maximum number of elements that can be retrieved on a request.
      */
+    @Override
     public void setMaxPageSize(int    maxPageSize)
     {
         this.maxPageSize = maxPageSize;
@@ -307,6 +323,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      * @return OMRSMetadataInstanceStore metadata information retrieved from the metadata repository.
      ** @throws RepositoryErrorException no metadata collection
      */
+    @Override
     public OMRSMetadataCollection getMetadataCollection() throws RepositoryErrorException
     {
         if (metadataCollection == null)

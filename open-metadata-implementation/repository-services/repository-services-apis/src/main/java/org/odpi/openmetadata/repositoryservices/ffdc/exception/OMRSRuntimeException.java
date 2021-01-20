@@ -27,12 +27,12 @@ public class OMRSRuntimeException extends RuntimeException
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private              int              reportedHTTPCode;
-    private              String           reportingClassName;
-    private              String           reportingActionDescription;
-    private              String           reportedErrorMessage;
-    private              String           reportedErrorMessageId;
-    private              String[]         reportedErrorMessageParameters;
+    private int                 reportedHTTPCode;
+    private String              reportingClassName;
+    private String              reportingActionDescription;
+    private String              reportedErrorMessage;
+    private String              reportedErrorMessageId;
+    private String[]            reportedErrorMessageParameters;
     private String              reportedSystemAction;
     private String              reportedUserAction;
     private Throwable           reportedCaughtException = null;

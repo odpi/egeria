@@ -11204,7 +11204,7 @@ public class OpenMetadataTypesArchive1_2
 
 
     /**
-     * 0330 Terms brings in hte glossary term that captures a single semantic meaning.
+     * 0330 Terms brings in the glossary term that captures a single semantic meaning.
      */
     private void add0330Terms()
     {
@@ -16602,7 +16602,7 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Description     = "Format or description of the measurements captured for this metric.";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "target";
-        final String attribute4Description     = "Definition of the measurement values that the goverance definitions are trying to achieve..";
+        final String attribute4Description     = "Definition of the measurement values that the governance definitions are trying to achieve.";
         final String attribute4DescriptionGUID = null;
 
 
@@ -21600,7 +21600,7 @@ public class OpenMetadataTypesArchive1_2
         TypeDefAttribute       property;
 
         final String attribute1Name            = "metamodelElementGUID";
-        final String attribute1Description     = "Element in hte metadata model that the attached element embodies.";
+        final String attribute1Description     = "Element in the metadata model that the attached element embodies.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -23395,6 +23395,8 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }

@@ -840,6 +840,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param registrationTimestamp  the time that the server/repository issued the registration request.
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      */
+    @SuppressWarnings(value = "unused")
     protected void processRegistrationEvent(String     sourceName,
                                             String     metadataCollectionId,
                                             String     metadataCollectionName,
@@ -862,6 +863,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerType       type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      */
+    @SuppressWarnings(value = "unused")
     protected void processRegistrationRefreshRequest(String sourceName,
                                                      String originatorServerName,
                                                      String originatorServerType,
@@ -884,6 +886,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param registrationTimestamp  the time that the server/repository first registered with the cohort.
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      */
+    @SuppressWarnings(value = "unused")
     protected void processReRegistrationEvent(String     sourceName,
                                               String     metadataCollectionId,
                                               String     metadataCollectionName,
@@ -908,6 +911,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      */
+    @SuppressWarnings(value = "unused")
     protected void processUnRegistrationEvent(String sourceName,
                                               String metadataCollectionId,
                                               String metadataCollectionName,
@@ -934,6 +938,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param conflictingMetadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
      * @param errorMessage  details of the conflict
      */
+    @SuppressWarnings(value = "unused")
     protected void processConflictingCollectionIdEvent(String sourceName,
                                                        String originatorMetadataCollectionId,
                                                        String originatorMetadataCollectionName,
@@ -961,6 +966,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
+    @SuppressWarnings(value = "unused")
     protected void processBadConnectionEvent(String     sourceName,
                                              String     originatorMetadataCollectionId,
                                              String     originatorMetadataCollectionName,
@@ -992,6 +998,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param typeDef details of the new TypeDef
      */
+    @SuppressWarnings(value = "unused")
     public void processNewTypeDefEvent(String       sourceName,
                                        String       originatorMetadataCollectionId,
                                        String       originatorServerName,
@@ -1015,6 +1022,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param attributeTypeDef details of the new AttributeTypeDef.
      */
+    @SuppressWarnings(value = "unused")
     public void processNewAttributeTypeDefEvent(String           sourceName,
                                                 String           originatorMetadataCollectionId,
                                                 String           originatorServerName,
@@ -1038,6 +1046,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param typeDefPatch details of the new version of the TypeDef
      */
+    @SuppressWarnings(value = "unused")
     public void processUpdatedTypeDefEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
                                            String       originatorServerName,
@@ -1064,6 +1073,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param typeDefGUID unique identifier of the TypeDef
      * @param typeDefName unique name of the TypeDef
      */
+    @SuppressWarnings(value = "unused")
     public void processDeletedTypeDefEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
                                            String       originatorServerName,
@@ -1090,6 +1100,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
      * @param attributeTypeDefName unique name of the AttributeTypeDef
      */
+    @SuppressWarnings(value = "unused")
     public void processDeletedAttributeTypeDefEvent(String      sourceName,
                                                     String      originatorMetadataCollectionId,
                                                     String      originatorServerName,
@@ -1117,6 +1128,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originalTypeDefSummary the details for the original TypeDef.
      * @param typeDef updated TypeDef with new identifiers
      */
+    @SuppressWarnings(value = "unused")
     public void processReIdentifiedTypeDefEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
                                                 String         originatorServerName,
@@ -1143,6 +1155,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originalAttributeTypeDef description of original AttributeTypeDef
      * @param attributeTypeDef updated AttributeTypeDef with new identifiers inside.
      */
+    @SuppressWarnings(value = "unused")
     public void processReIdentifiedAttributeTypeDefEvent(String           sourceName,
                                                          String           originatorMetadataCollectionId,
                                                          String           originatorServerName,
@@ -1170,6 +1183,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param conflictingTypeDefSummary the details of the TypeDef in the other metadata collection
      * @param errorMessage details of the error that occurs when the connection is used.
      */
+    @SuppressWarnings(value = "unused")
     public void processTypeDefConflictEvent(String         sourceName,
                                             String         originatorMetadataCollectionId,
                                             String         originatorServerName,
@@ -1200,6 +1214,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param conflictingAttributeTypeDef description of the AttributeTypeDef in the other metadata collection.
      * @param errorMessage details of the error that occurs when the connection is used.
      */
+    @SuppressWarnings(value = "unused")
     public void processAttributeTypeDefConflictEvent(String           sourceName,
                                                      String           originatorMetadataCollectionId,
                                                      String           originatorServerName,
@@ -1232,6 +1247,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param otherTypeDef details of the TypeDef in the local repository.
      * @param errorMessage descriptive message
      */
+    @SuppressWarnings(value = "unused")
     public void processTypeDefPatchMismatchEvent(String         sourceName,
                                                  String         originatorMetadataCollectionId,
                                                  String         originatorServerName,
@@ -1334,6 +1350,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
      * @param classification new classification
      */
+    @SuppressWarnings(value = "deprecation")
     public void processClassifiedEntityEvent(String         sourceName,
                                              String         originatorMetadataCollectionId,
                                              String         originatorServerName,
@@ -1369,6 +1386,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param entity                         details of the entity with the new classification added.
      */
     @Deprecated
+    @SuppressWarnings(value = "unused")
     public void processClassifiedEntityEvent(String       sourceName,
                                              String       originatorMetadataCollectionId,
                                              String       originatorServerName,
@@ -1392,6 +1410,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
      * @param originalClassification classification that was removed
      */
+    @SuppressWarnings(value = "deprecation")
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -1427,6 +1446,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param entity                         details of the entity after the classification has been removed.
      */
     @Deprecated
+    @SuppressWarnings(value = "unused")
     public void processDeclassifiedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -1451,6 +1471,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
+    @SuppressWarnings(value = "deprecation")
     public void processReclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -1487,6 +1508,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param entity                         details of the entity after the classification has been changed.
      */
     @Deprecated
+    @SuppressWarnings(value = "unused")
     public void processReclassifiedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -1704,6 +1726,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param instanceGUID                   unique identifier for the entity
      * @param homeMetadataCollectionId       metadata collection id for the home of this instance.
      */
+    @SuppressWarnings(value = "unused")
     public void processRefreshEntityRequested(String sourceName,
                                               String originatorMetadataCollectionId,
                                               String originatorServerName,
@@ -1730,6 +1753,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the requested entity
      */
+    @SuppressWarnings(value = "unused")
     public void processRefreshEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -2012,6 +2036,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param instanceGUID                   unique identifier for the instance
      * @param homeMetadataCollectionId       metadata collection id for the home of this instance.
      */
+    @SuppressWarnings(value = "unused")
     public void processRefreshRelationshipRequest(String sourceName,
                                                   String originatorMetadataCollectionId,
                                                   String originatorServerName,
@@ -2039,6 +2064,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   relationship details
      */
+    @SuppressWarnings(value = "unused")
     public void processRefreshRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -2063,11 +2089,11 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param instances multiple entities and relationships for sharing.
      */
-    public void processInstanceBatchEvent(String         sourceName,
-                                          String         originatorMetadataCollectionId,
-                                          String         originatorServerName,
-                                          String         originatorServerType,
-                                          String         originatorOrganizationName,
+    public void processInstanceBatchEvent(String        sourceName,
+                                          String        originatorMetadataCollectionId,
+                                          String        originatorServerName,
+                                          String        originatorServerType,
+                                          String        originatorOrganizationName,
                                           InstanceGraph instances)
     {
         log.debug("Processing instance batch event from: " + sourceName);
@@ -2096,6 +2122,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param otherInstanceGUID              unique identifier for the other (older) instance
      * @param errorMessage                   description of the error.
      */
+    @SuppressWarnings(value = "unused")
     public void processConflictingInstancesEvent(String                 sourceName,
                                                  String                 originatorMetadataCollectionId,
                                                  String                 originatorServerName,
@@ -2130,6 +2157,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param otherTypeDefSummary            details of the local copy of the instance's TypeDef
      * @param errorMessage                   description of the error.
      */
+    @SuppressWarnings(value = "unused")
     public void processConflictingTypeEvent(String         sourceName,
                                             String         originatorMetadataCollectionId,
                                             String         originatorServerName,

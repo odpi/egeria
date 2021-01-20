@@ -254,7 +254,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             if (tokens.length > 1)
             {
                 int startingToken = 0;
-                if (this.getFileSystemName(pathName) != null)
+
+                if ("".equals(tokens[startingToken]))
+                {
+                    startingToken = 1;
+                }
+                else if (this.getFileSystemName(pathName) != null)
                 {
                     startingToken = 2;
                 }
@@ -632,6 +637,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
+        final String localMethodName = "->createFolderStructureInCatalog";
+
         List<String>  folderGUIDs = new ArrayList<>();
 
         if ((folderNames != null) && (! folderNames.isEmpty()))
@@ -677,7 +684,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               nextConnectToGUID,
                                                               pathName,
                                                               folderName,
-                                                              methodName);
+                                                              methodName + localMethodName);
 
                     folderGUIDs.add(folderGUID);
                     nextConnectToGUID = folderGUID;
@@ -1619,7 +1626,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (fileType != null)
         {
-            this.getFileType(fullPath);
+            fileType = this.getFileType(fullPath);
         }
 
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
@@ -2001,10 +2008,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             {
                 if (columnName != null)
                 {
-                    String columnQualifiedName = qualifiedNameParameterName + "::" + columnName;
+                    String columnQualifiedName = fullPath + "::" + columnName + "::" + columnCount;
+                    String columnDisplayName = columnName + "::" + columnCount;
 
                     SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(columnQualifiedName,
-                                                                                               columnQualifiedName,
+                                                                                               columnDisplayName,
                                                                                                null,
                                                                                                columnCount,
                                                                                                1,
@@ -2023,7 +2031,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                                null,
                                                                                                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID,
                                                                                                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
-                                                                                               extendedProperties,
+                                                                                               null,
                                                                                                repositoryHelper,
                                                                                                serviceName,
                                                                                                serverName);
@@ -2043,17 +2051,17 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                     schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
 
                     schemaAttributeHandler.createNestedSchemaAttribute(userId,
-                                                                    externalSourceGUID,
-                                                                    externalSourceName,
-                                                                    schemaTypeGUID,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       schemaTypeGUID,
                                                                        schemaTypeGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                    columnQualifiedName,
-                                                                    qualifiedNameParameterName,
-                                                                    schemaAttributeBuilder,
-                                                                    methodName);
+                                                                       OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       columnQualifiedName,
+                                                                       qualifiedNameParameterName,
+                                                                       schemaAttributeBuilder,
+                                                                       methodName);
                 }
             }
         }

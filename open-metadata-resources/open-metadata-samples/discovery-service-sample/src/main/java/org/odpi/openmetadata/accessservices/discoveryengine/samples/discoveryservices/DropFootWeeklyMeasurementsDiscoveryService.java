@@ -137,6 +137,7 @@ public class DropFootWeeklyMeasurementsDiscoveryService extends DiscoveryService
      *
      * @throws DiscoveryServiceException there is a problem within the discovery service.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         final String  methodName = "start";

@@ -22,7 +22,7 @@
     </scm>
 
 
-    <name>Asset Analysis Engine Services API</name>
+    <name>Asset Analysis OMES API</name>
     <description>
         Provides the definitions that make up the APIs used by external components when communicating
         with the asset analysis engine services (heart of the metadata discovery services).
@@ -33,18 +33,8 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
         </dependency>
 
         <dependency>
@@ -64,4 +54,17 @@
         </dependency>
 
     </dependencies>
+
+	<build>
+		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                     <skipTests>true</skipTests>
+                </configuration>
+             </plugin>
+		</plugins>
+	</build>
+
 </project>

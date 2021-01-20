@@ -115,6 +115,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // verifyTypeDef will always return result from superclass because all knowledge of types is delegated to the RCM.
+    @Override
     public boolean verifyTypeDef(String  userId,
                                  TypeDef typeDef)
             throws
@@ -149,6 +150,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public EntityDetail addEntity(String                userId,
                                   String                entityTypeGUID,
                                   InstanceProperties    initialProperties,
@@ -206,6 +208,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addExternalEntity
+    @Override
     public EntityDetail addExternalEntity(String                userId,
                                           String                entityTypeGUID,
                                           String                externalSourceGUID,
@@ -263,6 +266,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addEntityProxy
+    @Override
     public void addEntityProxy(String       userId,
                                EntityProxy  entityProxy)
             throws
@@ -288,6 +292,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // isEntityKnown
+    @Override
     public EntityDetail isEntityKnown(String     userId,
                                       String     guid)
             throws
@@ -320,6 +325,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // isRelationshipKnown
+    @Override
     public Relationship  isRelationshipKnown(String     userId,
                                              String     guid)
             throws
@@ -351,6 +357,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // getEntitySummary
+    @Override
     public EntitySummary getEntitySummary(String     userId,
                                           String     guid)
             throws
@@ -379,6 +386,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // getEntityDetail
+    @Override
     public EntityDetail getEntityDetail(String     userId,
                                         String     guid)
             throws
@@ -410,6 +418,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addRelationship
+    @Override
     public Relationship addRelationship(String               userId,
                                         String               relationshipTypeGUID,
                                         InstanceProperties   initialProperties,
@@ -486,6 +495,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // addExternalRelationship
+    @Override
     public Relationship addExternalRelationship(String               userId,
                                                 String               relationshipTypeGUID,
                                                 String               externalSourceGUID,
@@ -566,6 +576,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // getRelationship
+    @Override
     public Relationship getRelationship(String    userId,
                                         String    guid)
             throws
@@ -594,6 +605,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // updateEntityStatus
+    @Override
     public EntityDetail updateEntityStatus(String           userId,
                                            String           entityGUID,
                                            InstanceStatus   newStatus)
@@ -692,6 +704,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // updateEntityProperties
+    @Override
     public EntityDetail updateEntityProperties(String               userId,
                                                String               entityGUID,
                                                InstanceProperties   properties)
@@ -789,6 +802,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // updateRelationshipStatus
+    @Override
     public Relationship updateRelationshipStatus(String           userId,
                                                  String           relationshipGUID,
                                                  InstanceStatus   newStatus)
@@ -872,6 +886,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      *                                characteristics in the TypeDef for this relationship's type.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public Relationship updateRelationshipProperties(String               userId,
                                                      String               relationshipGUID,
                                                      InstanceProperties   properties)
@@ -940,6 +955,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // purgeEntity
+    @Override
     public void purgeEntity(String    userId,
                             String    typeDefGUID,
                             String    typeDefName,
@@ -1035,6 +1051,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // purgeRelationship
+    @Override
     public void purgeRelationship(String    userId,
                                   String    typeDefGUID,
                                   String    typeDefName,
@@ -1079,6 +1096,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // getRelationshipsForEntity
+    @Override
     public List<Relationship> getRelationshipsForEntity(String                     userId,
                                                         String                     entityGUID,
                                                         String                     relationshipTypeGUID,
@@ -1168,6 +1186,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findEntitiesByProperty
+    @Override
     public List<EntityDetail> findEntitiesByProperty(String                 userId,
                                                      String                 entityTypeGUID,
                                                      InstanceProperties     matchProperties,
@@ -1287,6 +1306,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findRelationshipsByProperty
+    @Override
     public  List<Relationship> findRelationshipsByProperty(String                    userId,
                                                            String                    relationshipTypeGUID,
                                                            InstanceProperties        matchProperties,
@@ -1424,8 +1444,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
 
-
-
     public  void validateTypeGUID(String sourceName,
                                   String guidParameterName,
                                   String guid,
@@ -1447,6 +1465,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findEntitiesByPropertyValue
+    @Override
     public  List<EntityDetail> findEntitiesByPropertyValue(String                userId,
                                                            String                entityTypeGUID,
                                                            String                searchCriteria,
@@ -1569,6 +1588,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findRelationshipsByPropertyValue
+    @Override
     public  List<Relationship> findRelationshipsByPropertyValue(String                    userId,
                                                                 String                    relationshipTypeGUID,
                                                                 String                    searchCriteria,
@@ -2129,6 +2149,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // classifyEntity
+    @Override
     public EntityDetail classifyEntity(String               userId,
                                        String               entityGUID,
                                        String               classificationName,
@@ -2236,6 +2257,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // classifyEntity
+    @Override
     public   EntityDetail classifyEntity(String               userId,
                                          String               entityGUID,
                                          String               classificationName,
@@ -2364,6 +2386,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // declassifyEntity
+    @Override
     public EntityDetail declassifyEntity(String  userId,
                                          String  entityGUID,
                                          String  classificationName)
@@ -2422,6 +2445,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // findEntitiesByClassification
+    @Override
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                             String                    entityTypeGUID,
                                                             String                    classificationName,
@@ -2545,6 +2569,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // deleteEntity
+    @Override
      public EntityDetail deleteEntity(String    userId,
                                       String    typeDefGUID,
                                       String    typeDefName,
@@ -2648,6 +2673,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
     // restoreEntity
+    @Override
     public EntityDetail restoreEntity(String    userId,
                                       String    deletedEntityGUID)
         throws
@@ -2703,6 +2729,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // deleteRelationship
+    @Override
     public Relationship deleteRelationship(String    userId,
                                            String    typeDefGUID,
                                            String    typeDefName,
@@ -2746,6 +2773,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // restoreRelationship
+    @Override
     public Relationship restoreRelationship(String    userId,
                                             String    deletedRelationshipGUID)
             throws
@@ -2790,6 +2818,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reIdentifyEntity
+    @Override
     public EntityDetail reIdentifyEntity(String     userId,
                                          String     typeDefGUID,
                                          String     typeDefName,
@@ -2855,6 +2884,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reHomeEntity
+    @Override
     public EntityDetail reHomeEntity(String         userId,
                                      String         entityGUID,
                                      String         typeDefGUID,
@@ -2924,6 +2954,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reTypeEntity
+    @Override
     public EntityDetail reTypeEntity(String         userId,
                                      String         entityGUID,
                                      TypeDefSummary currentTypeDefSummary,
@@ -3009,6 +3040,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reIdentifyRelationship
+    @Override
     public Relationship reIdentifyRelationship(String     userId,
                                                String     typeDefGUID,
                                                String     typeDefName,
@@ -3061,6 +3093,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reTypeRelationship
+    @Override
     public Relationship reTypeRelationship(String         userId,
                                            String         relationshipGUID,
                                            TypeDefSummary currentTypeDefSummary,
@@ -3129,6 +3162,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // reHomeRelationship
+    @Override
     public Relationship reHomeRelationship(String   userId,
                                            String   relationshipGUID,
                                            String   typeDefGUID,
@@ -3183,6 +3217,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // updateEntityClassification
+    @Override
     public EntityDetail updateEntityClassification(String               userId,
                                                    String               entityGUID,
                                                    String               classificationName,
@@ -3253,6 +3288,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      * Reference Copies
      */
 
+    @Override
     public void saveEntityReferenceCopy(String         userId,
                                         EntityDetail   entity)
             throws
@@ -3281,6 +3317,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public List<Classification> getHomeClassifications(String userId,
                                                        String entityGUID)
             throws InvalidParameterException,
@@ -3333,6 +3370,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      * Removal of proxy entities: if a proxy entity existed prior to the ref copy being saved, it was replaced by the
      * ref copy - so when we now purge the ref copy there is no need to remove any proxy - it has already been subsumed.
      */
+    @Override
     public void purgeEntityReferenceCopy(String   userId,
                                          String   entityGUID,
                                          String   typeDefGUID,
@@ -3385,6 +3423,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public void saveClassificationReferenceCopy(String         userId,
                                                 EntityDetail   entity,
                                                 Classification classification)
@@ -3468,6 +3507,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
 
+    @Override
     public  void purgeClassificationReferenceCopy(String         userId,
                                                   EntityDetail   entity,
                                                   Classification classification)
@@ -3523,6 +3563,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
 
+    @Override
     public void saveRelationshipReferenceCopy(String         userId,
                                               Relationship   relationship)
             throws
@@ -3552,6 +3593,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    @Override
     public void purgeRelationshipReferenceCopy(String   userId,
                                                String   relationshipGUID,
                                                String   typeDefGUID,
@@ -3589,6 +3631,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // getEntityNeighborhood
+    @Override
     public InstanceGraph getEntityNeighborhood(String               userId,
                                                String               entityGUID,
                                                List<String>         entityTypeGUIDs,
@@ -3675,6 +3718,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     // The specified entityType, status and classification filters are passed through to getEntityNeighbourhood.
     //
 
+    @Override
     public  List<EntityDetail> getRelatedEntities(String               userId,
                                                   String               startEntityGUID,
                                                   List<String>         entityTypeGUIDs,
@@ -3737,6 +3781,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
     // Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+    @Override
     public  InstanceGraph getLinkingEntities(String                    userId,
                                              String                    startEntityGUID,
                                              String                    endEntityGUID,

@@ -56,6 +56,7 @@ public class EmbeddedConnectionBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
+    @Override
     public InstanceProperties getInstanceProperties(String  methodName)
     {
         InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName,

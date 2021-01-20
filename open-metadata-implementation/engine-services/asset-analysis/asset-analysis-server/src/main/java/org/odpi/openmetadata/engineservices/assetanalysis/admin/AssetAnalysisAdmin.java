@@ -2,21 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.assetanalysis.admin;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisAuditCode;
 import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisErrorCode;
-import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryConfigurationRefreshHandler;
 import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.engineservices.assetanalysis.server.AssetAnalysisInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,22 +32,26 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
      *
      * @param localServerId unique identifier of this server
      * @param localServerName name of this server
-     * @param auditLog link to the repository responsible for servicing the REST calls.
-     * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
-     * @param localServerPassword password for this server to use if sending REST requests.
+     * @param auditLog link to the repository responsible for servicing the REST calls
+     * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages
+     * @param localServerPassword password for this server to use if sending REST requests
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
-     * @param engineServiceConfig details of the options and the engines to run.
+     * @param configurationClient client used by the engine host services to connect to the Governance Engine OMAS to retrieve the governance engine definitions
+     * @param governanceActionClient client used by the engine host services to connect to the Governance Engine OMAS to manage governance actions
+     * @param engineServiceConfig details of the options and the engines to run
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
-    public void initialize(String              localServerId,
-                           String              localServerName,
-                           AuditLog            auditLog,
-                           String              localServerUserId,
-                           String              localServerPassword,
-                           int                 maxPageSize,
-                           EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
+    public Map<String, GovernanceEngineHandler> initialize(String                              localServerId,
+                                                           String                              localServerName,
+                                                           AuditLog                            auditLog,
+                                                           String                              localServerUserId,
+                                                           String                              localServerPassword,
+                                                           int                                 maxPageSize,
+                                                           GovernanceEngineConfigurationClient configurationClient,
+                                                           GovernanceEngineClient              governanceActionClient,
+                                                           EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
     {
-        final String actionDescription = "initialize";
+        final String actionDescription = "initialize engine service";
         final String methodName        = "initialize";
 
         ODFRESTClient restClient;
@@ -54,27 +59,24 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
         this.auditLog = auditLog;
         this.localServerName = localServerName;
 
-        auditLog.logMessage(actionDescription, AssetAnalysisAuditCode.SERVER_INITIALIZING.getMessageDefinition(localServerName));
+        auditLog.logMessage(actionDescription, AssetAnalysisAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName));
 
         try
         {
-            this.validateConfigDocument(engineServiceConfig, methodName);
+            this.validateConfigDocument(engineServiceConfig);
 
             /*
-             * The configuration for the discovery engines is located in an open metadata server.
-             * It is accessed through the Discovery Engine OMAS.  If the values needed to call
-             * the Discovery Engine OMAS are not present in the configuration then there is no point in continuing
-             * and an exception is thrown.
+             * The discovery services need access to an open metadata server to retrieve information about the asset they are analysing and
+             * to store the resulting analysis results in Annotations.
+             * Open metadata is accessed through the Discovery Engine OMAS.
              */
             String             accessServiceRootURL    = this.getAccessServiceRootURL(engineServiceConfig);
             String             accessServiceServerName = this.getAccessServiceServerName(engineServiceConfig);
             List<EngineConfig> discoveryEngines        = this.getEngines(engineServiceConfig);
 
             /*
-             * Create the client for accessing the configuration.  The Discovery Engine OMAS has a specific client for retrieving
-             * configuration. Any problems results in an exception.
+             * Create the client for accessing the open metadata repositories.
              */
-            DiscoveryConfigurationClient configurationClient;
             try
             {
                 if ((localServerName != null) && (localServerPassword != null))
@@ -88,13 +90,6 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                 {
                     restClient = new ODFRESTClient(accessServiceServerName, accessServiceRootURL);
                 }
-
-                configurationClient = new DiscoveryConfigurationClient(accessServiceServerName,
-                                                                       accessServiceRootURL,
-                                                                       restClient,
-                                                                       maxPageSize,
-                                                                       auditLog,
-                                                                       localServerId);
             }
             catch (InvalidParameterException error)
             {
@@ -109,6 +104,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                                                           accessServiceServerName,
                                                                                                           localServerUserId,
                                                                                                           configurationClient,
+                                                                                                          governanceActionClient,
                                                                                                           restClient,
                                                                                                           maxPageSize);
 
@@ -121,21 +117,6 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                           methodName);
             }
 
-            /*
-             * Register a listener for the Discovery Engine OMAS out topic.  This call will fail if
-             * the metadata server is not running so a separate thread is created to retry the registration request at
-             * intervals to wait for the metadata server to restart.  It will also try to retrieve the configuration
-             * for the discovery engines.
-             */
-            DiscoveryConfigurationRefreshHandler configurationHandler = new DiscoveryConfigurationRefreshHandler(discoveryEngineHandlers,
-                                                                                                                 configurationClient,
-                                                                                                                 auditLog,
-                                                                                                                 localServerUserId,
-                                                                                                                 localServerName,
-                                                                                                                 accessServiceServerName,
-                                                                                                                 accessServiceRootURL);
-            Thread thread = new Thread(configurationHandler, configurationHandler.getClass().getName());
-            thread.start();
 
             /*
              * Set up the REST APIs.
@@ -148,6 +129,18 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                               engineServiceConfig.getOMAGServerPlatformRootURL(),
                                                               engineServiceConfig.getOMAGServerName(),
                                                               discoveryEngineHandlers);
+
+            Map<String, GovernanceEngineHandler> governanceEngineHandlers = new HashMap<>();
+
+            for (String engineName : discoveryEngineHandlers.keySet())
+            {
+                if (engineName != null)
+                {
+                    governanceEngineHandlers.put(engineName, discoveryEngineHandlers.get(engineName));
+                }
+            }
+
+            return governanceEngineHandlers;
         }
         catch (Throwable error)
         {
@@ -172,18 +165,20 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
      * @param accessServiceServerName Server Name for the Discovery Engine OMAS
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
      * @param configurationClient client to retrieve configuration from
+     * @param governanceActionClient client used by the engine host services to connect to the Governance Engine OMAS to manage governance actions
      * @param odfRESTClient client for calling REST APIs
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      * @return map of discovery engine GUIDs to handlers
      * @throws OMAGConfigurationErrorException problem with config
      */
-    private Map<String, DiscoveryEngineHandler>  getDiscoveryEngineHandlers(List<EngineConfig>           discoveryEngines,
-                                                                            String                       accessServiceRootURL,
-                                                                            String                       accessServiceServerName,
-                                                                            String                       localServerUserId,
-                                                                            DiscoveryConfigurationClient configurationClient,
-                                                                            ODFRESTClient                odfRESTClient,
-                                                                            int                          maxPageSize) throws OMAGConfigurationErrorException
+    private Map<String, DiscoveryEngineHandler>  getDiscoveryEngineHandlers(List<EngineConfig>                  discoveryEngines,
+                                                                            String                              accessServiceRootURL,
+                                                                            String                              accessServiceServerName,
+                                                                            String                              localServerUserId,
+                                                                            GovernanceEngineConfigurationClient configurationClient,
+                                                                            GovernanceEngineClient              governanceActionClient,
+                                                                            ODFRESTClient                       odfRESTClient,
+                                                                            int                                 maxPageSize) throws OMAGConfigurationErrorException
     {
         final String methodName        = "getDiscoveryEngineHandlers";
 
@@ -223,6 +218,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                              accessServiceServerName,
                                                                              localServerUserId,
                                                                              configurationClient,
+                                                                             governanceActionClient,
                                                                              discoveryEngineClient,
                                                                              auditLog,
                                                                              maxPageSize);
@@ -243,7 +239,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
 
 
     /**
-     * Shutdown the view service.
+     * Shutdown the engine service.
      */
     public void shutdown()
     {
@@ -254,6 +250,5 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
         assetAnalysisInstance.shutdown();
 
         auditLog.logMessage(actionDescription, AssetAnalysisAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));
-
     }
 }

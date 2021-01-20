@@ -211,6 +211,12 @@ public class AssetMapSchemaType extends AssetSchemaType
                 Objects.equals(getMapToElement(), that.getMapToElement());
     }
 
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
     @Override
     public int hashCode()
     {

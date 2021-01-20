@@ -43,6 +43,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeCreate(String  userId,
                                            String  metadataCollectionName,
                                            TypeDef typeDef) throws UserNotAuthorizedException
@@ -62,6 +63,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeCreate(String           userId,
                                            String           metadataCollectionName,
                                            AttributeTypeDef attributeTypeDef) throws UserNotAuthorizedException
@@ -81,6 +83,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve types
      */
+    @Override
     public void  validateUserForTypeRead(String     userId,
                                          String     metadataCollectionName,
                                          TypeDef    typeDef) throws UserNotAuthorizedException
@@ -100,6 +103,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve types
      */
+    @Override
     public void  validateUserForTypeRead(String              userId,
                                          String              metadataCollectionName,
                                          AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
@@ -120,6 +124,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param patch changes to the type
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeUpdate(String       userId,
                                            String       metadataCollectionName,
                                            TypeDef      typeDef,
@@ -140,6 +145,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeDelete(String     userId,
                                            String     metadataCollectionName,
                                            TypeDef    typeDef) throws UserNotAuthorizedException
@@ -159,6 +165,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeDelete(String              userId,
                                            String              metadataCollectionName,
                                            AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
@@ -180,6 +187,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newTypeDefName new name for this type.
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeReIdentify(String  userId,
                                                String  metadataCollectionName,
                                                TypeDef originalTypeDef,
@@ -203,6 +211,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newTypeDefName new name for this type.
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeReIdentify(String           userId,
                                                String           metadataCollectionName,
                                                AttributeTypeDef originalAttributeTypeDef,
@@ -239,6 +248,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityCreate(String               userId,
                                              String               metadataCollectionName,
                                              String               entityTypeGUID,
@@ -266,6 +276,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntityRead(String          userId,
                                            String          metadataCollectionName,
                                            EntityDetail    instance) throws UserNotAuthorizedException
@@ -285,6 +296,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntitySummaryRead(String        userId,
                                                   String        metadataCollectionName,
                                                   EntitySummary instance) throws UserNotAuthorizedException
@@ -304,6 +316,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntityProxyRead(String      userId,
                                                 String      metadataCollectionName,
                                                 EntityProxy instance) throws UserNotAuthorizedException
@@ -323,6 +336,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityUpdate(String          userId,
                                              String          metadataCollectionName,
                                              EntityDetail    instance) throws UserNotAuthorizedException
@@ -345,6 +359,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityClassificationAdd(String               userId,
                                                         String               metadataCollectionName,
                                                         EntityDetail         instance,
@@ -373,6 +388,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityClassificationUpdate(String               userId,
                                                            String               metadataCollectionName,
                                                            EntityDetail         instance,
@@ -400,6 +416,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param classificationName String name for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityClassificationDelete(String               userId,
                                                            String               metadataCollectionName,
                                                            EntityDetail         instance,
@@ -423,6 +440,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityDelete(String       userId,
                                              String       metadataCollectionName,
                                              EntityDetail instance) throws UserNotAuthorizedException
@@ -442,6 +460,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityRestore(String       userId,
                                               String       metadataCollectionName,
                                               String       deletedEntityGUID) throws UserNotAuthorizedException
@@ -462,6 +481,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newGUID the new guid for the instance.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityReIdentification(String       userId,
                                                        String       metadataCollectionName,
                                                        EntityDetail instance,
@@ -483,6 +503,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newTypeDefSummary details of this instance's new TypeDef.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityReTyping(String         userId,
                                                String         metadataCollectionName,
                                                EntityDetail   instance,
@@ -505,6 +526,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityReHoming(String         userId,
                                                String         metadataCollectionName,
                                                EntityDetail   instance,
@@ -534,6 +556,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipCreate(String               userId,
                                                    String               metadataCollectionName,
                                                    String               relationshipTypeGUID,
@@ -563,6 +586,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForRelationshipRead(String          userId,
                                                  String          metadataCollectionName,
                                                  Relationship    instance) throws UserNotAuthorizedException
@@ -582,6 +606,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipUpdate(String          userId,
                                                    String          metadataCollectionName,
                                                    Relationship    instance) throws UserNotAuthorizedException
@@ -601,6 +626,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipDelete(String       userId,
                                                    String       metadataCollectionName,
                                                    Relationship instance) throws UserNotAuthorizedException
@@ -620,6 +646,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipRestore(String       userId,
                                                     String       metadataCollectionName,
                                                     String       deletedRelationshipGUID) throws UserNotAuthorizedException
@@ -640,6 +667,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newGUID the new guid for the instance.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipReIdentification(String       userId,
                                                              String       metadataCollectionName,
                                                              Relationship instance,
@@ -661,6 +689,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newTypeDefSummary details of this instance's new TypeDef.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipReTyping(String         userId,
                                                      String         metadataCollectionName,
                                                      Relationship   instance,
@@ -683,6 +712,7 @@ public class OMRSMetadataSecurity implements OpenMetadataRepositorySecurity
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipReHoming(String         userId,
                                                      String         metadataCollectionName,
                                                      Relationship   instance,

@@ -269,35 +269,6 @@ public class SchemaType extends SchemaElement
     }
 
 
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof SchemaType))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        SchemaType that = (SchemaType) objectToCompare;
-        return Objects.equals(getVersionNumber(), that.getVersionNumber()) &&
-                Objects.equals(getAuthor(), that.getAuthor()) &&
-                Objects.equals(getUsage(), that.getUsage()) &&
-                Objects.equals(getNamespace(), that.getNamespace()) &&
-                Objects.equals(getEncodingStandard(), that.getEncodingStandard());
-    }
-
 
     /**
      * Standard toString method.
@@ -325,5 +296,50 @@ public class SchemaType extends SchemaElement
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        SchemaType that = (SchemaType) objectToCompare;
+        return Objects.equals(getVersionNumber(), that.getVersionNumber()) &&
+                       Objects.equals(getAuthor(), that.getAuthor()) &&
+                       Objects.equals(getUsage(), that.getUsage()) &&
+                       Objects.equals(getEncodingStandard(), that.getEncodingStandard()) &&
+                       Objects.equals(getNamespace(), that.getNamespace()) &&
+                       Objects.equals(getFormula(), that.getFormula()) &&
+                       Objects.equals(getQueries(), that.getQueries());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getVersionNumber(), getAuthor(), getUsage(), getEncodingStandard(), getNamespace(), getFormula(),
+                            getQueries());
     }
 }

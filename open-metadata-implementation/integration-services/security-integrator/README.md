@@ -1,10 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Security Integrator Open Metadata Integration Service (OMIS)
 
 The Security Integrator integration service supports distribution of security
-parameters to access control enforcement engines.
+parameters to access control enforcement engines such as Apache Ranger.
+Its API simplifies the internal models and structures of
+the open metadata type model and related structure for the consumers.
 
 The modules are as follows:
 
@@ -15,7 +19,7 @@ of the context that wraps the Asset Manager OMAS's clients.
 * [security-integrator-server](security-integrator-server) - implements the context manager for
 the Security Integrator integration service.
 
-This integration service is paired with the [Asset Manager](../../access-services/asset-manager)
+This integration service is paired with the [Security Officer](../../access-services/security-officer)
 Open Metadata Access Service (OMAS).
 
 ----

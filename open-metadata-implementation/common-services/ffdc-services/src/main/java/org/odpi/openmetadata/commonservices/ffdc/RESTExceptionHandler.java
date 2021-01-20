@@ -457,10 +457,10 @@ public class RESTExceptionHandler
      * @param methodName calling method
      * @param auditLog log location for recording an unexpected exception
      */
-    public  void captureThrowable(FFDCResponse   response,
-                                  Throwable          error,
-                                  String             methodName,
-                                  AuditLog           auditLog)
+    public  void captureThrowable(FFDCResponse response,
+                                  Throwable    error,
+                                  String       methodName,
+                                  AuditLog     auditLog)
     {
         log.error("Exception from " + methodName + " being packaged for return on REST call", error);
 

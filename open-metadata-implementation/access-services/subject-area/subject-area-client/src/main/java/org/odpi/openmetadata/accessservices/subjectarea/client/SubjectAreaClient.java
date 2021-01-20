@@ -69,6 +69,25 @@ public interface SubjectAreaClient<T> {
     }
 
     /**
+     * Request to find all Glossary Artifacts of the type T.
+     * Be aware that getting all objects may incur a big performance hit when there are many objects.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed.
+     * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
+     * @return list all Glossary Artifacts of the T type.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    default List<T> findAll(String userId, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                                  PropertyServerException,
+                                                  UserNotAuthorizedException
+    {
+        return find(userId, EMPTY_FIND_REQUEST, maximumPageSizeOnRestCall);
+    }
+
+    /**
      * Request to find Glossary Artifacts of the type T.
      *
      * @param userId      unique identifier for requesting user, under which the request is performed.
@@ -79,7 +98,27 @@ public interface SubjectAreaClient<T> {
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-   List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException,
+    List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException;
+
+    /**
+     * Request to find Glossary Artifacts of the type T.
+     *
+     * The downstream server is likely to have a maximum Page Size is will accept, the client can interrogate this value
+     * and include it on the maximumPageSizeOnRestCall parameter. This API will ensure will issue multiple rest calls if required
+     * to ensure requests only request the supported max page size.
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param findRequest information Glossary Artifact for find calls.
+     * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
+     * @return list Glossary Artifacts of the T type relevant in the findRequest information.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+   List<T> find(String userId, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException;
 

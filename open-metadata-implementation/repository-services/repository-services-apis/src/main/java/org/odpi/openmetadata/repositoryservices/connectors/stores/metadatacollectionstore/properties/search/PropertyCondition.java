@@ -48,14 +48,12 @@ public class PropertyCondition implements Serializable
      */
     public PropertyCondition(PropertyCondition templateProperties)
     {
-        /*
-         * An empty properties object is created in the private variable declaration so nothing to do.
-         */
         if (templateProperties != null)
         {
             this.property = templateProperties.getProperty();
             this.operator = templateProperties.getOperator();
             this.value = templateProperties.getValue();
+            this.nestedConditions = templateProperties.getNestedConditions();
         }
     }
 

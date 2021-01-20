@@ -10,6 +10,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -955,7 +957,7 @@ public class RepositoryHandler
                      */
                     for (String entityClassificationName : entityClassificationMap.keySet())
                     {
-                        if (entityClassificationName != null)
+                        if (entityClassificationName != null && classification != null)
                         {
                             this.declassifyEntity(userId,
                                                   externalSourceGUID,
@@ -1102,7 +1104,7 @@ public class RepositoryHandler
                      */
                     for (String entityClassificationName : entityClassificationMap.keySet())
                     {
-                        if (entityClassificationName != null)
+                        if (entityClassificationName != null && classification != null)
                         {
                             this.declassifyEntity(userId,
                                                   entityGUID,
@@ -1811,16 +1813,19 @@ public class RepositoryHandler
 
         InstanceAuditHeader auditHeader = existingClassificationHeader;
 
+        /*
+         * The audit header is supplied if the caller has already lloked up the entity/classification
+         */
         if (auditHeader == null)
         {
             auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
         }
 
-        /*
-         * OK to reclassify.
-         */
         if (auditHeader != null)
         {
+            /*
+             * OK to reclassify the classification is currently attached.
+             */
             try
             {
                 errorHandler.validateProvenance(userId,
@@ -3012,6 +3017,7 @@ public class RepositoryHandler
         {
             EntityProxy requiredEnd = relationship.getEntityOneProxy();
             EntityProxy startingEnd = relationship.getEntityTwoProxy();
+
             if (startingEntityGUID.equals(requiredEnd.getGUID()))
             {
                 requiredEnd = relationship.getEntityTwoProxy();
@@ -3106,6 +3112,7 @@ public class RepositoryHandler
 
                     EntityProxy requiredEnd = relationship.getEntityOneProxy();
                     EntityProxy startingEnd = relationship.getEntityTwoProxy();
+
                     if (startingEntityGUID.equals(requiredEnd.getGUID()))
                     {
                         requiredEnd = relationship.getEntityTwoProxy();
@@ -3596,7 +3603,7 @@ public class RepositoryHandler
                                                                                             null,
                                                                                             2);
 
-            if ((returnedEntities == null) || returnedEntities.isEmpty())
+            if ((returnedEntities == null) || (returnedEntities.isEmpty()))
             {
                 return null;
             }
@@ -3710,6 +3717,141 @@ public class RepositoryHandler
 
 
     /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param startingFrom the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail> findEntities(String                userId,
+                                           String                entityTypeGUID,
+                                           List<String>          entitySubtypeGUIDs,
+                                           SearchProperties      searchProperties,
+                                           List<InstanceStatus>  limitResultsByStatus,
+                                           SearchClassifications searchClassifications,
+                                           Date                  asOfTime,
+                                           String                sequencingProperty,
+                                           SequencingOrder       sequencingOrder,
+                                           int                   startingFrom,
+                                           int                   pageSize,
+                                           String                methodName) throws UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String localMethodName = "findEntities";
+
+        try
+        {
+            return metadataCollection.findEntities(userId,
+                                                   entityTypeGUID,
+                                                   entitySubtypeGUIDs,
+                                                   searchProperties,
+                                                   startingFrom,
+                                                   limitResultsByStatus,
+                                                   searchClassifications,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the relationshipTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param startingFrom the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<Relationship> findRelationships(String                userId,
+                                                String                relationshipTypeGUID,
+                                                List<String>          relationshipSubtypeGUIDs,
+                                                SearchProperties      searchProperties,
+                                                List<InstanceStatus>  limitResultsByStatus,
+                                                Date                  asOfTime,
+                                                String                sequencingProperty,
+                                                SequencingOrder       sequencingOrder,
+                                                int                   startingFrom,
+                                                int                   pageSize,
+                                                String                methodName) throws UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String localMethodName = "findRelationships";
+
+        try
+        {
+            return metadataCollection.findRelationships(userId,
+                                                        relationshipTypeGUID,
+                                                        relationshipSubtypeGUIDs,
+                                                        searchProperties,
+                                                        startingFrom,
+                                                        limitResultsByStatus,
+                                                        asOfTime,
+                                                        sequencingProperty,
+                                                        sequencingOrder,
+                                                        pageSize);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the list of relationships of the requested type connected to the starting entity.
      * The list is expected to be small.
      *
@@ -3751,11 +3893,12 @@ public class RepositoryHandler
      * @param relationshipGUID String unique identifier for the relationship.
      * @param methodName  name of calling method
      *
-     * @return retrieved relationship or null
+     * @return retrieved relationship or exception
      *
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
+    @Deprecated
     public Relationship getRelationshipByGUID(String                 userId,
                                               String                 relationshipGUID,
                                               String                 methodName) throws UserNotAuthorizedException,
@@ -3766,6 +3909,53 @@ public class RepositoryHandler
         try
         {
             return metadataCollection.getRelationship(userId, relationshipGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the current version of a requested relationship.
+     *
+     * @param userId  user making the request
+     * @param relationshipGUID unique identifier for the relationship
+     * @param relationshipParameterName parameter name supplying relationshipGUID
+     * @param relationshipTypeName type name for the relationship
+     *
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationship or exception
+     *
+     * @throws InvalidParameterException the GUID is invalid
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public Relationship getRelationshipByGUID(String userId,
+                                              String relationshipGUID,
+                                              String relationshipParameterName,
+                                              String relationshipTypeName,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String localMethodName = "getRelationshipByGUID";
+
+        try
+        {
+            return metadataCollection.getRelationship(userId, relationshipGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException  error)
+        {
+            errorHandler.handleUnknownRelationship(error, relationshipGUID, relationshipTypeName, methodName, relationshipParameterName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -4112,7 +4302,71 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the starting entity.
+     * Return the list of relationships of the requested type connecting the supplied entities.
+     *
+     * @param userId  user making the request
+     * @param entity1GUID  entity at end 1 GUID
+     * @param entity1TypeName   entity 1's type name
+     * @param entity2GUID  entity at end 2 GUID
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationship or null
+     *
+     * @throws InvalidParameterException wrong type in entity 1
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public List<Relationship> getRelationshipsBetweenEntities(String                 userId,
+                                                              String                 entity1GUID,
+                                                              String                 entity1TypeName,
+                                                              String                 entity2GUID,
+                                                              String                 relationshipTypeGUID,
+                                                              String                 relationshipTypeName,
+                                                              String                 methodName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
+                                                                               entity1GUID,
+                                                                               entity1TypeName,
+                                                                               relationshipTypeGUID,
+                                                                               relationshipTypeName,
+                                                                               methodName);
+
+        if (entity1Relationships != null)
+        {
+            List<Relationship> results = new ArrayList<>();
+
+            for (Relationship  relationship : entity1Relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy  entity2Proxy = this.getOtherEnd(entity1GUID, entity1TypeName, relationship, methodName);
+                    if (entity2Proxy != null)
+                    {
+                        if (entity2GUID.equals(entity2Proxy.getGUID()))
+                        {
+                            results.add(relationship);
+                        }
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the first found relationship of the requested type connecting the supplied entities.
      *
      * @param userId  user making the request
      * @param entity1GUID  entity at end 1 GUID
@@ -4138,12 +4392,13 @@ public class RepositoryHandler
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
-                                                                               entity1GUID,
-                                                                               entity1TypeName,
-                                                                               relationshipTypeGUID,
-                                                                               relationshipTypeName,
-                                                                               methodName);
+        List<Relationship>  entity1Relationships = this.getRelationshipsBetweenEntities(userId,
+                                                                                        entity1GUID,
+                                                                                        entity1TypeName,
+                                                                                        entity2GUID,
+                                                                                        relationshipTypeGUID,
+                                                                                        relationshipTypeName,
+                                                                                        methodName);
 
         if (entity1Relationships != null)
         {
@@ -4151,14 +4406,7 @@ public class RepositoryHandler
             {
                 if (relationship != null)
                 {
-                    EntityProxy  entity2Proxy = this.getOtherEnd(entity1GUID, entity1TypeName, relationship, methodName);
-                    if (entity2Proxy != null)
-                    {
-                        if (entity2GUID.equals(entity2Proxy.getGUID()))
-                        {
-                            return relationship;
-                        }
-                    }
+                    return relationship;
                 }
             }
         }
@@ -5182,6 +5430,8 @@ public class RepositoryHandler
      *
      * @param userId calling user
      * @param relationshipGUID unique identifier of the relationship.
+     * @param relationshipParameterName parameter name supplying relationshipGUID
+     * @param relationshipTypeName type name for the relationship
      * @param instanceStatus new InstanceStatus for the entity.
      * @param methodName name of calling method.
      *
@@ -5192,6 +5442,8 @@ public class RepositoryHandler
                                          String         externalSourceGUID,
                                          String         externalSourceName,
                                          String         relationshipGUID,
+                                         String         relationshipParameterName,
+                                         String         relationshipTypeName,
                                          InstanceStatus instanceStatus,
                                          String         methodName) throws UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -5200,7 +5452,7 @@ public class RepositoryHandler
 
         try
         {
-            Relationship relationship = this.getRelationshipByGUID(userId, relationshipGUID, methodName);
+            Relationship relationship = this.getRelationshipByGUID(userId, relationshipGUID, relationshipParameterName, relationshipParameterName, methodName);
 
             errorHandler.validateProvenance(userId,
                                             relationship,

@@ -10,8 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.engineservices.assetanalysis.properties.DiscoveryEngineSummary;
-import org.odpi.openmetadata.engineservices.assetanalysis.rest.DiscoveryEngineStatusResponse;
+import org.odpi.openmetadata.engineservices.assetanalysis.client.rest.AssetAnalysisRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DiscoveryEngineClient is a client-side library for calling a specific discovery engine with a discovery server.
+ * AssetAnalysisClient is a client-side library for calling a specific discovery engine with an engine host server.
  */
 public class AssetAnalysisClient extends DiscoveryEngine
 {
@@ -42,7 +41,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * Create a client-side object for calling a discovery engine.
      *
      * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
-     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverName the name of the engine host server where the discovery engine is running
      * @param discoveryEngineName the unique name of the discovery engine.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
@@ -62,7 +61,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * Create a client-side object for calling a discovery engine.
      *
      * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
-     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverName the name of the engine host server where the discovery engine is running
      * @param discoveryEngineName the unique name of the discovery engine.
      * @param userId user id for the HTTP request
      * @param password password for the HTTP request
@@ -80,86 +79,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
 
         this.restClient = new AssetAnalysisRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
-
-
-    /**
-     * Retrieve the status of each assigned discovery engines.
-     *
-     * @param userId calling user
-     * @return list of discovery engine statuses
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    List<DiscoveryEngineSummary> getDiscoveryEngineStatuses(String userId) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        final String   methodName = "getDiscoveryEngineStatuses";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/status";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        DiscoveryEngineStatusResponse restResult = restClient.callDiscoveryEngineStatusGetRESTCall(methodName,
-                                                                                                   serverPlatformRootURL + urlTemplate,
-                                                                                                   serverName,
-                                                                                                   userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-
-        return restResult.getDiscoveryEngineSummaries();
-    }
-
-
-    /**
-     * Request that the discovery engine refresh its configuration by calling the metadata server.
-     * This request is useful if the metadata server has an outage, particularly while the
-     * discovery server is initializing.  This request just ensures that the latest configuration
-     * is in use.
-     *
-     * @param userId identifier of calling user
-     * @param discoveryEngineName name of the discovery engine to target
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
-     */
-    public  void refreshConfig(String userId,
-                               String discoveryEngineName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  DiscoveryEngineException
-    {
-        final String   methodName = "refreshConfig";
-        final String   discoveryEngineParameterName = "discoveryEngineName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/{2}/refresh-config";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(discoveryEngineName, discoveryEngineParameterName, methodName);
-
-        try
-        {
-            VoidResponse restResult = restClient.callVoidGetRESTCall(methodName,
-                                                                     serverPlatformRootURL + urlTemplate,
-                                                                     serverName,
-                                                                     userId,
-                                                                     discoveryEngineName);
-
-            exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-            exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-            exceptionHandler.detectAndThrowPropertyServerException(restResult);
-        }
-        catch (PropertyServerException exception)
-        {
-            throw new DiscoveryEngineException(exception.getReportedErrorMessage(), exception);
-        }
-    }
-
-
-    /*
-     * ==========================================================================================
-     */
 
 
     /**
@@ -458,7 +377,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * Return any annotations attached to this annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -470,7 +388,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public  List<Annotation>  getExtendedAnnotations(String   userId,
-                                                     String   discoveryRequestGUID,
                                                      String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
@@ -479,8 +396,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
     {
         final String methodName                  = "getExtendedAnnotations";
         final String annotationGUIDParameterName = "annotationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3" +
-                "}/annotations/{4}/extended-annotations?startingFrom={5}&maximumResults={6}";
+        final String urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{4}/extended-annotations?startingFrom={5}&maximumResults={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
@@ -493,7 +409,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
                                                                                          serverName,
                                                                                          userId,
                                                                                          discoveryEngineName,
-                                                                                         discoveryRequestGUID,
                                                                                          annotationGUID,
                                                                                          Integer.toString(startingFrom),
                                                                                          Integer.toString(maximumResults));
@@ -517,7 +432,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * for an annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -526,16 +440,14 @@ public class AssetAnalysisClient extends DiscoveryEngine
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  Annotation        getAnnotation(String   userId,
-                                            String   discoveryRequestGUID,
-                                            String   annotationGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            DiscoveryEngineException
+    public  Annotation getAnnotation(String   userId,
+                                     String   annotationGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     DiscoveryEngineException
     {
         final String   methodName = "getAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3" +
-                "}/annotations/{4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
@@ -547,7 +459,6 @@ public class AssetAnalysisClient extends DiscoveryEngine
                                                                                  serverName,
                                                                                  userId,
                                                                                  discoveryEngineName,
-                                                                                 discoveryRequestGUID,
                                                                                  annotationGUID);
 
             exceptionHandler.detectAndThrowInvalidParameterException(restResult);

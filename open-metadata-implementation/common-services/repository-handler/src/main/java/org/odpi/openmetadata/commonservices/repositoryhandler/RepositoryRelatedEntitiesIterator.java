@@ -61,6 +61,7 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
      * @throws PropertyServerException there is a problem in the repository
      */
+    @Override
     public boolean  moreToReceive() throws UserNotAuthorizedException,
                                            PropertyServerException
     {

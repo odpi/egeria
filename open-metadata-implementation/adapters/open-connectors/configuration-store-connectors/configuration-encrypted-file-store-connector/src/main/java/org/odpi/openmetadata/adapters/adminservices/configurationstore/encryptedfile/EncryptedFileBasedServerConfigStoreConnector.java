@@ -40,12 +40,13 @@ import java.util.stream.Stream;
  */
 public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase implements OMAGServerConfigStoreRetrieveAll {
 
+    private static final String KEYSTORE_FOLDER_BASEDIR = "data/platform/keys";
     private static final String KEYSTORE_FOLDER_PREFIX = "keystore_";
     private static final String KEY_FILE_EXTENSION = ".key";
     private static final int    RANDOM_NAME_LENGTH = 32;
 
     private static final String      KEY_ENV_VAR               = "EGERIA_CONFIG_KEYS";
-    private static final String      DEFAULT_FILENAME_TEMPLATE = "omag.server.{0}.config";
+    private static final String      DEFAULT_FILENAME_TEMPLATE = "data/servers/{0}/config/{0}.config";
     private static final KeyTemplate KEY_TEMPLATE              = AeadKeyTemplates.CHACHA20_POLY1305;
 
     private String configStoreName  = null;
@@ -440,7 +441,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         final String methodName = "getSecureDirectory";
 
         // Start by trying to identify any pre-existing keystore directory
-        File pwd = new File(".");
+        File pwd = new File(KEYSTORE_FOLDER_BASEDIR);
         File[] keystoreDirs = pwd.listFiles((dir, name) -> name.startsWith(KEYSTORE_FOLDER_PREFIX));
         File secureDir;
         if (keystoreDirs == null || keystoreDirs.length == 0) {
@@ -510,7 +511,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
         final String methodName = "createKeyStore";
         // If no directory was found with the prefix, we need to create one
-        String secureDirectory = KEYSTORE_FOLDER_PREFIX + getRandomString();
+        String secureDirectory = KEYSTORE_FOLDER_BASEDIR + '/' + KEYSTORE_FOLDER_PREFIX + getRandomString();
         File secureDir = new File(secureDirectory);
         // ... and we need to create a key file within it
         String keysetStoreName = getRandomString() + KEY_FILE_EXTENSION;
