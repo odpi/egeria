@@ -12,8 +12,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
-    # "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-delete-policy": "{{ if .Values.options.jobs.config.jobdelete }} hook-succeeded , {{ end }} before-hook-creation"
 
 spec:
   template:
@@ -22,6 +21,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ include "myapp.name" . }}
     spec:
+      {{- include "egeria.security" . | nindent 6 }}
       restartPolicy: OnFailure
       initContainers:
         - name: wait-for-egeria
@@ -62,4 +62,4 @@ spec:
           configMap:
             name: {{ .Release.Name }}-scripts-configmap
   # Keep trying quite a few times to aid in debugging
-  backoffLimit: 60
+  backoffLimit: {{ .Values.options.jobs.config.backOffLimit }}

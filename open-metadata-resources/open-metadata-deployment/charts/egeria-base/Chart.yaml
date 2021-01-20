@@ -3,7 +3,7 @@
 ---
 name: egeria-base
 description: Egeria simple deployment to Kubernetes
-apiVersion: v1
+apiVersion: v2
 version: 1.0.0
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:

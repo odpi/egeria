@@ -54,6 +54,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: presentation
     spec:
+      {{- include "egeria.security" . | nindent 6 }}
       containers:
         - name: presentation
           image: "{{ if (.Values.image.presentation.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.presentation.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -66,16 +67,33 @@ spec:
                 name: {{ .Release.Name }}-env
           ports:
             - containerPort: 8091
-          readinessProbe:
+          # No other checks until this passes
+          startupProbe:
             tcpSocket:
               port: 8091
             initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 15
+          # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
+          readinessProbe:
+            httpGet:
+              path: /{{ .Values.egeria.viewOrg }}
+              port: 8091
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          # Is pod doing useful work - if not we will restart it
+          livenessProbe:
+            httpGet:
+              path: /{{ .Values.egeria.viewOrg }}
+              port: 8091
+              scheme: HTTPS
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
           env:
             - name: EGERIA_PRESENTATIONSERVER_SERVER_{{ .Values.egeria.viewOrg }}
-              value: "{\"remoteServerName\":\"{{ .Values.egeria.viewServerName }}\",\"remoteURL\":\"https://{{ .Release.Name }}-egeria:9443\"}"
+              value: "{\"remoteServerName\":\"{{ .Values.egeria.viewServerName }}\",\"remoteURL\":\"https://{{ .Release.Name }}-platform:9443\"}"
       restartPolicy: Always
 
 status: {}

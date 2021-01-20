@@ -83,10 +83,27 @@ spec:
           {{ if .Values.egeria.debug }}
             - containerPort: 5005
           {{ end }}
-          readinessProbe:
+          # No other checks until this passes
+          startupProbe:
             tcpSocket:
               port: 9443
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 25
+          # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
+          readinessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              port: 9443
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          # Is pod doing useful work - if not we will restart it
+          livenessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              port: 9443
+              scheme: HTTPS
             periodSeconds: 10
             failureThreshold: 6
           resources: {}

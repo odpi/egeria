@@ -4,7 +4,8 @@
 
 # --- General Egeria configuration ---
 egeria:
-  #logging: OFF
+  # Set to INFO, WARNING, DEBUG if needed
+  logging: 
   version: "2.6-SNAPSHOT"
   repositoryType: "local-graph-repository"
   debug: false
@@ -19,7 +20,7 @@ egeria:
   # Cohort name
   cohort: mds
   # Set to override the k8s storage class for persistent volume claim
-  #storageClass:
+  storageClass:
   # Default to 8GB
   storageSize: 8Gi
 
@@ -36,6 +37,29 @@ service:
     platform: 31080
     presentation: 31091
     platformdebug: 31005
+
+# Standard helm best practice
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: true
+
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: true
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+# Specific processing features 
+options:
+  jobs:
+    config:
+      # Timeout for configuration job
+      backOffLimit: 60
+      # Default will be true, but during dev set to false
+      # This setting will control if the k8s job (and hence pod/logs) are deleted after egeria configuration
+      # Set to false to assist in debugging 
+      jobdelete: false    
 
 # --- Docker image sources ---
 
