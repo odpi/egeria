@@ -258,7 +258,7 @@ public class CreateDatabaseTest
             }
             if (! databaseType.equals(retrievedDatabase.getDatabaseType()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve " + retrievedDatabase.getDatabaseType() + ")");
             }
             if (! databaseVersion.equals(retrievedDatabase.getDatabaseVersion()))
             {
