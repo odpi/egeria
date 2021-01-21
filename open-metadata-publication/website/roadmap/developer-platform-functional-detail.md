@@ -63,16 +63,8 @@ The [engine services](../../../open-metadata-implementation/engine-services) are
 
 * [Asset Analysis](../../../open-metadata-implementation/engine-services/asset-analysis) for automated metadata discovery
   covering the content of an Asset's real-world counterpart.
-* [Action Scheduler](../../../open-metadata-implementation/engine-services/action-scheduler) maintains a calendar of
-  activities and ensures they are scheduled at the appropriate time.
-* [Asset Provisioning](../../../open-metadata-implementation/engine-services/asset-provisioning) invokes a specific
-  provisioning action for an asset.
-* [Metadata Watchdog](../../../open-metadata-implementation/engine-services/metadata-watchdog) for monitoring changes
-  to open metadata.
-* [Request Triage](../../../open-metadata-implementation/engine-services/request-triage) enables stewards to make
-  decisions on which actions to take.
-* [Issue Remediation](../../../open-metadata-implementation/engine-services/request-triage) 
-  runs actions to update metadata to repair a situation. 
+* [Governance Action](../../../open-metadata-implementation/engine-services/governance-action) for monitoring changes
+  to open metadata, making decisions on which actions to take and running actions that update metadata to repair a situation. 
 
 ### Integration Services
 

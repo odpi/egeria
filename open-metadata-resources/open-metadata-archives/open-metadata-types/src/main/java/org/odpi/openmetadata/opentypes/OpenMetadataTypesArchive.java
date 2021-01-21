@@ -846,7 +846,7 @@ public class OpenMetadataTypesArchive
          * Build the Entity
          */
         final String guid            = "d650a159-9b6c-4be7-8d35-13aa51a124f7";
-        final String name            = "OpenWatchdogEngine";
+        final String name            = "WatchdogGovernanceEngine";
         final String description     = "A collection of related governance services that looks for patterns and values in the open metadata.";
         final String descriptionGUID = null;
         final String superTypeName   = "GovernanceActionEngine";
@@ -864,7 +864,7 @@ public class OpenMetadataTypesArchive
          * Build the Entity
          */
         final String guid            = "926feef0-1e05-4239-86f3-fbc8a84ee9a2";
-        final String name            = "OpenTriageEngine";
+        final String name            = "TriageGovernanceEngine";
         final String description     = "A collection of related governance services that makes decisions about whether to fix a situation.";
         final String descriptionGUID = null;
         final String superTypeName   = "GovernanceActionEngine";
@@ -882,7 +882,7 @@ public class OpenMetadataTypesArchive
          * Build the Entity
          */
         final String guid            = "67f8f68c-0975-4597-b852-d5e199deff75";
-        final String name            = "OpenVerificationEngine";
+        final String name            = "VerificationGovernanceEngine";
         final String description     = "A collection of related governance services that test if specific situations are true.";
         final String descriptionGUID = null;
         final String superTypeName   = "GovernanceActionEngine";
@@ -900,7 +900,7 @@ public class OpenMetadataTypesArchive
          * Build the Entity
          */
         final String guid            = "c590ea9e-9afc-4c31-99ca-61fba1ec8113";
-        final String name            = "OpenRemediationEngine";
+        final String name            = "RemediationGovernanceEngine";
         final String description     = "A collection of related governance services that makes changes to open metadata.";
         final String descriptionGUID = null;
         final String superTypeName   = "GovernanceActionEngine";
@@ -918,7 +918,7 @@ public class OpenMetadataTypesArchive
          * Build the Entity
          */
         final String guid            = "80232e52-b2a7-4c7c-b9e8-396001ec8b50";
-        final String name            = "OpenProvisioningEngine";
+        final String name            = "ProvisioningGovernanceEngine";
         final String description     = "A collection of related governance services that provisions resources into the digital landscape.";
         final String descriptionGUID = null;
         final String superTypeName   = "GovernanceActionEngine";
@@ -1630,13 +1630,20 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "originGovernanceEngine";
-        final String attribute1Description     = "The qualifiedName of the governance engine that caused the governance action to be created.";
+        final String attribute1Name            = "originGovernanceService";
+        final String attribute1Description     = "The qualifiedName of the governance service that caused the governance action to be created.";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "originGovernanceEngine";
+        final String attribute2Description     = "The qualifiedName of the governance engine that caused the governance action to be created.";
+        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1701,14 +1708,20 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "originGovernanceEngine";
-        final String attribute1Description     = "The qualifiedName of the governance engine that caused the governance action to be created.";
+        final String attribute1Name            = "originGovernanceService";
+        final String attribute1Description     = "The qualifiedName of the governance service that caused the governance action to be created.";
         final String attribute1DescriptionGUID = null;
-
+        final String attribute2Name            = "originGovernanceEngine";
+        final String attribute2Description     = "The qualifiedName of the governance engine that caused the governance action to be created.";
+        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
