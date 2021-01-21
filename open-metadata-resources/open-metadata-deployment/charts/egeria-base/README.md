@@ -36,9 +36,11 @@ helm dep update egeria-base
 helm install egeria egeria-base
 ```
 
-The install will take several minutes to return back to the prompt, as it is not only creating the required
+THE INSTALL WILL TAAKE SEVERAL MINUTES
+
+This is beacuse it is not only creating the required
 objects in Kubernetes to run the platforms, but also is configuring egeria itself - which involves waiting
-for everything to startup.
+for everything to startup before configuring Egeria via REST API calls.
 
 Once installed the configured server is set to start automatically, storage is persisted, and so if your pod gets moved/restarted, egeria should come back automatically with the same data as before.
 
@@ -155,6 +157,7 @@ kubectl delete pvc <id>
 ```
 
 See the section on Configuration for more details
+
 ## Feedback & Future
 
 See Egeria on [GitHub](https://github.com/odpi/egeria) for more reference material, our Egeria mailing lists on [lists.lfaidata](https://lists.lfaidata.foundation/groups), or our slack channels by joining/singing up at https://slack.lfai.foundation . We'd very much like to help & discuss how we can improve, and ideally how you can help!
