@@ -82,93 +82,108 @@ echo -e '\n\n > Setting up TEX:\n'
 curl -f -k --verbose --basic admin:admin \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/tex" \
-  --data '{
-            "class":"IntegrationViewServiceConfig",
-            "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.tex.admin.TexViewAdmin",
-            "viewServiceFullName":"Type Explorer",
-            "viewServiceOperationalStatus":"ENABLED",
-            "omagserverPlatformRootURL": "UNUSED",
-            "omagserverName" : "UNUSED",
-            "resourceEndpoints" : [
-                {
-                    "class"              : "ResourceEndpointConfig",
-                    "resourceCategory"   : "Platform",
-                    "description"        : "Platform",
-                    "platformName"       : "platform",
-                    "platformRootURL"    : "https://{{ .Release.Name }}-platform:9443"
-                },
-                {
-                    "class"              : "ResourceEndpointConfig",
-                    "resourceCategory"   : "Server",
-                    "serverInstanceName" : "{{ .Values.egeria.serverName }}",
-                    "description"        : "Server",
-                    "platformName"       : "platform",
-                    "serverName"         : "{{ .Values.egeria.serverName }}"
-                }
-            ]
-          }'
+  --data @- <<EOF
+{
+  "class":"IntegrationViewServiceConfig",
+  "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.tex.admin.TexViewAdmin",
+  "viewServiceFullName":"Type Explorer",
+  "viewServiceOperationalStatus":"ENABLED",
+  "omagserverPlatformRootURL": "UNUSED",
+  "omagserverName" : "UNUSED",
+  "resourceEndpoints" : [
+    {
+      "class"              : "ResourceEndpointConfig",
+      "resourceCategory"   : "Platform",
+      "description"        : "Platform",
+      "platformName"       : "platform",
+      "platformRootURL"    : "${EGERIA_ENDPOINT}"
+    },
+    {
+      "class"              : "ResourceEndpointConfig",
+      "resourceCategory"   : "Server",
+      "serverInstanceName" : "${EGERIA_SERVER}",
+      "description"        : "Server",
+      "platformName"       : "platform",
+      "serverName"         : "${EGERIA_SERVER}"
+    }
+  ]
+}
+EOF
 
 echo -e '\n\n > Setting up REX:\n'
 
 curl -f -k --verbose --basic admin:admin \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/rex" \
-  --data '{
-            "class":"IntegrationViewServiceConfig",
-            "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.rex.admin.RexViewAdmin",
-            "viewServiceFullName":"Repository Explorer",
-            "viewServiceOperationalStatus":"ENABLED",
-            "omagserverPlatformRootURL": "UNUSED",
-            "omagserverName" : "UNUSED",
-            "resourceEndpoints" : [
-                {
-                    "class"              : "ResourceEndpointConfig",
-                    "resourceCategory"   : "Platform",
-                    "description"        : "Platform",
-                    "platformName"       : "platform",
-                    "platformRootURL"    : "https://{{ .Release.Name }}-platform:9443"
-                },
-                              {
-                    "class"              : "ResourceEndpointConfig",
-                    "resourceCategory"   : "Server",
-                    "serverInstanceName" : "{{ .Values.egeria.serverName }}",
-                    "description"        : "Server",
-                    "platformName"       : "platform",
-                    "serverName"         : "{{ .Values.egeria.serverName }}"
-                }
-             ]
-          }'
+  --data @- <<EOF
+{
+  "class":"IntegrationViewServiceConfig",
+  "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.rex.admin.RexViewAdmin",
+  "viewServiceFullName":"Repository Explorer",
+  "viewServiceOperationalStatus":"ENABLED",
+  "omagserverPlatformRootURL": "UNUSED",
+  "omagserverName" : "UNUSED",
+  "resourceEndpoints" : [
+    {
+              "class"              : "ResourceEndpointConfig",
+        "resourceCategory"   : "Platform",
+        "description"        : "Platform",
+        "platformName"       : "platform",
+        "platformRootURL"    : "${EGERIA_ENDPOINT}"
+    },
+                  {
+        "class"              : "ResourceEndpointConfig",
+        "resourceCategory"   : "Server",
+        "serverInstanceName" : "${EGERIA_SERVER}",
+        "description"        : "Server",
+        "platformName"       : "platform",
+        "serverName"         : "${EGERIA_SERVER}"
+    }
+  ]
+}
+EOF
 
 echo -e '\n\n > Setting up DINO:\n'
 
 curl -f -k --verbose --basic admin:admin \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/dino" \
-  --data '{
-            "class":"IntegrationViewServiceConfig",
-            "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin",
-            "viewServiceFullName":"Dino",
-            "viewServiceOperationalStatus":"ENABLED",
-            "omagserverPlatformRootURL": "UNUSED",
-            "omagserverName" : "UNUSED",
-            "resourceEndpoints" : [
-                {
-                    "class"              : "ResourceEndpointConfig",
-                    "resourceCategory"   : "Platform",
-                    "description"        : "Platform",
-                    "platformName"       : "platform",
-                    "platformRootURL"    : "https://{{ .Release.Name }}-platform:9443"
-                },
-                              {
-                    "class"              : "ResourceEndpointConfig",
-                    "resourceCategory"   : "Server",
-                    "serverInstanceName" : "{{ .Values.egeria.serverName }}",
-                    "description"        : "Server",
-                    "platformName"       : "platform",
-                    "serverName"         : "{{ .Values.egeria.serverName }}"
-                }
-              ]
-          }'
+  --data @- <<EOF
+{
+  "class":"IntegrationViewServiceConfig",
+  "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin",
+  "viewServiceFullName":"Dino",
+  "viewServiceOperationalStatus":"ENABLED",
+  "omagserverPlatformRootURL": "UNUSED",
+  "omagserverName" : "UNUSED",
+  "resourceEndpoints" : [
+    {
+        "class"              : "ResourceEndpointConfig",
+        "resourceCategory"   : "Platform",
+        "description"        : "Platform",
+        "platformName"       : "platform",
+        "platformRootURL"    : "${EGERIA_ENDPOINT}"
+    },
+    {
+        "class"              : "ResourceEndpointConfig",
+        "resourceCategory"   : "Server",
+        "serverInstanceName" : "${EGERIA_SERVER}",
+        "description"        : "Server",
+        "platformName"       : "platform",
+        "serverName"         : "${EGERIA_SERVER}"
+    },
+    {
+        "class"              : "ResourceEndpointConfig",
+        "resourceCategory"   : "Server",
+        "serverInstanceName" : "${VIEW_SERVER}",
+        "description"        : "Server",
+        "platformName"       : "platform",
+        "serverName"         : "${VIEW_SERVER}"
+    }
+  ]
+}
+EOF
+
 # Start up the view server
 echo -e '\n\n > Starting the view server:\n'
 
