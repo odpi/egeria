@@ -2,8 +2,15 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
+# Guards
+
+Guards are labels that are created by [governance action services](governance-action-service.md)
+and are used by the [Governance Engine OMAS](../../../access-services/governance-engine) to
+determine which governance action service to run next.
 
 
+----
+* Return the [Governance Action Framework Overview](..)
 
 
 ----
