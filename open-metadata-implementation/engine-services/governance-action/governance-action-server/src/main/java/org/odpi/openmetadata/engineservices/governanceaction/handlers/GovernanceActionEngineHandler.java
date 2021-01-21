@@ -85,7 +85,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     }
 
 
-
     /**
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *

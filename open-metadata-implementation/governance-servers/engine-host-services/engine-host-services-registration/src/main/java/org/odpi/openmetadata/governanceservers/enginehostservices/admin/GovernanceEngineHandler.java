@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
@@ -412,12 +413,18 @@ public abstract class GovernanceEngineHandler
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
+        final String methodName = "executeGovernanceAction";
+
         try
         {
             ElementHeader              elementHeader = governanceActionElement.getElementHeader();
             GovernanceActionProperties properties = governanceActionElement.getProperties();
 
             serverClient.claimGovernanceAction(engineUserId, elementHeader.getGUID());
+
+            // todo if the start date is in the future then the governance action should be given to the scheduler
+
+            serverClient.updateGovernanceActionStatus(engineUserId, elementHeader.getGUID(), GovernanceActionStatus.IN_PROGRESS);
 
             GovernanceServiceHandler governanceServiceHandler = runGovernanceService(elementHeader.getGUID(),
                                                                                      properties.getRequestType(),
@@ -427,7 +434,12 @@ public abstract class GovernanceEngineHandler
         }
         catch (Exception error)
         {
-            // todo log unexpected exception
+            auditLog.logException(methodName,
+                                  EngineHostServicesAuditCode.ACTION_PROCESSING_ERROR.getMessageDefinition(methodName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           governanceActionElement.toString(),
+                                                                                                           error.getMessage()),
+                                  error);
         }
     }
 

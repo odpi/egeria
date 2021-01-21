@@ -640,7 +640,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                governanceEngineName,
                                                                requestType,
                                                                requestProperties,
-                                                               governanceServiceHandler.getGovernanceServiceGUID(),
+                                                               governanceServiceHandler.getGovernanceServiceName(),
                                                                governanceServiceHandler.getGovernanceEngineName());
     }
 
@@ -671,7 +671,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                       requestSourceGUIDs,
                                                                       actionTargetGUIDs,
                                                                       startTime,
-                                                                      governanceServiceHandler.getGovernanceServiceGUID(),
+                                                                      governanceServiceHandler.getGovernanceServiceName(),
                                                                       governanceServiceHandler.getGovernanceEngineName());
     }
 

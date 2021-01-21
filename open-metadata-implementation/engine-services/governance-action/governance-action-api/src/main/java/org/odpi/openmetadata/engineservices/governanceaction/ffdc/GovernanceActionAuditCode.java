@@ -132,7 +132,7 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                        "A governance action service has returned from the start() method and without setting up the completion status prior to returning.  " +
                                                "The Governance Action OMES will call disconnect() on the governance action service since it is complete.  " +
                                                "The Governance Action entity in the ",
-                                       "Validate that this governance action service should still be running.  Typically you would expect an OpenWatchdogService to" +
+                                       "Validate that this governance action service should still be running.  Typically you would expect a WatchdogGovernanceService to" +
                                                "still be running at this stage because it will have registered a listener. The other types of governance action services should have completed during " +
                                                "start() unless they are managing their own thread(s)."),
 

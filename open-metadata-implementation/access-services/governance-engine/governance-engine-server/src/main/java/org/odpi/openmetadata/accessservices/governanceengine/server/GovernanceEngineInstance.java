@@ -4,12 +4,15 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.governanceengine.converters.GovernanceActionConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.converters.MetadataElementConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.GovernanceConfigurationHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -28,8 +31,9 @@ public class GovernanceEngineInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
-    private GovernanceConfigurationHandler governanceConfigurationHandler;
-    private MetadataElementHandler<OpenMetadataElement> metadataElementHandler;
+    private GovernanceConfigurationHandler                   governanceConfigurationHandler;
+    private MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
+    private GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -97,6 +101,20 @@ public class GovernanceEngineInstance extends OMASServiceInstance
                                                                        defaultZones,
                                                                        publishZones,
                                                                        auditLog);
+
+            this.governanceActionHandler = new GovernanceActionHandler<>(new GovernanceActionConverter<>(repositoryHelper, serviceName, serverName),
+                                                                         GovernanceActionElement.class,
+                                                                         serviceName,
+                                                                         serverName,
+                                                                         invalidParameterHandler,
+                                                                         repositoryHandler,
+                                                                         repositoryHelper,
+                                                                         localServerUserId,
+                                                                         securityVerifier,
+                                                                         supportedZones,
+                                                                         defaultZones,
+                                                                         publishZones,
+                                                                         auditLog);
         }
         else
         {
@@ -123,8 +141,19 @@ public class GovernanceEngineInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler()
+    public MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler()
     {
         return metadataElementHandler;
+    }
+
+
+    /**
+     * Return the handler for governance action requests.
+     *
+     * @return handler object
+     */
+    public GovernanceActionHandler<GovernanceActionElement> getGovernanceActionHandler()
+    {
+        return governanceActionHandler;
     }
 }

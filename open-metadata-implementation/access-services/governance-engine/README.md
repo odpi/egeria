@@ -47,8 +47,9 @@ The documentation for writing governance services is located:
 
 * [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework) for Open Discovery Services.
 * [Governance Action Framework (GAF)](../../frameworks/governance-action-framework) for the
-Governance Action Services: Open Watchdog Services, Open Triage Services, Open Verification Services, Open Remediation Services
-and Open Provisioning Services. 
+Governance Action Services: Watchdog Governance Services, Triage Governance Services, Verification Governance Services,
+Remediation Governance Services
+and Provisioning Governance Services. 
 
 
 ## Internals
