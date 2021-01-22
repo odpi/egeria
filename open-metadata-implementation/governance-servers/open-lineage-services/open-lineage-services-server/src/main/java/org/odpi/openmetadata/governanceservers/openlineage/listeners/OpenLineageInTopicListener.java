@@ -72,7 +72,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 case SEMANTIC_ASSIGNMENTS_EVENT:
                 case TERM_CATEGORIZATIONS_EVENT:
                 case TERM_ANCHOR_EVENT:
-                case GLOSSARY_CATEGORIES_EVENT:
+                case CATEGORY_ANCHORS_EVENT:
                 case COLUMN_CONTEXT_EVENT:
                 case ASSET_CONTEXT_EVENT:
                 case LINEAGE_MAPPINGS_EVENT:

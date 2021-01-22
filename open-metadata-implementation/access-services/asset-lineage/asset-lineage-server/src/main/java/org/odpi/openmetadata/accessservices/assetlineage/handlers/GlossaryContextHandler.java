@@ -106,7 +106,7 @@ public class GlossaryContextHandler {
         context.put(AssetLineageEventType.TERM_ANCHOR_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossary));
 
         List<Relationship> glossariesForCategories = getGlossariesForCategories(userId, glossaryTermGUID, termCategorizations);
-        context.put(AssetLineageEventType.GLOSSARY_CATEGORIES_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
+        context.put(AssetLineageEventType.CATEGORY_ANCHORS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
                 glossariesForCategories));
 
 
