@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
 # Script will be run by k8s as part of our initialization job.
 # Assumed here - platform up & responding to REST api, plus Kafka is available
 
