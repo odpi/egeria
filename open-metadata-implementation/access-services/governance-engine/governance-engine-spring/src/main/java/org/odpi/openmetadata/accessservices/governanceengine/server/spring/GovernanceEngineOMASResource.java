@@ -551,6 +551,30 @@ public class GovernanceEngineOMASResource
 
 
     /**
+     * Update the status of the governance action - providing the caller is permitted.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param governanceActionGUID identifier of the governance action request
+     * @param requestBody new status ordinal
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/governance-actions/{governanceActionGUID}/status/update")
+
+    public VoidResponse updateGovernanceActionStatus(@PathVariable String            serverName,
+                                                     @PathVariable String            userId,
+                                                     @PathVariable String            governanceActionGUID,
+                                                     @RequestBody  StatusRequestBody requestBody)
+    {
+        return restAPI.updateGovernanceActionStatus(serverName, userId, governanceActionGUID, requestBody);
+    }
+
+
+    /**
      * Declare that all of the processing for the governance action service is finished and the status of the work.
      *
      * @param serverName     name of server instance to route request to

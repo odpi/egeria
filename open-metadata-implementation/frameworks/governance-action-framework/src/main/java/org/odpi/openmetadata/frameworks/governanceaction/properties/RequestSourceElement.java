@@ -22,8 +22,9 @@ public class RequestSourceElement implements Serializable
 {
     private static final long      serialVersionUID = 1L;
 
-    private OpenMetadataElement requestSourceElement   = null;
-    private String              originGovernanceEngine = null;
+    private OpenMetadataElement requestSourceElement    = null;
+    private String              originGovernanceService = null;
+    private String              originGovernanceEngine  = null;
 
     /**
      * Typical Constructor
@@ -43,8 +44,9 @@ public class RequestSourceElement implements Serializable
     {
         if (template != null)
         {
-            requestSourceElement   = template.getRequestSourceElement();
-            originGovernanceEngine = template.getOriginGovernanceEngine();
+            requestSourceElement    = template.getRequestSourceElement();
+            originGovernanceService = template.getOriginGovernanceService();
+            originGovernanceEngine  = template.getOriginGovernanceEngine();
         }
     }
 
@@ -68,6 +70,28 @@ public class RequestSourceElement implements Serializable
     public void setRequestSourceElement(OpenMetadataElement requestSourceElement)
     {
         this.requestSourceElement = requestSourceElement;
+    }
+
+
+    /**
+     * Return the governance service that created this governance action (if any).
+     *
+     * @return string name
+     */
+    public String getOriginGovernanceService()
+    {
+        return originGovernanceService;
+    }
+
+
+    /**
+     * Set up the governance service that created this governance action (if any).
+     *
+     * @param originGovernanceService string name
+     */
+    public void setOriginGovernanceService(String originGovernanceService)
+    {
+        this.originGovernanceService = originGovernanceService;
     }
 
 
@@ -103,6 +127,7 @@ public class RequestSourceElement implements Serializable
     {
         return "RequestSourceElement{" +
                        "requestSourceElement=" + requestSourceElement +
+                       ", originGovernanceService=" + originGovernanceService +
                        ", originGovernanceEngine=" + originGovernanceEngine +
                        '}';
     }
@@ -128,6 +153,7 @@ public class RequestSourceElement implements Serializable
         }
         RequestSourceElement that = (RequestSourceElement) objectToCompare;
         return Objects.equals(requestSourceElement, that.requestSourceElement) &&
+                       Objects.equals(originGovernanceService, that.originGovernanceService) &&
                        Objects.equals(originGovernanceEngine, that.originGovernanceEngine);
     }
 
@@ -140,6 +166,6 @@ public class RequestSourceElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(requestSourceElement, originGovernanceEngine);
+        return Objects.hash(requestSourceElement, originGovernanceService, originGovernanceEngine);
     }
 }

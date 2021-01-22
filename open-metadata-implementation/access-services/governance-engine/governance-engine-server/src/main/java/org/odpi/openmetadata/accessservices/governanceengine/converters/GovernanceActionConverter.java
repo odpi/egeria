@@ -145,6 +145,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
 
                                         instanceProperties = new InstanceProperties(relationship.getProperties());
 
+                                        requestSourceElement.setOriginGovernanceService(this.removeOriginGovernanceService(instanceProperties));
                                         requestSourceElement.setOriginGovernanceEngine(this.removeOriginGovernanceEngine(instanceProperties));
 
                                         requestSourceElements.add(requestSourceElement);

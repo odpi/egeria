@@ -77,9 +77,20 @@ public abstract class GovernanceServiceHandler implements Runnable
 
 
     /**
-     * Return the unique name for the hosting governance engine.
+     * Return the unique name of this governance service.
      *
      * @return string name
+     */
+    public String getGovernanceServiceName()
+    {
+        return governanceServiceName;
+    }
+
+
+    /**
+     * Return the unique identifier of this governance service.
+     *
+     * @return string guid
      */
     public String getGovernanceServiceGUID()
     {
@@ -88,7 +99,7 @@ public abstract class GovernanceServiceHandler implements Runnable
 
 
     /**
-     * Return the unique identifier of the entity that describes this governance service.
+     * Return the unique name for the hosting governance engine.
      *
      * @return string name
      */

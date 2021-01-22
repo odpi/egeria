@@ -72,6 +72,11 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                     databaseProperties.setDisplayName(this.removeName(instanceProperties));
                     databaseProperties.setDescription(this.removeDescription(instanceProperties));
 
+                    databaseProperties.setDatabaseType(this.removeDatabaseType(instanceProperties));
+                    databaseProperties.setDatabaseVersion(this.removeDatabaseVersion(instanceProperties));
+                    databaseProperties.setDatabaseInstance(this.removeDatabaseInstance(instanceProperties));
+                    databaseProperties.setDatabaseImportedFrom(this.removeDatabaseImportedFrom(instanceProperties));
+
                     /* Note this value should be in the classification */
                     databaseProperties.setOwner(this.removeOwner(instanceProperties));
                     /* Note this value should be in the classification */

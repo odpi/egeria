@@ -12,7 +12,7 @@ and actions taken are attached to the incident report to create
 a complete record of the incident for future analysis.
 
 Incident reports are typically created by
-[Governance Watchdog Services](open-watchdog-service.md).
+[Governance Watchdog Services](watchdog-governance-service.md).
 
 
 ## Open metadata types
@@ -20,8 +20,9 @@ Incident reports are typically created by
 [0470 Incident Reporting](../../../../open-metadata-publication/website/open-metadata-types/0470-Incident-Reporting.md)
 shows the structure of the incident report.
 It is a [Referenceable](../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md)
-so it can support comments and have [].
+so it can support comments and linked classifications and tags.
  
+
 ----
 
 * Return to [Governance Action Framework Overview (GAF)](..)
