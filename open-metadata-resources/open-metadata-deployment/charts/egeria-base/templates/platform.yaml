@@ -112,7 +112,13 @@ spec:
             - mountPath: "/deployments/data"
               name: {{ .Release.Name }}-egeria-data
           {{ end }}
+            - name: extlib
+              mountPath: /extlib
       restartPolicy: Always
+      volumes:
+        - name: extlib
+          configMap:
+            name: {{ .Release.Name }}-extlib
   {{ if .Values.egeria.persistence }}
   volumeClaimTemplates:
   - metadata:
