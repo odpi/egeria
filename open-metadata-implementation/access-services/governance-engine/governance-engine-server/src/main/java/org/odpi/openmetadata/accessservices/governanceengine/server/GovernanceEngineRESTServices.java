@@ -3,12 +3,17 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.slf4j.LoggerFactory;
 
 
@@ -141,6 +146,18 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         OpenMetadataElementResponse response = new OpenMetadataElementResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getMetadataElementByGUID(userId, elementGUID, methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -162,7 +179,7 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public OpenMetadataElementsResponse findMetadataElementsWithString(String                 serverName,
+    public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
                                                                        String                  userId,
                                                                        int                     startFrom,
                                                                        int                     pageSize,
@@ -175,6 +192,25 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         OpenMetadataElementsResponse response = new OpenMetadataElementsResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.findMetadataElementsWithString(userId, requestBody.getSearchString(), startFrom, pageSize, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -197,7 +233,7 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public RelatedMetadataElementsListResponse getRelatedMetadataElements(String serverName,
+    public RelatedMetadataElementListResponse getRelatedMetadataElements(String serverName,
                                                                           String userId,
                                                                           String elementGUID,
                                                                           String relationshipTypeName,
@@ -208,9 +244,21 @@ public class GovernanceEngineRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AuditLog                            auditLog = null;
-        RelatedMetadataElementsListResponse response = new RelatedMetadataElementsListResponse();
+        AuditLog                           auditLog = null;
+        RelatedMetadataElementListResponse response = new RelatedMetadataElementListResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            response.setElementList(handler.getRelatedMetadataElements(userId, elementGUID, relationshipTypeName, startFrom, pageSize, methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -244,6 +292,35 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         OpenMetadataElementsResponse response = new OpenMetadataElementsResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.findMetadataElements(userId,
+                                                                     requestBody.getMetadataElementTypeName(),
+                                                                     requestBody.getMetadataElementSubtypeName(),
+                                                                     requestBody.getSearchProperties(),
+                                                                     requestBody.getLimitResultsByStatus(),
+                                                                     requestBody.getMatchClassifications(),
+                                                                     requestBody.getSequencingProperty(),
+                                                                     requestBody.getSequencingOrder(),
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -278,6 +355,32 @@ public class GovernanceEngineRESTServices
         AuditLog                            auditLog = null;
         RelatedMetadataElementsListResponse response = new RelatedMetadataElementsListResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
+                                                                                         requestBody.getMetadataElementTypeName(),
+                                                                                         requestBody.getSearchProperties(),
+                                                                                         requestBody.getSequencingProperty(),
+                                                                                         requestBody.getSequencingOrder(),
+                                                                                         startFrom,
+                                                                                         pageSize,
+                                                                                         methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -311,6 +414,32 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createMetadataElementInStore(userId,
+                                                                      requestBody.getTypeName(),
+                                                                      requestBody.getInitialStatus(),
+                                                                      requestBody.getEffectiveFrom(),
+                                                                      requestBody.getEffectiveTo(),
+                                                                      requestBody.getProperties(),
+                                                                      requestBody.getTemplateGUID(),
+                                                                      methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -345,6 +474,29 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.updateMetadataElementInStore(userId,
+                                                     metadataElementGUID,
+                                                     requestBody.getReplaceProperties(),
+                                                     requestBody.getProperties(),
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -379,6 +531,30 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.updateMetadataElementStatusInStore(userId,
+                                                           metadataElementGUID,
+                                                           requestBody.getNewStatus(),
+                                                           requestBody.getEffectiveFrom(),
+                                                           requestBody.getEffectiveTo(),
+                                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -399,9 +575,10 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public  VoidResponse deleteMetadataElementInStore(String serverName,
-                                                      String userId,
-                                                      String metadataElementGUID,
+    @SuppressWarnings(value = "unused")
+    public  VoidResponse deleteMetadataElementInStore(String          serverName,
+                                                      String          userId,
+                                                      String          metadataElementGUID,
                                                       NullRequestBody requestBody)
     {
         final String methodName = "deleteMetadataElementInStore";
@@ -411,6 +588,25 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.deleteMetadataElementInStore(userId, metadataElementGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -448,6 +644,31 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.classifyMetadataElementInStore(userId,
+                                                       metadataElementGUID,
+                                                       classificationName,
+                                                       requestBody.getEffectiveFrom(),
+                                                       requestBody.getEffectiveTo(),
+                                                       requestBody.getProperties(),
+                                                       methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -483,6 +704,30 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.reclassifyMetadataElementInStore(userId,
+                                                         metadataElementGUID,
+                                                         classificationName,
+                                                         requestBody.getReplaceProperties(),
+                                                         requestBody.getProperties(),
+                                                         methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -518,6 +763,30 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.updateClassificationStatusInStore(userId,
+                                                          metadataElementGUID,
+                                                          classificationName,
+                                                          requestBody.getEffectiveFrom(),
+                                                          requestBody.getEffectiveTo(),
+                                                          methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -552,6 +821,25 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.unclassifyMetadataElementInStore(userId, metadataElementGUID, classificationName, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -584,6 +872,32 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createRelatedElementsInStore(userId,
+                                                                      requestBody.getTypeName(),
+                                                                      requestBody.getMetadataElement1GUID(),
+                                                                      requestBody.getMetadataElement2GUID(),
+                                                                      requestBody.getEffectiveFrom(),
+                                                                      requestBody.getEffectiveTo(),
+                                                                      requestBody.getProperties(),
+                                                                      methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -617,6 +931,29 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.updateRelatedElementsInStore(userId,
+                                                     relationshipGUID,
+                                                     requestBody.getReplaceProperties(),
+                                                     requestBody.getProperties(),
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -650,6 +987,29 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.updateRelatedElementsStatusInStore(userId,
+                                                           relationshipGUID,
+                                                           requestBody.getEffectiveFrom(),
+                                                           requestBody.getEffectiveTo(),
+                                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -682,6 +1042,25 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.deleteRelatedElementsInStore(userId, relationshipGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -715,6 +1094,93 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+                int statusOrdinal = GovernanceActionStatus.ACTIONED.getOrdinal();
+
+                if (requestBody.getStatus() != null)
+                {
+                    statusOrdinal = requestBody.getStatus().getOrdinal();
+                }
+                handler.updateActionTargetStatus(userId,
+                                                 requestBody.getActionTargetGUID(),
+                                                 statusOrdinal,
+                                                 requestBody.getStartDate(),
+                                                 requestBody.getCompletionDate(),
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the status of the governance action - providing the caller is permitted.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param governanceActionGUID identifier of the governance action request
+     * @param requestBody new status ordinal
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public VoidResponse updateGovernanceActionStatus(String            serverName,
+                                                     String            userId,
+                                                     String            governanceActionGUID,
+                                                     StatusRequestBody requestBody)
+    {
+        final String methodName = "updateGovernanceActionStatus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+                int statusOrdinal = GovernanceActionStatus.ACTIONED.getOrdinal();
+
+                if (requestBody.getStatus() != null)
+                {
+                    statusOrdinal = requestBody.getStatus().getOrdinal();
+                }
+
+                handler.updateGovernanceActionStatus(userId, governanceActionGUID, statusOrdinal, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -748,6 +1214,37 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+                int statusOrdinal = GovernanceActionStatus.ACTIONED.getOrdinal();
+
+                if (requestBody.getStatus() != null)
+                {
+                    statusOrdinal = requestBody.getStatus().getOrdinal();
+                }
+
+                handler.recordCompletionStatus(userId,
+                                               governanceActionGUID,
+                                               statusOrdinal,
+                                               requestBody.getOutputGuards(),
+                                               requestBody.getNewActionTargetGUIDs(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -782,6 +1279,38 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.initiateGovernanceAction(userId,
+                                                                  requestBody.getQualifiedName(),
+                                                                  requestBody.getDomainIdentifier(),
+                                                                  requestBody.getDisplayName(),
+                                                                  requestBody.getDescription(),
+                                                                  requestBody.getRequestSourceGUIDs(),
+                                                                  requestBody.getActionTargetGUIDs(),
+                                                                  requestBody.getStartTime(),
+                                                                  governanceEngineName,
+                                                                  requestBody.getRequestType(),
+                                                                  requestBody.getRequestProperties(),
+                                                                  requestBody.getOriginatorServiceName(),
+                                                                  requestBody.getOriginatorEngineName(),
+                                                                  methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -805,13 +1334,14 @@ public class GovernanceEngineRESTServices
                                                         String                             userId,
                                                         GovernanceActionProcessRequestBody requestBody)
     {
-        final String methodName = "initiateGovernanceAction";
+        final String methodName = "initiateGovernanceActionProcess";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AuditLog auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
+        // todo
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -843,6 +1373,7 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
+        // todo
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -874,6 +1405,18 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         GovernanceActionElementResponse response = new GovernanceActionElementResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getGovernanceAction(userId, governanceActionGUID, methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -893,6 +1436,7 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem detected by the metadata store.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse claimGovernanceAction(String          serverName,
                                               String          userId,
                                               String          governanceActionGUID,
@@ -905,6 +1449,18 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+            handler.claimGovernanceAction(userId, governanceActionGUID, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -940,6 +1496,18 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         GovernanceActionElementsResponse response = new GovernanceActionElementsResponse();
 
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+            response.setElements(handler.getActiveClaimedGovernanceActions(userId, governanceEngineGUID, startFrom, pageSize, methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;

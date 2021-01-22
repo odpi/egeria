@@ -26,9 +26,8 @@ public abstract class GovernanceServiceHandler implements Runnable
     protected GovernanceEngineProperties governanceEngineProperties;
     protected String                     governanceEngineGUID;
     protected String                     governanceEngineUserId;
-
-
-    protected String governanceServiceName;
+    protected String                     governanceServiceGUID;
+    protected String                     governanceServiceName;
 
     private GovernanceEngineClient governanceActionClient;
 
@@ -49,6 +48,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for processing governance actions
      * @param requestType incoming request type
+     * @param governanceServiceGUID unique identifier of the governance service
      * @param governanceServiceName name of this governance  service - used for message logging
      * @param auditLog destination for log messages
      */
@@ -58,6 +58,7 @@ public abstract class GovernanceServiceHandler implements Runnable
                                        String                     governanceActionGUID,
                                        GovernanceEngineClient     governanceActionClient,
                                        String                     requestType,
+                                       String                     governanceServiceGUID,
                                        String                     governanceServiceName,
                                        Connector                  governanceService,
                                        AuditLog                   auditLog)
@@ -65,12 +66,46 @@ public abstract class GovernanceServiceHandler implements Runnable
         this.governanceEngineProperties = governanceEngineProperties;
         this.governanceEngineGUID       = governanceEngineGUID;
         this.governanceEngineUserId     = governanceActionUserId;
+        this.governanceServiceGUID      = governanceServiceGUID;
         this.governanceServiceName      = governanceServiceName;
         this.governanceActionGUID       = governanceActionGUID;
         this.governanceActionClient     = governanceActionClient;
         this.requestType                = requestType;
         this.governanceService          = governanceService;
         this.auditLog                   = auditLog;
+    }
+
+
+    /**
+     * Return the unique name of this governance service.
+     *
+     * @return string name
+     */
+    public String getGovernanceServiceName()
+    {
+        return governanceServiceName;
+    }
+
+
+    /**
+     * Return the unique identifier of this governance service.
+     *
+     * @return string guid
+     */
+    public String getGovernanceServiceGUID()
+    {
+        return governanceServiceGUID;
+    }
+
+
+    /**
+     * Return the unique name for the hosting governance engine.
+     *
+     * @return string name
+     */
+    public String getGovernanceEngineName()
+    {
+        return governanceEngineProperties.getQualifiedName();
     }
 
 

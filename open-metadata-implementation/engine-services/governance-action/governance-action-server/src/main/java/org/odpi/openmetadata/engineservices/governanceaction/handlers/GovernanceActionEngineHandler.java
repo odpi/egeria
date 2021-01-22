@@ -85,7 +85,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     }
 
 
-
     /**
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *
@@ -125,6 +124,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                requestParameters,
                                                                                                                requestSourceElements,
                                                                                                                actionTargetElements,
+                                                                                                               governanceServiceCache.getGovernanceServiceGUID(),
                                                                                                                governanceServiceCache.getGovernanceServiceName(),
                                                                                                                governanceServiceCache.getNextGovernanceService(),
                                                                                                                partnerServerName,

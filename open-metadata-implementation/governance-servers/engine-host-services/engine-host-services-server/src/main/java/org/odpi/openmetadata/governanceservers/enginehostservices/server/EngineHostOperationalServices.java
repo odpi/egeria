@@ -126,11 +126,11 @@ public class EngineHostOperationalServices
             GovernanceEngineRESTClient restClient;
             if (localServerPassword == null)
             {
-                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL);
+                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL, auditLog);
             }
             else
             {
-                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId);
+                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, auditLog);
             }
 
             /*
@@ -158,8 +158,7 @@ public class EngineHostOperationalServices
             GovernanceEngineClient serverClient = new GovernanceEngineClient(accessServiceServerName,
                                                                              accessServiceRootURL,
                                                                              restClient,
-                                                                             maxPageSize,
-                                                                             auditLog);
+                                                                             maxPageSize);
 
             /*
              * Initialize each of the integration services and accumulate the integration connector handlers for the

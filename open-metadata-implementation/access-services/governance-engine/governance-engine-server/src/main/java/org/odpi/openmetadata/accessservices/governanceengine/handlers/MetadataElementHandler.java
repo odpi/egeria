@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.handlers;
 
+import org.odpi.openmetadata.accessservices.governanceengine.converters.RelatedElementConverter;
+import org.odpi.openmetadata.accessservices.governanceengine.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -40,6 +42,9 @@ import java.util.Map;
 public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
     private PropertyHelper propertyHelper = new PropertyHelper();
+
+    private RelatedElementsConverter<RelatedMetadataElements> relatedElementsConverter;
+    private RelatedElementConverter<RelatedMetadataElement>   relatedElementConverter;
 
     /**
      * Construct the handler for metadata elements.
@@ -85,8 +90,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
               defaultZones,
               publishZones,
               auditLog);
-    }
 
+        relatedElementsConverter = new RelatedElementsConverter<>(repositoryHelper, serviceName, serverName);
+        relatedElementConverter = new RelatedElementConverter<>(repositoryHelper, serviceName, serverName);
+    }
 
 
     /**
@@ -94,6 +101,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
+     * @param methodName calling method
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
@@ -101,11 +109,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     public B getMetadataElementByGUID(String userId,
-                                      String elementGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                      String elementGUID,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
-        final String methodName = "getMetadataElementByGUID";
         final String guidParameterName = "elementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -126,6 +134,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param searchString name to retrieve
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
@@ -135,11 +144,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public List<B> findMetadataElementsWithString(String userId,
                                                   String searchString,
                                                   int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                                  int    pageSize,
+                                                  String methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        final String methodName = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -164,6 +173,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return list of related elements
      *
@@ -175,23 +185,77 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    String elementGUID,
                                                                    String relationshipTypeName,
                                                                    int    startFrom,
-                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+                                                                   int    pageSize,
+                                                                   String methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        final String methodName = "getRelatedMetadataElements";
         final String guidParameterName = "elementGUID";
         final String typeNameParameterName = "relationshipTypeName";
+        final String otherEndGUIDParameterName = "otherEnd.getGUID()";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
+        String relationshipTypeGUID = null;
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                            null,
+                                                                            serviceName,
+                                                                            methodName,
+                                                                            repositoryHelper);
+        }
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    elementGUID,
+                                                                    guidParameterName,
+                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    relationshipTypeGUID,
+                                                                    relationshipTypeName,
+                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName);
+
+        if (relationships != null)
+        {
+            List<RelatedMetadataElement> results = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy otherEnd = repositoryHandler.getOtherEnd(elementGUID, relationship);
+
+                    if (otherEnd != null)
+                    {
+                        EntityDetail otherEndEntity = this.getEntityFromRepository(userId,
+                                                                                   otherEnd.getGUID(),
+                                                                                   otherEndGUIDParameterName,
+                                                                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                   methodName);
+                        if (otherEndEntity != null)
+                        {
+                            results.add(relatedElementConverter.getNewBean(RelatedMetadataElement.class,
+                                                                           otherEndEntity,
+                                                                           relationship,
+                                                                           methodName));
+                        }
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
 
         return null;
     }
-
-
 
 
     /**
@@ -210,6 +274,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters is invalid
@@ -225,12 +290,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         String                sequencingProperty,
                                         SequencingOrder       sequencingOrder,
                                         int                   startingFrom,
-                                        int                   pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                        int                   pageSize,
+                                        String                methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
-        final String methodName = "findMetadataElements";
-
         return super.findBeans(userId,
                                metadataElementTypeName,
                                metadataElementSubtypeName,
@@ -888,6 +952,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the search parameters are is invalid
@@ -900,12 +965,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    String           sequencingProperty,
                                                                                    SequencingOrder  sequencingOrder,
                                                                                    int              startFrom,
-                                                                                   int              pageSize) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+                                                                                   int              pageSize,
+                                                                                   String           methodName) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
-        final String methodName = "findRelationshipsBetweenMetadataElements";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         List<Relationship> relationships = this.findAttachmentLinks(userId,
@@ -927,11 +991,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 if (relationship != null)
                 {
-                    RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
-
-                    relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
-                    // todo relatedMetadataElements.setRelationshipProperties();
-                    // todo relatedMetadataElements.setRelationshipType();
+                    results.add(relatedElementsConverter.getNewRelationshipBean(RelatedMetadataElements.class,
+                                                                                relationship,
+                                                                                methodName));
                 }
             }
 
@@ -959,6 +1021,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param properties properties of the new metadata element
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
      *                     connection etc)
+     * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
      *
@@ -972,11 +1035,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
                                                ElementProperties properties,
-                                               String            templateGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                               String            templateGUID,
+                                               String            methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        final String methodName                = "createMetadataElementInStore";
         final String elementTypeParameterName  = "metadataElementTypeName";
         final String templateGUIDParameterName = "templateGUID";
 
@@ -1037,6 +1100,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param properties new properties for the metadata element
+     * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -1045,11 +1109,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void updateMetadataElementInStore(String            userId,
                                              String            metadataElementGUID,
                                              boolean           replaceProperties,
-                                             ElementProperties properties) throws InvalidParameterException,
+                                             ElementProperties properties,
+                                             String            methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        final String methodName = "updateMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1083,6 +1147,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param newElementStatus new status value - or null to leave as is
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -1092,11 +1157,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                    String        metadataElementGUID,
                                                    ElementStatus newElementStatus,
                                                    Date          effectiveFrom,
-                                                   Date          effectiveTo) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                                   Date          effectiveTo,
+                                                   String        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        final String methodName = "updateMetadataElementStatusInStore";
         final String guidParameterName = "metadataElementGUID";
         final String statusParameterName = "newElementStatus";
 
@@ -1132,17 +1197,18 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public  void deleteMetadataElementInStore(String userId,
-                                              String metadataElementGUID) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                              String metadataElementGUID,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        final String methodName = "deleteMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1172,6 +1238,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param effectiveTo the date when this classification becomes inactive - null for active until deleted
      * @param properties properties to store in the new classification.  These must conform to the valid properties associated with the
      *                   classification name
+     * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
@@ -1183,11 +1250,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                String            classificationName,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
-                                               ElementProperties properties) throws InvalidParameterException,
+                                               ElementProperties properties,
+                                               String            methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String methodName = "classifyMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
 
@@ -1197,9 +1264,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
                                                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                                                                  serviceName,
-                                                                                  methodName,
-                                                                                  repositoryHelper);
+                                                                                 serviceName,
+                                                                                 methodName,
+                                                                                 repositoryHelper);
 
         MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
 
@@ -1231,6 +1298,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param properties new properties for the classification
+     * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
@@ -1241,11 +1309,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   String            metadataElementGUID,
                                                   String            classificationName,
                                                   boolean           replaceProperties,
-                                                  ElementProperties properties) throws InvalidParameterException,
+                                                  ElementProperties properties,
+                                                  String            methodName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        final String methodName = "reclassifyMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
 
@@ -1289,6 +1357,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param classificationName unique name of the classification to update
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -1298,11 +1367,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   String metadataElementGUID,
                                                   String classificationName,
                                                   Date   effectiveFrom,
-                                                  Date   effectiveTo) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                  Date   effectiveTo,
+                                                  String methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        final String methodName = "updateClassificationStatusInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
 
@@ -1336,6 +1405,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to remove
+     * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
@@ -1343,11 +1413,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public  void unclassifyMetadataElementInStore(String userId,
                                                   String metadataElementGUID,
-                                                  String classificationName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                  String classificationName,
+                                                  String methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        final String methodName = "unclassifyMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
 
@@ -1385,6 +1455,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties the properties of the relationship
+     * @param methodName calling method
      *
      * @return unique identifier of the new relationship
      *
@@ -1399,11 +1470,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                String            metadataElement2GUID,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
-                                               ElementProperties properties) throws InvalidParameterException,
+                                               ElementProperties properties,
+                                               String            methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String methodName = "createRelatedElementsInStore";
         final String elementTypeParameterName = "relationshipTypeName";
         final String end1ParameterName = "metadataElement1GUID";
         final String end2ParameterName = "metadataElement2GUID";
@@ -1413,7 +1484,31 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(metadataElement1GUID, end1ParameterName, methodName);
         invalidParameterHandler.validateGUID(metadataElement2GUID, end2ParameterName, methodName);
 
-        // todo
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
+        MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties relationshipProperties = builder.getInstanceProperties(propertyHelper.getElementPropertiesAsMap(properties),
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    methodName);
+        super.linkElementToElement(userId,
+                                   null,
+                                   null,
+                                   metadataElement1GUID,
+                                   end1ParameterName,
+                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                   metadataElement2GUID,
+                                   end2ParameterName,
+                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                   relationshipTypeGUID,
+                                   relationshipTypeName,
+                                   relationshipProperties,
+                                   methodName);
 
         return null;
     }
@@ -1428,6 +1523,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param properties new properties for the relationship
+     * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
@@ -1437,11 +1533,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void updateRelatedElementsInStore(String            userId,
                                              String            relationshipGUID,
                                              boolean           replaceProperties,
-                                             ElementProperties properties) throws InvalidParameterException,
+                                             ElementProperties properties,
+                                             String            methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        final String methodName = "updateRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1450,9 +1546,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
 
         InstanceProperties relationshipProperties = builder.getInstanceProperties(propertyHelper.getElementPropertiesAsMap(properties),
-                                                                                    null,
-                                                                                    null,
-                                                                                    methodName);
+                                                                                  null,
+                                                                                  null,
+                                                                                  methodName);
         this.updateRelationshipProperties(userId,
                                           null,
                                           null,
@@ -1473,6 +1569,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param relationshipGUID unique identifier of the relationship to update
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -1481,11 +1578,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public  void updateRelatedElementsStatusInStore(String userId,
                                                     String relationshipGUID,
                                                     Date   effectiveFrom,
-                                                    Date   effectiveTo) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                                    Date   effectiveTo,
+                                                    String methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        final String methodName = "updateRelatedElementsStatusInStore";
         final String guidParameterName = "relationshipGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1509,17 +1606,18 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param relationshipGUID unique identifier of the relationship to delete
+     * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void deleteRelatedElementsInStore(String userId,
-                                             String relationshipGUID) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                             String relationshipGUID,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        final String methodName = "deleteRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);

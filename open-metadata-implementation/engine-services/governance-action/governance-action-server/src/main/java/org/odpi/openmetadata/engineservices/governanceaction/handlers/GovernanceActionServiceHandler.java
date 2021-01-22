@@ -40,11 +40,20 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param governanceActionEngineGUID unique Identifier of the governance action engine - used for message logging
      * @param governanceActionUserId user Id for use by the engine host services
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
+     * @param governanceActionClient client for managing governance actions
      * @param requestType incoming request
      * @param requestParameters parameters associated with the request type
-     * @param governanceActionServiceName name of this governance action service - used for message logging
+     * @param requestSourceElements the elements that caused this service to run
+     * @param actionTargetElements the elements for the service to work on
+     * @param governanceActionServiceGUID unique identifier of entity defining this governance service
+     * @param governanceActionServiceName unique name of this governance action service - used for message logging
      * @param governanceActionServiceConnector connector that does the work
+     * @param partnerServerName name of the metadata server used by the governance service
+     * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
+     * @param governanceEngineClient client for use by the engine host services
+     * @param governanceListenerManager listener manager for Watchdog Governance Services
      * @param auditLog destination for log messages
+     * @throws InvalidParameterException problem with the governance service definitions
      */
     GovernanceActionServiceHandler(GovernanceEngineProperties governanceActionEngineProperties,
                                    String                     governanceActionEngineGUID,
@@ -55,6 +64,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    Map<String, String>        requestParameters,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
+                                   String                     governanceActionServiceGUID,
                                    String                     governanceActionServiceName,
                                    Connector                  governanceActionServiceConnector,
                                    String                     partnerServerName,
@@ -69,6 +79,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
               governanceActionGUID,
               governanceActionClient,
               requestType,
+              governanceActionServiceGUID,
               governanceActionServiceName,
               governanceActionServiceConnector,
               auditLog);
@@ -76,11 +87,11 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         final String actionDescription = "Initializing GovernanceActionService";
         final String governanceActionServiceConnectorParameterName = "governanceActionServiceConnector";
 
-        final String watchdogGovernanceActionServiceType     = "OpenWatchdogService";
-        final String provisioningGovernanceActionServiceType = "OpenProvisioningService";
-        final String verificationGovernanceActionServiceType = "OpenVerificationService";
-        final String triageGovernanceActionServiceType       = "OpenTriageService";
-        final String remediationGovernanceActionServiceType  = "OpenRemediationService";
+        final String watchdogGovernanceActionServiceType     = "WatchdogGovernanceService";
+        final String provisioningGovernanceActionServiceType = "ProvisioningGovernanceService";
+        final String verificationGovernanceActionServiceType = "VerificationGovernanceService";
+        final String triageGovernanceActionServiceType       = "TriageGovernanceService";
+        final String remediationGovernanceActionServiceType  = "RemediationGovernanceService";
 
         try
         {

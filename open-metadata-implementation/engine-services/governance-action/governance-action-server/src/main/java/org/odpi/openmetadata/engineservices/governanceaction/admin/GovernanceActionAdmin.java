@@ -94,8 +94,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                 governanceEngineClient = new GovernanceEngineClient(accessServiceServerName,
                                                                     accessServiceRootURL,
                                                                     restClient,
-                                                                    maxPageSize,
-                                                                    auditLog);
+                                                                    maxPageSize);
             }
             catch (InvalidParameterException error)
             {
