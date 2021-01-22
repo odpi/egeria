@@ -105,7 +105,13 @@ Where in this example ~/libs is the directory including the additional connector
 
 However the support for this is awaiting a [helm PR](https://github.com/helm/helm/pull/8841), so in the meantime please copy files directly into a 'libs' directory within the chart instead.
 
-These files will be copied into a kubernetes config map, which is then made available as a mounted volume to the runtime image of egeria & added to the class loading path as `/extlib'. You still need to configure the egeria server(s) appropriately
+For example
+```bash
+mkdir egeria-base/libs
+cp ~/libs/*jar egeria-base/libs
+```
+
+These files will be copied into a kubernetes config map, which is then made available as a mounted volume to the runtime image of egeria & added to the class loading path as `/extlib`. You still need to configure the egeria server(s) appropriately
 ## Accessing Egeria 
 
 We now have egeria running within a Kubernetes cluster, but by default no services are exposed externally - they are all of type `ClusterIP` - we can see these with
