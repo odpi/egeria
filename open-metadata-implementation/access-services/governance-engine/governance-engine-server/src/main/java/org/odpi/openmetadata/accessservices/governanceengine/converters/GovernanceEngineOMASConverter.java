@@ -7,9 +7,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.properties.OwnerCat
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -29,7 +28,7 @@ import java.util.Map;
  */
 abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 {
-    private PropertyHelper propertyHelper = new PropertyHelper();
+    protected PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
@@ -136,7 +135,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * @param entity entity containing the classifications
      * @return list of bean classifications
      */
-    private List<ElementClassification> getElementClassifications(EntityDetail entity)
+    List<ElementClassification> getElementClassifications(EntityDetail entity)
     {
         if (entity != null)
         {
@@ -166,6 +165,8 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
                 if (entityClassification != null)
                 {
                     ElementClassification beanClassification = new ElementClassification();
+
+                    fillElementControlHeader(beanClassification, entityClassification);
 
                     beanClassification.setClassificationName(entityClassification.getName());
 
@@ -233,7 +234,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * @param instanceProvenanceType value from the repository services
      * @return ElementOrigin enum
      */
-    ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
+    private ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
     {
         if (instanceProvenanceType != null)
         {
@@ -299,7 +300,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * @param properties  entity properties
      * @return OwnerType  enum value
      */
-    OwnerCategory getOwnerCategoryFromProperties(InstanceProperties   properties)
+    private OwnerCategory getOwnerCategoryFromProperties(InstanceProperties   properties)
     {
         OwnerCategory ownerCategory = OwnerCategory.OTHER;
 
@@ -336,4 +337,267 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
         return ownerCategory;
     }
 
+
+    /**
+     * Retrieve and delete the OwnerCategory enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return OwnerType  enum value
+     */
+    GovernanceActionStatus removeActionStatus(String               propertyName,
+                                              InstanceProperties   properties)
+    {
+        GovernanceActionStatus ownerCategory = this.getActionStatus(propertyName, properties);
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                instancePropertiesMap.remove(propertyName);
+            }
+
+            properties.setInstanceProperties(instancePropertiesMap);
+        }
+
+        return ownerCategory;
+    }
+
+
+    /**
+     * Retrieve the ActionStatus enum property from the instance properties of a Governance Action.
+     *
+     * @param propertyName name ot property to extract the enum from
+     * @param properties  entity properties
+     * @return ActionStatus  enum value
+     */
+    private GovernanceActionStatus getActionStatus(String               propertyName,
+                                                   InstanceProperties   properties)
+    {
+        GovernanceActionStatus governanceActionStatus = GovernanceActionStatus.OTHER;
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(propertyName);
+
+                if (instancePropertyValue instanceof EnumPropertyValue)
+                {
+                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+
+                    switch (enumPropertyValue.getOrdinal())
+                    {
+                        case 0:
+                            governanceActionStatus = GovernanceActionStatus.REQUESTED;
+                            break;
+
+                        case 1:
+                            governanceActionStatus = GovernanceActionStatus.APPROVED;
+                            break;
+
+                        case 2:
+                            governanceActionStatus = GovernanceActionStatus.WAITING;
+                            break;
+
+                        case 3:
+                            governanceActionStatus = GovernanceActionStatus.ACTIVATING;
+                            break;
+
+                        case 4:
+                            governanceActionStatus = GovernanceActionStatus.IN_PROGRESS;
+                            break;
+
+                        case 10:
+                            governanceActionStatus = GovernanceActionStatus.ACTIONED;
+                            break;
+
+                        case 11:
+                            governanceActionStatus = GovernanceActionStatus.INVALID;
+                            break;
+
+                        case 12:
+                            governanceActionStatus = GovernanceActionStatus.IGNORED;
+                            break;
+
+                        case 13:
+                            governanceActionStatus = GovernanceActionStatus.FAILED;
+                            break;
+
+                        case 99:
+                            governanceActionStatus = GovernanceActionStatus.OTHER;
+                            break;
+                    }
+                }
+            }
+        }
+
+        return governanceActionStatus;
+    }
+
+
+    /**
+     * Translate the repository services' InstanceProvenanceType to a GAF ElementOrigin.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementOrigin enum
+     */
+    ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
+
+                case DRAFT:
+                    return ElementStatus.DRAFT;
+
+                case PREPARED:
+                    return ElementStatus.PREPARED;
+
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
+
+                case APPROVED:
+                    return ElementStatus.APPROVED;
+
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
+    }
+
+
+    /**
+     * Build an open metadata element bean from a matching entity.
+     *
+     * @param entityGUID unique identifier of desired entity
+     * @param entities list of retrieved entities
+     * @return new bean or null if guid is not in list
+     */
+    OpenMetadataElement getOpenMetadataElement(String              entityGUID,
+                                               List<EntityDetail>  entities)
+    {
+        OpenMetadataElement metadataElement = new OpenMetadataElement();
+
+        if (entities != null)
+        {
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    if (entityGUID.equals(entity.getGUID()))
+                    {
+                        this.fillOpenMetadataElement(metadataElement, entity);
+
+                        return metadataElement;
+                    }
+                }
+            }
+        }
+
+        /*
+         * The entity was not retrieved - however, returning the guid allows the caller to retrieve the element separately.
+         */
+        metadataElement.setElementGUID(entityGUID);
+
+        return metadataElement;
+    }
+
+
+    /**
+     * Fill a GAF control header from the information in a repository services element header.
+     *
+     * @param elementControlHeader GAF object control header
+     * @param header OMRS element header
+     */
+    void fillElementControlHeader(ElementControlHeader elementControlHeader,
+                                  InstanceAuditHeader  header)
+    {
+        if (header != null)
+        {
+            elementControlHeader.setElementSourceServer(serverName);
+            elementControlHeader.setElementOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementControlHeader.setElementMetadataCollectionId(header.getMetadataCollectionId());
+            elementControlHeader.setElementMetadataCollectionName(header.getMetadataCollectionName());
+            elementControlHeader.setElementLicense(header.getInstanceLicense());
+            elementControlHeader.setElementCreatedBy(header.getCreatedBy());
+            elementControlHeader.setElementUpdatedBy(header.getUpdatedBy());
+            elementControlHeader.setElementMaintainedBy(header.getMaintainedBy());
+            elementControlHeader.setElementCreateTime(header.getCreateTime());
+            elementControlHeader.setElementUpdateTime(header.getUpdateTime());
+            elementControlHeader.setElementVersion(header.getVersion());
+            elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
+            elementControlHeader.setMappingProperties(header.getMappingProperties());
+        }
+    }
+
+
+    /**
+     * Fill out the properties for the GAF Open Metadata Element bean with values from an OMRS entity.
+     *
+     * @param bean bean to fill
+     * @param entity values from repositories
+     */
+    void fillOpenMetadataElement(OpenMetadataElement bean,
+                                 EntityDetail        entity)
+    {
+        fillElementControlHeader(bean, entity);
+
+        bean.setElementGUID(entity.getGUID());
+        bean.setElementType(this.getElementType(entity));
+        bean.setClassifications(this.getElementClassifications(entity));
+
+        InstanceProperties instanceProperties = entity.getProperties();
+
+        if (instanceProperties != null)
+        {
+            bean.setEffectiveFromTime(instanceProperties.getEffectiveFromTime());
+            bean.setEffectiveToTime(instanceProperties.getEffectiveToTime());
+
+            Map<String, Object> propertyMap = repositoryHelper.getInstancePropertiesAsMap(instanceProperties);
+
+            bean.setElementProperties(propertyHelper.addPropertyMap(new ElementProperties(), propertyMap));
+        }
+    }
 }

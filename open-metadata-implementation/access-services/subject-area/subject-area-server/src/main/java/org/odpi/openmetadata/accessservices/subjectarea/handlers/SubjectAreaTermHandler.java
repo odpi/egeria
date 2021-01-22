@@ -400,6 +400,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             }
 
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            response = new SubjectAreaOMASAPIResponse<>();
             response.setExceptionInfo(e, className);
         }
 

@@ -23,7 +23,8 @@ public class RequestSourceElement implements Serializable
     private static final long      serialVersionUID = 1L;
 
     private OpenMetadataElement requestSourceElement    = null;
-    private OpenMetadataElement associatedAnchorElement = null;
+    private String              originGovernanceService = null;
+    private String              originGovernanceEngine  = null;
 
     /**
      * Typical Constructor
@@ -44,7 +45,8 @@ public class RequestSourceElement implements Serializable
         if (template != null)
         {
             requestSourceElement    = template.getRequestSourceElement();
-            associatedAnchorElement = template.getAssociatedAnchorElement();
+            originGovernanceService = template.getOriginGovernanceService();
+            originGovernanceEngine  = template.getOriginGovernanceEngine();
         }
     }
 
@@ -72,24 +74,46 @@ public class RequestSourceElement implements Serializable
 
 
     /**
-     * Return the associated anchor element (if any).
+     * Return the governance service that created this governance action (if any).
      *
-     * @return metadata element
+     * @return string name
      */
-    public OpenMetadataElement getAssociatedAnchorElement()
+    public String getOriginGovernanceService()
     {
-        return associatedAnchorElement;
+        return originGovernanceService;
     }
 
 
     /**
-     * Set up the associated anchor element (if any).
+     * Set up the governance service that created this governance action (if any).
      *
-     * @param associatedAnchorElement metadata element
+     * @param originGovernanceService string name
      */
-    public void setAssociatedAnchorElement(OpenMetadataElement associatedAnchorElement)
+    public void setOriginGovernanceService(String originGovernanceService)
     {
-        this.associatedAnchorElement = associatedAnchorElement;
+        this.originGovernanceService = originGovernanceService;
+    }
+
+
+    /**
+     * Return the governance engine that created this governance action (if any).
+     *
+     * @return string name
+     */
+    public String getOriginGovernanceEngine()
+    {
+        return originGovernanceEngine;
+    }
+
+
+    /**
+     * Set up the governance engine that created this governance action (if any).
+     *
+     * @param originGovernanceEngine string name
+     */
+    public void setOriginGovernanceEngine(String originGovernanceEngine)
+    {
+        this.originGovernanceEngine = originGovernanceEngine;
     }
 
 
@@ -103,7 +127,8 @@ public class RequestSourceElement implements Serializable
     {
         return "RequestSourceElement{" +
                        "requestSourceElement=" + requestSourceElement +
-                       ", associatedAnchorElement=" + associatedAnchorElement +
+                       ", originGovernanceService=" + originGovernanceService +
+                       ", originGovernanceEngine=" + originGovernanceEngine +
                        '}';
     }
 
@@ -128,7 +153,8 @@ public class RequestSourceElement implements Serializable
         }
         RequestSourceElement that = (RequestSourceElement) objectToCompare;
         return Objects.equals(requestSourceElement, that.requestSourceElement) &&
-                       Objects.equals(associatedAnchorElement, that.associatedAnchorElement);
+                       Objects.equals(originGovernanceService, that.originGovernanceService) &&
+                       Objects.equals(originGovernanceEngine, that.originGovernanceEngine);
     }
 
 
@@ -140,6 +166,6 @@ public class RequestSourceElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(requestSourceElement, associatedAnchorElement);
+        return Objects.hash(requestSourceElement, originGovernanceService, originGovernanceEngine);
     }
 }

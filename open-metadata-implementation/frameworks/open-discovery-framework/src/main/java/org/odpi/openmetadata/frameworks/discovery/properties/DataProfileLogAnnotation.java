@@ -21,7 +21,7 @@ public class DataProfileLogAnnotation extends DataFieldAnnotation
 {
     private static final long    serialVersionUID = 1L;
 
-    List<String>   dataProfileLogFileNames = null;
+    private List<String>   dataProfileLogFileNames = null;
 
     /**
      * Default constructor

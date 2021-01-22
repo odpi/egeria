@@ -8,6 +8,7 @@ import org.odpi.openmetadata.engineservices.governanceaction.context.GovernanceL
 import org.odpi.openmetadata.engineservices.governanceaction.properties.EngineSummary;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
@@ -33,14 +34,16 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
 
 
     /**
-     * Create a client-side object for calling a governance action engine.
+     * Create a client-side object for calling a governance action engine.  Notices there there are two versions of the
+     * GovernanceEngineClient.  It is possible that they pointing at different metadata server instances so do not
+     * consolidate them into one client (even if IntelliJ begs you to :).
      *
      * @param engineConfig the unique identifier of the governance action engine.
      * @param localServerName the name of the engine host server where the governance action engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param governanceEngineClient REST client for direct REST Calls
-     * @param governanceListenerManager client for managing event listening
+     * @param serverClient client to control the execution of governance action requests
+     * @param governanceEngineClient REST client for calls made by the governance action services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -50,17 +53,35 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                          String                              partnerURLRoot,
                                          String                              serverUserId,
                                          GovernanceEngineConfigurationClient configurationClient,
+                                         GovernanceEngineClient              serverClient,
                                          GovernanceEngineClient              governanceEngineClient,
-                                         GovernanceListenerManager           governanceListenerManager,
                                          AuditLog                            auditLog,
                                          int                                 maxPageSize)
     {
-        super(engineConfig, localServerName, serverUserId, configurationClient, auditLog, maxPageSize);
+        super(engineConfig, localServerName, serverUserId, configurationClient, serverClient, auditLog, maxPageSize);
 
         this.governanceEngineClient = governanceEngineClient;
-        this.governanceListenerManager = governanceListenerManager;
         this.partnerServerName = partnerServerName;
         this.partnerURLRoot = partnerURLRoot;
+
+        this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
+    }
+
+
+    /**
+     * Pass on the watchdog event to any governance service that supports them.
+     *
+     * @param watchdogGovernanceEvent element describing the changing metadata data.
+     *
+     * @throws InvalidParameterException Vital fields of the governance action are not filled out
+     * @throws UserNotAuthorizedException the governance service is not permitted to execute the governance action
+     * @throws PropertyServerException there is a problem communicating with the open metadata stores
+     */
+    public void publishWatchdogEvent(WatchdogGovernanceEvent watchdogGovernanceEvent) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        governanceListenerManager.processEvent(watchdogGovernanceEvent);
     }
 
 
@@ -98,10 +119,12 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                governanceEngineGUID,
                                                                                                                serverUserId,
                                                                                                                governanceActionGUID,
+                                                                                                               serverClient,
                                                                                                                requestType,
                                                                                                                requestParameters,
                                                                                                                requestSourceElements,
                                                                                                                actionTargetElements,
+                                                                                                               governanceServiceCache.getGovernanceServiceGUID(),
                                                                                                                governanceServiceCache.getGovernanceServiceName(),
                                                                                                                governanceServiceCache.getNextGovernanceService(),
                                                                                                                partnerServerName,

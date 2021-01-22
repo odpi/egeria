@@ -84,23 +84,16 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @param elementHeader the header for the bean
      * @param instanceHeader header of entity
      * @param classifications classifications from the entity
-     * @param expectedTypeName type that the entity must match (or it may be a subtype)
      * @param methodName calling method
      * @throws PropertyServerException the supplied entity is not of the expected type
      */
     protected void setUpElementHeader(ElementHeader        elementHeader,
                                       InstanceHeader       instanceHeader,
                                       List<Classification> classifications,
-                                      String               expectedTypeName,
                                       String               methodName) throws PropertyServerException
     {
         if (instanceHeader != null)
         {
-            super.validateInstanceType(expectedTypeName,
-                                       elementHeader.getClass().getName(),
-                                       instanceHeader,
-                                       methodName);
-
             elementHeader.setGUID(instanceHeader.getGUID());
             elementHeader.setType(this.getElementType(instanceHeader));
             elementHeader.setURL(instanceHeader.getInstanceURL());

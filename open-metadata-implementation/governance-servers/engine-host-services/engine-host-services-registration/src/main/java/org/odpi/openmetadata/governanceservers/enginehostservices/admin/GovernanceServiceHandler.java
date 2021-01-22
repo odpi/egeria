@@ -2,10 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -14,11 +23,15 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  */
 public abstract class GovernanceServiceHandler implements Runnable
 {
-    protected GovernanceEngineProperties governanceActionEngineProperties;
-    protected String                     governanceActionEngineGUID;
-    protected String                     governanceActionServiceName;
+    protected GovernanceEngineProperties governanceEngineProperties;
+    protected String                     governanceEngineGUID;
+    protected String                     governanceEngineUserId;
+    protected String                     governanceServiceGUID;
+    protected String                     governanceServiceName;
 
-    private   Connector governanceService;
+    private GovernanceEngineClient governanceActionClient;
+
+    protected Connector governanceService;
     protected String    governanceActionGUID;
     protected String    requestType;
     protected AuditLog  auditLog;
@@ -29,28 +42,123 @@ public abstract class GovernanceServiceHandler implements Runnable
      * This call is made on the REST call's thread so the properties are just cached.
      * The action happens in the run() method.
      *
-     * @param governanceActionEngineProperties properties of the governance action engine - used for message logging
-     * @param governanceActionEngineGUID unique Identifier of the governance action engine - used for message logging
+     * @param governanceEngineProperties properties of the governance engine - used for message logging
+     * @param governanceEngineGUID unique identifier of the governance engine - used for message logging
+     * @param governanceActionUserId userId for making updates to the governance actions
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
+     * @param governanceActionClient client for processing governance actions
      * @param requestType incoming request type
-     * @param governanceActionServiceName name of this governance action service - used for message logging
+     * @param governanceServiceGUID unique identifier of the governance service
+     * @param governanceServiceName name of this governance  service - used for message logging
      * @param auditLog destination for log messages
      */
-    protected GovernanceServiceHandler(GovernanceEngineProperties governanceActionEngineProperties,
-                                       String                     governanceActionEngineGUID,
+    protected GovernanceServiceHandler(GovernanceEngineProperties governanceEngineProperties,
+                                       String                     governanceEngineGUID,
+                                       String                     governanceActionUserId,
                                        String                     governanceActionGUID,
+                                       GovernanceEngineClient     governanceActionClient,
                                        String                     requestType,
-                                       String                     governanceActionServiceName,
+                                       String                     governanceServiceGUID,
+                                       String                     governanceServiceName,
                                        Connector                  governanceService,
                                        AuditLog                   auditLog)
     {
-        this.governanceActionEngineProperties = governanceActionEngineProperties;
-        this.governanceActionEngineGUID       = governanceActionEngineGUID;
-        this.governanceActionServiceName      = governanceActionServiceName;
-        this.governanceActionGUID             = governanceActionGUID;
-        this.requestType                      = requestType;
-        this.governanceService                = governanceService;
-        this.auditLog                         = auditLog;
+        this.governanceEngineProperties = governanceEngineProperties;
+        this.governanceEngineGUID       = governanceEngineGUID;
+        this.governanceEngineUserId     = governanceActionUserId;
+        this.governanceServiceGUID      = governanceServiceGUID;
+        this.governanceServiceName      = governanceServiceName;
+        this.governanceActionGUID       = governanceActionGUID;
+        this.governanceActionClient     = governanceActionClient;
+        this.requestType                = requestType;
+        this.governanceService          = governanceService;
+        this.auditLog                   = auditLog;
+    }
+
+
+    /**
+     * Return the unique name of this governance service.
+     *
+     * @return string name
+     */
+    public String getGovernanceServiceName()
+    {
+        return governanceServiceName;
+    }
+
+
+    /**
+     * Return the unique identifier of this governance service.
+     *
+     * @return string guid
+     */
+    public String getGovernanceServiceGUID()
+    {
+        return governanceServiceGUID;
+    }
+
+
+    /**
+     * Return the unique name for the hosting governance engine.
+     *
+     * @return string name
+     */
+    public String getGovernanceEngineName()
+    {
+        return governanceEngineProperties.getQualifiedName();
+    }
+
+
+    /**
+     * Update the status of a specific action target. By default, these values are derived from
+     * the values for the governance action service.  However, if the governance action service has to process name
+     * target elements, then setting the status on each individual target will show the progress of the
+     * governance action service.
+     *
+     * @param actionTargetGUID unique identifier of the governance action service.
+     * @param status status enum to show its progress
+     * @param startDate date/time that the governance action service started processing the target
+     * @param completionDate date/time that the governance process completed processing this target.
+     *
+     * @throws InvalidParameterException the action target GUID is not recognized
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public void updateActionTargetStatus(String                 actionTargetGUID,
+                                         GovernanceActionStatus status,
+                                         Date                   startDate,
+                                         Date                   completionDate) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        if (governanceActionGUID != null)
+        {
+            governanceActionClient.updateActionTargetStatus(governanceEngineUserId, actionTargetGUID, status, startDate, completionDate);
+        }
+    }
+
+
+    /**
+     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public void recordCompletionStatus(CompletionStatus status,
+                                       List<String>     outputGuards,
+                                       List<String>     newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        if (governanceActionGUID != null)
+        {
+            governanceActionClient.recordCompletionStatus(governanceEngineUserId, governanceActionGUID, status, outputGuards, newActionTargetGUIDs);
+        }
     }
 
 

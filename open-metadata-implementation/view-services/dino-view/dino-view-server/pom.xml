@@ -89,6 +89,20 @@
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-client</artifactId>
+        </dependency>
 
     </dependencies>
 

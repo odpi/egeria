@@ -151,7 +151,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+    public  abstract List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
                                                                                            SearchProperties searchProperties,
                                                                                            String           sequencingProperty,
                                                                                            SequencingOrder  sequencingOrder,
@@ -365,7 +365,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
-     * @param properties new properties for the classification
+     * @param properties new properties for the relationship
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
@@ -436,7 +436,6 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
     /**
      * Declare that all of the processing for the governance action service is finished and the status of the work.
      *
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
@@ -445,8 +444,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public abstract void recordCompletionStatus(String           governanceActionGUID,
-                                                CompletionStatus status,
+    public abstract void recordCompletionStatus(CompletionStatus status,
                                                 List<String>     outputGuards,
                                                 List<String>     newActionTargetGUIDs) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
@@ -561,6 +559,12 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
                                           List<WatchdogEventType>    interestingEventTypes,
                                           List<String>               interestingMetadataTypes,
                                           String                     specificInstance) throws InvalidParameterException;
+
+
+    /**
+     * Unregister the listener from the event infrastructure.
+     */
+    public abstract void disconnectListener();
 
 
     /**

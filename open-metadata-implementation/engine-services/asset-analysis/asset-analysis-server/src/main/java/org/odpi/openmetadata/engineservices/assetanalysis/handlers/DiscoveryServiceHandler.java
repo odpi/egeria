@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -12,23 +13,20 @@ import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.Date;
 
 /**
- * DiscoveryServiceHandler provides the thread to run a discovery service.  A new instance is created for each request.
+ * DiscoveryServiceHandler provides the support to run a discovery service.  A new instance is created for each request and it is assigned its
+ * own thread.
  */
 public class DiscoveryServiceHandler extends GovernanceServiceHandler
 {
-    private GovernanceEngineProperties discoveryEngineProperties;
-    private String                     discoveryEngineGUID;
-    private String                     assetDiscoveryType;
-    private String                     discoveryServiceName;
-    private DiscoveryService           discoveryService;
-    private DiscoveryContext           discoveryContext;
-    private String                     discoveryReportGUID;
-    private AuditLog                   auditLog;
+    private DiscoveryService discoveryService;
+    private DiscoveryContext discoveryContext;
+    private String           discoveryReportGUID;
 
 
     /**
@@ -38,7 +36,11 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
      *
      * @param discoveryEngineProperties properties of the discovery engine - used for message logging
      * @param discoveryEngineGUID unique Identifier of the discovery engine - used for message logging
-     * @param assetDiscoveryType type of asset to analyse - used for message logging
+     * @param governanceActionUserId userId for making updates to the governance actions
+     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
+     * @param governanceActionClient client for processing governance actions
+     * @param requestType requestType - used for message logging
+     * @param discoveryServiceGUID name of this discovery service - used for message logging
      * @param discoveryServiceName name of this discovery service - used for message logging
      * @param discoveryServiceConnector connector that does the work
      * @param discoveryContext context for the connector
@@ -47,8 +49,11 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
      */
     DiscoveryServiceHandler(GovernanceEngineProperties discoveryEngineProperties,
                             String                     discoveryEngineGUID,
+                            String                     governanceActionUserId,
                             String                     governanceActionGUID,
-                            String                     assetDiscoveryType,
+                            GovernanceEngineClient     governanceActionClient,
+                            String                     requestType,
+                            String                     discoveryServiceGUID,
                             String                     discoveryServiceName,
                             Connector                  discoveryServiceConnector,
                             DiscoveryContext           discoveryContext,
@@ -57,19 +62,20 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
     {
         super(discoveryEngineProperties,
               discoveryEngineGUID,
+              governanceActionUserId,
               governanceActionGUID,
-              assetDiscoveryType,
+              governanceActionClient,
+              requestType,
+              discoveryServiceGUID,
               discoveryServiceName,
               discoveryServiceConnector,
               auditLog);
 
-        this.discoveryEngineProperties = discoveryEngineProperties;
-        this.discoveryEngineGUID       = discoveryEngineGUID;
-        this.assetDiscoveryType        = assetDiscoveryType;
-        this.discoveryServiceName      = discoveryServiceName;
-        this.discoveryContext          = discoveryContext;
-        this.discoveryReportGUID       = discoveryReportGUID;
-        this.auditLog                  = auditLog;
+
+        this.requestType          = requestType;
+        this.discoveryContext     = discoveryContext;
+        this.discoveryReportGUID  = discoveryReportGUID;
+        this.auditLog             = auditLog;
 
         try
         {
@@ -82,12 +88,12 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
 
             auditLog.logException(actionDescription,
                                   AssetAnalysisAuditCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(discoveryServiceName,
-                                                                                                        assetDiscoveryType,
+                                                                                                        requestType,
                                                                                                         error.getClass().getName(),
                                                                                                         error.getMessage()),
                                   error);
             throw new InvalidParameterException(AssetAnalysisErrorCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(discoveryServiceName,
-                                                                                                                      assetDiscoveryType,
+                                                                                                                      requestType,
                                                                                                                       error.getClass().getName(),
                                                                                                                       error.getMessage()),
                                                 this.getClass().getName(),
@@ -129,43 +135,46 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
             discoveryReportGUID = discoveryReport.getDiscoveryReportGUID();
 
             auditLog.logMessage(actionDescription,
-                                AssetAnalysisAuditCode.DISCOVERY_SERVICE_STARTING.getMessageDefinition(discoveryServiceName,
+                                AssetAnalysisAuditCode.DISCOVERY_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
                                                                                                        discoveryContext.getAssetGUID(),
-                                                                                                       assetDiscoveryType,
-                                                                                                       discoveryEngineProperties.getQualifiedName(),
-                                                                                                       discoveryEngineGUID,
+                                                                                                       requestType,
+                                                                                                       governanceEngineProperties.getQualifiedName(),
+                                                                                                       governanceEngineGUID,
                                                                                                        discoveryReport.getDiscoveryReportGUID()));
 
 
             discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.IN_PROGRESS);
 
             discoveryService.setDiscoveryContext(discoveryContext);
-            discoveryService.setDiscoveryServiceName(discoveryServiceName);
+            discoveryService.setDiscoveryServiceName(governanceServiceName);
 
             startTime = new Date();
             discoveryService.start();
             endTime = new Date();
 
             auditLog.logMessage(actionDescription,
-                                AssetAnalysisAuditCode.DISCOVERY_SERVICE_COMPLETE.getMessageDefinition(discoveryServiceName,
+                                AssetAnalysisAuditCode.DISCOVERY_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
                                                                                                        discoveryContext.getAssetGUID(),
-                                                                                                       assetDiscoveryType,
+                                                                                                       requestType,
                                                                                                        Long.toString(endTime.getTime() - startTime.getTime()),
                                                                                                        discoveryReport.getDiscoveryReportGUID()));
 
             discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.COMPLETED);
-            discoveryService.disconnect();
+            super.disconnect();
+            discoveryService.setDiscoveryContext(null);
+
+            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null);
         }
         catch (Throwable  error)
         {
             auditLog.logException(actionDescription,
-                                  AssetAnalysisAuditCode.DISCOVERY_SERVICE_FAILED.getMessageDefinition(discoveryServiceName,
+                                  AssetAnalysisAuditCode.DISCOVERY_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
                                                                                                        error.getClass().getName(),
                                                                                                        discoveryReportGUID,
                                                                                                        discoveryContext.getAssetGUID(),
-                                                                                                       assetDiscoveryType,
-                                                                                                       discoveryEngineProperties.getQualifiedName(),
-                                                                                                       discoveryEngineGUID,
+                                                                                                       requestType,
+                                                                                                       governanceEngineProperties.getQualifiedName(),
+                                                                                                       governanceEngineGUID,
                                                                                                        error.getMessage()),
                                   error.toString(),
                                   error);
@@ -178,8 +187,8 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
             catch (Throwable statusError)
             {
                 auditLog.logException(actionDescription,
-                                      AssetAnalysisAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(discoveryEngineProperties.getDisplayName(),
-                                                                                                             discoveryServiceName,
+                                      AssetAnalysisAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceEngineProperties.getQualifiedName(),
+                                                                                                             governanceServiceName,
                                                                                                              statusError.getClass().getName(),
                                                                                                              statusError.getMessage()),
                                       statusError.toString(),

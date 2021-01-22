@@ -14,16 +14,19 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_ZONE_MEMBERSHIP;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DISPLAY_NAME;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
 
@@ -121,6 +124,23 @@ public class CommonHandler {
 
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
         return Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
+    }
+
+    public boolean hasDisplayName(String userId, String typeDefGUID) throws InvalidParameterException {
+        String methodName = "hasDisplayName";
+        TypeDef typeDefByName = null;
+        try {
+            typeDefByName = repositoryHelper.getTypeDef(userId, GUID_PARAMETER, typeDefGUID, methodName);
+        } catch (TypeErrorException typeErrorException) {
+            errorHandler.handleUnsupportedType(typeErrorException, methodName, GUID_PARAMETER);
+        }
+        List<TypeDefAttribute> allPropertiesForTypeDef = repositoryHelper.getAllPropertiesForTypeDef(sourceName, typeDefByName, methodName);
+        if (allPropertiesForTypeDef == null) {
+            return false;
+        } else {
+            return allPropertiesForTypeDef.stream().anyMatch(property -> property.getAttributeName().equals(DISPLAY_NAME));
+        }
+
     }
 
     /**

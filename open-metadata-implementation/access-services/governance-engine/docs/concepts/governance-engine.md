@@ -53,8 +53,8 @@ There are six types of governance service:
   configuring, enabling, provisioning resources in the digital landscape.  Often these provisioning
   services manage the cataloguing of new assets and the lineage between them.
 
-There is an [Open Metadata Engine Service (OMES)](../../../../engine-services)
-for each type of governance service.  The engine services support
+There is a different [Open Metadata Engine Service (OMES)](../../../../engine-services)
+depending on the type of governance service.  The engine services support
 the specialist REST APIs and event handling needed for the specific
 type of governance service.
 
@@ -62,14 +62,11 @@ type of governance service.
 | Governance Service | Engine Service |
 | :----------------- | :------------- | 
 | Open Discovery Service | [Asset Analysis OMES](../../../../engine-services/asset-analysis) |
-| Open Watchdog Service | [Metadata Watchdog OMES](../../../../engine-services/metadata-watchdog) |
-| Open Verification Service | [Rule Verifier OMES](../../../../engine-services/rule-verifier) |
-| Open Triage Service | [Request Triage OMES](../../../../engine-services/request-triage) |
-| Open Remediation Service | [Issue Remediation OMES](../../../../engine-services/issue-remediation) |
-| Open Provisioning Service | [Asset Provisioning OMES](../../../../engine-services/asset-provisioning) |
-
-
-
+| Watchdog Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Verification Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Triage Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Remediation Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Provisioning Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
 
 
 Each governance engine has a unique name. 
