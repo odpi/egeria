@@ -29,8 +29,8 @@ public class GovernanceEngineOutTopicPublisher
      * @param outTopicAuditLog logging destination if anything goes wrong.
      */
     public GovernanceEngineOutTopicPublisher(GovernanceEngineOutTopicServerConnector outTopicServerConnector,
-                                             String                                 outTopicName,
-                                             AuditLog                               outTopicAuditLog)
+                                             String                                  outTopicName,
+                                             AuditLog                                outTopicAuditLog)
     {
         this.outTopicServerConnector = outTopicServerConnector;
         this.outTopicAuditLog        = outTopicAuditLog;
@@ -205,7 +205,6 @@ public class GovernanceEngineOutTopicPublisher
     private void logUnexpectedPublishingException(Throwable  error,
                                                   String     methodName)
     {
-
         if (outTopicAuditLog != null)
         {
             outTopicAuditLog.logException(methodName,

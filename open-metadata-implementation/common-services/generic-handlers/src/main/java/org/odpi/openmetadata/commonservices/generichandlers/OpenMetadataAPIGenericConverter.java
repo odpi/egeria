@@ -2705,6 +2705,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the originGovernanceService property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeOriginGovernanceService(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeOriginGovernanceService";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_SERVICE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the originGovernanceEngine property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

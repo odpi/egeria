@@ -4478,7 +4478,94 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the starting entity.
+     * Return the relationship of the requested type connected to the starting entity and where the starting entity is the logical child.
+     * The assumption is that this is a 0..1 relationship so the first matching relationship is returned (or null if there is none).
+     *
+     * @param userId  user making the request
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param parentAtEnd1 boolean flag to indicate which end has the parent element
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationship or null
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public Relationship getUniqueParentRelationshipByType(String  userId,
+                                                          String  startingEntityGUID,
+                                                          String  startingEntityTypeName,
+                                                          String  relationshipTypeGUID,
+                                                          String  relationshipTypeName,
+                                                          boolean parentAtEnd1,
+                                                          String  methodName) throws UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        final String localMethodName = "getUniqueParentRelationshipByType";
+
+        try
+        {
+            List<Relationship> relationships = this.getRelationshipsByType(userId,
+                                                                           startingEntityGUID,
+                                                                           startingEntityTypeName,
+                                                                           relationshipTypeGUID,
+                                                                           relationshipTypeName,
+                                                                           methodName);
+
+            if (relationships != null)
+            {
+                RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
+                                                                                               userId,
+                                                                                               startingEntityGUID,
+                                                                                               startingEntityTypeName,
+                                                                                               relationshipTypeGUID,
+                                                                                               relationshipTypeName,
+                                                                                               0,
+                                                                                               maxPageSize,
+                                                                                               methodName);
+
+                while (iterator.moreToReceive())
+                {
+                    Relationship relationship = iterator.getNext();
+
+                    if (relationship != null)
+                    {
+                        EntityProxy parentEntity;
+
+                        if (parentAtEnd1)
+                        {
+                            parentEntity = relationship.getEntityOneProxy();
+                        }
+                        else
+                        {
+                            parentEntity = relationship.getEntityTwoProxy();
+                        }
+
+                        if ((parentEntity != null) && (! startingEntityGUID.equals(parentEntity.getGUID())))
+                        {
+                            return relationship;
+                        }
+                    }
+                }
+            }
+        }
+        catch (PropertyServerException | UserNotAuthorizedException error)
+        {
+            throw error;
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the relationship of the requested type connected to the starting entity.
      * The assumption is that this is a 0..1 relationship so one relationship (or null) is returned.
      * If lots of relationships are found then the PropertyServerException is thrown.
      *

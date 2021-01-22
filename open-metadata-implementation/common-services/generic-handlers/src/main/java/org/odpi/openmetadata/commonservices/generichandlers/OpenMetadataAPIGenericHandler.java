@@ -2190,14 +2190,16 @@ public class OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * Is the attribute nested in another attribute?
+         * Is the attribute nested in another attribute?  Note that because schema attributes can be nested through multiple levels,
+         * the retrieval of the parent needs to take account of which end the attributeGUID is connected to.
          */
-        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                     attributeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                     methodName);
+        relationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
+                                                                           attributeGUID,
+                                                                           OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                           OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                           OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                           true,
+                                                                           methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
@@ -7150,8 +7152,8 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the list of beans of the requested type that match the supplied value.
-     * A null is returned if the entity is not found.
+     * Return the unique identifier of the entity that has the supplied unique name. An exception is thrown if
+     * multiple entities are found with this name.
      *
      * @param userId the calling user
      * @param name  value to search
@@ -7162,7 +7164,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
      *
-     * @return list of beans
+     * @return unique identifier of the requested entity/bean
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -7249,7 +7251,6 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             return guid;
         }
-
 
         throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(resultTypeName,
                                                                                                                 name,
@@ -9143,7 +9144,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                              relationshipProperties,
                                              methodName);
 
-
         /*
          * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
          */
@@ -9165,6 +9165,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 {
                     latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
                 }
+
                 this.addLatestChangeToAnchor(startingElementAnchorEntity,
                                               latestChangeTarget,
                                               OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
@@ -9188,24 +9189,30 @@ public class OpenMetadataAPIGenericHandler<B>
                                           methodName);
             }
 
-            if ((attachingElementAnchorEntity != null) && (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
+            if (attachingElementAnchorEntity != null)
             {
-                int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                if (attachingGUID.equals(attachingElementAnchorEntity.getGUID()))
+                /*
+                 * Only need to add latestChange if the anchor of the attached element is different
+                 */
+                if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID()))
                 {
-                    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+
+                    if (attachingGUID.equals(attachingElementAnchorEntity.getGUID()))
+                    {
+                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+                    }
+                    this.addLatestChangeToAnchor(attachingElementAnchorEntity,
+                                                 latestChangeTarget,
+                                                 OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
                 }
-                this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                              latestChangeTarget,
-                                              OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                              null,
-                                              startingGUID,
-                                              startingElementTypeName,
-                                              attachmentTypeName,
-                                              userId,
-                                              actionDescription,
-                                              methodName);
             }
             else
             {
@@ -9414,24 +9421,27 @@ public class OpenMetadataAPIGenericHandler<B>
                                               methodName);
                 }
 
-                if ((attachingElementAnchorEntity != null) && (!attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
+                if (attachingElementAnchorEntity != null)
                 {
-                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                    if (attachingGUID.equals(attachingElementAnchorEntity.getGUID()))
+                    if (!attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID()))
                     {
-                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+                        int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+
+                        if (attachingGUID.equals(attachingElementAnchorEntity.getGUID()))
+                        {
+                            latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+                        }
+                        this.addLatestChangeToAnchor(attachingElementAnchorEntity,
+                                                     latestChangeTarget,
+                                                     OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                     null,
+                                                     startingGUID,
+                                                     startingElementTypeName,
+                                                     attachmentTypeName,
+                                                     userId,
+                                                     actionDescription,
+                                                     methodName);
                     }
-                    this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                 latestChangeTarget,
-                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                 null,
-                                                 startingGUID,
-                                                 startingElementTypeName,
-                                                 attachmentTypeName,
-                                                 userId,
-                                                 actionDescription,
-                                                 methodName);
                 }
                 else
                 {

@@ -11,49 +11,47 @@ to give them their full name) which, in turn run in the Engine Host OMAG Server.
 
 The engine services are:
 
-* **Asset Analysis** - Analyses the content of an asset's real world counterpart in the digital landscape, generates annotations
-                   in an open discovery analysis report that is attached to the asset in the open metadata repositories.
-                   
-* **Metadata Watchdog** - Monitors changes in the open metadata repositories and initiates governance activity as a result.
-  This is typically by creating a 
-  [Governance Action](../../../frameworks/governance-action-framework/docs/governance-action.md), a 
-  [Governance Action Process](../../../frameworks/governance-action-framework/docs/governance-action-process.md) or an
-  [Incident Report](../../../frameworks/governance-action-framework/docs/incident-report.md).
-  One example of a metadata watchdog service is to monitor for the addition of
-  a new asset.
+* **Asset Analysis** - For running [Open Discovery Services](../../../frameworks/open-discovery-framework/docs/discovery-service.md) 
+                       that analyse the content of an asset's real world counterpart in the digital landscape, generates annotations
+                       in an open discovery analysis report that is attached to the asset in the open metadata repositories.
+
+* **Governance Action** - For running [Governance Action Services](../../../frameworks/governance-action-framework/docs/governance-action-service.md).
+                        There are five types of governance action services:                
+    * **Watchdog Governance Service** - Monitors changes in the open metadata repositories and initiates governance activity as a result.
+        This is typically by creating a 
+        [Governance Action](../../../frameworks/governance-action-framework/docs/governance-action.md), a 
+        [Governance Action Process](../../../frameworks/governance-action-framework/docs/governance-action-process.md) or an
+        [Incident Report](../../../frameworks/governance-action-framework/docs/incident-report.md).
+        One example of a watchdog governance service is to monitor for the addition of a new asset.
   
-* **Rule Verifier** - Runs checks on the metadata properties to ensure they are complete and correct.
-   One example of a rule verifier service is detection for metadata
+    * **Verification Governance Service** - Runs checks on the metadata properties to ensure they are complete and correct.
+   One example of a verification governance service is detection for metadata
    elements with the same qualified name, or an asset without an owner.
                       
-* **Request Triage** - Runs triage tasks to determine how to manage an incident or situation.
+    * **Triage Governance Service** - Runs triage tasks to determine how to manage an incident or situation.
     For example, it could initiate an external workflow, assign a task to a steward, wait for manual
     decision or initiate a remediation request.
                    
-* **Issue Remediation** - Makes updates to the open metadata or the digital landscape.
-  An example of a remediation service could be to link or consolidate metadata elements with the same
-   qualified name. Another remediation service may move assets between zones when a particular date is reached.
+    * **Remediation Governance Service** - Makes updates to the open metadata or the digital landscape.
+    An example of a remediation governance service could be to link or consolidate metadata elements with the same
+   qualified name. Another remediation governance service may move assets between zones when a particular date is reached.
    
-* **Asset Provisioning** - Invokes a provisioning service whenever a provisioning request is made.  Typically the
+    * **Provisioning Governance Service** - Invokes a provisioning service whenever a provisioning request is made.  Typically the
    provisioning service is an external service.  It may also create lineage metadata to
    describe the work of the provisioning engine.                
 
 An engine service is paired with a specific [access service](../../../access-services) running in either a 
 [Metadata Access Point](metadata-access-point.md) or a [metadata server](metadata-server.md).
 
-
 The name and URL root of the server where the access service is running
-is needed to configure an engine service.  The specific access services
-are:
+is needed to configure an engine service.  The specific access services are:
 
 * [Discovery Engine OMAS](../../../access-services/discovery-engine) for Asset Analysis OMES.
-* [Stewardship Action OMAS](../../../access-services/stewardship-action) for Request Triage OMES.
-* [Asset Manager OMAS](../../../access-services/asset-manager) for all of the others.
+* [Governance Engine OMAS](../../../access-services/asset-manager) for Governance Engine OMES.
 
 The engine host services have an REST API to query the status of the governance engines
 running in the engine services.  The engine services also have a REST API to control and query the work of their
-governance engines.
-All of these REST APIs may be called by a view server as part of the support for a user interface.
+governance engines.  All of these REST APIs may be called by a view server as part of the support for a user interface.
 
 
 ![Figure 1](engine-host.png#pagewidth)

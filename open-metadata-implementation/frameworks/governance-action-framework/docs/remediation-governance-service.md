@@ -1,11 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Remediation Service
+# Remediation Governance Service
 
-Monitors for RemediationRequest instances and runs the requested remediation service.
+Performs updates to metadata.
 Examples of remediation services are duplicate linking and consolidating.
 
+
+
+![Figure 1](remediation-governance-service-context.png)
+> **Figure 1:** Governance context for the remediation governance service
 
 
 ----
