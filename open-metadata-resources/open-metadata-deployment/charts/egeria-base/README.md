@@ -94,6 +94,18 @@ Refer to the comments in `values.yaml` for further information on what can be co
 - names & repositories for docker images used by the chart
 - Kafka specific configuration (setup in the Bitnami chart we use)
 
+### Using additional connectors
+
+If you have additional Egeria connectors that are needed in your deployment, you should soon be able to include the following when deploying the chart
+
+```bash
+helm install --include-dir libs=~/libs egeria egeria-base
+```
+Where in this example ~/libs is the directory including the additional connectors you wish to use.
+
+However the support for this is awaiting a [helm PR](https://github.com/helm/helm/pull/8841), so in the meantime please copy files directly into a 'libs' directory within the chart instead.
+
+These files will be copied into a kubernetes config map, which is then made available as a mounted volume to the runtime image of egeria & added to the class loading path as `/extlib'. You still need to configure the egeria server(s) appropriately
 ## Accessing Egeria 
 
 We now have egeria running within a Kubernetes cluster, but by default no services are exposed externally - they are all of type `ClusterIP` - we can see these with
