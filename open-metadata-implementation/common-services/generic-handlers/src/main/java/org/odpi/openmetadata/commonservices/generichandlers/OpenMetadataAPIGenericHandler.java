@@ -1499,9 +1499,8 @@ public class OpenMetadataAPIGenericHandler<B>
         EntityDetail updatedAssetEntity = new EntityDetail(originalAssetEntity);
         updatedAssetEntity.setProperties(updatedAssetProperties);
         updatedAssetEntity.setStatus(newInstanceStatus);
-        Asset updatedAsset = this.getAssetBeanFromEntity(updatedAssetEntity, methodName);
 
-        securityVerifier.validateUserForAssetDetailUpdate(userId, originalAsset, assetAuditHeader, updatedAsset);
+        securityVerifier.validateUserForAssetDetailUpdate(userId, originalAsset);
     }
 
 

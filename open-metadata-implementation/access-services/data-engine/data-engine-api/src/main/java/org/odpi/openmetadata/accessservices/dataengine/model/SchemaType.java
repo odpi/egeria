@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,6 +26,7 @@ public class SchemaType implements Serializable {
     private String usage;
     private String encodingStandard;
     private String versionNumber;
+    private ElementType type;
     @JsonProperty("columns")
     private List<Attribute> attributeList;
 
@@ -84,6 +86,14 @@ public class SchemaType implements Serializable {
         this.attributeList = attributeList;
     }
 
+    public ElementType getType() {
+        return type;
+    }
+
+    public void setType(ElementType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "SchemaType{" +
@@ -93,6 +103,7 @@ public class SchemaType implements Serializable {
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", versionNumber='" + versionNumber + '\'' +
+                ", type=" + type +
                 ", attributeList=" + attributeList +
                 '}';
     }
@@ -108,6 +119,7 @@ public class SchemaType implements Serializable {
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(versionNumber, that.versionNumber) &&
+                Objects.equals(type, that.type) &&
                 Objects.equals(attributeList, that.attributeList);
     }
 
@@ -115,4 +127,5 @@ public class SchemaType implements Serializable {
     public int hashCode() {
         return Objects.hash(qualifiedName, displayName, author, usage, encodingStandard, versionNumber, attributeList);
     }
+
 }

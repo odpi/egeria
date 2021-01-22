@@ -167,37 +167,29 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     /**
      * Determine the appropriate setting for the asset zones depending on the content of the asset and the
      * default zones.  This is called whenever a new asset is created.
-     *
+     * <p>
      * The default behavior is to use the default values, unless the zones have been explicitly set up,
      * in which case, they are left unchanged.
      *
      * @param defaultZones setting of the default zones for the service
-     * @param ocfAsset initial values for the asset
-     *
+     * @param asset        initial values for the asset
      * @return list of zones to set in the asset
      * @throws InvalidParameterException one of the asset values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
+     * @throws PropertyServerException   there is a problem calculating the zones
      */
-    public List<String> initializeAssetZones(List<String>                                                       defaultZones,
-                                             org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfAsset) throws InvalidParameterException,
-                                                                                                                                 PropertyServerException
-    {
-        List<String>  resultingZones = null;
+    public List<String> initializeAssetZones(List<String> defaultZones,
+                                             Asset asset) throws InvalidParameterException,
+            PropertyServerException {
+        List<String> resultingZones = null;
 
-        if (ocfAsset != null)
-        {
-            Asset asset = getAssetFromOCFAsset(ocfAsset);
-            if ((ocfAsset.getZoneMembership() == null) || (ocfAsset.getZoneMembership().isEmpty()))
-            {
+        if (asset != null) {
+            if ((asset.getZoneMembership() == null) || (asset.getZoneMembership().isEmpty())) {
                 resultingZones = defaultZones;
-            }
-            else
-            {
-                resultingZones = ocfAsset.getZoneMembership();
+            } else {
+                resultingZones = asset.getZoneMembership();
             }
 
-            if (connector != null)
-            {
+            if (connector != null) {
                 return connector.setAssetZonesToDefault(resultingZones, asset);
             }
         }
@@ -659,7 +651,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
             Asset originalAsset = this.getAssetFromOCFAsset(ocfOriginalAsset);
             Asset newAsset = this.getAssetFromOCFAsset(ocfNewAsset);
 
-            connector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, newAsset);
+            connector.validateUserForAssetDetailUpdate(userId, originalAsset);
         }
     }
 
@@ -669,21 +661,15 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * This is used for a general asset update, which may include changes to the
      * zones and the ownership.
      *
-     * @param userId identifier of user
+     * @param userId        identifier of user
      * @param originalAsset original asset details
-     * @param originalAssetAuditHeader details of the asset's audit header
-     * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
     @Override
-    public void  validateUserForAssetDetailUpdate(String           userId,
-                                                  Asset            originalAsset,
-                                                  AssetAuditHeader originalAssetAuditHeader,
-                                                  Asset            newAsset) throws UserNotAuthorizedException
-    {
-        if (connector != null)
-        {
-            connector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, new Asset(newAsset));
+    public void validateUserForAssetDetailUpdate(String userId,
+                                                 Asset originalAsset) throws UserNotAuthorizedException {
+        if (connector != null) {
+            connector.validateUserForAssetDetailUpdate(userId, originalAsset);
         }
     }
 

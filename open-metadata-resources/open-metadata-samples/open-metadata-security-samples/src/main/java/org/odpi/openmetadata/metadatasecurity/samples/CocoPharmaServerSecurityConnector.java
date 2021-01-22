@@ -1063,7 +1063,6 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    @Override
     public void  validateUserForAssetDetailUpdate(String           userId,
                                                   Asset            originalAsset,
                                                   AssetAuditHeader originalAssetAuditHeader,
@@ -1134,7 +1133,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         /*
          * Any other conditions, use superclass to throw user not authorized exception
          */
-        super.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, newAsset);
+        super.validateUserForAssetDetailUpdate(userId, originalAsset);
     }
 
 

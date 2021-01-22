@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
-import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 
 import java.util.List;
 
@@ -124,16 +123,12 @@ public interface OpenMetadataAssetSecurity
      * This is used for a general asset update, which may include changes to the
      * zones and the ownership.
      *
-     * @param userId identifier of user
+     * @param userId        identifier of user
      * @param originalAsset original asset details
-     * @param originalAssetAuditHeader details of the asset's audit header
-     * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    void  validateUserForAssetDetailUpdate(String           userId,
-                                           Asset            originalAsset,
-                                           AssetAuditHeader originalAssetAuditHeader,
-                                           Asset            newAsset) throws UserNotAuthorizedException;
+    void validateUserForAssetDetailUpdate(String userId,
+                                          Asset originalAsset) throws UserNotAuthorizedException;
 
 
     /**

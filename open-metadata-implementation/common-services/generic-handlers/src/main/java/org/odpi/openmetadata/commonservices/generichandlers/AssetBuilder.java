@@ -181,21 +181,19 @@ public class AssetBuilder extends ReferenceableBuilder
      * Return the bean properties describing the asset's zone membership in an InstanceProperties object.
      *
      * @param zoneMembership list of zone names for the zones this asset is a member of
-     * @param methodName name of the calling method
+     * @param methodName     name of the calling method
      * @return InstanceProperties object
      */
-    InstanceProperties getZoneMembershipProperties(List<String> zoneMembership,
-                                                   String       methodName)
-    {
+    public InstanceProperties getZoneMembershipProperties(List<String> zoneMembership,
+                                                          String methodName) {
         InstanceProperties properties = null;
 
-        if (zoneMembership != null)
-        {
+        if (zoneMembership != null) {
             properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           null,
-                                                                           OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                           zoneMembership,
-                                                                           methodName);
+                    null,
+                    OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                    zoneMembership,
+                    methodName);
         }
 
         return properties;
@@ -249,32 +247,29 @@ public class AssetBuilder extends ReferenceableBuilder
     /**
      * Return the bean properties describing the asset's owner in an InstanceProperties object.
      *
-     * @param userId calling user
-     * @param owner name of the owner.
-     * @param ownerType Enum ordinal for type of owner - 0=userId; 1= profileId; 99=other.
+     * @param userId     calling user
+     * @param owner      name of the owner.
+     * @param ownerType  Enum ordinal for type of owner - 0=userId; 1= profileId; 99=other.
      * @param methodName name of the calling method
      * @return InstanceProperties object
      * @throws InvalidParameterException the owner enum type is not supported
      */
-    InstanceProperties getOwnerProperties(String userId,
-                                          String owner,
-                                          int    ownerType,
-                                          String methodName) throws InvalidParameterException
-    {
+    public InstanceProperties getOwnerProperties(String userId,
+                                                 String owner,
+                                                 int ownerType,
+                                                 String methodName) throws InvalidParameterException {
         InstanceProperties properties;
 
-        if (owner != null)
-        {
+        if (owner != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
-                                                                      owner,
-                                                                      methodName);
+                    null,
+                    OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
+                    owner,
+                    methodName);
 
-            try
-            {
+            try {
                 properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                        properties,
+                        properties,
                                                                         OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME,
                                                                         OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_NAME,

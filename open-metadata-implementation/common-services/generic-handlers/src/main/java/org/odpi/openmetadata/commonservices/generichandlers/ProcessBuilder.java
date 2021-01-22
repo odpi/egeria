@@ -3,12 +3,8 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.Map;
 
@@ -56,29 +52,28 @@ public class ProcessBuilder extends AssetBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    ProcessBuilder(String               qualifiedName,
-                   String               technicalName,
-                   String               technicalDescription,
-                   String               formula,
-                   String               implementationLanguage,
-                   Map<String, String>  additionalProperties,
-                   String               typeGUID,
-                   String               typeName,
-                   Map<String, Object>  extendedProperties,
-                   OMRSRepositoryHelper repositoryHelper,
-                   String               serviceName,
-                   String               serverName)
-    {
+    protected ProcessBuilder(String qualifiedName,
+                             String technicalName,
+                             String technicalDescription,
+                             String formula,
+                             String implementationLanguage,
+                             Map<String, String> additionalProperties,
+                             String typeGUID,
+                             String typeName,
+                             Map<String, Object> extendedProperties,
+                             OMRSRepositoryHelper repositoryHelper,
+                             String serviceName,
+                             String serverName) {
         super(qualifiedName,
-              technicalName,
-              technicalDescription,
-              additionalProperties,
-              typeGUID,
-              typeName,
-              extendedProperties,
-              repositoryHelper,
-              serviceName,
-              serverName);
+                technicalName,
+                technicalDescription,
+                additionalProperties,
+                typeGUID,
+                typeName,
+                extendedProperties,
+                repositoryHelper,
+                serviceName,
+                serverName);
 
         this.formula = formula;
         this.implementationLanguage = implementationLanguage;
@@ -224,7 +219,6 @@ public class ProcessBuilder extends AssetBuilder
 
         return properties;
     }
-
 
     /**
      * Return the supplied bean properties in an InstanceProperties object.

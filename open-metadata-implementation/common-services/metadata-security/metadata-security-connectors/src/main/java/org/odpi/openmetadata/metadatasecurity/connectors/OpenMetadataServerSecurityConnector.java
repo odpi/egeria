@@ -15,11 +15,18 @@ import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
-import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
@@ -978,19 +985,14 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * This is used for a general asset update, which may include changes to the
      * zones and the ownership.
      *
-     * @param userId identifier of user
+     * @param userId        identifier of user
      * @param originalAsset original asset details
-     * @param originalAssetAuditHeader details of the asset's audit header
-     * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
     @Override
-    public void  validateUserForAssetDetailUpdate(String           userId,
-                                                  Asset            originalAsset,
-                                                  AssetAuditHeader originalAssetAuditHeader,
-                                                  Asset            newAsset) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForAssetDetailUpdate";
+    public void validateUserForAssetDetailUpdate(String userId,
+                                                 Asset originalAsset) throws UserNotAuthorizedException {
+        final String methodName = "validateUserForAssetDetailUpdate";
 
         throwUnauthorizedAssetChange(userId, originalAsset, methodName);
     }
