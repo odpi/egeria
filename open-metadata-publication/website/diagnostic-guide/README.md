@@ -39,7 +39,7 @@ throughout Egeria.
      * REST Call logger for debug messages and performance logging.
      * Handler for common exceptions.
      
-* The  [Audit Log Framework (ALF)](../../../open-metadata-implementation/frameworks/audit-log-framework) -
+* The [Audit Log Framework (ALF)](../../../open-metadata-implementation/frameworks/audit-log-framework) -
   provides interface definitions and classes to enable connectors to support natural language enabled
   diagnostics such as exception messages and audit log messages.
 

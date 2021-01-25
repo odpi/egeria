@@ -146,7 +146,6 @@ public class CSVDiscoveryService extends AuditableDiscoveryService
 
         try
         {
-
             CSVFileStoreConnector    assetConnector  = (CSVFileStoreConnector)discoveryContext.getAssetStore().getConnectorToAsset();
             DiscoveryAnnotationStore annotationStore = discoveryContext.getAnnotationStore();
             int                      size            = 0;
