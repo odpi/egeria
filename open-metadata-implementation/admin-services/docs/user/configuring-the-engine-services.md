@@ -29,7 +29,7 @@ It is possible to get a description of each of the registered
 engine services using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/engine-services
+GET {platformURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/engine-services
 ```
 Note the `engineServiceURLMarker` for the engine service that you want to configure.
 
@@ -55,7 +55,7 @@ are retrieved from the metadata access point / metadata server when the
 engine service starts up.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/engine-services/{engineServiceURLMarker}
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/engine-services/{engineServiceURLMarker}
 {
         "class": "EngineServiceRequestBody",
         "omagserverPlatformRootURL": {MDServerURLRoot},

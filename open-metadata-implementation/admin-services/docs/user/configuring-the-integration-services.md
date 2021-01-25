@@ -18,7 +18,7 @@ It is possible to get a description of each of the registered
 integration services using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/integration-services
+GET {platformURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/integration-services
 ```
 Note the `integrationServiceURLMarker` for the integration service that you want to configure.
 
@@ -42,7 +42,7 @@ The integration connector's configuration properties defines which connector imp
 to use and how it should be operated.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/integration-services/{integrationServiceURLMarker}
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/integration-services/{integrationServiceURLMarker}
 {
         "class": "IntegrationServiceRequestBody",
         "omagserverPlatformRootURL": "{MDServerURLRoot}",
