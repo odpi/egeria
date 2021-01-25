@@ -109,8 +109,7 @@ public class CSVFileReaderSample
                              * type is returned, on one where it is not possible to create a connector for, then an
                              * exception is thrown and the code moves on to process the next asset.
                              */
-                            return (CSVFileStoreConnector) client.getConnectorForAsset(clientUserId,
-                                                                                       assetGUID);
+                            return (CSVFileStoreConnector) client.getConnectorForAsset(clientUserId, assetGUID);
                         }
                         catch (Throwable error)
                         {

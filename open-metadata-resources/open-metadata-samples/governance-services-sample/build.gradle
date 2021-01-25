@@ -15,7 +15,7 @@ dependencies {
 
 }
 
-description = 'Discovery service sample'
+description = 'Governance services sample'
 
 java {
     withJavadocJar()
