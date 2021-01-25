@@ -320,6 +320,8 @@ public class IntegrationConnectorHandler implements Serializable
             {
                 integrationConnector.refresh();
             }
+
+            this.lastRefreshTime = new Date();
         }
         catch (Exception error)
         {

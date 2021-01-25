@@ -406,7 +406,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied property to an instance properties object.  If the instance property object
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
@@ -478,7 +478,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied property to an instance properties object.  If the instance property object
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
@@ -536,7 +536,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied array property to an instance properties object.  The supplied array is stored as a single
+     * If the supplied array property is not null, add it to an instance properties object.  The supplied array is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -574,7 +574,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -593,7 +593,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -612,7 +612,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -631,7 +631,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -652,7 +652,7 @@ public interface OMRSRepositoryPropertiesHelper
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -671,7 +671,7 @@ public interface OMRSRepositoryPropertiesHelper
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -690,7 +690,7 @@ public interface OMRSRepositoryPropertiesHelper
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -710,7 +710,7 @@ public interface OMRSRepositoryPropertiesHelper
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -729,7 +729,7 @@ public interface OMRSRepositoryPropertiesHelper
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller

@@ -3,21 +3,25 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 
+import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * GovernanceEngineOMRSTopicListener is the listener that registers with the repository services (OMRS)
@@ -29,26 +33,44 @@ import java.util.List;
  */
 public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 {
-    private GovernanceEngineOutTopicPublisher eventPublisher;
-    private OMRSRepositoryHelper              repositoryHelper;
+    private GovernanceEngineOutTopicPublisher                eventPublisher;
+    private OMRSRepositoryHelper                             repositoryHelper;
+    private MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
+    private GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
 
-    private EntityDetail nullEntity = null;
-    private Relationship nullRelationship = null;
+    private String                                           userId;
+
+    private EntityDetail                                     nullEntity = null;
+    private Relationship                                     nullRelationship = null;
+
+    private PropertyHelper propertyHelper = new PropertyHelper();
+
 
     /**
      * Initialize the topic listener.
      *
      * @param serviceName this is the full name of the service - used for error logging in base class
+     * @param userId local server userId for issuing requests to the repository services
+     * @param metadataElementHandler handler for working with GAF objects
+     * @param governanceActionHandler handler for working with governance actions
      * @param eventPublisher this is the out topic publisher.
      * @param repositoryHelper repository helper
      * @param auditLog logging destination
      */
-    public GovernanceEngineOMRSTopicListener(String                            serviceName,
-                                             GovernanceEngineOutTopicPublisher eventPublisher,
-                                             OMRSRepositoryHelper              repositoryHelper,
-                                             AuditLog                          auditLog)
+    public GovernanceEngineOMRSTopicListener(String                                           serviceName,
+                                             String                                           userId,
+                                             MetadataElementHandler<OpenMetadataElement>      metadataElementHandler,
+                                             GovernanceActionHandler<GovernanceActionElement> governanceActionHandler,
+                                             GovernanceEngineOutTopicPublisher                eventPublisher,
+                                             OMRSRepositoryHelper                             repositoryHelper,
+                                             AuditLog                                         auditLog)
     {
         super(serviceName, auditLog);
+
+        this.metadataElementHandler = metadataElementHandler;
+        this.governanceActionHandler = governanceActionHandler;
+
+        this.userId = userId;
 
         this.eventPublisher   = eventPublisher;
         this.repositoryHelper = repositoryHelper;
@@ -160,8 +182,24 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                               type.getTypeDefName(),
                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME))
                 {
-                    // todo call governance action handler
-                    // todo if updated still may be new because restart called
+                    GovernanceActionStatus status = governanceActionHandler.getActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
+                                                                                            entity.getProperties());
+
+                    if (status == GovernanceActionStatus.REQUESTED)
+                    {
+                        try
+                        {
+                            GovernanceActionElement element = governanceActionHandler.getGovernanceAction(userId, entity.getGUID(), methodName);
+
+                            eventPublisher.publishNewGovernanceAction(element);
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logException(methodName,
+                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(methodName, entity.getGUID()),
+                                                  error);
+                        }
+                    }
                     return true;
                 }
             }
@@ -256,19 +294,142 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * Using the content of the entity, create a metadata element.
+     * Translate the repository services' InstanceProvenanceType to a GAF ElementOrigin.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementOrigin enum
+     */
+    ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
+
+                case DRAFT:
+                    return ElementStatus.DRAFT;
+
+                case PREPARED:
+                    return ElementStatus.PREPARED;
+
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
+
+                case APPROVED:
+                    return ElementStatus.APPROVED;
+
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
+    }
+
+
+
+    /**
+     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
+     *
+     * @param instanceProvenanceType value from the repository services
+     * @return ElementOrigin enum
+     */
+    private ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
+    {
+        if (instanceProvenanceType != null)
+        {
+            switch (instanceProvenanceType)
+            {
+                case DEREGISTERED_REPOSITORY:
+                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
+
+                case EXTERNAL_SOURCE:
+                    return ElementOriginCategory.EXTERNAL_SOURCE;
+
+                case EXPORT_ARCHIVE:
+                    return ElementOriginCategory.EXPORT_ARCHIVE;
+
+                case LOCAL_COHORT:
+                    return ElementOriginCategory.LOCAL_COHORT;
+
+                case CONTENT_PACK:
+                    return ElementOriginCategory.CONTENT_PACK;
+
+                case CONFIGURATION:
+                    return ElementOriginCategory.CONFIGURATION;
+
+                case UNKNOWN:
+                    return ElementOriginCategory.UNKNOWN;
+            }
+        }
+
+        return ElementOriginCategory.UNKNOWN;
+    }
+
+
+
+    /**
+     * Fill a GAF control header from the information in a repository services element header.
      *
      * @param sourceName source of the event
-     * @param entity entity from the repository
-     * @param methodName calling method
-     * @return open metadata element object
+     * @param elementControlHeader GAF object control header
+     * @param header OMRS element header
      */
-    private OpenMetadataElement getMetadataElement(String       sourceName,
-                                                   EntityDetail entity,
-                                                   String       methodName)
+    void fillElementControlHeader(String               sourceName,
+                                  ElementControlHeader elementControlHeader,
+                                  InstanceAuditHeader  header)
     {
-        // todo - call converter
-        return null;
+        if (header != null)
+        {
+            elementControlHeader.setElementSourceServer(sourceName);
+            elementControlHeader.setElementOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementControlHeader.setElementMetadataCollectionId(header.getMetadataCollectionId());
+            elementControlHeader.setElementMetadataCollectionName(header.getMetadataCollectionName());
+            elementControlHeader.setElementLicense(header.getInstanceLicense());
+            elementControlHeader.setElementCreatedBy(header.getCreatedBy());
+            elementControlHeader.setElementUpdatedBy(header.getUpdatedBy());
+            elementControlHeader.setElementMaintainedBy(header.getMaintainedBy());
+            elementControlHeader.setElementCreateTime(header.getCreateTime());
+            elementControlHeader.setElementUpdateTime(header.getUpdateTime());
+            elementControlHeader.setElementVersion(header.getVersion());
+            elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
+            elementControlHeader.setMappingProperties(header.getMappingProperties());
+        }
     }
 
 
@@ -284,8 +445,17 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                     Classification classification,
                                                     String         methodName)
     {
-        // todo - call converter
-        return null;
+        ElementClassification beanClassification = new ElementClassification();
+
+        fillElementControlHeader(sourceName, beanClassification, classification);
+
+        beanClassification.setClassificationName(classification.getName());
+
+        Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
+
+        beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+
+        return beanClassification;
     }
 
 
@@ -327,14 +497,24 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
             if (type != null)
             {
-                WatchdogMetadataElementEvent watchdogEvent = new WatchdogMetadataElementEvent();
-
-                watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(this.getMetadataElement(sourceName, entity, methodName));
-
-                if (previousEntity != null)
+                try
                 {
-                    watchdogEvent.setPreviousMetadataElement(this.getMetadataElement(sourceName, previousEntity, methodName));
+                    WatchdogMetadataElementEvent watchdogEvent = new WatchdogMetadataElementEvent();
+
+                    watchdogEvent.setEventType(eventType);
+                    watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+
+                    if (previousEntity != null)
+                    {
+                        watchdogEvent.setPreviousMetadataElement(
+                                metadataElementHandler.getMetadataElementByGUID(userId, previousEntity.getGUID(), methodName));
+                    }
+                }
+                catch (Exception error)
+                {
+                    auditLog.logException(methodName,
+                                          GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(methodName, entity.getGUID()),
+                                          error);
                 }
             }
         }
@@ -364,15 +544,24 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
             if (type != null)
             {
-                WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
-
-                watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(this.getMetadataElement(sourceName, entity, methodName));
-                watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification, methodName));
-
-                if (previousClassification != null)
+                try
                 {
-                    watchdogEvent.setChangedClassification(this.getClassification(sourceName, previousClassification, methodName));
+                    WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
+
+                    watchdogEvent.setEventType(eventType);
+                    watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+                    watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification, methodName));
+
+                    if (previousClassification != null)
+                    {
+                        watchdogEvent.setChangedClassification(this.getClassification(sourceName, previousClassification, methodName));
+                    }
+                }
+                catch (Exception error)
+                {
+                    auditLog.logException(methodName,
+                                          GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(methodName, entity.getGUID()),
+                                          error);
                 }
             }
         }
@@ -412,8 +601,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             }
         }
     }
-
-
 
 
     /**

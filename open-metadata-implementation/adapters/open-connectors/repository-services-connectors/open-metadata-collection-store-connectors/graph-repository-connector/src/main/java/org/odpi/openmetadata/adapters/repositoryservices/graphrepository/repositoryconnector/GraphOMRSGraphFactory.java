@@ -368,8 +368,8 @@ public class GraphOMRSGraphFactory {
             createCompositeIndexForEdgeProperty(PROPERTY_NAME_TYPE_NAME,               PROPERTY_KEY_RELATIONSHIP_TYPE_NAME);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_CREATED_BY,              PROPERTY_KEY_RELATIONSHIP_CREATED_BY);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_UPDATED_BY,              PROPERTY_KEY_RELATIONSHIP_UPDATED_BY);
-            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_CREATE_TIME,           PROPERTY_KEY_RELATIONSHIP_CREATE_TIME);
-            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_UPDATE_TIME,           PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME);
+            createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_CREATE_TIME,             PROPERTY_KEY_RELATIONSHIP_CREATE_TIME);
+            createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_UPDATE_TIME,             PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_MAINTAINED_BY,           PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_INSTANCE_URL,            PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL);
