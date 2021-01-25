@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * It may involve a human decision maker.
  *
  * To create your own triage governance action service, create a new class that extends this class
- * along with another class that extends the GovernanceServiceProvider class to act as its connector provider.
+ * along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  * Add a start() method that begins by calling super.start() and then includes the logic to either make the decision or initiate action to
  * request a third party make the decision.
  * This is done either by calling a third party technology or using the methods available through the governanceContext which is set up

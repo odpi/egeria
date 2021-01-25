@@ -273,7 +273,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-service-sample</artifactId>
+            <artifactId>governance-services-sample</artifactId>
         </dependency>
 
         <!-- Technically this is a dependency as we consume license/readme files. However parent is always done
