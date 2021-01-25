@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.samples.governanceengine.watchdog.discoveryservices;
+package org.odpi.openmetadata.samples.governanceengine.discoveryservices;
 
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryServiceProvider;
 

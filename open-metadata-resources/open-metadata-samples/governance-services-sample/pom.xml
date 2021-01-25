@@ -13,7 +13,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>discovery-service-sample</artifactId>
+    <artifactId>governance-services-sample</artifactId>
 
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
@@ -21,9 +21,9 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Discovery service sample</name>
+    <name>Governance services sample connectors</name>
     <description>
-        Sample that shows how to create a Discovery Service
+        Sample that shows how to create both open discovery services and governance action services
     </description>
 
     <dependencies>
