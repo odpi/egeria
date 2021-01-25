@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# 0290 Ports
+# 0217 Ports
 
-Ports are used to define the interfaces of Processes.
+Ports are used to define the interfaces of [Processes](0010-Base-Model.md).
 
-![UML](0290-Ports.png#pagewidth)
+![UML](0217-Ports.png#pagewidth)
 
 - **PortImplementation** - at the most detailed level, a PortImplementation defines the specific
     interface of a process: for example, its expected inputs or produced outputs.
@@ -15,7 +15,12 @@ Ports are used to define the interfaces of Processes.
     a particular PortAlias delegates to.
 - **ProcessPort** - defines the Port(s) that are used by a given Process as its interface(s).
 
-(See also [Lineage Relationships](0298-Process-Hierarchies.md).)
+## Further Information
+
+* [Base definition of Process](0010-Base-Model.md)
+* [LineageMapping relationships](0770-Lineage-Mapping.md)
+* [Process Hierarchies](0215-Software-Components.md)
+
 
 Return to [Area 2](Area-2-models.md).
 
