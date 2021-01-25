@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * open metadata and the associated digital landscape.
  *
  * To create your own remediation governance action service, create a new class that extends this class
- * along with another class that extends the GovernanceServiceProvider class to act as its connector provider.
+ * along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  * Add a start() method that begins by calling super.start() and then includes the logic to correct the metadata elements.
  * This is done using the methods available through the governanceContext which is set up just before your start() method is called.
  *
