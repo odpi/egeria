@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.samples.discoveryservices;
+package org.odpi.openmetadata.samples.governanceengine.watchdog.discoveryservices;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * CSVDiscoveryService is a discovery service implementation for analysing CSF Files.
  */
-public class DropFootWeeklyMeasurementsDiscoveryService extends DiscoveryService
+public class ValidatePatientRecordDiscoveryService extends DiscoveryService
 {
     private final static String STRING_TYPE_NAME  = "string";
     private final static String CHAR_TYPE_NAME    = "char";
