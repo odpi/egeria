@@ -164,6 +164,7 @@
 
 ## P
 
+* [Platform URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [Projects](../../open-metadata-implementation/access-services/docs/concepts/projects)
 * [Provenance of metadata](../../open-metadata-publication/website/metadata-provenance)
 
@@ -183,6 +184,7 @@
 * [Resource](../../open-metadata-implementation/access-services/docs/concepts/resource.md)
 * [REST Repository Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)
 * [Reviews](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
+* [Root URL](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 
 ## S
 
@@ -192,8 +194,10 @@
 * [Server Chassis](../../open-metadata-implementation/server-chassis)
 * [Servers for Governance](../../open-metadata-implementation/governance-servers)
 * [Server Personalities (Types)](../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
+* [Server Name](../../open-metadata-implementation/admin-services/docs/concepts/server-name.md)
+* [Server URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [Star Ratings](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
-* [Stewardship Engine](../../open-metadata-implementation/frameworks/governance-action-framework/docs/stewardship-engine.md)
+* [Stewardship Engine](../../open-metadata-implementation/frameworks/governance-action-framework/docs/governance-action-engine.md)
 * [Stewardship Server](../../open-metadata-implementation/admin-services/docs/concepts/stewardship-server.md)
 * [Supported Zones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 
@@ -215,6 +219,7 @@
 
 ## U
 
+* [URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [User Identity](../../open-metadata-implementation/access-services/docs/concepts/users/user-identity.md)
 * [User Roles](../../open-metadata-implementation/access-services/docs/concepts/user-roles)
 * [Users](../../open-metadata-implementation/access-services/docs/concepts/users)
