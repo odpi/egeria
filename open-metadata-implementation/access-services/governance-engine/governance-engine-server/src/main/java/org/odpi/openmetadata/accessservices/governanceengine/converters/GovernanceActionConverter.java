@@ -119,6 +119,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                 {
                                     ActionTargetElement actionTargetElement = new ActionTargetElement();
 
+                                    actionTargetElement.setActionTargetName(this.removeActionTargetName(instanceProperties));
                                     actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, instanceProperties));
                                     actionTargetElement.setStartDate(this.removeStartDate(instanceProperties));
                                     actionTargetElement.setCompletionDate(this.removeCompletionDate(instanceProperties));
@@ -145,6 +146,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
 
                                         instanceProperties = new InstanceProperties(relationship.getProperties());
 
+                                        requestSourceElement.setRequestSourceName(this.removeRequestSourceName(instanceProperties));
                                         requestSourceElement.setOriginGovernanceService(this.removeOriginGovernanceService(instanceProperties));
                                         requestSourceElement.setOriginGovernanceEngine(this.removeOriginGovernanceEngine(instanceProperties));
 
