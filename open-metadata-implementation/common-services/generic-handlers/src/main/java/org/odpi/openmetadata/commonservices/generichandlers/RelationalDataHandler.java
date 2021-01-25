@@ -799,11 +799,11 @@ public class RelationalDataHandler<DATABASE,
                                                                   PropertyServerException
     {
         return databaseHandler.getBeansByType(userId,
-                                          OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
-                                          OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                          startFrom,
-                                          pageSize,
-                                          methodName);
+                                              OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                              OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                              startFrom,
+                                              pageSize,
+                                              methodName);
     }
 
 
