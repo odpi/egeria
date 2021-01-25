@@ -28,10 +28,12 @@ public class GovernanceContext
     private List<RequestSourceElement> requestSourceElements;
     private List<ActionTargetElement>  actionTargetElements;
 
+    private String                     governanceActionGUID;
+
     private volatile CompletionStatus  completionStatus = null;
 
-    protected OpenMetadataClient       openMetadataStore;
-    protected PropertyHelper           propertyHelper = new PropertyHelper();
+    OpenMetadataClient       openMetadataStore;
+    PropertyHelper           propertyHelper = new PropertyHelper();
 
     /**
      * Constructor sets up the key parameters for processing the request to the governance action service.
@@ -53,6 +55,7 @@ public class GovernanceContext
                              OpenMetadataClient         openMetadataStore)
     {
         this.userId = userId;
+        this.governanceActionGUID = governanceActionGUID;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
         this.requestSourceElements = requestSourceElements;
