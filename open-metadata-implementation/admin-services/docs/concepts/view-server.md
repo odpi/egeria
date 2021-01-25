@@ -4,20 +4,19 @@
 # View Server
 
 A **View Server** is an [OMAG Server](omag-server.md)
-that hosts the presentation services to support a UI.
-These services are designed to support specific display paradigms needed
+that hosts the REST API services to support a UI.  
+These REST API services are called 
+[Open Metadata View Services (OMVS)](../../../view-services) 
+and they are designed to support specific display paradigms needed
 by different types of UIs.
 
-Each view server hosts one or more **Open Metadata View Services (OMVSs)**.
-A [view service](../../../view-services) supports a collection of related presentation services
-that support a particular part of a UI.  [Glossary Author OMVS](../../../view-services/glossary-author-view)
-is an example of a view
-service.
+The view services are are typically
+called by the [Presentation Server](presentation-server.md), but may also be used by third parties.
+The presentation server hosts the JavaScript that controls the browser display.
+
 
 ![Figure 1](view-server.png)
 > **Figure 1:** A View Server in the open metadata ecosystem
-
-The presentation server is hosting the JavaScript that controls the browser display.
 
 ## Configuring the View Server
 

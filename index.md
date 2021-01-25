@@ -107,6 +107,8 @@ If you would like to browse to see what is available then these pages may be of 
   the scope and usage of metadata supported by Egeria "out of the box".
 * [Egeria Glossary](open-metadata-publication/website/open-metadata-glossary.md) - provides definitions to terms 
   used in the Egeria project.
+* [Egeria Connector Catalog](open-metadata-publication/website/connector-catalog) - provides descriptions of the
+  connectors supporting the use of third party technology in the open metadata ecosystem.
 * [Egeria Status and Road Map](open-metadata-publication/website/roadmap) - describes the various
   components of Egeria, how they fit together and their current status.
 * [Egeria Module Organization](Content-Organization.md) - defines the hierarchical structure of the modules in the

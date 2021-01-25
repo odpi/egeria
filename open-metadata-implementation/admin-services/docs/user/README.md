@@ -22,7 +22,8 @@ If you are keen to get started right away then these are the links
 to the configuration instructions.
 
 * [Configuring the OMAG Server Platform](configuring-the-omag-server-platform.md)
-* [Configuring an OMAG Server](configuring-an-omag-server.md)
+* [Configuring an OMAG Server to run on an OMAG Server Platform](configuring-an-omag-server.md)
+* [Configuring the Presentation Server (for UIs)](configuring-the-presentation-server.md)
 
 and once you have your OMAG Servers configured:
 
