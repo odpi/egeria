@@ -73,6 +73,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-env
+            - configMapRef:
+                name: {{ .Release.Name }}-autostart
           env:
             {{ if .Values.egeria.debug }}
             - name: JAVA_DEBUG
