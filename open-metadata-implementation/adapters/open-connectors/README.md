@@ -21,14 +21,16 @@ the open metadata configuration.
 * **[data-store-connectors](data-store-connectors)** contains OCF connectors to data stores on different
 data platforms.
 
-* **[discovery-service-connectors](discovery-service-connectors)** implementations of discovery services.
+* **[discovery-service-connectors](discovery-service-connectors)** implementations of open discovery services
+from the [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework).
 
 * **[event-bus-connectors](event-bus-connectors)** supports different event/messaging infrastructures.
 They can be plugged into the topic connectors from the access-service-connectors
 and repository-service-connectors.
 
-* **[governance-action-connectors](governance-action-connectors)** contains governance actions for assessing and acting on
-governance issues detected in the metadata ecosystem.
+* **[governance-action-connectors](governance-action-connectors)** contains governance action services for 
+assessing and acting on governance issues detected in the metadata ecosystem.
+These connectors support the [Governance Action Framework (GAF)](../../frameworks/governance-action-framework).
 
 * **[governance-daemon-connectors](governance-daemon-connectors)** contains connectors for the governance
 servers that monitor activity or synchronize metadata and configuration
@@ -47,7 +49,8 @@ Java.
 In addition there is the **[connector-configuration-factory](connector-configuration-factory)**
 that creates **Connection** objects to configure these connectors.
 
-Return to [Adapters](..)
+----
+* Return to [Adapters](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
