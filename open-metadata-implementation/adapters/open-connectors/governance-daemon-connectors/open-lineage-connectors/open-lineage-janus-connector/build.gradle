@@ -25,6 +25,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.hamcrest:hamcrest'
     testRuntimeOnly 'org.janusgraph:janusgraph-inmemory:0.5.2'
+    testRuntimeOnly 'com.fasterxml.jackson.core:jackson-core'
+    testRuntimeOnly 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.apache.commons:commons-collections4'
 
