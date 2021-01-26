@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# Configuring developer logging options for OMAG server platform
+# Configuring developer logging options for OMAG Server Platform
 
 ## Options for logging system using Spring Boot server chassis
 
@@ -51,3 +51,8 @@ logging.level.org.odpi.openmetadata.frameworks.auditlog.omag-server-2.Repository
 ---
 * Return to [Configuring the Audit Log](configuring-the-audit-log.md)
 * Return to [Configuring the OMAG Server Platform](configuring-the-omag-server-platform.md)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

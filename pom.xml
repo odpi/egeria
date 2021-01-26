@@ -2524,7 +2524,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-service-sample</artifactId>
+                <artifactId>governance-services-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
             <!-- End of POM dependency versions -->
