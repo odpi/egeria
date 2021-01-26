@@ -137,6 +137,7 @@ public class CSVDiscoveryService extends AuditableDiscoveryService
      *
      * @throws ConnectorCheckedException there is a problem within the discovery service.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         final String  methodName = "start";
@@ -145,7 +146,6 @@ public class CSVDiscoveryService extends AuditableDiscoveryService
 
         try
         {
-
             CSVFileStoreConnector    assetConnector  = (CSVFileStoreConnector)discoveryContext.getAssetStore().getConnectorToAsset();
             DiscoveryAnnotationStore annotationStore = discoveryContext.getAnnotationStore();
             int                      size            = 0;

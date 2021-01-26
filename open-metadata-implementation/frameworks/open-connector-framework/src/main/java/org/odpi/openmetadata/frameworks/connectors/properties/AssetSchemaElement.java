@@ -179,7 +179,19 @@ public abstract class AssetSchemaElement extends AssetReferenceable
         {
             return false;
         }
-        AssetSchemaType that = (AssetSchemaType) objectToCompare;
-        return Objects.equals(getSchemaElementBean(), that.getSchemaTypeBean());
+        AssetSchemaElement that = (AssetSchemaElement) objectToCompare;
+        return Objects.equals(schemaElementBean, that.schemaElementBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), schemaElementBean);
     }
 }

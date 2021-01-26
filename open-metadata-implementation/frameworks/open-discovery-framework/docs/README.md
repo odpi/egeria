@@ -37,7 +37,7 @@ Discovery services run in a [Discovery Engine](discovery-engine.md) that is host
 ## Egeria implementation
 
 Egeria provides a full implementation of the ODF.  It provides a
-[discovery server](../../../admin-services/docs/concepts/discovery-server.md)
+[discovery server](../../../engine-services/asset-analysis)
 as well as an implementation of the metadata server APIs by the
 [Discovery Engine OMAS](../../../access-services/discovery-engine).
 There are also implementations of discovery services in the

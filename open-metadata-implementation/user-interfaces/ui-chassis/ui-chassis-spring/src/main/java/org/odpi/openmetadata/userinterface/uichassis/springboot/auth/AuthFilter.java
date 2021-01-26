@@ -37,7 +37,7 @@ public class AuthFilter extends GenericFilterBean {
             LOG.error("TOKEN EXPIRED", e.getMessage());
             SecurityContextHolder.getContext().setAuthentication(null);
         }catch (JwtException e){
-            LOG.error("Token error", e);
+            LOG.debug("Token error", e.getMessage());
             SecurityContextHolder.getContext().setAuthentication(null);
         }catch (Exception e){
             LOG.error("Authentication exception", e);

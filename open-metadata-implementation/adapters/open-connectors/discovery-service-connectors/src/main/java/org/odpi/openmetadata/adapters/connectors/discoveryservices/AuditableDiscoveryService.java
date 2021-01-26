@@ -18,8 +18,6 @@ import java.util.List;
  */
 public abstract class AuditableDiscoveryService extends DiscoveryService implements AuditLoggingComponent
 {
-    protected AuditLog auditLog = null;
-
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
      * with the correct component description and log destinations.

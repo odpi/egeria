@@ -103,7 +103,7 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
     REFRESH_DISCOVERY_SERVICE("OMAS-DISCOVERY-ENGINE-0010",
              OMRSAuditLogRecordSeverity.INFO,
              "The Discovery Engine Open Metadata Access Service (OMAS) sent notification that discovery engine {0} ({1}) had a " +
-                                      "configuration change for discovery request types {2} that map to registered discovery service {3}",
+                                      "configuration change for discovery request type {2} mapped to registered discovery service {3}",
              "The access service sends out configuration notifications to ensure connected discovery servers have the most up to-date " +
                                       "configuration about the discovery service.",
               "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
@@ -171,6 +171,7 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -183,6 +184,7 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);

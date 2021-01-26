@@ -153,7 +153,7 @@ public class AssetRelatedMediaReference extends AssetExternalReference
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetRelatedMediaReference))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -162,6 +162,18 @@ public class AssetRelatedMediaReference extends AssetExternalReference
             return false;
         }
         AssetRelatedMediaReference that = (AssetRelatedMediaReference) objectToCompare;
-        return Objects.equals(getRelatedMediaReferenceBean(), that.getRelatedMediaReferenceBean());
+        return Objects.equals(relatedMediaReferenceBean, that.relatedMediaReferenceBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), relatedMediaReferenceBean);
     }
 }

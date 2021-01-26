@@ -24,8 +24,10 @@ public class DataFlowElement implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader      elementHeader      = null;
+    private ElementHeader      dataFlowHeader     = null;
     private DataFlowProperties dataFlowProperties = null;
+    private ElementHeader      dataSupplier       = null;
+    private ElementHeader      dataConsumer       = null;
 
     /**
      * Default constructor
@@ -45,34 +47,34 @@ public class DataFlowElement implements Serializable
     {
         if (template != null)
         {
-            elementHeader      = template.getElementHeader();
+            dataFlowHeader = template.getDataFlowHeader();
             dataFlowProperties = template.getDataFlowProperties();
+            dataSupplier = template.getDataSupplier();
+            dataConsumer = template.getDataConsumer();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Return the element header associated with the relationship.
      *
      * @return element header object
      */
-    public ElementHeader getElementHeader()
+    public ElementHeader getDataFlowHeader()
     {
-        return elementHeader;
+        return dataFlowHeader;
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the element header associated with the relationship.
      *
-     * @param elementHeader element header object
+     * @param dataFlowHeader element header object
      */
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setDataFlowHeader(ElementHeader dataFlowHeader)
     {
-        this.elementHeader = elementHeader;
+        this.dataFlowHeader = dataFlowHeader;
     }
-
-
 
 
     /**
@@ -98,6 +100,51 @@ public class DataFlowElement implements Serializable
 
 
     /**
+     * Return the element header associated with end 1 of the relationship.
+     *
+     * @return element header object
+     */
+    public ElementHeader getDataSupplier()
+    {
+        return dataSupplier;
+    }
+
+
+    /**
+     * Set up the element header associated with end 1 of the relationship.
+     *
+     * @param dataSupplier element header object
+     */
+    public void setDataSupplier(ElementHeader dataSupplier)
+    {
+        this.dataSupplier = dataSupplier;
+    }
+
+
+
+    /**
+     * Return the element header associated with end 2 of the relationship.
+     *
+     * @return element header object
+     */
+    public ElementHeader getDataConsumer()
+    {
+        return dataConsumer;
+    }
+
+
+    /**
+     * Set up the element header associated with end 2 of the relationship.
+     *
+     * @param dataConsumer element header object
+     */
+    public void setDataConsumer(ElementHeader dataConsumer)
+    {
+        this.dataConsumer = dataConsumer;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -106,8 +153,10 @@ public class DataFlowElement implements Serializable
     public String toString()
     {
         return "DataFlowElement{" +
-                       "elementHeader=" + elementHeader +
+                       "dataFlowHeader=" + dataFlowHeader +
                        ", dataFlowProperties=" + dataFlowProperties +
+                       ", dataSupplier=" + dataSupplier +
+                       ", dataConsumer=" + dataConsumer +
                        '}';
     }
 
@@ -129,13 +178,11 @@ public class DataFlowElement implements Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         DataFlowElement that = (DataFlowElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(dataFlowProperties, that.dataFlowProperties);
+        return Objects.equals(getDataFlowHeader(), that.getDataFlowHeader()) &&
+                       Objects.equals(getDataFlowProperties(), that.getDataFlowProperties()) &&
+                       Objects.equals(getDataSupplier(), that.getDataSupplier()) &&
+                       Objects.equals(getDataConsumer(), that.getDataConsumer());
     }
 
 
@@ -147,6 +194,6 @@ public class DataFlowElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, dataFlowProperties);
+        return Objects.hash(super.hashCode(), dataFlowHeader, dataFlowProperties, dataSupplier, dataConsumer);
     }
 }

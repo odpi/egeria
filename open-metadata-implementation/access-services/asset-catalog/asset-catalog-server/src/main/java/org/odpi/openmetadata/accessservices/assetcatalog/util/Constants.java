@@ -12,7 +12,7 @@ public final class Constants {
     public static final String SCHEMA_ELEMENT_GUID = "718d4244-8559-49ed-ad5a-10e5c305a656";
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
-    public static final String GLOSSARY_TERM_GUID = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
+    public static final String GLOSSARY_TERM_TYPE_GUID = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String ASSET = "Asset";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
@@ -89,11 +89,12 @@ public final class Constants {
     public static final String TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
+    public static final String DISPLAY_NAME = "displayName";
+    public static final String TYPE_SEQUENCING = "type";
 
     public static final String GUID_PARAMETER = "GUID";
     public static final String SEARCH_PARAMETER = "searchParameter";
     public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME = "additionalProperties";
-
     private Constants() {
     }
 }

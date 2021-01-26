@@ -8,7 +8,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 
 /**
- * The IntegrationDaemonServicesAuditCode is used to define the message content for the OMRS Audit Log.
+ * The CatalogIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -22,21 +22,20 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum CatalogIntegratorAuditCode implements AuditLogMessageSet
 {
-    CONTEXT_INITIALIZING("CATALOG-INTEGRATOR-0001",
+    CONTEXT_INITIALIZING("OMIS-CATALOG-INTEGRATOR-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The catalog integrator context manager is being initialized for calls to server {0} on platform {1}",
                         "The Catalog Integrator OMIS is initializing its context manager.",
                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
-    CONNECTOR_CONTEXT_INITIALIZING("CATALOG-INTEGRATOR-0002",
+    CONNECTOR_CONTEXT_INITIALIZING("OMIS-CATALOG-INTEGRATOR-0002",
                         OMRSAuditLogRecordSeverity.STARTUP,
-                        "The {0} is initializing in server {1}",
-                        "A new Open Metadata Integration Service (OMIS) is starting up in the integration daemon.  " +
-                                "It will begin to initialize its context manager and the integration connectors that will exchange metadata " +
-                                             "between the open metadata ecosystem and a third party technology.",
-                        "Verify that the start up sequence goes on to initialize the configured integration connectors."),
+                        "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
+                        "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
+                                "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
+                        "Verify that this connector is being started with the correct configuration."),
 
-    PERMITTED_SYNCHRONIZATION("CATALOG-INTEGRATOR-0003",
+    PERMITTED_SYNCHRONIZATION("OMIS-CATALOG-INTEGRATOR-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The context for connector {0} has its permitted synchronization set to {1}",
              "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
@@ -44,12 +43,12 @@ public enum CatalogIntegratorAuditCode implements AuditLogMessageSet
              "Check that this permitted synchronized value is as expected.  If it is not," +
                      "change the configuration for this connector and restart the integration daemon."),
 
-    DISABLED_EXCHANGE_SERVICES("CATALOG-INTEGRATOR-0004",
+    DISABLED_EXCHANGE_SERVICES("OMIS-CATALOG-INTEGRATOR-0004",
                                OMRSAuditLogRecordSeverity.STARTUP,
                                "The following exchange services are disabled in the context for connector {1}: {2}",
-                               "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
+                               "The context is set up to ensure that the connector can only issue requests to supported services.  " +
                                        "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
-                               "Check that this permitted synchronized value is as expected.  If it is not," +
+                               "Check that this value is as expected.  If it is not, " +
                                        "change the configuration for this connector and restart the integration daemon."),
     ;
 
@@ -59,10 +58,10 @@ public enum CatalogIntegratorAuditCode implements AuditLogMessageSet
 
 
     /**
-     * The constructor for IntegrationDaemonServicesAuditCode expects to be passed one of the enumeration rows defined in
-     * IntegrationDaemonServicesAuditCode above.   For example:
+     * The constructor for CatalogIntegratorAuditCode expects to be passed one of the enumeration rows defined in
+     * CatalogIntegratorAuditCode above.   For example:
      *
-     *     IntegrationDaemonServicesAuditCode   auditCode = IntegrationDaemonServicesAuditCode.SERVER_SHUTDOWN;
+     *     CatalogIntegratorAuditCode   auditCode = CatalogIntegratorAuditCode.SERVER_SHUTDOWN;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -91,6 +90,7 @@ public enum CatalogIntegratorAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -103,6 +103,7 @@ public enum CatalogIntegratorAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);
@@ -118,7 +119,7 @@ public enum CatalogIntegratorAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "IntegrationDaemonServicesAuditCode{" +
+        return "CatalogIntegratorAuditCode{" +
                 "messageDefinition=" + messageDefinition +
                 '}';
     }

@@ -76,16 +76,15 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[governance-action-framework](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
   * **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.
     * **[data-engine-proxy-services](open-metadata-implementation/governance-servers/data-engine-proxy-services)** - supports automated metadata cataloguing from data engines.
-    * **[discovery-engine-services](open-metadata-implementation/governance-servers/discovery-engine-services)** - supports automated metadata discovery.
-    * **[engine-host-services](open-metadata-implementation/governance-servers/engine-host-services)** - supports the management of external engines hosted in the [Engine Host](open-metadata-implementation/admin-services/docs/concepts/engine-host.md) OMAG Server.
+    * **[integration-daemon-services](open-metadata-implementation/governance-servers/integration-daemon-services)** - supports the exchange of metadata with third party technologies.
     * **[open-lineage-services](open-metadata-implementation/governance-servers/open-lineage-services)** - provides historic warehouse for lineage.
-    * **[security-sync-services](open-metadata-implementation/governance-servers/security-sync-services)** - supports automated configuration of security engines.
-    * **[stewardship-engine-services](open-metadata-implementation/governance-servers/stewardship-engine-services)** - supports automated stewardship actions.
   * **[integration-services](open-metadata-implementation/integration-services)** - services that host integration connectors.  These run in the [Integration Daemon](open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md) OMAG Server.
     * **[catalog-integrator](open-metadata-implementation/integration-services/catalog-integrator)** - services to exchange metadata with asset managers and catalogs.
     * **[database-integrator](open-metadata-implementation/integration-services/database-integrator)** - services to capture metadata from file systems and file management applications.
     * **[files-integrator](open-metadata-implementation/integration-services/files-integrator)** - services to exchange metadata with relational databases.
     * **[organization-integrator](open-metadata-implementation/integration-services/organization-integrator)** - services to load metadata about the organization, including user identifiers, profiles, team structures and department hierarchy.
+    * **[lineage-integrator](open-metadata-implementation/integration-services/lineage-integrator)** - services to load lineage metadata.
+    * **[security-integrator](open-metadata-implementation/integration-services/security-integrator)** - services to push security tags to an external security enforcement point.
   * **[platform-services](open-metadata-implementation/platform-services)** - the platform services support REST APIs for the OMAG Server Platform.
   * **[repository-services](open-metadata-implementation/repository-services)** - metadata exchange and federation - aka the Open Metadata Repository Services (OMRS).
   * **[server-chassis](open-metadata-implementation/server-chassis)** - the server chassis provides the server framework for the OMAG Server Platform.

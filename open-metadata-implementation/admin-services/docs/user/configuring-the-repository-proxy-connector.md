@@ -19,7 +19,7 @@ This is done by adding the connection
 for the repository proxy as the local repository.
 
 ```
-POST {{serverURLRoot}}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/proxy-details?connectorProvider={fullyQualifiedJavaClassName}
+POST {{platformURLRoot}}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/proxy-details?connectorProvider={fullyQualifiedJavaClassName}
 ```
 
 ### Add the connection to the repository's event mapper
@@ -35,7 +35,7 @@ from the repository and converts them into calls to the OMRS.
 The OMRS then distributes this new metadata.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName/local-repository/event-mapper-details?connectorProvider={fullyQualifiedJavaClassName}&eventSource={resourceName}
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName/local-repository/event-mapper-details?connectorProvider={fullyQualifiedJavaClassName}&eventSource={resourceName}
 ```
 
 For example, to enable the IBM Information Governance Catalog event mapper,
@@ -44,7 +44,7 @@ domain (services) tier of the environment, and `59092` is the port on which
 its Kafka bus can be accessed):
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=igc.hostname.somewhere.com:59092
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=igc.hostname.somewhere.com:59092
 ```
 
 ----

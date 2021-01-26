@@ -33,9 +33,9 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    IntegrationDaemonConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public IntegrationDaemonConfigurationClient(String adminUserId,
+                                                String serverName,
+                                                String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -53,11 +53,11 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    IntegrationDaemonConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL,
-                                         String connectionUserId,
-                                         String connectionPassword) throws OMAGInvalidParameterException
+    public IntegrationDaemonConfigurationClient(String adminUserId,
+                                                String serverName,
+                                                String serverPlatformRootURL,
+                                                String connectionUserId,
+                                                String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }
@@ -180,7 +180,6 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @param partnerOMASServerName name of server where the access service used by this integration service is running
      * @param serviceURLMarker string indicating which integration service it is configuring
      * @param integrationServiceOptions property name/value pairs used to configure the integration service
-     * @param integratorQualifiedName unique name of the integrator used for metadata created by this integration service
      * @param integrationConnectorConfigs Connection properties
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
@@ -191,7 +190,6 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
                                             String                           partnerOMASServerName,
                                             String                           serviceURLMarker,
                                             Map<String, Object>              integrationServiceOptions,
-                                            String                           integratorQualifiedName,
                                             List<IntegrationConnectorConfig> integrationConnectorConfigs) throws OMAGNotAuthorizedException,
                                                                                                                  OMAGInvalidParameterException,
                                                                                                                  OMAGConfigurationErrorException
@@ -241,7 +239,7 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
         final String methodName    = "configureIntegrationService";
         final String configName    = "serviceConfig";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/integration-services/{2}/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/integration-services/configuration";
 
         try
         {
@@ -257,8 +255,7 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
                                         serverPlatformRootURL + urlTemplate,
                                         serviceConfig,
                                         adminUserId,
-                                        serverName,
-                                        serviceConfig.getIntegrationServiceURLMarker());
+                                        serverName);
     }
 
 
@@ -278,7 +275,7 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
     {
         final String methodName    = "setIntegrationServicesConfig";
         final String configName    = "integrationServicesConfig";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/integration-services/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/integration-services/configuration/all";
 
         try
         {

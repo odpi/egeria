@@ -25,8 +25,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
 {
     private final String databaseManagerGUIDParameterName = "databaseManagerGUID";
     private final String databaseManagerNameParameterName = "databaseManagerName";
-    private final String editURLTemplatePrefix
-            = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/database-managers/{2}/{3}/databases";
+    private final String editURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/database-managers/{2}/{3}/databases";
     private final String retrieveURLTemplatePrefix   = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
     private final String governanceURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
 
@@ -143,6 +142,8 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
         this.restClient = restClient;
     }
 
@@ -193,6 +194,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabase(String             userId,
                                  String             databaseManagerGUID,
                                  String             databaseManagerName,
@@ -239,6 +241,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseFromTemplate(String             userId,
                                              String             databaseManagerGUID,
                                              String             databaseManagerName,
@@ -287,6 +290,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateDatabase(String             userId,
                                String             databaseManagerGUID,
                                String             databaseManagerName,
@@ -332,6 +336,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void publishDatabase(String userId,
                                 String databaseGUID) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
@@ -366,6 +371,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void withdrawDatabase(String userId,
                                  String databaseGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
@@ -401,6 +407,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeDatabase(String userId,
                                String databaseManagerGUID,
                                String databaseManagerName,
@@ -450,6 +457,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseElement> findDatabases(String userId,
                                                String searchString,
                                                int    startFrom,
@@ -464,7 +472,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -493,6 +501,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseElement>   getDatabasesByName(String userId,
                                                       String name,
                                                       int    startFrom,
@@ -507,7 +516,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -536,6 +545,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseElement>   getDatabasesForDatabaseManager(String userId,
                                                                   String databaseManagerGUID,
                                                                   String databaseManagerName,
@@ -551,7 +561,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = editURLTemplatePrefix + "?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "?startFrom={4}&pageSize={5}";
 
         DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
                                                                            urlTemplate,
@@ -578,6 +588,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public DatabaseElement getDatabaseByGUID(String userId,
                                              String guid) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
@@ -589,7 +600,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/{2}";
 
         DatabaseResponse restResult = restClient.callDatabaseGetRESTCall(methodName,
                                                                          urlTemplate,
@@ -620,6 +631,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseSchema(String                   userId,
                                        String                   databaseManagerGUID,
                                        String                   databaseManagerName,
@@ -669,6 +681,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseSchemaFromTemplate(String             userId,
                                                    String             databaseManagerGUID,
                                                    String             databaseManagerName,
@@ -719,6 +732,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateDatabaseSchema(String                   userId,
                                      String                   databaseManagerGUID,
                                      String                   databaseManagerName,
@@ -762,6 +776,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void publishDatabaseSchema(String userId,
                                       String databaseSchemaGUID) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
@@ -796,6 +811,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void withdrawDatabaseSchema(String userId,
                                        String databaseSchemaGUID) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -831,6 +847,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeDatabaseSchema(String userId,
                                      String databaseManagerGUID,
                                      String databaseManagerName,
@@ -878,6 +895,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseSchemaElement>   findDatabaseSchemas(String userId,
                                                              String searchString,
                                                              int    startFrom,
@@ -892,7 +910,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -920,6 +938,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseSchemaElement>   getSchemasForDatabase(String userId,
                                                                String databaseGUID,
                                                                int    startFrom,
@@ -934,7 +953,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/{2}/schemas?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/{2}/schemas?startFrom={3}&pageSize={4}";
 
         DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -963,6 +982,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseSchemaElement>   getDatabaseSchemasByName(String userId,
                                                                   String name,
                                                                   int    startFrom,
@@ -977,7 +997,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -1003,6 +1023,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public DatabaseSchemaElement getDatabaseSchemaByGUID(String userId,
                                                          String guid) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -1014,7 +1035,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/{2}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/{2}";
 
         DatabaseSchemaResponse restResult = restClient.callDatabaseSchemaGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1045,6 +1066,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseTable(String                  userId,
                                       String                  databaseManagerGUID,
                                       String                  databaseManagerName,
@@ -1094,6 +1116,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseTableFromTemplate(String             userId,
                                                   String             databaseManagerGUID,
                                                   String             databaseManagerName,
@@ -1144,6 +1167,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateDatabaseTable(String                  userId,
                                     String                  databaseManagerGUID,
                                     String                  databaseManagerName,
@@ -1188,6 +1212,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeDatabaseTable(String userId,
                                     String databaseManagerGUID,
                                     String databaseManagerName,
@@ -1235,6 +1260,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseTableElement>   findDatabaseTables(String userId,
                                                            String searchString,
                                                            int    startFrom,
@@ -1249,7 +1275,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1277,6 +1303,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseTableElement>    getTablesForDatabaseSchema(String userId,
                                                                     String databaseSchemaGUID,
                                                                     int    startFrom,
@@ -1291,7 +1318,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/{2}/tables?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/{2}/tables?startFrom={3}&pageSize={4}";
 
         DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1320,6 +1347,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseTableElement>   getDatabaseTablesByName(String userId,
                                                                 String name,
                                                                 int    startFrom,
@@ -1334,7 +1362,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1360,6 +1388,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public DatabaseTableElement getDatabaseTableByGUID(String userId,
                                                        String guid) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -1371,7 +1400,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/{2}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/{2}";
 
         DatabaseTableResponse restResult = restClient.callDatabaseTableGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -1398,6 +1427,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseView(String                 userId,
                                      String                 databaseManagerGUID,
                                      String                 databaseManagerName,
@@ -1447,6 +1477,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseViewFromTemplate(String             userId,
                                                  String             databaseManagerGUID,
                                                  String             databaseManagerName,
@@ -1497,6 +1528,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateDatabaseView(String                 userId,
                                    String                 databaseManagerGUID,
                                    String                 databaseManagerName,
@@ -1541,6 +1573,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeDatabaseView(String userId,
                                    String databaseManagerGUID,
                                    String databaseManagerName,
@@ -1588,6 +1621,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseViewElement>   findDatabaseViews(String userId,
                                                          String searchString,
                                                          int    startFrom,
@@ -1602,7 +1636,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/views/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -1630,6 +1664,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseViewElement>    getViewsForDatabaseSchema(String userId,
                                                                   String databaseSchemaGUID,
                                                                   int    startFrom,
@@ -1644,7 +1679,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/{2}/tables/views?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/{2}/tables/views?startFrom={3}&pageSize={4}";
 
         DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -1673,6 +1708,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseViewElement>   getDatabaseViewsByName(String userId,
                                                               String name,
                                                               int    startFrom,
@@ -1687,7 +1723,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/views/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -1713,6 +1749,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public DatabaseViewElement getDatabaseViewByGUID(String userId,
                                                      String guid) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -1724,7 +1761,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/views/{2}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/{2}";
 
         DatabaseViewResponse restResult = restClient.callDatabaseViewGetRESTCall(methodName,
                                                                                  urlTemplate,
@@ -1757,6 +1794,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseColumn(String                   userId,
                                        String                   databaseManagerGUID,
                                        String                   databaseManagerName,
@@ -1806,6 +1844,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createDatabaseColumnFromTemplate(String             userId,
                                                    String             databaseManagerGUID,
                                                    String             databaseManagerName,
@@ -1856,6 +1895,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateDatabaseColumn(String                   userId,
                                      String                   databaseManagerGUID,
                                      String                   databaseManagerName,
@@ -1900,6 +1940,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeDatabaseColumn(String userId,
                                      String databaseManagerGUID,
                                      String databaseManagerName,
@@ -1947,6 +1988,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseColumnElement>   findDatabaseColumns(String userId,
                                                              String searchString,
                                                              int    startFrom,
@@ -1961,7 +2003,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/columns/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -1989,6 +2031,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseColumnElement>    getColumnsForDatabaseTable(String userId,
                                                                      String databaseTableGUID,
                                                                      int    startFrom,
@@ -2003,7 +2046,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/{2}/columns?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/{2}/columns?startFrom={3}&pageSize={4}";
 
         DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -2032,6 +2075,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<DatabaseColumnElement>   getDatabaseColumnsByName(String userId,
                                                                   String name,
                                                                   int    startFrom,
@@ -2046,7 +2090,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "schemas/tables/columns/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -2072,6 +2116,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public DatabaseColumnElement getDatabaseColumnByGUID(String userId,
                                                          String guid) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -2083,7 +2128,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/schemas/tables/columns/{2}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/{2}";
 
         DatabaseColumnResponse restResult = restClient.callDatabaseColumnGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -2113,6 +2158,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setPrimaryKeyOnColumn(String                       userId,
                                       String                       databaseManagerGUID,
                                       String                       databaseManagerName,
@@ -2156,6 +2202,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removePrimaryKeyFromColumn(String                       userId,
                                            String                       databaseManagerGUID,
                                            String                       databaseManagerName,
@@ -2199,6 +2246,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void addForeignKeyRelationship(String                       userId,
                                           String                       databaseManagerGUID,
                                           String                       databaseManagerName,
@@ -2247,6 +2295,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeForeignKeyRelationship(String                       userId,
                                              String                       databaseManagerGUID,
                                              String                       databaseManagerName,

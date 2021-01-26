@@ -4,18 +4,7 @@ package org.odpi.openmetadata.viewservices.dino.server;
 
 
 
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoPlatformOverviewResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoPlatformRequestBody;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoResourceEndpointListResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerAuditLogResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerConfigResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerDoubleConfigResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerListResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerOverviewResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerRequestBody;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServerTypeResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoServiceListResponse;
-import org.odpi.openmetadata.viewservices.dino.api.rest.DinoStringResponse;
+import org.odpi.openmetadata.viewservices.dino.api.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -253,7 +242,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the server origin or exception information
      */
 
     @PostMapping("/server/{serverName}/origin")
@@ -273,7 +262,7 @@ public class DinoViewRESTResource {
      * @param userId       user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the server type information (as a String) or exception information
+     * @return response object containing the server type information or exception information
      */
 
     @PostMapping("/server/{serverName}/server-type-classification")
@@ -293,7 +282,7 @@ public class DinoViewRESTResource {
      * @param userId       user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the server configuration or exception information
      */
 
     @PostMapping("/server/{serverName}/configuration")
@@ -314,7 +303,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the server configuration or exception information
      */
 
     @PostMapping("/server/{serverName}/instance/configuration")
@@ -334,7 +323,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the server configuration or exception information
      */
 
     @PostMapping("/server/{serverName}/stored-and-active-configuration")
@@ -354,7 +343,7 @@ public class DinoViewRESTResource {
      * @param userId           user account under which to conduct operation.
      * @param serverName       name of the server
      * @param requestBody      request body containing parameters to formulate repository request
-     * @return response object containing the repository's type information or exception information
+     * @return response object containing the server's audit log or exception information
      */
 
     @PostMapping("/server/{serverName}/audit-log")
@@ -363,6 +352,187 @@ public class DinoViewRESTResource {
                                                         @PathVariable String                           serverName,
                                                         @RequestBody DinoServerRequestBody             requestBody  ) {
         return restAPI.serverGetAuditLog(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get a list of the integration services on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the list of integration services or exception information
+     */
+
+    @PostMapping("/server/{serverName}/integration-services")
+    public DinoServiceListResponse getServerIntegrationServices(@PathVariable String                      viewServerName,
+                                                                @PathVariable String                      userId,
+                                                                @PathVariable String                      serverName,
+                                                                @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetIntegrationServices(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get a list of the engine services on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the list of integration services or exception information
+     */
+
+    @PostMapping("/server/{serverName}/engine-services")
+    public DinoServiceListResponse getServerEngineServices(@PathVariable String                      viewServerName,
+                                                           @PathVariable String                      userId,
+                                                           @PathVariable String                      serverName,
+                                                           @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetEngineServices(viewServerName, userId, requestBody);
+
+    }
+    /**
+     * Get a list of the access services on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the list of integration services or exception information
+     */
+
+    @PostMapping("/server/{serverName}/access-services")
+    public DinoServiceListResponse getServerAccessServices(@PathVariable String                      viewServerName,
+                                                           @PathVariable String                      userId,
+                                                           @PathVariable String                      serverName,
+                                                           @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetAccessServices(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get a list of the view services on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the list of integration services or exception information
+     */
+
+    @PostMapping("/server/{serverName}/view-services")
+    public DinoServiceListResponse getServerViewServices(@PathVariable String                      viewServerName,
+                                                         @PathVariable String                      userId,
+                                                         @PathVariable String                      serverName,
+                                                         @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetViewServices(viewServerName, userId, requestBody);
+
+    }
+
+
+    /**
+     * Get the details of an integration service running on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the service's details or exception information
+     */
+
+    @PostMapping("/server/{serverName}/integration-service-details")
+    public DinoServiceDetailsResponse getServerIntegrationServiceDetails(@PathVariable String                      viewServerName,
+                                                                         @PathVariable String                      userId,
+                                                                         @PathVariable String                      serverName,
+                                                                         @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetIntegrationServiceDetails(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get the details of an engine service running on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the service's details or exception information
+     */
+
+    @PostMapping("/server/{serverName}/engine-service-details")
+    public DinoServiceDetailsResponse getServerEngineServiceDetails(@PathVariable String                      viewServerName,
+                                                                    @PathVariable String                      userId,
+                                                                    @PathVariable String                      serverName,
+                                                                    @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetEngineServiceDetails(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get the details of an access service running on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the service's details or exception information
+     */
+
+    @PostMapping("/server/{serverName}/access-service-details")
+    public DinoServiceDetailsResponse getServerAccessServiceDetails(@PathVariable String                      viewServerName,
+                                                                    @PathVariable String                      userId,
+                                                                    @PathVariable String                      serverName,
+                                                                    @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetAccessServiceDetails(viewServerName, userId, requestBody);
+
+    }
+
+    /**
+     * Get the details of a view service running on the server
+     *
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the service's details or exception information
+     */
+
+    @PostMapping("/server/{serverName}/view-service-details")
+    public DinoServiceDetailsResponse getServerViewServiceDetails(@PathVariable String                      viewServerName,
+                                                                  @PathVariable String                      userId,
+                                                                  @PathVariable String                      serverName,
+                                                                  @RequestBody DinoServiceRequestBody       requestBody  ) {
+        return restAPI.serverGetViewServiceDetails(viewServerName, userId, requestBody);
+
+    }
+
+
+    /**
+     * Get the details of an engine running on the server. This wll return a list of the services registered to the engine
+     * The request body contains the serverName, platformName and OMES service name, plus the engine name.
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId           user account under which to conduct operation.
+     * @param serverName       name of the server
+     * @param requestBody      request body containing parameters to formulate repository request
+     * @return response object containing the service's details or exception information
+     */
+
+    @PostMapping("/server/{serverName}/engine-details")
+    public DinoEngineDetailsResponse getServerEngineServiceDetails(@PathVariable String                      viewServerName,
+                                                                    @PathVariable String                      userId,
+                                                                    @PathVariable String                      serverName,
+                                                                    @RequestBody DinoEngineRequestBody requestBody  ) {
+        return restAPI.serverGetEngineDetails(viewServerName, userId, requestBody);
 
     }
 }

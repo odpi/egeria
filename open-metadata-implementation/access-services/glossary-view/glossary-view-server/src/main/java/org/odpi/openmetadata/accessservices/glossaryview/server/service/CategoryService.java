@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 public class CategoryService extends GlossaryViewOMAS {
 
     private static final String CATEGORY_TYPE_NAME = "GlossaryCategory";
+    private static final String GLOSSARY_TYPE_NAME = "Glossary";
 
     private static final String CATEGORY_ANCHOR_RELATIONSHIP_NAME = "CategoryAnchor";
     private static final String CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME ="CategoryHierarchyLink";
@@ -46,7 +47,7 @@ public class CategoryService extends GlossaryViewOMAS {
      */
     public GlossaryViewEntityDetailResponse getCategoriesViaCategoryAnchorRelationships(String userId, String serverName,
                                                                                         String glossaryGUID, Integer from, Integer size){
-        return getRelatedEntitiesResponse(userId, serverName, glossaryGUID, CATEGORY_TYPE_NAME,
+        return getRelatedEntitiesResponse(userId, serverName, glossaryGUID, GLOSSARY_TYPE_NAME,
                 CATEGORY_ANCHOR_RELATIONSHIP_NAME, from, size, "getCategoriesViaCategoryAnchorRelationships");
     }
 

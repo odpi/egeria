@@ -186,7 +186,10 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
         }
         catch (EntityNotKnownException error)
         {
-            accumulator.captureException(metadataCollectionId, error);
+            /*
+             * The entity is not known in the remote system so convert this to a null response.
+             */
+            accumulator.addRelationships(null, metadataCollectionId);
         }
         catch (FunctionNotSupportedException error)
         {

@@ -100,6 +100,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
      * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
+    @Override
     protected  AssetExternalIdentifiers cloneIterator(AssetDescriptor parentAsset)
     {
         return new ConnectedAssetExternalIdentifiers(connectedAsset, this);
@@ -114,6 +115,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
      * @param template object to clone
      * @return new cloned object.
      */
+    @Override
     protected  AssetPropertyBase cloneElement(AssetDescriptor  parentAsset, AssetPropertyBase template)
     {
         return new AssetExternalIdentifier(parentAsset, (AssetExternalIdentifier)template);
@@ -128,6 +130,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
      * @return list of elements corresponding to the supplied cache pointers.
      * @throws PropertyServerException there is a problem retrieving elements from the property (metadata) server.
      */
+    @Override
     protected  List<AssetPropertyBase> getCachedList(int  cacheStartPointer,
                                                      int  maximumSize) throws PropertyServerException
     {

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>lineage-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.5-SNAPSHOT</version>
+        <version>2.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -21,7 +21,7 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Lineage Integrator Server-side</name>
+    <name>Lineage Integrator OMIS Server-side</name>
     <description>
         Context and context manager implementation for this integration service.
     </description>

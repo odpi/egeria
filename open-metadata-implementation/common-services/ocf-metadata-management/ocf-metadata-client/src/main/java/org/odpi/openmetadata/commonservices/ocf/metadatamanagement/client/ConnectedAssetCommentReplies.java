@@ -101,6 +101,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
      * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
+    @Override
     protected  AssetCommentReplies cloneIterator(AssetDescriptor parentAsset)
     {
         return new ConnectedAssetCommentReplies(connectedAsset, this);
@@ -115,6 +116,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
      * @param template object to clone
      * @return new cloned object.
      */
+    @Override
     protected  AssetPropertyBase cloneElement(AssetDescriptor  parentAsset, AssetPropertyBase template)
     {
         return new AssetComment(parentAsset, (AssetComment)template);
@@ -129,6 +131,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
      * @return list of elements corresponding to the supplied cache pointers.
      * @throws PropertyServerException there is a problem retrieving elements from the property (metadata) server.
      */
+    @Override
     protected  List<AssetPropertyBase> getCachedList(int  cacheStartPointer,
                                                      int  maximumSize) throws PropertyServerException
     {

@@ -126,6 +126,7 @@ public class AssetMeaning extends AssetElementHeader
     }
 
 
+
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -139,7 +140,7 @@ public class AssetMeaning extends AssetElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetMeaning))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -148,6 +149,18 @@ public class AssetMeaning extends AssetElementHeader
             return false;
         }
         AssetMeaning that = (AssetMeaning) objectToCompare;
-        return Objects.equals(getMeaningBean(), that.getMeaningBean());
+        return Objects.equals(meaningBean, that.meaningBean);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), meaningBean);
     }
 }

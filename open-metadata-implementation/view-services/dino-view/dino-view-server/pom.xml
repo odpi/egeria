@@ -9,7 +9,7 @@
     <parent>
         <artifactId>dino-view</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.5-SNAPSHOT</version>
+        <version>2.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -89,6 +89,20 @@
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-client</artifactId>
+        </dependency>
 
     </dependencies>
 

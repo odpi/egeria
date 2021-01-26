@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.admin;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.listener.AssetConsumerOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
@@ -43,6 +44,7 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
      * @param serverUserName  user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
+    @Override
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
@@ -65,7 +67,8 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                               supportedZones,
                                                               auditLog,
                                                               serverUserName,
-                                                              repositoryConnector.getMaxPageSize());
+                                                              repositoryConnector.getMaxPageSize(),
+                                                              accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
             /*
@@ -114,6 +117,7 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
+    @Override
     public void shutdown()
     {
         final String            actionDescription = "shutdown";

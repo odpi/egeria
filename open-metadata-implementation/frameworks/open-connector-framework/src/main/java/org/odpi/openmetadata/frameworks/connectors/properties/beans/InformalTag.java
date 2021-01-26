@@ -216,7 +216,7 @@ public class InformalTag extends ElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof InformalTag))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -225,10 +225,22 @@ public class InformalTag extends ElementHeader
             return false;
         }
         InformalTag that = (InformalTag) objectToCompare;
-        return getIsPublic() == that.getIsPublic() &&
-                getIsPrivateTag() == that.getIsPrivateTag() &&
-                Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getUser(), that.getUser());
+        return isPublic == that.isPublic &&
+                       isPrivateTag == that.isPrivateTag &&
+                       Objects.equals(getName(), that.getName()) &&
+                       Objects.equals(getDescription(), that.getDescription()) &&
+                       Objects.equals(getUser(), that.getUser());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), isPublic, isPrivateTag, getName(), getDescription(), getUser());
     }
 }

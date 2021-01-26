@@ -516,6 +516,21 @@ public class OMRSOperationalServices
      *
      * @param repositoryServicesConfig current configuration values
      */
+    public void initializeEngineHostServer(RepositoryServicesConfig repositoryServicesConfig)
+    {
+        final String   actionDescription = "Initialize Repository Services for Engine Hosting OMAG Server";
+        final String   methodName        = "initializeEngineHostServer";
+
+        initializeSimpleServer(repositoryServicesConfig, actionDescription, methodName);
+    }
+
+
+    /**
+     * Initialize the OMRS component for the Open Metadata Repository Services (OMRS).  The configuration
+     * is taken as is.  Any configuration errors are reported as exceptions.
+     *
+     * @param repositoryServicesConfig current configuration values
+     */
     public void initializeViewServer(RepositoryServicesConfig repositoryServicesConfig)
     {
         final String   actionDescription = "Initialize Repository Services for View Server";

@@ -228,6 +228,8 @@ public class SchemaExchangeService
     /**
      * Connect a schema type to a data asset, process or port.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -235,16 +237,24 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaTypeParent(String parentElementGUID,
-                                      String parentElementTypeName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void setupSchemaTypeParent(boolean assetManagerIsHome,
+                                      String  schemaTypeGUID,
+                                      String  parentElementGUID,
+                                      String  parentElementTypeName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName = "setupSchemaTypeParent";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.setupSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+            schemaExchangeClient.setupSchemaTypeParent(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       assetManagerIsHome,
+                                                       schemaTypeGUID,
+                                                       parentElementGUID,
+                                                       parentElementTypeName);
         }
         else
         {
@@ -262,6 +272,7 @@ public class SchemaExchangeService
     /**
      * Remove the relationship between a schema type and its parent data asset, process or port.
      *
+     * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      *
@@ -269,7 +280,8 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaTypeParent(String parentElementGUID,
+    public void clearSchemaTypeParent(String schemaTypeGUID,
+                                      String parentElementGUID,
                                       String parentElementTypeName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -278,7 +290,12 @@ public class SchemaExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.clearSchemaTypeParent(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+            schemaExchangeClient.clearSchemaTypeParent(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       schemaTypeGUID,
+                                                       parentElementGUID,
+                                                       parentElementTypeName);
         }
         else
         {
@@ -604,6 +621,7 @@ public class SchemaExchangeService
      *
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param schemaElementExternalIdentifier unique identifier of the schema element in the external asset manager
+     * @param formula description of how the value is calculated
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -654,132 +672,6 @@ public class SchemaExchangeService
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             schemaExchangeClient.clearSchemaElementAsCalculatedValue(userId, assetManagerGUID, assetManagerName, schemaElementGUID, schemaElementExternalIdentifier);
-        }
-        else
-        {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
-                    connectorName,
-                    methodName),
-                                                 this.getClass().getName(),
-                                                 methodName,
-                                                 userId);
-        }
-    }
-
-
-    /**
-     * Link two schema elements together to show how a calculated value is derived.
-     *
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
-     * @param query query issued to the target
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void setupSchemaQueryTarget(String schemaElementOneGUID,
-                                       String schemaElementTwoGUID,
-                                       String queryId,
-                                       String query) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
-    {
-        final String methodName = "setupSchemaQueryTarget";
-
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
-        {
-            schemaExchangeClient.setupSchemaQueryTarget(userId,
-                                                        assetManagerGUID,
-                                                        assetManagerName,
-                                                        schemaElementOneGUID,
-                                                        schemaElementTwoGUID,
-                                                        queryId,
-                                                        query);
-        }
-        else
-        {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
-                    connectorName,
-                    methodName),
-                                                 this.getClass().getName(),
-                                                 methodName,
-                                                 userId);
-        }
-    }
-
-
-    /**
-     * Update the relationship properties for the query target.
-     *
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     * @param queryId identifier of query (used if place holders are in the "CalculatedValue" formula).
-     * @param query query issued to the target
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateSchemaQueryTarget(String schemaElementOneGUID,
-                                        String schemaElementTwoGUID,
-                                        String queryId,
-                                        String query) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
-    {
-        final String methodName = "updateSchemaQueryTarget";
-
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
-        {
-            schemaExchangeClient.updateSchemaQueryTarget(userId,
-                                                         assetManagerGUID,
-                                                         assetManagerName,
-                                                         schemaElementOneGUID,
-                                                         schemaElementTwoGUID,
-                                                         queryId,
-                                                         query);
-        }
-        else
-        {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
-                    connectorName,
-                    methodName),
-                                                 this.getClass().getName(),
-                                                 methodName,
-                                                 userId);
-        }
-    }
-
-
-    /**
-     * Remove the relationship between two schema elements.
-     *
-     * @param schemaElementOneGUID unique identifier of the derived schema element
-     * @param schemaElementTwoGUID unique identifier of the query target schema element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void clearSchemaQueryTarget(String schemaElementOneGUID,
-                                       String schemaElementTwoGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        final String methodName = "clearSchemaQueryTarget";
-
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
-        {
-            schemaExchangeClient.clearSchemaQueryTarget(userId,
-                                                        assetManagerGUID,
-                                                        assetManagerName,
-                                                        schemaElementOneGUID,
-                                                        schemaElementTwoGUID);
         }
         else
         {

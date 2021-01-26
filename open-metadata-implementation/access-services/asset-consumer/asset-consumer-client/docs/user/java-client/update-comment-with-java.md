@@ -8,7 +8,7 @@
      * Update an existing comment.
      *
      * @param userId        userId of user making request.
-     * @param assetGUID    unique identifier for the asset at the head of this comment chain.
+     * @param requestType    unique identifier for the asset at the head of this comment chain.
      * @param commentGUID   unique identifier for the comment to change.
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
@@ -19,7 +19,7 @@
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void   updateComment(String      userId,
-                         String      assetGUID,
+                         String      requestType,
                          String      commentGUID,
                          CommentType commentType,
                          String      commentText,

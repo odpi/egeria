@@ -45,6 +45,7 @@ properties to be updated.
 Each connection stored in a metadata repository has a unique identifier.
 An application can request a connector instance through selected Egeria OMAS interfaces, such
 as the [Asset Consumer OMAS](../../../../access-services/asset-consumer/docs/concepts/README.md), with just the unique identifier or name of a connection.  
+
 The OMAS retrieves the connection object from the open metadata repositories and passes it to the [Connector Broker](connector-broker.md)
 factory object.  The Connector Broker (and underlying [Connector Provider](connector-provider.md)) uses the information from the Connection object
 to create an instance of the connector.
@@ -52,9 +53,50 @@ to create an instance of the connector.
 The advantage of retrieving the connection information from a metadata repository is that the connection properties
 do not need to be hard-coded in the consuming applications.
 
-Connections can be created in the open metadata repositories through the [Asset Owner OMAS](../../../../access-services/asset-owner/README.md).
+Connections can be created in the open metadata repositories through the following interfaces:
+* [Asset Owner OMAS](../../../../access-services/asset-owner)
+* [Asset Manager OMAS](../../../../access-services/asset-manager)
+* [Data Manager OMAS](../../../../access-services/data-manager)
+* [Database Integrator OMIS](../../../../integration-services/database-integrator)
+* [Files Integrator OMIS](../../../../integration-services/files-integrator)
+* [Governance Action OMES](../../../../engine-services/governance-action)
+ 
 
-## Configuring Egeria Connections 
+## Configuring Egeria Connections
+
+The [Administration Guide](../../../../admin-services/docs/user) describes how to configure Egeria's
+OMAG Server Platforms and Servers.  Both the platform and the servers used connectors for access to the
+external resources to support their basic operation and to coordinate metadata and governance with
+third party technologies.  This means that the configuration includes Connection definitions for these connectors.
+
+All of these interfaces have Java clients that enable you to set up the connection using the OCF Connection bean.
+However if you want to use the REST API directly, then you need to specify the connection in JSON.
+
+Egeria's JSON structures map one-to-ene with the properties in the equivalent Java beans and also include
+a `class` property that includes the name of the class that it maps to.  So a simple Connection object
+would look something like this in JSON:
+
+```json
+{
+  "connection" : 
+  {
+    "class" : "Connection",
+    "connectorType" : 
+    {
+      "class" : "ConnectorType",
+      "connectorProviderClassName" : "...fully qualified class name..."
+    },
+    "endpoint" : 
+    {
+      "class" : "Endpoint",
+      "address" : "... network address of resource ..."
+    }
+  }
+}
+```
+
+----
+* [Return to OCF Overview](../..)
   
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

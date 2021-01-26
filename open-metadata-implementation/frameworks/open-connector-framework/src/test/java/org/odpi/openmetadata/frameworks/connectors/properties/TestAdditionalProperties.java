@@ -197,11 +197,6 @@ public class TestAdditionalProperties
         differentElementType.setElementTypeName("DifferentTypeName");
         differentAssetBean.setQualifiedName("TestAssetName");
         differentAssetBean.setType(differentElementType);
-
-        AssetDescriptor      differentParentAsset = new AssetSummary(differentAssetBean);
-
-        assertFalse(additionalProperties.equals(new AdditionalProperties(differentParentAsset, propertyMap)));
-
     }
 
 

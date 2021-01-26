@@ -15,7 +15,7 @@ Its use is described in the [Developer's Guide](../developer-guide).
 Figure 1 summarizes the capabilities it includes.  They are described
 in the sections the follow.
 
-![Developer Platform Detail](developer-platform-functional-detail.png)
+![Developer Platform Detail](developer-platform-functional-detail.png#pagewidth)
 > **Figure 1:** Developer Platform Detail
 
 ## Open Metadata and Governance (OMAG) Services
@@ -53,11 +53,18 @@ The access services run in the following types of [cohort members](../../../open
 ### Engine Services
 
 The Open Metadata Engine Services (OMES) each provide the services that host a specific
-type of governance engine.  They are hosted in an [Engine Host](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
+type of governance engine.  The governance engines collectively provide active governance
+to the assets and their associated metadata.
+
+Engine services are hosted in an [Engine Host](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
 governance server.
 
-These services are still in design.  There is more information
-described in its [engine-services](../../../open-metadata-implementation/engine-services) code module.
+The [engine services](../../../open-metadata-implementation/engine-services) are:
+
+* [Asset Analysis](../../../open-metadata-implementation/engine-services/asset-analysis) for automated metadata discovery
+  covering the content of an Asset's real-world counterpart.
+* [Governance Action](../../../open-metadata-implementation/engine-services/governance-action) for monitoring changes
+  to open metadata, making decisions on which actions to take and running actions that update metadata to repair a situation. 
 
 ### Integration Services
 
@@ -69,9 +76,21 @@ The purpose of the integration services is to simplify the implementation and ma
 connectors that integrate metadata exchange with third party technologies.  Follow the link
 for the integration daemon to understand more.
 
+These are in integration services provides today:
+
+* [Catalog Integrator](../../../open-metadata-implementation/integration-services/catalog-integrator) - provides a two-way synchronization for data catalogs.
+* [Database Integrator](../../../open-metadata-implementation/integration-services/database-integrator) - provides metadata extraction from relational databases.
+* [Files Integrator](../../../open-metadata-implementation/integration-services/files-integrator) - collects metadata about files stored in a filesystem or file manager.
+* [Lineage Integrator](../../../open-metadata-implementation/integration-services/lineage-integrator) - collects metadata about processes, their internal logic and the data assets they work with.
+
+In addition, the following integration services will be added in the near future:
+
+* [Organization Integrator](../../../open-metadata-implementation/integration-services/organization-integrator) - imports details of an organization's structure - such as teams and departments.
+* [Security Integrator](../../../open-metadata-implementation/integration-services/security-integrator) - distributes security properties to access control enforcement points.
+
 ### View Services
 
-The [Open Metadata View Services](../../../open-metadata-implementation/view-services) provide the services used by UIs.
+The [Open Metadata View Services (OMVS)](../../../open-metadata-implementation/view-services) provide the services used by UIs.
 They are typically fine-grained services and they
 run in the [view server](../../../open-metadata-implementation/admin-services/docs/concepts/view-server.md).
 The use of the separate server (and server platform) enables an extra firewall to be erected between the
@@ -164,38 +183,21 @@ provides
 customizable authorization checks for calls to the OMAG Server Platform, OMAG Server and the open metadata instances
 themselves.
 
+### Governance Server Services
 
-### Governance Services
-
-The [governance services](../../../open-metadata-implementation/governance-servers) each provide the principle subsystem of a 
-[governance server](../../../open-metadata-implementation/admin-services/docs/concepts/governance-server-types.md).
+A governance server makes use of open metadata to actively manage an aspect of the digital landscape.
+The [governance server services](../../../open-metadata-implementation/governance-servers) each provide the principle subsystem of a 
+[type of governance server](../../../open-metadata-implementation/admin-services/docs/concepts/governance-server-types.md).
 They include:
 
 * [data-engine-proxy-services](../../../open-metadata-implementation/governance-servers/data-engine-proxy-services) for
 the [Data Engine Proxy](../../../open-metadata-implementation/admin-services/docs/concepts/data-engine-proxy.md).
-* [discovery-engine-services](../../../open-metadata-implementation/governance-servers/discovery-engine-services) for
-the [Discovery Server](../../../open-metadata-implementation/admin-services/docs/concepts/discovery-server.md).
 * [integration-daemon-services](../../../open-metadata-implementation/governance-servers/integration-daemon-services) for
 the [Integration Daemon](../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md).
-* [engine-host-services](../../../open-metadata-implementation/governance-servers/integration-daemon-services) for
-the [Engine Hosting Server](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md).
 * [open-lineage-services](../../../open-metadata-implementation/governance-servers/open-lineage-services) for
 the [Open Lineage Server](../../../open-metadata-implementation/admin-services/docs/concepts/open-lineage-server.md).
-* [security-officer-services](../../../open-metadata-implementation/governance-servers/security-officer-services) for
-the [Security Server](../../../open-metadata-implementation/admin-services/docs/concepts/security-officer-server.md).
-* [security-sync-services](../../../open-metadata-implementation/governance-servers/security-officer-services) for
-the [Security Sync Server](../../../open-metadata-implementation/admin-services/docs/concepts/security-sync-server.md).
-* [stewardship-engine-services](../../../open-metadata-implementation/governance-servers/stewardship-engine-services) for
-the [Stewardship Server](../../../open-metadata-implementation/admin-services/docs/concepts/stewardship-server.md).
 
-Each governance server is making use of open metadata to actively manage an aspect of the digital landscape.
-
-Note: as our experience with writing governance servers increases, there is planned
-consolidation in the governance services:
-* The integration services that run in the integration daemon will be extended to provide
-the support now offered by the data engine proxy services and security sync services.
-* The engine services that run in the engine hosting server will be implemented to support the
-function currently offered by the discovery-engine-services and the stewardship-engine-services.
+The strategy for governance servers is [here](governance-servers-strategy.md).
 
 ### Generic Handlers
 

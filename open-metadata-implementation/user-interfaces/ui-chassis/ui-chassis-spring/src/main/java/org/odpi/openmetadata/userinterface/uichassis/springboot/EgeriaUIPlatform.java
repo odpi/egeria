@@ -7,8 +7,11 @@ import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClie
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.RedisAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.LineageGraphDisplayRulesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,8 +30,9 @@ import javax.annotation.PostConstruct;
 
 @EnableZuulProxy
 @SpringBootApplication
-@ComponentScan({"org.odpi.openmetadata.*"})
+@ComponentScan(basePackages = {"${scan.packages}"})
 @Configuration
+@EnableConfigurationProperties({ComponentService.class, LineageGraphDisplayRulesService.class})
 public class EgeriaUIPlatform {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIPlatform.class);
@@ -72,9 +77,11 @@ public class EgeriaUIPlatform {
     }
 
     @Bean
-    public AuthService getAuthService(@Value("${authentication.mode}") String authenticationMode)  {
-        if(null == authenticationMode || authenticationMode.isEmpty() || "token".equals(authenticationMode)){
+    public AuthService getAuthService(@Value("${authentication.mode:token}") String authenticationMode)  {
+        if( "token".equals(authenticationMode) ){
             return new TokenAuthService();
+        }else if( "redis".equals(authenticationMode) ){
+            return new RedisAuthService();
         }
         return new SessionAuthService();
     }

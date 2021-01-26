@@ -32,13 +32,14 @@ public class SLF4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
      * @return unique identifier assigned to the log record
      * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
      */
+    @Override
     public String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException
     {
         final String   methodName = "storeLogRecord";
 
         super.validateLogRecord(logRecord, methodName);
 
-        String loggerName = logRecord.getOriginator().getServerName() + "." + logRecord.getOriginatorComponent().getComponentName();
+        String loggerName =  "org.odpi.openmetadata.frameworks.auditlog." + (logRecord.getOriginator().getServerName() + "." + logRecord.getOriginatorComponent().getComponentName()).replaceAll(" ","");
         Logger log = LoggerFactory.getLogger(loggerName);
 
         if (super.isSupportedSeverity(logRecord))

@@ -148,6 +148,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public String  createValidValueSet(String               userId,
                                        String               assetManagerGUID,
                                        String               assetManagerName,
@@ -187,6 +188,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public String  createValidValueDefinition(String               userId,
                                               String               setGUID,
                                               String               assetManagerGUID,
@@ -224,6 +226,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    updateValidValue(String               userId,
                                     String               assetManagerGUID,
                                     String               assetManagerName,
@@ -252,6 +255,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    removeValidValue(String userId,
                                     String assetManagerGUID,
                                     String assetManagerName,
@@ -279,6 +283,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    attachValidValueToSet(String userId,
                                          String assetManagerGUID,
                                          String assetManagerName,
@@ -305,6 +310,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public void    detachValidValueFromSet(String userId,
                                            String assetManagerGUID,
                                            String assetManagerName,
@@ -332,6 +338,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public ValidValueElement getValidValueByGUID(String userId,
                                                  String assetManagerGUID,
                                                  String assetManagerName,
@@ -362,6 +369,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement> getValidValueByName(String userId,
                                                        String assetManagerGUID,
                                                        String assetManagerName,
@@ -394,6 +402,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement> findValidValues(String userId,
                                                    String assetManagerGUID,
                                                    String assetManagerName,
@@ -424,6 +433,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement> getValidValueSetMembers(String userId,
                                                            String assetManagerGUID,
                                                            String assetManagerName,
@@ -455,6 +465,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public List<ValidValueElement> getSetsForValidValue(String userId,
                                                         String assetManagerGUID,
                                                         String assetManagerName,

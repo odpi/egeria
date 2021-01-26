@@ -9,6 +9,22 @@ Arguments: `--zuul.routes.ui.url=https://ui.production`.
 Also you need to make sure you have deployed statically the egeria-ui [0] project at a given URL (e.g. https://ui.production) so
 that it can be linked to.
 
+In the application properties file rules can be defined based on which the edges of the lineage graph will be inverted. 
+A rule must contain an edge type and can also contain the source node type and destination node type for further restrictions.
+Eg: 
+
+```
+lineage-display-config:
+  rules:
+    -
+     edgeType: SemanticAssignment
+     destinationNodeType: GlossaryTerm
+     sourceNodeType: GlossaryCategory
+```
+
+In this example a rule is defined which will invert all the edges from the lineage graph of type SemanticAssignment 
+and have the destination node type GlossaryTerm and source node type GlossaryCategory. 
+
 [0] - [https://github.com/odpi/egeria-ui](https://github.com/odpi/egeria-ui)
 
 # Start

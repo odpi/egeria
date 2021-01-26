@@ -49,15 +49,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
         this.eventPublisher = eventPublisher;
     }
 
-    /**
-     * Unpack and deliver an instance event to the InstanceEventProcessor
-     *
-     * @param instanceEvent event to unpack
-     */
-    public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
-    {
 
-    }
 
 
 

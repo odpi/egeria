@@ -57,8 +57,7 @@ public enum ElementStatus implements Serializable
     DISABLED                (21, "Disabled",                "The instance is shutdown or disabled."),
     COMPLETE                (22, "Complete",                "The activity associated with the instance is complete."),
     DEPRECATED              (30, "Deprecated",              "The instance is out of date and should not be used."),
-    OTHER                   (50, "Other",                   "The instance is in a locally defined state."),
-    DELETED                 (99, "Deleted",                 "The instance has been deleted and is no longer available.");
+    OTHER                   (50, "Other",                   "The instance is in a locally defined state.");
 
     private static final long serialVersionUID = 1L;
 

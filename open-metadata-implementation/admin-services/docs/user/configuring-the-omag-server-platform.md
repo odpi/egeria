@@ -3,19 +3,22 @@
 
 # Configuring the OMAG Server Platform
 
-The OMAG Server platform is a JVM process that includes a tomcat
+The **OMAG Server Platform** is a JVM process that includes a tomcat
 web server and uses [Spring Boot](https://spring.io/) to support REST APIs.
 
 By default
-* It registers the REST APIs
-at **https://localhost:9443**. This address is called the server platform's **root URL** and
-is configured in a number of places in the [OMAG Server](configuring-an-omag-server.md) configuration.
+* It registers the REST APIs at **https://localhost:9443**. 
+This address is called the platform's **[URL root](../concepts/platform-url-root.md)**
+and is configured in a number of places in the [OMAG Server](configuring-an-omag-server.md) configuration.
 
-* The platform also supports no specific security
-  authorization.
+* The platform supports no specific security authorization.
+
+* All configuration is stored in encrypted files - one for each [OMAG Server](../concepts/omag-server.md)
+  configured to run on it.
 
 These defaults are suitable for a development environment. However for
-production, the platform should be configured with more robust options.
+production, the platform should be configured with platform security because this ensures configuration
+is managed by authorized users.
 
 Figure 1 shows the points of configuration for the OMAG Server Platform.
 
@@ -39,7 +42,7 @@ its **application.properties** file found in the **resources** subdirectory.
   REST API calls.
   
 * Controlling the level of developer logging that the platform
-  produces when it is running.
+  produces when it is running. See [Configuring logging options](omag-server-platform-logging.md) for more details.
   
 * Defining where the connector implementations should be loaded from.
 
@@ -50,9 +53,13 @@ In addition, Egeria adds support for additional application properties.
 * [Auto-starting servers](configuring-the-server-startup-list-for-the-platform.md) - Defining which OMAG Servers, 
   if any, should be started automatically by the OMAG Server Platform when it starts.
 
-##Transport Level Security
+## Transport Level Security (TLS)
 
-See [Transport Level Security in Egeria & Certificates](omag-server-platform-transport-level-security.md) for information on setting up transport level security with egeria
+Transport level security describes the security applied to API calls made between servers.
+The most commonly known transport level security is SSL.
+
+See [Transport Level Security in Egeria and Certificates](omag-server-platform-transport-level-security.md) for
+information on setting up transport level security in the OMAG Server Platform.
 
 ----
 Return to the [Administration Services User Guide](.)

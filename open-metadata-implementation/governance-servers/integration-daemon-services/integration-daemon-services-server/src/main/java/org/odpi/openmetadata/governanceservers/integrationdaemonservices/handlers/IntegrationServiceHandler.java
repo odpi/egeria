@@ -22,7 +22,7 @@ import java.util.List;
  * IntegrationServiceHandler provides the support for a specific integration service running in the
  * integration daemon.  This handler is responsible for setting up its connectors and responding to
  * REST API calls.  The management of the threads where the connectors are running is handled by the
- * IntegrationDaemonHandler.
+ * IntegrationDaemonThread.
  */
 public class IntegrationServiceHandler
 {
@@ -254,11 +254,18 @@ public class IntegrationServiceHandler
     {
         final String actionDescription = "Server shutdown";
 
-        for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
+        /*
+        if the server hosting  integration daemon has encountered a problem
+        when starting then the connectorHandlers can be null
+         */
+        if(connectorHandlers != null)
         {
-            if (connectorHandler != null)
+            for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
             {
-                connectorHandler.shutdown(actionDescription);
+                if (connectorHandler != null)
+                {
+                    connectorHandler.shutdown(actionDescription);
+                }
             }
         }
     }

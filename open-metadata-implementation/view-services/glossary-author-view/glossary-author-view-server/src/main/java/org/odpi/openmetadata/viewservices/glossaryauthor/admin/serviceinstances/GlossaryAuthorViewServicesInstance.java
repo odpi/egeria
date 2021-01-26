@@ -4,8 +4,9 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
@@ -21,10 +22,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 {
     private final SubjectAreaNodeClients nodeClients;
-    private final SubjectAreaRelationshipClients subjectAreaRelationship;
-    private final SubjectAreaGraph subjectAreaGraph;
-
-
+    private final SubjectAreaRelationshipClients subjectAreaRelationshipClients;
+    private final SubjectAreaConfigClient subjectAreaConfigClient;
 
     /**
      * Set up the Glossary Author OMVS instance
@@ -46,9 +45,9 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
         super(serverName, ViewServiceDescription.GLOSSARY_AUTHOR.getViewServiceName(), auditLog, localServerUserId, maxPageSize, remoteServerName,
               remoteServerURL);
         final SubjectArea subjectArea = new SubjectAreaImpl(remoteServerName, remoteServerURL);
-        this.subjectAreaGraph = subjectArea.subjectAreaGraph();
-        this.subjectAreaRelationship = subjectArea.relationshipClients();
+        this.subjectAreaRelationshipClients = subjectArea.relationshipClients();
         this.nodeClients = subjectArea.nodeClients();
+        this.subjectAreaConfigClient = subjectArea.subjectAreaConfigClient();
     }
 
     public String getViewServiceName()
@@ -58,11 +57,14 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 
     public SubjectAreaNodeClients getNodeClients() { return nodeClients; }
 
-    public SubjectAreaRelationshipClients getSubjectAreaRelationship() {
-        return subjectAreaRelationship;
+    public SubjectAreaRelationshipClients getSubjectAreaRelationshipClients() {
+        return subjectAreaRelationshipClients;
     }
 
-    public SubjectAreaGraph getSubjectAreaGraph() {
-        return subjectAreaGraph;
+    public SubjectAreaConfigClient getSubjectAreaConfigClient() {
+        return subjectAreaConfigClient;
+    }
+    public int getGlossaryViewMaxPageSize() {
+        return maxPageSize;
     }
 }

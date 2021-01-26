@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -64,9 +65,11 @@ public class GlossaryContextHandler {
      * @param userId           String - userId of user making request.
      * @param glossaryTermGUID the glossary term GUID
      * @return the entity details for a glossary term based on the glossary term guid
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
      */
-    public EntityDetail getGlossaryTermDetails(String userId, String glossaryTermGUID) throws OCFCheckedExceptionBase {
+    public EntityDetail getGlossaryTermDetails(String userId, String glossaryTermGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return handlerHelper.getEntityDetails(userId, glossaryTermGUID, GLOSSARY_TERM);
     }
 

@@ -35,6 +35,7 @@ public class DataManagerOutTopicClientConnector extends OpenMetadataTopicListene
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
+    @Override
     public  synchronized void registerListener(String                       userId,
                                                DataManagerEventListener listener) throws InvalidParameterException
     {
@@ -58,6 +59,7 @@ public class DataManagerOutTopicClientConnector extends OpenMetadataTopicListene
      *
      * @param event inbound event
      */
+    @Override
     public synchronized void processEvent(String event)
     {
         if (event != null)

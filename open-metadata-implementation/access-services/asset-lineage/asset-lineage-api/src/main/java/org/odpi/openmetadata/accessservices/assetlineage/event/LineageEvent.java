@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,15 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LineageEvent extends AssetLineageEventHeader {
 
-    private Map<String, Set<GraphContext>> assetContext;
-    private LineageEntity lineageEntity;
+    Set<GraphContext> assetContext;
 
     /**
      * Gets asset context.
      *
      * @return the asset context
      */
-    public Map<String, Set<GraphContext>> getAssetContext() {
+    public Set<GraphContext> getAssetContext() {
         return assetContext;
     }
 
@@ -40,27 +37,9 @@ public class LineageEvent extends AssetLineageEventHeader {
      *
      * @param assetContext the asset context
      */
-    public void setAssetContext(Map<String, Set<GraphContext>> assetContext) {
+    public void setAssetContext(Set<GraphContext> assetContext) {
 
         this.assetContext = assetContext;
-    }
-
-    /**
-     * Gets lineage entity.
-     *
-     * @return the lineage entity
-     */
-    public LineageEntity getLineageEntity() {
-        return lineageEntity;
-    }
-
-    /**
-     * Sets lineage entity.
-     *
-     * @param lineageEntity the lineage entity
-     */
-    public void setLineageEntity(LineageEntity lineageEntity) {
-        this.lineageEntity = lineageEntity;
     }
 
     @Override

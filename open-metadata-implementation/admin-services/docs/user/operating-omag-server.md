@@ -13,6 +13,14 @@ can be used to find out more about the operation of the servers.
 
 * [Querying the servers and services running in an OMAG Server Platform](../../../platform-services)
 
+Egeria also has an interactive graph-based user interface (UI) that enables you to explore the
+open metadata ecosystem.  This includes the OMAG Server Platforms and Servers, the types of metadata
+supported by each metadata repository and the contents of the metadata repositories.
+It is also possible to maintain the configuration of the OMAG Servers through this UI.
+
+* [Using the ecosystem user interface](https://github.com/odpi/egeria-react-ui)
+
+
 ----
 Return to the [Administration Services User Guide](.).
 

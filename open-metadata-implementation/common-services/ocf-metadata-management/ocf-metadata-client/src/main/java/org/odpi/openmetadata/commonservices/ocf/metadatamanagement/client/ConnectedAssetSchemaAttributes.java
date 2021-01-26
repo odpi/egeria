@@ -99,6 +99,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
      * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
+    @Override
     protected AssetSchemaAttributes cloneIterator(AssetDescriptor parentAsset)
     {
         return new ConnectedAssetSchemaAttributes(connectedAsset, this);
@@ -113,6 +114,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
      * @param template object to clone
      * @return new cloned object.
      */
+    @Override
     protected AssetPropertyBase cloneElement(AssetDescriptor parentAsset, AssetPropertyBase template)
     {
         return new AssetSchemaAttribute(parentAsset, (AssetSchemaAttribute)template);
@@ -127,11 +129,12 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
      * @return list of elements corresponding to the supplied cache pointers.
      * @throws PropertyServerException there is a problem retrieving elements from the property (metadata) server.
      */
+    @Override
     protected List<AssetPropertyBase> getCachedList(int  cacheStartPointer,
                                                     int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "SchemaAttributes.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/schemas/{3}/attributes?elementStart={4}&maxElements={5}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/schemas/{3}/schema-attributes?elementStart={4}&maxElements={5}";
 
 
         try

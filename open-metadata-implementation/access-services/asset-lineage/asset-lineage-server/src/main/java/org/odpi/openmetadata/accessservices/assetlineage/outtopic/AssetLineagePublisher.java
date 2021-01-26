@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
@@ -70,6 +71,7 @@ public class AssetLineagePublisher {
      * Takes the context for a Process and publishes the event to the output topic
      *
      * @param entityDetail entity to get context
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -78,11 +80,11 @@ public class AssetLineagePublisher {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(processContext)) {
-            log.debug("Context not found for the entity {} ", entityDetail.getGUID());
+            log.info("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
-        publishLineageEvent(processContext, AssetLineageEventType.PROCESS_CONTEXT_EVENT);
+        publishLineageEvents(processContext, AssetLineageEventType.PROCESS_CONTEXT_EVENT);
         return processContext;
     }
 
@@ -90,6 +92,7 @@ public class AssetLineagePublisher {
      * Build the context for a Glossary Term based on the glossary term GUID and publishes the event to the out topic
      *
      * @param glossaryTermGUID glossary term GUID to get context
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -110,17 +113,18 @@ public class AssetLineagePublisher {
         Map<String, Set<GraphContext>> context = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(context)) {
-            log.debug("Context not found for the entity {} ", entityDetail.getGUID());
+            log.info("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
-        publishLineageEvent(context, AssetLineageEventType.GLOSSARY_TERM_CONTEXT_EVENT);
+        publishLineageEvents(context, AssetLineageEventType.GLOSSARY_TERM_CONTEXT_EVENT);
         return context;
     }
 
     /**
      * @param entityDetail          entity to get context
      * @param assetLineageEventType event type to get published
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -133,7 +137,7 @@ public class AssetLineagePublisher {
             return;
         }
 
-        publishLineageEvent(classificationContext, assetLineageEventType);
+        publishLineageEvents(classificationContext, assetLineageEventType);
     }
 
 
@@ -142,6 +146,7 @@ public class AssetLineagePublisher {
      *
      * @param lineageRelationship the LineageRelationship to be published
      * @param eventType           the type on the event
+     *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
@@ -159,6 +164,7 @@ public class AssetLineagePublisher {
      * Output a new asset event.
      *
      * @param event event to send
+     *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
@@ -168,7 +174,7 @@ public class AssetLineagePublisher {
 
         ObjectMapper objectMapper = new ObjectMapper();
         outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
-        log.debug("Asset Lineage OMAS has published an event of type {} ", event.getAssetLineageEventType());
+
     }
 
     /**
@@ -176,12 +182,13 @@ public class AssetLineagePublisher {
      *
      * @param lineageEntity    - lineage entity
      * @param lineageEventType - lineage event type
+     *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
     public void publishLineageEntityEvent(LineageEntity lineageEntity,
                                           AssetLineageEventType lineageEventType) throws ConnectorCheckedException, JsonProcessingException {
-        LineageEvent event = new LineageEvent();
+        LineageEntityEvent event = new LineageEntityEvent();
 
         event.setLineageEntity(lineageEntity);
         event.setAssetLineageEventType(lineageEventType);
@@ -194,7 +201,9 @@ public class AssetLineagePublisher {
      * The GlossaryTerm and GlossaryCategory entities are send out if has SemanticAssignment and/or TermCategorization relationships
      *
      * @param entityDetail entity to be checked
+     *
      * @return true if the entity has the lineage relationships created
+     *
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException    problem accessing property server
      */
@@ -209,21 +218,26 @@ public class AssetLineagePublisher {
     }
 
     /**
-     * Publish Lineage Events
+     * Publishes a lineage event for each entry from the context map
      *
      * @param context          the context of the lineage entity
      * @param lineageEventType the lineage event type
+     *
      * @throws JsonProcessingException   exception parsing the event json
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    private void publishLineageEvent(Map<String, Set<GraphContext>> context,
-                                     AssetLineageEventType lineageEventType) throws JsonProcessingException, ConnectorCheckedException {
-        LineageEvent event = new LineageEvent();
+    private void publishLineageEvents(Map<String, Set<GraphContext>> context, AssetLineageEventType lineageEventType)
+            throws JsonProcessingException, ConnectorCheckedException {
 
-        event.setAssetContext(context);
-        event.setAssetLineageEventType(lineageEventType);
+        for (String guid : context.keySet()) {
+            LineageEvent event = new LineageEvent();
 
-        publishEvent(event);
+            event.setAssetContext(context.get(guid));
+            event.setAssetLineageEventType(lineageEventType);
+
+            publishEvent(event);
+        }
+
     }
 
 }
