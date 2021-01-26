@@ -320,7 +320,7 @@ public class AnalyticsArtifactHandler {
 		if (container.getContainer() != null) {
 			verifyOrder(container.getContainer());
 			for (MetadataContainer subContainer: container.getContainer()) {
-				createContainer(subContainer, guid, null, true, qualifiedName);
+				createContainer(subContainer, guid, anchorGUID, true, qualifiedName);
 			}
 		}
 
@@ -386,7 +386,7 @@ public class AnalyticsArtifactHandler {
 		if (item.getItem() != null) {
 			Map<String, MetadataItem> guidToItem = new HashMap<>();
 			for (MetadataItem nestedItem : item.getItem()) {
-				String itemGUID = createItem(nestedItem, guid, null, true, qualifiedName);
+				String itemGUID = createItem(nestedItem, guid, anchorGUID, true, qualifiedName);
 				guidToItem.put(itemGUID, nestedItem);
 			}
 
