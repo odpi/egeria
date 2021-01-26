@@ -29,11 +29,8 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Table;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -51,23 +48,14 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	private static final String VENDOR_TYPE_INT32 = "INT32";
 	private static final String VENDOR_TYPE_STRING = "STRING";
 	private static final Integer FROM_INDEX = 0;
-	private static final Integer PAGE_SIZE = 20;
 
 	private DatabaseContextHandler databaseContextHandler;
-	private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 	@BeforeMethod
 	public void setup() throws Exception {
 		super.setup();
 		OMEntityDao omEntityDaoReal = new OMEntityDao(enterpriseConnector, Collections.emptyList(), auditLog);
-		String serviceName = "serviceName";
-		String serverName = "serverName";
 		
-		RepositoryHandler repositoryHandler = new RepositoryHandler(auditLog, 
-				new RepositoryErrorHandler(omrsRepositoryHelper, serviceName, serverName, auditLog),
-				metadataCollection,
-	            PAGE_SIZE);
-
 		RelationalDataHandler<Database, Schema, TableBean, Object, Object, Object> relationalDataHandler =
 		new RelationalDataHandler<>(
         		new DatabaseConverter(omrsRepositoryHelper, serviceName,serverName),
@@ -87,7 +75,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
                 invalidParameterHandler,
                 repositoryHandler,
                 omrsRepositoryHelper,
-                "localServerUserId",
+                LOCAL_SERVER_USER_ID,
                 null, // securityVerifier,
                 null, // supportedZones,
                 null, // defaultZones,
