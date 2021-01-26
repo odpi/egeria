@@ -12,8 +12,8 @@ provided by Egeria.
 * **Sequential Discovery Pipeline** - Runs nested discovery services
   in a sequence.  [More information on discovery pipelines](../../../frameworks/open-discovery-framework/docs/discovery-pipeline.md).
   
-* **DuplicateSuspectDiscoveryService** - Builds a list of all of the assets that
-  appear to be duplicates of the requested asset.
+* **CSVDiscoveryService** - Extracts the column names from the first line of the file, counts up the number of records in the file
+  and extracts its last modified time..
 
 ## Further information
 

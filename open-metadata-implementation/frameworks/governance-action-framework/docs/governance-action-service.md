@@ -4,30 +4,28 @@
 # Governance Action Service
 
 A governance action service is a specialized [connector](../../open-connector-framework/docs/concepts/connector.md)
-that performs triage, assessment and/or remediation activities on request.
+that performs monitoring of metadata changes, validation of metadata, triage of issues, assessment and/or remediation activities on request.
 
 There are five types of governance action services:
   
-* **Watchdog Governance Service** listens for changes to metadata.   One example of a
-  governance action service is duplicate detection. Another example is to monitor the addition of
-  open discovery reports and take action on their content. 
+* **Watchdog Governance Service Service** listens for changes to metadata and initiates
+  [governance actions](governance-action.md), [governance action processes](governance-action-process.md)
+  or an [incident report](incident-report.md).
   
-* ** 
-  Alterruns triage rules to determine
-  how to manage the request.  This could be to initiate an external workflow, wait for manual
-  decision or initiate a remediation request.
+* **Verification Governance Action Service** validates that the metadata elements, relationships and
+  classification are set up as they should be.  For example, it may check that a new asset has an owner, is set up
+  with zones and includes a connection and a schema there possible.  It produces [guards](guard.md)
+  that define what needs to be done.
   
-* **Remediation Governance Service** - Hosts [OpenRemediationEngines](../../../frameworks/governance-action-framework/docs/g)
-  that monitor for remediation requests and runs the requested remediation service.
-  Examples of remediation services are duplicate linking and consolidating.
+* **Triage Governance Action Service** runs triage rules to determine how to manage a situation or request.
+  Often this involves a human decision maker.   It may initiate an external workflow, wait for manual
+  decision or create a **To Do** for a specific person.
   
-* **Action Scheduler** - Hosts [OpenSchedulingEngines](verification-governance-service.md)
-  that maintains a calendar of events and creates RequestForAction instances at the requested
-  time.  For example, it may move assets between zones when a particular date is reached.
+* **Remediation Governance Action Service** makes updates to metadata elements, relationships between them
+  and classifications. Examples of remediation governance action services are duplicate linking and consolidating.
 
-* **Asset Provisioning** - Hosts [OpenProvisioningEngines](../../../frameworks/governance-action-framework/docs/open-provisioning-engine.md)
-  that invokes a provisioning service whenever a provisioning request is made.  Typically the
-  provisioning service is an external service.  It may also create lineage metadata to
+* **Provisioning Governance Action Service**  invokes a provisioning service whenever a provisioning request is made. 
+  Typically the provisioning service is an external service.  It may also create lineage metadata to
   describe the work of the provisioning engine.         
 
 
