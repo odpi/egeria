@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph.model.GlossaryValidations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,13 +41,17 @@ import java.util.stream.Stream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_QUALIFIED_NAME;
 
 /**
  * Based on provided information, the graph will be interrogated on assets of type Process, DataFile, RelationalColumn,
- * TabularColumn and RelationalColumn, and the graph structure around them will be validated. The value of constant
+ * TabularColumn and RelationalColumn, GlossaryTerm, GlossaryCategory and the graph structure around them will be validated. The value of constant
  * {@code INPUT_FOLDER} holds the path to the resource folder where json files of the following structure are kept and
  * used for graph interrogation
  *
@@ -76,6 +83,27 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
  *     [
  *       "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID"
  *     ]
+ *   },
+ *   "glossaryTerms": {
+ *     "(category)=Egeria::(term)=Transaction Value Date": {
+ *       "tabularColumn": [
+ *       ],
+ *       "relationalColumn": [
+ *       ],
+ *       "glossaries": [
+ *         "gen!GL@(category)=Egeria"
+ *       ],
+ *       "glossaryCategories": [
+ *         "(category)=Egeria::(category)=Subject Area::(category)=Payment Transfer"
+ *       ]
+ *     }
+ *   },
+ *   "glossaryCategories": {
+ *     "(category)=Egeria::(category)=Subject Area::(category)=Payment Transfer": [
+ *       "(category)=Egeria::(term)=Payment Settled Amount",
+ *       "(category)=Egeria::(term)=Transaction Value Date",
+ *       "(category)=Egeria::(term)=Payment Settled Amount"
+ *     ]
  *   }
  * }
  *
@@ -97,13 +125,18 @@ public class OpenLineageGraphValidation {
     private static final String COLUMN_DATA_FLOW = "ColumnDataFlow";
     private static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
     private static final String RELATIONAL_COLUMN = "RelationalColumn";
+    private static final String GLOSSARY_TERM_ERROR_MESSAGE_FORMAT = "The glossary term %s with the qualifiedName %s does not have the correct neighbours %s with type %s";
+    private static final ObjectMapper objectMapper  = new ObjectMapper();
 
-    static{
+
+    static {
         REQUIRED_JSON_FIELDS.add("graphConfigFile");
         REQUIRED_JSON_FIELDS.add("processes");
         REQUIRED_JSON_FIELDS.add("inTables");
         REQUIRED_JSON_FIELDS.add("outTables");
         REQUIRED_JSON_FIELDS.add("columns");
+        REQUIRED_JSON_FIELDS.add("glossaryTerms");
+        REQUIRED_JSON_FIELDS.add("glossaryCategories");
     }
 
     private static final List<String> PROCESSES = new ArrayList<>();
@@ -125,6 +158,20 @@ public class OpenLineageGraphValidation {
     private static Stream<Arguments> getColumns(){
         List<Arguments> arguments = new ArrayList<>();
         COLUMNS.forEach( (k, v) -> arguments.add(Arguments.of(k, v)) );
+        return arguments.stream();
+    }
+
+    private static final Map<String, GlossaryValidations> GLOSSARY_TERMS_VALIDATIONS = new HashMap<>();
+    private static Stream<Arguments> getGlossaryTerms(){
+        List<Arguments> arguments = new ArrayList<>();
+        GLOSSARY_TERMS_VALIDATIONS.forEach( (k, v) -> arguments.add(Arguments.of(k, v)) );
+        return arguments.stream();
+    }
+
+    private static final Map<String, List<String>> GLOSSARY_CATEGORIES = new HashMap<>();
+    private static Stream<Arguments> getGlossaryCategories(){
+        List<Arguments> arguments = new ArrayList<>();
+        GLOSSARY_CATEGORIES.forEach( (k, v) -> arguments.add(Arguments.of(k, v)) );
         return arguments.stream();
     }
 
@@ -170,7 +217,7 @@ public class OpenLineageGraphValidation {
         JsonObject jsonObject;
         try{
             jsonObject = readJsonObjectFromFile(inputFile);
-        }catch (IOException ioe){
+        } catch (IOException ioe){
             log.warn( "Unable to read json, skipping file " + inputFile.getPath() + inputFile.getName());
             return false;
         }
@@ -201,11 +248,13 @@ public class OpenLineageGraphValidation {
         initGraph(jsonObject.getString("graphConfigFile"));
     }
 
-    private static void fillTargets(JsonObject jsonObject) {
+    private static void fillTargets(JsonObject jsonObject) throws JsonProcessingException {
         addEntitiesToTarget(jsonObject.getJsonArray("processes"), PROCESSES);
         addEntitiesToTarget(jsonObject.getJsonArray("inTables"), IN_TABLES);
         addEntitiesToTarget(jsonObject.getJsonArray("outTables"), OUT_TABLES);
         addEntitiesToTarget(jsonObject.getJsonObject("columns"), COLUMNS);
+        addGlossaryEntitiesToTarget(jsonObject.getJsonObject("glossaryTerms"), GLOSSARY_TERMS_VALIDATIONS);
+        addEntitiesToTarget(jsonObject.getJsonObject("glossaryCategories"), GLOSSARY_CATEGORIES);
     }
 
     private static void addEntitiesToTarget(JsonArray entitiesAsJsonArray, Collection<String> target){
@@ -222,6 +271,14 @@ public class OpenLineageGraphValidation {
             addEntitiesToTarget(outColumnGuidsAsJsonArray, outColumnGuids);
 
             target.put(inColumnGuid, outColumnGuids);
+        }
+    }
+
+    private static void addGlossaryEntitiesToTarget(JsonObject entitiesAsJsonObject, Map<String, GlossaryValidations> target) throws JsonProcessingException {
+        for (String inColumnGuid : entitiesAsJsonObject.keySet()) {
+            JsonObject outColumnGuidsAsJsonArray = entitiesAsJsonObject.getJsonObject(inColumnGuid);
+            GlossaryValidations glossaryValidations = objectMapper.readValue(outColumnGuidsAsJsonArray.toString(), GlossaryValidations.class);
+            target.put(inColumnGuid, glossaryValidations);
         }
     }
 
@@ -245,6 +302,8 @@ public class OpenLineageGraphValidation {
         IN_TABLES.clear();
         OUT_TABLES.clear();
         COLUMNS.clear();
+        GLOSSARY_TERMS_VALIDATIONS.clear();
+        GLOSSARY_CATEGORIES.clear();
     }
 
     private static void closeGraph() throws Exception {
@@ -386,6 +445,90 @@ public class OpenLineageGraphValidation {
                 isInputOrOutputColumnFunction.apply(g, columnAsVertex)));
 
         log.debug("Validated column with qualifiedName " + columnQualifiedName);
+    }
+
+    @Disabled
+    @ParameterizedTest
+    @MethodSource("getGlossaryTerms")
+    public void validateGlossaryTermGlossary(String glossaryTermQualifiedName, GlossaryValidations validations) {
+        Vertex glossaryTermVertex = getGlossaryTermVertex(glossaryTermQualifiedName);
+        validateGlossaryTermNeighbours(glossaryTermVertex, validations.getGlossaries(), GLOSSARY);
+        log.debug("Validated glossaryTerm with qualifiedName " + glossaryTermQualifiedName + " and relations to Glossary");
+    }
+
+    @Disabled
+    @ParameterizedTest
+    @MethodSource("getGlossaryTerms")
+    public void validateGlossaryTermGlossaryCategory(String glossaryTermQualifiedName, GlossaryValidations validations) {
+        Vertex glossaryTermVertex = getGlossaryTermVertex(glossaryTermQualifiedName);
+        validateGlossaryTermNeighbours(glossaryTermVertex, validations.getGlossaryCategories(), GLOSSARY_CATEGORY);
+        log.debug("Validated glossaryTerm with qualifiedName " + glossaryTermQualifiedName + " and relations to GlossaryCategories");
+    }
+
+    @Disabled
+    @ParameterizedTest
+    @MethodSource("getGlossaryTerms")
+    public void validateGlossaryTermTabularColumn(String glossaryTermQualifiedName, GlossaryValidations validations) {
+        Vertex glossaryTermVertex = getGlossaryTermVertex(glossaryTermQualifiedName);
+        validateGlossaryTermNeighbours(glossaryTermVertex, validations.getTabularColumn(), TABULAR_COLUMN);
+        log.debug("Validated glossaryTerm with qualifiedName " + glossaryTermQualifiedName + " and relations to TabularColumn");
+    }
+
+    @Disabled
+    @ParameterizedTest
+    @MethodSource("getGlossaryTerms")
+    public void validateGlossaryTermRelationalColumn(String glossaryTermQualifiedName, GlossaryValidations validations) {
+        Vertex glossaryTermVertex = getGlossaryTermVertex(glossaryTermQualifiedName);
+        validateGlossaryTermNeighbours(glossaryTermVertex, validations.getRelationalColumn(), RELATIONAL_COLUMN);
+        log.debug("Validated glossaryTerm with qualifiedName " + glossaryTermQualifiedName + " and relations to RelationalColumn");
+    }
+
+    private Vertex getGlossaryTermVertex(String glossaryTermQualifiedName) {
+        GraphTraversal<Vertex, Vertex> glossaryTermTraversal = g.V().has(VERTEX_QUALIFIED_NAME, glossaryTermQualifiedName)
+                .has(PROPERTY_KEY_LABEL, GLOSSARY_TERM);
+        assertTrue(glossaryTermTraversal.hasNext(), "GlossaryTerm not found by qualified name " + glossaryTermQualifiedName);
+        return glossaryTermTraversal.next();
+    }
+
+    private void validateGlossaryTermNeighbours(Vertex glossaryTermVertex, List<String> validationQualifiedNames, String neighboursType) {
+        String glossaryTermQualifiedName = (String) glossaryTermVertex.properties(VERTEX_QUALIFIED_NAME).next().value();
+        String glossaryTermDisplayName = (String) glossaryTermVertex.properties(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).next().value();
+
+        if (validationQualifiedNames != null && !validationQualifiedNames.isEmpty()) {
+            GraphTraversal<Vertex, Vertex> neighboursTraversal = g.V(glossaryTermVertex.id()).inE().outV()
+                    .has(PROPERTY_KEY_LABEL, neighboursType);
+            List<String> verticesQualifiedNames = new ArrayList<>();
+            while (neighboursTraversal.hasNext()) {
+                Vertex next = neighboursTraversal.next();
+                verticesQualifiedNames.add((String) next.properties(VERTEX_QUALIFIED_NAME).next().value());
+            }
+            String errorMessage = String.format(GLOSSARY_TERM_ERROR_MESSAGE_FORMAT,
+                    glossaryTermDisplayName, glossaryTermQualifiedName, validationQualifiedNames, neighboursType);
+
+            assertTrue(verticesQualifiedNames.containsAll(validationQualifiedNames), errorMessage);
+        }
+    }
+
+    @Disabled
+    @ParameterizedTest
+    @MethodSource("getGlossaryCategories")
+    public void validateGlossaryCategories(String glossaryCategoryQualifiedName, List<String> glossaryTermQualifiedNames) {
+        GraphTraversal<Vertex, Vertex> glossaryCategoryTraversal = g.V().has(VERTEX_QUALIFIED_NAME, glossaryCategoryQualifiedName)
+                .has(PROPERTY_KEY_LABEL, GLOSSARY_CATEGORY);
+        assertTrue(glossaryCategoryTraversal.hasNext(), "GlossaryCategory not found by qualified name " + glossaryCategoryQualifiedName);
+        Vertex glossaryCategoryVertex = glossaryCategoryTraversal.next();
+        GraphTraversal<Vertex, Vertex> glossaryTermsNeighbours = g.V(glossaryCategoryVertex.id()).outE().inV().has(PROPERTY_KEY_LABEL, GLOSSARY_TERM);
+        List <String> glossaryTerms = new ArrayList<>();
+
+        while (glossaryTermsNeighbours.hasNext()) {
+            glossaryTerms.add((String) glossaryTermsNeighbours.next().properties(VERTEX_QUALIFIED_NAME).next().value());
+        }
+
+        List<String> glossaryTermsNotInGraph = new ArrayList<>(glossaryTermQualifiedNames);
+        glossaryTermsNotInGraph.removeAll(glossaryTerms);
+        assertTrue(glossaryTerms.containsAll(glossaryTermQualifiedNames), "The GlossaryCategory " + glossaryCategoryQualifiedName +
+                " is not assigned to the following GlossaryTerms " + glossaryTermsNotInGraph);
+
     }
 
 }
