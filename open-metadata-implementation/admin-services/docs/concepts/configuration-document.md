@@ -28,14 +28,14 @@ The sections are as follows:
 
 It is possible to retrieve the configuration document for a server using the following command.
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration
 ```
 
 When the server is running, the following command returns the configuration document that was used to start it
 (since it may have changed in the configuration document store since the server was started.)
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance/configuration
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance/configuration
 ```
 
 ### Default Values

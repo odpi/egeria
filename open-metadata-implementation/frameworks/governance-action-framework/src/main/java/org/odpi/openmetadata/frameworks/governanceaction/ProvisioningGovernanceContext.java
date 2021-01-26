@@ -44,7 +44,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
                                          Map<String, String>        requestParameters,
                                          List<RequestSourceElement> requestSourceElements,
                                          List<ActionTargetElement>  actionTargetElements,
-                                         OpenMetadataClient openMetadataStore)
+                                         OpenMetadataClient         openMetadataStore)
     {
         super(userId, governanceActionGUID, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
     }
@@ -149,7 +149,12 @@ public class ProvisioningGovernanceContext extends GovernanceContext
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(processTypeName,initialStatus, null, null, properties, templateGUID);
+        return openMetadataStore.createMetadataElementInStore(processTypeName,
+                                                              initialStatus,
+                                                              null,
+                                                              null,
+                                                              properties,
+                                                              templateGUID);
     }
 
 

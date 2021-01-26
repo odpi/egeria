@@ -87,11 +87,11 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         final String actionDescription = "Initializing GovernanceActionService";
         final String governanceActionServiceConnectorParameterName = "governanceActionServiceConnector";
 
-        final String watchdogGovernanceActionServiceType     = "WatchdogGovernanceService";
-        final String provisioningGovernanceActionServiceType = "ProvisioningGovernanceService";
-        final String verificationGovernanceActionServiceType = "VerificationGovernanceService";
-        final String triageGovernanceActionServiceType       = "TriageGovernanceService";
-        final String remediationGovernanceActionServiceType  = "RemediationGovernanceService";
+        final String watchdogGovernanceActionServiceType     = "WatchdogGovernanceActionService";
+        final String provisioningGovernanceActionServiceType = "ProvisioningGovernanceActionService";
+        final String verificationGovernanceActionServiceType = "VerificationGovernanceActionService";
+        final String triageGovernanceActionServiceType       = "TriageGovernanceActionService";
+        final String remediationGovernanceActionServiceType  = "RemediationGovernanceActionService";
 
         try
         {

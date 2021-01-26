@@ -82,7 +82,7 @@
                 <!--include>org.odpi.egeria:ranger-connector:*</include-->
                 <!--include>org.odpi.egeria:view-generator-connectors:*</include-->
                 <!-- pluggable discovery service -->
-                <include>org.odpi.egeria:discovery-service-sample:*</include>
+                <include>org.odpi.egeria:governance-services-sample:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
