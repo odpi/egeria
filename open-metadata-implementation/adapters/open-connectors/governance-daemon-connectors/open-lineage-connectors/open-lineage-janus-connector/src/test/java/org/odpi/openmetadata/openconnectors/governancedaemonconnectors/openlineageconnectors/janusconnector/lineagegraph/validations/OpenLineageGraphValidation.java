@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph.validations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph.model.GlossaryValidations;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph.validations.model.GlossaryValidations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -528,7 +528,6 @@ public class OpenLineageGraphValidation {
         glossaryTermsNotInGraph.removeAll(glossaryTerms);
         assertTrue(glossaryTerms.containsAll(glossaryTermQualifiedNames), "The GlossaryCategory " + glossaryCategoryQualifiedName +
                 " is not assigned to the following GlossaryTerms " + glossaryTermsNotInGraph);
-
     }
 
 }
