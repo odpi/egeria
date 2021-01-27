@@ -31,7 +31,8 @@ egeria:
   #logging: OFF
   development: true
   version: "2.7-SNAPSHOT"
-  repositoryType: "local-graph-repository"
+  #repositoryType: "local-graph-repository"
+  repositoryType: "in-memory-repositoy"
 
 debug:
   egeriaJVM: false
@@ -66,10 +67,23 @@ image:
   uistatic:
     name: egeria-uistatic
 
+# --- 
 # Persistence
+# 
+# If you enable persistence 
+#  - Any metadata servers configured by the notebooks will be configured to use the graph repository
+#  - A persistent volume (pvc) will be used to store all cohort registry, server config, and graph data
+#  - the name of the volume is based on the helm 'release' so same release will mean the data will remain on redeployment
+#    or starting
+#  - Note that the 'config' notebook will actually start servers if config is found, and you may get unexpected results
+#  - This config is provided to help with those using the lab environment as a base for further work
+#  - You may also wish to look at the 'egeria-base' helm chart for a single persistent server
+#  - You should also set all the kafka persistence settings below to 'true'
+#  - You should also set the value of egeria.repositoryType above in 'in-memory-repository'
+
+
 persistence:
-  enabled: true
-  # See also kafka below
+  enabled: false
 
 # When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
 # See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
@@ -80,11 +94,11 @@ kafka:
         enabled: false
     zookeeper:
         persistence: 
-            enabled: true
+            enabled: false
     persistence: 
-        enabled: true
+        enabled: false
     logpersistence: 
-        enabled: true
+        enabled: false
     #can be enabled if external kafka access is required
     #service:
         #nodeport: 30092
