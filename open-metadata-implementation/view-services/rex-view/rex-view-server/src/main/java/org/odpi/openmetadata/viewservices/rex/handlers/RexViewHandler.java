@@ -330,7 +330,8 @@ public class RexViewHandler
             }
 
             // All typeDefs processed, resolve linkages and return the TEX object
-            tex.resolve();
+            // The platformRootURL and repositoryName are passed in only for error logging
+            tex.resolve(platformRootURL, repositoryServerName);
             return tex;
 
         }
