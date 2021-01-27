@@ -121,8 +121,8 @@ The following articles may answer additional questions that you have.
 * [Where is the code?](https://github.com/odpi/egeria) - link to GitHub.
 * [Who is contributing?](https://lfanalytics.io/projects/odpi%2Fegeria/dashboard) - see the project activity by logging
   in with your GitHub Account.
-* [How do I join the mailing list?](https://lists.odpi.org/g/odpi-project-egeria) - go to the sign up page.
-* [What is the ODPi?](https://www.odpi.org/) - visit their website.
+* [How do I join the mailing list?](https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics) - go to the sign up page.
+* [What is the LF AI & Data Foundation?](https://lfaidata.foundation/) - visit their website.
 * [Why is the project called Egeria?](open-metadata-publication/website/why-egeria) - understand the background of the project.
 * [What are the goals of Egeria?](open-metadata-publication/website) - understand the motivation behind this project and its key components.
 * [How do I run Egeria?](open-metadata-resources/open-metadata-tutorials) - try our getting started tutorials and labs.
