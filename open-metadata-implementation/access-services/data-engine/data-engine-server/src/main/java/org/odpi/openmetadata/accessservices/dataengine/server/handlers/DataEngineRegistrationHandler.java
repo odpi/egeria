@@ -92,7 +92,7 @@ public class DataEngineRegistrationHandler {
         return new ExternalDataEnginePropertiesBuilder(softwareServerCapability.getQualifiedName(),
                 softwareServerCapability.getDisplayName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                 softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                null, null, repositoryHelper, serviceName, serverName);
+                null, repositoryHelper, serviceName, serverName);
     }
 
     /**

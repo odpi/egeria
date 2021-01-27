@@ -125,8 +125,8 @@ class DataEngineRegistrationHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
 
         ExternalDataEnginePropertiesBuilder builder = new ExternalDataEnginePropertiesBuilder(QUALIFIED_NAME, NAME,
-                DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE, null, null,
-                repositoryHelper, "serviceName", "serverName");
+                DESCRIPTION, TYPE, VERSION, PATCH_LEVEL, SOURCE, null, repositoryHelper,
+                "serviceName", "serverName");
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
         doReturn(builder).when(registrationHandler).getExternalDataEnginePropertiesBuilder(softwareServerCapability);

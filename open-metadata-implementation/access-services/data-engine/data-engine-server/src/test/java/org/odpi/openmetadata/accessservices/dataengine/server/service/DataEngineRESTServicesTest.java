@@ -530,7 +530,6 @@ class DataEngineRESTServicesTest {
                                                                               InstantiationException,
                                                                               IllegalAccessException {
         mockSchemaTypeHandler("upsertSchemaType");
-        mockSchemaTypeHandler("addLineageMappings");
         mockPortHandler("upsertPortImplementationWithSchemaType");
         mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("updateProcessStatus");
@@ -540,12 +539,9 @@ class DataEngineRESTServicesTest {
 
         when(portHandler.createPortAlias(USER, portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
-
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
 
-
-        when(processHandler.createProcess(USER, getProcess(Collections.singletonList(portImplementation), Collections.singletonList(portAlias),
-                Collections.emptyList()), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
@@ -579,8 +575,7 @@ class DataEngineRESTServicesTest {
         when(portHandler.createPortAlias(USER, portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(processHandler.createProcess(USER, getProcess(Collections.singletonList(portImplementation), Collections.singletonList(portAlias),
-                Collections.emptyList()), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
