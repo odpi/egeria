@@ -200,6 +200,11 @@ Refer to the existing values file for additional ports in this section that may 
 You can then deploy using
 `helm install lab odpi-egeria-lab -f lab.yaml` which will override standard defaults with your choices
 
+## Enabling persistence
+
+Support has been added to use persistence in these charts. See 'values.yaml' for more information on this option.
+You may also wish to refer to the 'egeria-base' helm chart which is a deployment of a single, persistent, autostart server with UI.
+
 ## Using the environment to extend notebooks or develop new ones
 
   - If you are using a notebook written to assume 'localhost:9443' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
