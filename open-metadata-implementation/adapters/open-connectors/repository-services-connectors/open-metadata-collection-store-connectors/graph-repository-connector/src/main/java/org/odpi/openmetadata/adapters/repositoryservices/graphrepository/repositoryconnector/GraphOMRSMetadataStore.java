@@ -2855,14 +2855,18 @@ class GraphOMRSMetadataStore {
     }
 
 
+
+
     // findEntitiesByClassification
     public List<EntityDetail> findEntitiesByClassification(String               classificationName,
                                                            InstanceProperties   classificationProperties,
                                                            MatchCriteria        matchCriteria,
-                                                           String               entityTypeName)
+                                                           boolean              performTypeFiltering,
+                                                           List<String>         entityTypeNames)
     throws InvalidParameterException
 
     {
+
 
         final String methodName = "findEntitiesByClassification";
 
@@ -3064,7 +3068,7 @@ class GraphOMRSMetadataStore {
                         /*
                          * Skip this property but process the rest
                          */
-                       // continue;
+                        // continue;
 
                     }
                     else
@@ -3151,19 +3155,31 @@ class GraphOMRSMetadataStore {
             switch (matchCriteria)
             {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                    if (!propCriteria.isEmpty())
+                    {
+                        gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                    }
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
+
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                    if (!propCriteria.isEmpty())
+                    {
+                        gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                    }
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
+
                 case NONE:
-                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                    gt = gt.not(t);
+                    if (!propCriteria.isEmpty())
+                    {
+                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
+                    }
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
+
                 default:
                     g.tx().rollback();
                     final String parameterName = "matchCriteria";
@@ -3182,8 +3198,14 @@ class GraphOMRSMetadataStore {
 
 
         // Cannot return EntityProxy objects, so ensure that only traverse to a non-proxy entity vertex...
-        gt = gt.in("Classifier").has(PROPERTY_KEY_ENTITY_IS_PROXY, false).has(PROPERTY_KEY_ENTITY_TYPE_NAME, entityTypeName);
 
+        gt = gt.in("Classifier").has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
+
+        // Optionally perform type filtering
+        if (performTypeFiltering)
+        {
+            gt = gt.has(PROPERTY_KEY_ENTITY_TYPE_NAME, within(entityTypeNames));
+        }
 
         while (gt.hasNext())
         {
@@ -3213,6 +3235,8 @@ class GraphOMRSMetadataStore {
         return entities;
 
     }
+
+
 
 
     InstanceGraph getSubGraph(String                entityGUID,
