@@ -20,7 +20,7 @@ More information about open metadata archives can be found in the
 [open-metadata-archives](../../../open-metadata-resources/open-metadata-archives) module.
 
 ----
-* [Return to the repository services design overview](.)
+* Return to [Repository Services Design](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

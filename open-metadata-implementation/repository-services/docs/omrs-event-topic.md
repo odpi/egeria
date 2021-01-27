@@ -40,6 +40,8 @@ enterprise OMRS event topic.  By default, it is implemented as an
 [in-memory open metadata topic](../../adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/inmemory-open-metadata-topic-connector).
 
 
+----
+* Return to [Repository Services Design](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
