@@ -48,6 +48,8 @@ This may be due to a configuration error but is much more likely to be a bug in 
 OMRS code.
 
 
+----
+Return to [repository services design](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

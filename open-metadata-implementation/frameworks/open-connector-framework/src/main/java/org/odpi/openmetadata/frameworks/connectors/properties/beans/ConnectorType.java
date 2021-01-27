@@ -46,6 +46,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         new connector instances.
  *     </li>
  *     <li>
+ *         recognizedAdditionalProperties - these are the Connection additional properties recognized by the connector implementation
+ *     </li>
+ *     <li>
+ *         recognizedConfigurationProperties - these are the Connection configuration properties recognized by the connector implementation
+ *     </li>
+ *     <li>
+ *         recognizedSecuredProperties - these are the Connection secured properties recognized by the connector implementation
+ *     </li>
+ *     <li>
  *         additionalProperties - Any additional properties that the connector provider needs to know in order to
  *         create connector instances.
  *     </li>
