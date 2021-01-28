@@ -76,7 +76,7 @@ See the **[documentation](docs)**.
 
 ## What about the code?
 
-The code for OMRS is organized into three modules:
+The code for OMRS is organized into five modules:
 
 * **[repository-services-apis](repository-services-apis)** contains the Java client interfaces,
 connector interfaces and

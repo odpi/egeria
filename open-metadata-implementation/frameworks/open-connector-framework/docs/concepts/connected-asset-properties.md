@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Connected Asset Properties
+# Connected Asset Properties - part of the [Open Connector Framework (OCF)](../..)
 
 Connected Asset Properties are the properties known about an asset accessed through a connector.
 These properties are presented at three levels:
@@ -109,6 +109,9 @@ are retrieved from the open metadata repositories by
 It will use the same user id that was used to create the
 connector.
 
+
+----
+* [Return to OCF Overview](../..)
 
 
 ----
