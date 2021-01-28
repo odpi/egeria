@@ -32,7 +32,7 @@ egeria:
   development: true
   version: "2.7-SNAPSHOT"
   #repositoryType: "local-graph-repository"
-  repositoryType: "in-memory-repositoy"
+  repositoryType: "in-memory-repository"
 
 debug:
   egeriaJVM: false
