@@ -1,5 +1,5 @@
 {
-  "graphConfigFile": "/Users/wf40wc/Developer/gremlin.properties",
+  "graphConfigFile": "GREMLIN_CONFIG_PATH_PLACEHOLDER",
   "processes": [
       "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(transformation_project)=minimal::(dsjob)=flow3"
   ],
@@ -31,5 +31,7 @@
     [
       "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCID"
     ]
-  }
+  },
+  "glossaryTerms": {},
+  "glossaryCategories" : {}
 }
