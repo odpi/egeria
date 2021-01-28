@@ -311,7 +311,12 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public TypeDefLink getSuperType()
     {
-        return superType;
+        if (superType == null)
+        {
+            return null;
+        }
+
+        return new TypeDefLink(superType);
     }
 
 
@@ -322,7 +327,14 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public void setSuperType(TypeDefLink superType)
     {
-        this.superType = superType;
+        if (superType == null)
+        {
+            this.superType = null;
+        }
+        else
+        {
+            this.superType = new TypeDefLink(superType);
+        }
     }
 
 

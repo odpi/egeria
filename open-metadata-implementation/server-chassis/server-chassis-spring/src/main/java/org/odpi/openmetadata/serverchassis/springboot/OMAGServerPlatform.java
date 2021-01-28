@@ -57,7 +57,7 @@ import java.util.*;
                         "\n" +
                         "Click on the documentation link to find out more ...",
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
-                contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi Egeria Project", email = "odpi-project-egeria@lists.odpi.org")
+                contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi Egeria Project", email = "egeria-technical-discuss@lists.lfaidata.foundation")
         ),
 
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
