@@ -95,7 +95,68 @@ public enum TexViewErrorCode implements ExceptionMessageSet
             (400, "OMVS-TYPE-EXPLORER-400-011",
              "The type explorer view service could not perform the requested operation {0} because te requestBody was missing",
              "The system could not perform the requested action.",
-             "Check the calling code to make sure that a requestBody is passed to the view service API.")
+             "Check the calling code to make sure that a requestBody is passed to the view service API."),
+
+    TYPE_SYSTEM_ENTITY_DEF_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-012",
+             "The type explorer view service method {0} detected that entity type {1} does not have an EntityDef, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_ENTITY_SUPERTYPE_NAME_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-013",
+             "The type explorer view service method {0} detected that entity type {1} has a super type with no name, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_ENTITY_SUPERTYPE_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-014",
+             "The type explorer view service method {0} detected that entity type {1} refers a super type {2} that is not in the type gallery, as returned by repository {3} on platform {4}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_RELATIONSHIP_DEF_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-015",
+             "The type explorer view service method {0} detected that relationship type {1} does not have a RelationshipDef, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_RELATIONSHIP_END_DEF_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-016",
+             "The type explorer view service method {0} detected that relationship type {1} is missing a RelationshipEndDef, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_DEF_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-017",
+             "The type explorer view service method {0} detected that classification type {1} does not have a ClassificationDef, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_NAME_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-018",
+             "The type explorer view service method {0} detected that the classification type {1} refers to a validEntityDef that has no name, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-019",
+             "The type explorer view service method {0} detected that classification type {1} refers to a validEntityDef for entity type {2} that is not in the type gallery, as returned by repository {3} on platform {4}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_NAME_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-020",
+             "The type explorer view service method {0} detected that the classification type {1} refers to a supertype that has no name, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_MISSING
+            (400, "OMVS-TYPE-EXPLORER-400-021",
+             "The type explorer view service method {0} detected that the classification type {1} refers to a supertype {2} that is not in the type gallery, as returned by repository {3} on platform {4}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery.")
+
             ;
 
     private ExceptionMessageDefinition messageDefinition;
