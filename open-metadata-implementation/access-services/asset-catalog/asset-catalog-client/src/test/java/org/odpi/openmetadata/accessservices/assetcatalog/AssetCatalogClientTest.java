@@ -3,7 +3,6 @@ package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -180,7 +179,6 @@ public class AssetCatalogClientTest {
         Assert.assertEquals(SECOND_ASSET_ID, relationshipListResponse.getRelationships().get(0).getToEntity().getGuid());
     }
 
-    @Ignore
     @Test
     public void testGetAssetsFromNeighborhood() throws Exception {
         AssetDescriptionListResponse response = mockAssetDescriptionListResponse();
@@ -189,10 +187,11 @@ public class AssetCatalogClientTest {
         when(connector.callPostRESTCall(eq("getAssetsFromNeighborhood"),
                 eq(AssetDescriptionListResponse.class),
                 anyString(),
+                eq(searchParameters),
                 eq(SERVER_NAME),
                 eq(USER_ID),
-                eq(ASSET_ID),
-                eq(searchParameters))).thenReturn(response);
+                eq(ASSET_ID)
+                )).thenReturn(response);
 
         AssetDescriptionListResponse assetsFromNeighborhood = assetCatalog.getAssetsFromNeighborhood(USER_ID,
                 ASSET_ID,
