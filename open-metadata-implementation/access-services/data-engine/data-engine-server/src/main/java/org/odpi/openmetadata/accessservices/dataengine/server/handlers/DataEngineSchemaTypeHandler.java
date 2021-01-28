@@ -60,6 +60,7 @@ public class DataEngineSchemaTypeHandler {
      * @param schemaTypeHandler             handler for managing schema elements in the metadata repositories
      * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
      * @param dataEngineCommonHandler       provides utilities for manipulating entities
+     * @param schemaAttributeHandler        handler for managing schema attributes in the metadata repositories
      */
     public DataEngineSchemaTypeHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                        RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
@@ -208,6 +209,8 @@ public class DataEngineSchemaTypeHandler {
      *
      * @param userId         the name of the calling user
      * @param schemaTypeGUID the unique identifier of the schema type
+     * @param externalSourceName the external data engine
+     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
@@ -236,6 +239,7 @@ public class DataEngineSchemaTypeHandler {
      * @param userId      the name of the calling user
      * @param attribute   the properties of the schema attribute
      * @param processGUID the GUID of the process
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

@@ -95,9 +95,11 @@ public class DataEngineCommonHandler {
      * @param entityGUID         unique identifier of entity to update
      * @param instanceProperties the properties of the entity
      * @param entityTypeName     name of the entity's type
+     * @param externalSourceName the external data engine
      *
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
+     * @throws InvalidParameterException  the bean properties are invalid
      */
     protected void updateEntity(String userId, String entityGUID, InstanceProperties instanceProperties, String entityTypeName,
                                 String externalSourceName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
@@ -235,9 +237,10 @@ public class DataEngineCommonHandler {
     /**
      * Remove entity
      *
-     * @param userId         the name of the calling user
-     * @param entityGUID     the unique identifier of the port to be removed
-     * @param entityTypeName the type name of the entity
+     * @param userId             the name of the calling user
+     * @param entityGUID         the unique identifier of the port to be removed
+     * @param entityTypeName     the type name of the entity
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

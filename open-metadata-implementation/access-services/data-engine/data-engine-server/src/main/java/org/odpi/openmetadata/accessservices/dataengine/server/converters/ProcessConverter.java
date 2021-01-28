@@ -22,6 +22,8 @@ public class ProcessConverter extends AssetConverter {
 
     /**
      * Request the bean is extracted from the repository objects
+     * @param entity the EntityDetail from which the bean is extracted
+     * @throws PropertyServerException problem accessing the property server
      *
      * @return output bean
      */

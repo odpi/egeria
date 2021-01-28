@@ -56,6 +56,7 @@ public class ProcessHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
+     * @param registrationHandler     creates software server capability entities
      **/
     public ProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                           RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, AssetHandler<Asset> assetHandler,
@@ -105,6 +106,7 @@ public class ProcessHandler {
      * @param userId                the name of the calling user
      * @param originalProcessEntity the created process entity
      * @param updatedProcess        the new values of the process
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -189,6 +191,8 @@ public class ProcessHandler {
      * @param userId         the name of the calling user
      * @param process        the process
      * @param instanceStatus the status of the process
+     * @param externalSourceName the external data engine
+     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server

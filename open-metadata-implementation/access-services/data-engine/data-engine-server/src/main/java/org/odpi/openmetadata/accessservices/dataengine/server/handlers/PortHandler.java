@@ -102,6 +102,7 @@ public class PortHandler {
      * @param userId             the name of the calling user
      * @param originalPortEntity the created port entity
      * @param portImplementation the port implementation new values
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -121,6 +122,7 @@ public class PortHandler {
      * @param userId             the name of the calling user
      * @param originalPortEntity the created port entity
      * @param portAlias          the port alias new values
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -296,6 +298,7 @@ public class PortHandler {
      * @param userId         the name of the calling user
      * @param portGUID       the unique identifier of the port to be removed
      * @param entityTypeName the type name
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

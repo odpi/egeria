@@ -32,7 +32,6 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
      * @param patchLevel           new patch level for the discovery engine implementation.
      * @param source               new source description for the implementation of the discovery engine.
      * @param additionalProperties additional properties
-     * @param extendedProperties   properties from the subtype.
      * @param repositoryHelper     helper methods
      * @param serviceName          name of this OMAS
      * @param serverName           name of local server
