@@ -17,6 +17,8 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewErrorCode;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -78,7 +80,7 @@ public class TypeExplorer {
         return entityTypeNameToGUID;
     }
 
-    public Map<String, String> getRelationshipyTypeGUIDToName() {
+    public Map<String, String> getRelationshipTypeGUIDToName() {
         return relationshipTypeGUIDToName;
     }
 
@@ -108,20 +110,32 @@ public class TypeExplorer {
         enums.put(enumTypeName, enumDef);
     }
 
-    public void resolve() {
+    public void resolve(String  platformRootURL,
+                        String  repositoryServerName)
+
+    throws RepositoryErrorException
+    {
 
         /*
          * After all types have been loaded, call the resolver methods to expand the TEX for each type category
          * Order is important, entities are expanded first.
+         *
+         * If anything untoward is spotted during one of the resolve methods, a RepositoryErrorException is thrown.
          */
 
-        resolveEntities();
-        resolveRelationships();
-        resolveClassifications();
+        resolveEntities(platformRootURL, repositoryServerName);
+        resolveRelationships(platformRootURL, repositoryServerName);
+        resolveClassifications(platformRootURL, repositoryServerName);
 
     }
 
-    private void resolveEntities() {
+    private void resolveEntities(String  platformRootURL,
+                                 String  repositoryServerName)
+
+    throws RepositoryErrorException
+    {
+
+        String methodName = "resolveEntities";
 
         // For each entityExplorer add it to its superType's subTypes
         for (String entityTypeName : entities.keySet()) {
@@ -130,8 +144,24 @@ public class TypeExplorer {
             // Not every entity type has a superType
             if (superType != null) {
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 // Find supertype in explorer
                 EntityExplorer superTypeExplorer = entities.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 superTypeExplorer.addSubTypName(entityTypeName);
             }
         }
@@ -143,9 +173,33 @@ public class TypeExplorer {
             while (superType != null) {
                 // add supertype's attributes to subtype
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 // find supertype in explorer
                 EntityExplorer superTypeExplorer = entities.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 EntityDef superDef = superTypeExplorer.getEntityDef();
+                if (superDef == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_ENTITY_DEF_MISSING.getMessageDefinition(
+                                    methodName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 List<TypeDefAttribute> superAttributes = superDef.getPropertiesDefinition();
                 entityExplorer.addInheritedAttributes(superAttributes);
                 superType = superDef.getSuperType();
@@ -153,8 +207,14 @@ public class TypeExplorer {
         }
     }
 
-    private void resolveRelationships()
+    private void resolveRelationships(String  platformRootURL,
+                                      String  repositoryServerName)
+
+    throws RepositoryErrorException
     {
+
+        String methodName = "resolveRelationships";
+
         // For each relationshipExplorer gets its end types and add the relationship type to each of the entity types
         for (String relationshipTypeName : relationships.keySet()) {
 
@@ -171,6 +231,14 @@ public class TypeExplorer {
                     addRelationshipToSubType(relationshipTypeName,subTypeName);
                 }
             }
+            else
+            {
+                throw new RepositoryErrorException(
+                        RexViewErrorCode.TYPE_SYSTEM_RELATIONSHIP_END_DEF_MISSING.getMessageDefinition(
+                                methodName, relationshipTypeName, repositoryServerName, platformRootURL),
+                        this.getClass().getName(),
+                        methodName);
+            }
 
             if (entityTwoDef != null) {
                 String entityTwoTypeName = entityTwoDef.getEntityType().getName();
@@ -180,6 +248,14 @@ public class TypeExplorer {
                 for (String subTypeName : subTypeNames) {
                     addRelationshipToSubType(relationshipTypeName,subTypeName);
                 }
+            }
+            else
+            {
+                throw new RepositoryErrorException(
+                        RexViewErrorCode.TYPE_SYSTEM_RELATIONSHIP_END_DEF_MISSING.getMessageDefinition(
+                                methodName, relationshipTypeName, repositoryServerName, platformRootURL),
+                        this.getClass().getName(),
+                        methodName);
             }
 
 
@@ -201,8 +277,14 @@ public class TypeExplorer {
     }
 
 
-    private void resolveClassifications()
+    private void resolveClassifications(String  platformRootURL,
+                                        String  repositoryServerName)
+
+    throws RepositoryErrorException
     {
+
+        String methodName = "resolveClassifications";
+
         // For each classificationExplorer add its name to the known classifications for its valid entity types
         for (String classificationTypeName : classifications.keySet()) {
             ClassificationExplorer classificationExplorer = classifications.get(classificationTypeName);
@@ -210,10 +292,27 @@ public class TypeExplorer {
             if (validEntityTypes != null) {
                 for (TypeDefLink entityType : validEntityTypes) {
                     String entityTypeName = entityType.getName();
+                    if (entityTypeName == null)
+                    {
+                        throw new RepositoryErrorException(
+                                RexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_NAME_MISSING.getMessageDefinition(
+                                        methodName, classificationTypeName, repositoryServerName, platformRootURL),
+                                this.getClass().getName(),
+                                methodName);
+                    }
                     EntityExplorer entityExplorer = entities.get(entityTypeName);
+                    if (entityExplorer == null)
+                    {
+                        throw new RepositoryErrorException(
+                                RexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_MISSING.getMessageDefinition(
+                                        methodName, classificationTypeName, entityTypeName, repositoryServerName, platformRootURL),
+                                this.getClass().getName(),
+                                methodName);
+                    }
                     entityExplorer.addClassification(classificationTypeName);
                     List<String> subTypeNames = entityExplorer.getSubTypeNames();
-                    for (String subTypeName : subTypeNames) {
+                    for (String subTypeName : subTypeNames)
+                    {
                         addClassificationToSubType(classificationTypeName,subTypeName);
                     }
                 }
@@ -226,8 +325,24 @@ public class TypeExplorer {
             TypeDefLink superType = classificationExplorer.getClassificationDef().getSuperType();
             if (superType != null) {
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 // find supertype in explorer
                 ClassificationExplorer superTypeExplorer = classifications.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 superTypeExplorer.addSubTypName(classificationTypeName);
             }
         }
@@ -239,9 +354,33 @@ public class TypeExplorer {
             while (superType != null) {
                 // add supertype's attributes to subtype
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 // find supertype in explorer
                 ClassificationExplorer superTypeExplorer = classifications.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 ClassificationDef superDef = superTypeExplorer.getClassificationDef();
+                if (superDef == null)
+                {
+                    throw new RepositoryErrorException(
+                            RexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_DEF_MISSING.getMessageDefinition(
+                                    methodName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 List<TypeDefAttribute> superAttributes = superDef.getPropertiesDefinition();
                 classificationExplorer.addInheritedAttributes(superAttributes);
                 superType = superDef.getSuperType();
