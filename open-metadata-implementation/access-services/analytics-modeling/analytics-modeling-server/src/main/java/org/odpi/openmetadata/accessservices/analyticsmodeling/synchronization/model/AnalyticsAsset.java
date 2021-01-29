@@ -6,8 +6,6 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.m
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.Asset;
 
@@ -26,11 +24,6 @@ public class AnalyticsAsset extends Asset {
 	private List<MetadataContainer> visualization;
 
 
-	public Map<String, String> buildAdditionalProperties() {
-		Map<String, String> ret = new TreeMap<>();
-		
-		return ret;
-	}
 	public void addContainer(MetadataContainer child) {
 		if (container == null) {
 			container = new ArrayList<>();
@@ -151,5 +144,11 @@ public class AnalyticsAsset extends Asset {
 	public boolean isVisualization() {
 		return visualization != null;
 	}
+	
+	public boolean hasMetadataModule() {
+		return (container != null && !container.isEmpty())
+				|| (item != null && !item.isEmpty());
+	}
+
 
 }

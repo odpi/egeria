@@ -3,10 +3,14 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.Asset;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaType;
@@ -28,6 +32,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AnalyticsArtifactHandler {
 
@@ -69,80 +76,73 @@ public class AnalyticsArtifactHandler {
 	}
 
 	/**
-	 * Create Asset.
+	 * Create assets defined by input.
+	 * @param user making the request.
+	 * @param input definition of analytic artifact.
+	 * @return set of asset GUIDs representing the artifact.
+	 * @throws AnalyticsModelingCheckedException in case of error.
+	 */
+	public ResponseContainerAssets createAssets(String user, String input)
+			throws AnalyticsModelingCheckedException
+	{
+		String methodName = "createAssets";
+		ctx.setUserId(user);	// set the user requested the operation
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<String> guids = new ArrayList<>();
+		
+		try {
+			AnalyticsAsset asset = mapper.readValue(input, AnalyticsAsset.class);
+			
+			if (asset.hasMetadataModule()) {
+				guids.add(createModuleAsset(asset));
+			}
+			
+			if (asset.isVisualization()) {
+				guids.add(createVisualizationAsset(asset));
+			}
+			
+		} catch (JsonProcessingException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.INCORRECT_ARTIFACT_DEFINITION.getMessageDefinition(input),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
+		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_CREATE_ARTIFACT.getMessageDefinition(),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
+		}
+		
+		ResponseContainerAssets ret = new ResponseContainerAssets();
+		ret.setAssetsList(guids);
+		return ret;
+	}
+	
+	/**
+	 * Create an asset with metadata model.
 	 * 
-	 * @param asset to create.
+	 * @param asset definition.
 	 * @return GUID of the created Asset
 	 * @throws InvalidParameterException
 	 * @throws PropertyServerException
 	 * @throws UserNotAuthorizedException
 	 */
-	public String createAsset(AnalyticsAsset asset) 
+	private String createModuleAsset(AnalyticsAsset asset) 
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
 	{
-		String methodName = "createAsset";
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
-		
 		resolver = new IdentifierResolver(ctx, asset);
 		
-		Map<String, String>  additionalProperties = new HashMap<>();
-        additionalProperties.put(Constants.TYPE, asset.getType());
-
 		// create asset
-		String qualifiedName = QualifiedNameUtils.buildQualifiedName(ssc.getQualifiedName(), IdMap.INFOTMATION_VIEW_TYPE_NAME, asset.getUid());
-		asset.setQualifiedName(qualifiedName);
-		String assetGUID = assetHandler.createAssetInRepository(ctx.getUserId(),
-				ssc.getGUID(), ssc.getSource(),
-				qualifiedName, asset.getDisplayName(),
-				asset.getDescription(),
-				ctx.getSupportedZones(), // zoneMembership,
-				null,	// owner
-				0,		// ownerType (0 = OWNS),
-				null,	//originOrganizationCapabilityGUID,
-				null,	//originBusinessCapabilityGUID,
-				null,	//otherOriginValues,
-				additionalProperties,	//additionalProperties, 
-				IdMap.INFOTMATION_VIEW_TYPE_GUID, IdMap.INFOTMATION_VIEW_TYPE_NAME,
-				null,	//extended properties
-				methodName);
-		
-		
-		
-		ctx.getRepositoryHandler().createRelationship(ctx.getUserId(),
-				IdMap.SERVER_ASSET_USE_TYPE_GUID, null, null, ssc.getGUID(), assetGUID, null, methodName);
+		String assetGUID = createAssetEntity(asset, true);
+		String qualifiedName = asset.getQualifiedName();
 
 		// create relationships for referenced assets
-		List<AssetReference> refAssets = asset.getReference();
+		createAssetReferences(asset, assetGUID);
 		
-		if (refAssets != null) {
-			refAssets.forEach(ref->{
-				try {
-					if (ref.getGuid() == null) {
-						// unresolved referenced base module
-					} else {
-						ctx.getRepositoryHandler().createRelationship(ctx.getUserId(), IdMap.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID, 
-								null, null, assetGUID, ref.getGuid(), null, methodName);
-					}
-				} catch (UserNotAuthorizedException | PropertyServerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-		}
-		
-
-		// create SchemaType
-		SchemaTypeBuilder builder = new SchemaTypeBuilder(
-				QualifiedNameUtils.buildQualifiedName(qualifiedName, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME, asset.getType()),
-				IdMap.COMPLEX_SCHEMA_TYPE_TYPE_GUID,	IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
-                ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName());
-		
-		builder.setAnchors(ctx.getUserId(), assetGUID, methodName);
-		
-		String schemaTypeGUID = schemaTypeHandler.addSchemaType(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), builder, methodName);
-		
-		assetHandler.attachSchemaTypeToAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), assetGUID, "assetGUID", 
-				schemaTypeGUID, "schemaTypeGUID", methodName);	
+		String schemaTypeGUID = createSchemaType(asset, assetGUID);	
 
 		// create containers
 		if (asset.getContainer() != null) {
@@ -170,12 +170,108 @@ public class AnalyticsArtifactHandler {
 		
 		return assetGUID;
 	}
+
+	/**
+	 * Create relationships of the asset using references to existing assets.
+	 * @param asset
+	 * @param assetGUID
+	 * @throws PropertyServerException 
+	 * @throws UserNotAuthorizedException 
+	 */
+	private void createAssetReferences(AnalyticsAsset asset, String assetGUID) 
+			throws UserNotAuthorizedException, PropertyServerException 
+	{
+		String methodName = "createAssetReferences";
+		List<AssetReference> refAssets = asset.getReference();
+		
+		if (refAssets == null) {
+			return;
+		}
+	
+		for (AssetReference ref : refAssets) {
+			if (ref.getGuid() != null) {
+				ctx.getRepositoryHandler().createRelationship(ctx.getUserId(), IdMap.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID, 
+						null, null, assetGUID, ref.getGuid(), null, methodName);
+			} else {
+				// unresolved reference
+			}
+		}
+	}
+
+	/**
+	 * Create SchemaType entity element of the asset.
+	 * 
+	 * @param asset parent of the created element.
+	 * @param assetGUID
+	 * @return GUID of the created entity.
+	 * @throws InvalidParameterException
+	 * @throws PropertyServerException
+	 * @throws UserNotAuthorizedException
+	 */
+	private String createSchemaType(AnalyticsAsset asset, String assetGUID)
+			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
+	{
+		String methodName = "createSchemaType";
+		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		SchemaTypeBuilder builder = new SchemaTypeBuilder(
+				QualifiedNameUtils.buildQualifiedName(asset.getQualifiedName(), IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME, asset.getType()),
+				IdMap.COMPLEX_SCHEMA_TYPE_TYPE_GUID,	IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
+                ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName());
+		
+		builder.setAnchors(ctx.getUserId(), assetGUID, methodName);
+		
+		String schemaTypeGUID = schemaTypeHandler.addSchemaType(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), builder, methodName);
+		
+		assetHandler.attachSchemaTypeToAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), assetGUID, "assetGUID", 
+				schemaTypeGUID, "schemaTypeGUID", methodName);
+		return schemaTypeGUID;
+	}
+
+	/**
+	 * Create Asset entity.
+	 * @param asset object whose entity to create.
+	 * @return GUID of the created entity.
+	 * @throws InvalidParameterException
+	 * @throws PropertyServerException
+	 * @throws UserNotAuthorizedException
+	 */
+	private String createAssetEntity(AnalyticsAsset asset, boolean bModuleAsset)
+			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
+	{
+		String methodName = "createAsset";
+		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		String assetTypeName = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_NAME : IdMap.DEPLOYED_REPORT_TYPE_NAME;
+		String assetTypeGuid = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_GUID : IdMap.DEPLOYED_REPORT_TYPE_GUID;
+		String qualifiedName = QualifiedNameUtils.buildQualifiedName(ssc.getQualifiedName(), assetTypeName, asset.getUid());
+		
+		Map<String, String>  additionalProperties = new HashMap<>();
+        additionalProperties.put(Constants.TYPE, asset.getType());
+		
+		asset.setQualifiedName(qualifiedName);
+		String assetGUID = assetHandler.createAssetInRepository(ctx.getUserId(),
+				ssc.getGUID(), ssc.getSource(),
+				qualifiedName, asset.getDisplayName(),
+				asset.getDescription(),
+				ctx.getSupportedZones(), // zoneMembership,
+				null,	// owner
+				0,		// ownerType (0 = OWNS),
+				null,	//originOrganizationCapabilityGUID,
+				null,	//originBusinessCapabilityGUID,
+				null,	//otherOriginValues,
+				additionalProperties,	//additionalProperties, 
+				assetTypeGuid, assetTypeName,
+				null,	//extended properties
+				methodName);
+		
+		ctx.getRepositoryHandler().createRelationship(ctx.getUserId(),
+				IdMap.SERVER_ASSET_USE_TYPE_GUID, null, null, ssc.getGUID(), assetGUID, null, methodName);
+		
+		return assetGUID;
+	}
 	
 
 	/**
-	 * Create asset for visualization.
-	 * 
-	 * DeployedReport asset created for visualization.
+	 * Create DeployedReport asset for visualization.
 	 * 
 	 * @param report specification.
 	 * @return created asset GUID.
@@ -186,75 +282,25 @@ public class AnalyticsArtifactHandler {
 	 * 
 	 * Note: use resolver from InformationView asset.
 	 */
-	public String createVisualizationAsset(AnalyticsAsset report) 
+	private String createVisualizationAsset(AnalyticsAsset report) 
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
-
-		String methodName = "createVisualizationAsset";
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
-		
-		if (resolver == null) {
+		if (resolver == null || !report.hasMetadataModule()) {
 			resolver = new IdentifierResolver(ctx, report);
 		}
 		
 		Map<String, String>  additionalProperties = new HashMap<>();
         additionalProperties.put(Constants.TYPE, report.getType());
 
-        // create asset
-		String qualifiedName = QualifiedNameUtils.buildQualifiedName(ssc.getQualifiedName(), IdMap.DEPLOYED_REPORT_TYPE_NAME, report.getUid());
-		report.setQualifiedName(qualifiedName);
-		String assetGUID = assetHandler.createAssetInRepository(ctx.getUserId(),
-				ssc.getGUID(), ssc.getSource(),
-				qualifiedName, report.getDisplayName(),
-				report.getDescription(),
-				ctx.getSupportedZones(), // zoneMembership,
-				null,	// owner
-				0,		// ownerType (0 = OWNS),
-				null,	//originOrganizationCapabilityGUID,
-				null,	//originBusinessCapabilityGUID,
-				null,	//otherOriginValues,
-				additionalProperties,	//additionalProperties, 
-				IdMap.DEPLOYED_REPORT_TYPE_GUID, IdMap.DEPLOYED_REPORT_TYPE_NAME,
-				null,	//extended properties
-				methodName);
-		
-		
-		
-		ctx.getRepositoryHandler().createRelationship(ctx.getUserId(),
-				IdMap.SERVER_ASSET_USE_TYPE_GUID, null, null, ssc.getGUID(), assetGUID, null, methodName);
+		// create asset
+		String assetGUID = createAssetEntity(report, false);
+		String qualifiedName = report.getQualifiedName();
 
-		// create relationships for referenced assets
-		List<AssetReference> refAssets = report.getReference();
-		
-		if (refAssets != null) {
-			refAssets.forEach(ref->{
-				try {
-					if (ref.getGuid() == null) {
-						// unresolved referenced base module
-					} else {
-						ctx.getRepositoryHandler().createRelationship(ctx.getUserId(), IdMap.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID, 
-								null, null, assetGUID, ref.getGuid(), null, methodName);
-					}
-				} catch (UserNotAuthorizedException | PropertyServerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-		}
+		createAssetReferences(report, assetGUID);
 		
 
 		// create SchemaType
-		SchemaTypeBuilder builder = new SchemaTypeBuilder(
-				QualifiedNameUtils.buildQualifiedName(qualifiedName, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME, report.getType()),
-				IdMap.COMPLEX_SCHEMA_TYPE_TYPE_GUID,	IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
-                ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName());
-		
-		builder.setAnchors(ctx.getUserId(), assetGUID, methodName);
-		
-		String schemaTypeGUID = schemaTypeHandler.addSchemaType(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), builder, methodName);
-		
-		assetHandler.attachSchemaTypeToAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), assetGUID, "assetGUID", 
-				schemaTypeGUID, "schemaTypeGUID", methodName);	
+		String schemaTypeGUID = createSchemaType(report, assetGUID);
 
 		// create containers
 		if (report.getVisualization() != null) {
@@ -495,14 +541,4 @@ public class AnalyticsArtifactHandler {
 
 		return builder;
 	}
-
-	public void deleteAsset(String uid) {
-	}
-	
-	public void updateAsset(Asset asset) {
-
-	}
-
-
-
 }

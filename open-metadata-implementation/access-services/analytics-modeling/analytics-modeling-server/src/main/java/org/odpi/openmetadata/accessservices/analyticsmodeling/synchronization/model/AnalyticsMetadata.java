@@ -8,15 +8,28 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 
+/**
+ *	Base class for analytics metadata provides common attributes. 
+ */
 public abstract class AnalyticsMetadata extends SchemaAttribute {
 
-	private String identifier;				// identifier within parent element
-	private List<String> sourceGuid;		// GUIDs of external metadata objects
+	private String identifier;				// 3rd party system identifier within parent element
+	private List<String> sourceGuid;		// repository GUIDs of entities representing external metadata objects
 	private List<String> sourceId;			// IDs of external metadata objects
-	private String type;
-	
+	private String type;					// arbitrary type of the metadata as defined in 3rd party system
+											// display name and type should represent element for the user in UI
+											// Samples of possible values for types:
+											// queryItem - metadata stored in storage like RDBMS, OLAP, CSV files, etc.
+											// dataItem - projected metadata within visualization
+											// querySubject - group of related metadata items: Relation/Table/View in RDBMS, Dimension in OLAP
+											// query - group of metadata items projected in a query: SQL (RDBMS), MDX (OLAP)
+											// widget - visual elements with metadata items
+											// page - multiple page report logical grouping for widgets
+											// tab - multiple tab per page logical grouping for widgets
+
 
 	/**
+	 * Get type of the metadata.
 	 * @return the type
 	 */
 	public String getType() {
@@ -24,38 +37,13 @@ public abstract class AnalyticsMetadata extends SchemaAttribute {
 	}
 
 	/**
+	 * Set type of the metadata.
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	public enum Type {
-		
-		QUERY_ITEM ("queryItem"),		// metadata stored in data bases like RDBMS, OLAP, CSV files, etc.
-		DATA_ITEM ("dataItem"),			// projected metadata within visualization
-		QUERY_SUBJECT ("querySubject"),	// group of related metadata items: Relation/Table/View in RDBMS, Dimension in OLAP
-		QUERY ("query"),				// group of metadata items projected in a query: SQL (RDBMS), MDX (OLAP)
-		PAGE ("page"),					// multiple page report logical grouping for widgets
-		TAB ("tab"),					// multiple tab per page logical grouping for widgets
-		WIDGET("widget"),				// visual elements with metadata items
-		BASE_MODULE ("baseModule"),		// asset of metadata connected to native repository objects
-		MODULE ("module"),				// asset of metadata defined by base module items
-		REPORT("report"),				// report visualization
-		DASHBOARD("dashboard");			// dashboard visualization
-		
-		
-		Type (String value) {
-			name = value;
-		}
-	
-		public String getName() {
-			return name;
-		}
-
-		private String name;
-	};
-	
 	/**
 	 * Getter method for attribute identifier
 	 * @return the identifier
@@ -73,6 +61,7 @@ public abstract class AnalyticsMetadata extends SchemaAttribute {
 	}
 
 	/**
+	 * Get GUID list the element is connected to.
 	 * @return the sourceGuid
 	 */
 	public List<String> getSourceGuid() {
@@ -80,6 +69,7 @@ public abstract class AnalyticsMetadata extends SchemaAttribute {
 	}
 
 	/**
+	 * Set GUID list the element is connected to.
 	 * @param sourceGuid the sourceGuid to set
 	 */
 	public void setSourceGuid(List<String> sourceGuid) {
@@ -114,6 +104,9 @@ public abstract class AnalyticsMetadata extends SchemaAttribute {
 		sourceId.add(id);
 	}
 	
+	/**
+	 * The function 
+	 */
 	public abstract void convertProperties();
 
 }

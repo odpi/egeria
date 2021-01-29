@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *	MetadataItem is an abstraction of something that references source of data.
+ *	MetadataItem is an abstraction of something that references source of
+ *	simple data that have same type like integer, string, etc.
  *
  */
 public class MetadataItem extends AnalyticsMetadata {
@@ -15,21 +16,32 @@ public class MetadataItem extends AnalyticsMetadata {
 	private String expression;
 	private String dataType;
 
+	/**
+	 * Nested items.
+	 * OLAP hierarchy/levels/members.
+	 * DATE, TIMESTAMP consist of smaller items.
+	 */
 	private List<MetadataItem> items;
 
 	/**
-	 * @return the items
+	 * Get the nested data.
+	 * @return the items.
 	 */
 	public List<MetadataItem> getItem() {
 		return items;
 	}
 	/**
-	 * @param items the items to set
+	 * Set all nested items.
+	 * @param items the items to set.
 	 */
 	public void setItem(List<MetadataItem> items) {
 		this.items = items;
 	}
 	
+	/**
+	 * Add single nested item.
+	 * @param item to add.
+	 */
 	public void addItem(MetadataItem item) {
 		if (items == null) {
 			items = new ArrayList<>();
@@ -51,18 +63,6 @@ public class MetadataItem extends AnalyticsMetadata {
 		return null;
 	}
 	
-	/**
-	 * @return the qualifiedName
-	 */
-	public String getQualifiedName() {
-		return qualifiedName;
-	}
-	/**
-	 * @param qualifiedName the qualifiedName to set
-	 */
-	public void setQualifiedName(String qualifiedName) {
-		this.qualifiedName = qualifiedName;
-	}
 	public String getExpression() {
 		return expression;
 	}
@@ -77,7 +77,5 @@ public class MetadataItem extends AnalyticsMetadata {
 	}
 	@Override
 	public void convertProperties() {
-		// TODO Auto-generated method stub
-		
 	}
 }

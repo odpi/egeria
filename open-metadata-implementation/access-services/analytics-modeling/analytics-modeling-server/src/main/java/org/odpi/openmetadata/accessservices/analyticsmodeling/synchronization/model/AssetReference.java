@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.m
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,7 +17,7 @@ public class AssetReference {
 	private String uid;			// external unique identifiers of the metadata source
 	private String location;	// location of the metadata source in external system
 	private String guid;		// repository GUID of the asset corresponding to external metadata source
-	private String alias;		// alias used inside module
+	private String alias;		// alias used inside asset
 
 	
 	public String getUid() {

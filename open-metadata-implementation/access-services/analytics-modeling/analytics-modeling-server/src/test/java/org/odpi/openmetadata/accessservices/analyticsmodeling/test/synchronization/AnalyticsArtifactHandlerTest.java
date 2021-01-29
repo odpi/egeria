@@ -12,10 +12,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.AnalyticsArtifactHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.ExecutionContext;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
@@ -60,7 +64,6 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 		super.setup();
 		
 		ctx = new ExecutionContext(
-				USER_ID,
 				serviceName, 
 				serverName, 
 				invalidParameterHandler,
@@ -73,7 +76,7 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 				null, // publishZones,
 				auditLog);
 		
-		ctx.initializeSoftwareServerCapability(HTTP_LOCALHOST_9300_P2PD_SERVLET);
+		ctx.initializeSoftwareServerCapability(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET);
 		
 		obj = new AnalyticsArtifactHandler(ctx);
 	}
@@ -117,6 +120,11 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 		TestUtilities.assertObjectJson(obj, TestUtilities.readJsonFile(FOLDER_MASTER, "baseModuleAsset"));
 	}	
 
+	@Test
+	void testReadBaseModule() throws Exception {
+		createBeanWithAssertion("baseModule");
+	}
+	
 	/**
 	 * Base module has GUIDs used to connect to original asset.
 	 * Identifier resolution is not required.
@@ -126,18 +134,28 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	void testCreateBaseModule() throws Exception {
 
-		AnalyticsAsset baseModule = createBeanWithAssertion("baseModuleAssetRaw");
-		
-		createReferencedEntitiesForMetadataLinks(baseModule);
+		String input = "baseModule";
+		AnalyticsAsset baseModule = createBean(input);
 
-		String guid = obj.createAsset(baseModule);
+		// create entities for columns referenced in base module
+		Map<String, String>guidMap = new HashMap<>();
+		createReferencedEntitiesForMetadataLinks(baseModule.getContainer(), guidMap);
+		String json = TestUtilities.readJsonFile(FOLDER_INPUT, input);
+		// replace GUIDs from input with real GUIDs of created entities
+		for (Entry<String, String> pair : guidMap.entrySet()) {
+			json = json.replace(pair.getKey(), pair.getValue());
+		}
+
+		ResponseContainerAssets guids = obj.createAssets(USER_ID, json);
+		
+		assertEquals(guids.getAssetsList().size(), 1, "Single asset should be created.");
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
 		//---------------------------------------------------
+		String guid = guids.getAssetsList().get(0);
 
-		assertSubgraph(guid, "baseModuleSubgraph", baseModule.getQualifiedName());
-
+		assertSubgraph(guid, "baseModuleSubgraph");
 	}
 
 	/**
@@ -149,18 +167,17 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	void testCreateModule() throws Exception {
 
-		AnalyticsAsset baseModule = createBeanWithAssertion("baseModuleAssetRaw");
-		obj.createAsset(baseModule);
+		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
 		
-		AnalyticsAsset module = createBeanWithAssertion("moduleAssetRaw");
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
 		
-		String guid = obj.createAsset(module);
-
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
 		//---------------------------------------------------
+		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
+		String guid = guidsModule.getAssetsList().get(0);
 		
-		assertSubgraph(guid, "moduleSubgraph", module.getQualifiedName());
+		assertSubgraph(guid, "moduleSubgraph");
 	}
 	
 	/**
@@ -172,18 +189,19 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	void testCreateReport() throws Exception {
 
-		AnalyticsAsset baseModule = createBeanWithAssertion("baseModuleAssetRaw");
-		obj.createAsset(baseModule);
+		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
 		
-		AnalyticsAsset module = createBeanWithAssertion("moduleAssetRaw");
-		obj.createAsset(module);
+		
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "report"));
+		
+		//---------------------------------------------------
+		// Verify structure and content of the built asset. 
+		//---------------------------------------------------
+		assertEquals(guidsReport.getAssetsList().size(), 2, "Module and Visualization assets should be created.");
+		String guid = guidsReport.getAssetsList().get(1);
 
-		AnalyticsAsset report = createBeanWithAssertion("report");
-		obj.createAsset(report);
-		
-		String guidReportViz = obj.createVisualizationAsset(report);
-		
-		assertSubgraph(guidReportViz, "reportSubgraph", report.getQualifiedName());
+		assertSubgraph(guid, "reportSubgraph");
 	}
 
 	/**
@@ -195,27 +213,30 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	void testCreateDashboard() throws Exception {
 
-		AnalyticsAsset baseModule = createBeanWithAssertion("baseModuleAssetRaw");
-		obj.createAsset(baseModule);
+		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
 		
-		AnalyticsAsset module = createBeanWithAssertion("moduleAssetRaw");
-		obj.createAsset(module);
+		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "dashboard"));
+		
+		//---------------------------------------------------
+		// Verify structure and content of the built asset. 
+		//---------------------------------------------------
+		assertEquals(guidsDashBoard.getAssetsList().size(), 1, "Visualization only asset should be created.");
+		String guid = guidsDashBoard.getAssetsList().get(0);
 
-		AnalyticsAsset report = createBeanWithAssertion("dashboard");
-		obj.createAsset(report);
-		
-		String guidReportViz = obj.createVisualizationAsset(report);
-		
-		assertSubgraph(guidReportViz, "dashboardSubgraph", report.getQualifiedName());
+		assertSubgraph(guid, "dashboardSubgraph");
 	}
 	
 	
 	//----------------------------------------------------------------------------------
 	// Verify structure and content of the built asset as graph with nodes and edges. 
 	//----------------------------------------------------------------------------------
-	private void assertSubgraph(String guid, String fileMaster, String assetQName) throws IOException {
+	private void assertSubgraph(String guid, String fileMaster) throws IOException, AnalyticsModelingCheckedException {
 		ArrayList<EntityDetail> nodes = new ArrayList<>();
 		ArrayList<Relationship> edges = new ArrayList<>();
+		
+		String assetQName = omEntityDao.getEntityQName(omEntityDao.getEntityByGuid(guid));
+
 		try {
 			
 			collectRelatedNodes(nodes, edges, guid, assetQName);
@@ -380,11 +401,7 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	//----------------------------------------------------------------------------------------------------------------
 	// Tests support functions.
 	//----------------------------------------------------------------------------------------------------------------
-	private void createReferencedEntitiesForMetadataLinks(AnalyticsAsset baseModule) {
-		createReferencedEntitiesForMetadataLinks(baseModule.getContainer());
-	}
-	
-	private void createReferencedEntitiesForMetadataLinks(List<? extends AnalyticsMetadata> list ) {
+	private void createReferencedEntitiesForMetadataLinks(List<? extends AnalyticsMetadata> list, Map<String, String> guidMap ) {
 		if (list == null) {
 			return;
 		}
@@ -392,38 +409,41 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 		for (AnalyticsMetadata mtdObject : list) {
 			
 			if (mtdObject instanceof MetadataItem) {
-				List<String> sourceGUIDs = mtdObject.getSourceGuid();
-				if (sourceGUIDs != null && !sourceGUIDs.isEmpty()) {
-					String [] guids = new String[sourceGUIDs.size()];
-					for( int i = 0; i < sourceGUIDs.size(); ++i) {
+				if (mtdObject.getSourceGuid() != null) {
+					for( String orgGuid : mtdObject.getSourceGuid()) {
 						try {
 							InstanceProperties columnTypeProperties = new EntityPropertiesBuilder("JUnitTest", "createReferencedEntitiesForMetadataLinks", null)
-					                .withStringProperty(Constants.QUALIFIED_NAME, sourceGUIDs.get(i)).build();
+					                .withStringProperty(Constants.QUALIFIED_NAME, orgGuid).build();
 							
-							guids[i] = omEntityDao.createOrUpdateEntity(Constants.RELATIONAL_COLUMN_TYPE, sourceGUIDs.get(i), columnTypeProperties, null, false, false)
+							String guid = omEntityDao.createOrUpdateEntity(Constants.RELATIONAL_COLUMN_TYPE, orgGuid, columnTypeProperties, null, false, false)
 									.getEntityDetail().getGUID();
+							
+							guidMap.put(orgGuid, guid);
 						} catch (Exception e) {
-							fail("Failed create referenced entity: " + sourceGUIDs.get(i));
+							fail("Failed create referenced entity: " + orgGuid);
 						}
 					}
-					mtdObject.setSourceGuid(Arrays.asList(guids));
 				}
 			}
 			
 			if (mtdObject instanceof MetadataContainer) {
-				createReferencedEntitiesForMetadataLinks(((MetadataContainer) mtdObject).getContainer());
-				createReferencedEntitiesForMetadataLinks(((MetadataContainer) mtdObject).getItem());
+				createReferencedEntitiesForMetadataLinks(((MetadataContainer) mtdObject).getContainer(), guidMap);
+				createReferencedEntitiesForMetadataLinks(((MetadataContainer) mtdObject).getItem(), guidMap);
 			} else if (mtdObject instanceof MetadataItem) {
-				createReferencedEntitiesForMetadataLinks(((MetadataItem) mtdObject).getItem());
+				createReferencedEntitiesForMetadataLinks(((MetadataItem) mtdObject).getItem(), guidMap);
 			}
 		}
 	}
 
+	private AnalyticsAsset createBean(String input) throws IOException {
+		String json = TestUtilities.readJsonFile(FOLDER_INPUT, input);
+		return TestUtilities.readObjectJson(json, AnalyticsAsset.class);
+	}
+	
 	private AnalyticsAsset createBeanWithAssertion(String input) throws IOException {
-		String dataModuleJson = TestUtilities.readJsonFile(FOLDER_INPUT, input);
-		AnalyticsAsset module = TestUtilities.readObjectJson(dataModuleJson, AnalyticsAsset.class);
+		AnalyticsAsset asset = createBean(input);
 		// confirm data read successful
-		TestUtilities.assertObjectJson(module, TestUtilities.readJsonFile(FOLDER_MASTER, input));
-		return module;
+		TestUtilities.assertObjectJson(asset, TestUtilities.readJsonFile(FOLDER_MASTER, input));
+		return asset;
 	}
 }

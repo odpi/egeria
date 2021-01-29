@@ -129,13 +129,42 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Tables for schemas {0} of the database {1} could not be fetched.",
 			"The system is unable to process the request.", 
 			"Review the exception to resolve the issue."),
+	UNEXPECTED_CLASS(
+			"OMAS-ANALYTICS-MODELING-020", 
+			"Unexpected class {0} of the AnalyticsMetadata.",
+			"The system is unable to process the request.", 
+			"Fix data in repository."),
+	FAILED_CREATE_BEAN(
+			"OMAS-ANALYTICS-MODELING-021", 
+			"Failed to create bean of class {0} of the AnalyticsMetadata.",
+			"The system is unable to process the request.", 
+			"Fix data in repository or class path."),
+	MISSING_BEAN_CLASS(
+			"OMAS-ANALYTICS-MODELING-022", 
+			"Java class of the AnalyticsMetadata is not defined.",
+			"The system is unable to process the request.", 
+			"Fix data in repository."),
+	MISSING_BEAN_PROPERTIES(
+			"OMAS-ANALYTICS-MODELING-023", 
+			"Entity {0} of the AnalyticsMetadata is missing properties.",
+			"The system is unable to process the request.", 
+			"Fix data in repository."),
+	INCORRECT_ARTIFACT_DEFINITION(
+			"OMAS-ANALYTICS-MODELING-024", 
+			"Definition of Analytics artifact cannot be parsed: {0}.",
+			"The system is unable to process the request.",
+			"Fix the definition."),
+	FAILED_CREATE_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-025", 
+			"Failed to create analytics artifact.",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue."),
 
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 
 			"Server failed to execute request with unknown reason.",
 			"The system is unable to process the request.", 
-			"Report the error to administrator."), 
-	;
+			"Report the error to administrator.");
 	
 	private static final long    serialVersionUID = 1L;
 

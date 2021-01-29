@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.c
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
@@ -45,12 +46,14 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 			String nativeClass = this.removeNativeClass(instanceProperties);
 			
 			if (nativeClass == null) {
-				// error
+				throw new PropertyServerException(
+						AnalyticsModelingErrorCode.MISSING_BEAN_CLASS.getMessageDefinition(),
+						this.getClass().getSimpleName(),
+						methodName);
 			}
 			
 			Object object = null;
 			try {
-			
 				Class<?> c = Class.forName(nativeClass);
 				Constructor<?> cons = c.getConstructor();
 				object = cons.newInstance();
@@ -58,16 +61,20 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 			} catch (ClassNotFoundException // forName
 					| NoSuchMethodException | SecurityException // getConstructor
 					| InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				// error
+				throw new PropertyServerException(
+						AnalyticsModelingErrorCode.FAILED_CREATE_BEAN.getMessageDefinition(nativeClass),
+						this.getClass().getSimpleName(),
+						methodName);
 			}
 			
-			if (!(object instanceof AnalyticsMetadata)) {
-				// error
+			if (object instanceof AnalyticsMetadata) {
+				throw new PropertyServerException(
+						AnalyticsModelingErrorCode.UNEXPECTED_CLASS.getMessageDefinition(object.getClass().getSimpleName()),
+						this.getClass().getSimpleName(),
+						methodName);
 			}
 			
 			AnalyticsMetadata bean = (AnalyticsMetadata) object;
-			
-			bean.convertProperties();
 			
 			bean.setDisplayName(this.removeDisplayName(instanceProperties));
 			bean.setDescription(this.removeDescription(instanceProperties));
@@ -75,10 +82,14 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 			bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 			bean.setElementPosition(this.getPosition(instanceProperties));
 			
+			bean.convertProperties();
+			
 			return bean;
 		}
 
-		// error or empty SchemaAttribute ?
-        return null;
+		throw new PropertyServerException(
+				AnalyticsModelingErrorCode.MISSING_BEAN_PROPERTIES.getMessageDefinition(entity.getGUID()),
+				this.getClass().getSimpleName(),
+				methodName);
     }
 }

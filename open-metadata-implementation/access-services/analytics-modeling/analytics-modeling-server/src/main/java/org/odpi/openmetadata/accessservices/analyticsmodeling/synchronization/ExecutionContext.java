@@ -17,8 +17,8 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
- * Context container class to hold all parts involved in execution. 
- *
+ * Context container class to hold all parts involved in execution.
+ * It makes code cleaner to pass less parameters where they needed. 
  */
 public class ExecutionContext {
 	private String userId;
@@ -39,7 +39,6 @@ public class ExecutionContext {
 
 	
 	public ExecutionContext(
-			String userId,
 			String serviceName,
 			String serverName,
 			InvalidParameterHandler invalidParameterHandler,
@@ -52,7 +51,6 @@ public class ExecutionContext {
 			List<String> publishZones,
 			AuditLog auditLog)
 	{
-		this.userId = userId;
 		this.serviceName = serviceName;
 		this.serverName = serverName;
 		this.invalidParameterHandler = invalidParameterHandler;
@@ -66,10 +64,12 @@ public class ExecutionContext {
 		this.auditLog = auditLog;
 	}
 	
-	public void initializeSoftwareServerCapability(String softwareServerCapabilityName) {
+	public void initializeSoftwareServerCapability(String userId, String softwareServerCapabilityName) {
 		
 		String methodName = "InitializeExecutionContext";
 		
+		this.userId = userId;
+
 		softwareServerCapabilityHandler = new SoftwareServerCapabilityHandler(
 				new SoftwareServerCapabilityConverter(repositoryHelper, serviceName, serverName),
 				 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
@@ -105,30 +105,42 @@ public class ExecutionContext {
 		return userId;
 	}
 	/**
+	 * Set the userId.
+	 * @param value to set.
+	 */
+	public void setUserId(String value) {
+		userId = value;
+	}
+	/**
+	 * Get service name.
 	 * @return the serviceName
 	 */
 	public String getServiceName() {
 		return serviceName;
 	}
 	/**
+	 * Get server name.
 	 * @return the serverName
 	 */
 	public String getServerName() {
 		return serverName;
 	}
 	/**
+	 * Get invalid parameter handler.
 	 * @return the invalidParameterHandler
 	 */
 	public InvalidParameterHandler getInvalidParameterHandler() {
 		return invalidParameterHandler;
 	}
 	/**
+	 * Get repository handler.
 	 * @return the repositoryHandler
 	 */
 	public RepositoryHandler getRepositoryHandler() {
 		return repositoryHandler;
 	}
 	/**
+	 * Get repository helper.
 	 * @return the repositoryHelper
 	 */
 	public OMRSRepositoryHelper getRepositoryHelper() {
