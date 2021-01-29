@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -84,7 +84,7 @@ public class GlossaryContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Map<String, Set<GraphContext>> buildGlossaryTermContext(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
+    public Map<String, RelationshipsContext> buildGlossaryTermContext(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
         String methodName = "buildGlossaryTermContext";
 
         String glossaryTermGUID = glossaryTerm.getGUID();
@@ -98,16 +98,16 @@ public class GlossaryContextHandler {
             return Collections.emptyMap();
         }
 
-        Map<String, Set<GraphContext>> context = new HashMap<>();
+        Map<String, RelationshipsContext> context = new HashMap<>();
         context.put(AssetLineageEventType.SEMANTIC_ASSIGNMENTS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
-                semanticAssignments));
+                glossaryTermGUID, semanticAssignments));
         context.put(AssetLineageEventType.TERM_CATEGORIZATIONS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
-                termCategorizations));
-        context.put(AssetLineageEventType.TERM_ANCHOR_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossary));
+                glossaryTermGUID, termCategorizations));
+        context.put(AssetLineageEventType.TERM_ANCHOR_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTermGUID, glossary));
 
         List<Relationship> glossariesForCategories = getGlossariesForCategories(userId, glossaryTermGUID, termCategorizations);
         context.put(AssetLineageEventType.CATEGORY_ANCHORS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
-                glossariesForCategories));
+                glossaryTermGUID, glossariesForCategories));
 
 
         context.put(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(),

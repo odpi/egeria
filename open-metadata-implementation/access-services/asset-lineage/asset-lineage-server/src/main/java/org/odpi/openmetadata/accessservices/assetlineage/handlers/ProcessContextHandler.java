@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -188,18 +189,19 @@ public class ProcessContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private void addContextForTabularColumns(String userId,
-                                             EntityDetail entity) throws OCFCheckedExceptionBase {
+    private void addContextForTabularColumns(String userId, EntityDetail entity) throws OCFCheckedExceptionBase {
         Set<String> superTypes = superTypesRetriever.getSuperTypes(userId, entity.getType().getTypeDefName());
 
         if (superTypes.contains(TABULAR_COLUMN)) {
-            Map<String, Set<GraphContext>> assetContext = assetContextHandler.buildSchemaElementContext(userId, entity);
+            Map<String, RelationshipsContext> assetContext = assetContextHandler.buildSchemaElementContext(userId, entity);
 
             for (String eventType : assetContext.keySet()) {
-                Set<GraphContext> graphContext = assetContext.get(eventType);
-                graph.getGraphContexts().addAll(graphContext);
+                RelationshipsContext relationshipContext = assetContext.get(eventType);
+                Set<GraphContext> relationships = relationshipContext.getRelationships();
+
+                graph.getGraphContexts().addAll(relationships);
+                mergeGraphNeighbors(eventType, relationships);
             }
-            assetContext.forEach(this::mergeGraphNeighbors);
         }
     }
 

@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -322,10 +323,11 @@ public class HandlerHelper {
     }
 
     /**
-     * Builds the context for the relationships
+     * Builds the relationships context for an entity
      *
-     * @param userId        the unique identifier for the user
-     * @param relationships the list of relationships for which the context is built
+     * @param userId           the unique identifier for the user
+     * @param entityGUID       the guid of the entity
+     * @param relationships    the list of relationships for which the context is built
      *
      * @return a set of {@link GraphContext} containing the lineage context for the relationships
      *
@@ -333,29 +335,12 @@ public class HandlerHelper {
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    public Set<GraphContext> buildContextForRelationships(String userId, List<Relationship> relationships) throws InvalidParameterException,
-                                                                                                                  PropertyServerException,
-                                                                                                                  UserNotAuthorizedException {
-        Set<GraphContext> context = new HashSet<>();
+    public RelationshipsContext buildContextForRelationships(String userId, String entityGUID, List<Relationship> relationships) throws
+                                                                                                                                       UserNotAuthorizedException,
+                                                                                                                                       PropertyServerException,
+                                                                                                                                       InvalidParameterException {
+        Set<GraphContext> lineageRelationships = new HashSet<>();
 
-        addRelationshipsToContext(userId, context, relationships);
-
-        return context;
-    }
-
-    /**
-     * @param userId        the unique identifier for the user
-     * @param context       the context to be updated
-     * @param relationships the list of relationships for which the context is updated
-     *
-     * @throws InvalidParameterException  the invalid parameter exception
-     * @throws PropertyServerException    the property server exception
-     * @throws UserNotAuthorizedException the user not authorized exception
-     */
-    private void addRelationshipsToContext(String userId, Set<GraphContext> context, List<Relationship> relationships) throws
-                                                                                                                       InvalidParameterException,
-                                                                                                                       PropertyServerException,
-                                                                                                                       UserNotAuthorizedException {
         Converter converter = new Converter(repositoryHelper);
         for (Relationship relationship : relationships) {
 
@@ -370,9 +355,11 @@ public class HandlerHelper {
             LineageEntity startVertex = converter.createLineageEntity(startEntity);
             LineageEntity endVertex = converter.createLineageEntity(endEntity);
 
-            context.add(new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex));
+            lineageRelationships.add(new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex));
 
         }
+
+        return new RelationshipsContext(entityGUID, lineageRelationships);
     }
 
     /**
@@ -382,19 +369,18 @@ public class HandlerHelper {
      *
      * @return a set of {@link GraphContext} containing the lineage context for the classifications
      */
-    public Set<GraphContext> buildContextForLineageClassifications(EntityDetail entityDetail) {
+    public RelationshipsContext buildContextForLineageClassifications(EntityDetail entityDetail) {
         List<Classification> classifications = filterLineageClassifications(entityDetail.getClassifications());
 
         Converter converter = new Converter(repositoryHelper);
         LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
 
         String entityGUID = entityDetail.getGUID();
-        return classifications
+        return new RelationshipsContext(entityGUID, classifications
                 .stream()
                 .map(classification -> getClassificationVertex(classification, entityGUID))
                 .map(classificationVertex -> new GraphContext(CLASSIFICATION, classificationVertex.getGuid(), originalEntityVertex,
-                        classificationVertex))
-                .collect(Collectors.toSet());
+                        classificationVertex)).collect(Collectors.toSet()));
 
 
     }

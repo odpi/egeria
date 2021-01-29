@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -44,12 +44,12 @@ public class ClassificationHandler {
      *
      * @return the classification context of the entity
      */
-    public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType) throws
-                                                                                                                                             OCFCheckedExceptionBase {
+    public Map<String, RelationshipsContext> buildClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType) throws
+                                                                                                                                                OCFCheckedExceptionBase {
         String methodName = "buildClassificationContext";
         invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
 
-        Map<String, Set<GraphContext>> context = new HashMap<>();
+        Map<String, RelationshipsContext> context = new HashMap<>();
 
         context.put(assetLineageEventType.getEventTypeName(), handlerHelper.buildContextForLineageClassifications(entityDetail));
         return context;
