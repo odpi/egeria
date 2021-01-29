@@ -22,7 +22,7 @@ document; however, this ensures security is applied before a user is able
 to retrieve the configuration document's contents:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration/
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration/
 ```
 
 You may also wish to:
@@ -52,7 +52,7 @@ The configuration document store connector is configured in the OMAG Server Plat
 using the following command.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
 ```
 
 This passes in a connection used to create the connector to the configuration document storage
@@ -100,7 +100,7 @@ It is possible to query the setting of the configuration document store connecto
 using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
 ```
 
 If the response is:
@@ -140,7 +140,7 @@ It is possible to remove the configuration for the connector using
 the following command:
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
 ```
 
 This reverts the store to the default encrypted JSON file store.

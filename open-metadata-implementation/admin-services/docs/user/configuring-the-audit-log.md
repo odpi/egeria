@@ -13,7 +13,7 @@ sufficient.  This is the just the console audit log destination.
 Using this option overrides all previous audit log destinations.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/default
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/default
 ```
 
 If this server is a production server then you will probably want to set up the audit log
@@ -52,7 +52,7 @@ The command below adds the **console audit log destination**.  This writes selec
 each audit log record to stdout.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/console
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/console
 { supported severities }
 ```
 
@@ -60,7 +60,7 @@ The next command adds the **slf4j audit log destination**.  This writes full log
 slf4j ecosystem.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/slf4j
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/slf4j
 { supported severities }
 ```
 
@@ -71,7 +71,7 @@ This is described in [Connecting the OMAG Audit Log Framework](omag-server-platf
 The next command adds an audit log destination that creates log records as JSON files in a shared directory.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/files
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/files
 { supported severities }
 ```
 
@@ -79,7 +79,7 @@ The next command adds an audit log destination that sends each log record as an 
 It assumes that the [event bus](configuring-event-bus.md) is set up first.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/event-topic
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/event-topic
 { supported severities }
 ```
 
@@ -89,7 +89,7 @@ The connection is passed in the request body.  The supported severities can be s
 connection's configuration properties.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/connection
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/connection
 { connection }
 ```
 
@@ -97,14 +97,14 @@ The following command clears the list of audit log destinations from the configu
 enabling you to add a new set of audit log destinations.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/none
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations/none
 ```
 
 It is also possible to set up the audit log destinations as a list of connections.
 Using this option overrides all previous audit log destinations.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/audit-log-destinations
 { list of connections }
 ```
 

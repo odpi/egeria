@@ -288,7 +288,8 @@ public class TexViewHandler
             }
 
             // All typeDefs processed, resolve linkages and return the TEX object
-            tex.resolve(deprecationOption);
+            // The platformRootURL and repositoryName are passed in only for error logging
+            tex.resolve(deprecationOption, platformRootURL, repositoryServerName);
             return tex;
 
         }

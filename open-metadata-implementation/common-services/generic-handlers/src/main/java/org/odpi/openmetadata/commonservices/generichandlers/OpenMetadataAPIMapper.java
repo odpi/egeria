@@ -290,6 +290,14 @@ public class OpenMetadataAPIMapper
     public static final String USE_TYPE_PROPERTY_NAME                    = "useType";                         /* from ServerAssetUse relationship */
     /* public static final String DESCRIPTION_PROPERTY_NAME              = "description";                        from ServerAssetUse relationship */
 
+    public static final String SERVER_ASSET_USE_TYPE_TYPE_GUID          = "09439481-9489-467c-9ae5-178a6e0b6b5a";  /* from Area 0 */
+    public static final String SERVER_ASSET_USE_TYPE_TYPE_NAME          = "ServerAssetUseType";
+    public static final int SERVER_ASSET_USE_TYPE_OWNS_ORDINAL          = 0;
+    public static final int SERVER_ASSET_USE_TYPE_GOVERNS_ORDINAL       = 1;
+    public static final int SERVER_ASSET_USE_TYPE_MAINTAINS_ORDINAL     = 2;
+    public static final int SERVER_ASSET_USE_TYPE_USES_ORDINAL          = 3;
+    public static final int SERVER_ASSET_USE_TYPE_OTHER_ORDINAL         = 99;
+
 
     public static final String CLOUD_SERVICE_CLASSIFICATION_GUID     = "337e7b1a-ad4b-4818-aa3e-0ff3307b2fbe6";
     public static final String CLOUD_SERVICE_CLASSIFICATION_NAME     = "CloudService";
@@ -961,30 +969,6 @@ public class OpenMetadataAPIMapper
     public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";               /* from SupportedGovernanceService relationship */
     public static final String REQUEST_PARAMETERS_PROPERTY_NAME          = "requestParameters";  /* from SupportedGovernanceService relationship */
 
-    public static final String WATCHDOG_ENGINE_TYPE_GUID                 = "d650a159-9b6c-4be7-8d35-13aa51a124f7";
-    public static final String WATCHDOG_ENGINE_TYPE_NAME                 = "OpenWatchdogEngine";
-    /* GovernanceActionEngine */
-
-    public static final String TRIAGE_ENGINE_TYPE_GUID                   = "926feef0-1e05-4239-86f3-fbc8a84ee9a2";
-    public static final String TRIAGE_ENGINE_TYPE_NAME                   = "OpenTriageEngine";
-    /* GovernanceActionEngine */
-
-    public static final String VERIFICATION_ENGINE_TYPE_GUID             = "67f8f68c-0975-4597-b852-d5e199deff75";
-    public static final String VERIFICATION_ENGINE_TYPE_NAME             = "OpenVerificationEngine";
-    /* GovernanceActionEngine */
-
-    public static final String REMEDIATION_ENGINE_TYPE_GUID              = "c590ea9e-9afc-4c31-99ca-61fba1ec8113";
-    public static final String REMEDIATION_ENGINE_TYPE_NAME              = "OpenRemediationEngine";
-    /* GovernanceActionEngine */
-
-    public static final String SCHEDULING_ENGINE_TYPE_GUID               = "441a43f2-2227-4a0a-9ec6-27dd75f6d53b";
-    public static final String SCHEDULING_ENGINE_TYPE_NAME               = "OpenSchedulingEngine";
-    /* GovernanceActionEngine */
-
-    public static final String PROVISIONING_ENGINE_TYPE_GUID             = "80232e52-b2a7-4c7c-b9e8-396001ec8b50";
-    public static final String PROVISIONING_ENGINE_TYPE_NAME             = "OpenProvisioningEngine";
-    /* GovernanceActionEngine */
-
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_GUID       = "4d3a2b8d-9e2e-4832-b338-21c74e45b238";
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_NAME       = "GovernanceActionProcess";
     /* Process */
@@ -1027,25 +1011,31 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_TYPE_NAME               = "GovernanceAction";
     /* Reference */
 
-    public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";   /* from GovernanceAction entity */
-    public static final String START_DATE_PROPERTY_NAME                  = "startDate";        /* from GovernanceAction entity */
-    public static final String ACTION_STATUS_PROPERTY_NAME               = "actionStatus";     /* from GovernanceAction entity */
-    public static final String COMPLETION_DATE_PROPERTY_NAME             = "completionDate";   /* from GovernanceAction entity */
-    public static final String COMPLETION_GUARDS_PROPERTY_NAME           = "completionGuards"; /* from GovernanceAction entity */
+    public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";         /* from GovernanceAction entity */
+    public static final String START_DATE_PROPERTY_NAME                  = "startDate";              /* from GovernanceAction entity */
+    public static final String ACTION_STATUS_PROPERTY_NAME               = "actionStatus";           /* from GovernanceAction entity */
+    public static final String PROCESSING_ENGINE_USER_ID_PROPERTY_NAME   = "processingEngineUserId"; /* from GovernanceAction entity */
+    public static final String COMPLETION_DATE_PROPERTY_NAME             = "completionDate";         /* from GovernanceAction entity */
+    public static final String COMPLETION_GUARDS_PROPERTY_NAME           = "completionGuards";       /* from GovernanceAction entity */
 
     public static final String GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID      = "31e734ec-5baf-4e96-9f0d-e8a85081cb14";
     public static final String GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME      = "GovernanceActionTypeUse";
     /* End1 = GovernanceActionType; End 2 = GovernanceAction */
 
-    public static final String ORIGIN_GOVERNANCE_ENGINE_PROPERTY_NAME    = "originGovernanceEngine"; /* from GovernanceActionTypeUse relationship */
+    public static final String ORIGIN_GOVERNANCE_SERVICE_PROPERTY_NAME   = "originGovernanceService"; /* from GovernanceActionTypeUse relationship */
+    public static final String ORIGIN_GOVERNANCE_ENGINE_PROPERTY_NAME    = "originGovernanceEngine";  /* from GovernanceActionTypeUse relationship */
 
     public static final String GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_GUID = "5323a705-4c1f-456a-9741-41fdcb8e93ac";
     public static final String GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME = "GovernanceActionRequestSource";
     /* End1 = OpenMetadataRoot; End 2 = GovernanceAction */
 
+    public static final String REQUEST_SOURCE_NAME_PROPERTY_NAME         = "requestSourceName"; /* from GovernanceActionRequestSource relationship */
+
     public static final String TARGET_FOR_ACTION_TYPE_GUID               = "46ec49bf-af66-4575-aab7-06ce895120cd";
     public static final String TARGET_FOR_ACTION_TYPE_NAME               = "TargetForAction";
     /* End1 = GovernanceAction; End 2 = Referenceable */
+
+    public static final String ACTION_TARGET_NAME_PROPERTY_NAME          = "actionTargetName"; /* from TargetForAction relationship */
 
     public static final String NEXT_GOVERNANCE_ACTION_TYPE_GUID          = "4efd16d4-f397-449c-a75d-ebea42fe581b";
     public static final String NEXT_GOVERNANCE_ACTION_TYPE_NAME          = "NextGovernanceAction";
@@ -1104,7 +1094,7 @@ public class OpenMetadataAPIMapper
     public static final String IMPACTED_RESOURCE_TYPE_NAME               = "ImpactedResource";
     /* End1 = Referenceable; End 2 = IncidentReport */
 
-    public static final String SEVERITY_LEVEL_IDENTIFIER_PROPERTY_NAME   = "severityLevelIdentifier";                 /* from Certification relationship */
+    public static final String SEVERITY_LEVEL_IDENTIFIER_PROPERTY_NAME   = "severityLevelIdentifier";       /* from Certification relationship */
 
     public static final String INCIDENT_DEPENDENCY_TYPE_GUID             = "017be6a8-0037-49d8-af5d-c45c41f25e0b";
     public static final String INCIDENT_DEPENDENCY_TYPE_NAME             = "IncidentDependency";
@@ -1614,12 +1604,16 @@ public class OpenMetadataAPIMapper
     public static final String DATA_FIELD_DESCRIPTION_PROPERTY_NAME        = "dataFieldDescription"; /* from DataField entity */
     public static final String DATA_FIELD_ALIASES_PROPERTY_NAME            = "dataFieldAliases";     /* from DataField entity */
     public static final String DATA_FIELD_SORT_ORDER_PROPERTY_NAME         = "dataFieldName";        /* from DataField entity */
-    public static final String DATA_FIELD_DEFAULT_VALUE_PROPERTY_NAME      = "defaultValue";         /* from DataField entity */
 
     /* For DiscoveredDataField relationship */
     public static final String DISCOVERED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e22222cd54";
     public static final String DISCOVERED_DATA_FIELD_TYPE_NAME    = "DiscoveredDataField";
     /* End1 = SchemaAnalysisAnnotation; End 2 = DataField */
+
+    /* For DiscoveredDataField relationship */
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME    = "DiscoveredNestedDataField";
+    /* End1 = (parent)DataField; End 2 = DataField */
 
     public static final String DATA_FIELD_POSITION_PROPERTY_NAME  = "dataFieldPosition"; /* from DiscoveredDataField and
                                                                                             DiscoveredNestedDataField relationship */
@@ -1628,6 +1622,11 @@ public class OpenMetadataAPIMapper
     public static final String DATA_FIELD_ANNOTATION_TYPE_GUID = "72ed6de6-79d9-4e7d-aefc-b969382fc4b0";
     public static final String DATA_FIELD_ANNOTATION_TYPE_NAME = "DataFieldAnnotation";
     /* Annotation */
+
+    /* For DataFieldAnalysis relationship */
+    public static final String DATA_FIELD_ANALYSIS_TYPE_GUID    = "833e849d-eda2-40bb-9e6b-c3ca0b56d581";
+    public static final String DATA_FIELD_ANALYSIS_TYPE_NAME    = "DataFieldAnalysis";
+    /* End1 = DataFieldAnnotation; End 2 = DataField */
 
     /* For ClassificationAnnotation entity */
     public static final String CLASSIFICATION_ANNOTATION_TYPE_GUID = "23e8287f-5c7e-4e03-8bd3-471fc7fc029c";

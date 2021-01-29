@@ -60,12 +60,33 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                   "Typically these associations are created by an integration connector running in the Catalog Integrator OMIS." +
                                   "Look for errors reported in the hosting integration daemon."),
 
+    UNKNOWN_ENGINE_NAME(400, "OMAG-GENERIC-HANDLERS-400-005",
+                        "Governance Engine with unique name of {0} is not found by calling service {1} running in server {2}",
+                        "The system is unable to initiate a governance action because the nominated governance engine is not found in the metadata repository.",
+                        "Investigate whether the requested name is incorrect or the definition is missing. " +
+                                "Then retry the request once the issue is resolved."),
+
+
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-GENERIC-HANDLERS-403-001",
             "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +
                                     "was not created by the requesting user {5}",
                             "The request fails because the user does not have the rights to take this action.",
                             "Retry the request with a relationship created with this user, or request that the user who created " +
                                     "the relationship issues the delete request."),
+
+    INVALID_PROCESSING_USER(403, "OMAG-GENERIC-HANDLERS-403-002",
+                            "Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for governance action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}",
+                            "The system is unable to update a governance action because the requester has not claimed the governance action.",
+                            "Investigate why the Engine Host OMAG Server is attempting to process this governance action.  If you have multiple Engine Host OMAG Servers " +
+                                    "running the same governance engines then it is possible that they both attempted to claim the governance action at the same time.  If this is the case, " +
+                                    "validate that the governance action is processed successful by the victorious engine host.  If this happens frequently, it may be necessary to " +
+                                    "separate the workload amongst distinct governance engines that support the same governance services."),
+
+    INVALID_GOVERNANCE_ACTION_STATUS(403, "OMAG-GENERIC-HANDLERS-403-003",
+                            "Engine Host OMAG Server with a userId of {0} is not allowed claim the governance action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}",
+                            "The system is unable to claim a governance action because another Engine Host OMAG Server has got there first.",
+                            "This is a normal event if there are more than one Engine Host OMAG Server running the same governance engine."),
+
 
     MULTIPLE_CONNECTIONS_FOUND(404, "OMAG-GENERIC-HANDLERS-404-001",
             "{0} connections are connected to the asset with unique identifier {1}; the calling method is {2} and the server is {3}",
@@ -127,6 +148,21 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                               "identifier correctly.",
                       "The error is likely to be either in the handler code or the integration connector that is managing the exchange" +
                               "of metadata for ."),
+
+    MISSING_GOVERNANCE_ACTION(500, "OMAG-GENERIC-HANDLERS-500-007",
+                            "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} is null",
+                            "The system is unable to process the request because the handler has failed to retrieve the entity for the " +
+                                    "identifier.  Normally this would result in an InvalidParameterException and it is curious that it did not.",
+                            "The error is likely to be in one of the repository connectors, but it may be either in the handler code " +
+                                    "or the governance engines managing the governance action entities."),
+
+    MISSING_GOVERNANCE_ACTION_PROPERTIES(500, "OMAG-GENERIC-HANDLERS-500-008",
+                              "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} has null properties",
+                              "The system is unable to process the request because the handler has retrieved a governance action entity " +
+                                      "that has no properties.  The handler does not know how to proceed.",
+                              "The error is likely to be in one of the repository connectors " +
+                                      "or the governance engines managing the governance action entities."),
+
     ;
 
     private ExceptionMessageDefinition messageDefinition;

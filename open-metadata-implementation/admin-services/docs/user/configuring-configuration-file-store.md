@@ -19,7 +19,7 @@ To change the connector used for the configuration
 with the connection object of the new connector as the request body.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/stores/connection
 ```
 
 The JSON below is an example of a [Connection](../../../frameworks/open-connector-framework/docs/concepts/connection.md) object.

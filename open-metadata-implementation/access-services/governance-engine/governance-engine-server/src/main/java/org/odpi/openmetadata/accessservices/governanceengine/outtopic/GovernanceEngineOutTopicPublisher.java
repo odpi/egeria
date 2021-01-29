@@ -4,13 +4,11 @@
 package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceActionEvent;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineConfigurationEvent;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineEventType;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceServiceConfigurationEvent;
+import org.odpi.openmetadata.accessservices.governanceengine.events.*;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 
 /**
  * GovernanceEngineOutTopicPublisher is responsible for pushing events to the Governance Engine OMAS's out topic.
@@ -31,8 +29,8 @@ public class GovernanceEngineOutTopicPublisher
      * @param outTopicAuditLog logging destination if anything goes wrong.
      */
     public GovernanceEngineOutTopicPublisher(GovernanceEngineOutTopicServerConnector outTopicServerConnector,
-                                             String                                 outTopicName,
-                                             AuditLog                               outTopicAuditLog)
+                                             String                                  outTopicName,
+                                             AuditLog                                outTopicAuditLog)
     {
         this.outTopicServerConnector = outTopicServerConnector;
         this.outTopicAuditLog        = outTopicAuditLog;
@@ -137,7 +135,7 @@ public class GovernanceEngineOutTopicPublisher
      */
     void publishNewGovernanceAction(GovernanceActionElement governanceActionElement)
     {
-        final String methodName = "publishRefreshGovernanceServiceEvent";
+        final String methodName = "publishNewGovernanceAction";
 
         if (outTopicServerConnector != null)
         {
@@ -145,16 +143,49 @@ public class GovernanceEngineOutTopicPublisher
             {
                 GovernanceActionEvent newEvent = new GovernanceActionEvent();
 
-                newEvent.setEventType(GovernanceEngineEventType.NEW_GOVERNANCE_ACTION_EVENT);
+                newEvent.setEventType(GovernanceEngineEventType.REQUESTED_GOVERNANCE_ACTION_EVENT);
                 newEvent.setGovernanceActionElement(governanceActionElement);
 
                 outTopicServerConnector.sendEvent(newEvent);
 
                 if (outTopicAuditLog != null)
                 {
-                    // todo
                     outTopicAuditLog.logMessage(actionDescription,
-                                                GovernanceEngineAuditCode.REFRESH_GOVERNANCE_SERVICE.getMessageDefinition());
+                                                GovernanceEngineAuditCode.NEW_GOVERNANCE_ACTION.getMessageDefinition(governanceActionElement.getElementHeader().getGUID()));
+                }
+            }
+            catch (Exception error)
+            {
+                logUnexpectedPublishingException(error, methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Publish an event for Open Watchdog Governance Action Services.
+     *
+     * @param watchdogGovernanceEvent GAF defined watchdog event
+     */
+    void publishWatchdogEvent(WatchdogGovernanceEvent  watchdogGovernanceEvent)
+    {
+        final String methodName = "publishWatchdogEvent";
+
+        if (outTopicServerConnector != null)
+        {
+            try
+            {
+                WatchdogGovernanceServiceEvent newEvent = new WatchdogGovernanceServiceEvent();
+
+                newEvent.setEventType(GovernanceEngineEventType.WATCHDOG_GOVERNANCE_SERVICE_EVENT);
+                newEvent.settWatchdogGovernanceEvent(watchdogGovernanceEvent);
+
+                outTopicServerConnector.sendEvent(newEvent);
+
+                if (outTopicAuditLog != null)
+                {
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                GovernanceEngineAuditCode.WATCHDOG_EVENT.getMessageDefinition(watchdogGovernanceEvent.getEventType().getName()));
                 }
             }
             catch (Exception error)
@@ -174,7 +205,6 @@ public class GovernanceEngineOutTopicPublisher
     private void logUnexpectedPublishingException(Throwable  error,
                                                   String     methodName)
     {
-
         if (outTopicAuditLog != null)
         {
             outTopicAuditLog.logException(methodName,

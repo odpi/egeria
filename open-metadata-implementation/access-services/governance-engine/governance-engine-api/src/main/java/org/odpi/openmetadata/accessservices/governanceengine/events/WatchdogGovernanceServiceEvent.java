@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * WatchdogGovernanceServiceEvent holds a formatted event for a Watchdog governance action service.
+ * WatchdogGovernanceServiceEvent holds a formatted event for a watchdog governance action service.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -82,6 +82,8 @@ public class WatchdogGovernanceServiceEvent extends GovernanceEngineEvent
                        "watchdogGovernanceEvent=" + watchdogGovernanceEvent +
                        ", eventVersionId=" + getEventVersionId() +
                        ", eventType=" + getEventType() +
+                       ", governanceEngineGUID='" + getGovernanceEngineGUID() + '\'' +
+                       ", governanceEngineName='" + getGovernanceEngineName() + '\'' +
                        '}';
     }
 

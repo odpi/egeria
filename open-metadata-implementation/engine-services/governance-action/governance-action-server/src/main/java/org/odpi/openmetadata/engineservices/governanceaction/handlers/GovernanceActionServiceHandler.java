@@ -38,21 +38,33 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      *
      * @param governanceActionEngineProperties properties of the governance action engine - used for message logging
      * @param governanceActionEngineGUID unique Identifier of the governance action engine - used for message logging
+     * @param governanceActionUserId user Id for use by the engine host services
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
+     * @param governanceActionClient client for managing governance actions
      * @param requestType incoming request
      * @param requestParameters parameters associated with the request type
-     * @param governanceActionServiceName name of this governance action service - used for message logging
+     * @param requestSourceElements the elements that caused this service to run
+     * @param actionTargetElements the elements for the service to work on
+     * @param governanceActionServiceGUID unique identifier of entity defining this governance service
+     * @param governanceActionServiceName unique name of this governance action service - used for message logging
      * @param governanceActionServiceConnector connector that does the work
+     * @param partnerServerName name of the metadata server used by the governance service
+     * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
+     * @param governanceEngineClient client for use by the engine host services
+     * @param governanceListenerManager listener manager for Watchdog Governance Services
      * @param auditLog destination for log messages
+     * @throws InvalidParameterException problem with the governance service definitions
      */
     GovernanceActionServiceHandler(GovernanceEngineProperties governanceActionEngineProperties,
                                    String                     governanceActionEngineGUID,
-                                   String                     userId,
+                                   String                     governanceActionUserId,
                                    String                     governanceActionGUID,
+                                   GovernanceEngineClient     governanceActionClient,
                                    String                     requestType,
                                    Map<String, String>        requestParameters,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
+                                   String                     governanceActionServiceGUID,
                                    String                     governanceActionServiceName,
                                    Connector                  governanceActionServiceConnector,
                                    String                     partnerServerName,
@@ -63,8 +75,11 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
     {
         super(governanceActionEngineProperties,
               governanceActionEngineGUID,
+              governanceActionUserId,
               governanceActionGUID,
+              governanceActionClient,
               requestType,
+              governanceActionServiceGUID,
               governanceActionServiceName,
               governanceActionServiceConnector,
               auditLog);
@@ -72,11 +87,11 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         final String actionDescription = "Initializing GovernanceActionService";
         final String governanceActionServiceConnectorParameterName = "governanceActionServiceConnector";
 
-        final String watchdogGovernanceActionServiceType     = "OpenWatchdogService";
-        final String provisioningGovernanceActionServiceType = "OpenProvisioningService";
-        final String verificationGovernanceActionServiceType = "OpenVerificationService";
-        final String triageGovernanceActionServiceType       = "OpenTriageService";
-        final String remediationGovernanceActionServiceType  = "OpenRemediationService";
+        final String watchdogGovernanceActionServiceType     = "WatchdogGovernanceActionService";
+        final String provisioningGovernanceActionServiceType = "ProvisioningGovernanceActionService";
+        final String verificationGovernanceActionServiceType = "VerificationGovernanceActionService";
+        final String triageGovernanceActionServiceType       = "TriageGovernanceActionService";
+        final String remediationGovernanceActionServiceType  = "RemediationGovernanceActionService";
 
         try
         {
@@ -84,11 +99,12 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                                 partnerServerPlatformURLRoot,
                                                                                 governanceEngineClient,
                                                                                 governanceListenerManager,
-                                                                                userId);
+                                                                                this,
+                                                                                governanceActionUserId);
 
             if (governanceActionServiceConnector instanceof WatchdogGovernanceActionService)
             {
-                WatchdogGovernanceContext context = new WatchdogGovernanceContext(userId,
+                WatchdogGovernanceContext context = new WatchdogGovernanceContext(governanceActionUserId,
                                                                                   governanceActionGUID,
                                                                                   requestType,
                                                                                   requestParameters,
@@ -107,7 +123,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             }
             else if (governanceActionServiceConnector instanceof VerificationGovernanceActionService)
             {
-                VerificationGovernanceContext context = new VerificationGovernanceContext(userId,
+                VerificationGovernanceContext context = new VerificationGovernanceContext(governanceActionUserId,
                                                                                           governanceActionGUID,
                                                                                           requestType,
                                                                                           requestParameters,
@@ -126,7 +142,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             }
             else if (governanceActionServiceConnector instanceof TriageGovernanceActionService)
             {
-                TriageGovernanceContext context = new TriageGovernanceContext(userId,
+                TriageGovernanceContext context = new TriageGovernanceContext(governanceActionUserId,
                                                                               governanceActionGUID,
                                                                               requestType,
                                                                               requestParameters,
@@ -145,7 +161,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             }
             else if (governanceActionServiceConnector instanceof RemediationGovernanceActionService)
             {
-                RemediationGovernanceContext context = new RemediationGovernanceContext(userId,
+                RemediationGovernanceContext context = new RemediationGovernanceContext(governanceActionUserId,
                                                                                         governanceActionGUID,
                                                                                         requestType,
                                                                                         requestParameters,
@@ -164,7 +180,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             }
             else if (governanceActionServiceConnector instanceof ProvisioningGovernanceActionService)
             {
-                ProvisioningGovernanceContext context = new ProvisioningGovernanceContext(userId,
+                ProvisioningGovernanceContext context = new ProvisioningGovernanceContext(governanceActionUserId,
                                                                                           governanceActionGUID,
                                                                                           requestType,
                                                                                           requestParameters,
@@ -247,10 +263,10 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         {
             auditLog.logMessage(actionDescription,
                                 GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_STARTING.getMessageDefinition(governanceActionServiceType,
-                                                                                                                  governanceActionServiceName,
+                                                                                                                  governanceServiceName,
                                                                                                                   requestType,
-                                                                                                                  governanceActionEngineProperties.getQualifiedName(),
-                                                                                                                  governanceActionEngineGUID));
+                                                                                                                  governanceEngineProperties.getQualifiedName(),
+                                                                                                                  governanceEngineGUID));
 
 
 
@@ -264,7 +280,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             {
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_RETURNED.getMessageDefinition(governanceActionServiceType,
-                                                                                                                      governanceActionServiceName,
+                                                                                                                      governanceServiceName,
                                                                                                                       requestType,
                                                                                                                       Long.toString(
                                                                                                                               endTime.getTime() - startTime.getTime())));
@@ -273,20 +289,19 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             {
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceActionServiceType,
-                                                                                                                      governanceActionServiceName,
+                                                                                                                      governanceServiceName,
                                                                                                                       requestType,
                                                                                                                       Long.toString(endTime.getTime() - startTime.getTime())));
             }
-
         }
         catch (Throwable  error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_FAILED.getMessageDefinition(governanceActionServiceType,
-                                                                                                                  governanceActionServiceName,
+                                                                                                                  governanceServiceName,
                                                                                                                   error.getClass().getName(),
-                                                                                                                  governanceActionEngineProperties.getQualifiedName(),
-                                                                                                                  governanceActionEngineGUID,
+                                                                                                                  governanceEngineProperties.getQualifiedName(),
+                                                                                                                  governanceEngineGUID,
                                                                                                                   error.getMessage()),
                                   error.toString(),
                                   error);
@@ -303,10 +318,10 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             catch (Throwable statusError)
             {
                 auditLog.logException(actionDescription,
-                                      GovernanceActionAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceActionEngineProperties.getDisplayName(),
-                                                                                                             governanceActionServiceName,
-                                                                                                             statusError.getClass().getName(),
-                                                                                                             statusError.getMessage()),
+                                      GovernanceActionAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceEngineProperties.getDisplayName(),
+                                                                                                                governanceServiceName,
+                                                                                                                statusError.getClass().getName(),
+                                                                                                                statusError.getMessage()),
                                       statusError.toString(),
                                       statusError);
             }

@@ -132,9 +132,16 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                        "A governance action service has returned from the start() method and without setting up the completion status prior to returning.  " +
                                                "The Governance Action OMES will call disconnect() on the governance action service since it is complete.  " +
                                                "The Governance Action entity in the ",
-                                       "Validate that this governance action service should still be running.  Typically you would expect an OpenWatchdogService to" +
+                                       "Validate that this governance action service should still be running.  Typically you would expect a WatchdogGovernanceActionService to" +
                                                "still be running at this stage because it will have registered a listener. The other types of governance action services should have completed during " +
                                                "start() unless they are managing their own thread(s)."),
+
+    WATCHDOG_LISTENER_EXCEPTION("OMES-GOVERNANCE-ACTION-0021",
+                                OMRSAuditLogRecordSeverity.ERROR,
+                                "Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.  The exception was {1} with error message {2}",
+                                "An open watchdog governance action service has raised an exception while processing an incoming " +
+                                        "watchdog event.  The exception explains the reason.",
+                                "Review the error messages and resolve the cause of the problem if needed."),
 
     NO_GOVERNANCE_ACTION_ENGINES_STARTED("OMES-GOVERNANCE-ACTION-0027",
                          OMRSAuditLogRecordSeverity.ERROR,

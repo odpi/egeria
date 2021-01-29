@@ -63,11 +63,14 @@ public class WatchdogGovernanceContext extends GovernanceContext
      *
      * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
      * If the listener parameter is null, no more events are passed to the listener.
+     * The type name specified in the interestingMetadataTypes refers to the subject of the event - so it is the type of the metadata element
+     * for metadata element types, the type of the relationship for related elements events and the name of the classification
+     * for classification events.
      *
      * @param listener listener object to receive events
      * @param interestingEventTypes types of events that should be passed to the listener
      * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
-     * @param specificInstance unique identifier of a specific instance to watch for
+     * @param specificInstance unique identifier of a specific instance (metadata element or relationship) to watch for
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
@@ -77,6 +80,15 @@ public class WatchdogGovernanceContext extends GovernanceContext
                                  String                     specificInstance) throws InvalidParameterException
     {
         openMetadataStore.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+    }
+
+
+    /**
+     * Unregister the listener permanently from the event infrastructure.
+     */
+    void disconnectListener()
+    {
+        openMetadataStore.disconnectListener();
     }
 
 

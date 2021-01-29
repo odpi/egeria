@@ -20,7 +20,7 @@ It is possible to get a description of each of the registered
 view services using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/view-services
+GET {platformURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/view-services
 ```
 Note the `viewServiceURLMarker` for the view service that you want to configure.
 
@@ -248,7 +248,7 @@ It is possible to list the configured view services for an [OMAG Server](../conc
 using the following command.
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
 ```
 The response will be an RegisteredOMAGServicesResponse which contains a list of RegisteredOMAGService objects,
 that will look something like the following:
@@ -289,13 +289,13 @@ These view services are available to configure either together or individually.
 All the view services configured on a server can be cleared with the following command.
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services
 ```
 
 
 ### Get the configuration of a specific view service
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/{serviceURLMarker}
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/{serviceURLMarker}
 ```
 
 The response will be a ViewServiceConfigResponse containing a ViewServiceConfig object.
@@ -306,7 +306,7 @@ The response will be a ViewServiceConfigResponse containing a ViewServiceConfig 
 A specific view service can be individually configured with the following command:
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/{serviceURLMarker}
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/{serviceURLMarker}
 ```
 
 The request body must contain a ViewServiceConfig object.
@@ -318,7 +318,7 @@ The service URL marker for a service can be found using [List Configured View Se
 A specific view service can be individually cleared with the following command. This will remove the view service's configuration from the server.
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/{serviceURLMarker}
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/{serviceURLMarker}
 ```
 
 The service URL marker for a service can be found using [List Configured View Services](#list-the-view-services-configured-on-a-server).
@@ -328,7 +328,7 @@ The service URL marker for a service can be found using [List Configured View Se
 
 It is possible to set the current configuration for a set of view services, using the following command.
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
 ```
 The request body must contain a list of ViewServiceConfig objects.
 
@@ -337,14 +337,14 @@ The request body must contain a list of ViewServiceConfig objects.
 It is possible to retrieve the current configuration for all configured view services.
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services
 ```
 This will return a ViewServicesResponse which will contain a list of ViewServiceConfig objects.
 
 It is then possible to make changes to the configuration and save it back as described above:
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
 ```
 
 

@@ -23,8 +23,9 @@ public class ActionTargetElement implements Serializable
 {
     private static final long      serialVersionUID = 1L;
 
-    private String                 actionTargetGUID = null;
+    private String                 actionTargetName = null;
 
+    private String                 actionTargetGUID = null;
     private GovernanceActionStatus status           = null;
     private Date                   startDate        = null;
     private Date                   completionDate   = null;
@@ -50,12 +51,35 @@ public class ActionTargetElement implements Serializable
     {
         if (template != null)
         {
+            actionTargetName = template.getActionTargetName();
             actionTargetGUID = template.getActionTargetGUID();
             status = template.getStatus();
             startDate = template.getStartDate();
             completionDate = template.getCompletionDate();
             targetElement = template.getTargetElement();
         }
+    }
+
+
+    /**
+     * Return the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.
+     *
+     * @return string name
+     */
+    public String getActionTargetName()
+    {
+        return actionTargetName;
+    }
+
+
+    /**
+     * Set up the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.
+     *
+     * @param actionTargetName string name
+     */
+    public void setActionTargetName(String actionTargetName)
+    {
+        this.actionTargetName = actionTargetName;
     }
 
 
@@ -190,7 +214,8 @@ public class ActionTargetElement implements Serializable
     public String toString()
     {
         return "ActionTargetElement{" +
-                       "actionTargetGUID='" + actionTargetGUID + '\'' +
+                       "actionTargetName='" + actionTargetName + '\'' +
+                       ", actionTargetGUID='" + actionTargetGUID + '\'' +
                        ", status=" + status +
                        ", startDate=" + startDate +
                        ", completionDate=" + completionDate +
@@ -217,7 +242,8 @@ public class ActionTargetElement implements Serializable
             return false;
         }
         ActionTargetElement that = (ActionTargetElement) objectToCompare;
-        return Objects.equals(actionTargetGUID, that.actionTargetGUID) &&
+        return Objects.equals(actionTargetName, that.actionTargetName) &&
+                       Objects.equals(actionTargetGUID, that.actionTargetGUID) &&
                        status == that.status &&
                        Objects.equals(startDate, that.startDate) &&
                        Objects.equals(completionDate, that.completionDate) &&
@@ -234,6 +260,6 @@ public class ActionTargetElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(actionTargetGUID, status, startDate, completionDate, targetElement);
+        return Objects.hash(actionTargetName, actionTargetGUID, status, startDate, completionDate, targetElement);
     }
 }

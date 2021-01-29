@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.6-SNAPSHOT</version>
+        <version>2.7-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -273,7 +273,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-service-sample</artifactId>
+            <artifactId>governance-services-sample</artifactId>
         </dependency>
 
         <!-- Technically this is a dependency as we consume license/readme files. However parent is always done

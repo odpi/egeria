@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Learning about ODPi Egeria
+# Learning about Egeria
 
 Egeria is a big project tackling a complex problem.
 The [Egeria Dojo](egeria-dojo) provides guided learning to help you get up to
@@ -21,7 +21,10 @@ experiment with different capabilities of Egeria.
 * Learn more about the [Egeria Dojo](egeria-dojo)
 * Link to the [Hands on Labs](../open-metadata-labs) 
 
+
+
 ----
+* Return to [open-metadata-resources](..)
 * Return to [Site Map](../../Content-Organization.md)
 * Return to [Home Page](../../index.md)
 

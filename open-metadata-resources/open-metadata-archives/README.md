@@ -80,6 +80,8 @@ an example archive for the [Cloud Information Model (CIM)](https://cloudinformat
 
 ----
 * Return to [open-metadata-resources](..)
+* Return to [Site Map](../../Content-Organization.md)
+* Return to [Home Page](../../index.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

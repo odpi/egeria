@@ -17,7 +17,7 @@ The following command registers the server with a cohort.
 Each cohort has a memorable name - eg `cocoCohort`.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}
 ```
 
 ## Query the name of the cohort topic
@@ -32,7 +32,7 @@ the event bus for environments where topics are not auto-created on use.
 
 It is possible to change the topic name used by a cohort with the following command.
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}topic-name-override
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}topic-name-override
 ```
 This is an example of the result for a configured cohort:
 ```json
@@ -59,7 +59,7 @@ If the cohort name is not known, the result looks like this:
 It is also possible to change the topic name used by a cohort with the following command.
 The `{newTopicName}` flows in the request body.
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}topic-name-override
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}topic-name-override
 {newTopicName}
 ```
 It must be issued against each member of the cohort so that they are
@@ -72,7 +72,7 @@ The new value takes affect the next time the server is started.
 This command unregisters a server from a cohort.
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/cohorts/{cohortName}
 ```
 
 ----

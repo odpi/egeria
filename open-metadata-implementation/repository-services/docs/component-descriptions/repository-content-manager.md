@@ -9,6 +9,8 @@ plus the implementation of many [Repository Helper](repository-helper.md) and [R
 
 
 
+----
+* Return to [repository services component descriptions](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

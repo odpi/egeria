@@ -24,18 +24,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionRequestBody implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
 
-    private String              qualifiedName = null;
-    private int                 domainIdentifier = 0;
-    private String              displayName = null;
-    private String              description = null;
-    private List<String>        requestSourceGUIDs = null;
-    private List<String>        actionTargetGUIDs = null;
-    private Date                startTime = null;
-    private String              requestType = null;
-    private Map<String, String> requestProperties = null;
-
+    private String              qualifiedName         = null;
+    private int                 domainIdentifier      = 0;
+    private String              displayName           = null;
+    private String              description           = null;
+    private List<String>        requestSourceGUIDs    = null;
+    private List<String>        actionTargetGUIDs     = null;
+    private Date                startTime             = null;
+    private String              requestType           = null;
+    private Map<String, String> requestProperties     = null;
+    private String              originatorServiceName = null;
+    private String              originatorEngineName  = null;
 
     /**
      * Default constructor
@@ -64,7 +65,8 @@ public class GovernanceActionRequestBody implements Serializable
             startTime = template.getStartTime();
             requestType = template.getRequestType();
             requestProperties = template.getRequestProperties();
-        }
+            originatorServiceName = template.getOriginatorServiceName();
+            originatorEngineName = template.getOriginatorEngineName();}
     }
 
 
@@ -297,6 +299,50 @@ public class GovernanceActionRequestBody implements Serializable
 
 
     /**
+     * Set up the unique name of the service that created this request.
+     *
+     * @return string name
+     */
+    public String getOriginatorServiceName()
+    {
+        return originatorServiceName;
+    }
+
+
+    /**
+     * Set up the unique name of the service that created this request.
+     *
+     * @param originatorServiceName string name
+     */
+    public void setOriginatorServiceName(String originatorServiceName)
+    {
+        this.originatorServiceName = originatorServiceName;
+    }
+
+
+    /**
+     * Return the qualified name of the governance engine that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getOriginatorEngineName()
+    {
+        return originatorEngineName;
+    }
+
+
+    /**
+     * Set up the qualified name of the governance engine that originated this request (if any).
+     *
+     * @param originatorEngineName string name
+     */
+    public void setOriginatorEngineName(String originatorEngineName)
+    {
+        this.originatorEngineName = originatorEngineName;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -314,6 +360,8 @@ public class GovernanceActionRequestBody implements Serializable
                        ", startTime=" + startTime +
                        ", requestType='" + requestType + '\'' +
                        ", requestProperties=" + requestProperties +
+                       ", originatorServiceName=" + originatorServiceName +
+                       ", originatorEngineName=" + originatorEngineName +
                        '}';
     }
 
@@ -344,6 +392,8 @@ public class GovernanceActionRequestBody implements Serializable
                        Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs) &&
                        Objects.equals(startTime, that.startTime) &&
                        Objects.equals(requestType, that.requestType) &&
+                       Objects.equals(originatorServiceName, that.originatorServiceName) &&
+                       Objects.equals(originatorEngineName, that.originatorEngineName) &&
                        Objects.equals(requestProperties, that.requestProperties);
     }
 
@@ -357,6 +407,6 @@ public class GovernanceActionRequestBody implements Serializable
     public int hashCode()
     {
         return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargetGUIDs, startTime, requestType,
-                            requestProperties);
+                            requestProperties, originatorServiceName, originatorEngineName);
     }
 }

@@ -4,7 +4,8 @@
 # Stewardship Server
 
 The **stewardship server** is implemented by the [Engine Host](engine-host.md)
-OMAG Server.
+OMAG Server running the 
+[Governance Action Open Metadata Engine Services (OMES)](../../../engine-services/governance-action).
 
 
 ----

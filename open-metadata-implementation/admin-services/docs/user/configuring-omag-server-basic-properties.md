@@ -46,7 +46,7 @@ It may be the name of a specific product that it is enabling, or a role
 in the metadata and governance landscape.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-type?typeName="{serverTypeName}"
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-type?typeName="{serverTypeName}"
 ```
 
 ## Set organization name
@@ -55,7 +55,7 @@ The organization name may be the owning organization or department or
 team supported by the server.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/organization-name?name="{organizationName}"
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/organization-name?name="{organizationName}"
 ```
 
 ## Set the server's user Id and optional password
@@ -70,13 +70,13 @@ provide authentication information on each REST call made by the server.
 
 This is the command for changing the server's userId
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-user-id?id="{serverUserId}"
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-user-id?id="{serverUserId}"
 ```
 
 This is the command for changing the server's password.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-user-password?password="{serverUserPassword}"
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-user-password?password="{serverUserPassword}"
 ```
 
 ## Set Max Page Size
@@ -87,7 +87,7 @@ large requests to overwhelm the server.
 
 This is the command to set up the maximum page size.  A value of 0 means no limit.
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/max-page-size?limit="{maxPageSize}"
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/max-page-size?limit="{maxPageSize}"
 ```
 
 ----

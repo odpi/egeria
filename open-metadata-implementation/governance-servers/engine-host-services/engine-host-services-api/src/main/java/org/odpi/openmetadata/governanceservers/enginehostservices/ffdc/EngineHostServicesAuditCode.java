@@ -214,52 +214,52 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                    OMRSAuditLogRecordSeverity.STARTUP,
                                    "Governance engine called {0} is not known by metadata server {1}.  Exception {2} with message {3} " +
                                            "returned to server {4}",
-                                   "The Asset Analysis OMES in server is not able to initialize the governance engine and so it will not de able to support " +
+                                   "The engine host services in server is not able to initialize the governance engine and so it will not de able to support " +
                                            "governance requests targeted to this governance engine until this configuration is available.",
                                    "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
                                            "configuration of the server.  Once the cause is resolved, restart the server."),
 
     NO_CONFIGURATION_LISTENER("ENGINE-HOST-SERVICES-0026",
                               OMRSAuditLogRecordSeverity.EXCEPTION,
-                              "The Asset Analysis OMES are unable to retrieve the connection for the configuration " +
+                              "The engine host services are unable to retrieve the connection for the configuration " +
                                       "listener for server {0} from metadata server {1}. " +
                                       "Exception returned was {2} with error message {3}",
-                              "The server continues to run.  The Asset Analysis OMES will start up the " +
+                              "The server continues to run.  The engine host services will start up the " +
                                       "governance engines and they will operate with whatever configuration that they can retrieve.  " +
-                                      "Periodically the Asset Analysis OMES will" +
+                                      "Periodically the engine host services will" +
                                       "retry the request to retrieve the connection information.  " +
-                                      "Without the connection, the Asset Analysis OMES will not be notified of changes to the governance " +
+                                      "Without the connection, the engine host services will not be notified of changes to the governance " +
                                       "engines' configuration",
-                              "This problem may be caused because the Asset Analysis OMES has been configured with the wrong location for the " +
+                              "This problem may be caused because the engine host services has been configured with the wrong location for the " +
                                       "metadata server, or the metadata server is not running the Governance Engine OMAS service or " +
                                       "the metadata server is not running at all.  Investigate the status of the metadata server to " +
                                       "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
-                                      "refresh-config command or wait for the Asset Analysis OMES to retry the configuration request."),
+                                      "refresh-config command or wait for the engine host services to retry the configuration request."),
 
     CONFIGURATION_LISTENER_REGISTERED("ENGINE-HOST-SERVICES-0027",
                                       OMRSAuditLogRecordSeverity.STARTUP,
-                                      "The Asset Analysis OMES has registered the configuration " +
+                                      "The engine host services has registered the configuration " +
                                               "listener for server {0}.  It will receive configuration updates from metadata server {1}",
-                                      "The Asset Analysis OMES continues to run.  The Asset Analysis OMES will start up the " +
+                                      "The engine host services continues to run.  The engine host services will start up the " +
                                               "governance engines and they will operate with whatever configuration that they can retrieve.  " +
-                                              "Periodically the Asset Analysis OMES will" +
+                                              "Periodically the engine host services will" +
                                               "retry the request to retrieve the connection information.  " +
-                                              "Without the connection, the Asset Analysis OMES will not be notified of changes to the governance " +
+                                              "Without the connection, the engine host services will not be notified of changes to the governance " +
                                               "engines' configuration",
-                                      "This problem may be caused because the Asset Analysis OMES has been configured with the wrong location for the " +
+                                      "This problem may be caused because the engine host services has been configured with the wrong location for the " +
                                               "metadata server, or the metadata server is not running the Governance Engine OMAS service or " +
                                               "the metadata server is not running at all.  Investigate the status of the metadata server to " +
                                               "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
-                                              "refresh-config command or wait for the Asset Analysis OMES to retry the configuration request."),
+                                              "refresh-config command or wait for the engine host services to retry the configuration request."),
 
     CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG("ENGINE-HOST-SERVICES-0028",
                                           OMRSAuditLogRecordSeverity.INFO,
                                           "All governance service configuration is being refreshed for governance engine {0}",
-                                          "The Asset Analysis OMES will call the Governance Engine OMAS in the metadata server to " +
+                                          "The engine host services will call the Governance Engine OMAS in the metadata server to " +
                                                   "retrieve details of all of the governance services configured for this engine." +
                                                   "During this process, some governance request may fail if the associated governance" +
                                                   "service is only partially configured.",
-                                          "Monitor the Asset Analysis OMES to ensure all of the governance services are retrieved. " +
+                                          "Monitor the engine host services to ensure all of the governance services are retrieved. " +
                                                   "Then it is ready to process new governance requests."),
 
     FINISHED_ALL_GOVERNANCE_SERVICE_CONFIG("ENGINE-HOST-SERVICES-0029",
@@ -277,20 +277,56 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                         "{0} for governance request types {1}.  The exception was {2} with error message {3}",
                                 "The governance engine is unable to process governance request types for the failed governance service.",
                                 "Review the error messages and resolve the cause of the problem.  " +
-                                        "Either wait for the Asset Analysis OMES to refresh the configuration, or issue the refreshConfig" +
-                                        "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for" +
-                                        " the governance service."),
+                                        "Then, either wait for the engine host services to refresh the configuration, or issue the refreshConfig " +
+                                        "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for " +
+                                        "the governance service."),
 
     GOVERNANCE_ENGINE_NO_CONFIG("ENGINE-HOST-SERVICES-0031",
                                OMRSAuditLogRecordSeverity.ERROR,
                                "Failed to refresh configuration for governance engine {0}.  The exception was {1} with error message {2}",
                                "The governance engine is unable to process any governance requests until its configuration can be retrieved.",
                                "Review the error messages and resolve the cause of the problem.  " +
-                                       "Either wait for the Asset Analysis OMES to refresh the configuration, or issue the refreshConfig" +
-                                       "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for" +
-                                       " the governance service."),
+                                       "Either wait for the engine host services to refresh the configuration, or issue the refreshConfig " +
+                                       "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for " +
+                                       "the governance service."),
 
+    GOVERNANCE_ACTION_FAILED("ENGINE-HOST-SERVICES-0032",
+                                OMRSAuditLogRecordSeverity.ERROR,
+                                "Failed to execute governance action for governance engine {0}.  The exception was {1} with error message {2}",
+                                "The governance engine is unable to process the governance action request.  The exception explains the " +
+                                        "reason. The governance action has been marked as FAILED.",
+                                "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
+                                        "retry the governance action by updating its status back to REQUESTED status."),
 
+    NO_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0150",
+                       OMRSAuditLogRecordSeverity.ERROR,
+                       "{0} in server {1} is not configured with the platform URL root for the {2}",
+                       "The server is not able to retrieve its configuration from the metadata server because it does not " +
+                               "know which platform it is running on.  The engine service fails to start.",
+                       "Add the platform URL root of the metadata server where the partner OMAS is running " +
+                               "to this engine service's configuration document."),
+
+    NO_OMAS_SERVER_NAME("ENGINE-HOST-SERVICES-0151",
+                        OMRSAuditLogRecordSeverity.ERROR,
+                        "{0} in server {1} is not configured with the name for the server running the {2}",
+                        "The server is not able to retrieve its configuration because it does not know which metadata server to use.  " +
+                                "It fails to start.",
+                        "Add the server name of the metadata server where the partner OMAS is running " +
+                                "to this engine service's configuration document."),
+
+    NO_ENGINES("ENGINE-HOST-SERVICES-0152",
+               OMRSAuditLogRecordSeverity.ERROR,
+               "The {0} in server {1} is not configured with any engines",
+               "The server is not able to run any requests since this has not engines.  It fails to start.",
+               "Add the qualified name for at least one engine to the engine service in this server's configuration document."),
+
+    ACTION_PROCESSING_ERROR( "ENGINE-HOST-SERVICES-2000",
+                            OMRSAuditLogRecordSeverity.ERROR,
+                            "{0} caught an exception {1} while processing governance action {2}; the error message was {3}",
+                            "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
+                                    "the server to fail too.",
+                            "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
+                                    "and then restart the server."),
     ;
 
 

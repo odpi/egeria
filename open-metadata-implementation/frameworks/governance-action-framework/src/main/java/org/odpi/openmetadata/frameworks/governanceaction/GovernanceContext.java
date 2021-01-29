@@ -21,7 +21,6 @@ import java.util.Map;
 public class GovernanceContext
 {
     private String                     userId;
-    private String                     governanceActionGUID;
 
     private String                     requestType;
     private Map<String, String>        requestParameters;
@@ -29,10 +28,12 @@ public class GovernanceContext
     private List<RequestSourceElement> requestSourceElements;
     private List<ActionTargetElement>  actionTargetElements;
 
+    private String                     governanceActionGUID;
+
     private volatile CompletionStatus  completionStatus = null;
 
-    protected OpenMetadataClient       openMetadataStore;
-    protected PropertyHelper           propertyHelper = new PropertyHelper();
+    OpenMetadataClient       openMetadataStore;
+    PropertyHelper           propertyHelper = new PropertyHelper();
 
     /**
      * Constructor sets up the key parameters for processing the request to the governance action service.
@@ -167,7 +168,7 @@ public class GovernanceContext
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(governanceActionGUID, status, outputGuards, newActionTargetGUIDs);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, newActionTargetGUIDs);
     }
 
 
