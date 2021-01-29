@@ -104,9 +104,12 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                 "Correct the code in the caller to provide the object."),
 
     UNEXPECTED_EXCEPTION(400, "OMAG-COMMON-400-016",
-              "An unexpected {0} exception was caught by {1}; error message was {2}",
-              "The system is unable to process the request.",
-              "Review the error message and other diagnostics created at the same time."),
+                         "An unexpected {0} exception was caught by {1}; error message was {2}",
+                         "The system is unable to process the request and has returned an exception to the caller.",
+                         "Review the error message.  Also look up its full message definition which includes the system action " +
+                                 "and user action.  This is most likely to describe the correct action to take to resolve the error.  " +
+                                 "If that does not help, look for other diagnostics created at the same time.  Also validate that the " +
+                                 "caller is a valid client of this server and is operating correctly."),
 
     NO_REQUEST_BODY(400, "OMAG-COMMON-400-017",
                     "An request by user {0} to method {1} on server {2} had no request body",
