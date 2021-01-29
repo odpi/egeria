@@ -14,5 +14,8 @@ standards through integration with OMRS is called an
 
 
 ----
+* Return to [Repository Services Design](.)
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

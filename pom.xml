@@ -40,8 +40,8 @@
     </licenses>
 
     <organization>
-        <name>ODPi</name>
-        <url>http://www.odpi.org</url>
+        <name>LF AI &amp; Data Foundation</name>
+        <url>https://lfaidata.foundation/</url>
     </organization>
 
     <issueManagement>
@@ -54,10 +54,10 @@
     <mailingLists>
         <mailingList>
             <name>odpi-egeria</name>
-            <subscribe>odpi-project-egeria+subscribe@lists.odpi.org</subscribe>
-            <unsubscribe>odpi-project-egeria+unsubscribe@lists.odpi.org</unsubscribe>
-            <archive>https://lists.odpi.org/g/odpi-project-egeria</archive>
-            <post>odpi-project-egeria@lists.odpi.org</post>
+            <subscribe>egeria-technical-discuss+subscribe@lists.lfaidata.foundation</subscribe>
+            <unsubscribe>egeria-technical-discuss+unsubscribe@lists.lfaidata.foundation</unsubscribe>
+            <archive>https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics</archive>
+            <post>egeria-technical-discuss@lists.lfaidata.foundation</post>
         </mailingList>
     </mailingLists>
 

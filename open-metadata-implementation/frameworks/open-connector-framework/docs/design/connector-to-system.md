@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Creating an OCF connector to access an underlying system
+# Creating an OCF connector to access a third party technology
 
 When you want to connect to a tool or system from an existing service, you need to create an open connector for that
 tool or system. For example, you might want to connect a new metadata repository into Egeria, or connect Egeria with
@@ -9,16 +9,22 @@ a new data processing engine.
 
 To write an open connector you need to complete four steps:
 
-1. Design the properties for the [connection](../concepts/connection.md)
+1. Identify the properties for the [connection](../concepts/connection.md)
 1. Write the [connector provider](../concepts/connector-provider.md)
-1. Understand the interface to which the connector needs to adhere
+1. Understand the interface to which the connector needs to implement
 1. Write the [connector](../concepts/connector.md) itself
 
 All of the code you write to implement these should exist in its own module, and as illustrated by the examples could
-even be in its own independent code repository. Their implementation will have dependencies on Egeria's Open Connector
-Framework, but there is no dependency in Egeria itself on these specific connector implementations.
+even be in its own independent code repository. Their implementation will have dependencies on Egeria's 
 
-## 1. Design the properties for the connection
+* Open Connector Framework (OCF)
+* Audit Log Framework (ALF)
+* Specific interfaces used by the type of connector
+ 
+However there is no dependency on Egeria's OMAG Server Platform on these specific connector implementations
+and they could run in another runtime that supported the connector APIs.
+
+## 1. Identify the properties for the connection
 
 Begin by identifying and designing the properties needed to connect to your tool or system. These will commonly
 include a network address, protocol, and user credentials, but could also include other information.
@@ -26,13 +32,13 @@ include a network address, protocol, and user credentials, but could also includ
 ## 2. Write the connector provider
 
 The [connector provider](../concepts/connector-provider.md) is a simple Java factory that implements the creation of
-the type of connector it can instantiate using:
+the connector type it can instantiates using:
 
-- a GUID for the type of connector
-- a name for type of connector
+- a GUID for the [connector type](../concepts/connector-type.md)
+- a name for the connector type
 - a description of what the connector is for and how to configure it
 - the connector class it instantiates
-- a list of the additional properties needed to configure instances of the connector
+- a list of the additional properties, configuration properties and secured properties needed to configure instances of the connector
 
 For example, the [DataStageConnectorProvider](https://github.com/odpi/egeria-connector-ibm-information-server/blob/master/datastage-adapter/src/main/java/org/odpi/egeria/connectors/ibm/datastage/dataengineconnector/DataStageConnectorProvider.java)
 is used to instantiate connectors to IBM DataStage data processing engines. Therefore its name and description refer to
@@ -105,12 +111,16 @@ need to implement the methods defined by that interface.
 
 Implement the connector by:
 
-1. Retrieving _connection_ information provided by the configuration. Every connector should override the `initialize`
-    method, which receives a [ConnectionProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java)
-    object. Use the configuration details inside this object to connect to your underlying technology.
+1. Retrieving _connection_ information provided by the configuration. The default method for `initialize`
+   saves the connection object used to create the connector.  If your connector needs to override the `initialize`
+    method, it should call `super.initialize()` to capture the connection properties for the base classes. 
+1. The `start()` method is where the main logic for your connector runs.     
+    Use the configuration details from the connection object to connect to your underlying technology.
+    If the connector is long running, this may be the time to start up a separate thread. However, this has to conform
+    the rules laid down for the category of connector you are implementing.
 1. Using pre-existing, technology-specific clients and APIs to talk to your underlying technology.
 1. Translating the underlying technology's representation of information into the Open Metadata representation used by
-    the interface itself.
+   the connector interface itself.
 
 For the first point, you can retrieve general connection information like:
 
@@ -118,7 +128,7 @@ For the first point, you can retrieve general connection information like:
     with `getEndpoint()`:
     - retrieving the protocol by calling `getProtocol()` on the [EndpointProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
     - retrieving the address by calling `getAddress()` on the [EndpointProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
-- the user ID, by calling `getUserId()` on the [ConnectionProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java)
+- the user Id, by calling `getUserId()` on the [ConnectionProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java)
 - the password, by calling either `getClearPassword()` or `getEncryptedPassword()` on the [ConnectionProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java),
     depending on what your underlying technology can handle
 
@@ -134,9 +144,13 @@ Retrieve additional properties by:
 
 Implementation of the remaining points (2-3) will vary widely depending on the specific technology being used.
 
-See [Implementing an Open Metadata Connector](https://www.odpi.org/blog/2019/07/08/implementing-an-open-metadata-connector)
-for a detailed walkthrough of examples of [OMRSRepositoryConnectors](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java)
-for some specific technologies.
+## Further Information
+
+The [Developer Guide](../../../../../open-metadata-publication/website/developer-guide) provides more information on the specific types of connectors supported by Egeria.
+
+
+----
+* [Return to OCF Overview](../..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
