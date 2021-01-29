@@ -142,7 +142,7 @@ public class AnalyticsModelingRestServices {
 
 			SchemaTablesResponse response = new SchemaTablesResponse();
 			ResponseContainerSchemaTables tables = getHandler()
-					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(userId, databaseGuid, schema);
+					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(databaseGuid, schema);
 			response.setTableList(tables);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {

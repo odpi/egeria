@@ -10,10 +10,8 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OME
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.DatabaseConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.SchemaConverter;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.TableConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.TableBean;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.AnalyticsArtifactHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.ExecutionContext;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -35,7 +33,7 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
     
     private RelationalDataHandler<Database,
 								    Schema,
-								    TableBean,
+								    Object,
 								    Object,
 								    Object,
 								    Object>	relationalDataHandler;
@@ -65,8 +63,8 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
                 Database.class,
                 new SchemaConverter(repositoryHelper, serviceName,serverName),
                 Schema.class,
-                new TableConverter(repositoryHelper, serviceName,serverName),
-                TableBean.class,
+                new EmptyConverter(repositoryHelper, serviceName,serverName),
+                Object.class,
                 new EmptyConverter(repositoryHelper, serviceName,serverName),
                 Object.class,
                 new EmptyConverter(repositoryHelper, serviceName, serverName),
