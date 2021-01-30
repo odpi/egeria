@@ -44,9 +44,10 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                          "Correct the configuration of the access service to include the name of the topic."),
 
     SERVER_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-001",
-            "The OMAG Server {0} is not available to service a request from user {1}",
-            "The system is unable to process the request because the server is not running.",
-            "Retry the request when the OMAG Server is available."),
+                         "The OMAG Server {0} is not available to service a request from user {1}",
+                         "The system is unable to process the request because the server is not running on the called platform.",
+                         "Verify that the correct server is being called on the correct platform and that this server is running. " +
+                                 "Retry the request when the server is available."),
 
     SERVICE_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-002",
             "The {0} service is not available on OMAG Server {1} to handle a request from user {2}",
