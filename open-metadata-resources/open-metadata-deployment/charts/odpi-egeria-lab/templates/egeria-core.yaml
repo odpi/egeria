@@ -96,6 +96,7 @@ spec:
               name: {{ .Release.Name }}-core-data
           {{ end }}
       restartPolicy: Always
+  {{ if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-core-data
@@ -106,4 +107,5 @@ spec:
         requests:
           storage: 8Gi
       #storageClassName:
+  {{ end }}
 ...
