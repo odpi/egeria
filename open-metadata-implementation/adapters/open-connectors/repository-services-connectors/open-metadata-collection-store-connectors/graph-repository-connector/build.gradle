@@ -15,7 +15,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.apache.tinkerpop:gremlin-core'
     implementation 'org.apache.commons:commons-collections4'
-    runtimeOnly 'org.janusgraph:janusgraph-cassandra:0.5.2'
+    runtimeOnly 'org.janusgraph:janusgraph-cassandra:0.5.3'
     runtimeOnly 'org.janusgraph:janusgraph-berkeleyje:0.5.2'
     runtimeOnly 'org.janusgraph:janusgraph-lucene:0.5.2'
     runtimeOnly 'org.janusgraph:janusgraph-es:0.5.2'
