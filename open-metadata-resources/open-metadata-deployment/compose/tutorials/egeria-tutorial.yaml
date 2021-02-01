@@ -152,7 +152,7 @@ services:
     presentation:
         depends_on:
             - datalake
-        image: '${egeria_repo}/egeria-presentation-server:${egeria_version}'
+        image: '${egeria_repo}/egeria-react-ui:${egeria_react_ui_version}'
         environment:
             - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
         ports:
