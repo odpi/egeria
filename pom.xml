@@ -213,7 +213,7 @@
         <commons-codec.version>1.15</commons-codec.version>
         <json-sanitizer.version>1.2.1</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.9.0</oss.version>
+        <oss.version>4.10.0</oss.version>
         <spotbugs-annotations.version>4.2.0</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.9</joda.version>
