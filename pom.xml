@@ -219,7 +219,7 @@
         <joda.version>2.10.9</joda.version>
         <jackson-asl.version>1.9.13-atlassian-2</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
-        <snappy.version>1.1.8.2</snappy.version>
+        <snappy.version>1.1.8.4</snappy.version>
         <snakeyaml.version>1.27</snakeyaml.version>
         <classgraph.version>4.8.98</classgraph.version>
         <swagger.version>2.1.6</swagger.version>
