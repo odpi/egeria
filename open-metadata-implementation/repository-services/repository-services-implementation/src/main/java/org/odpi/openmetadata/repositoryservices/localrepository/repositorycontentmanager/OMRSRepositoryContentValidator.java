@@ -4048,96 +4048,111 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             boolean matchesProperties = true;
             BigDecimal testBD = getNumericRepresentation(testValue);
             BigDecimal actualBD = getNumericRepresentation(actualValue);
-            switch (condition.getOperator())
+            PropertyComparisonOperator operator = condition.getOperator();
+
+            /*
+             * When the nested branch is complete, operator will be null (along
+             * with propertyName, testValue, etc). All that remains for this
+             * (nested) property condition is to contribute its result
+             * (matchesNested && matchesProperties) into the current level of
+             * property condition combination.
+             *
+             * Do not attempt to use null operator in switch statement, it will NPE
+             */
+
+            if (operator != null)
             {
-                case EQ:
-                    matchesProperties = Objects.equals(actualValue, testValue);
-                    break;
-                case NEQ:
-                    matchesProperties = !Objects.equals(actualValue, testValue);
-                    break;
-                case LT:
-                    // Should only apply to numbers and dates
-                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) < 0);
-                    break;
-                case LTE:
-                    // Should only apply to numbers and dates
-                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) <= 0);
-                    break;
-                case GT:
-                    // Should only apply to numbers and dates
-                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) > 0);
-                    break;
-                case GTE:
-                    // Should only apply to numbers and dates
-                    matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) >= 0);
-                    break;
-                case IN:
-                    // The value to test against must be a list (ArrayPropertyValue)
-                    if (testValue instanceof ArrayPropertyValue)
-                    {
-                        ArrayPropertyValue apv = (ArrayPropertyValue) testValue;
-                        InstanceProperties values = apv.getArrayValues();
-                        if (values == null)
+                switch (condition.getOperator())
+                {
+                    case EQ:
+                        matchesProperties = Objects.equals(actualValue, testValue);
+                        break;
+                    case NEQ:
+                        matchesProperties = !Objects.equals(actualValue, testValue);
+                        break;
+                    case LT:
+                        // Should only apply to numbers and dates
+                        matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) < 0);
+                        break;
+                    case LTE:
+                        // Should only apply to numbers and dates
+                        matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) <= 0);
+                        break;
+                    case GT:
+                        // Should only apply to numbers and dates
+                        matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) > 0);
+                        break;
+                    case GTE:
+                        // Should only apply to numbers and dates
+                        matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) >= 0);
+                        break;
+                    case IN:
+                        // The value to test against must be a list (ArrayPropertyValue)
+                        if (testValue instanceof ArrayPropertyValue)
                         {
-                            // Impossible to match against an empty list, so always return false
-                            matchesProperties = false;
-                        }
-                        else
-                        {
-                            Iterator<String> names = values.getPropertyNames();
-                            matchesProperties = false;
-                            while (names.hasNext() && !matchesProperties)
+                            ArrayPropertyValue apv = (ArrayPropertyValue) testValue;
+                            InstanceProperties values = apv.getArrayValues();
+                            if (values == null)
                             {
-                                String index = names.next();
-                                InstancePropertyValue oneTestValue = values.getPropertyValue(index);
-                                if (oneTestValue != null)
+                                // Impossible to match against an empty list, so always return false
+                                matchesProperties = false;
+                            }
+                            else
+                            {
+                                Iterator<String> names = values.getPropertyNames();
+                                matchesProperties = false;
+                                while (names.hasNext() && !matchesProperties)
                                 {
-                                    matchesProperties = oneTestValue.equals(actualValue);
+                                    String index = names.next();
+                                    InstancePropertyValue oneTestValue = values.getPropertyValue(index);
+                                    if (oneTestValue != null)
+                                    {
+                                        matchesProperties = oneTestValue.equals(actualValue);
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        throw new InvalidParameterException(OMRSErrorCode.INVALID_LIST_CONDITION.getMessageDefinition(),
-                                                            this.getClass().getName(),
-                                                            methodName,
-                                                            "matchProperties");
-                    }
-                    break;
-                case IS_NULL:
-                    matchesProperties = (actualValue == null);
-                    break;
-                case NOT_NULL:
-                    matchesProperties = (actualValue != null);
-                    break;
-                case LIKE:
-                    // Should only apply to strings
-                    if (testValue instanceof PrimitivePropertyValue && ( (PrimitivePropertyValue) testValue).getPrimitiveDefCategory().equals(OM_PRIMITIVE_TYPE_STRING))
-                    {
-                        String test = testValue.valueAsString();
-                        if (actualValue == null)
+                        else
                         {
-                            matchesProperties = false;
+                            throw new InvalidParameterException(OMRSErrorCode.INVALID_LIST_CONDITION.getMessageDefinition(),
+                                                                this.getClass().getName(),
+                                                                methodName,
+                                                                "matchProperties");
+                        }
+                        break;
+                    case IS_NULL:
+                        matchesProperties = (actualValue == null);
+                        break;
+                    case NOT_NULL:
+                        matchesProperties = (actualValue != null);
+                        break;
+                    case LIKE:
+                        // Should only apply to strings
+                        if (testValue instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) testValue).getPrimitiveDefCategory().equals(OM_PRIMITIVE_TYPE_STRING))
+                        {
+                            String test = testValue.valueAsString();
+                            if (actualValue == null)
+                            {
+                                matchesProperties = false;
+                            }
+                            else
+                            {
+                                String actual = actualValue.valueAsString();
+                                matchesProperties = actual.matches(test);
+                            }
                         }
                         else
                         {
-                            String actual = actualValue.valueAsString();
-                            matchesProperties = actual.matches(test);
+                            throw new InvalidParameterException(OMRSErrorCode.INVALID_LIKE_CONDITION.getMessageDefinition(),
+                                                                this.getClass().getName(),
+                                                                methodName,
+                                                                "matchProperties");
                         }
-                    }
-                    else
-                    {
-                        throw new InvalidParameterException(OMRSErrorCode.INVALID_LIKE_CONDITION.getMessageDefinition(),
-                                                            this.getClass().getName(),
-                                                            methodName,
-                                                            "matchProperties");
-                    }
-                    break;
-                default:
-                    matchesProperties = true;
-                    break;
+                        break;
+                    default:
+                        matchesProperties = true;
+                        break;
+                }
             }
             conditionMatchCount += (matchesNested && matchesProperties) ? 1 : 0;
         }

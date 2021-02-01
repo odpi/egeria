@@ -86,8 +86,8 @@ working on the project (approximately 1.25 business days per week).
 New maintainers are voted onto the maintainers list by the existing maintainers - see
 [maintainer list](./MAINTAINERS.md).
 
-A person wishing to become a maintainer sends a note to the existing maintainers
-at odpi-project-egeria-maintainers@lists.odpi.org, listing their Egeria contributions to date and
+A person wishing to become a maintainer sends a note to the existing mailing list
+at egeria-technical-discuss@lists.lfaidata.foundation, listing their Egeria contributions to date and
 requesting to be made a maintainer.
 The maintainers vote and if a majority agree then the requester
 is added to the maintainers list and given write access to the
@@ -136,8 +136,9 @@ channel names will begin with '#egeria', you can also view slack channels from o
 
 ## Egeria email
 
-Egeria uses the [following distribution list](https://lists.odpi.org/g/odpi-project-egeria)
-to advertise events and news for the community.
+Egeria uses the [announce list](https://lists.lfaidata.foundation/g/egeria-announce/topics)
+to advertise events and news for the community, in addition to the [discussion list](https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics)
+for more general discussion.
 
 ## Egeria content management tools
 

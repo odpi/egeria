@@ -12,6 +12,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewErrorCode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -108,29 +112,52 @@ public class TypeExplorer {
         enums.put(enumTypeName, enumDef);
     }
 
-    public void resolve(boolean includeDeprecatedTypes) {
+    public void resolve(boolean includeDeprecatedTypes,
+                        String  platformRootURL,
+                        String  repositoryServerName)
+
+    throws RepositoryErrorException
+    {
 
         /*
          * After all types have been loaded, call the resolver methods to expand the TEX for each type category
          * Order is important, entities are expanded first.
+         *
+         * If anything untoward is spotted during one of the resolve methods, a RepositoryErrorException is thrown.
          */
 
-        resolveEntities(includeDeprecatedTypes);
-        resolveRelationships(includeDeprecatedTypes);
-        resolveClassifications(includeDeprecatedTypes);
+        resolveEntities(includeDeprecatedTypes, platformRootURL, repositoryServerName);
+        resolveRelationships(includeDeprecatedTypes, platformRootURL, repositoryServerName);
+        resolveClassifications(includeDeprecatedTypes, platformRootURL, repositoryServerName);
 
     }
 
-    private void resolveEntities(boolean includeDeprecatedTypes) {
+    private void resolveEntities(boolean includeDeprecatedTypes,
+                                 String  platformRootURL,
+                                 String  repositoryServerName)
+
+    throws RepositoryErrorException
+
+    {
+        String methodName = "resolveEntities";
 
         // For each entity type, check whether deprecated and if it should be included
         Map<String, EntityExplorer> includedEntities = new HashMap<>();
         for (String entityTypeName : entities.keySet()) {
             EntityExplorer entityExplorer = entities.get(entityTypeName);
             EntityDef entityDef = entityExplorer.getEntityDef();
+            if (entityDef == null)
+            {
+               throw new RepositoryErrorException(
+                       TexViewErrorCode.TYPE_SYSTEM_ENTITY_DEF_MISSING.getMessageDefinition(
+                               methodName, entityTypeName, repositoryServerName, platformRootURL),
+                       this.getClass().getName(),
+                       methodName);
+            }
             if (includeDeprecatedTypes || entityDef.getStatus() != DEPRECATED_TYPEDEF) {
                 includedEntities.put(entityTypeName, entityExplorer);
             }
+
         }
         entities = includedEntities;
 
@@ -141,8 +168,24 @@ public class TypeExplorer {
             // Not every entity type has a superType
             if (superType != null) {
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 // Find supertype in explorer
                 EntityExplorer superTypeExplorer = entities.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 superTypeExplorer.addSubTypName(entityTypeName);
             }
         }
@@ -154,9 +197,33 @@ public class TypeExplorer {
             while (superType != null) {
                 // add supertype's attributes to subtype
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 // find supertype in explorer
                 EntityExplorer superTypeExplorer = entities.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_ENTITY_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, entityTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 EntityDef superDef = superTypeExplorer.getEntityDef();
+                if (superDef == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_ENTITY_DEF_MISSING.getMessageDefinition(
+                                    methodName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 List<TypeDefAttribute> superAttributes = superDef.getPropertiesDefinition();
                 entityExplorer.addInheritedAttributes(superAttributes);
                 superType = superDef.getSuperType();
@@ -164,14 +231,28 @@ public class TypeExplorer {
         }
     }
 
-    private void resolveRelationships(boolean includeDeprecatedTypes)
+    private void resolveRelationships(boolean includeDeprecatedTypes,
+                                      String  platformRootURL,
+                                      String  repositoryServerName)
+
+    throws RepositoryErrorException
     {
+
+        String methodName = "resolveRelationships";
 
         // For each relationship type, check whether deprecated and if it should be included
         Map<String, RelationshipExplorer> includedRelationships = new HashMap<>();
         for (String relationshipTypeName : relationships.keySet()) {
             RelationshipExplorer relationshipExplorer = relationships.get(relationshipTypeName);
             RelationshipDef relationshipDef = relationshipExplorer.getRelationshipDef();
+            if (relationshipDef == null)
+            {
+                throw new RepositoryErrorException(
+                        TexViewErrorCode.TYPE_SYSTEM_RELATIONSHIP_DEF_MISSING.getMessageDefinition(
+                                methodName, relationshipTypeName, repositoryServerName, platformRootURL),
+                        this.getClass().getName(),
+                        methodName);
+            }
             if (includeDeprecatedTypes || relationshipDef.getStatus() != DEPRECATED_TYPEDEF) {
                 includedRelationships.put(relationshipTypeName, relationshipExplorer);
             }
@@ -200,6 +281,14 @@ public class TypeExplorer {
                     }
                 }
             }
+            else
+            {
+                throw new RepositoryErrorException(
+                        TexViewErrorCode.TYPE_SYSTEM_RELATIONSHIP_END_DEF_MISSING.getMessageDefinition(
+                                methodName, relationshipTypeName, repositoryServerName, platformRootURL),
+                        this.getClass().getName(),
+                        methodName);
+            }
 
             if (entityTwoDef != null) {
                 String entityTwoTypeName = entityTwoDef.getEntityType().getName();
@@ -214,8 +303,14 @@ public class TypeExplorer {
                     }
                 }
             }
-
-
+            else
+            {
+                throw new RepositoryErrorException(
+                        TexViewErrorCode.TYPE_SYSTEM_RELATIONSHIP_END_DEF_MISSING.getMessageDefinition(
+                                methodName, relationshipTypeName, repositoryServerName, platformRootURL),
+                        this.getClass().getName(),
+                        methodName);
+            }
         }
     }
 
@@ -234,13 +329,28 @@ public class TypeExplorer {
     }
 
 
-    private void resolveClassifications(boolean includeDeprecatedTypes)
+    private void resolveClassifications(boolean includeDeprecatedTypes,
+                                        String  platformRootURL,
+                                        String  repositoryServerName)
+
+    throws RepositoryErrorException
     {
+
+        String methodName = "resolveClassifications";
+
         // For each classification type, check whether deprecated and if it should be included
         Map<String, ClassificationExplorer> includedClassifications = new HashMap<>();
         for (String classificationTypeName : classifications.keySet()) {
             ClassificationExplorer classificationExplorer = classifications.get(classificationTypeName);
             ClassificationDef classificationDef = classificationExplorer.getClassificationDef();
+            if (classificationDef == null)
+            {
+                throw new RepositoryErrorException(
+                        TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_DEF_MISSING.getMessageDefinition(
+                                methodName, classificationTypeName, repositoryServerName, platformRootURL),
+                        this.getClass().getName(),
+                        methodName);
+            }
             if (includeDeprecatedTypes || classificationDef.getStatus() != DEPRECATED_TYPEDEF) {
                 includedClassifications.put(classificationTypeName, classificationExplorer);
             }
@@ -255,17 +365,31 @@ public class TypeExplorer {
             ClassificationExplorer classificationExplorer = classifications.get(classificationTypeName);
             List<TypeDefLink> validEntityTypes = classificationExplorer.getClassificationDef().getValidEntityDefs();
             if (validEntityTypes != null) {
-                for (TypeDefLink entityType : validEntityTypes) {
+                for (TypeDefLink entityType : validEntityTypes)
+                {
                     String entityTypeName = entityType.getName();
-                    EntityExplorer entityExplorer = entities.get(entityTypeName);
-                    if (entityExplorer != null)
+                    if (entityTypeName == null)
                     {
-                        entityExplorer.addClassification(classificationTypeName);
-                        List<String> subTypeNames = entityExplorer.getSubTypeNames();
-                        for (String subTypeName : subTypeNames)
-                        {
-                            addClassificationToSubType(classificationTypeName, subTypeName);
-                        }
+                        throw new RepositoryErrorException(
+                                TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_NAME_MISSING.getMessageDefinition(
+                                        methodName, classificationTypeName, repositoryServerName, platformRootURL),
+                                this.getClass().getName(),
+                                methodName);
+                    }
+                    EntityExplorer entityExplorer = entities.get(entityTypeName);
+                    if (entityExplorer == null)
+                    {
+                        throw new RepositoryErrorException(
+                                TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_MISSING.getMessageDefinition(
+                                        methodName, classificationTypeName, entityTypeName, repositoryServerName, platformRootURL),
+                                this.getClass().getName(),
+                                methodName);
+                    }
+                    entityExplorer.addClassification(classificationTypeName);
+                    List<String> subTypeNames = entityExplorer.getSubTypeNames();
+                    for (String subTypeName : subTypeNames)
+                    {
+                        addClassificationToSubType(classificationTypeName, subTypeName);
                     }
                 }
             }
@@ -277,8 +401,25 @@ public class TypeExplorer {
             TypeDefLink superType = classificationExplorer.getClassificationDef().getSuperType();
             if (superType != null) {
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
+
                 // find supertype in explorer
                 ClassificationExplorer superTypeExplorer = classifications.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 superTypeExplorer.addSubTypName(classificationTypeName);
             }
         }
@@ -290,9 +431,33 @@ public class TypeExplorer {
             while (superType != null) {
                 // add supertype's attributes to subtype
                 String superTypeName = superType.getName();
+                if (superTypeName == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_NAME_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 // find supertype in explorer
                 ClassificationExplorer superTypeExplorer = classifications.get(superTypeName);
+                if (superTypeExplorer == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_MISSING.getMessageDefinition(
+                                    methodName, classificationTypeName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 ClassificationDef superDef = superTypeExplorer.getClassificationDef();
+                if (superDef == null)
+                {
+                    throw new RepositoryErrorException(
+                            TexViewErrorCode.TYPE_SYSTEM_CLASSIFICATION_DEF_MISSING.getMessageDefinition(
+                                    methodName, superTypeName, repositoryServerName, platformRootURL),
+                            this.getClass().getName(),
+                            methodName);
+                }
                 List<TypeDefAttribute> superAttributes = superDef.getPropertiesDefinition();
                 classificationExplorer.addInheritedAttributes(superAttributes);
                 superType = superDef.getSuperType();
