@@ -15,10 +15,10 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
     implementation 'com.google.guava:guava'
-    runtimeOnly 'org.janusgraph:janusgraph-cql:0.5.3'
-    runtimeOnly 'org.janusgraph:janusgraph-es:0.5.2'
-    runtimeOnly 'org.janusgraph:janusgraph-berkeleyje:0.5.2'
-    runtimeOnly 'org.janusgraph:janusgraph-lucene:0.5.3'
+    runtimeOnly 'org.janusgraph:janusgraph-cql'
+    runtimeOnly 'org.janusgraph:janusgraph-es'
+    runtimeOnly 'org.janusgraph:janusgraph-berkeleyje'
+    runtimeOnly 'org.janusgraph:janusgraph-lucene'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-params'
@@ -26,7 +26,7 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest'
     testImplementation 'com.fasterxml.jackson.core:jackson-core'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
-    testRuntimeOnly 'org.janusgraph:janusgraph-inmemory:0.5.2'
+    testRuntimeOnly 'org.janusgraph:janusgraph-inmemory'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.apache.commons:commons-collections4'
 
