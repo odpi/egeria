@@ -16,7 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
     implementation 'com.google.guava:guava'
     runtimeOnly 'org.janusgraph:janusgraph-cql:0.5.2'
-    runtimeOnly 'org.janusgraph:janusgraph-es:0.5.2'
+    runtimeOnly 'org.janusgraph:janusgraph-es:0.5.3'
     runtimeOnly 'org.janusgraph:janusgraph-berkeleyje:0.5.2'
     runtimeOnly 'org.janusgraph:janusgraph-lucene:0.5.2'
     testImplementation 'org.mockito:mockito-core'
