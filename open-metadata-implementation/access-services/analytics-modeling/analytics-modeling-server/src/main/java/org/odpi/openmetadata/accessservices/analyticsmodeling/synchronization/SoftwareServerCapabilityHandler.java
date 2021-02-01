@@ -21,7 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- *	 
+ *	 Handler for SoftwareServerCapability object.
  */
 public class SoftwareServerCapabilityHandler extends ReferenceableHandler<SoftwareServerCapability> {
 	/**

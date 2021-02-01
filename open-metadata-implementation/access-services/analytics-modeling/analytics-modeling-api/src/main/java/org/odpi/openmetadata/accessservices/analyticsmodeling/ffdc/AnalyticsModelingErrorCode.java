@@ -159,7 +159,13 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Failed to create analytics artifact.",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue."),
-
+	FAILED_CREATE_SERVER_CAPABILITY(
+			"OMAS-ANALYTICS-MODELING-026", 
+			"User {0} failed to create server capability {1}. Cause: {3}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue."),
+	
+	
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 
 			"Server failed to execute request with unknown reason.",

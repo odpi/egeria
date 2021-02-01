@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization;
 
 import java.util.List;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.SoftwareServerCapabilityConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -64,7 +66,9 @@ public class ExecutionContext {
 		this.auditLog = auditLog;
 	}
 	
-	public void initializeSoftwareServerCapability(String userId, String softwareServerCapabilityName) {
+	public void initializeSoftwareServerCapability(String userId, String softwareServerCapabilityName)
+			throws AnalyticsModelingCheckedException
+	{
 		
 		String methodName = "InitializeExecutionContext";
 		
@@ -84,7 +88,13 @@ public class ExecutionContext {
 				softwareServerCapability = softwareServerCapabilityHandler.getSoftwareServerCapability(userId, guid, "guid", methodName);
 			}
 
-		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_CREATE_SERVER_CAPABILITY.getMessageDefinition(userId, 
+							softwareServerCapabilityName, ex.getLocalizedMessage()),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
 			
 		}
 	}

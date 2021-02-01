@@ -5,6 +5,10 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 
+/**
+ *	The class keeps identifiers used by synchronization feature.
+ *	Any type GUID and name used by the feature should be referenced here to keep track.
+ */
 public class IdMap {
 
 	public static final String CAPABILITY_TYPE_GUID = OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID;

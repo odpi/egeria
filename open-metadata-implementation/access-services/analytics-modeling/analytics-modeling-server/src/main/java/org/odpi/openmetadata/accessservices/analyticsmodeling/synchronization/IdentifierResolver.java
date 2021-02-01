@@ -33,9 +33,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class IdentifierResolver {
 	
-	private static String CLIENT 			= org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants.ANALYTICS_MODELING_OMAS_NAME;
-	private static String ANY_STRING_REGEX	= ".*";
-	public static String NAME_SEPARATOR		= ".";
+	private static String CLIENT           = org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants.ANALYTICS_MODELING_OMAS_NAME;
+	private static String ANY_STRING_REGEX = ".*";
+	public static String NAME_SEPARATOR    = ".";
 	
 	private ExecutionContext ctx;
 	
@@ -67,7 +67,12 @@ public class IdentifierResolver {
 		resolveAssetReferences();
 	}
 	
-	
+	/**
+	 * Add GUID for identifier that need to be resolved.
+	 * @param guid to add.
+	 * @param id of the identifier.
+	 * @return true if GUID was added for known identifier.
+	 */
 	public boolean addGuidForIdentifier(String guid, String id) {
 		if (identifiersToResolve != null && identifiersToResolve.remove(id)) {
 			identifierToGuid.put(id, guid);
@@ -77,6 +82,10 @@ public class IdentifierResolver {
 	}
 	
 
+	/**
+	 * Resolve GUIDs for source referenced by identifier.
+	 * @param ref of the source.
+	 */
 	private void resolveSourcesGuids(AssetReference ref) {
 		
 		String methodName = "resolveSourcesGuids";
@@ -109,6 +118,12 @@ public class IdentifierResolver {
 	}
 
 
+	/**
+	 * Get compound identifier from qualified name.
+	 * @param qName source of identifier.
+	 * @param alias optional.
+	 * @return identifier.
+	 */
 	public static String getIdFromQName(String qName, String alias) {
 		List<String> ids = QualifiedNameUtils.extractIdentifiersFromQualifiedName(qName);
 		if (alias != null) {
@@ -127,6 +142,10 @@ public class IdentifierResolver {
 	}
 
 
+	/**
+	 * Select identifiers to resolve.
+	 * @param lstMetadata identifier storage.
+	 */
 	private void addMetadataSources(List<? extends AnalyticsMetadata> lstMetadata) {
 		
 		if (lstMetadata == null) {
