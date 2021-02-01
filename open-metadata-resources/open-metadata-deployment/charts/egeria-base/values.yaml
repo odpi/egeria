@@ -82,9 +82,9 @@ imageDefaults:
 image:
   egeria:
     name: egeria
-  presentation:
-    name: egeria-presentation-server
-    tag: latest
+  presentation
+    name: egeria-react-ui
+    tag: 2.6.0
   configure:
     name: egeria-configure
 
