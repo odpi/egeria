@@ -19,7 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LineageEvent extends AssetLineageEventHeader {
+//TODO needs to be replaced with new LineageRelationshipsEvent
+public class ProcessLineageEvent extends AssetLineageEventHeader {
 
     private Set<GraphContext> context;
 
@@ -46,7 +47,7 @@ public class LineageEvent extends AssetLineageEventHeader {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LineageEvent that = (LineageEvent) o;
+        ProcessLineageEvent that = (ProcessLineageEvent) o;
         return Objects.equals(context, that.context);
     }
 
@@ -57,9 +58,9 @@ public class LineageEvent extends AssetLineageEventHeader {
 
     @Override
     public String toString() {
-        return "LineageEvent{" +
-                "assetContext=" + context +
-                "} " + super.toString();
+        return "ProcessLineageEvent{" +
+                "context=" + context +
+                '}';
     }
 }
 

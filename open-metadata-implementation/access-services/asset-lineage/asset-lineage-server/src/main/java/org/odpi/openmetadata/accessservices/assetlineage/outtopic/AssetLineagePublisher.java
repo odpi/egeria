@@ -10,7 +10,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
@@ -135,7 +135,7 @@ public class AssetLineagePublisher {
     }
 
     /**
-     * Publishes a {@link LineageEvent} for each entry from the context map
+     * Publishes a {@link LineageRelationshipsEvent} for each entry from the context map
      *
      * @param contextMap the context map to be published
      *
@@ -256,7 +256,7 @@ public class AssetLineagePublisher {
     }
 
     /**
-     * Publishes a {@link LineageEvent} for each entry from the context map
+     * Publishes a {@link ProcessLineageEvent} for each entry from the context map
      *
      * @param context the context of the lineage entity
      *
@@ -266,7 +266,7 @@ public class AssetLineagePublisher {
     private void publishProcessContextEvents(Map<String, Set<GraphContext>> context) throws JsonProcessingException, ConnectorCheckedException {
 
         for (String guid : context.keySet()) {
-            LineageEvent event = new LineageEvent();
+            ProcessLineageEvent event = new ProcessLineageEvent();
 
             event.setContext(context.get(guid));
             event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);

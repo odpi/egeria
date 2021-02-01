@@ -6,6 +6,9 @@ public class RelationshipsContext {
     private String entityGuid;
     private Set<GraphContext> relationships;
 
+    public RelationshipsContext() {
+    }
+
     public RelationshipsContext(String entityGuid, Set<GraphContext> relationships) {
         this.entityGuid = entityGuid;
         this.relationships = relationships;

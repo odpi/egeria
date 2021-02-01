@@ -6,7 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
@@ -62,54 +63,61 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
     private void processEventBasedOnType(String assetLineageEvent) throws JsonProcessingException {
         AssetLineageEventHeader assetLineageEventHeader = OBJECT_MAPPER.readValue(assetLineageEvent, AssetLineageEventHeader.class);
 
-        if (assetLineageEventHeader != null) {
-            LineageEvent lineageEvent;
-            LineageRelationshipEvent lineageRelationshipEvent;
-            LineageEntityEvent lineageEntityEvent;
-            switch (assetLineageEventHeader.getAssetLineageEventType()) {
-                case PROCESS_CONTEXT_EVENT:
-                case CLASSIFICATION_CONTEXT_EVENT:
-                case SEMANTIC_ASSIGNMENTS_EVENT:
-                case TERM_CATEGORIZATIONS_EVENT:
-                case TERM_ANCHOR_EVENT:
-                case CATEGORY_ANCHORS_EVENT:
-                case COLUMN_CONTEXT_EVENT:
-                case ASSET_CONTEXT_EVENT:
-                case LINEAGE_MAPPINGS_EVENT:
-                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
-                    storingServices.addEntity(lineageEvent);
-                    break;
-                case NEW_RELATIONSHIP_EVENT:
-                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
-                    storingServices.upsertRelationship(lineageRelationshipEvent);
-                    break;
-                case UPDATE_ENTITY_EVENT:
-                    lineageEntityEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEntityEvent.class);
-                    storingServices.updateEntity(lineageEntityEvent);
-                    break;
-                case UPDATE_RELATIONSHIP_EVENT:
-                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
-                    storingServices.updateRelationship(lineageRelationshipEvent);
-                    break;
-                case RECLASSIFIED_ENTITY_EVENT:
-                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
-                    storingServices.updateClassification(lineageEvent);
-                    break;
-                case DELETE_ENTITY_EVENT:
-                    lineageEntityEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEntityEvent.class);
-                    storingServices.deleteEntity(lineageEntityEvent);
-                    break;
-                case DELETE_RELATIONSHIP_EVENT:
-                    lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
-                    storingServices.deleteRelationship(lineageRelationshipEvent);
-                    break;
-                case DECLASSIFIED_ENTITY_EVENT:
-                    lineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEvent.class);
-                    storingServices.deleteClassification(lineageEvent);
-                    break;
-                default:
-                    break;
-            }
+        if (assetLineageEventHeader == null) {
+            return;
+        }
+
+        LineageRelationshipEvent lineageRelationshipEvent;
+        LineageEntityEvent lineageEntityEvent;
+        ProcessLineageEvent processLineageEvent;
+        LineageRelationshipsEvent lineageRelationshipsEvent;
+
+        switch (assetLineageEventHeader.getAssetLineageEventType()) {
+            case PROCESS_CONTEXT_EVENT:
+                processLineageEvent = OBJECT_MAPPER.readValue(assetLineageEvent, ProcessLineageEvent.class);
+                storingServices.addEntityContext(processLineageEvent);
+                break;
+            case CLASSIFICATION_CONTEXT_EVENT:
+            case SEMANTIC_ASSIGNMENTS_EVENT:
+            case TERM_CATEGORIZATIONS_EVENT:
+            case TERM_ANCHOR_EVENT:
+            case CATEGORY_ANCHORS_EVENT:
+            case COLUMN_CONTEXT_EVENT:
+            case ASSET_CONTEXT_EVENT:
+            case LINEAGE_MAPPINGS_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storingServices.addEntityContext(lineageRelationshipsEvent);
+                break;
+            case NEW_RELATIONSHIP_EVENT:
+                lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
+                storingServices.upsertRelationship(lineageRelationshipEvent);
+                break;
+            case UPDATE_ENTITY_EVENT:
+                lineageEntityEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEntityEvent.class);
+                storingServices.updateEntity(lineageEntityEvent);
+                break;
+            case UPDATE_RELATIONSHIP_EVENT:
+                lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
+                storingServices.updateRelationship(lineageRelationshipEvent);
+                break;
+            case RECLASSIFIED_ENTITY_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storingServices.updateClassification(lineageRelationshipsEvent);
+                break;
+            case DELETE_ENTITY_EVENT:
+                lineageEntityEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageEntityEvent.class);
+                storingServices.deleteEntity(lineageEntityEvent);
+                break;
+            case DELETE_RELATIONSHIP_EVENT:
+                lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
+                storingServices.deleteRelationship(lineageRelationshipEvent);
+                break;
+            case DECLASSIFIED_ENTITY_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storingServices.deleteClassification(lineageRelationshipsEvent);
+                break;
+            default:
+                break;
         }
     }
 

@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.slf4j.Logger;
@@ -22,22 +23,28 @@ public class StoringServices {
     /**
      * Delegates the call for the creation of entities and relationships to the connector
      */
-    public void addEntity(LineageEvent lineageEvent) {
-        lineageGraph.storeToGraph(lineageEvent.getContext());
+    public void addEntityContext(ProcessLineageEvent processLineageEvent) {
+        lineageGraph.storeToGraph(processLineageEvent.getContext());
+    }
+
+    /**
+     * Delegates the call for the creation of entities and relationships to the connector
+     */
+    public void addEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
     /**
      * Delegates the call for the update of an entity to the connector
-     *
      */
     public void updateEntity(LineageEntityEvent lineageEntityEvent) {
-        log.debug("Open Lineage Services is processing a UpdateEntity event which contains the following entity with guid : {}", lineageEntityEvent.getLineageEntity().getGuid());
+        log.debug("Open Lineage Services is processing a UpdateEntity event which contains the following entity with guid : {}",
+                lineageEntityEvent.getLineageEntity().getGuid());
         lineageGraph.updateEntity(lineageEntityEvent.getLineageEntity());
     }
 
     /**
      * Delegates the call for the update of a relationship to the connector
-     *
      */
     public void updateRelationship(LineageRelationshipEvent lineageRelationshipEvent) {
         log.debug("Open Lineage Services is processing a UpdateRelationshipEvent event which contains the following relationship with guid: {}",
@@ -48,9 +55,9 @@ public class StoringServices {
     /**
      * Delegates the call for the update of a classification to the connector
      */
-    public void updateClassification(LineageEvent lineageEvent){
+    public void updateClassification(LineageRelationshipsEvent lineageRelationshipsEvent) {
         log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
-        lineageGraph.updateClassification(lineageEvent.getContext());
+        lineageGraph.updateClassification(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
     /**
@@ -77,9 +84,10 @@ public class StoringServices {
     /**
      * Delegates the call to delete a classification to the connector
      */
-    public void deleteClassification(LineageEvent lineageEvent){
-        log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
+    public void deleteClassification(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        log.debug("Open Lineage Services is processing an DeleteClassificationEvent event");
 
-        lineageGraph.deleteClassification(lineageEvent.getContext());
+        lineageGraph.deleteClassification(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
+
 }
