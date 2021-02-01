@@ -221,7 +221,7 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.2</snappy.version>
         <snakeyaml.version>1.27</snakeyaml.version>
-        <classgraph.version>4.8.98</classgraph.version>
+        <classgraph.version>4.8.102</classgraph.version>
         <swagger.version>2.1.6</swagger.version>
         <groovy.version>3.0.7</groovy.version>
         <micrometer-registry-prometheus.version>1.6.2</micrometer-registry-prometheus.version>
