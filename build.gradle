@@ -183,7 +183,7 @@ allprojects {
             runtimeOnly("org.apache.jena:jena-arq:3.17.0")
             runtimeOnly("org.codehaus.jackson:jackson-core-asl:1.9.13")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:1.9.13-atlassian-2")
-            runtimeOnly("org.janusgraph:janusgraph-berkeleyje:0.5.2")
+            runtimeOnly("org.janusgraph:janusgraph-berkeleyje:0.5.3")
             runtimeOnly("org.janusgraph:janusgraph-cassandra:0.5.2")
             runtimeOnly("org.janusgraph:janusgraph-cql:0.5.2")
             runtimeOnly("org.janusgraph:janusgraph-es:0.5.2")
