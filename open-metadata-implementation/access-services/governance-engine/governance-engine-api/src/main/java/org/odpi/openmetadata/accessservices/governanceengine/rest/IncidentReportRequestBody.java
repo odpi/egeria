@@ -34,6 +34,7 @@ public class IncidentReportRequestBody implements Serializable
     private List<IncidentDependency>      previousIncidents = null;
     private Map<String, Integer>          incidentClassifiers = null;
     private Map<String, String>           additionalProperties = null;
+    private String                        originatorGUID = null;
 
 
     /**
@@ -61,6 +62,7 @@ public class IncidentReportRequestBody implements Serializable
             previousIncidents = template.getPreviousIncidents();
             incidentClassifiers = template.getIncidentClassifiers();
             additionalProperties = template.getAdditionalProperties();
+            originatorGUID = template.getOriginatorGUID();
         }
     }
 
@@ -259,6 +261,29 @@ public class IncidentReportRequestBody implements Serializable
 
 
     /**
+     * Return the unique identifier of the person or process that created the incident.
+     * This this is typically an ActorProfile or Process.
+     *
+     * @return string guid
+     */
+    public String getOriginatorGUID()
+    {
+        return originatorGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the person or process that created the incident.
+     *
+     * @param originatorGUID string guid
+     */
+    public void setOriginatorGUID(String originatorGUID)
+    {
+        this.originatorGUID = originatorGUID;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -274,6 +299,7 @@ public class IncidentReportRequestBody implements Serializable
                        ", previousIncidents=" + previousIncidents +
                        ", incidentClassifiers=" + incidentClassifiers +
                        ", additionalProperties=" + additionalProperties +
+                       ", originatorGUID=" + originatorGUID +
                        '}';
     }
 
@@ -302,6 +328,7 @@ public class IncidentReportRequestBody implements Serializable
                        Objects.equals(impactedResources, that.impactedResources) &&
                        Objects.equals(previousIncidents, that.previousIncidents) &&
                        Objects.equals(incidentClassifiers, that.incidentClassifiers) &&
+                       Objects.equals(originatorGUID, that.originatorGUID) &&
                        Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -315,6 +342,6 @@ public class IncidentReportRequestBody implements Serializable
     public int hashCode()
     {
         return Objects.hash(qualifiedName, domainIdentifier, background, impactedResources, previousIncidents, incidentClassifiers,
-                            additionalProperties);
+                            originatorGUID, additionalProperties);
     }
 }

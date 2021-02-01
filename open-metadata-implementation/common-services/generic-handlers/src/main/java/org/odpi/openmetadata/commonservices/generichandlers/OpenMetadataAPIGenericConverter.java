@@ -137,8 +137,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * relationships between them.  The relationships may be omitted if they do not have any properties.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
-     *                      content of the bean
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
      * @param methodName calling method
@@ -2541,6 +2540,259 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return 0;
+    }
+
+
+    /**
+     * Extract and delete the processingEngineUserId property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeProcessingEngineUserId(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProcessingEngineUserId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requestType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeRequestType(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequestType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requestParameters property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected Map<String, String> removeRequestParameters(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequestParameters";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the receivedGuards property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return array of guards
+     */
+    protected List<String> removeReceivedGuards(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeReceivedGuards";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.RECEIVED_GUARDS_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the completionGuards property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return array of guards
+     */
+    protected List<String> removeCompletionGuards(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeCompletionGuards";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.COMPLETION_GUARDS_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the startDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeStartDate(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeStartDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.START_DATE_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the completionDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeCompletionDate(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeCompletionDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.COMPLETION_DATE_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requestSourceName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected String removeRequestSourceName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequestSourceName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataAPIMapper.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the actionTargetName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected String removeActionTargetName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeActionTargetName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the originGovernanceService property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeOriginGovernanceService(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeOriginGovernanceService";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_SERVICE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the originGovernanceEngine property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeOriginGovernanceEngine(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeOriginGovernanceEngine";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_ENGINE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
     }
 
 

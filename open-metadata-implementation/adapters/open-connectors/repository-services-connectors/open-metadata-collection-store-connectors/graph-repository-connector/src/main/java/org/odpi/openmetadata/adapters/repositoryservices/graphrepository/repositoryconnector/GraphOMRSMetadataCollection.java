@@ -1717,6 +1717,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+
     /**
      * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
      *
@@ -1777,7 +1778,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         final String methodName = "findEntities";
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
-
         /*
          * Validate parameters
          */
@@ -1806,9 +1806,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Perform operation
          */
 
-        ArrayList<EntityDetail> returnEntities = null;
-
-
         String specifiedTypeName = null;
         if (entityTypeGUID != null)
         {
@@ -1819,30 +1816,23 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
         List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
 
-        for (TypeDef typeDef : allTypeDefs)
+        List<String> validTypeNames = new ArrayList<>();
+
+        if (specifiedTypeName != null)
         {
-            if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)
+            for (TypeDef typeDef : allTypeDefs)
             {
-
-                String actualTypeName = typeDef.getName();
-
-                /*
-                 * If entityTypeGUID parameter is not null there is an expected type, so check whether the
-                 * current type matches the expected type or is one of its sub-types.
-                 */
-                if (specifiedTypeName != null)
+                if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)
                 {
 
+                    String actualTypeName = typeDef.getName();
+
+                    /*
+                     * If entityTypeGUID parameter is not null there is an expected type, so check whether the
+                     * current type matches the expected type or is one of its sub-types.
+                     */
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
-                    if (!typeMatch)
-                    {
-                        /*
-                         * Established that the caller wants type filtering but this (actual) type is neither the
-                         * specified type nor one of its subtypes. It will be skipped.
-                         */
-                        continue;
-                    }
-                    else
+                    if (typeMatch)
                     {
                         /*
                          * Established that the caller wants type filtering and that this (actual) type is either the
@@ -1875,59 +1865,58 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                 }
                             }
                         }
+                        validTypeNames.add(actualTypeName);
                     }
                 }
-
-                /*
-                 * Invoke a type specific search. The search will expect the regexp to match fully to the value.
-                 */
-                List<EntityDetail> entitiesForCurrentType = graphStore.findEntities(actualTypeName, matchProperties, true);
-
-                if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty())
-                {
-                    if (returnEntities == null)
-                    {
-                        returnEntities = new ArrayList<>();
-                    }
-                    log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
-                    returnEntities.addAll(entitiesForCurrentType);
-                }
-                else
-                {
-                    log.info("{}: for type {} found no entities", methodName, typeDef.getName());
-                }
-
             }
+            if (validTypeNames.isEmpty())
+            {
+                /*
+                 * Filtering was requested but there are no valid types based on the specified GUID.
+                 */
+                return null;
+            }
+        }
+        /*
+         * validTypeNames now contains a (possibly empty!) list of all the eligible entity types - metadata store will check for emptiness.
+         */
+
+        /*
+         * Invoke the metadata store search method. The search will expect the regexp to match fully to the value.
+         */
+        List<EntityDetail> matchingEntities = graphStore.findEntities(matchProperties,
+                                                                      specifiedTypeName != null,
+                                                                      validTypeNames);
+
+
+        if (matchingEntities == null || matchingEntities.isEmpty())
+        {
+            return null;
         }
 
         /*
          * Eliminate soft deleted entities and apply status and classification filtering if any was requested
          */
-        if (returnEntities == null)
+        List<EntityDetail> retainedEntities = new ArrayList<>();
+
+        for (EntityDetail entity : matchingEntities)
         {
-            return null;
-        }
-        else
-        {
-            List<EntityDetail> retainedEntities = new ArrayList<>();
-            for (EntityDetail entity : returnEntities)
+            if (entity != null)
             {
-                if (entity != null)
+                if ((entity.getStatus() != InstanceStatus.DELETED)
+                        && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
+                        && (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)))
                 {
-                    if ((entity.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
-                            && (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)))
-                    {
-                        retainedEntities.add(entity);
-                    }
+                    retainedEntities.add(entity);
                 }
             }
-
-            return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
         }
 
+        return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
 
     }
+
+
 
 
     /**
@@ -2005,11 +1994,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                                    sequencingOrder,
                                                    pageSize);
 
-
-        /*
-         * Perform operation
-         */
-
         if (asOfTime != null)
         {
             log.error("{} does not support asOfTime searches", methodName);
@@ -2022,9 +2006,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Perform operation
          */
 
-        ArrayList<Relationship> returnRelationships = null;
-
-
         String specifiedTypeName = null;
         if (relationshipTypeGUID != null)
         {
@@ -2035,36 +2016,29 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
         List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
 
-        for (TypeDef typeDef : allTypeDefs)
+        List<String> validTypeNames = new ArrayList<>();
+
+        if (specifiedTypeName != null)
         {
-            if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)
+            for (TypeDef typeDef : allTypeDefs)
             {
-
-                String actualTypeName = typeDef.getName();
-
-                /*
-                 * If relationshipTypeGUID parameter is not null there is an expected type, so check whether the
-                 * current type matches the expected type or is one of its sub-types.
-                 */
-                if (specifiedTypeName != null)
+                if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)
                 {
 
+                    String actualTypeName = typeDef.getName();
+
+                    /*
+                     * If entityTypeGUID parameter is not null there is an expected type, so check whether the
+                     * current type matches the expected type or is one of its sub-types.
+                     */
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
-                    if (!typeMatch)
-                    {
-                        /*
-                         * Established that the caller wants type filtering but this (actual) type is neither the
-                         * specified type nor one of its subtypes. It will be skipped.
-                         */
-                        continue;
-                    }
-                    else
+                    if (typeMatch)
                     {
                         /*
                          * Established that the caller wants type filtering and that this (actual) type is either the
-                         * specified type or one of its subtypes. If there is also a list of subtype GUIDs, need to
-                         * check that if the typeDef is a subtype (ONLY - not the specified type) that it is
-                         * in the relationshipSubtypeGUIDs list. If it is present, it will be searched. If it is not present it
+                         * specified type or one of its subtypes. If there is also a list of subtypeGUIDs, need to
+                         * check that if the typeDef is a subtype (ONLY - not the specified type) that it is in the
+                         * relationshipSubtypeGUIDs list. If it is present, it will be searched. If it is not present it
                          * will not be searched.
                          */
                         if (relationshipSubtypeGUIDs != null)
@@ -2091,57 +2065,54 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                 }
                             }
                         }
+                        validTypeNames.add(actualTypeName);
                     }
                 }
-
-                /*
-                 * Invoke a type specific search. The search will expect the regexp to match fully to the value.
-                 */
-                List<Relationship> relationshipsForCurrentType = graphStore.findRelationships(actualTypeName, matchProperties, true);
-
-                if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty())
-                {
-                    if (returnRelationships == null)
-                    {
-                        returnRelationships = new ArrayList<>();
-                    }
-                    log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
-                    returnRelationships.addAll(relationshipsForCurrentType);
-                }
-                else
-                {
-                    log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
-                }
-
             }
+            if (validTypeNames.isEmpty())
+            {
+                /*
+                 * Filtering was requested but there are no valid types based on the specified GUID.
+                 */
+                return null;
+            }
+        }
+        /*
+         * validTypeNames now contains a (possibly empty!) list of all the eligible relationship types - metadata store will check for emptiness.
+         */
+
+        /*
+         * Invoke the metadata store search method. The search will expect the regexp to match fully to the value.
+         */
+        List<Relationship> matchingRelationships = graphStore.findRelationships(matchProperties,
+                                                                                specifiedTypeName != null,
+                                                                                validTypeNames);
+
+
+        if (matchingRelationships == null || matchingRelationships.isEmpty())
+        {
+            return null;
         }
 
         /*
          * Eliminate soft deleted relationships and apply status filtering if any was requested
          */
-        if (returnRelationships == null)
+
+        List<Relationship> retainedRelationships = new ArrayList<>();
+        for (Relationship relationship : matchingRelationships)
         {
-            return null;
-        }
-        else
-        {
-            List<Relationship> retainedRelationships = new ArrayList<>();
-            for (Relationship relationship : returnRelationships)
+            if (relationship != null)
             {
-                if (relationship != null)
+                if ( (relationship.getStatus() != InstanceStatus.DELETED)
+                        && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))
+                    )
                 {
-                    if ( (relationship.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))
-                            )
-                    {
-                        retainedRelationships.add(relationship);
-                    }
+                    retainedRelationships.add(relationship);
                 }
             }
-
-            return repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
         }
 
+        return repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
 
     }
 
@@ -2444,6 +2415,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+
+
     // findEntitiesByClassification
     @Override
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
@@ -2468,6 +2441,13 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             UserNotAuthorizedException
     {
 
+
+        /*
+         * This method compiles a list of the valid entity types and passes it to the metadata store method
+         * so it can be used inside the traversal. If there is no entity filtering (entityTypeGUID is null)
+         * the metadata store will skip the filtering step.
+         */
+
         final String methodName = "findEntitiesByClassification";
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
@@ -2475,19 +2455,20 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Validate parameters
          */
         super.findEntitiesByClassificationParameterValidation(userId,
-                entityTypeGUID,
-                classificationName,
-                matchClassificationProperties,
-                matchCriteria,
-                fromEntityElement,
-                limitResultsByStatus,
-                asOfTime,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize);
+                                                              entityTypeGUID,
+                                                              classificationName,
+                                                              matchClassificationProperties,
+                                                              matchCriteria,
+                                                              fromEntityElement,
+                                                              limitResultsByStatus,
+                                                              asOfTime,
+                                                              sequencingProperty,
+                                                              sequencingOrder,
+                                                              pageSize);
 
 
-        if (asOfTime != null) {
+        if (asOfTime != null)
+        {
             log.error("{} does not support asOfTime searches", methodName);
 
             super.reportUnsupportedOptionalFunction(methodName);
@@ -2498,12 +2479,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Perform operation
          */
 
-
-        ArrayList<EntityDetail> returnEntities = null;
-
-
         String specifiedTypeName = null;
-        if (entityTypeGUID != null) {
+        if (entityTypeGUID != null)
+        {
             TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
             specifiedTypeName = typeDef.getName();
         }
@@ -2511,59 +2489,104 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
         List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
 
-        for (TypeDef typeDef : allTypeDefs) {
-            if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
+        List<String> validTypeNames = new ArrayList<>();
+        if (specifiedTypeName != null)
+        {
+            for (TypeDef typeDef : allTypeDefs)
+            {
+                if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)
+                {
 
-                String actualTypeName = typeDef.getName();
+                    String actualTypeName = typeDef.getName();
 
-                // If entityTypeGUID parameter is not null there is an expected type, so check whether the
-                // current type matches the expected type or is one of its sub-types.
-
-                if (specifiedTypeName != null) {
-
+                    /*
+                     * If entityTypeGUID parameter is not null there is an expected type, so check whether the
+                     * current type matches the expected type or is one of its sub-types.
+                     */
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
-                    if (!typeMatch) {
-                        continue;
+                    if (typeMatch)
+                    {
+                        validTypeNames.add(actualTypeName);
                     }
-
                 }
-
-                // Find all entities of this type that have the matching classification.
-                //
-                List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByClassification(classificationName, matchClassificationProperties, matchCriteria, actualTypeName);
-
-
-                if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty()) {
-                    if (returnEntities == null) {
-                        returnEntities = new ArrayList<>();
-                    }
-                    log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
-                    returnEntities.addAll(entitiesForCurrentType);
-                } else {
-                    log.info("{}: for type {} found no entities", methodName, typeDef.getName());
-                }
-
+            }
+            if (validTypeNames.isEmpty()) {
+                /*
+                 * Filtering was requested but there are no valid types based on the specified GUID.
+                 */
+                return null;
             }
         }
+        /*
+         * validTypeNames now contains a (possibly empty!) list of all the eligible entity types - metadata store will check for emptiness.
+         */
 
+        /*
+         * Find all entities of this type that have the matching classification.
+         */
+        List<EntityDetail> entitiesWithClassification = graphStore.findEntitiesByClassification(classificationName,
+                                                                                                  matchClassificationProperties,
+                                                                                                  matchCriteria,
+                                                                                                  specifiedTypeName != null,
+                                                                                                  validTypeNames);
 
-        // Eliminate soft deleted entities and apply status filtering if any was requested
-        if (returnEntities == null) {
+        if (entitiesWithClassification == null || entitiesWithClassification.isEmpty())
+        {
             return null;
-        } else {
-            List<EntityDetail> retainedEntities = new ArrayList<>();
-            for (EntityDetail entity : returnEntities) {
-                if (entity != null) {
-                    if (   (entity.getStatus() != InstanceStatus.DELETED)
-                        && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))) {
+        }
 
-                        retainedEntities.add(entity);
+        /*
+         * Filter list of entities to ensure none are soft-deleted, and are within status filter if any was requested.
+         */
+
+        List<EntityDetail> retainedEntities = null;
+
+        for (EntityDetail entity : entitiesWithClassification)
+        {
+            if (entity != null)
+            {
+                /*
+                 * Assume the entity is to be retained unless it fails any of the filter conditions below...
+                 */
+                boolean retainEntity = true;
+
+                /*
+                 * Status filter
+                 * Eliminate soft deleted entities and apply status filtering if any was requested
+                 */
+                if ((entity.getStatus() == InstanceStatus.DELETED)
+                        || (!repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)))
+                {
+                    retainEntity = false;
+                }
+
+                /*
+                 * Check if this entity is worth keeping
+                 */
+                if (retainEntity)
+                {
+                    if (retainedEntities == null)
+                    {
+                        retainedEntities = new ArrayList<>();
                     }
+                    retainedEntities.add(entity);
                 }
             }
-
-            return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
         }
+
+        List<EntityDetail> returnEntities = null;
+        if (retainedEntities == null)
+        {
+            log.info("{}: found no entities", methodName);
+        }
+        else
+        {
+            log.info("{}: found {} entities", methodName, retainedEntities.size());
+            returnEntities = repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        }
+
+        return returnEntities;
+
     }
 
 

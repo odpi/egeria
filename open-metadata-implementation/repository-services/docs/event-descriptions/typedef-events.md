@@ -13,6 +13,9 @@ they support.
 > Figure 1: Different formats of a TypeDef event
 
 
+----
+* Return to [repository services event descriptions](.)
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

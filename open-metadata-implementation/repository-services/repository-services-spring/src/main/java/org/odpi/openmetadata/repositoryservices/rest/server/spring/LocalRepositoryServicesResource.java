@@ -1800,11 +1800,11 @@ public class LocalRepositoryServicesResource
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/detailed")
 
-    public EntityDetailResponse  classifyEntity(String                serverName,
-                                                String                userId,
-                                                String                entityGUID,
-                                                String                classificationName,
-                                                ClassificationRequest classificationRequestBody)
+    public EntityDetailResponse  classifyEntity(@PathVariable String                serverName,
+                                                @PathVariable String                userId,
+                                                @PathVariable String                entityGUID,
+                                                @PathVariable String                classificationName,
+                                                @RequestBody  ClassificationRequest classificationRequestBody)
     {
         return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, classificationRequestBody);
     }
@@ -1829,11 +1829,12 @@ public class LocalRepositoryServicesResource
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/delete")
 
-    public EntityDetailResponse declassifyEntity(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @PathVariable String          entityGUID,
-                                                 @PathVariable String          classificationName,
-                                                 @RequestBody  OMRSAPIRequest  requestBody)
+    @SuppressWarnings(value = "unused")
+    public EntityDetailResponse declassifyEntity(@PathVariable                  String          serverName,
+                                                 @PathVariable                  String          userId,
+                                                 @PathVariable                  String          entityGUID,
+                                                 @PathVariable                  String          classificationName,
+                                                 @RequestBody(required = false) OMRSAPIRequest  requestBody)
     {
         return restAPI.declassifyEntity(serverName, userId, entityGUID, classificationName);
     }
@@ -2567,8 +2568,6 @@ public class LocalRepositoryServicesResource
                                                         @PathVariable String                          userId,
                                                         @RequestBody  ClassificationWithEntityRequest requestBody)
     {
-        final String methodName  = "saveClassificationReferenceCopy";
-
         return restAPI.saveClassificationReferenceCopy(serverName, userId, requestBody);
     }
 
@@ -2601,8 +2600,6 @@ public class LocalRepositoryServicesResource
                                                           String                          userId,
                                                           ClassificationWithEntityRequest requestBody)
     {
-        final String methodName  = "purgeClassificationReferenceCopy";
-
         return restAPI.purgeClassificationReferenceCopy(serverName, userId, requestBody);
     }
 

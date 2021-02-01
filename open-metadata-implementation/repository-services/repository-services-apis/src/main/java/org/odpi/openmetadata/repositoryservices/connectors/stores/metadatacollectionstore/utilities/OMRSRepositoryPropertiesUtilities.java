@@ -1286,7 +1286,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Add the supplied property to an instance properties object.  If the instance property object
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
@@ -1303,36 +1303,39 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                                         Date               propertyValue,
                                                         String             methodName)
     {
-
-
-        InstanceProperties  resultingProperties;
-
-        log.debug("Adding property " + propertyName + " for " + methodName);
-
-        if (properties == null)
+        if (propertyValue != null)
         {
-            log.debug("First property");
+            InstanceProperties resultingProperties;
 
-            resultingProperties = new InstanceProperties();
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (properties == null)
+            {
+                log.debug("First property");
+
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+
+            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+            /*
+             * Date objects are stored in PrimitivePropertyValue as Java Long.
+             */
+            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+            Long longValue = propertyValue.getTime();
+            primitivePropertyValue.setPrimitiveValue(longValue);
+
+            resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+            return resultingProperties;
         }
-        else
-        {
-            resultingProperties = properties;
-        }
 
-
-        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-
-        /*
-         * Date objects are stored in PrimitivePropertyValue as Java Long.
-         */
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-        Long longValue = propertyValue.getTime();
-        primitivePropertyValue.setPrimitiveValue(longValue);
-
-        resultingProperties.setProperty(propertyName, primitivePropertyValue);
-
-        return resultingProperties;
+        return properties;
     }
 
 
@@ -1434,7 +1437,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Add the supplied array property to an instance properties object.  The supplied array is stored as a single
+     * If the supplied array property is not null, add it to an instance properties object.  The supplied array is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -1452,7 +1455,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                                                List<String>        arrayValues,
                                                                String              methodName)
     {
-        if ((arrayValues != null) && (! arrayValues.isEmpty()))
+        if (arrayValues != null)
         {
             log.debug("Adding property " + propertyName + " for " + methodName + " from " + sourceName);
 
@@ -1470,7 +1473,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
             arrayPropertyValue.setArrayCount(arrayValues.size());
             int index = 0;
-            for (String arrayValue : arrayValues )
+            for (String arrayValue : arrayValues)
             {
                 PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
@@ -1494,7 +1497,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -1561,7 +1564,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -1629,7 +1632,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -1697,7 +1700,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -1766,7 +1769,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -2024,7 +2027,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -2062,13 +2065,16 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             {
                 String mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
-                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                propertyCount++;
+                if (mapPropertyValue != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
+                }
             }
 
             if (propertyCount > 0)
@@ -2086,7 +2092,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -2124,13 +2130,16 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             {
                 Boolean mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
-                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
-                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
-                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                propertyCount++;
+                if (mapPropertyValue != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
+                }
             }
 
             if (propertyCount > 0)
@@ -2149,7 +2158,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -2187,13 +2196,16 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             {
                 Long mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
-                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
-                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
-                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                propertyCount++;
+                if (mapPropertyValue != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
+                }
             }
 
             if (propertyCount > 0)
@@ -2211,7 +2223,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -2247,15 +2259,18 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             for (String mapPropertyName : mapValues.keySet())
             {
-                int mapPropertyValue = mapValues.get(mapPropertyName);
+                Integer mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
-                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
-                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
-                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                propertyCount++;
+                if (mapPropertyValue != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
+                }
             }
 
             if (propertyCount > 0)

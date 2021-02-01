@@ -639,7 +639,9 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                startTime,
                                                                governanceEngineName,
                                                                requestType,
-                                                               requestProperties);
+                                                               requestProperties,
+                                                               governanceServiceHandler.getGovernanceServiceName(),
+                                                               governanceServiceHandler.getGovernanceEngineName());
     }
 
 
@@ -664,7 +666,13 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return governanceEngineClient.initiateGovernanceActionProcess(engineUserId, processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime);
+        return governanceEngineClient.initiateGovernanceActionProcess(engineUserId,
+                                                                      processQualifiedName,
+                                                                      requestSourceGUIDs,
+                                                                      actionTargetGUIDs,
+                                                                      startTime,
+                                                                      governanceServiceHandler.getGovernanceServiceName(),
+                                                                      governanceServiceHandler.getGovernanceEngineName());
     }
 
 
@@ -703,7 +711,8 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                            impactedResources,
                                                            previousIncidents,
                                                            incidentClassifiers,
-                                                           additionalProperties);
+                                                           additionalProperties,
+                                                           governanceServiceHandler.getGovernanceServiceGUID());
     }
 
 

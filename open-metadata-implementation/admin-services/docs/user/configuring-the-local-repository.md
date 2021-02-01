@@ -19,7 +19,7 @@ This command enables a JanusGraph based metadata repository that is embedded in 
 and uses the local disk to store the metadata.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/local-graph-repository
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/local-graph-repository
 ```
 
 
@@ -30,7 +30,7 @@ No metadata is kept if the open metadata services are deactivated,
 or the server is shutdown.  It should nto be used in a production environment.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/in-memory-repository
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/in-memory-repository
 ```
 
 
@@ -47,7 +47,7 @@ The content from the archive will be shared with other members of the cohort.
 
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/read-only-repository
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository/mode/read-only-repository
 ```
 
 
@@ -59,7 +59,7 @@ added, it will have a new local metadata collection id and will
 not be able to automatically re-register with its cohort(s).
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/local-repository
 ```
 
 

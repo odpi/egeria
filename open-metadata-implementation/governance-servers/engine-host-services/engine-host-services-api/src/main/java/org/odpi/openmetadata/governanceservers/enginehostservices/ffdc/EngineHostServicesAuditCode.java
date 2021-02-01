@@ -319,6 +319,14 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                "The {0} in server {1} is not configured with any engines",
                "The server is not able to run any requests since this has not engines.  It fails to start.",
                "Add the qualified name for at least one engine to the engine service in this server's configuration document."),
+
+    ACTION_PROCESSING_ERROR( "ENGINE-HOST-SERVICES-2000",
+                            OMRSAuditLogRecordSeverity.ERROR,
+                            "{0} caught an exception {1} while processing governance action {2}; the error message was {3}",
+                            "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
+                                    "the server to fail too.",
+                            "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
+                                    "and then restart the server."),
     ;
 
 

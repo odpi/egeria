@@ -140,12 +140,12 @@ public class GovernanceEngineOMASResource
      */
     @GetMapping(path = "/open-metadata-store/related-elements/{elementGUID}/type/{relationshipTypeName}")
 
-    public RelatedMetadataElementsListResponse getRelatedMetadataElements(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String elementGUID,
-                                                                          @PathVariable String relationshipTypeName,
-                                                                          @RequestParam int    startFrom,
-                                                                          @RequestParam int    pageSize)
+    public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String elementGUID,
+                                                                         @PathVariable String relationshipTypeName,
+                                                                         @RequestParam int    startFrom,
+                                                                         @RequestParam int    pageSize)
     {
         return restAPI.getRelatedMetadataElements(serverName, userId, elementGUID, relationshipTypeName, startFrom, pageSize);
     }
@@ -547,6 +547,30 @@ public class GovernanceEngineOMASResource
                                                  @RequestBody  ActionTargetStatusRequestBody requestBody)
     {
         return restAPI.updateActionTargetStatus(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Update the status of the governance action - providing the caller is permitted.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param governanceActionGUID identifier of the governance action request
+     * @param requestBody new status ordinal
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/governance-actions/{governanceActionGUID}/status/update")
+
+    public VoidResponse updateGovernanceActionStatus(@PathVariable String            serverName,
+                                                     @PathVariable String            userId,
+                                                     @PathVariable String            governanceActionGUID,
+                                                     @RequestBody  StatusRequestBody requestBody)
+    {
+        return restAPI.updateGovernanceActionStatus(serverName, userId, governanceActionGUID, requestBody);
     }
 
 

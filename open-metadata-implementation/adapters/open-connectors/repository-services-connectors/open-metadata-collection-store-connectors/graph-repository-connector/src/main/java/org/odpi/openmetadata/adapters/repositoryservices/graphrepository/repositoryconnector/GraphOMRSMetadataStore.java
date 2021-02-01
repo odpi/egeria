@@ -36,6 +36,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -2855,14 +2857,18 @@ class GraphOMRSMetadataStore {
     }
 
 
+
+
     // findEntitiesByClassification
     public List<EntityDetail> findEntitiesByClassification(String               classificationName,
                                                            InstanceProperties   classificationProperties,
                                                            MatchCriteria        matchCriteria,
-                                                           String               entityTypeName)
+                                                           boolean              performTypeFiltering,
+                                                           List<String>         entityTypeNames)
     throws InvalidParameterException
 
     {
+
 
         final String methodName = "findEntitiesByClassification";
 
@@ -3064,7 +3070,7 @@ class GraphOMRSMetadataStore {
                         /*
                          * Skip this property but process the rest
                          */
-                       // continue;
+                        // continue;
 
                     }
                     else
@@ -3151,19 +3157,31 @@ class GraphOMRSMetadataStore {
             switch (matchCriteria)
             {
                 case ALL:
-                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                    if (!propCriteria.isEmpty())
+                    {
+                        gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                    }
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
+
                 case ANY:
-                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                    if (!propCriteria.isEmpty())
+                    {
+                        gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                    }
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
+
                 case NONE:
-                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                    gt = gt.not(t);
+                    if (!propCriteria.isEmpty())
+                    {
+                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
+                    }
                     log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     break;
+
                 default:
                     g.tx().rollback();
                     final String parameterName = "matchCriteria";
@@ -3182,8 +3200,14 @@ class GraphOMRSMetadataStore {
 
 
         // Cannot return EntityProxy objects, so ensure that only traverse to a non-proxy entity vertex...
-        gt = gt.in("Classifier").has(PROPERTY_KEY_ENTITY_IS_PROXY, false).has(PROPERTY_KEY_ENTITY_TYPE_NAME, entityTypeName);
 
+        gt = gt.in("Classifier").has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
+
+        // Optionally perform type filtering
+        if (performTypeFiltering)
+        {
+            gt = gt.has(PROPERTY_KEY_ENTITY_TYPE_NAME, within(entityTypeNames));
+        }
 
         while (gt.hasNext())
         {
@@ -3213,6 +3237,8 @@ class GraphOMRSMetadataStore {
         return entities;
 
     }
+
+
 
 
     InstanceGraph getSubGraph(String                entityGUID,
@@ -3945,10 +3971,12 @@ class GraphOMRSMetadataStore {
     }
 
 
+
+
     // findEntities
-    List<EntityDetail> findEntities(String              typeDefName,
-                                    SearchProperties    searchProperties,
-                                    boolean             fullMatch)
+    List<EntityDetail> findEntities(SearchProperties    searchProperties,
+                                    boolean             performTypeFiltering,
+                                    List<String>        entityTypeNames)
 
     throws InvalidParameterException,
            RepositoryErrorException,
@@ -3957,6 +3985,7 @@ class GraphOMRSMetadataStore {
     {
 
         final String methodName = "findEntities";
+        boolean fullMatch = true;
 
         List<EntityDetail> entities = new ArrayList<>();
 
@@ -4003,100 +4032,140 @@ class GraphOMRSMetadataStore {
         GraphTraversalSource g = instanceGraph.traversal();
 
         GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity");
-        if (typeDefName != null)
-        {
-            gt = gt.has(PROPERTY_KEY_ENTITY_TYPE_NAME, typeDefName);
-        }
-        // Only accept non-proxy entities:
+
+        /*
+         * Only accept non-proxy entities:
+         */
         gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
 
 
         if (searchProperties != null)
         {
 
-            /*
-             * searchProperties is a SearchProperties object which contains MatchCriteria and a list of
-             * PropertyCondition objects, which in turn may contain nestedConditions. The rules around
-             * searchProperties is that a PropertyCondition EITHER specifies a property value, condition
-             * and operator OR it specifies none of them and instead provides a nested SearchProperties.
-             *
-             * Extract the conditions and construct the necessary graph traversals.
-             *
-             * Start at the top of the searchProperties and iterate over the list of PropertyConditions.
-             * For each PropertyCondition, either process it (property, value, operator) or recursively
-             * visit the nested SearchProperties it contains. At each stage in the iteration and recursion
-             * add each discovered condition to the graph traversal.
-             */
+            TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
+            List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
 
-            try
+            for (TypeDef typeDef : allTypeDefs)
             {
-                List<GraphTraversal<Vertex, Vertex>> propCriteria = processEntitySearchProperties(typeDefName, searchProperties, fullMatch);
-
-                /*
-                 * Use the MatchCriteria to combine the properCriteria into the overall graph traversal.
-                 *
-                 * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
-                 * between the match properties and the properties defined on the type (core or type defined). So
-                 * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
-                 * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
-                 * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-                 * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
-                 * entity) so let that case continue.
-                 */
-
-                switch (searchProperties.getMatchCriteria())
+                if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)
                 {
-                    case ALL:
-                        if (!propCriteria.isEmpty())
-                        {
-                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                        }
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                        break;
 
-                    case ANY:
-                        if (!propCriteria.isEmpty())
-                        {
-                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                        }
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                        break;
+                    String typeDefName = typeDef.getName();
 
-                    case NONE:
-                        if (!propCriteria.isEmpty())
-                        {
-                            GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                            t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                            gt = gt.not(t);
-                        }
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                        break;
+                    /*
+                     * If performTypeFiltering is set true then check the type is in the list of entityTypeNames,
+                     * otherwise we're going to parse the properties for this type anyway...
+                     */
 
-                    default:
+                    if (performTypeFiltering)
+                    {
+
+                        if (!entityTypeNames.contains(typeDefName))
+                        {
+                            // Leave this type and process another...
+                            continue;
+                        }
+
+                    }
+
+                    /*
+                     * searchProperties is a SearchProperties object which contains MatchCriteria and a list of
+                     * PropertyCondition objects, which in turn may contain nestedConditions. The rules around
+                     * searchProperties is that a PropertyCondition EITHER specifies a property value, condition
+                     * and operator OR it specifies none of them and instead provides a nested SearchProperties.
+                     *
+                     * Extract the conditions and construct the necessary graph traversals.
+                     *
+                     * Start at the top of the searchProperties and iterate over the list of PropertyConditions.
+                     * For each PropertyCondition, either process it (property, value, operator) or recursively
+                     * visit the nested SearchProperties it contains. At each stage in the iteration and recursion
+                     * add each discovered condition to the graph traversal.
+                     */
+
+                    try
+                    {
+                        List<GraphTraversal<Vertex, Vertex>> propCriteria = processEntitySearchProperties(typeDefName, searchProperties, fullMatch);
+
                         /*
-                         * Invalid match criteria. Throw InvalidParameterException.
-                         * The calling method will handle transaction rollback (and surface the error).
+                         * Use the MatchCriteria to combine the properCriteria into the overall graph traversal.
+                         *
+                         * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+                         * between the match properties and the properties defined on the type (core or type defined). So
+                         * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+                         * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+                         * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+                         * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
+                         * entity) so let that case continue.
                          */
-                        throw new InvalidParameterException(
-                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                        methodName,
+
+                        switch (searchProperties.getMatchCriteria())
+                        {
+                            case ALL:
+                                if (!propCriteria.isEmpty())
+                                {
+                                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                                }
+                                log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                                break;
+
+                            case ANY:
+                                if (!propCriteria.isEmpty())
+                                {
+                                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                                }
+                                log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                                break;
+
+                            case NONE:
+                                if (!propCriteria.isEmpty())
+                                {
+                                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                                    gt = gt.not(t);
+                                }
+                                log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                                break;
+
+                            default:
+                                /*
+                                 * Invalid match criteria. Throw InvalidParameterException.
+                                 * The calling method will handle transaction rollback (and surface the error).
+                                 */
+                                throw new InvalidParameterException(
+                                        GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                                methodName,
+                                                this.getClass().getName(),
+                                                repositoryName),
                                         this.getClass().getName(),
-                                        repositoryName),
-                                this.getClass().getName(),
-                                methodName,
-                                "searchProperties");
+                                        methodName,
+                                        "searchProperties");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        /*
+                         * If anything went wrong (e.g. invalid match criteria or invalid parameter) catch the
+                         * exception and perform a rollback. Then rethrow for error reporting.
+                         */
+                        g.tx().rollback();
+                        throw e;
+                    }
                 }
             }
-            catch (Exception e)
-            {
-                /*
-                 * If anything went wrong (e.g. invalid match criteria or invalid parameter) catch the
-                 * exception and perform a rollback. Then rethrow for error reporting.
-                 */
-                g.tx().rollback();
-                throw e;
-            }
         }
+
+        /*
+         * Optionally perform type filtering
+         */
+
+        if (performTypeFiltering)
+        {
+            gt = gt.has(PROPERTY_KEY_ENTITY_TYPE_NAME, within(entityTypeNames));
+        }
+
+        /*
+         * Iterate the traversal
+         */
 
         while (gt.hasNext())
         {
@@ -4106,7 +4175,9 @@ class GraphOMRSMetadataStore {
             EntityDetail entityDetail = new EntityDetail();
             try
             {
-                // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
+                /*
+                 * Check if we have stumbled on a proxy somehow, and if so avoid processing it.
+                 */
                 Boolean isProxy = entityMapper.isProxy(vertex);
                 if (!isProxy)
                 {
@@ -4132,15 +4203,14 @@ class GraphOMRSMetadataStore {
         g.tx().commit();
 
         return entities;
-
     }
 
 
 
     // findRelationships
-    List<Relationship> findRelationships(String              typeDefName,
-                                         SearchProperties    searchProperties,
-                                         boolean             fullMatch)
+    List<Relationship> findRelationships(SearchProperties    searchProperties,
+                                         boolean             performTypeFiltering,
+                                         List<String>        relationshipTypeNames)
 
     throws InvalidParameterException,
            RepositoryErrorException,
@@ -4149,13 +4219,14 @@ class GraphOMRSMetadataStore {
     {
 
         final String methodName = "findRelationships";
+        boolean fullMatch = true;
 
         List<Relationship> relationships = new ArrayList<>();
 
 
         /*
          *
-         * There are two origins of properties stored on an instance vertex in the graph -
+         * There are two origins of properties stored on an instance vertex or edge in the graph -
          *   1. core properties from the audit header
          *   2. type-defined attributes from the typedef (including inheritance in the case of entities, but not relationships or classifications)
          *
@@ -4192,102 +4263,138 @@ class GraphOMRSMetadataStore {
          * Even if there are no search properties specified, the method performs a traversal.
          */
 
+
         GraphTraversalSource g = instanceGraph.traversal();
 
         GraphTraversal<Edge, Edge> gt = g.E().hasLabel("Relationship");
-        if (typeDefName != null)
-        {
-            gt = gt.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, typeDefName);
-        }
 
 
         if (searchProperties != null)
         {
 
-            /*
-             * searchProperties is a SearchProperties object which contains MatchCriteria and a list of
-             * PropertyCondition objects, which in turn may contain nestedConditions. The rules around
-             * searchProperties is that a PropertyCondition EITHER specifies a property value, condition
-             * and operator OR it specifies none of them and instead provides a nested SearchProperties.
-             *
-             * Extract the conditions and construct the necessary graph traversals.
-             *
-             * Start at the top of the searchProperties and iterate over the list of PropertyConditions.
-             * For each PropertyCondition, either process it (property, value, operator) or recursively
-             * visit the nested SearchProperties it contains. At each stage in the iteration and recursion
-             * add each discovered condition to the graph traversal.
-             */
+            TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
+            List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
 
-            try
+            for (TypeDef typeDef : allTypeDefs)
             {
-                List<GraphTraversal<Edge, Edge>> propCriteria = processRelationshipSearchProperties(typeDefName, searchProperties, fullMatch);
-
-                /*
-                 * Use the MatchCriteria to combine the properCriteria into the overall graph traversal.
-                 *
-                 * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
-                 * between the match properties and the properties defined on the type (core or type defined). So
-                 * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
-                 * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
-                 * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-                 * be satisfied. For matchCriteria NONE we need to retrieve the edge from the graph (to construct the
-                 * relationship) so let that case continue.
-                 */
-
-                switch (searchProperties.getMatchCriteria())
+                if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)
                 {
-                    case ALL:
-                        if (!propCriteria.isEmpty())
-                        {
-                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                        }
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                        break;
 
-                    case ANY:
-                        if (!propCriteria.isEmpty())
-                        {
-                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                        }
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                        break;
+                    String typeDefName = typeDef.getName();
 
-                    case NONE:
-                        if (!propCriteria.isEmpty())
-                        {
-                            GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
-                            t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                            gt = gt.not(t);
-                        }
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                        break;
+                    /*
+                     * If performTypeFiltering is set true then check the type is in the list of relationshipTypeNames,
+                     * otherwise we're going to parse the properties for this type anyway...
+                     */
 
-                    default:
+                    if (performTypeFiltering)
+                    {
+                        if (!relationshipTypeNames.contains(typeDefName))
+                        {
+                            // Leave this type and process another...
+                            continue;
+                        }
+                    }
+
+                    /*
+                     * searchProperties is a SearchProperties object which contains MatchCriteria and a list of
+                     * PropertyCondition objects, which in turn may contain nestedConditions. The rules around
+                     * searchProperties is that a PropertyCondition EITHER specifies a property value, condition
+                     * and operator OR it specifies none of them and instead provides a nested SearchProperties.
+                     *
+                     * Extract the conditions and construct the necessary graph traversals.
+                     *
+                     * Start at the top of the searchProperties and iterate over the list of PropertyConditions.
+                     * For each PropertyCondition, either process it (property, value, operator) or recursively
+                     * visit the nested SearchProperties it contains. At each stage in the iteration and recursion
+                     * add each discovered condition to the graph traversal.
+                     */
+
+                    try
+                    {
+                        List<GraphTraversal<Edge, Edge>> propCriteria = processRelationshipSearchProperties(typeDefName, searchProperties, fullMatch);
+
                         /*
-                         * Invalid match criteria. Throw InvalidParameterException.
-                         * The calling method will handle transaction rollback (and surface the error).
+                         * Use the MatchCriteria to combine the properCriteria into the overall graph traversal.
+                         *
+                         * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+                         * between the match properties and the properties defined on the type (core or type defined). So
+                         * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+                         * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+                         * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+                         * be satisfied. For matchCriteria NONE we need to retrieve the edge from the graph (to construct the
+                         * relationship) so let that case continue.
                          */
-                        throw new InvalidParameterException(
-                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                        methodName,
+
+                        switch (searchProperties.getMatchCriteria())
+                        {
+                            case ALL:
+                                if (!propCriteria.isEmpty())
+                                {
+                                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                                }
+                                log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                                break;
+
+                            case ANY:
+                                if (!propCriteria.isEmpty())
+                                {
+                                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                                }
+                                log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                                break;
+
+                            case NONE:
+                                if (!propCriteria.isEmpty())
+                                {
+                                    GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+                                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                                    gt = gt.not(t);
+                                }
+                                log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                                break;
+
+                            default:
+                                /*
+                                 * Invalid match criteria. Throw InvalidParameterException.
+                                 * The calling method will handle transaction rollback (and surface the error).
+                                 */
+                                throw new InvalidParameterException(
+                                        GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                                methodName,
+                                                this.getClass().getName(),
+                                                repositoryName),
                                         this.getClass().getName(),
-                                        repositoryName),
-                                this.getClass().getName(),
-                                methodName,
-                                "searchProperties");
+                                        methodName,
+                                        "searchProperties");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        /*
+                         * If anything went wrong (e.g. invalid match criteria or invalid parameter) catch the
+                         * exception and perform a rollback. Then rethrow for error reporting.
+                         */
+                        g.tx().rollback();
+                        throw e;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                /*
-                 * If anything went wrong (e.g. invalid match criteria or invalid parameter) catch the
-                 * exception and perform a rollback. Then rethrow for error reporting.
-                 */
-                g.tx().rollback();
-                throw e;
             }
         }
 
+
+        /*
+         * Optionally perform type filtering
+         */
+
+        if (performTypeFiltering)
+        {
+            gt = gt.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, within(relationshipTypeNames));
+        }
+
+        /*
+         * Iterate the traversal
+         */
 
         while (gt.hasNext())
         {

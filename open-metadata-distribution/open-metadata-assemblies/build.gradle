@@ -82,7 +82,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
-    implementation project(':open-metadata-resources:open-metadata-samples:discovery-service-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 
 }
 
@@ -121,7 +121,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:discovery-service-sample').jar }
+                from { project(':open-metadata-resources:open-metadata-samples:governance-services-sample').jar }
                 fileMode = 0755
             }
             into('utilities') {

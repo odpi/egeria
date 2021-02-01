@@ -207,6 +207,7 @@ public class RelationalDataHandler<DATABASE,
      * @param encodingType the name of the encoding style used in the database
      * @param encodingLanguage the name of the natural language used for text strings within the database
      * @param encodingDescription the description of the encoding used in the database
+     * @param encodingProperties properties used to control encoding
      * @param databaseType a description of the database type
      * @param databaseVersion the version of the database - often this is related to the version of its schemas.
      * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
@@ -240,6 +241,7 @@ public class RelationalDataHandler<DATABASE,
                                  String               encodingType,
                                  String               encodingLanguage,
                                  String               encodingDescription,
+                                 Map<String, String>  encodingProperties,
                                  String               databaseType,
                                  String               databaseVersion,
                                  String               databaseInstance,
@@ -280,11 +282,8 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
-        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME, encodingType);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
         assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
         assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
         assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
@@ -313,10 +312,57 @@ public class RelationalDataHandler<DATABASE,
 
         if (databaseGUID != null)
         {
-            databaseHandler.setVendorProperties(userId,
-                                                databaseGUID,
-                                                vendorProperties,
-                                                methodName);
+            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
+            {
+                InstanceProperties classificationProperties = null;
+
+                if (encodingType != null)
+                {
+                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                            null,
+                                                                                            OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
+                                                                                            encodingType,
+                                                                                            methodName);
+                }
+
+                if (encodingLanguage != null)
+                {
+                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                            classificationProperties,
+                                                                                            OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                                                            encodingLanguage,
+                                                                                            methodName);
+                }
+
+                if (encodingDescription != null)
+                {
+                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                            classificationProperties,
+                                                                                            OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                            encodingDescription,
+                                                                                            methodName);
+                }
+
+                if ((encodingProperties != null) && (! encodingProperties.isEmpty()))
+                {
+                    classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                               classificationProperties,
+                                                                                               OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                               encodingProperties,
+                                                                                               methodName);
+                }
+
+                databaseHandler.setClassificationInRepository(userId,
+                                                              databaseGUID,
+                                                              databaseGUIDParameterName,
+                                                              OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
+                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                              classificationProperties,
+                                                              methodName);
+            }
+
+            databaseHandler.setVendorProperties(userId, databaseGUID, vendorProperties, methodName);
 
             try
             {
@@ -424,6 +470,7 @@ public class RelationalDataHandler<DATABASE,
      * @param encodingType the name of the encoding style used in the database
      * @param encodingLanguage the name of the natural language used for text strings within the database
      * @param encodingDescription the description of the encoding used in the database
+     * @param encodingProperties properties used to control encoding
      * @param databaseType a description of the database type
      * @param databaseVersion the version of the database - often this is related to the version of its schemas.
      * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
@@ -456,6 +503,7 @@ public class RelationalDataHandler<DATABASE,
                                String               encodingType,
                                String               encodingLanguage,
                                String               encodingDescription,
+                               Map<String, String>  encodingProperties,
                                String               databaseType,
                                String               databaseVersion,
                                String               databaseInstance,
@@ -494,11 +542,9 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
-        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME, encodingType);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
+
         assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
         assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
         assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
@@ -521,6 +567,56 @@ public class RelationalDataHandler<DATABASE,
         databaseHandler.updateAssetOwner(userId, databaseGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
 
         databaseHandler.updateAssetZones(userId, databaseGUID, elementGUIDParameterName, zoneMembership, methodName);
+
+        if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
+        {
+            InstanceProperties classificationProperties = null;
+
+            if (encodingType != null)
+            {
+                classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                        null,
+                                                                                        OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
+                                                                                        encodingType,
+                                                                                        methodName);
+            }
+
+            if (encodingLanguage != null)
+            {
+                classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                        classificationProperties,
+                                                                                        OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                                                        encodingLanguage,
+                                                                                        methodName);
+            }
+
+            if (encodingDescription != null)
+            {
+                classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                        classificationProperties,
+                                                                                        OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                        encodingDescription,
+                                                                                        methodName);
+            }
+
+            if ((encodingProperties != null) && (! encodingProperties.isEmpty()))
+            {
+                classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                           classificationProperties,
+                                                                                           OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                           encodingProperties,
+                                                                                           methodName);
+            }
+
+            databaseHandler.setClassificationInRepository(userId,
+                                                          databaseGUID,
+                                                          elementGUIDParameterName,
+                                                          OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                          OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
+                                                          OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                          classificationProperties,
+                                                          methodName);
+        }
 
         if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
         {
@@ -703,11 +799,11 @@ public class RelationalDataHandler<DATABASE,
                                                                   PropertyServerException
     {
         return databaseHandler.getBeansByType(userId,
-                                          OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
-                                          OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                          startFrom,
-                                          pageSize,
-                                          methodName);
+                                              OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                              OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                              startFrom,
+                                              pageSize,
+                                              methodName);
     }
 
 
@@ -1432,6 +1528,7 @@ public class RelationalDataHandler<DATABASE,
                                                                               PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String schemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
         final String qualifiedNameParameterName     = "qualifiedName";
 
         String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
@@ -1516,8 +1613,8 @@ public class RelationalDataHandler<DATABASE,
             String databaseTableGUID = databaseTableHandler.createNestedSchemaAttribute(userId,
                                                                                         databaseManagerGUID,
                                                                                         databaseManagerName,
-                                                                                        databaseSchemaGUID,
-                                                                                        parentElementGUIDParameterName,
+                                                                                        databaseSchemaTypeGUID,
+                                                                                        schemaTypeGUIDParameterName,
                                                                                         OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
@@ -2597,8 +2694,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                        nativeJavaClass,
                                                                                        aliases,
                                                                                        additionalProperties,
-                                                                                       attributeTypeName,
                                                                                        attributeTypeId,
+                                                                                       attributeTypeName,
                                                                                        extendedProperties,
                                                                                        repositoryHelper,
                                                                                        serviceName,
@@ -3114,8 +3211,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                        nativeJavaClass,
                                                                                        aliases,
                                                                                        additionalProperties,
-                                                                                       attributeTypeName,
                                                                                        attributeTypeId,
+                                                                                       attributeTypeName,
                                                                                        extendedProperties,
                                                                                        repositoryHelper,
                                                                                        serviceName,

@@ -25,10 +25,13 @@ public class GovernanceActionProcessRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private String       processQualifiedName = null;
-    private List<String> requestSourceGUIDs   = null;
-    private List<String> actionTargetGUIDs    = null;
-    private Date         startTime            = null;
+    private String       processQualifiedName  = null;
+    private List<String> requestSourceGUIDs    = null;
+    private List<String> actionTargetGUIDs     = null;
+    private Date         startTime             = null;
+    private String       originatorServiceName = null;
+    private String       originatorEngineName  = null;
+
 
     /**
      * Default constructor
@@ -52,6 +55,8 @@ public class GovernanceActionProcessRequestBody implements Serializable
             requestSourceGUIDs = template.getRequestSourceGUIDs();
             actionTargetGUIDs = template.getActionTargetGUIDs();
             startTime = template.getStartTime();
+            originatorServiceName = template.getOriginatorServiceName();
+            originatorEngineName = template.getOriginatorEngineName();
         }
     }
 
@@ -147,6 +152,50 @@ public class GovernanceActionProcessRequestBody implements Serializable
 
 
     /**
+     * Return the unique name of the service that created this request.
+     *
+     * @return string name
+     */
+    public String getOriginatorServiceName()
+    {
+        return originatorServiceName;
+    }
+
+
+    /**
+     * Set up the unique name of the service that created this request.
+     *
+     * @param originatorServiceName string name
+     */
+    public void setOriginatorServiceName(String originatorServiceName)
+    {
+        this.originatorServiceName = originatorServiceName;
+    }
+
+
+    /**
+     * Return the qualified name of the governance engine that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getOriginatorEngineName()
+    {
+        return originatorEngineName;
+    }
+
+
+    /**
+     * Set up the qualified name of the governance engine that originated this request (if any).
+     *
+     * @param originatorEngineName string name
+     */
+    public void setOriginatorEngineName(String originatorEngineName)
+    {
+        this.originatorEngineName = originatorEngineName;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -159,6 +208,8 @@ public class GovernanceActionProcessRequestBody implements Serializable
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
                        ", actionTargetGUIDs=" + actionTargetGUIDs +
                        ", startTime=" + startTime +
+                       ", originatorServiceName=" + originatorServiceName +
+                       ", originatorEngineName=" + originatorEngineName +
                        '}';
     }
 
@@ -184,6 +235,8 @@ public class GovernanceActionProcessRequestBody implements Serializable
         return Objects.equals(processQualifiedName, that.processQualifiedName) &&
                        Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
                        Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs) &&
+                       Objects.equals(originatorServiceName, that.originatorServiceName) &&
+                       Objects.equals(originatorEngineName, that.originatorEngineName) &&
                        Objects.equals(startTime, that.startTime);
     }
 
@@ -196,6 +249,7 @@ public class GovernanceActionProcessRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime);
+        return Objects.hash(processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime,
+                            originatorServiceName, originatorEngineName);
     }
 }
