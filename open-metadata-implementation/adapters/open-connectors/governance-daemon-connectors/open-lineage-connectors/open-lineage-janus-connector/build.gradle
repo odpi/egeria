@@ -26,7 +26,7 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest'
     testImplementation 'com.fasterxml.jackson.core:jackson-core'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
-    testRuntimeOnly 'org.janusgraph:janusgraph-inmemory:0.5.2'
+    testRuntimeOnly 'org.janusgraph:janusgraph-inmemory:0.5.3'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.apache.commons:commons-collections4'
 

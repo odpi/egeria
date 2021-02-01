@@ -141,7 +141,7 @@ allprojects {
             implementation("org.hdrhistogram:HdrHistogram:2.1.12")
             implementation("org.janusgraph:janusgraph-core:0.5.2")
             implementation("org.janusgraph:janusgraph-driver:0.5.2")
-            implementation("org.janusgraph:janusgraph-inmemory:0.5.2")
+            implementation("org.janusgraph:janusgraph-inmemory:0.5.3")
             implementation("org.javassist:3.27.0-GA")
             implementation("org.quartz-scheduler:quartz:2.3.2")
             implementation("org.reflections:reflections:0.9.12")
