@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -73,9 +75,7 @@ public class AssetContextHandler {
     /**
      * @param userId         the user id
      * @param entityTypeName the name of the entity type
-     *
      * @return the existing list of glossary terms available in the repository
-     *
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
@@ -85,6 +85,24 @@ public class AssetContextHandler {
         String typeDefGUID = handlerHelper.getTypeByName(userId, entityTypeName);
 
         return repositoryHandler.getEntitiesByType(userId, typeDefGUID, 0, 0, methodName);
+    }
+
+    /**
+     * @param userId                 the user id
+     * @param entityTypeName         the name of the entity type
+     * @param findEntitiesParameters filtering used to reduce the scope of the search
+     * @return a list with entities matching the supplied parameteres;
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     */
+    public List<EntityDetail> getEntitiesToUpdate(String userId, String entityTypeName, FindEntitiesParameters findEntitiesParameters)
+            throws UserNotAuthorizedException, PropertyServerException {
+        final String methodName = "getEntitiesByTypeName";
+        String typeDefGUID = handlerHelper.getTypeByName(userId, entityTypeName);
+        SearchProperties searchProperties = handlerHelper.getSearchPropertiesAfterUpdateTime(findEntitiesParameters.getUpdatedAfter());
+        return repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+                searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
+                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName);
     }
 
     /**

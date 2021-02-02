@@ -9,6 +9,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.PredicateUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,30 +68,8 @@ public class AssetLineageRestServices {
         String methodName = "publishEntities";
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
-            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
             List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesByTypeName(userId, entityType);
-            if (entitiesByTypeName == null || CollectionUtils.isEmpty(entitiesByTypeName)) {
-                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_NOT_FOUND", entityType, "0"));
-                return response;
-            }
-
-            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType, String.valueOf(entitiesByTypeName.size())));
-            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES", entityType,
-                    String.valueOf(entitiesByTypeName.stream().map(e->e.getGUID()).collect(Collectors.joining(",")))));
-
-            AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
-            if (publisher == null) {
-                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISHER_NOT_AVAILABLE_ERROR.getMessageDefinition());
-                return response;
-            }
-
-            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType, String.valueOf(entitiesByTypeName.size())));
-            List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher, auditLog);
-            response.setGUIDs(publishedEntitiesContext);
-            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType, String.valueOf(publishedEntitiesContext.size())));
-
-
+            return publishEntitiesContext(userId, serverName, entityType, entitiesByTypeName);
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
@@ -101,7 +81,45 @@ public class AssetLineageRestServices {
         return response;
     }
 
+    private GUIDListResponse publishEntitiesContext(String userId, String serverName, String entityType, List<EntityDetail> entitiesByTypeName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        String methodName = "publishEntitiesContext";
+        AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+        GUIDListResponse response = new GUIDListResponse();
+        if (entitiesByTypeName == null || CollectionUtils.isEmpty(entitiesByTypeName)) {
+            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_NOT_FOUND", entityType, "0"));
+            return response;
+        }
+
+        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType, String.valueOf(entitiesByTypeName.size())));
+        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES", entityType,
+                entitiesByTypeName.stream().map(InstanceHeader::getGUID).collect(Collectors.joining(","))));
+
+        AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
+        if (publisher == null) {
+            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISHER_NOT_AVAILABLE_ERROR.getMessageDefinition());
+            return response;
+        }
+
+        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType, String.valueOf(entitiesByTypeName.size())));
+        List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher, auditLog);
+        response.setGUIDs(publishedEntitiesContext);
+        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType, String.valueOf(publishedEntitiesContext.size())));
+        return response;
+    }
+
+    /**
+     * Find in the cohort the element with the provided guid and the given type
+     * Publish the context for the entity on the AL OMAS out Topic
+     *
+     * @param serverName name of server instance to call
+     * @param userId     the name of the calling user
+     * @param entityType the type of the entity to search for
+     * @param guid       the guid of the searched entity
+     *
+     * @return the unique identifier (guid) of the entity that was processed
+     */
     public GUIDListResponse publishEntity(String serverName, String userId, String entityType, String guid) {
         GUIDListResponse response = new GUIDListResponse();
 
@@ -135,6 +153,40 @@ public class AssetLineageRestServices {
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
+        return response;
+    }
+
+
+    /**
+     * Scan the cohort for the given type using and filtering based on the findEntitiesParameters.
+     * Providing only the updatedAfter filed in findEntitiesParameters will update only the entities that were updated
+     * in the cohort after that date.
+     * Publish the context for the entity on the AL OMAS out Topic
+     *
+     * @param serverName             name of server instance to call
+     * @param userId                 the name of the calling user
+     * @param entityType             the type of the entity to search for
+     * @param findEntitiesParameters filtering used to reduce the scope of the search
+     * @return the unique identifier (guid) of the entity that was processed
+     */
+    public GUIDListResponse publishEntitiesUpdate(String serverName, String userId, String entityType,
+                                                  FindEntitiesParameters findEntitiesParameters) {
+        GUIDListResponse response = new GUIDListResponse();
+
+        String methodName = "publishEntities";
+        try {
+            AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
+            List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesToUpdate(userId, entityType, findEntitiesParameters);
+            return publishEntitiesContext(userId, serverName, entityType, entitiesByTypeName);
+
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+
         return response;
     }
 

@@ -17,7 +17,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -29,6 +34,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 
 
 /**
@@ -361,5 +367,28 @@ public class HandlerHelper {
 
         Converter converter = new Converter(repositoryHelper);
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
+    }
+
+    /**
+     * Creat the search body for find entities searching entities updated after the given time
+     * @param time date in milliseconds after which the entities were updated
+     * @return the search properties having the condition updateTime greater than the provided time
+    * */
+    public SearchProperties getSearchPropertiesAfterUpdateTime(Long time) {
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        primitivePropertyValue.setPrimitiveValue(time);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+
+        PropertyCondition propertyCondition = new PropertyCondition();
+        propertyCondition.setProperty(UPDATE_TIME);
+        propertyCondition.setOperator(PropertyComparisonOperator.GT);
+        propertyCondition.setValue(primitivePropertyValue);
+
+        SearchProperties searchProperties = new SearchProperties();
+        searchProperties.setConditions(Collections.singletonList(propertyCondition));
+        return searchProperties;
     }
 }

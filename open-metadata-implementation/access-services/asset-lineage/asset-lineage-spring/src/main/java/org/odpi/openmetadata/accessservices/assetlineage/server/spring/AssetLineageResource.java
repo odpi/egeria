@@ -4,12 +4,21 @@ package org.odpi.openmetadata.accessservices.assetlineage.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageRestServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -48,10 +57,49 @@ public class AssetLineageResource {
      * @return a list of unique identifiers (guids) of the available entity with the given type provided as a response
      */
     @GetMapping(path = "/publish-entity/{entityType}/{guid}")
-    public GUIDListResponse publishEntitiesTest(@PathVariable String serverName,
-                                            @PathVariable String userId,
-                                            @PathVariable String guid,
-                                            @PathVariable String entityType) {
+    public GUIDListResponse publishEntity(@PathVariable String serverName,
+                                          @PathVariable String userId,
+                                          @PathVariable String guid,
+                                          @PathVariable String entityType) {
         return restAPI.publishEntity(serverName, userId, entityType, guid);
+    }
+
+    /**
+     * Scan the cohort based on the given entity type and publish the contexts for the entities updated after the updatedAfterDate parameter
+     *
+     * @param serverName            name of server instance to call
+     * @param userId                the name of the calling user
+     * @param entityType            the name of the relationship type
+     * @param updatedAfterDate      the date after which the entities were retrieved were updated. The date must be provided in the ISO format and is mandatory
+     * @param entitySubtypeGUIDs    optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                              include in the search results. Null means all subtypes.
+     * @param limitResultsByStatus  By default, entities in all statuses are returned.  However, it is possible
+     *                              to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                              status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param sequencingProperty    String name of the entity property that is to be used to sequence the results.
+     *                              Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder       Enum defining how the results should be ordered.
+     * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
+     */
+    @GetMapping(path = "/publish-entities-update/{entityType}")
+    public GUIDListResponse publishEntitiesUpdate(@PathVariable String serverName,
+                                                @PathVariable String userId,
+                                                @PathVariable String entityType,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime updatedAfterDate,
+                                                @RequestParam(required = false) List<String> entitySubtypeGUIDs,
+                                                @RequestParam(required = false) List<InstanceStatus> limitResultsByStatus,
+                                                @RequestParam(required = false) SearchClassifications searchClassifications,
+                                                @RequestParam(required = false) String sequencingProperty,
+                                                @RequestParam(required = false) SequencingOrder sequencingOrder) {
+
+        FindEntitiesParameters findEntitiesParameters = new FindEntitiesParameters.Builder().withUpdatedAfter(updatedAfterDate)
+                .withEntitySubtypeGUIDs(entitySubtypeGUIDs)
+                .withLimitResultsByStatus(limitResultsByStatus)
+                .withSearchClassifications(searchClassifications)
+                .withSequencingProperty(sequencingProperty)
+                .withSequencingOrder(sequencingOrder)
+                .build();
+        return restAPI.publishEntitiesUpdate(serverName, userId, entityType, findEntitiesParameters);
     }
 }
