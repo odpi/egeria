@@ -166,7 +166,7 @@ class DataEngineProcessHandlerTest {
 
         verify(assetHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, "processGUID",
-                process.getQualifiedName(), null, null, process.getAdditionalProperties(),
+                process.getQualifiedName(), NAME, DESCRIPTION, process.getAdditionalProperties(),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
                 process.getExtendedProperties(), true,"updateProcess");
 
@@ -221,7 +221,7 @@ class DataEngineProcessHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, "updateProcess");
 
         doThrow(mockedException).when(assetHandler).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, "processGUID", process.getQualifiedName(), null, null,
+                PROCESS_GUID, "processGUID", process.getQualifiedName(), NAME, DESCRIPTION,
                 process.getAdditionalProperties(), ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
                 process.getExtendedProperties(), true,"updateProcess");
 
