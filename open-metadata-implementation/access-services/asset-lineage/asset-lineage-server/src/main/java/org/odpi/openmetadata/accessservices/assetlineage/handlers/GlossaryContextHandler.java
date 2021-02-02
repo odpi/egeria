@@ -92,9 +92,9 @@ public class GlossaryContextHandler {
 
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTermGUID, GLOSSARY_TERM);
         List<Relationship> termCategorizations = getTermCategorizations(userId, glossaryTermGUID, GLOSSARY_TERM);
-        List<Relationship> glossary = getTermAnchor(userId, glossaryTermGUID);
+        List<Relationship> glossaries = getTermAnchors(userId, glossaryTermGUID);
 
-        if (Stream.of(semanticAssignments, termCategorizations, glossary).allMatch(CollectionUtils::isEmpty)) {
+        if (Stream.of(semanticAssignments, termCategorizations, glossaries).allMatch(CollectionUtils::isEmpty)) {
             return Collections.emptyMap();
         }
 
@@ -103,15 +103,14 @@ public class GlossaryContextHandler {
                 glossaryTermGUID, semanticAssignments));
         context.put(AssetLineageEventType.TERM_CATEGORIZATIONS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
                 glossaryTermGUID, termCategorizations));
-        context.put(AssetLineageEventType.TERM_ANCHOR_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTermGUID, glossary));
+        context.put(AssetLineageEventType.TERM_ANCHORS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTermGUID, glossaries));
 
         List<Relationship> glossariesForCategories = getGlossariesForCategories(userId, glossaryTermGUID, termCategorizations);
         context.put(AssetLineageEventType.CATEGORY_ANCHORS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
                 glossaryTermGUID, glossariesForCategories));
 
 
-        context.put(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(),
-                handlerHelper.buildContextForLineageClassifications(glossaryTerm));
+        context.put(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(), handlerHelper.buildContextForLineageClassifications(glossaryTerm));
 
         return context;
     }
@@ -186,7 +185,7 @@ public class GlossaryContextHandler {
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    the property server exception
      */
-    private List<Relationship> getTermAnchor(String userId, String entityGUID) throws UserNotAuthorizedException, PropertyServerException {
+    private List<Relationship> getTermAnchors(String userId, String entityGUID) throws UserNotAuthorizedException, PropertyServerException {
         return getRelationshipsByTypeGUID(userId, entityGUID, GLOSSARY_TERM, TERM_ANCHOR);
     }
 

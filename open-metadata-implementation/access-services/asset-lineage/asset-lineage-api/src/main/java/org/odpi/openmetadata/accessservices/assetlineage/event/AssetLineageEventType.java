@@ -33,7 +33,7 @@ public enum AssetLineageEventType implements Serializable {
     RECLASSIFIED_ENTITY_EVENT(8, "ReclassifiedEntityEvent", "Has the full context for a classified element"),
     SEMANTIC_ASSIGNMENTS_EVENT(9, "SemanticAssignmentsEvent", "Has the semantic assignments for a glossary term"),
     TERM_CATEGORIZATIONS_EVENT(10, "TermCategorizationsEvent", "Has the term categorizations for a glossary term"),
-    TERM_ANCHOR_EVENT(11, "TermAnchorEvent", "Has the term anchor for a glossary term"),
+    TERM_ANCHORS_EVENT(11, "TermAnchorEvent", "Has the term anchor for a glossary term"),
     CATEGORY_ANCHORS_EVENT(12, "GlossaryCategoriesEvent", "Has the categorizations for an anchor"),
     COLUMN_CONTEXT_EVENT(13, "ColumnContextEvent", "Has the context for a column"),
     ASSET_CONTEXT_EVENT(14, "AssetContextEvent", "Has the context for an asset"),
