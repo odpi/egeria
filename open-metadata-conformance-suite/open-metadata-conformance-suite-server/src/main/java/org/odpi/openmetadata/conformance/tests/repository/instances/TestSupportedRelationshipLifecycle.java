@@ -969,7 +969,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
         /*
-         * Perform a historic get of the relationship - this should return the relationship even though it has now been [deleted and] purged
+         * Perform a historic get of the relationship - this should not return the relationship since it has now been [deleted and] purged
          * The time for the query is the time set just before the delete operation above.
          */
         try {
@@ -983,9 +983,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
             /*
-             * Check that the earlierRelationship is not null and that the relationship matches the copy saved at preDeleteDate.
+             * Check that the earlierRelationship is null (really it should be the RelationshipNotKnownException below that handles)
              */
-            assertCondition(((earlierRelationship != null) && earlierRelationship.equals(preDeleteRelationship)),
+            assertCondition((earlierRelationship == null),
                             assertion25,
                             testTypeName + assertionMsg25,
                             RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
@@ -994,9 +994,10 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
         } catch (RelationshipNotKnownException exception) {
             /*
-             * If it supports historical retrieval, the repository should have returned the relationship, hence fail the test
+             * Even if it supports historical retrieval, the repository should not return any version of a purged relationship,
+             * as the relationship and all of its history should have been purged
              */
-            assertCondition((false),
+            assertCondition((true),
                             assertion25,
                             testTypeName + assertionMsg25,
                             RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
