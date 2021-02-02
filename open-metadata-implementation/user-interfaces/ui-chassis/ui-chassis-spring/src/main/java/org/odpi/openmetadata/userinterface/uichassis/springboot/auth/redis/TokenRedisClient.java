@@ -22,43 +22,36 @@ public class TokenRedisClient implements TokenClient {
         commands = connection.sync();
     }
 
-
     @Override
     public void shutdownClient(){
         connection.close();
         redisClient.shutdown();
     }
 
-
     @Override
     public String set(String key, long seconds, String value){
         return commands.setex(key, seconds, value);
     }
-
 
     @Override
     public String set(String key, String value){
         return commands.set(key, value);
     }
 
-
     @Override
     public String setKeepTTL(String key, String value){
         return commands.set(key, value, SetArgs.Builder.keepttl());
     }
-
 
     @Override
     public String get(String key){
         return commands.get(key);
     }
 
-
     @Override
     public Long ttl(String key){
         return commands.ttl(key);
     }
-
 
     public Long exists(String... keys){
         return commands.exists(keys);

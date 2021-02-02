@@ -51,6 +51,7 @@ public class OpenLineageService {
 
     /**
      * @param openLineageClient client to connect to open lineage services
+     * @param lineageGraphDisplayRulesService the rules for display
      */
     @Autowired
     public OpenLineageService(OpenLineageClient openLineageClient, LineageGraphDisplayRulesService lineageGraphDisplayRulesService) {
