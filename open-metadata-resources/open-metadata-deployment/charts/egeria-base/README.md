@@ -130,6 +130,9 @@ egeria-zookeeper-0                          1/1     Running   0          4m16s
 You should wait until that first 'egeria-base-config' job completes, it will then disappear from the list.
 This job issues REST calls against the egeria serves to configure them for this simple environment (see scripts directory).
 
+The script will not run again, since we will have now configured the servers with persistent storage, and for the platform
+to autostart our servers. So even if a pod is removed and restarted, the egeria platform and servers should return in the same state.
+
 We now have egeria running within a Kubernetes cluster, but by default no services are exposed externally - they are all of type `ClusterIP` - we can see these with
 
 ```bash
