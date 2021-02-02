@@ -56,9 +56,8 @@ imageDefaults:
 image:
   egeria:
     name: egeria
-  # See issue 4110 - code moved to egeria-react-ui . For now the image is built with tag 'latest' only
   presentation:
-    name: egeria-presentation-server
+    name: egeria-react-ui
     tag: latest
   configure:
     name: egeria-configure
