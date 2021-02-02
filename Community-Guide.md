@@ -50,7 +50,7 @@ More information about slack is available in the [developer-resources/tools](dev
 
 ### Egeria's mailing list
 
-Follow the link to sign up to the [mailing list](https://lists.odpi.org/g/odpi-project-egeria).
+Follow the link to review the [mailing list archives](https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics)
 
 ### Other websites and resources
 

@@ -11,9 +11,9 @@ Specific items that Egeria employs include but are not limited to...
 - [SonarCloud](https://sonarcloud.io/dashboard?id=odpi_egeria) to continously track code quality, including bugs, code smells, and potential security issues.
 - [YourKit Java Profiler](https://www.yourkit.com/java/profiler/) for doing code profiling of Java components. YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET.
 - [Community Bridge Vulnerability Detection](https://security.communitybridge.org) for proactive assessment of vulnerabilities in dependent libraries and packages.
-- [GitHub Security Advisories](https://help.github.com/en/github/managing-security-vulnerabilities/about-github-security-advisories) for internally triaging security issues that come through (egeria-security@odpi.org) and other confidential channels before publishing them for broader community awareness.
+- [GitHub Security Advisories](https://help.github.com/en/github/managing-security-vulnerabilities/about-github-security-advisories) for internally triaging security issues that come through (egeria-security@lists.lfaidata.foundation) and other confidential channels before publishing them for broader community awareness.
 
-For more questions on Egeria's commitment to code quality, feel free to reach out to the [Egeria development team](mailto:odpi-project-egeria@lists.odpi.org)
+For more questions on Egeria's commitment to code quality, feel free to reach out to the [Egeria development team](mailto:egeria-technical-discuss@lists.lfaidata.foundation)
 
 
 ----
