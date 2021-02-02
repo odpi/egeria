@@ -27,6 +27,7 @@ public class Attribute implements Serializable {
     private String defaultValueOverride;
     private String dataType;
     private String defaultValue;
+    private String anchorGUID;
 
     public String getQualifiedName() {
         return qualifiedName;
@@ -108,6 +109,14 @@ public class Attribute implements Serializable {
         this.defaultValue = defaultValue;
     }
 
+    public String getAnchorGUID() {
+        return anchorGUID;
+    }
+
+    public void setAnchorGUID(String anchorGUID) {
+        this.anchorGUID = anchorGUID;
+    }
+
     @Override
     public String toString() {
         return "Attribute{" +
@@ -121,6 +130,7 @@ public class Attribute implements Serializable {
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
+                ", anchorGUID='" + anchorGUID + '\'' +
                 '}';
     }
 
@@ -138,12 +148,13 @@ public class Attribute implements Serializable {
                 Objects.equals(position, attribute.position) &&
                 Objects.equals(defaultValueOverride, attribute.defaultValueOverride) &&
                 Objects.equals(dataType, attribute.dataType) &&
-                Objects.equals(defaultValue, attribute.defaultValue);
+                Objects.equals(defaultValue, attribute.defaultValue) &&
+                Objects.equals(anchorGUID, attribute.anchorGUID);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(qualifiedName, displayName, minCardinality, maxCardinality, allowsDuplicateValues,
-                orderedValues, position, defaultValueOverride, dataType, defaultValue);
+                orderedValues, position, defaultValueOverride, dataType, defaultValue, anchorGUID);
     }
 }

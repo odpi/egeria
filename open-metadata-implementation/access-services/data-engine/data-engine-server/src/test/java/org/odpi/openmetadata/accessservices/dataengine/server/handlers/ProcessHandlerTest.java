@@ -2,14 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -21,15 +19,13 @@ import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -39,16 +35,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -65,19 +59,15 @@ class ProcessHandlerTest {
     private static final String NAME = "name";
     private static final String DESCRIPTION = "desc";
     private static final String GUID = "guid";
-    private static final String LATEST_CHANGE = "latestChange";
     private static final String FORMULA = "formula";
     private static final String OWNER = "OWNER";
     private static final String PROCESS_GUID = "processGuid";
     private static final String PORT_IMPL_GUID = "portImplGUID";
     private static final String PORT_ALIAS_GUID = "portAliasGUID";
+    private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
-    private static final List<String> ZONES = Collections.singletonList("ZONE");
     private static final String PARENT_PROCESS_QUALIFIED_NAME = "parentQualifiedName";
     private static final String PARENT_GUID = "parentGUID";
-
-    @Captor
-    private ArgumentCaptor<Asset> originalProcessCaptor;
 
     @Mock
     private RepositoryHandler repositoryHandler;
@@ -89,43 +79,44 @@ class ProcessHandlerTest {
     private InvalidParameterHandler invalidParameterHandler;
 
     @Mock
-    private AssetHandler assetHandler;
+    private AssetHandler<Asset> assetHandler;
 
-    @Mock
-    private OpenMetadataServerSecurityVerifier securityVerifier;
-
+    @Spy
     @InjectMocks
     private ProcessHandler processHandler;
 
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
 
-    @BeforeEach
-    void before() {
-        processHandler.setSecurityVerifier(securityVerifier);
-    }
+    @Mock
+    private DataEngineRegistrationHandler registrationHandler;
 
     @Test
     void createProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "createProcess";
 
-        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+        Process process = getProcess();
+        process.setGUID(PROCESS_GUID);
+
+        when(registrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         when(dataEngineCommonHandler.createExternalEntity(USER, null, InstanceStatus.DRAFT,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
-        when(securityVerifier.initializeAssetZones(any(), any())).thenReturn(ZONES);
-        String result = processHandler.createProcess(USER, getProcess(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        when(assetHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, null, null,
+                process.getZoneMembership(), process.getOwner(), process.getOwnerType(), null,
+                null, null, process.getAdditionalProperties(),
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
+                process.getExtendedProperties(), "createProcess")).thenReturn(GUID);
+
+        String result = processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
                 ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-
-        verify(repositoryHandler, times(1)).classifyEntity(USER, GUID, AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME, null, "classifyAsset");
-        verify(repositoryHandler, times(1)).classifyEntity(USER, GUID, AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, null, "classifyAsset");
     }
 
     @Test
@@ -134,13 +125,21 @@ class ProcessHandlerTest {
                                                                  InstantiationException,
                                                                  IllegalAccessException, InvalidParameterException {
         String methodName = "createProcess";
+        Process process = getProcess();
+
+        when(registrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineCommonHandler.createExternalEntity(USER, null, InstanceStatus.DRAFT,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        doThrow(mockedException).when(assetHandler).createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, null, null,
+                process.getZoneMembership(), process.getOwner(), process.getOwnerType(), null,
+                null, null, process.getAdditionalProperties(),
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
+                process.getExtendedProperties(), "createProcess");
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.createProcess(USER, getProcess(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -149,6 +148,9 @@ class ProcessHandlerTest {
     void updateProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
+        Process process = getProcess();
+        process.setGUID(PROCESS_GUID);
+        doReturn(process).when(processHandler).getProcess(mockedOriginalProcessEntity);
 
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(PROCESS_GUID, null)).thenReturn(mockedUpdatedProcessEntity);
@@ -157,17 +159,26 @@ class ProcessHandlerTest {
         when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(Boolean.TRUE);
         when(repositoryHelper.getEntityDetailDifferences(mockedOriginalProcessEntity, mockedUpdatedProcessEntity, true)).thenReturn(mockedDifferences);
 
-        processHandler.updateProcess(USER, mockedOriginalProcessEntity, getProcess());
+        when(registrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        verify(assetHandler, times(1)).reclassifyAsset(any(), originalProcessCaptor.capture(),
-                any(), any(),  any(), any());
-        verify(dataEngineCommonHandler, times(1)).updateEntity(USER, PROCESS_GUID, null, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
+        processHandler.updateProcess(USER, mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        verify(assetHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, "processGUID",
+                process.getQualifiedName(), null, null, process.getAdditionalProperties(),
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
+                process.getExtendedProperties(), true,"updateProcess");
+
     }
 
     @Test
     void updateProcess_noChanges() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
+        Process process = getProcess();
+        process.setGUID(PROCESS_GUID);
+        doReturn(process).when(processHandler).getProcess(mockedOriginalProcessEntity);
 
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(PROCESS_GUID, null)).thenReturn(mockedUpdatedProcessEntity);
@@ -176,33 +187,46 @@ class ProcessHandlerTest {
         when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(Boolean.FALSE);
         when(repositoryHelper.getEntityDetailDifferences(mockedOriginalProcessEntity, mockedUpdatedProcessEntity, true)).thenReturn(mockedDifferences);
 
-        processHandler.updateProcess(USER, mockedOriginalProcessEntity, getProcess());
+        processHandler.updateProcess(USER, mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(assetHandler, times(1)).reclassifyAsset(any(), originalProcessCaptor.capture(),
-                any(), any(),  any(), any());
-        verify(dataEngineCommonHandler, times(0)).updateEntity(USER, PROCESS_GUID, null, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
+        verify(assetHandler, times(0)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, "processGUID",
+                process.getQualifiedName(), null, null, process.getAdditionalProperties(),
+                process.getTypeGUID(), process.getTypeName(), process.getExtendedProperties(), "updateProcess");
     }
 
     @Test
     void updateProcess_throwsUserNotAuthorizedException() throws UserNotAuthorizedException, PropertyServerException,
-                                                                 InvocationTargetException, NoSuchMethodException,
-                                                                 InstantiationException,
-                                                                 IllegalAccessException {
+            InvocationTargetException, NoSuchMethodException,
+            InstantiationException,
+            IllegalAccessException, InvalidParameterException {
+        Process process = getProcess();
+
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
+
+        doReturn(process).when(processHandler).getProcess(mockedOriginalProcessEntity);
 
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(PROCESS_GUID, null)).thenReturn(mockedUpdatedProcessEntity);
 
         EntityDetailDifferences mockedDifferences = mock(EntityDetailDifferences.class);
         when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(Boolean.TRUE);
-        when(repositoryHelper.getEntityDetailDifferences(mockedOriginalProcessEntity, mockedUpdatedProcessEntity, true)).thenReturn(mockedDifferences);
+        when(repositoryHelper.getEntityDetailDifferences(mockedOriginalProcessEntity, mockedUpdatedProcessEntity, true))
+                .thenReturn(mockedDifferences);
+
+        when(registrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, "updateProcess");
-        doThrow(mockedException).when(dataEngineCommonHandler).updateEntity(USER, PROCESS_GUID, null, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
+
+        doThrow(mockedException).when(assetHandler).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                PROCESS_GUID, "processGUID", process.getQualifiedName(), null, null,
+                process.getAdditionalProperties(), ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
+                process.getExtendedProperties(), true,"updateProcess");
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () -> processHandler.updateProcess(USER,
-                mockedOriginalProcessEntity, getProcess()));
+                mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -216,6 +240,7 @@ class ProcessHandlerTest {
 
         Optional<EntityDetail> result = processHandler.findProcessEntity(USER, QUALIFIED_NAME);
 
+        assertTrue(result.isPresent());
         assertEquals(GUID, result.get().getGUID());
     }
 
@@ -235,7 +260,7 @@ class ProcessHandlerTest {
                                              InvalidParameterException {
         processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).createOrUpdateExternalRelationship(USER, PROCESS_GUID, GUID,
+        verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PROCESS_GUID, GUID,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
@@ -250,7 +275,7 @@ class ProcessHandlerTest {
         String methodName = "addProcessPortRelationship";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(dataEngineCommonHandler).createOrUpdateExternalRelationship(USER, PROCESS_GUID, GUID,
+        doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, PROCESS_GUID, GUID,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
@@ -264,16 +289,22 @@ class ProcessHandlerTest {
         final String methodName = "updateProcessStatus";
 
         mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+        Process process = getProcess();
+        process.setGUID(PROCESS_GUID);
 
-        processHandler.updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.ACTIVE);
+        when(registrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+
+        processHandler.updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.ACTIVE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(PROCESS_GUID,
                 PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
-        verify(repositoryHandler, times(1)).updateEntityStatus(USER, PROCESS_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
-                InstanceStatus.ACTIVE, methodName);
+        verify(assetHandler, times(1)).updateBeanStatusInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, "processGUID",
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, InstanceStatus.ACTIVE,
+                "newProcessStatus", methodName);
     }
 
     @Test
@@ -308,7 +339,7 @@ class ProcessHandlerTest {
     }
 
     @Test
-    void createOrUpdateProcessHierarchyRelationship() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    void upsertProcessHierarchyRelationship() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         ParentProcess parentProcess = new ParentProcess();
         parentProcess.setProcessContainmentType(ProcessContainmentType.OWNED);
         parentProcess.setQualifiedName(PARENT_PROCESS_QUALIFIED_NAME);
@@ -318,26 +349,27 @@ class ProcessHandlerTest {
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
         when(dataEngineCommonHandler.findEntity(USER, PARENT_PROCESS_QUALIFIED_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
 
-        processHandler.createOrUpdateProcessHierarchyRelationship(USER, parentProcess, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        processHandler.upsertProcessHierarchyRelationship(USER, parentProcess, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).createOrUpdateExternalRelationship(USER, PARENT_GUID, GUID,
+        verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PARENT_GUID, GUID,
                 ProcessPropertiesMapper.PROCESS_HIERARCHY_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 null);
     }
 
     @Test
-    void createOrUpdateProcessHierarchyRelationship_parentProcessNotFound() throws InvalidParameterException, PropertyServerException,
-                                                                                             UserNotAuthorizedException {
+    void upsertProcessHierarchyRelationship_parentProcessNotFound() throws InvalidParameterException, PropertyServerException,
+            UserNotAuthorizedException {
         ParentProcess parentProcess = new ParentProcess();
         parentProcess.setProcessContainmentType(ProcessContainmentType.OWNED);
         parentProcess.setQualifiedName(PARENT_PROCESS_QUALIFIED_NAME);
 
         when(dataEngineCommonHandler.findEntity(USER, PARENT_PROCESS_QUALIFIED_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME)).thenReturn(Optional.empty());
 
-        processHandler.createOrUpdateProcessHierarchyRelationship(USER, parentProcess, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        processHandler.upsertProcessHierarchyRelationship(USER, parentProcess, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
+        String methodName = "upsertProcessHierarchyRelationship";
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND,
-                "createOrUpdateProcessHierarchyRelationship", "qualifiedName", PARENT_PROCESS_QUALIFIED_NAME);
+                methodName, PARENT_PROCESS_QUALIFIED_NAME);
     }
 
     private void mockTypeDef(String typeName, String typeGUID) {
@@ -355,10 +387,9 @@ class ProcessHandlerTest {
         process.setName(NAME);
         process.setDisplayName(NAME);
         process.setDescription(DESCRIPTION);
-        process.setLatestChange(LATEST_CHANGE);
         process.setFormula(FORMULA);
         process.setOwner(OWNER);
-        process.setOwnerType(OwnerType.USER_ID);
+        process.setOwnerType(OwnerType.USER_ID.getOrdinal());
         process.setUpdateSemantic(UpdateSemantic.REPLACE);
 
         return process;

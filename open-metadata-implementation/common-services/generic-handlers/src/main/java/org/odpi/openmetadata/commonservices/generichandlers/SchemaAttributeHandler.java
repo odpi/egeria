@@ -4,12 +4,15 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
@@ -705,16 +708,38 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                                          PropertyServerException
     {
         List<EntityDetail> schemaAttributeEntities = this.findEntities(userId,
-                                                                       searchString,
-                                                                       searchStringParameterName,
-                                                                       resultTypeGUID,
-                                                                       resultTypeName,
-                                                                       requiredClassificationName,
-                                                                       omittedClassificationName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       methodName);
+                searchString,
+                searchStringParameterName,
+                resultTypeGUID,
+                resultTypeName,
+                requiredClassificationName,
+                omittedClassificationName,
+                startFrom,
+                pageSize,
+                methodName);
 
         return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);
+    }
+
+    public void updateSchemaAttribute(String userId,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
+                                      String schemaAttributeGUID,
+                                      InstanceProperties instanceProperties) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+        final String methodName = "updateSchemaAttribute";
+        final String parameterName = "schemaAttributeGUID";
+
+        this.updateBeanInRepository(userId,
+                externalSourceGUID,
+                externalSourceName,
+                schemaAttributeGUID,
+                parameterName,
+                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                instanceProperties,
+                true,
+                methodName);
     }
 }

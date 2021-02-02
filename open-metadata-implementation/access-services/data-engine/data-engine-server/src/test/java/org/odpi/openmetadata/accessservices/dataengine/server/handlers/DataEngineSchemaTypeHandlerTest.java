@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -15,19 +15,22 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.SchemaAttributeBuilder;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
@@ -37,11 +40,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler.SCHEMA_TYPE_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,7 +76,10 @@ class DataEngineSchemaTypeHandlerTest {
     private InvalidParameterHandler invalidParameterHandler;
 
     @Mock
-    private SchemaTypeHandler schemaTypeHandler;
+    private SchemaTypeHandler<SchemaType> schemaTypeHandler;
+
+    @Mock
+    private SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler;
 
     @Mock
     private DataEngineRegistrationHandler dataEngineRegistrationHandler;
@@ -84,61 +87,88 @@ class DataEngineSchemaTypeHandlerTest {
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
 
+    @Spy
     @InjectMocks
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
 
-    private Attribute attribute = getAttribute();
+    private final Attribute attribute = getAttribute();
 
-    private List<Attribute> attributeList = Collections.singletonList(attribute);
+    private final List<Attribute> attributeList = Collections.singletonList(attribute);
 
     @Test
-    void createSchemaTypeWithSchemaAttribute() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "createOrUpdateSchemaType";
+    void createSchemaTypeWithSchemaAttribute() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, TypeErrorException {
+        String methodName = "upsertSchemaType";
 
-        ComplexSchemaType schemaType = new ComplexSchemaType();
-        SchemaAttribute schemaAttribute = new SchemaAttribute();
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME))
+                .thenReturn(Optional.empty());
 
-        when(schemaTypeHandler.getEmptyComplexSchemaType(SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID,
-                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME)).thenReturn(schemaType);
+        SchemaType schemaType = getSchemaType();
 
-        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+        SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
+        doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
+        doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
 
-        when(schemaTypeHandler.addExternalSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME))
+                .thenReturn(Optional.empty());
 
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
-
-        when(schemaTypeHandler.addExternalSchemaAttribute(USER, schemaAttribute, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(ATTRIBUTE_GUID);
+        when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                schemaTypeBuilder, methodName)).thenReturn(GUID);
 
         mockTypeDef(SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
 
-        String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+        final String qualifiedNameParameterName = "schemaAttribute.getQualifiedName()";
+        when(schemaAttributeHandler.createNestedSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                GUID, schemaTypeGUIDParameterName, OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder, "createSchemaAttribute"))
+                .thenReturn(ATTRIBUTE_GUID);
+
+        Classification classification = new Classification();
+        classification.setName("classificationName");
+        when(repositoryHelper.getNewClassification("serviceName", null, null,
+                InstanceProvenanceType.LOCAL_COHORT, USER, OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, ClassificationOrigin.ASSIGNED, null,
+                schemaTypeBuilder.getTypeEmbeddedInstanceProperties("createSchemaAttribute")))
+                .thenReturn(classification);
+
+        String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(NAME, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
-        verify(repositoryHandler, times(1)).createExternalRelationship(USER, SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, ATTRIBUTE_GUID, null, "createSchemaAttribute");
-        verify(repositoryHandler, times(1)).classifyEntity(USER, ATTRIBUTE_GUID, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME,
-                SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME, null, "createSchemaAttribute");
+        verify(invalidParameterHandler, times(1))
+                .validateName(QUALIFIED_NAME, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1))
+                .validateName(NAME, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+
+        TypeDef classificationTypeDef = repositoryHelper.getTypeDefByName(USER, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance("sourceName", null,
+                SchemaTypePropertiesMapper.DATA_TYPE, attribute.getDataType(), methodName);
+
+        verify(repositoryHandler, times(1)).classifyEntity(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, ATTRIBUTE_GUID, classificationTypeDef.getGUID(), classificationTypeDef.getName(),
+                null, null, properties, "createSchemaAttribute");
     }
 
     @Test
     void updateSchemaTypeWithSchemaAttribute() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "createOrUpdateSchemaType";
+        String methodName = "upsertSchemaType";
 
-        ComplexSchemaType schemaType = new ComplexSchemaType();
-        SchemaAttribute schemaAttribute = new SchemaAttribute();
+        SchemaType schemaType = getSchemaType();
+        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
 
-        when(schemaTypeHandler.getEmptyComplexSchemaType(SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID,
-                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME)).thenReturn(schemaType);
+        SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
 
-        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+        doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
 
         EntityDetail schemaTypeEntity = mockFindEntity(QUALIFIED_NAME, GUID, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME);
 
@@ -146,28 +176,39 @@ class DataEngineSchemaTypeHandlerTest {
         when(dataEngineCommonHandler.buildEntityDetail(GUID, null)).thenReturn(schemaTypeUpdatedEntity);
         EntityDetailDifferences schemaTypeDifferences = mock(EntityDetailDifferences.class);
         when((schemaTypeDifferences.hasInstancePropertiesDifferences())).thenReturn(Boolean.TRUE);
-        when(repositoryHelper.getEntityDetailDifferences(schemaTypeEntity, schemaTypeUpdatedEntity, true)).thenReturn(schemaTypeDifferences);
+        when(repositoryHelper.getEntityDetailDifferences(schemaTypeEntity, schemaTypeUpdatedEntity, true))
+                .thenReturn(schemaTypeDifferences);
 
-        EntityDetail schemaAttributeEntity = mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+        EntityDetail schemaAttributeEntity = mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID,
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
         EntityDetail schemaAttributeUpdatedEntity = mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(ATTRIBUTE_GUID, null)).thenReturn(schemaAttributeUpdatedEntity);
         EntityDetailDifferences attributeDifferences = mock(EntityDetailDifferences.class);
         when((attributeDifferences.hasInstancePropertiesDifferences())).thenReturn(Boolean.TRUE);
-        when(repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity, schemaAttributeUpdatedEntity, true)).thenReturn(attributeDifferences);
+        when(repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity, schemaAttributeUpdatedEntity, true))
+                .thenReturn(attributeDifferences);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        SchemaAttributeBuilder builder = mock(SchemaAttributeBuilder.class);
-        when(schemaTypeHandler.getSchemaAttributeBuilder(schemaAttribute)).thenReturn(builder);
+        doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
 
-        String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(NAME, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
-        verify(schemaTypeHandler, times(1)).updateSchemaType(USER, GUID, schemaType);
-        verify(schemaTypeHandler, times(1)).updateSchemaAttribute(USER, ATTRIBUTE_GUID, schemaAttribute);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
+                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(NAME,
+                SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(schemaTypeHandler, times(1)).updateSchemaType(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder);
+
+        verify(schemaAttributeHandler, times(1)).updateSchemaAttribute(USER,
+                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, ATTRIBUTE_GUID,
+                getSchemaAttributeBuilder(attribute).getInstanceProperties("upsertSchemaAttributes"));
+
     }
 
     @Test
@@ -178,22 +219,24 @@ class DataEngineSchemaTypeHandlerTest {
                                                                     NoSuchMethodException,
                                                                     InstantiationException,
                                                                     IllegalAccessException {
-        String methodName = "createOrUpdateSchemaType";
+        String methodName = "upsertSchemaType";
 
-        ComplexSchemaType schemaType = new ComplexSchemaType();
-        SchemaAttribute schemaAttribute = new SchemaAttribute();
-
-        when(schemaTypeHandler.getEmptyComplexSchemaType(SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID,
-                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME)).thenReturn(schemaType);
-        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+        SchemaType schemaType = getSchemaType();
+        SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
 
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME))
+                .thenReturn(Optional.empty());
+
+        doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
+
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(schemaTypeHandler.addExternalSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, schemaTypeBuilder,
+                methodName)).thenThrow(mockedException);
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -207,7 +250,7 @@ class DataEngineSchemaTypeHandlerTest {
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).createOrUpdateExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
+        verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
@@ -226,7 +269,7 @@ class DataEngineSchemaTypeHandlerTest {
         mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(dataEngineCommonHandler).createOrUpdateExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
+        doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
@@ -247,7 +290,7 @@ class DataEngineSchemaTypeHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
-                "addLineageMappingRelationship", "qualifiedName", SOURCE_QUALIFIED_NAME);
+                "addLineageMappingRelationship", SOURCE_QUALIFIED_NAME);
     }
 
     @Test
@@ -261,23 +304,28 @@ class DataEngineSchemaTypeHandlerTest {
                 SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
                 "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
 
-        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID);
+        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME);
+        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
+                SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
+        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,
+                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     @Test
     void addAnchorGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
-        SchemaAttribute schemaAttribute = new SchemaAttribute();
-        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
+        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
 
-        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID);
+        doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(schemaTypeHandler, times(1)).updateSchemaAttribute(USER, GUID, schemaAttribute);
+        verify(schemaAttributeHandler, times(1)).updateSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, schemaAttributeBuilder.getInstanceProperties("addAnchorGUID"));
     }
 
     @Test
@@ -285,14 +333,13 @@ class DataEngineSchemaTypeHandlerTest {
         SchemaAttribute schemaAttribute = new SchemaAttribute();
         schemaAttribute.setQualifiedName(ATTRIBUTE_QUALIFIED_NAME);
 
-        when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
 
         when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
 
-        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID);
+        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID, EXTERNAL_SOURCE_DE_GUID);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
-                "addAnchorGUID",  "qualifiedName", ATTRIBUTE_QUALIFIED_NAME);
+                "addAnchorGUID", ATTRIBUTE_QUALIFIED_NAME);
     }
 
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
@@ -338,5 +385,23 @@ class DataEngineSchemaTypeHandlerTest {
         schemaType.setAttributeList(attributeList);
 
         return schemaType;
+    }
+
+    private SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
+        SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(attribute.getQualifiedName(),
+                attribute.getDisplayName(), null, repositoryHelper, "serviceName",
+                "serverName");
+        Classification classification = new Classification();
+        classification.setName("classification");
+        schemaAttributeBuilder.setClassification(classification);
+        return schemaAttributeBuilder;
+    }
+
+    SchemaTypeBuilder getSchemaTypeBuilder(SchemaType schemaType) {
+        return new SchemaTypeBuilder(schemaType.getQualifiedName(), schemaType.getDisplayName(), null,
+                schemaType.getVersionNumber(), false, schemaType.getAuthor(), schemaType.getUsage(),
+                schemaType.getEncodingStandard(), null, null, SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_GUID,
+                SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME, null, repositoryHelper, "serviceName",
+                "serverName");
     }
 }

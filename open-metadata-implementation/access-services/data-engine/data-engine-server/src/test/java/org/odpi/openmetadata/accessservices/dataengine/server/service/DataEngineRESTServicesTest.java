@@ -9,7 +9,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -85,7 +84,6 @@ class DataEngineRESTServicesTest {
     private static final String ENCODING_STANDARD = "encodingStandard";
     private static final String VERSION_NUMBER = "versionNumber";
     private static final String DELEGATED_QUALIFIED_NAME = "delegatedQualifiedName";
-    private static final String LATEST_CHANGE = "latestChange";
     private static final String FORMULA = "formula";
     private static final String OWNER = "OWNER";
     private static final String SOURCE_QUALIFIED_NAME = "source";
@@ -118,11 +116,11 @@ class DataEngineRESTServicesTest {
     @Mock
     private ProcessHandler processHandler;
 
-    private PortImplementation portImplementation = getPortImplementation();
+    private final PortImplementation portImplementation = getPortImplementation();
 
-    private PortAlias portAlias = getPortAlias();
+    private final PortAlias portAlias = getPortAlias();
 
-    private Process process = getProcess(Collections.singletonList(portImplementation), Collections.singletonList(portAlias),
+    private final Process process = getProcess(Collections.singletonList(portImplementation), Collections.singletonList(portAlias),
             Collections.emptyList());
 
     @Captor
@@ -148,7 +146,7 @@ class DataEngineRESTServicesTest {
                                            UserNotAuthorizedException {
         mockRegistrationHandler("createExternalDataEngine");
 
-        when(dataEngineRegistrationHandler.createOrUpdateExternalDataEngine(USER, getSoftwareServerCapability())).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getSoftwareServerCapability())).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -170,7 +168,7 @@ class DataEngineRESTServicesTest {
         mockRegistrationHandler(methodName);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-        when(dataEngineRegistrationHandler.createOrUpdateExternalDataEngine(USER, getSoftwareServerCapability())).thenThrow(mockedException);
+        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getSoftwareServerCapability())).thenThrow(mockedException);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -192,7 +190,7 @@ class DataEngineRESTServicesTest {
         mockRegistrationHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineRegistrationHandler.createOrUpdateExternalDataEngine(USER, getSoftwareServerCapability())).thenThrow(mockedException);
+        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getSoftwareServerCapability())).thenThrow(mockedException);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -257,14 +255,14 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void createSchemaType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
+    void upsertSchemaType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockSchemaTypeHandler("upsertSchemaType");
 
-        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdateSchemaType(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertSchemaType(USER, SERVER_NAME, requestBody);
         assertEquals(GUID, response.getGUID());
     }
 
@@ -276,16 +274,16 @@ class DataEngineRESTServicesTest {
                                                                                  NoSuchMethodException,
                                                                                  InstantiationException,
                                                                                  IllegalAccessException {
-        String methodName = "createOrUpdateSchemaType";
+        String methodName = "upsertSchemaType";
 
         mockSchemaTypeHandler(methodName);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdateSchemaType(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertSchemaType(USER, SERVER_NAME, requestBody);
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
     }
 
@@ -297,32 +295,32 @@ class DataEngineRESTServicesTest {
                                                                                   NoSuchMethodException,
                                                                                   InstantiationException,
                                                                                   IllegalAccessException {
-        String methodName = "createOrUpdateSchemaType";
+        String methodName = "upsertSchemaType";
 
         mockSchemaTypeHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdateSchemaType(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertSchemaType(USER, SERVER_NAME, requestBody);
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
     }
 
     @Test
     void createPortImplementation() throws InvalidParameterException, PropertyServerException,
                                            UserNotAuthorizedException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
-        mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
+        mockPortHandler("upsertPortImplementationWithSchemaType");
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
         when(portHandler.createPortImplementation(USER, portImplementation, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(GUID, response.getGUID());
     }
 
@@ -334,9 +332,9 @@ class DataEngineRESTServicesTest {
                                                                                           NoSuchMethodException,
                                                                                           InstantiationException,
                                                                                           IllegalAccessException {
-        String methodName = "createOrUpdatePortImplementationWithSchemaType";
+        String methodName = "upsertPortImplementationWithSchemaType";
 
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
         mockPortHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
@@ -344,9 +342,9 @@ class DataEngineRESTServicesTest {
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
     }
 
@@ -358,9 +356,9 @@ class DataEngineRESTServicesTest {
                                                                                          NoSuchMethodException,
                                                                                          InstantiationException,
                                                                                          IllegalAccessException {
-        String methodName = "createOrUpdatePortImplementationWithSchemaType";
+        String methodName = "upsertPortImplementationWithSchemaType";
 
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
         mockPortHandler(methodName);
 
 
@@ -369,66 +367,67 @@ class DataEngineRESTServicesTest {
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
     }
 
     @Test
     void updatePortImplementation() throws InvalidParameterException, PropertyServerException,
                                            UserNotAuthorizedException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
-        mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
+        mockPortHandler("upsertPortImplementationWithSchemaType");
 
         Optional<EntityDetail> portEntity = mockEntityDetail(PORT_GUID);
         when(portHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
 
         when(portHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(SCHEMA_GUID);
-        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
-        verify(portHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation);
+        verify(portHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(PORT_GUID, response.getGUID());
     }
 
     @Test
     void updatePortImplementation_removeObsoleteSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
         mockSchemaTypeHandler("deleteObsoleteSchemaType");
-        mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
+        mockPortHandler("upsertPortImplementationWithSchemaType");
 
         Optional<EntityDetail> portEntity = mockEntityDetail(PORT_GUID);
         when(portHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
 
         when(portHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(OLD_SCHEMA_GUID);
-        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
-        verify(portHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation);
+        verify(portHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, OLD_SCHEMA_GUID);
+        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, OLD_SCHEMA_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(PORT_GUID, response.getGUID());
     }
 
     @Test
     void createPortAlias() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockPortHandler("createOrUpdatePortAliasWithDelegation");
+        mockPortHandler("upsertPortAliasWithDelegation");
 
         when(portHandler.createPortAlias(USER, portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         PortAliasRequestBody requestBody = mockPortAliasRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortAlias(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortAlias(USER, SERVER_NAME, requestBody);
 
         assertEquals(GUID, response.getGUID());
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME,
@@ -443,7 +442,7 @@ class DataEngineRESTServicesTest {
                                                                                 NoSuchMethodException,
                                                                                 InstantiationException,
                                                                                 IllegalAccessException {
-        String methodName = "createOrUpdatePortAliasWithDelegation";
+        String methodName = "upsertPortAliasWithDelegation";
         mockPortHandler(methodName);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
@@ -451,7 +450,7 @@ class DataEngineRESTServicesTest {
 
         PortAliasRequestBody requestBody = mockPortAliasRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortAlias(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortAlias(USER, SERVER_NAME, requestBody);
 
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
     }
@@ -464,7 +463,7 @@ class DataEngineRESTServicesTest {
                                                                                 NoSuchMethodException,
                                                                                 InstantiationException,
                                                                                 IllegalAccessException {
-        String methodName = "createOrUpdatePortAliasWithDelegation";
+        String methodName = "upsertPortAliasWithDelegation";
         mockPortHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
@@ -472,7 +471,7 @@ class DataEngineRESTServicesTest {
 
         PortAliasRequestBody requestBody = mockPortAliasRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortAlias(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortAlias(USER, SERVER_NAME, requestBody);
 
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
     }
@@ -480,28 +479,28 @@ class DataEngineRESTServicesTest {
     @Test
     void updatePortAlias() throws InvalidParameterException, PropertyServerException,
                                            UserNotAuthorizedException {
-         mockPortHandler("createOrUpdatePortAliasWithDelegation");
+        mockPortHandler("upsertPortAliasWithDelegation");
 
         Optional<EntityDetail> portEntity = mockEntityDetail(GUID);
         when(portHandler.findPortAliasEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
 
         PortAliasRequestBody requestBody = mockPortAliasRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortAlias(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertPortAlias(USER, SERVER_NAME, requestBody);
 
         assertEquals(GUID, response.getGUID());
-        verify(portHandler, times(1)).updatePortAlias(USER, portEntity.get(), portAlias);
+        verify(portHandler, times(1)).updatePortAlias(USER, portEntity.get(), portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
     @Test
     void createProcess() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
         mockSchemaTypeHandler("addLineageMappings");
         mockSchemaTypeHandler("addAnchorGUID");
-        mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
-        mockPortHandler("createOrUpdatePortAliasWithDelegation");
-        mockProcessHandler("createOrUpdateProcess");
+        mockPortHandler("upsertPortImplementationWithSchemaType");
+        mockPortHandler("upsertPortAliasWithDelegation");
+        mockProcessHandler("upsertProcess");
         mockProcessHandler("updateProcessStatus");
         mockProcessHandler("addProcessPortRelationships");
 
@@ -511,14 +510,14 @@ class DataEngineRESTServicesTest {
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
-        ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
+        ProcessListResponse response = dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).createPortImplementation(USER, portImplementation, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(processHandler, times(1)).updateProcessStatus(USER, GUID, InstanceStatus.ACTIVE);
+        verify(processHandler, times(1)).updateProcessStatus(USER, GUID, InstanceStatus.ACTIVE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(GUID, response.getGUIDs().get(0));
     }
 
@@ -530,29 +529,25 @@ class DataEngineRESTServicesTest {
                                                                               NoSuchMethodException,
                                                                               InstantiationException,
                                                                               IllegalAccessException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
-        mockSchemaTypeHandler("addLineageMappings");
-        mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
-        mockPortHandler("createOrUpdatePortAliasWithDelegation");
+        mockSchemaTypeHandler("upsertSchemaType");
+        mockPortHandler("upsertPortImplementationWithSchemaType");
+        mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("updateProcessStatus");
 
-        String methodName = "createOrUpdateProcess";
+        String methodName = "upsertProcess";
         mockProcessHandler(methodName);
 
         when(portHandler.createPortAlias(USER, portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
-
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
 
-
-        when(processHandler.createProcess(USER, getProcess(Collections.singletonList(portImplementation), Collections.singletonList(portAlias),
-                Collections.emptyList()), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
-        dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).createPortImplementation(USER, portImplementation, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
@@ -568,26 +563,25 @@ class DataEngineRESTServicesTest {
                                                                                NoSuchMethodException,
                                                                                InstantiationException,
                                                                                IllegalAccessException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
         mockSchemaTypeHandler("addLineageMappings");
-        mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
-        mockPortHandler("createOrUpdatePortAliasWithDelegation");
+        mockPortHandler("upsertPortImplementationWithSchemaType");
+        mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("updateProcessStatus");
 
-        String methodName = "createOrUpdateProcess";
+        String methodName = "upsertProcess";
         mockProcessHandler(methodName);
 
         when(portHandler.createPortAlias(USER, portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(processHandler.createProcess(USER, getProcess(Collections.singletonList(portImplementation), Collections.singletonList(portAlias),
-                Collections.emptyList()), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
-        dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).createPortImplementation(USER, portImplementation, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
@@ -597,12 +591,12 @@ class DataEngineRESTServicesTest {
 
     @Test
     void updateProcess() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockSchemaTypeHandler("createOrUpdateSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
         mockSchemaTypeHandler("deleteObsoleteSchemaType");
         mockSchemaTypeHandler("addLineageMappings");
-        mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
-        mockPortHandler("createOrUpdatePortAliasWithDelegation");
-        mockProcessHandler("createOrUpdateProcess");
+        mockPortHandler("upsertPortImplementationWithSchemaType");
+        mockPortHandler("upsertPortAliasWithDelegation");
+        mockProcessHandler("upsertProcess");
         mockProcessHandler("updateProcessStatus");
         mockProcessHandler("addProcessPortRelationships");
         mockProcessHandler("deleteObsoletePorts");
@@ -612,24 +606,27 @@ class DataEngineRESTServicesTest {
         when(portHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
 
         when(portHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(OLD_SCHEMA_GUID);
-        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
         when(portHandler.createPortAlias(USER, portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(PORT_GUID);
 
-        Optional<EntityDetail> processEntity =mockEntityDetail(GUID);
+        Optional<EntityDetail> processEntity = mockEntityDetail(GUID);
         when(processHandler.findProcessEntity(USER, QUALIFIED_NAME)).thenReturn(processEntity);
 
         when(processHandler.getPortsForProcess(USER, GUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME)).thenReturn(new HashSet<>(Collections.singletonList(PORT_GUID)));
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
-        ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
+        ProcessListResponse response = dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        verify(portHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(portHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, PORT_GUID, PortType.INOUT_PORT,
                 DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(processHandler, times(2)).updateProcessStatus(any(), any(), instanceStatuses.capture());
+        verify(processHandler, times(2)).updateProcessStatus(any(), any(), instanceStatuses.capture(),
+                any());
+
         List<InstanceStatus> allValues = instanceStatuses.getAllValues();
         assertEquals(2, allValues.size());
         assertTrue(allValues.containsAll(Arrays.asList(InstanceStatus.DRAFT, InstanceStatus.ACTIVE)));
@@ -894,10 +891,9 @@ class DataEngineRESTServicesTest {
         process.setName(NAME);
         process.setDisplayName(NAME);
         process.setDescription(DESCRIPTION);
-        process.setLatestChange(LATEST_CHANGE);
         process.setFormula(FORMULA);
         process.setOwner(OWNER);
-        process.setOwnerType(OwnerType.USER_ID);
+        process.setOwnerType(OwnerType.USER_ID.getOrdinal());
         process.setPortImplementations(portImplementations);
         process.setPortAliases(portAliases);
         process.setLineageMappings(lineageMappings);

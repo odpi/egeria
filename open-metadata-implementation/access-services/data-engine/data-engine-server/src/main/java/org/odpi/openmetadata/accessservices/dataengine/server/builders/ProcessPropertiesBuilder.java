@@ -3,28 +3,36 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.AssetBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.List;
 import java.util.Map;
 
 /**
  * ProcessPropertiesBuilder is able to build the properties for an Process entity.
  */
-public class ProcessPropertiesBuilder extends AssetBuilder {
+public class ProcessPropertiesBuilder extends ProcessBuilder {
     private final String processDisplayName;
     private final String formula;
 
-    public ProcessPropertiesBuilder(String qualifiedName, String displayName, String processDisplayName, String description, String owner,
-                                    OwnerType ownerType, List<String> zoneMembership, String latestChange, String formula,
-                                    Map<String, String> additionalProperties, Map<String, Object> extendedProperties,
-                                    OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
-        super(qualifiedName, displayName, description, owner, ownerType, zoneMembership, null, latestChange, additionalProperties,
-                extendedProperties, repositoryHelper, serviceName, serverName);
+    public ProcessPropertiesBuilder(String qualifiedName, String processDisplayName, String technicalName, String technicalDescription, String typeGUID,
+                                    String typeName, String implementationLanguage, String formula, Map<String, String> additionalProperties,
+                                    Map<String, Object> extendedProperties, OMRSRepositoryHelper repositoryHelper, String serviceName,
+                                    String serverName) {
+        super(qualifiedName,
+                technicalName,
+                technicalDescription,
+                formula,
+                implementationLanguage,
+                additionalProperties,
+                typeGUID,
+                typeName,
+                extendedProperties,
+                repositoryHelper,
+                serviceName,
+                serverName);
+
         this.processDisplayName = processDisplayName;
         this.formula = formula;
     }
