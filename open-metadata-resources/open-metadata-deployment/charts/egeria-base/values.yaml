@@ -59,7 +59,7 @@ options:
       # Default will be true, but during dev set to false
       # This setting will control if the k8s job (and hence pod/logs) are deleted after egeria configuration
       # Set to false to assist in debugging 
-      jobdelete: false    
+      jobdelete: true    
 
 # --- Docker image sources ---
 

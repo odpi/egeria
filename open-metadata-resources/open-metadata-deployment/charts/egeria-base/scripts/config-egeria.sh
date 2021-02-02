@@ -80,6 +80,19 @@ curl -f -k --verbose --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/cohorts/${EGERIA_COHORT}"
 
 # Configure the view services
+echo -e '\n\n > Setting up Glossary Author:\n'
+
+ curl -f -k --verbose --basic admin:admin \
+   --header "Content-Type: application/json" \
+   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/glossary-author" \
+   --data @- <<EOF
+{
+  "class": "ViewServiceConfig",
+  "omagserverPlatformRootURL": "${EGERIA_ENDPOINT}"
+  "omagserverName" : "${EGERIA_SERVER}"
+}
+EOF
+
 echo -e '\n\n > Setting up TEX:\n'
 
 curl -f -k --verbose --basic admin:admin \
@@ -216,9 +229,7 @@ curl -k \
   {
     "STARTUP_SERVER_LIST": "$POSTCONFIG_STARTUP_SERVER_LIST"
   }
-} 
+}
 EOF
-
-sleep 10000
 
 echo '-- End of configuration'
