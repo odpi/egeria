@@ -53,7 +53,7 @@ import static org.testng.AssertJUnit.assertFalse;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class ProcessHandlerTest {
+class DataEngineProcessHandlerTest {
     private static final String USER = "user";
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String NAME = "name";
@@ -83,7 +83,7 @@ class ProcessHandlerTest {
 
     @Spy
     @InjectMocks
-    private ProcessHandler processHandler;
+    private DataEngineProcessHandler processHandler;
 
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;

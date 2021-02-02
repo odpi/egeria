@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineIn
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -360,7 +360,7 @@ public class DataEngineRESTServices {
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processHierarchy);
 
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+        DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
         Optional<EntityDetail> childProcessEntity = processHandler.findProcessEntity(userId, processHierarchy.getChildProcess());
 
@@ -488,7 +488,7 @@ public class DataEngineRESTServices {
             return;
         }
 
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+        DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         for (String portQualifiedName : portQualifiedNames) {
@@ -763,7 +763,7 @@ public class DataEngineRESTServices {
 
         VoidResponse response = new VoidResponse();
         try {
-            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+            DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
             processHandler.updateProcessStatus(userId, process.getGUID(), instanceStatus, externalSourceName);
         } catch (InvalidParameterException error) {
@@ -812,7 +812,7 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+            DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
@@ -891,7 +891,7 @@ public class DataEngineRESTServices {
             String processGUID = process.getGUID();
             if (CollectionUtils.isNotEmpty(parentProcesses)) {
                 try {
-                    ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+                    DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
                     for (ParentProcess parentProcess : parentProcesses) {
                         processHandler.upsertProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
                     }
@@ -915,7 +915,7 @@ public class DataEngineRESTServices {
 
         final String methodName = "addProcessPortRelationships";
 
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+        DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
         portGUIDs.parallelStream().forEach(portGUID -> {
             try {
@@ -940,7 +940,7 @@ public class DataEngineRESTServices {
             return;
         }
 
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+        DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);

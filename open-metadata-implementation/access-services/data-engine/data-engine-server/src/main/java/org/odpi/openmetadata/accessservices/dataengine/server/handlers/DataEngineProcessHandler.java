@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * ProcessHandler manages Process objects from the property server.  It runs server-side in the DataEngine OMAS
  * and creates process entities and relationships through the OMRSRepositoryConnector.
  */
-public class ProcessHandler {
+public class DataEngineProcessHandler {
     private final String serviceName;
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
@@ -58,9 +58,9 @@ public class ProcessHandler {
      * @param dataEngineCommonHandler provides utilities for manipulating entities
      * @param registrationHandler     creates software server capability entities
      **/
-    public ProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                          RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, AssetHandler<Asset> assetHandler,
-                          DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
+    public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
+                                    RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, AssetHandler<Asset> assetHandler,
+                                    DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
@@ -95,7 +95,7 @@ public class ProcessHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         return assetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getQualifiedName(),
-                null, null, process.getZoneMembership(), process.getOwner(), process.getOwnerType(),
+                process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(), process.getOwnerType(),
                 null, null, null, process.getAdditionalProperties(),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
                 process.getExtendedProperties(), methodName);

@@ -33,7 +33,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineIn
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -114,7 +114,7 @@ class DataEngineRESTServicesTest {
     private PortHandler portHandler;
 
     @Mock
-    private ProcessHandler processHandler;
+    private DataEngineProcessHandler processHandler;
 
     private final PortImplementation portImplementation = getPortImplementation();
 

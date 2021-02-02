@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
@@ -33,7 +33,7 @@ import java.util.List;
 public class DataEngineServicesInstance extends OMASServiceInstance {
     private static final AccessServiceDescription description = AccessServiceDescription.DATA_ENGINE_OMAS;
 
-    private final ProcessHandler processHandler;
+    private final DataEngineProcessHandler processHandler;
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private final PortHandler portHandler;
@@ -83,7 +83,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
             DataEngineCommonHandler dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
-            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+            processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
@@ -103,7 +103,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      *
      * @return handler object
      */
-    ProcessHandler getProcessHandler() {
+    DataEngineProcessHandler getProcessHandler() {
         return processHandler;
     }
 

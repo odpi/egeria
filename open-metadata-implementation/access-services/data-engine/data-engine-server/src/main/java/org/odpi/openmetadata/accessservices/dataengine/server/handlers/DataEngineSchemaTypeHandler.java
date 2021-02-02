@@ -266,7 +266,7 @@ public class DataEngineSchemaTypeHandler {
         }
     }
 
-    private void upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID,
+    private void   upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID,
                                         List<Attribute> attributeList, String externalSourceName) throws
             InvalidParameterException,
             PropertyServerException,
