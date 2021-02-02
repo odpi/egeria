@@ -137,9 +137,9 @@ public class DataEngineProcessHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
-                originalProcess.getQualifiedName(), null, null, originalProcess.getAdditionalProperties(),
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
-                originalProcess.getExtendedProperties(), true, methodName);
+                originalProcess.getQualifiedName(), originalProcess.getName(), originalProcess.getDescription(),
+                originalProcess.getAdditionalProperties(), ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, originalProcess.getExtendedProperties(), true, methodName);
     }
 
     Process getProcess(EntityDetail originalProcessEntity) throws PropertyServerException {
@@ -261,8 +261,8 @@ public class DataEngineProcessHandler {
     ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process) {
         return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(),
                 process.getName(), process.getDescription(), process.getTypeGUID(), process.getTypeName(),
-                null, process.getFormula(), null, null,
-                repositoryHelper, serverName, serviceName);
+                process.getFormula(), null, null,
+                InstanceStatus.DRAFT, repositoryHelper, serverName, serviceName);
     }
 
     public void upsertProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,

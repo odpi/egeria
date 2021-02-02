@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Map;
@@ -12,23 +14,22 @@ import java.util.Map;
 /**
  * ProcessPropertiesBuilder is able to build the properties for an Process entity.
  */
-public class ProcessPropertiesBuilder extends ProcessBuilder {
+public class ProcessPropertiesBuilder extends AssetBuilder {
     private final String processDisplayName;
     private final String formula;
 
-    public ProcessPropertiesBuilder(String qualifiedName, String processDisplayName, String technicalName, String technicalDescription, String typeGUID,
-                                    String typeName, String implementationLanguage, String formula, Map<String, String> additionalProperties,
-                                    Map<String, Object> extendedProperties, OMRSRepositoryHelper repositoryHelper, String serviceName,
-                                    String serverName) {
+    public ProcessPropertiesBuilder(String qualifiedName, String processDisplayName, String technicalName, String technicalDescription,
+                                    String typeGUID, String typeName, String formula, Map<String, String> additionalProperties,
+                                    Map<String, Object> extendedProperties, InstanceStatus initialStatus, OMRSRepositoryHelper repositoryHelper,
+                                    String serviceName, String serverName) {
         super(qualifiedName,
                 technicalName,
                 technicalDescription,
-                formula,
-                implementationLanguage,
                 additionalProperties,
                 typeGUID,
                 typeName,
                 extendedProperties,
+                initialStatus,
                 repositoryHelper,
                 serviceName,
                 serverName);
