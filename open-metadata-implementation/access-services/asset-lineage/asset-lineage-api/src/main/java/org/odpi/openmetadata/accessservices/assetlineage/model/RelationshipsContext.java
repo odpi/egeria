@@ -1,7 +1,11 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.model;
 
 import java.util.Set;
-
+/**
+ * Contains a set of lineage relationship in the lineage graph with self contained properties.
+ */
 public class RelationshipsContext {
     private String entityGuid;
     private Set<GraphContext> relationships;
