@@ -98,7 +98,7 @@ public class DataEngineProcessHandler {
                 process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(), process.getOwnerType(),
                 null, null, null, process.getAdditionalProperties(),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), methodName);
+                process.getExtendedProperties(), InstanceStatus.DRAFT, methodName);
     }
 
     /**

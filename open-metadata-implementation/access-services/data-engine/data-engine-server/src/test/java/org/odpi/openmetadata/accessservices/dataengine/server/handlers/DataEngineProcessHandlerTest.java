@@ -105,11 +105,11 @@ class DataEngineProcessHandlerTest {
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         when(assetHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, null, null,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
                 process.getZoneMembership(), process.getOwner(), process.getOwnerType(), null,
                 null, null, process.getAdditionalProperties(),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), "createProcess")).thenReturn(GUID);
+                process.getExtendedProperties(), InstanceStatus.DRAFT, "createProcess")).thenReturn(GUID);
 
         String result = processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
@@ -132,11 +132,11 @@ class DataEngineProcessHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(assetHandler).createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, null, null,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
                 process.getZoneMembership(), process.getOwner(), process.getOwnerType(), null,
                 null, null, process.getAdditionalProperties(),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), "createProcess");
+                process.getExtendedProperties(), InstanceStatus.DRAFT, "createProcess");
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));

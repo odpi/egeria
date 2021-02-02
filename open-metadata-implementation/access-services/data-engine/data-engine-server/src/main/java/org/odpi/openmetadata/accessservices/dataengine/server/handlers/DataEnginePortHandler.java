@@ -29,7 +29,7 @@ import java.util.Optional;
  * PortHandler manages Port objects from the property server. It runs server-side in the DataEngine OMAS
  * and creates port entities with wire relationships through the OMRSRepositoryConnector.
  */
-public class PortHandler {
+public class DataEnginePortHandler {
     private final String serviceName;
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
@@ -47,8 +47,8 @@ public class PortHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param dataEngineCommonHandler provides utilities for manipulating entities
      */
-    public PortHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
-                       OMRSRepositoryHelper repositoryHelper, DataEngineCommonHandler dataEngineCommonHandler) {
+    public DataEnginePortHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
+                                 OMRSRepositoryHelper repositoryHelper, DataEngineCommonHandler dataEngineCommonHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;

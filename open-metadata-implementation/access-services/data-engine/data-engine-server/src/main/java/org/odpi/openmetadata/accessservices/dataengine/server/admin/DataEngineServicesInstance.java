@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaT
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -36,7 +36,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineProcessHandler processHandler;
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
-    private final PortHandler portHandler;
+    private final DataEnginePortHandler dataEnginePortHandler;
     private final AssetHandler<Asset> assetHandler;
     private final SchemaTypeHandler<SchemaType> schemaTypeHandler;
     private final SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler;
@@ -87,7 +87,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                     assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
-            portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+            dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     dataEngineCommonHandler);
 
         } else {
@@ -130,8 +130,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      *
      * @return handler object
      */
-    PortHandler getPortHandler() {
-        return portHandler;
+    DataEnginePortHandler getPortHandler() {
+        return dataEnginePortHandler;
     }
 
     /**

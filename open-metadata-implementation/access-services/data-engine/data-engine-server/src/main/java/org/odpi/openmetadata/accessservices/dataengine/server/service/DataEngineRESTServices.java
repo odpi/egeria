@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -317,20 +317,20 @@ public class DataEngineRESTServices {
 
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portAlias);
 
-        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
+        DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        Optional<EntityDetail> portEntity = portHandler.findPortAliasEntity(userId, portAlias.getQualifiedName());
+        Optional<EntityDetail> portEntity = dataEnginePortHandler.findPortAliasEntity(userId, portAlias.getQualifiedName());
 
         String portAliasGUID;
         if (!portEntity.isPresent()) {
-            portAliasGUID = portHandler.createPortAlias(userId, portAlias, externalSourceName);
+            portAliasGUID = dataEnginePortHandler.createPortAlias(userId, portAlias, externalSourceName);
         } else {
             portAliasGUID = portEntity.get().getGUID();
-            portHandler.updatePortAlias(userId, portEntity.get(), portAlias, externalSourceName);
+            dataEnginePortHandler.updatePortAlias(userId, portEntity.get(), portAlias, externalSourceName);
         }
 
         if (!StringUtils.isEmpty(portAlias.getDelegatesTo())) {
-            portHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(), externalSourceName);
+            dataEnginePortHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(), externalSourceName);
         }
 
         log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, portAliasGUID);
@@ -405,26 +405,26 @@ public class DataEngineRESTServices {
 
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portImplementation);
 
-        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
+        DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         String schemaTypeGUID = upsertSchemaType(userId, serverName, portImplementation.getSchemaType(), externalSourceName);
 
-        Optional<EntityDetail> portEntity = portHandler.findPortImplementationEntity(userId, portImplementation.getQualifiedName());
+        Optional<EntityDetail> portEntity = dataEnginePortHandler.findPortImplementationEntity(userId, portImplementation.getQualifiedName());
 
         String portImplementationGUID;
         if (!portEntity.isPresent()) {
-             portImplementationGUID = portHandler.createPortImplementation(userId, portImplementation, externalSourceName);
+             portImplementationGUID = dataEnginePortHandler.createPortImplementation(userId, portImplementation, externalSourceName);
         } else {
             portImplementationGUID = portEntity.get().getGUID();
-            portHandler.updatePortImplementation(userId, portEntity.get(), portImplementation, externalSourceName);
+            dataEnginePortHandler.updatePortImplementation(userId, portEntity.get(), portImplementation, externalSourceName);
 
             if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
                 deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID,
-                        portHandler.findSchemaTypeForPort(userId, portImplementationGUID), externalSourceName);
+                        dataEnginePortHandler.findSchemaTypeForPort(userId, portImplementationGUID), externalSourceName);
             }
         }
 
-        portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, externalSourceName);
+        dataEnginePortHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, externalSourceName);
 
         log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, portImplementationGUID);
 
@@ -489,10 +489,10 @@ public class DataEngineRESTServices {
         }
 
         DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
+        DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         for (String portQualifiedName : portQualifiedNames) {
-            Optional<EntityDetail> portEntity = portHandler.findPortEntity(userId, portQualifiedName);
+            Optional<EntityDetail> portEntity = dataEnginePortHandler.findPortEntity(userId, portQualifiedName);
             if (portEntity.isPresent()) {
                 processHandler.addProcessPortRelationship(userId, processGUID, portEntity.get().getGUID(), externalSourceName);
             }
@@ -941,7 +941,7 @@ public class DataEngineRESTServices {
         }
 
         DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
+        DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
 
@@ -949,7 +949,7 @@ public class DataEngineRESTServices {
         List<String> obsoletePorts = oldPortGUIDs.parallelStream().collect(partitioningBy(newPortGUIDs::contains)).get(Boolean.FALSE);
         obsoletePorts.parallelStream().forEach(portGUID -> {
             try {
-                portHandler.removePort(userId, portGUID, portTypeName, externalSourceName);
+                dataEnginePortHandler.removePort(userId, portGUID, portTypeName, externalSourceName);
             } catch (InvalidParameterException error) {
                 restExceptionHandler.captureInvalidParameterException(response, error);
             } catch (PropertyServerException error) {
