@@ -22,45 +22,67 @@ public class TokenRedisClient implements TokenClient {
         commands = connection.sync();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public void shutdownClient(){
         connection.close();
         redisClient.shutdown();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public String set(String key, long seconds, String value){
         return commands.setex(key, seconds, value);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public String set(String key, String value){
         return commands.set(key, value);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public String setKeepTTL(String key, String value){
         return commands.set(key, value, SetArgs.Builder.keepttl());
     }
 
-    public Boolean expire(String key, long seconds){
-        return commands.expire(key, seconds);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public String get(String key){
         return commands.get(key);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public Long ttl(String key){
         return commands.ttl(key);
     }
 
+    /**
+     *
+     * @param keys
+     * @return the number of keys that exists
+     */
     public Long exists(String... keys){
         return commands.exists(keys);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public void del(String... keys){
         commands.del(keys);
