@@ -7,8 +7,9 @@ import io.lettuce.core.RedisURI;
 import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenClient;
 
-public class TokenRedisClient {
+public class TokenRedisClient implements TokenClient {
 
     private RedisClient redisClient;
     private StatefulRedisConnection<String, String> connection;
@@ -21,19 +22,23 @@ public class TokenRedisClient {
         commands = connection.sync();
     }
 
-    public void shutdownRedisClient(){
+    @Override
+    public void shutdownClient(){
         connection.close();
         redisClient.shutdown();
     }
 
+    @Override
     public String set(String key, long seconds, String value){
         return commands.setex(key, seconds, value);
     }
 
+    @Override
     public String set(String key, String value){
         return commands.set(key, value);
     }
 
+    @Override
     public String setKeepTTL(String key, String value){
         return commands.set(key, value, SetArgs.Builder.keepttl());
     }
@@ -42,10 +47,12 @@ public class TokenRedisClient {
         return commands.expire(key, seconds);
     }
 
+    @Override
     public String get(String key){
         return commands.get(key);
     }
 
+    @Override
     public Long ttl(String key){
         return commands.ttl(key);
     }
@@ -54,8 +61,9 @@ public class TokenRedisClient {
         return commands.exists(keys);
     }
 
-    public Long del(String... keys){
-        return commands.del(keys);
+    @Override
+    public void del(String... keys){
+        commands.del(keys);
     }
 
 
