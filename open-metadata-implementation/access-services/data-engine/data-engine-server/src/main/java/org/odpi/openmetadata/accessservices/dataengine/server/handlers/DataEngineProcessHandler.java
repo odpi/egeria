@@ -144,7 +144,7 @@ public class DataEngineProcessHandler {
 
     Process getProcess(EntityDetail originalProcessEntity) throws PropertyServerException {
         ProcessConverter processConverter = new ProcessConverter(repositoryHelper, serviceName, serverName);
-        return processConverter.getProcessBean(originalProcessEntity);
+        return processConverter.getProcessBean(Process.class, originalProcessEntity);
     }
 
     /**

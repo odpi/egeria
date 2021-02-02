@@ -306,31 +306,13 @@ public class DataEngineSchemaTypeHandler {
         return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, schemaAttributeBuilder.getInstanceProperties(methodName));
     }
 
-    public SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
-        return new SchemaAttributeBuilder(attribute.getQualifiedName(),
-                attribute.getDisplayName(),
-                null,
-                attribute.getPosition(),
-                1,
-                1,
-                false,
-                null,
-                true,
-                false,
-                0,
-                0,
-                0,
-                0,
-                false,
-                null,
-                null,
-                null,
-                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID,
-                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
-                null,
-                repositoryHelper,
-                serviceName,
-                serverName);
+    SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
+        return new SchemaAttributeBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), null,
+                attribute.getPosition(), 1, 1, false, null,
+                true, false, 0, 0, 0, 0,
+                false, null, null, null,
+                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID, OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
+                null, repositoryHelper, serviceName, serverName);
     }
 
     private void createSchemaAttribute(String userId, SchemaType schemaType, String schemaTypeGUID, Attribute attribute,
