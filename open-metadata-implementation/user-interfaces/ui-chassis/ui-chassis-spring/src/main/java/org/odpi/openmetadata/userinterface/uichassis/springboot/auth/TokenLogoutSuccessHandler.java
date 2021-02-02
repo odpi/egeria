@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis.TokenRedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -19,10 +18,10 @@ public class TokenLogoutSuccessHandler extends
 
     private static final Logger log = LoggerFactory.getLogger( TokenLogoutSuccessHandler.class );
 
-    private TokenRedisClient tokenRedisClient;
+    private TokenClient tokenClient;
 
-    TokenLogoutSuccessHandler(TokenRedisClient tokenRedisClient){
-        this.tokenRedisClient = tokenRedisClient;
+    TokenLogoutSuccessHandler(TokenClient tokenClient){
+        this.tokenClient = tokenClient;
     }
 
     @Override
@@ -38,8 +37,8 @@ public class TokenLogoutSuccessHandler extends
 
         String token = request.getHeader(AuthService.AUTH_HEADER_NAME);
 
-        if(tokenRedisClient!=null && token != null ){
-            tokenRedisClient.del(token);
+        if(tokenClient!=null && token != null ){
+            tokenClient.del(token);
         }
         response.addHeader(AuthService.AUTH_HEADER_NAME,"");
         response.sendRedirect("login?logoutSuccessful");
