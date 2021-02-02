@@ -55,7 +55,7 @@ public interface TokenClient {
 
     /**
      * retrieve the absolute timeout of token in seconds
-     * @param token
+     * @param token the token to determine ttl for
      * @return the ttl for the token
      */
     default Long ttl(String token){
