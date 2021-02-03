@@ -152,7 +152,6 @@ public class ConfigMetadataServerSample
         configurationClient.configureAccessService("stewardship-action", accessServiceOptions);
         configurationClient.configureAccessService("data-engine", accessServiceOptions);
         configurationClient.configureAccessService("data-manager", accessServiceOptions);
-        configurationClient.configureAccessService("information-view", accessServiceOptions);
 
         accessServiceOptions = new HashMap<>();
         accessServiceOptions.put("KarmaPointPlateau", 500);
