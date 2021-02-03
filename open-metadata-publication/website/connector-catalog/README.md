@@ -103,7 +103,7 @@ hosted by the
 * [Monitor for New Assets Governance Action Service](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors)
   listens for new assets and initiates other governance actions that ensure the asset is properly set up.
   
-* [Move/Copy File Provisioning Governance Action Service](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors)
+* [Move/Copy File Provisioning Governance Action Service](move-copy-file-provisioning-governance-action-service.md)
   moves or copied files from one location to another and maintains the lineage of the action.
 
 ### Event Bus Connectors
