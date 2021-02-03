@@ -308,8 +308,9 @@ public class DataEngineSchemaTypeHandler {
 
     SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
         return new SchemaAttributeBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), null,
-                attribute.getPosition(), 1, 1, false, null,
-                true, false, 0, 0, 0, 0,
+                attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), false,
+                attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
+                0, 0, 0, 0,
                 false, null, null, null,
                 OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID, OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
                 null, repositoryHelper, serviceName, serverName);

@@ -708,38 +708,49 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                                          PropertyServerException
     {
         List<EntityDetail> schemaAttributeEntities = this.findEntities(userId,
-                searchString,
-                searchStringParameterName,
-                resultTypeGUID,
-                resultTypeName,
-                requiredClassificationName,
-                omittedClassificationName,
-                startFrom,
-                pageSize,
-                methodName);
+                                                                       searchString,
+                                                                       searchStringParameterName,
+                                                                       resultTypeGUID,
+                                                                       resultTypeName,
+                                                                       requiredClassificationName,
+                                                                       omittedClassificationName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
 
         return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);
     }
 
+    /**
+     * Update a schema attribute
+     * @param userId                      calling user
+     * @param externalSourceGUID          unique identifier of software server capability representing the caller
+     * @param externalSourceName          unique name of software server capability representing the caller
+     * @param schemaAttributeGUID         unique identifier of schema attribute
+     * @param instanceProperties          the schema attribute's properties
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
     public void updateSchemaAttribute(String userId,
                                       String externalSourceGUID,
                                       String externalSourceName,
                                       String schemaAttributeGUID,
                                       InstanceProperties instanceProperties) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException {
         final String methodName = "updateSchemaAttribute";
         final String parameterName = "schemaAttributeGUID";
 
         this.updateBeanInRepository(userId,
-                externalSourceGUID,
-                externalSourceName,
-                schemaAttributeGUID,
-                parameterName,
-                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                instanceProperties,
-                true,
-                methodName);
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    schemaAttributeGUID,
+                                    parameterName,
+                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                    instanceProperties,
+                                    true,
+                                    methodName);
     }
 }
