@@ -24,8 +24,9 @@ services:
             - '12181:2181'
         networks:
             - cocopharma
-        volumes:
-            - zookeeper-data:/bitnami/zookeeper
+        # Persistence
+        #volumes:
+        #    - zookeeper-data:/bitnami/zookeeper
 
     kafka:
         depends_on:
@@ -39,8 +40,9 @@ services:
             - '19092:9092'
         networks:
             - cocopharma
-        volumes:
-            - kafka-data:/bitnami/kafka
+        # Persistence
+        #volumes:
+        #    - kafka-data:/bitnami/kafka
 
     notebook:
         image: '${egeria_repo}/jupyter:${egeria_version}'
@@ -78,8 +80,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - core-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - core-data:/deployments/data
 
     datalake:
         depends_on:
@@ -91,8 +94,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - datalake-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - datalake-data:/deployments/data
 
     dev:
         depends_on:
@@ -104,8 +108,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - dev-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - dev-data:/deployments/data
 
     factory:
         depends_on:
@@ -117,8 +122,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - factory-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - factory-data:/deployments/data
 
     ui:
         depends_on:
@@ -164,19 +170,21 @@ services:
 networks:
     cocopharma:
 
+# Persistence:
 # These are the persistent volumes used by each of the egeria servers. See the README.md for further information
 #
 # Change external to true and create volumes manually if you wish to persist between runs
-volumes:
-    core-data:
-        external: false
-    datalake-data:
-        external: false
-    dev-data:
-        external: false
-    factory-data:
-        external: false
-    zookeeper-data:
-        external: false
-    kafka-data:
-        external: false
+#
+#volumes:
+#    core-data:
+#        external: false
+#    datalake-data:
+#        external: false
+#    dev-data:
+#        external: false
+#    factory-data:
+#        external: false
+#    zookeeper-data:
+#        external: false
+#    kafka-data:
+#        external: false

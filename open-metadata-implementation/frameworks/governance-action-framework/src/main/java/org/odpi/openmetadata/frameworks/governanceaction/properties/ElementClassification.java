@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,6 +26,8 @@ public class ElementClassification extends ElementClassificationHeader
     private static final long    serialVersionUID = 1L;
 
     private String            classificationName       = null;
+    private Date              effectiveFromTime        = null;
+    private Date              effectiveToTime          = null;
     private ElementProperties classificationProperties = null;
 
 
@@ -48,8 +51,10 @@ public class ElementClassification extends ElementClassificationHeader
 
         if (template != null)
         {
-            classificationName            = template.getClassificationName();
-            classificationProperties      = template.getClassificationProperties();
+            classificationName       = template.getClassificationName();
+            effectiveFromTime        = template.getEffectiveFromTime();
+            effectiveToTime          = template.getEffectiveToTime();
+            classificationProperties = template.getClassificationProperties();
         }
     }
 
@@ -73,6 +78,49 @@ public class ElementClassification extends ElementClassificationHeader
     public String getClassificationName()
     {
         return classificationName;
+    }
+
+
+
+
+    /**
+     * Return the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @return Date object
+     */
+    public Date getEffectiveFromTime() { return effectiveFromTime; }
+
+
+    /**
+     * Set up the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @param effectiveFromTime Date object
+     */
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+
+
+    /**
+     * Return the date/time that this instance should no longer be used.
+     *
+     * @return Date object
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+
+
+    /**
+     * Set up the date/time that this instance should no longer be used.
+     *
+     * @param effectiveToTime Date object
+     */
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
     }
 
 
@@ -109,28 +157,31 @@ public class ElementClassification extends ElementClassificationHeader
     public String toString()
     {
         return "ElementClassification{" +
-                "classificationName='" + classificationName + '\'' +
-                ", classificationProperties=" + classificationProperties +
-                ", classificationTypeId='" + getClassificationTypeId() + '\'' +
-                ", classificationTypeVersion=" + getClassificationTypeVersion() +
-                ", classificationTypeDescription='" + getClassificationTypeDescription() + '\'' +
-                ", classificationOrigin=" + getClassificationOrigin() +
-                ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
-                ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                ", elementOriginCategory=" + getElementOriginCategory() +
-                ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                ", elementLicense='" + getElementLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                ", elementMaintainedBy=" + getElementMaintainedBy() +
-                ", elementCreateTime=" + getElementCreateTime() +
-                ", elementUpdateTime=" + getElementUpdateTime() +
-                ", elementVersion=" + getElementVersion() +
-                ", mappingProperties=" + getMappingProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "classificationName='" + classificationName + '\'' +
+                       ", effectiveFromTime=" + effectiveFromTime +
+                       ", effectiveToTime=" + effectiveToTime +
+                       ", classificationProperties=" + classificationProperties +
+                       ", classificationTypeId='" + getClassificationTypeId() + '\'' +
+                       ", classificationTypeVersion=" + getClassificationTypeVersion() +
+                       ", classificationTypeDescription='" + getClassificationTypeDescription() + '\'' +
+                       ", classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", classificationValidProperties=" + getClassificationValidProperties() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", elementSourceServer='" + getElementSourceServer() + '\'' +
+                       ", elementOriginCategory=" + getElementOriginCategory() +
+                       ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
+                       ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
+                       ", elementLicense='" + getElementLicense() + '\'' +
+                       ", status=" + getStatus() +
+                       ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
+                       ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
+                       ", elementMaintainedBy=" + getElementMaintainedBy() +
+                       ", elementCreateTime=" + getElementCreateTime() +
+                       ", elementUpdateTime=" + getElementUpdateTime() +
+                       ", elementVersion=" + getElementVersion() +
+                       ", mappingProperties=" + getMappingProperties() +
+                       '}';
     }
 
 
@@ -157,7 +208,9 @@ public class ElementClassification extends ElementClassificationHeader
         }
         ElementClassification that = (ElementClassification) objectToCompare;
         return Objects.equals(classificationName, that.classificationName) &&
-                Objects.equals(classificationProperties, that.classificationProperties);
+                       Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
+                       Objects.equals(effectiveToTime, that.effectiveToTime) &&
+                       Objects.equals(classificationProperties, that.classificationProperties);
     }
 
 
@@ -169,6 +222,6 @@ public class ElementClassification extends ElementClassificationHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), classificationName, classificationProperties);
+        return Objects.hash(super.hashCode(), classificationName, effectiveFromTime, effectiveToTime, classificationProperties);
     }
 }

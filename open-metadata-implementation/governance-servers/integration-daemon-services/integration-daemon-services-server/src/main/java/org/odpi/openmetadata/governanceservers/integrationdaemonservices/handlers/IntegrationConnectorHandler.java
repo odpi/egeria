@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
@@ -35,17 +36,17 @@ public class IntegrationConnectorHandler implements Serializable
      * These values are set in the constructor and do not change.
      */
     private String                     integrationServiceFullName;
-    private Map<String, Object>        integrationServiceOptions;
-    private String                     integrationDaemonName;
-    private String                     integrationConnectorId;
-    private String                     integrationConnectorName;
-    private String                     metadataSourceQualifiedName;
-    private PermittedSynchronization   permittedSynchronization;
-    private Connection                 connection;
-    private boolean                    needDedicatedThread;
-    private long                       minSecondsBetweenRefresh;
-    private IntegrationContextManager  contextManager;
-    private AuditLog                   auditLog;
+    private Map<String, Object>       integrationServiceOptions;
+    private String                    integrationDaemonName;
+    private String                    integrationConnectorId;
+    private String                    integrationConnectorName;
+    private String                    metadataSourceQualifiedName;
+    private PermittedSynchronization  permittedSynchronization;
+    private Connection                connection;
+    private boolean                   needDedicatedThread;
+    private long                      minMinutesBetweenRefresh;
+    private IntegrationContextManager contextManager;
+    private AuditLog                  auditLog;
 
 
     /*
@@ -85,7 +86,7 @@ public class IntegrationConnectorHandler implements Serializable
         this.integrationConnectorId      = integrationConnectorConfig.getConnectorId();
         this.integrationConnectorName    = integrationConnectorConfig.getConnectorName();
         this.metadataSourceQualifiedName = integrationConnectorConfig.getMetadataSourceQualifiedName();
-        this.minSecondsBetweenRefresh    = integrationConnectorConfig.getRefreshTimeInterval();
+        this.minMinutesBetweenRefresh    = integrationConnectorConfig.getRefreshTimeInterval();
         this.connection                  = integrationConnectorConfig.getConnection();
         this.needDedicatedThread         = integrationConnectorConfig.getUsesBlockingCalls();
         this.permittedSynchronization    = integrationConnectorConfig.getPermittedSynchronization();
@@ -166,13 +167,13 @@ public class IntegrationConnectorHandler implements Serializable
 
     /**
      * Return the configured minimum time between calls to refresh.  This gives an indication of when the
-     * next refresh is due.  Null means refresh is only called in response to an API request.
+     * next refresh is due.  Null means refresh is only called at server start up and in response to an API request.
      *
      * @return count
      */
-    public long getMinSecondsBetweenRefresh()
+    public long getMinMinutesBetweenRefresh()
     {
-        return minSecondsBetweenRefresh;
+        return minMinutesBetweenRefresh;
     }
 
 
@@ -305,8 +306,10 @@ public class IntegrationConnectorHandler implements Serializable
      * Call refresh on the connector provided it is in the correct state.
      *
      * @param actionDescription external caller's activity
+     * @param firstCall is this the first call to refresh?
      */
-    public synchronized void refreshConnector(String   actionDescription)
+    public synchronized void refreshConnector(String   actionDescription,
+                                              boolean  firstCall)
     {
         final String operationName = "refresh";
 
@@ -318,6 +321,22 @@ public class IntegrationConnectorHandler implements Serializable
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.RUNNING)
             {
+                if (auditLog != null)
+                {
+                    if (firstCall)
+                    {
+                        auditLog.logMessage(actionDescription,
+                                            IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_FIRST_REFRESH.getMessageDefinition(integrationConnectorName,
+                                                                                                                                   integrationDaemonName));
+                    }
+                    else
+                    {
+                        auditLog.logMessage(actionDescription,
+                                            IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_REFRESH.getMessageDefinition(integrationConnectorName,
+                                                                                                                             integrationDaemonName));
+                    }
+                }
+
                 integrationConnector.refresh();
             }
 
@@ -424,12 +443,23 @@ public class IntegrationConnectorHandler implements Serializable
         updateStatus(IntegrationConnectorStatus.FAILED);
         failingExceptionMessage = error.getMessage();
 
-        auditLog.logException(actionDescription,
-                              IntegrationDaemonServicesAuditCode.CONNECTOR_ERROR.getMessageDefinition(integrationConnectorName,
-                                                                                                      operationName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      error.getMessage()),
-                              error);
+        if (error instanceof OCFCheckedExceptionBase)
+        {
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.CONNECTOR_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                        operationName,
+                                                                                                        error.getClass().getName(),
+                                                                                                        error.getMessage()));
+        }
+        else
+        {
+            auditLog.logException(actionDescription,
+                                  IntegrationDaemonServicesAuditCode.CONNECTOR_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                          operationName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          error.getMessage()),
+                                  error);
+        }
     }
 
 
