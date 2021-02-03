@@ -17,9 +17,11 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -196,7 +198,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                         catch (Exception error)
                         {
                             auditLog.logException(methodName,
-                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(methodName, entity.getGUID()),
+                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
                                                   error);
                         }
                     }
@@ -402,6 +404,49 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     }
 
 
+    /**
+     * Convert information from a repository instance into an ElementType.
+     *
+     * @param instanceHeader values from the server
+     * @return ElementType object
+     */
+    private ElementType getElementType(InstanceHeader instanceHeader)
+    {
+        ElementType  elementType = new ElementType();
+
+        InstanceType instanceType = instanceHeader.getType();
+
+        if (instanceType != null)
+        {
+            elementType.setElementTypeId(instanceType.getTypeDefGUID());
+            elementType.setElementTypeName(instanceType.getTypeDefName());
+            elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
+
+            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
+
+            if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
+            {
+                List<String>   superTypes = new ArrayList<>();
+
+                for (TypeDefLink typeDefLink : typeDefSuperTypes)
+                {
+                    if (typeDefLink != null)
+                    {
+                        superTypes.add(typeDefLink.getName());
+                    }
+                }
+
+                if (! superTypes.isEmpty())
+                {
+                    elementType.setElementSuperTypeNames(superTypes);
+                }
+            }
+        }
+
+        return elementType;
+    }
+
 
     /**
      * Fill a GAF control header from the information in a repository services element header.
@@ -410,9 +455,9 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param elementControlHeader GAF object control header
      * @param header OMRS element header
      */
-    void fillElementControlHeader(String               sourceName,
-                                  ElementControlHeader elementControlHeader,
-                                  InstanceAuditHeader  header)
+    private void fillElementControlHeader(String               sourceName,
+                                          ElementControlHeader elementControlHeader,
+                                          InstanceAuditHeader  header)
     {
         if (header != null)
         {
@@ -438,12 +483,10 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      *
      * @param sourceName source of the event
      * @param classification from the repository services
-     * @param methodName calling method
      * @return open metadata element object
      */
     private ElementClassification getClassification(String         sourceName,
-                                                    Classification classification,
-                                                    String         methodName)
+                                                    Classification classification)
     {
         ElementClassification beanClassification = new ElementClassification();
 
@@ -451,28 +494,56 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
         beanClassification.setClassificationName(classification.getName());
 
-        Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
+        if (classification.getProperties() != null)
+        {
+            Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
 
-        beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+            beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+            beanClassification.setEffectiveFromTime(classification.getProperties().getEffectiveFromTime());
+            beanClassification.setEffectiveToTime(classification.getProperties().getEffectiveToTime());
+        }
 
         return beanClassification;
     }
 
 
     /**
-     * Using the content of the entity, create a metadata element.
+     * Using the content of the relationship, create a related metadata elements object.
      *
      * @param sourceName source of the event
      * @param relationship relationship from the repository
-     * @param methodName calling method
-     * @return open metadata element object
+     * @return related metadata elements object
      */
     private RelatedMetadataElements getRelatedElements(String       sourceName,
-                                                       Relationship relationship,
-                                                       String       methodName)
+                                                       Relationship relationship)
     {
-        // todo - call converter
-        return null;
+        RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
+
+        fillElementControlHeader(sourceName, relatedMetadataElements, relationship);
+
+        relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
+        relatedMetadataElements.setRelationshipType(this.getElementType(relationship));
+
+        if (relationship.getProperties() != null)
+        {
+            Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(relationship.getProperties());
+
+            relatedMetadataElements.setRelationshipProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+            relatedMetadataElements.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
+            relatedMetadataElements.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
+        }
+
+        if (relationship.getEntityOneProxy() != null)
+        {
+            relatedMetadataElements.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
+        }
+
+        if (relationship.getEntityTwoProxy() != null)
+        {
+            relatedMetadataElements.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
+        }
+
+        return relatedMetadataElements;
     }
 
 
@@ -493,29 +564,26 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         if (entity != null)
         {
-            InstanceType type = entity.getType();
-
-            if (type != null)
+            try
             {
-                try
-                {
-                    WatchdogMetadataElementEvent watchdogEvent = new WatchdogMetadataElementEvent();
+                WatchdogMetadataElementEvent watchdogEvent = new WatchdogMetadataElementEvent();
 
-                    watchdogEvent.setEventType(eventType);
-                    watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+                watchdogEvent.setEventType(eventType);
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
 
-                    if (previousEntity != null)
-                    {
-                        watchdogEvent.setPreviousMetadataElement(
-                                metadataElementHandler.getMetadataElementByGUID(userId, previousEntity.getGUID(), methodName));
-                    }
-                }
-                catch (Exception error)
+                if (previousEntity != null)
                 {
-                    auditLog.logException(methodName,
-                                          GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(methodName, entity.getGUID()),
-                                          error);
+                    watchdogEvent.setPreviousMetadataElement(
+                            metadataElementHandler.getMetadataElementByGUID(userId, previousEntity.getGUID(), methodName));
                 }
+
+                eventPublisher.publishWatchdogEvent(watchdogEvent);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                      error);
             }
         }
     }
@@ -540,29 +608,26 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         if (entity != null)
         {
-            InstanceType type = entity.getType();
-
-            if (type != null)
+            try
             {
-                try
-                {
-                    WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
+                WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
 
-                    watchdogEvent.setEventType(eventType);
-                    watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
-                    watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification, methodName));
+                watchdogEvent.setEventType(eventType);
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+                watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification));
 
-                    if (previousClassification != null)
-                    {
-                        watchdogEvent.setChangedClassification(this.getClassification(sourceName, previousClassification, methodName));
-                    }
-                }
-                catch (Exception error)
+                if (previousClassification != null)
                 {
-                    auditLog.logException(methodName,
-                                          GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(methodName, entity.getGUID()),
-                                          error);
+                    watchdogEvent.setChangedClassification(this.getClassification(sourceName, previousClassification));
                 }
+
+                eventPublisher.publishWatchdogEvent(watchdogEvent);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                      error);
             }
         }
     }
@@ -585,19 +650,25 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         if (relationship != null)
         {
-            InstanceType type = relationship.getType();
-
-            if (type != null)
+            try
             {
                 WatchdogRelatedElementsEvent watchdogEvent = new WatchdogRelatedElementsEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setRelatedMetadataElements(this.getRelatedElements(sourceName, relationship, methodName));
+                watchdogEvent.setRelatedMetadataElements(this.getRelatedElements(sourceName, relationship));
 
                 if (previousRelationship != null)
                 {
-                    watchdogEvent.setPreviousRelatedMetadataElements(this.getRelatedElements(sourceName, previousRelationship, methodName));
+                    watchdogEvent.setPreviousRelatedMetadataElements(this.getRelatedElements(sourceName, previousRelationship));
                 }
+
+                eventPublisher.publishWatchdogEvent(watchdogEvent);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, relationship.getGUID()),
+                                      error);
             }
         }
     }

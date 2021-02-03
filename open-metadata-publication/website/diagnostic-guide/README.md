@@ -88,19 +88,48 @@ how to set them up are described in
 
 
 ## Exceptions
+
 ### An example of a response from a REST API call
 
 This is how an exception is passed from the OMAG Server Platform to a calling program.  
 
 ```json
 {
-    "class": "GovernanceOfficerListResponse",
+    "class": "VoidResponse",
+    "relatedHTTPCode": 400,
+    "exceptionClassName": "org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException",
+    "exceptionCausedBy": "java.lang.NullPointerException",
+    "actionDescription": "refreshService",
+    "exceptionErrorMessage": "OMAG-COMMON-400-016 An unexpected java.lang.NullPointerException exception was caught by refreshService; error message was null",
+    "exceptionErrorMessageId": "OMAG-COMMON-400-016",
+    "exceptionErrorMessageParameters": [
+        "java.lang.NullPointerException",
+        "refreshService",
+        "null"
+    ],
+    "exceptionSystemAction": "The system is unable to process the request and has returned an exception to the caller.",
+    "exceptionUserAction": "Review the error message.  Also look up its full message definition which includes the system action and user action.  This is most likely to describe the correct action to take to resolve the error.  If that does not help, look for other diagnostics created at the same time.  Also validate that the caller is a valid client of this server and is operating correctly."
+}
+```
+
+and another example:
+
+```json
+{
+    "class": "VoidResponse",
     "relatedHTTPCode": 404,
     "exceptionClassName": "org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException",
-    "exceptionErrorMessage": "OMAG-PLATFORM-404-001 The OMAG Server cocoMDS2 is not available to service a request from user peterprofile",
-    "exceptionSystemAction": "The system is unable to process the request.",
-    "exceptionUserAction": "Retry the request when the OMAG Server is available.",
+    "actionDescription": "refreshService",
+    "exceptionErrorMessage": "OMAG-MULTI-TENANT-404-001 The OMAG Server exchangeDL01 is not available to service a request from user garygeeke",
+    "exceptionErrorMessageId": "OMAG-MULTI-TENANT-404-001",
+    "exceptionErrorMessageParameters": [
+        "exchangeDL01",
+        "garygeeke"
+    ],
+    "exceptionSystemAction": "The system is unable to process the request because the server is not running on the called platform.",
+    "exceptionUserAction": "Verify that the correct server is being called on the correct platform and that this server is running. Retry the request when the server is available.",
     "exceptionProperties": {
+        "serverName": "exchangeDL01",
         "parameterName": "serverName"
     }
 }
@@ -190,6 +219,10 @@ Below is an example of the types of information captured in an audit log record.
     }
 }
 ```
+
+## Further information
+
+* [Integration Daemon Diagnostics Guide](integration-daemon-diagnostic-guide.md)
 
 ----
 Return to [Home Page](../../../index.md)

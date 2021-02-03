@@ -25,22 +25,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionProperties implements Serializable
+public class GovernanceActionProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long          serialVersionUID = 1L;
 
-    private String                     qualifiedName          = null;
     private int                        domainIdentifier       = 0;
     private String                     displayName            = null;
     private String                     description            = null;
 
     private List<String>               receivedGuards         = null;
 
-    private String                     governanceEngineGUID  = null;
-    private String                     requestType           = null;
-    private Map<String, String>        requestProperties     = null;
-    private List<RequestSourceElement> requestSourceElements = null;
-    private List<ActionTargetElement>  actionTargetElements  = null;
+    private String                     governanceEngineGUID   = null;
+    private String                     requestType            = null;
+    private Map<String, String>        requestProperties      = null;
+    private List<RequestSourceElement> requestSourceElements  = null;
+    private List<ActionTargetElement>  actionTargetElements   = null;
 
     private GovernanceActionStatus     actionStatus           = null;
 
@@ -49,9 +48,6 @@ public class GovernanceActionProperties implements Serializable
 
     private Date                       completionTime         = null;
     private List<String>               completionGuards       = null;
-
-    private Map<String, String>        additionalProperties   = null;
-
 
     /**
      * Default constructor
@@ -69,9 +65,10 @@ public class GovernanceActionProperties implements Serializable
      */
     public GovernanceActionProperties(GovernanceActionProperties template)
     {
+        super(template);
+
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
             domainIdentifier = template.getDomainIdentifier();
             displayName = template.getDisplayName();
             description = template.getDescription();
@@ -91,31 +88,7 @@ public class GovernanceActionProperties implements Serializable
 
             completionTime = template.getCompletionTime();
             completionGuards = template.getCompletionGuards();
-
-            additionalProperties = template.getAdditionalProperties();
         }
-    }
-
-
-    /**
-     * Return the qualified name for this new governance action.
-     *
-     * @return string name
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * Set up the qualified name of this new governance action.
-     *
-     * @param qualifiedName string name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
     }
 
 
@@ -468,38 +441,6 @@ public class GovernanceActionProperties implements Serializable
 
 
     /**
-     * Return any additional properties.
-     *
-     * @return map of properties
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-
-        if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-
-        return additionalProperties;
-    }
-
-
-    /**
-     * Set up any additional properties.
-     *
-     * @param additionalProperties map of properties
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -508,8 +449,7 @@ public class GovernanceActionProperties implements Serializable
     public String toString()
     {
         return "GovernanceActionProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", domainIdentifier=" + domainIdentifier +
+                       "domainIdentifier=" + domainIdentifier +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", receivedGuards=" + receivedGuards +
@@ -523,7 +463,8 @@ public class GovernanceActionProperties implements Serializable
                        ", processingEngineUserId='" + processingEngineUserId + '\'' +
                        ", completionTime=" + completionTime +
                        ", completionGuards=" + completionGuards +
-                       ", additionalProperties=" + additionalProperties +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
                        '}';
     }
 
@@ -545,9 +486,12 @@ public class GovernanceActionProperties implements Serializable
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         GovernanceActionProperties that = (GovernanceActionProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(receivedGuards, that.receivedGuards) &&
@@ -560,10 +504,8 @@ public class GovernanceActionProperties implements Serializable
                        Objects.equals(startTime, that.startTime) &&
                        Objects.equals(processingEngineUserId, that.processingEngineUserId) &&
                        Objects.equals(completionTime, that.completionTime) &&
-                       Objects.equals(completionGuards, that.completionGuards) &&
-                       Objects.equals(additionalProperties, that.additionalProperties);
+                       Objects.equals(completionGuards, that.completionGuards);
     }
-
 
 
     /**
@@ -574,8 +516,8 @@ public class GovernanceActionProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, requestType,
-                            requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime, processingEngineUserId, completionTime,
-                            completionGuards, additionalProperties);
+        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, requestType,
+                            requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime, processingEngineUserId,
+                            completionTime, completionGuards);
     }
 }

@@ -27,7 +27,7 @@ public class ProcessElement implements MetadataElement, Serializable
 
     private ElementHeader                   elementHeader      = null;
     private List<MetadataCorrelationHeader> correlationHeaders = null;
-    private ProcessProperties                  processProperties = null;
+    private ProcessProperties               processProperties = null;
 
     /**
      * Default constructor
