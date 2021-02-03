@@ -6,8 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionTypeProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,24 +15,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceActionTypeElement contains the properties and header for an entity retrieved from the metadata
- * repository that represents a governance action type (plus relevant relationships and properties).
+ * GovernanceActionTypesElement contains the properties and header for a governance action type entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionElement implements MetadataElement, Serializable
+public class GovernanceActionTypeElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader              elementHeader = null;
-    private GovernanceActionProperties properties    = null;
-
+    private ElementHeader                  elementHeader        = null;
+    private GovernanceActionTypeProperties actionTypeProperties = null;
 
     /**
      * Default constructor
      */
-    public GovernanceActionElement()
+    public GovernanceActionTypeElement()
     {
         super();
     }
@@ -44,12 +41,12 @@ public class GovernanceActionElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public GovernanceActionElement(GovernanceActionElement template)
+    public GovernanceActionTypeElement(GovernanceActionTypeElement template)
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
+            elementHeader      = template.getElementHeader();
+            actionTypeProperties = template.getActionTypeProperties();
         }
     }
 
@@ -76,27 +73,26 @@ public class GovernanceActionElement implements MetadataElement, Serializable
     {
         this.elementHeader = elementHeader;
     }
-    
-    
+
     /**
-     * Return the properties of the governance action.
+     * Return details of the process
      *
-     * @return properties bean
+     * @return process properties
      */
-    public GovernanceActionProperties getProperties()
+    public GovernanceActionTypeProperties getActionTypeProperties()
     {
-        return properties;
+        return actionTypeProperties;
     }
 
 
     /**
-     * Set up the properties of the governance action.
+     * Set up process properties
      *
-     * @param properties properties bean
+     * @param actionTypeProperties process properties
      */
-    public void setProperties(GovernanceActionProperties properties)
+    public void setActionTypeProperties(GovernanceActionTypeProperties actionTypeProperties)
     {
-        this.properties = properties;
+        this.actionTypeProperties = actionTypeProperties;
     }
 
 
@@ -108,13 +104,13 @@ public class GovernanceActionElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "GovernanceActionElement{" +
+        return "GovernanceActionTypeElement{" +
                        "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
+                       ", actionTypeProperties=" + actionTypeProperties +
                        '}';
     }
-    
-    
+
+
     /**
      * Return comparison result based on the content of the properties.
      *
@@ -132,9 +128,13 @@ public class GovernanceActionElement implements MetadataElement, Serializable
         {
             return false;
         }
-        GovernanceActionElement that = (GovernanceActionElement) objectToCompare;
-        return Objects.equals(getElementHeader(), that.getElementHeader()) &&
-                       Objects.equals(getProperties(), that.getProperties());
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        GovernanceActionTypeElement that = (GovernanceActionTypeElement) objectToCompare;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(actionTypeProperties, that.actionTypeProperties);
     }
 
 
@@ -146,6 +146,6 @@ public class GovernanceActionElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties);
     }
 }

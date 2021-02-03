@@ -6,8 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProcessProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,24 +15,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceActionTypeElement contains the properties and header for an entity retrieved from the metadata
- * repository that represents a governance action type (plus relevant relationships and properties).
+ * GovernanceActionProcessElement contains the properties and header for a governance action process entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionElement implements MetadataElement, Serializable
+public class GovernanceActionProcessElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader              elementHeader = null;
-    private GovernanceActionProperties properties    = null;
-
+    private ElementHeader                     elementHeader     = null;
+    private GovernanceActionProcessProperties processProperties = null;
 
     /**
      * Default constructor
      */
-    public GovernanceActionElement()
+    public GovernanceActionProcessElement()
     {
         super();
     }
@@ -44,12 +41,12 @@ public class GovernanceActionElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public GovernanceActionElement(GovernanceActionElement template)
+    public GovernanceActionProcessElement(GovernanceActionProcessElement template)
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
+            elementHeader      = template.getElementHeader();
+            processProperties = template.getProcessProperties();
         }
     }
 
@@ -76,27 +73,26 @@ public class GovernanceActionElement implements MetadataElement, Serializable
     {
         this.elementHeader = elementHeader;
     }
-    
-    
+
     /**
-     * Return the properties of the governance action.
+     * Return details of the process
      *
-     * @return properties bean
+     * @return process properties
      */
-    public GovernanceActionProperties getProperties()
+    public GovernanceActionProcessProperties getProcessProperties()
     {
-        return properties;
+        return processProperties;
     }
 
 
     /**
-     * Set up the properties of the governance action.
+     * Set up process properties
      *
-     * @param properties properties bean
+     * @param processProperties process properties
      */
-    public void setProperties(GovernanceActionProperties properties)
+    public void setProcessProperties(GovernanceActionProcessProperties processProperties)
     {
-        this.properties = properties;
+        this.processProperties = processProperties;
     }
 
 
@@ -108,13 +104,13 @@ public class GovernanceActionElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "GovernanceActionElement{" +
+        return "GovernanceActionProcessElement{" +
                        "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
+                       ", processProperties=" + processProperties +
                        '}';
     }
-    
-    
+
+
     /**
      * Return comparison result based on the content of the properties.
      *
@@ -132,9 +128,13 @@ public class GovernanceActionElement implements MetadataElement, Serializable
         {
             return false;
         }
-        GovernanceActionElement that = (GovernanceActionElement) objectToCompare;
-        return Objects.equals(getElementHeader(), that.getElementHeader()) &&
-                       Objects.equals(getProperties(), that.getProperties());
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        GovernanceActionProcessElement that = (GovernanceActionProcessElement) objectToCompare;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(processProperties, that.processProperties);
     }
 
 
@@ -146,6 +146,6 @@ public class GovernanceActionElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), elementHeader, processProperties);
     }
 }
