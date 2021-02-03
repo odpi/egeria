@@ -6,10 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClient;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.RedisAuthService;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.*;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.LineageGraphDisplayRulesService;
 import org.slf4j.Logger;
@@ -19,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
@@ -84,6 +82,13 @@ public class EgeriaUIPlatform {
             return new RedisAuthService();
         }
         return new SessionAuthService();
+    }
+
+    @Bean(value = "tokenClient")
+    @ConditionalOnProperty(value = "authentication.mode", havingValue = "token", matchIfMissing = true)
+    public TokenClient stateLessTokenClient(){
+        return new TokenClient() {
+        };
     }
 
     @PostConstruct
