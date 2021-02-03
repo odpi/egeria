@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning;
+package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
@@ -11,60 +11,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MoveCopyFileGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is is a Provisioning Governance Action Service.
+ * MonitorForNewAssetGovernanceActionProvider is the OCF connector provider for the Monitor for New Asset Governance Action Service.
+ * This is is a Watchdog Governance Action Service.
  */
-public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public class MonitorForNewAssetGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
-    private static final String  connectorTypeName = "Move or Copy File Governance Action Service";
-    private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
+    private static final String  connectorTypeGUID = "8145967e-bb83-44b2-bc8c-68112c6a5a06";
+    private static final String  connectorTypeName = "Monitor for New Asset Governance Action Service";
+    private static final String  connectorTypeDescription = "Watchdog Governance Action Service that detects new assets.";
 
-    static final String PROVISION_UNCATALOGUED_FILES_CONFIGURATION_PROPERTY = "provisionUncataloguedFiles";
+    static final String INTERESTING_ASSET_TYPE_NAME_PROPERTY                = "interestingAssetTypeName";
+
     static final String NO_LINEAGE_CONFIGURATION_PROPERTY                   = "createLineage";
     static final String LINEAGE_PROCESS_NAME_CONFIGURATION_PROPERTY         = "processName";
     static final String TARGET_FILE_NAME_PATTERN_CONFIGURATION_PROPERTY     = "targetFileNamePattern";
 
-    static final String COPY_REQUEST_TYPE = "copy-file";
-    static final String MOVE_REQUEST_TYPE = "move-file";
+    static final String PROCESS_SINGLE_EVENT    = "process-single-event";
+    static final String PROCESS_MULTIPLE_EVENTS = "process-multiple-events";
 
-    static final String SOURCE_FILE_PARAMETER        = "source-file";
-    static final String DESTINATION_FOLDER_PARAMETER = "destination-folder";
+    static final String MONITORING_COMPLETE = "monitoring-complete";
+    static final String MONITORING_SHUTDOWN = "monitoring-shutdown";
+    static final String MONITORING_FAILED   = "monitoring-failed";
 
-    static final String SOURCE_FILE_ACTION_TARGET        = "source-file";
-    static final String DESTINATION_FOLDER_ACTION_TARGET = "destination-folder";
+    private static final String connectorClassName = MonitorForNewAssetGovernanceActionConnector.class.getName();
 
-    static final String PROVISIONING_COMPLETE_GUARD = "provisioning-complete";
-    static final String PROVISIONING_FAILED_GUARD   = "provisioning-failed";
-
-    private static final String connectorClassName = MoveCopyFileGovernanceActionConnector.class.getName();
-
-    private List<String> supportedRequestTypes       = new ArrayList<>();
-    private List<String> supportedRequestParameters  = new ArrayList<>();
-    private List<String> supportedTargetActionNames  = new ArrayList<>();
-    private List<String> supportedGuards             = new ArrayList<>();
+    private List<String> supportedGuards = new ArrayList<>();
 
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
      */
-    public MoveCopyFileGovernanceActionProvider()
+    public MonitorForNewAssetGovernanceActionProvider()
     {
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedRequestTypes.add(COPY_REQUEST_TYPE);
-        supportedRequestTypes.add(MOVE_REQUEST_TYPE);
-
-        supportedRequestParameters.add(SOURCE_FILE_PARAMETER);
-        supportedRequestParameters.add(DESTINATION_FOLDER_PARAMETER);
-
-        supportedTargetActionNames.add(SOURCE_FILE_ACTION_TARGET);
-        supportedTargetActionNames.add(DESTINATION_FOLDER_ACTION_TARGET);
-
-        supportedGuards.add(PROVISIONING_COMPLETE_GUARD);
-        supportedGuards.add(PROVISIONING_FAILED_GUARD);
+        supportedGuards.add(MONITORING_COMPLETE);
+        supportedGuards.add(MONITORING_SHUTDOWN);
+        supportedGuards.add(MONITORING_FAILED);
 
         super.setConnectorClassName(connectorClassName);
 
@@ -75,13 +60,6 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(PROVISION_UNCATALOGUED_FILES_CONFIGURATION_PROPERTY);
-        recognizedConfigurationProperties.add(NO_LINEAGE_CONFIGURATION_PROPERTY);
-        recognizedConfigurationProperties.add(LINEAGE_PROCESS_NAME_CONFIGURATION_PROPERTY);
-        recognizedConfigurationProperties.add(TARGET_FILE_NAME_PATTERN_CONFIGURATION_PROPERTY);
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
     }
@@ -96,7 +74,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
     @Override
     public List<String> supportedRequestTypes()
     {
-        return supportedRequestTypes;
+        return null;
     }
 
 
@@ -108,7 +86,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
     @Override
     public List<String> supportedRequestParameters()
     {
-        return supportedRequestParameters;
+        return null;
     }
 
 
@@ -134,7 +112,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
     @Override
     public List<String> supportedActionTargetNames()
     {
-        return supportedTargetActionNames;
+        return null;
     }
 
 
