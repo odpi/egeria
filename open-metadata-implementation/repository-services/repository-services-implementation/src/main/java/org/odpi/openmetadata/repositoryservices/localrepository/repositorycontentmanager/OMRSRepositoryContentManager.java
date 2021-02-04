@@ -61,6 +61,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     private Map<String, List<TypeDefLink>>  typeDefSuperTypes              = new HashMap<>();
     private Map<String, InstanceType>       knownInstanceTypes             = new HashMap<>();
     private Map<String, String>             metadataCollectionNames        = new HashMap<>();
+    private Map<String, Set<String>>        knownPropertyToTypeDefNames    = new HashMap<>();
 
 
     /*
@@ -157,11 +158,39 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             activeTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
             activeTypeDefNames.put(newTypeDef.getName(), newTypeDef);
 
-            log.debug("New Active Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
+            log.debug("New Active Type {} from {}. Full TypeDef: {}", newTypeDef.getName(), sourceName, newTypeDef);
         }
         else
         {
-            log.debug("New Known Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
+            log.debug("New Known Type {} from {}. Full TypeDef: {}", newTypeDef.getName(), sourceName, newTypeDef);
+        }
+        cacheTypeDefPropertyLookup(sourceName, newTypeDef);
+    }
+
+
+    /**
+     * Cache a lookup of the TypeDef's properties by their name, to the names of the TypeDefs in which a property by
+     * that name is defined.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeDef TypeDef structure describing the new TypeDef.
+     */
+    private void cacheTypeDefPropertyLookup(String sourceName, TypeDef typeDef)
+    {
+        // retrieve all properties on the newTypeDef
+        String                     typeDefName                   = typeDef.getName();
+        List<TypeDefAttribute>     propertiesDefinition          = typeDef.getPropertiesDefinition();
+
+        if (propertiesDefinition != null)
+        {
+            // for each property, add this typeDef's GUID as one that defines a property with this name
+            for (TypeDefAttribute property : propertiesDefinition)
+            {
+                String propertyName = property.getAttributeName();
+                knownPropertyToTypeDefNames.computeIfAbsent(propertyName, k -> new HashSet<>());
+                knownPropertyToTypeDefNames.get(propertyName).add(typeDefName);
+                log.debug("Cached property '{}' from {}, for lookup under TypeDef: {}", propertyName, sourceName, typeDefName);
+            }
         }
     }
 
@@ -188,7 +217,29 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             activeTypeDefNames.remove(obsoleteTypeDefName);
         }
 
-        log.debug("Removed Type " + obsoleteTypeDefName + " from " + sourceName);
+        log.debug("Removed Type {} from {}", obsoleteTypeDefName, sourceName);
+        uncacheTypeDefPropertyLookup(sourceName, obsoleteTypeDefName);
+    }
+
+
+    /**
+     * Remove a TypeDef from the reverse property lookup.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeDefName unique name for the type.
+     */
+    private void uncacheTypeDefPropertyLookup(String sourceName, String typeDefName)
+    {
+        // Not much choice but to iterate through the entire Map...
+        for (String propertyName : knownPropertyToTypeDefNames.keySet())
+        {
+            // ... but the removal operation at least is idempotent (no need to first check it is present in the Set)
+            boolean removed = knownPropertyToTypeDefNames.get(propertyName).remove(typeDefName);
+            if (removed)
+            {
+                log.debug("Removed Type {} from {}, from reverse-lookup of property: {}", typeDefName, sourceName, propertyName);
+            }
+        }
     }
 
 
@@ -1467,6 +1518,30 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
 
         return propertiesDefinition;
+    }
+
+
+    /**
+     * Return the names of all of the type definitions that define the supplied property name.
+     *
+     * @param sourceName name of the caller.
+     * @param propertyName property name to query.
+     * @param methodName calling method.
+     * @return set of names of the TypeDefs that define a property with this name
+     */
+    Set<String> getAllTypeDefsForProperty(String sourceName,
+                                          String propertyName,
+                                          String methodName)
+    {
+        final String               thisMethodName                = "getAllTypeDefsForProperty";
+
+        if (propertyName == null)
+        {
+            throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+            return null;
+        }
+
+        return knownPropertyToTypeDefNames.getOrDefault(propertyName, null);
     }
 
 
