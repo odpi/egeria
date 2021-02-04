@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
 import java.util.*;
 
@@ -35,7 +34,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     private String              displayName                  = null;
     private String              description                  = null;
     private String              owner                        = null;
-    private OwnerType           ownerType                    = null;
+    private OwnerCategory       ownerCategory                = null;
     private List<String>        zoneMembership               = null;
     private String              originOrganizationGUID       = null;
     private String              originBusinessCapabilityGUID = null;
@@ -69,7 +68,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
             displayName                  = template.getDisplayName();
             description                  = template.getDescription();
             owner                        = template.getOwner();
-            ownerType                    = template.getOwnerType();
+            ownerCategory                = template.getOwnerCategory();
             zoneMembership               = template.getZoneMembership();
             originOrganizationGUID       = template.getOriginOrganizationGUID();
             originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
@@ -153,20 +152,20 @@ public class GovernanceServiceProperties extends ReferenceableProperties
      *
      * @return OwnerCategory enum
      */
-    public OwnerType getOwnerType()
+    public OwnerCategory getOwnerCategory()
     {
-        return ownerType;
+        return ownerCategory;
     }
 
 
     /**
      * Set up the owner type for this asset.
      *
-     * @param ownerType OwnerCategory enum
+     * @param ownerCategory OwnerCategory enum
      */
-    public void setOwnerType(OwnerType ownerType)
+    public void setOwnerCategory(OwnerCategory ownerCategory)
     {
-        this.ownerType = ownerType;
+        this.ownerCategory = ownerCategory;
     }
 
 
@@ -315,15 +314,13 @@ public class GovernanceServiceProperties extends ReferenceableProperties
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", owner='" + owner + '\'' +
-                       ", ownerType=" + ownerType +
+                       ", ownerCategory=" + ownerCategory +
                        ", zoneMembership=" + zoneMembership +
                        ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
                        ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
                        ", otherOriginValues=" + otherOriginValues +
                        ", additionalProperties=" + additionalProperties +
                        ", connection=" + connection +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -354,7 +351,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(owner, that.owner) &&
-                       ownerType == that.ownerType &&
+                       ownerCategory == that.ownerCategory &&
                        Objects.equals(zoneMembership, that.zoneMembership) &&
                        Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
                        Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
@@ -372,7 +369,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, displayName, description, owner, ownerType, zoneMembership, originOrganizationGUID,
+        return Objects.hash(super.hashCode(), qualifiedName, displayName, description, owner, ownerCategory, zoneMembership, originOrganizationGUID,
                             originBusinessCapabilityGUID, otherOriginValues, additionalProperties, connection);
     }
 }
