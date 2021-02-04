@@ -90,15 +90,10 @@ public class GovernanceServiceConverter<B> extends GovernanceEngineOMASConverter
                     /* Note this value should be in the classification */
                     properties.setOwner(this.removeOwner(instanceProperties));
                     /* Note this value should be in the classification */
-                    properties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
+                    properties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
                     /* Note this value should be in the classification */
                     properties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    properties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                     /*
                      * The values in the classifications override the values in the main properties of the Asset's entity.
@@ -111,7 +106,7 @@ public class GovernanceServiceConverter<B> extends GovernanceEngineOMASConverter
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, primaryEntity);
 
                     properties.setOwner(this.getOwner(instanceProperties));
-                    properties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+                    properties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, primaryEntity);
 

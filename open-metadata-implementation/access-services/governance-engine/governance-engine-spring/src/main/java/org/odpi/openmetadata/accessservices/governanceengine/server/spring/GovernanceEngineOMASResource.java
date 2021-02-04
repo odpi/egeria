@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *
+ * GovernanceEngineOMASResource supports the REST APIs for running Governance Action Service
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")

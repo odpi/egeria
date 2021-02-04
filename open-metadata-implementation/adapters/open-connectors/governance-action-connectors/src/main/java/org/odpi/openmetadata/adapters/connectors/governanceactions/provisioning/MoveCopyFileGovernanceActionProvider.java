@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * MoveCopyFileGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is is a Provisioning Governance Service.
+ * This is is a Provisioning Governance Action Service.
  */
 public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
