@@ -8,7 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.PredicateUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,23 +54,28 @@ public class AssetLineageRestServices {
     }
 
     /**
-     * Scan the cohort for available entities of the provided entityType
+     * Scan the cohort for the given type and filtering based on the findEntitiesParameters.
+     * Providing only the updatedAfter filed in findEntitiesParameters will update only the entities that were updated
+     * in the cohort after that date.
      * Publish the context for each entity on the AL OMAS out Topic
      *
-     * @param serverName name of server instance to call
-     * @param userId     the name of the calling user
-     * @param entityType the type of the entity to search for
-     *
-     * @return a list of unique identifiers (guids) of the available entityType as a response
+     * @param serverName             name of server instance to call
+     * @param userId                 the name of the calling user
+     * @param entityType             the type of the entity to search for
+     * @param findEntitiesParameters filtering used to reduce the scope of the search
+     * @return the unique identifier (guid) of the entity that was processed
      */
-    public GUIDListResponse publishEntities(String serverName, String userId, String entityType) {
+    public GUIDListResponse publishEntities(String serverName, String userId, String entityType,
+                                            FindEntitiesParameters findEntitiesParameters) {
         GUIDListResponse response = new GUIDListResponse();
 
         String methodName = "publishEntities";
         try {
-            AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
-            List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesByTypeName(userId, entityType);
+            HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
+            SearchProperties searchProperties = handlerHelper.getSearchPropertiesAfterUpdateTime(findEntitiesParameters.getUpdatedAfter());
+            List<EntityDetail> entitiesByTypeName = handlerHelper.getEntities(userId, entityType, findEntitiesParameters,  searchProperties);
             return publishEntitiesContext(userId, serverName, entityType, entitiesByTypeName);
+
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
@@ -80,7 +86,6 @@ public class AssetLineageRestServices {
 
         return response;
     }
-
     private GUIDListResponse publishEntitiesContext(String userId, String serverName, String entityType, List<EntityDetail> entitiesByTypeName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "publishEntitiesContext";
@@ -126,12 +131,10 @@ public class AssetLineageRestServices {
         String methodName = "publishEntity";
 
         try {
-
-            AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
             AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            EntityDetail entityByTypeAndGuid = assetContextHandler.getEntityByTypeAndGuid(userId, guid, entityType);
-
-            if (entityByTypeAndGuid == null) {
+            HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
+            EntityDetail entity = handlerHelper.getEntityDetails(userId, guid, entityType);
+            if (entity == null) {
                 auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("ENTITY_NOT_FOUND", entityType, guid));
                 return response;
             }
@@ -143,7 +146,7 @@ public class AssetLineageRestServices {
                 return response;
             }
 
-            String publishedEntitiesContext = publishEntityContext(publisher, entityByTypeAndGuid, auditLog);
+            String publishedEntitiesContext = publishEntityContext(publisher, entity, auditLog);
             response.setGUIDs(Collections.singletonList(publishedEntitiesContext));
 
         } catch (InvalidParameterException e) {
@@ -156,39 +159,6 @@ public class AssetLineageRestServices {
         return response;
     }
 
-
-    /**
-     * Scan the cohort for the given type using and filtering based on the findEntitiesParameters.
-     * Providing only the updatedAfter filed in findEntitiesParameters will update only the entities that were updated
-     * in the cohort after that date.
-     * Publish the context for the entity on the AL OMAS out Topic
-     *
-     * @param serverName             name of server instance to call
-     * @param userId                 the name of the calling user
-     * @param entityType             the type of the entity to search for
-     * @param findEntitiesParameters filtering used to reduce the scope of the search
-     * @return the unique identifier (guid) of the entity that was processed
-     */
-    public GUIDListResponse publishEntitiesUpdate(String serverName, String userId, String entityType,
-                                                  FindEntitiesParameters findEntitiesParameters) {
-        GUIDListResponse response = new GUIDListResponse();
-
-        String methodName = "publishEntities";
-        try {
-            AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
-            List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesToUpdate(userId, entityType, findEntitiesParameters);
-            return publishEntitiesContext(userId, serverName, entityType, entitiesByTypeName);
-
-        } catch (InvalidParameterException e) {
-            restExceptionHandler.captureInvalidParameterException(response, e);
-        } catch (UserNotAuthorizedException e) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, e);
-        } catch (PropertyServerException e) {
-            restExceptionHandler.capturePropertyServerException(response, e);
-        }
-
-        return response;
-    }
 
     /**
      * Returns the list of entity GUIDs that were published on the Out Topic

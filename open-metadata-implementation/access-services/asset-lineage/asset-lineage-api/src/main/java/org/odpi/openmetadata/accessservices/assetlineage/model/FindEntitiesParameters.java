@@ -88,7 +88,11 @@ public class FindEntitiesParameters {
         }
 
         public Builder withUpdatedAfter(LocalDateTime updatedAfterDate) {
-            this.updatedAfter = updatedAfterDate.atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
+            if (updatedAfterDate != null) {
+                this.updatedAfter = updatedAfterDate.atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
+            } else {
+                this.updatedAfter = 0L;
+            }
             return this;
         }
 

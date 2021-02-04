@@ -177,15 +177,14 @@ public class HandlerHelper {
      * @param userId                 the user id
      * @param entityTypeName         the name of the entity type
      * @param findEntitiesParameters filtering used to reduce the scope of the search
-     * @return a list with entities matching the supplied parameteres;
+     * @return a list with entities matching the supplied parameters;
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> getEntitiesToUpdate(String userId, String entityTypeName, FindEntitiesParameters findEntitiesParameters)
+    public List<EntityDetail> getEntities(String userId, String entityTypeName, FindEntitiesParameters findEntitiesParameters, SearchProperties searchProperties)
             throws UserNotAuthorizedException, PropertyServerException {
-        final String methodName = "getEntitiesByTypeName";
+        final String methodName = "getEntities";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
-        SearchProperties searchProperties = getSearchPropertiesAfterUpdateTime(findEntitiesParameters.getUpdatedAfter());
         return repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
                 findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName);
