@@ -63,7 +63,7 @@ public class AssetLineageRestServices {
      * @param userId                 the name of the calling user
      * @param entityType             the type of the entity to search for
      * @param findEntitiesParameters filtering used to reduce the scope of the search
-     * @return the unique identifier (guid) of the entity that was processed
+     * @return a list of unique identifiers (guids) of the available entityType as a response
      */
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType,
                                             FindEntitiesParameters findEntitiesParameters) {

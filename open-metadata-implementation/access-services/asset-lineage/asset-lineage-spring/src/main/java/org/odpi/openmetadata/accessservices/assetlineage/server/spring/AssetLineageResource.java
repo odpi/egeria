@@ -38,7 +38,7 @@ public class AssetLineageResource {
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param entityType the name of the relationship type
-     * @param updatedAfterDate      the date after which the entities were retrieved were updated. The date must be provided in the ISO format and is mandatory
+     * @param updatedAfterDate      the date after which the entities were retrieved were updated. The date must be provided in the ISO format
      * @param entitySubtypeGUIDs    optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
      *                              include in the search results. Null means all subtypes.
      * @param limitResultsByStatus  By default, entities in all statuses are returned.  However, it is possible
