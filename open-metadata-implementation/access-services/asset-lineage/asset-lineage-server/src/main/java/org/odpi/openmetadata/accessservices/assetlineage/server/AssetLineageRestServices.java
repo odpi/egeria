@@ -73,7 +73,7 @@ public class AssetLineageRestServices {
         try {
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
             SearchProperties searchProperties = handlerHelper.getSearchPropertiesAfterUpdateTime(findEntitiesParameters.getUpdatedAfter());
-            List<EntityDetail> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, findEntitiesParameters,  searchProperties);
+            List<EntityDetail> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
             return publishEntitiesContext(userId, serverName, entityType, entitiesByTypeName);
 
         } catch (InvalidParameterException e) {

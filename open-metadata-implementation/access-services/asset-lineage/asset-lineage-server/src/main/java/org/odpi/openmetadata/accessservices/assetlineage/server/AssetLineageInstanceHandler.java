@@ -125,7 +125,8 @@ public class AssetLineageInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException the user not authorized exception
      * @throws PropertyServerException    the property server exception
      */
-    public HandlerHelper getHandlerHelper(String userId, String serverName, String serviceOperationName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
+    public HandlerHelper getHandlerHelper(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         if (instance != null) {
             return instance.getHandlerHelper();
