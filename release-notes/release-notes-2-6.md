@@ -40,7 +40,6 @@ so this can be mapped to a volume easily.
 
 If you have already explicitly configured the relevant connector yourself there will be no change. this updates the defaults only.
 
-
 ### Removal of the Discovery Server and Stewardship Server
  
 The Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been consolidated into a new
@@ -110,11 +109,13 @@ Open Metadata and Governance vision, strategy and content.
 
 * Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been replaced with more extensive capability - see above.
 * Information View OMAS has now been removed following earlier deprecation.
+* 
 # Further Help and Support
 
 As part of the Linux AI & Data Foundation, our slack channels have moved to the [LF AI & Data Slack workspace](slack.lfaidata.foundation), and our mailing lists can now be found at https://lists.lfaidata.foundation/groups
 
 Continue to use these resources, along with GitHub to report bugs or ask questions.
+
 ----
 * Return to [Release Notes](.)
    
