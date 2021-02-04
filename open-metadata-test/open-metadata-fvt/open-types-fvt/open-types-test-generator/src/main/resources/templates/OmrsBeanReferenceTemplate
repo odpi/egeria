@@ -133,6 +133,7 @@ $$$>
         }
     }    
 
+    @SuppressWarnings(value = "unchecked")
     public <$$uname$$>Reference(Map objIdMap) {
         if (objIdMap != null) {
             Object reg = objIdMap.get(KEY_RELATED_END_GUID);
