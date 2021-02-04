@@ -51,15 +51,15 @@ public class AssetLineageResource {
      * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
      */
     @GetMapping(path = "/publish-entities/{entityType}")
-    public GUIDListResponse publishEntitiesUpdate(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String entityType,
-                                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime updatedAfterDate,
-                                                  @RequestParam(required = false) List<String> entitySubtypeGUIDs,
-                                                  @RequestParam(required = false) List<InstanceStatus> limitResultsByStatus,
-                                                  @RequestParam(required = false) SearchClassifications searchClassifications,
-                                                  @RequestParam(required = false) String sequencingProperty,
-                                                  @RequestParam(required = false) SequencingOrder sequencingOrder) {
+    public GUIDListResponse publishEntities(@PathVariable String serverName,
+                                            @PathVariable String userId,
+                                            @PathVariable String entityType,
+                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime updatedAfterDate,
+                                            @RequestParam(required = false) List<String> entitySubtypeGUIDs,
+                                            @RequestParam(required = false) List<InstanceStatus> limitResultsByStatus,
+                                            @RequestParam(required = false) SearchClassifications searchClassifications,
+                                            @RequestParam(required = false) String sequencingProperty,
+                                            @RequestParam(required = false) SequencingOrder sequencingOrder) {
 
         FindEntitiesParameters findEntitiesParameters = new FindEntitiesParameters.Builder()
                 .withUpdatedAfter(updatedAfterDate)
