@@ -1559,6 +1559,13 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
 
+        List<String> maintainedBy = originalInstance.getMaintainedBy();
+        if (!maintainedBy.contains(userId))
+        {
+            maintainedBy.add(userId);
+            updatedInstance.setMaintainedBy(maintainedBy);
+        }
+
         return updatedInstance;
     }
 
@@ -1582,6 +1589,13 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
 
+        List<String> maintainedBy = originalInstance.getMaintainedBy();
+        if (!maintainedBy.contains(userId))
+        {
+            maintainedBy.add(userId);
+            updatedInstance.setMaintainedBy(maintainedBy);
+        }
+
         return updatedInstance;
     }
 
@@ -1604,6 +1618,13 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
+
+        List<String> maintainedBy = originalInstance.getMaintainedBy();
+        if (!maintainedBy.contains(userId))
+        {
+            maintainedBy.add(userId);
+            updatedInstance.setMaintainedBy(maintainedBy);
+        }
 
         return updatedInstance;
     }
