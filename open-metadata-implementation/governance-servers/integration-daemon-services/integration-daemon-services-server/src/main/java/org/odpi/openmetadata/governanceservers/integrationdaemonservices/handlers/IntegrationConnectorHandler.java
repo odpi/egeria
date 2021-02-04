@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
@@ -35,7 +36,7 @@ public class IntegrationConnectorHandler implements Serializable
     /*
      * These values are set in the constructor and do not change.
      */
-    private String                     integrationServiceFullName;
+    private String                    integrationServiceFullName;
     private Map<String, Object>       integrationServiceOptions;
     private String                    integrationDaemonName;
     private String                    integrationConnectorId;
@@ -374,6 +375,11 @@ public class IntegrationConnectorHandler implements Serializable
         {
             if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
             {
+                if (integrationConnector instanceof IntegrationConnectorBase)
+                {
+                    integrationConnector.setConnectorName(integrationConnectorName);
+                }
+
                 integrationConnector.start();
                 updateStatus(IntegrationConnectorStatus.RUNNING);
             }
