@@ -862,14 +862,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         } catch (EntityNotKnownException exception) {
             /*
              * Even if it supports historical retrieval, the repository should not return any version of a purged entity,
-             * as the entity and all of its history should have been purged
+             * as the entity and all of its history should have been purged. Therefore this exception being thrown
+             * indicates success -- so we do not need to handle it any further.
              */
-            assertCondition((true),
-                            assertion27,
-                            testTypeName + assertionMsg27,
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
-
         } catch (FunctionNotSupportedException exception) {
 
             super.addNotSupportedAssertion(assertion31,
