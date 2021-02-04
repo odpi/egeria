@@ -61,7 +61,6 @@ public class AssetLineageResource {
                                                   @RequestParam(required = false) String sequencingProperty,
                                                   @RequestParam(required = false) SequencingOrder sequencingOrder) {
 
-        System.out.println("updated after... " + updatedAfterDate);
         FindEntitiesParameters findEntitiesParameters = new FindEntitiesParameters.Builder()
                 .withUpdatedAfter(updatedAfterDate)
                 .withEntitySubtypeGUIDs(entitySubtypeGUIDs)

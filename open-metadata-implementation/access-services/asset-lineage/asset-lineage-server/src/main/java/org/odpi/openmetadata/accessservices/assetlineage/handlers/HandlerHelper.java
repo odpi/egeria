@@ -172,7 +172,7 @@ public class HandlerHelper {
 
 
     /**
-     * Retreieves a list of entities based on the search criteria passed
+     * Retrieves a list of entities based on the search criteria passed
      *
      * @param userId                 the user id
      * @param entityTypeName         the name of the entity type
@@ -181,7 +181,7 @@ public class HandlerHelper {
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> getEntities(String userId, String entityTypeName, FindEntitiesParameters findEntitiesParameters, SearchProperties searchProperties)
+    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, FindEntitiesParameters findEntitiesParameters, SearchProperties searchProperties)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "getEntities";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
