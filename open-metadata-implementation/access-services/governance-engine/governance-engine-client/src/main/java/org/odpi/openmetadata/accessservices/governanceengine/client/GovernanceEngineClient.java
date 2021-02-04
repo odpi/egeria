@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
+import org.odpi.openmetadata.accessservices.governanceengine.api.GovernanceProcessingInterface;
+import org.odpi.openmetadata.accessservices.governanceengine.api.MetadataElementInterface;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
@@ -23,7 +25,7 @@ import java.util.Map;
  * It is however shared by all of the governance action services running in an engine service so that we only need one connector to the topic
  * listener for the watchdog governance services.
  */
-public class GovernanceEngineClient
+public class GovernanceEngineClient implements MetadataElementInterface, GovernanceProcessingInterface
 {
     private String                     serverName;               /* Initialized in constructor */
     private String                     serverPlatformURLRoot;    /* Initialized in constructor */
@@ -116,6 +118,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
+    @Override
     public OpenMetadataElement getMetadataElementByGUID(String userId,
                                                         String elementGUID) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
@@ -151,6 +154,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
+    @Override
     public List<OpenMetadataElement> findMetadataElementsWithString(String userId,
                                                                     String searchString,
                                                                     int    startFrom,
@@ -197,6 +201,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
+    @Override
     public List<RelatedMetadataElement> getRelatedMetadataElements(String userId,
                                                                    String elementGUID,
                                                                    String relationshipTypeName,
@@ -249,6 +254,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
+    @Override
     public List<OpenMetadataElement> findMetadataElements(String                userId,
                                                           String                metadataElementTypeName,
                                                           List<String>          metadataElementSubtypeName,
@@ -307,6 +313,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
+    @Override
     public  List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           userId,
                                                                                    String           relationshipTypeName,
                                                                                    SearchProperties searchProperties,
@@ -362,6 +369,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public String createMetadataElementInStore(String            userId,
                                                String            metadataElementTypeName,
                                                ElementStatus     initialStatus,
@@ -413,6 +421,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void updateMetadataElementInStore(String            userId,
                                              String            metadataElementGUID,
                                              boolean           replaceProperties,
@@ -456,6 +465,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void updateMetadataElementStatusInStore(String        userId,
                                                    String        metadataElementGUID,
                                                    ElementStatus newElementStatus,
@@ -496,6 +506,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public  void deleteMetadataElementInStore(String userId,
                                               String metadataElementGUID) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
@@ -534,6 +545,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void classifyMetadataElementInStore(String            userId,
                                                String            metadataElementGUID,
                                                String            classificationName,
@@ -583,6 +595,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public  void reclassifyMetadataElementInStore(String            userId,
                                                   String            metadataElementGUID,
                                                   String            classificationName,
@@ -629,6 +642,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void updateClassificationStatusInStore(String userId,
                                                   String metadataElementGUID,
                                                   String classificationName,
@@ -672,6 +686,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public  void unclassifyMetadataElementInStore(String userId,
                                                   String metadataElementGUID,
                                                   String classificationName) throws InvalidParameterException,
@@ -717,6 +732,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public String createRelatedElementsInStore(String            userId,
                                                String            relationshipTypeName,
                                                String            metadataElement1GUID,
@@ -771,6 +787,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void updateRelatedElementsInStore(String            userId,
                                              String            relationshipGUID,
                                              boolean           replaceProperties,
@@ -812,6 +829,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public  void updateRelatedElementsStatusInStore(String userId,
                                                     String relationshipGUID,
                                                     Date   effectiveFrom,
@@ -850,6 +868,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void deleteRelatedElementsInStore(String userId,
                                              String relationshipGUID) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -887,6 +906,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
+    @Override
     public void updateActionTargetStatus(String                 userId,
                                          String                 actionTargetGUID,
                                          GovernanceActionStatus status,
@@ -928,6 +948,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
+    @Override
     public void updateGovernanceActionStatus(String                 userId,
                                              String                 governanceActionGUID,
                                              GovernanceActionStatus governanceActionStatus) throws InvalidParameterException,
@@ -969,6 +990,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
+    @Override
     public void recordCompletionStatus(String           userId,
                                        String           governanceActionGUID,
                                        CompletionStatus status,
@@ -1023,6 +1045,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public String initiateGovernanceAction(String              userId,
                                            String              qualifiedName,
                                            int                 domainIdentifier,
@@ -1089,6 +1112,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public String initiateGovernanceActionProcess(String       userId,
                                                   String       processQualifiedName,
                                                   List<String> requestSourceGUIDs,
@@ -1144,6 +1168,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a incident report
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public  String createIncidentReport(String                        userId,
                                         String                        qualifiedName,
                                         int                           domainIdentifier,
@@ -1197,6 +1222,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
+    @Override
     public GovernanceActionElement getGovernanceAction(String userId,
                                                        String governanceActionGUID) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -1229,6 +1255,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
+    @Override
     public void claimGovernanceAction(String userId,
                                       String governanceActionGUID) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -1264,6 +1291,7 @@ public class GovernanceEngineClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
+    @Override
     public List<GovernanceActionElement>  getActiveClaimedGovernanceActions(String userId,
                                                                             String governanceEngineGUID,
                                                                             int    startFrom,

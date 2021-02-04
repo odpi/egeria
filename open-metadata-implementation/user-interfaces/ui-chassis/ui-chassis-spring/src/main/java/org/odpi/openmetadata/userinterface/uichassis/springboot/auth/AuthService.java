@@ -61,8 +61,8 @@ public interface AuthService {
 
     /**
      *
-     * @param user
-     * @param secret
+     * @param user the user to create token for
+     * @param secret the secret for signature
      * @return jwt token
      */
     default String createTokenForUser(User user, String secret) {

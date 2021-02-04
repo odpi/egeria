@@ -4,12 +4,10 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -17,68 +15,128 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
- * MoveCopyFileGovernanceActionConnector moves or copies files from one location to another and creates lineage between them.
+ * MoveCopyFileGovernanceActionConnector moves or copies files from one location to another and optionally creates lineage between them.
  */
 class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceActionService
 {
-    static volatile Map<String, Integer> fileIndexMap = new HashMap<>();
+    /*
+     * This map remembers the index of the last file that was created in a destination folder.
+     */
+    private static volatile Map<String, Integer> fileIndexMap = new HashMap<>();
 
-    PropertyHelper propertyHelper = new PropertyHelper();
+    private PropertyHelper propertyHelper = new PropertyHelper();
 
 
-
-    private static synchronized String getDestinationFileName(String destinationFolderName,
+    /**
+     * Generate a destination file name based on the input.
+     * @param previousDestinationFileName the file name tried on a previous iteration of the the loop
+     * @param destinationFolderName folder name where the file is to be copied to
+     * @param sourceFile File object pointing to the source file
+     * @param fileNamePattern pattern to generate the destination filename (or null to use the source file name)
+     * @return next file name to try - or null if no more
+     */
+    private static synchronized String getDestinationFileName(String previousDestinationFileName,
+                                                              String destinationFolderName,
                                                               File   sourceFile,
                                                               String fileNamePattern)
     {
-        // todo
-        return null;
+         int fileIndex;
+
+         if (fileIndexMap.get(destinationFolderName) != null)
+         {
+             fileIndex = fileIndexMap.get(destinationFolderName) + 1;
+         }
+         else
+         {
+             fileIndex = 0;
+         }
+
+         String nextDestinationFileName;
+
+         if (fileNamePattern != null)
+         {
+             nextDestinationFileName = MessageFormat.format(fileNamePattern, sourceFile.getName(), fileIndex);
+         }
+         else
+         {
+             nextDestinationFileName = sourceFile.getName();
+         }
+
+         if ((previousDestinationFileName != null) && (previousDestinationFileName.equals(nextDestinationFileName)))
+         {
+             /*
+              * The file name is no longer changing as the index increases so return null to show that there
+              * are no more options.
+              */
+             return null;
+         }
+         else
+         {
+             /*
+              * A new file name has been created so return it to try.
+              */
+             fileIndexMap.put(destinationFolderName, fileIndex);
+             return FilenameUtils.concat(destinationFolderName, nextDestinationFileName);
+         }
     }
 
 
 
     /**
+     * Perform the file provisioning.
      *
-     * @param destinationFolderName
+     * @param destinationFolderName name of the folder where the file is to be provisioned into
      * @param sourceFilePathName full path name of the source file
      * @param fileNamePattern patten for generating the name of the destination file
      * @param copyFile is this a copy of a move?
      * @return name of new file
      */
-    private static synchronized String provisionFile(String destinationFolderName,
-                                                     String sourceFilePathName,
-                                                     String fileNamePattern,
-                                                     boolean copyFile) throws IOException
+    private static synchronized String provisionFile(String  destinationFolderName,
+                                                     String  sourceFilePathName,
+                                                     String  fileNamePattern,
+                                                     boolean copyFile)
     {
         try
         {
             File   sourceFile          = new File(sourceFilePathName);
-            String destinationFileName = getDestinationFileName(destinationFolderName, sourceFile, fileNamePattern);
-            File destinationFile       = new File(destinationFileName);
+            File   destinationFolder   = new File(destinationFolderName);
 
-            if (copyFile)
+            String destinationFileName = getDestinationFileName(null, destinationFolderName, sourceFile, fileNamePattern);
+
+            while (destinationFileName != null)
             {
-                // todo log audit record
-                FileUtils.copyFile(sourceFile, destinationFile, true);
-            }
-            else
-            {
-                // todo log audit record
-                FileUtils.moveFile(sourceFile, destinationFile);
+                File destinationFile = new File(destinationFileName);
+                if (! FileUtils.directoryContains(destinationFolder, destinationFile))
+                {
+                    if (copyFile)
+                    {
+                        // todo log audit record
+                        FileUtils.copyFile(sourceFile, destinationFile, true);
+                    }
+                    else
+                    {
+                        // todo log audit record
+                        FileUtils.moveFile(sourceFile, destinationFile);
+                    }
+
+                    return destinationFileName;
+                }
+
+                destinationFileName = getDestinationFileName(destinationFileName, destinationFolderName, sourceFile, fileNamePattern);
             }
 
-            return destinationFileName;
+            // todo log audit log record
         }
         catch (IOException exception)
         {
             // todo log audit record
-            throw exception;
         }
+
+        return null;
     }
 
 
@@ -95,7 +153,8 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
     {
         super.start();
 
-        int fileIndex = 1;
+        List<String>     outputGuards = new ArrayList<>();
+        CompletionStatus completionStatus;
 
         String  lineageProcessName = this.getClass().getName();
         String  destinationFileNamePattern = "{0}";
@@ -186,14 +245,29 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
         {
             String destinationFileName = provisionFile(destinationFolderName, sourceFileName, destinationFileNamePattern, copyFile);
 
-            if (createLineage)
+            if ((destinationFileName != null) && (createLineage))
             {
                 createLineage(sourceFileGUID, destinationFileName, lineageProcessName);
             }
+
+            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
+            completionStatus = CompletionStatus.ACTIONED;
         }
         catch (Exception  error)
         {
             // todo log audit record
+
+            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
+            completionStatus = CompletionStatus.FAILED;
+        }
+
+        try
+        {
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null);
+        }
+        catch (OCFCheckedExceptionBase error)
+        {
+            throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }
     }
 

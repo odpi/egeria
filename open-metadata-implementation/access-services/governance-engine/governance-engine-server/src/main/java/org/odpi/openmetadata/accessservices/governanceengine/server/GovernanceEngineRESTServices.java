@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * The GovernedAssetRESTServices provides the server-side implementation of the services used by the governance
+ * The GovernanceEngineRESTServices provides the server-side implementation of the services used by the governance
  * engine as it is managing requests to execute open governance services in the governance server.
- * These services align with the interface definitions from the Open Governance Framework (ODF).
+ * These services align with the interface definitions from the Governance Action Framework (GAF).
  */
 public class GovernanceEngineRESTServices
 {

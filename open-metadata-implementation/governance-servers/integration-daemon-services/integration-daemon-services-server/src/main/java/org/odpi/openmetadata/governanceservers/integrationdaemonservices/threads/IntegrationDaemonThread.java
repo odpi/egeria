@@ -91,27 +91,17 @@ public class IntegrationDaemonThread implements Runnable
                 {
                     if (connectorHandler.getLastRefreshTime() == null)
                     {
-                        auditLog.logMessage(actionDescription,
-                                            IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_FIRST_REFRESH.
-                                                    getMessageDefinition(connectorHandler.getIntegrationConnectorName(),
-                                                                         integrationDaemonName));
-
-                        connectorHandler.refreshConnector(actionDescription);
+                        connectorHandler.refreshConnector(actionDescription, true);
                     }
-                    else if (connectorHandler.getMinSecondsBetweenRefresh() > 0)
+                    else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
                     {
                         long nextRefreshTime =
                                 connectorHandler.getLastRefreshTime().getTime() +
-                                        (connectorHandler.getMinSecondsBetweenRefresh() * 1000);
+                                        (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
 
                         if (nextRefreshTime < now.getTime())
                         {
-                            auditLog.logMessage(actionDescription,
-                                                IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_REFRESH.
-                                                        getMessageDefinition(connectorHandler.getIntegrationConnectorName(),
-                                                                             integrationDaemonName));
-
-                            connectorHandler.refreshConnector(actionDescription);
+                            connectorHandler.refreshConnector(actionDescription, false);
                         }
                     }
                 }
