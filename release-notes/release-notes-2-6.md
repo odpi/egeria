@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.6 (Planned January 2021)
+# Release 2.6 (February 2021)
 
 Release 2.6 adds support for:
  * New Governance Server called [Engine Host](../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
@@ -14,10 +14,9 @@ Release 2.6 adds support for:
 The release also changes the default location of some important files in order to facilitate deployment
 and seperate program files from writeable data. 
 
-Details of these changes are in the sections that follow.
+Details of these and other changes are in the sections that follow.
 
 ## Description of Changes
-
 ### Changes to data files created/used by Egeria
 
 Up to and including release 2.5, various data files were created in the current working directory when Egeria was run. This included
@@ -81,18 +80,41 @@ there will be multiple metadata instances that represent the same real-world "th
 [0465 Duplicate Processing](../open-metadata-publication/website/open-metadata-types/0465-Duplicate-Processing.md)
 types allow these elements to be linked together.
 
+## Presentation Server / React UI
 
-### New Metadata Types for the Software Development Lifecycle and Analytics Models
+The node based User Interface component known as 'Presentation Server' has now fully moved to it's own
+[GitHub Repository](https://github.com/odpi/egeria-react-ui). 
+The docker image has been renamed to [egeria-react-ui](https://hub.docker.com/repository/docker/odpi/egeria-react-ui)  
 
-*Details to follow...*
+Bug fixes & Improvements have been made in Dino, Type Explorer & Repository Explorer.
+At this time 'Server Author' and 'Glossary Author' are still in development.
 
-## Egeria Implementation Status at Release 2.6
+## New Helm Chart
+
+In addition to our 'lab' helm chart to support the Coco Pharmaceuticals environment, we have now added an [additional
+helm chart](../open-metadata-resources/open-metadata-deployment/egeria-base) which provides a simpler environment with just a single platform, and a single server, but configured with 
+persistence and auto start. This offers an example of a simple Kubernetes deployment.
+
+## Other changes
+
+Release 2.6 also contains many bug fixes and minor improvements & dependency updates
+
+# Egeria Implementation Status at Release 2.6
 
 ![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.6.png#pagewidth)
 
 Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
 Open Metadata and Governance vision, strategy and content.
 
+# Removals and Deprecations
+
+* Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been replaced with more extensive capability - see above.
+* Information View OMAS has now been removed following earlier deprecation.
+# Further Help and Support
+
+As part of the Linux AI & Data Foundation, our slack channels have moved to the [LF AI & Data Slack workspace](slack.lfaidata.foundation), and our mailing lists can now be found at https://lists.lfaidata.foundation/groups
+
+Continue to use these resources, along with GitHub to report bugs or ask questions.
 ----
 * Return to [Release Notes](.)
    

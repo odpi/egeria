@@ -24,14 +24,25 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
+Note that as of 2.6 the dates in the release notes now apply to when the code is released publically, rather than the month the code was developed
+
+## Older Releases
+
+* [Release 2.6](release-notes-2-6.md) - February 2020
+  * Governance Server, replacing Stewardship, Discovery & Security Server
+  * Changes to location of configuration files
+  * New metadata types for Governance Actions, Duplicate Processing
+  * Improvements and build changes for the React based UI
+  * A new simple helm chart deployment sample
+  * Bug Fixes
+  * Dependency updates
+
 * [Release 2.5](release-notes-2-5.md) - December 2020
   * User Interface improvements
   * Additional tests
   * Bug fixes
   * Dependency updates
- 
-## Older Releases
-
+  
 * [Release 2.4](release-notes-2-4.md) - November 2020
     * Integration Daemon
     * Rex/Tex in Presentation Server
