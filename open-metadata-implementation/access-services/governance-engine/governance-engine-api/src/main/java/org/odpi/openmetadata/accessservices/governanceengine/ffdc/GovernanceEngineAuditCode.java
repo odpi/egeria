@@ -133,13 +133,22 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
 
     NEW_GOVERNANCE_ACTION("OMAS-GOVERNANCE-ENGINE-0015",
                                OMRSAuditLogRecordSeverity.INFO,
-                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification that a new governance action {0}",
+                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification of a new governance action {0} for governance engine {1} ({2})",
                                "The access service sends out notifications about new governance actions to governance engines so " +
                                        "they can claim it and execute the requested governance service.",
                                "This is part of the normal operation of the service.  No action is required if this action is expected " +
                                        "beyond verifying that the requested action is picked up and executed."),
 
-    WATCHDOG_EVENT("OMAS-GOVERNANCE-ENGINE-0016",
+    BAD_GOVERNANCE_ACTION("OMAS-GOVERNANCE-ENGINE-0016",
+                          OMRSAuditLogRecordSeverity.ERROR,
+                          "The Governance Engine Open Metadata Access Service (OMAS) sent notification of a new governance action with no governance engine executor: {0}",
+                          "The access service sends out notifications about new governance actions to governance engines so " +
+                                  "they can claim it and execute the requested governance service.  However, this governance action does not have information " +
+                                  "about the governance engine.",
+                          "Review the governance action in the metadata repository.  Try to work out how it was set up.  Is it linked to a " +
+                                  "governance engine? If not, why not? If it is then why was the governance action not populated with the governance engine name?"),
+
+    WATCHDOG_EVENT("OMAS-GOVERNANCE-ENGINE-0017",
                           OMRSAuditLogRecordSeverity.INFO,
                           "The Governance Engine Open Metadata Access Service (OMAS) sent a metadata change event to listening Open Watchdog Governance Action Services: {0}",
                           "The access service sends out metadata change events when metadata instances change (with the exception of metadata " +
@@ -158,7 +167,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
 
     OUT_TOPIC_EVENT("OMAS-GOVERNANCE-ENGINE-0019",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Governance Engine Open Metadata Access Service (OMAS) has sent event: {0}",
+                    "The Governance Engine Open Metadata Access Service (OMAS) has sent event of type {0} ",
                     "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
                             "configuration.  This message is to create a record of the events that are being published.",
                     "This event indicates that the configuration for a governance engine, or governance service has changed.  " +

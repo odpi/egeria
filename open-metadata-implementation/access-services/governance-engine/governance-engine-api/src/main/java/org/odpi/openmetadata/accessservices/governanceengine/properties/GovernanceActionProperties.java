@@ -36,6 +36,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
     private List<String>               receivedGuards         = null;
 
     private String                     governanceEngineGUID   = null;
+    private String                     governanceEngineName   = null;
     private String                     requestType            = null;
     private Map<String, String>        requestProperties      = null;
     private List<RequestSourceElement> requestSourceElements  = null;
@@ -76,6 +77,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
             receivedGuards = template.getReceivedGuards();
 
             governanceEngineGUID = template.getGovernanceEngineGUID();
+            governanceEngineName = template.getGovernanceEngineName();
             requestType = template.getRequestType();
             requestProperties = template.getRequestProperties();
             requestSourceElements = template.getRequestSourceElements();
@@ -199,6 +201,28 @@ public class GovernanceActionProperties extends ReferenceableProperties
     public void setGovernanceEngineGUID(String governanceEngineGUID)
     {
         this.governanceEngineGUID = governanceEngineGUID;
+    }
+
+
+    /**
+     * Return the unique name of governance engine that is processing the governance action.
+     *
+     * @return string name
+     */
+    public String getGovernanceEngineName()
+    {
+        return governanceEngineName;
+    }
+
+
+    /**
+     * Set up the unique name of governance engine that is processing the governance action.
+     *
+     * @param governanceEngineName string name
+     */
+    public void setGovernanceEngineName(String governanceEngineName)
+    {
+        this.governanceEngineName = governanceEngineName;
     }
 
 
@@ -454,6 +478,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
                        ", description='" + description + '\'' +
                        ", receivedGuards=" + receivedGuards +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
+                       ", governanceEngineName='" + governanceEngineName + '\'' +
                        ", requestType='" + requestType + '\'' +
                        ", requestProperties=" + requestProperties +
                        ", requestSourceElements=" + requestSourceElements +
@@ -496,6 +521,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
                        Objects.equals(description, that.description) &&
                        Objects.equals(receivedGuards, that.receivedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
+                       Objects.equals(governanceEngineName, that.governanceEngineName) &&
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(requestProperties, that.requestProperties) &&
                        Objects.equals(requestSourceElements, that.requestSourceElements) &&
@@ -516,8 +542,8 @@ public class GovernanceActionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, requestType,
-                            requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime, processingEngineUserId,
-                            completionTime, completionGuards);
+        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, governanceEngineName,
+                            requestType, requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime,
+                            processingEngineUserId, completionTime, completionGuards);
     }
 }
