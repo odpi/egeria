@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * OMRSRepositoryHelper provides methods to repository connectors and repository event mappers to help
@@ -239,6 +240,19 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
                                                       TypeDef typeDef,
                                                       String  methodName);
+
+
+    /**
+     * Return the names of all of the type definitions that define the supplied property name.
+     *
+     * @param sourceName name of the caller.
+     * @param propertyName property name to query.
+     * @param methodName calling method.
+     * @return set of names of the TypeDefs that define a property with this name
+     */
+    Set<String> getAllTypeDefsForProperty(String sourceName,
+                                          String propertyName,
+                                          String methodName);
 
 
     /**
