@@ -129,6 +129,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String exchangeDL01UserId = "exchangeDL01npa";
         final String findItDL01UserId   = "findItDL01npa";
         final String fixItDL01UserId    = "fixItDL01npa";
+        final String onboardDL01UserId  = "onboardDL01npa";
+        final String monitorDL01UserId  = "monitorDL01npa";
 
         /*
          * Set up default zone membership
@@ -178,6 +180,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(exchangeDL01UserId);
         allUsers.add(findItDL01UserId);
         allUsers.add(fixItDL01UserId);
+        allUsers.add(onboardDL01UserId);
+        allUsers.add(monitorDL01UserId);
 
         allEmployees.add(zachNowUserId);
         allEmployees.add(steveStarterUserId);
@@ -234,6 +238,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(fixItDL01UserId);
         npaAccounts.add(governDL01UserId);
         npaAccounts.add(exchangeDL01UserId);
+        npaAccounts.add(onboardDL01UserId);
+        npaAccounts.add(monitorDL01UserId);
         assetOnboarding.addAll(npaAccounts);
 
         List<String> zoneSetUp = new ArrayList<>();

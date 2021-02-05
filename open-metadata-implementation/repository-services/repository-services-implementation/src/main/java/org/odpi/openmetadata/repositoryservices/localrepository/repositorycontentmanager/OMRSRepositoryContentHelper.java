@@ -454,6 +454,25 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
+     * Return the names of all of the type definitions that define the supplied property name.
+     *
+     * @param sourceName name of the caller.
+     * @param propertyName property name to query.
+     * @param methodName calling method.
+     * @return set of names of the TypeDefs that define a property with this name
+     */
+    @Override
+    public Set<String> getAllTypeDefsForProperty(String sourceName,
+                                                 String propertyName,
+                                                 String methodName)
+    {
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getAllTypeDefsForProperty(sourceName, propertyName, methodName);
+    }
+
+
+    /**
      * Validate that the type of an instance is of the expected/desired type.  The actual instance may be a subtype
      * of the expected type of course.
      *

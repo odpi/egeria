@@ -114,6 +114,25 @@ cp ~/libs/*jar egeria-base/libs
 These files will be copied into a kubernetes config map, which is then made available as a mounted volume to the runtime image of egeria & added to the class loading path as `/extlib`. You still need to configure the egeria server(s) appropriately
 ## Accessing Egeria 
 
+When this chart is installed, an initialization job is run to configure the egeria metadata server and UI.
+
+For example looking at kubernetes jobs will show something like:
+```bash
+$ kubectl get pods                                                                                      [17:27:11]
+NAME                                        READY   STATUS    RESTARTS   AGE
+egeria-base-config-crhrv                    1/1     Running   0          4m16s
+egeria-base-platform-0                      1/1     Running   0          4m16s
+egeria-base-presentation-699669cfd4-9swjb   1/1     Running   0          4m16s
+egeria-kafka-0                              1/1     Running   2          4m16s
+egeria-zookeeper-0                          1/1     Running   0          4m16s
+```
+
+You should wait until that first 'egeria-base-config' job completes, it will then disappear from the list.
+This job issues REST calls against the egeria serves to configure them for this simple environment (see scripts directory).
+
+The script will not run again, since we will have now configured the servers with persistent storage, and for the platform
+to autostart our servers. So even if a pod is removed and restarted, the egeria platform and servers should return in the same state.
+
 We now have egeria running within a Kubernetes cluster, but by default no services are exposed externally - they are all of type `ClusterIP` - we can see these with
 
 ```bash
