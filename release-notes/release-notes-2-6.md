@@ -97,11 +97,11 @@ persistence and auto start. This offers an example of a simple Kubernetes deploy
 
 ### Graph Repository
 * Now implements the findEntities and fnidRelationships methods of the OMRS MetadataCollection API.
-Added detailed documentation for the graph repository
+* Added detailed documentation for the graph repository
 
 ### Conformance Test Suite
 * Now implements the findEntities and fnidRelationships methods of the OMRS MetadataCollection API.
-Added detailed documentation for the graph repository
+* Added detailed documentation for the graph repository
 
 ### Other changes
 
