@@ -79,24 +79,37 @@ there will be multiple metadata instances that represent the same real-world "th
 [0465 Duplicate Processing](../open-metadata-publication/website/open-metadata-types/0465-Duplicate-Processing.md)
 types allow these elements to be linked together.
 
-## Presentation Server / React UI
+### Presentation Server / React UI
 
-The node based User Interface component known as 'Presentation Server' has now fully moved to it's own
+* The node based User Interface component known as 'Presentation Server' has now fully moved to it's own
 [GitHub Repository](https://github.com/odpi/egeria-react-ui). 
-The docker image has been renamed to [egeria-react-ui](https://hub.docker.com/repository/docker/odpi/egeria-react-ui)  
+* The docker image has been renamed to [egeria-react-ui](https://hub.docker.com/repository/docker/odpi/egeria-react-ui) 
+* Dino - Adds display of integration servers’ integration services and engine hosts’ engine services, including display of a dependency on a partnerOMAS.
+* Rex - Improved error reporting and geometry management plus more consistent handling of focus objects.
+Enterprise queries are now the default, but can be over-ridden to perform a local operation.
+* At this time 'Server Author' and 'Glossary Author' are still in development.
 
-Bug fixes & Improvements have been made in Dino, Type Explorer & Repository Explorer.
-At this time 'Server Author' and 'Glossary Author' are still in development.
-
-## New Helm Chart
+### New Helm Chart
 
 In addition to our 'lab' helm chart to support the Coco Pharmaceuticals environment, we have now added an [additional
 helm chart](../open-metadata-resources/open-metadata-deployment/egeria-base) which provides a simpler environment with just a single platform, and a single server, but configured with 
 persistence and auto start. This offers an example of a simple Kubernetes deployment.
 
-## Other changes
+### Graph Repository
+* Now implements the findEntities and fnidRelationships methods of the OMRS MetadataCollection API.
+Added detailed documentation for the graph repository
+
+### Conformance Test Suite
+* Now implements the findEntities and fnidRelationships methods of the OMRS MetadataCollection API.
+Added detailed documentation for the graph repository
+
+### Other changes
 
 Release 2.6 also contains many bug fixes and minor improvements & dependency updates
+### Removals and Deprecations
+
+* Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been replaced with more extensive capability - see above.
+* Information View OMAS has now been removed following earlier deprecation.
 
 # Egeria Implementation Status at Release 2.6
 
@@ -105,11 +118,7 @@ Release 2.6 also contains many bug fixes and minor improvements & dependency upd
 Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
 Open Metadata and Governance vision, strategy and content.
 
-# Removals and Deprecations
 
-* Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been replaced with more extensive capability - see above.
-* Information View OMAS has now been removed following earlier deprecation.
-* 
 # Further Help and Support
 
 As part of the Linux AI & Data Foundation, our slack channels have moved to the [LF AI & Data Slack workspace](slack.lfaidata.foundation), and our mailing lists can now be found at https://lists.lfaidata.foundation/groups
