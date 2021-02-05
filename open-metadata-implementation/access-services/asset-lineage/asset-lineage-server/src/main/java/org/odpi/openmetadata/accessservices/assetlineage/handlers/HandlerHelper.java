@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
@@ -17,7 +18,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -29,6 +35,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 
 
 /**
@@ -163,6 +170,26 @@ public class HandlerHelper {
         return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
     }
 
+
+    /**
+     * Retrieves a list of entities based on the search criteria passed
+     *
+     * @param userId                 the user id
+     * @param entityTypeName         the name of the entity type
+     * @param searchProperties       searchProperties used in the filtering
+     * @param findEntitiesParameters filtering used to reduce the scope of the search
+     * @return a list with entities matching the supplied parameters;
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     */
+    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties, FindEntitiesParameters findEntitiesParameters)
+            throws UserNotAuthorizedException, PropertyServerException {
+        final String methodName = "findEntitiesByType";
+        String typeDefGUID = getTypeByName(userId, entityTypeName);
+        return repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+                searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
+                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName);
+    }
 
     /**
      * Adds entities and relationships for the process Context structure
@@ -361,5 +388,28 @@ public class HandlerHelper {
 
         Converter converter = new Converter(repositoryHelper);
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
+    }
+
+    /**
+     * Creat the search body for find entities searching entities updated after the given time
+     * @param time date in milliseconds after which the entities were updated
+     * @return the search properties having the condition updateTime greater than the provided time
+    * */
+    public SearchProperties getSearchPropertiesAfterUpdateTime(Long time) {
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        primitivePropertyValue.setPrimitiveValue(time);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+
+        PropertyCondition propertyCondition = new PropertyCondition();
+        propertyCondition.setProperty(UPDATE_TIME);
+        propertyCondition.setOperator(PropertyComparisonOperator.GT);
+        propertyCondition.setValue(primitivePropertyValue);
+
+        SearchProperties searchProperties = new SearchProperties();
+        searchProperties.setConditions(Collections.singletonList(propertyCondition));
+        return searchProperties;
     }
 }
