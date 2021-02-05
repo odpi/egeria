@@ -55,7 +55,7 @@ public class AssetLineageRestServices {
 
     /**
      * Scan the cohort for the given type and filtering based on the findEntitiesParameters.
-     * Providing only the updatedAfter filed in findEntitiesParameters will update only the entities that were updated
+     * Providing only the updatedAfter filed in findEntitiesParameters will publish only the entities that were updated
      * in the cohort after that date.
      * Publish the context for each entity on the AL OMAS out Topic
      *
@@ -115,7 +115,7 @@ public class AssetLineageRestServices {
     }
 
     /**
-     * Find in the cohort the element with the provided guid and the given type
+     * Find the entity the element with the provided guid and the given type
      * Publish the context for the entity on the AL OMAS out Topic
      *
      * @param serverName name of server instance to call
