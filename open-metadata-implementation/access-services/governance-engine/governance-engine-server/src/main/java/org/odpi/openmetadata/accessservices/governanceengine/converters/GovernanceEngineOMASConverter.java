@@ -170,9 +170,15 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
                     beanClassification.setClassificationName(entityClassification.getName());
 
-                    Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties());
+                    if (entityClassification.getProperties() != null)
+                    {
+                        Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(
+                                entityClassification.getProperties());
 
-                    beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                        beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                        beanClassification.setEffectiveFromTime(entityClassification.getProperties().getEffectiveFromTime());
+                        beanClassification.setEffectiveToTime(entityClassification.getProperties().getEffectiveToTime());
+                    }
 
                     beanClassifications.add(beanClassification);
                 }
@@ -300,7 +306,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * @param properties  entity properties
      * @return OwnerType  enum value
      */
-    private OwnerCategory getOwnerCategoryFromProperties(InstanceProperties   properties)
+    OwnerCategory getOwnerCategoryFromProperties(InstanceProperties   properties)
     {
         OwnerCategory ownerCategory = OwnerCategory.OTHER;
 
@@ -440,10 +446,10 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Translate the repository services' InstanceProvenanceType to a GAF ElementOrigin.
+     * Translate the repository services' InstanceStatus to an ElementStatus.
      *
      * @param instanceStatus value from the repository services
-     * @return ElementOrigin enum
+     * @return ElementStatus enum
      */
     ElementStatus getElementStatus(InstanceStatus instanceStatus)
     {

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.governanceactions;
+package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 /**
  * ActionDiscoveryAnnotations is currently a placeholder for a governance action that will convert schema

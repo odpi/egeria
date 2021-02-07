@@ -169,8 +169,6 @@ public class IntegrationDaemonOperationalServices
 
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
-            activatedServicesList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
-
             return activatedServicesList;
         }
         catch (InvalidParameterException error)

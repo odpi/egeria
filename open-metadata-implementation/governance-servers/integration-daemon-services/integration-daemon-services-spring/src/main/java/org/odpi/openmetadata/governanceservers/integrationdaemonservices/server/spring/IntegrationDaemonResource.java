@@ -76,6 +76,7 @@ public class IntegrationDaemonResource
         return restAPI.refreshService(serverName, userId, serviceURLMarker, connectorName);
     }
 
+
     /**
      * Request that the integration service shutdown and recreate its integration connectors.
      *
@@ -112,10 +113,10 @@ public class IntegrationDaemonResource
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
-    @PostMapping(path = "/status")
+    @GetMapping(path = "/status")
 
-    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(String   serverName,
-                                                                      String   userId)
+    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(@PathVariable String   serverName,
+                                                                      @PathVariable String   userId)
     {
         return restAPI.getIntegrationDaemonStatus(serverName, userId);
     }
