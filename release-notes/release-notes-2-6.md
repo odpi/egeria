@@ -100,8 +100,7 @@ persistence and auto start. This offers an example of a simple Kubernetes deploy
 * Added detailed documentation for the graph repository
 
 ### Conformance Test Suite
-* Now implements the findEntities and fnidRelationships methods of the OMRS MetadataCollection API.
-* Added detailed documentation for the graph repository
+* CTS now has tests for findEntities and findRelationships methods and search tests have been realigned into profiles so that all search operations are in optional profiles, with basic and advanced profiles for each of entities and relationships.
 
 ### Other changes
 
