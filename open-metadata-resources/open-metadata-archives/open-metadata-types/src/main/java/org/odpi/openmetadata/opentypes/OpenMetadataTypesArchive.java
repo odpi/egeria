@@ -211,7 +211,7 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "SoftwareServerCapability";
-        final String                     end1AttributeName            = "consumedBy";
+        final String                     end1AttributeName            = "consumedIn";
         final String                     end1AttributeDescription     = "Capability consuming this asset.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -228,7 +228,7 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "Asset";
-        final String                     end2AttributeName            = "consumedAsset";
+        final String                     end2AttributeName            = "consumesAsset";
         final String                     end2AttributeDescription     = "Asset that this software server capability is dependent on.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
