@@ -6,9 +6,11 @@ import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationListR
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationResponse;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalysisReportResponse;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryRequestRequestBody;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -16,6 +18,8 @@ import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryEngi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.slf4j.LoggerFactory;
 
 
@@ -32,6 +36,49 @@ public class AssetAnalysisRESTServices
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AssetAnalysisRESTServices.class),
                                                                       instanceHandler.getServiceName());
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+
+
+    /**
+     * Validate the connector and return its connector type.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
+     *
+     * @return connector type or
+     *
+     *  InvalidParameterException the connector provider class name is not a valid connector fo this service
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException there was a problem detected by the integration service
+     */
+    public ConnectorTypeResponse validateConnector(String serverName,
+                                                   String userId,
+                                                   String connectorProviderClassName)
+    {
+        final String methodName = "validateConnector";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ConnectorTypeResponse response = new ConnectorTypeResponse();
+        AuditLog              auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
+                                                                        DiscoveryService.class,
+                                                                        EngineServiceDescription.ASSET_ANALYSIS_OMES.getEngineServiceName()));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
     /**

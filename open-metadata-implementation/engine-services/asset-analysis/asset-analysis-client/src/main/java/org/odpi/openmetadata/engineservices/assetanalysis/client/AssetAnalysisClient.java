@@ -8,12 +8,15 @@ import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalys
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.engineservices.assetanalysis.api.AssetAnalysisAPI;
 import org.odpi.openmetadata.engineservices.assetanalysis.client.rest.AssetAnalysisRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
@@ -26,7 +29,7 @@ import java.util.Map;
 /**
  * AssetAnalysisClient is a client-side library for calling a specific discovery engine with an engine host server.
  */
-public class AssetAnalysisClient extends DiscoveryEngine
+public class AssetAnalysisClient extends DiscoveryEngine implements AssetAnalysisAPI
 {
     private String                  serverName;               /* Initialized in constructor */
     private String                  serverPlatformRootURL;    /* Initialized in constructor */
@@ -78,6 +81,40 @@ public class AssetAnalysisClient extends DiscoveryEngine
         this.discoveryEngineName   = discoveryEngineName;
 
         this.restClient = new AssetAnalysisRESTClient(serverName, serverPlatformRootURL, userId, password);
+    }
+
+
+    /**
+     * Validate the connector and return its connector type.
+     *
+     * @param userId calling user
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
+     *
+     * @return connector type for this connector
+     *
+     * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration service
+     */
+    public ConnectorType validateConnector(String userId,
+                                           String connectorProviderClassName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String   methodName = "validateConnector";
+        final String   nameParameter = "connectorProviderClassName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/validate-connector";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
+
+        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
+                                                                                   serverPlatformRootURL + urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   connectorProviderClassName);
+
+        return restResult.getConnectorType();
     }
 
 
@@ -156,7 +193,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
         final String assetGUIDParameterName = "assetGUID";
         final String discoveryRequestTypeParameterName = "discoveryRequestType";
         final String urlTemplate
-                = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-request-types/{3}/assets/{4}";
+                = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/{2}/discovery-request-types/{3}/assets/{4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
@@ -213,7 +250,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
     {
         final String methodName = "scanAllAssets";
         final String discoveryRequestTypeParameterName = "discoveryRequestType";
-        final String urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-request-types/{3}/assets";
+        final String urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/{2}/discovery-request-types/{3}/assets";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(discoveryRequestType, discoveryRequestTypeParameterName, methodName);
@@ -291,7 +328,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
     {
         final String   methodName = "getDiscoveryAnalysisReport";
         final String   reportGUIDParameterName = "discoveryRequestGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryRequestGUID, reportGUIDParameterName, methodName);
@@ -342,7 +379,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
     {
         final String   methodName = "getDiscoveryReportAnnotations";
         final String   reportGUIDParameterName = "discoveryReportGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3" +
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/{2}/discovery-analysis-reports/{3" +
                 "}/annotations?startingFrom={4}&maximumResults={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -396,7 +433,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
     {
         final String methodName                  = "getExtendedAnnotations";
         final String annotationGUIDParameterName = "annotationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{4}/extended-annotations?startingFrom={5}&maximumResults={6}";
+        final String urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{4}/extended-annotations?startingFrom={5}&maximumResults={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
@@ -447,7 +484,7 @@ public class AssetAnalysisClient extends DiscoveryEngine
     {
         final String   methodName = "getAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/asset-analysis/users/{1}/discovery-engines/{2}/annotations/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);

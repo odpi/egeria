@@ -1,27 +1,25 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.engineservices.governanceaction.server.spring;
+package org.odpi.openmetadata.engineservices.assetanalysis.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionRESTServices;
+import org.odpi.openmetadata.engineservices.assetanalysis.server.AssetAnalysisRESTServices;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
- * GovernanceActionEngineResource provides the server-side catcher for REST calls using Spring that target a specific
- * governance action engine hosted in a engine host server.
- * The engine host server routes these requests to the named governance action engine.
+ * AssetAnalysisResource provides the server-side catcher for REST calls using Spring that validated Discovery Service implementations
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/engine-services/governance-action/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/engine-services/asset-analysis/users/{userId}")
 
-@Tag(name="Governance Action OMES", description="The Governance Action OMES provide the core subsystem for driving requests for automated governance action services.", externalDocs=@ExternalDocumentation(description="Governance Action Open Metadata Engine Services (OMES)",url="https://egeria.odpi.org/open-metadata-implementation/engine-services/governance-action/"))
+@Tag(name="Asset Analysis OMES", description="The Asset Analysis OMES provide the core subsystem for driving requests for automated metadata discovery services.", externalDocs=@ExternalDocumentation(description="Asset Analysis Open Metadata Engine Services (OMES)",url="https://egeria.odpi.org/open-metadata-implementation/engine-services/asset-analysis/"))
 
-public class GovernanceActionEngineResource
+public class AssetAnalysisResource
 {
-    private GovernanceActionRESTServices restAPI = new GovernanceActionRESTServices();
+    private AssetAnalysisRESTServices restAPI = new AssetAnalysisRESTServices();
 
 
     /**
