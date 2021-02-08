@@ -11,7 +11,6 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.context
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
 
 import java.util.ArrayList;
@@ -85,10 +84,7 @@ public class IntegrationServiceHandler
                                                                                                    contextManager,
                                                                                                    auditLog);
 
-                    if (connectorHandler.getIntegrationConnectorStatus() != IntegrationConnectorStatus.FAILED)
-                    {
-                        connectorHandlers.add(connectorHandler);
-                    }
+                    connectorHandlers.add(connectorHandler);
                 }
             }
         }
@@ -96,8 +92,6 @@ public class IntegrationServiceHandler
         if (connectorHandlers.isEmpty())
         {
             final String actionDescription = "Initialize integration service";
-
-            connectorHandlers = null;
 
             auditLog.logMessage(actionDescription,
                                 IntegrationDaemonServicesAuditCode.NO_INTEGRATION_CONNECTORS.
@@ -138,7 +132,7 @@ public class IntegrationServiceHandler
                     connectorReport.setStatistics(connectorHandler.getStatistics());
                     connectorReport.setLastStatusChange(connectorHandler.getLastStatusChange());
                     connectorReport.setLastRefreshTime(connectorHandler.getLastRefreshTime());
-                    connectorReport.setMinSecondsBetweenRefresh(connectorHandler.getMinSecondsBetweenRefresh());
+                    connectorReport.setMinMinutesBetweenRefresh(connectorHandler.getMinMinutesBetweenRefresh());
 
                     connectorReports.add(connectorReport);
                 }
@@ -171,7 +165,7 @@ public class IntegrationServiceHandler
             {
                 if (connectorHandler != null)
                 {
-                    connectorHandler.refreshConnector(actionDescription);
+                    connectorHandler.refreshConnector(actionDescription, false);
                 }
             }
         }
@@ -183,7 +177,7 @@ public class IntegrationServiceHandler
                 {
                     if (connectorName.equals(connectorHandler.getIntegrationConnectorName()))
                     {
-                        connectorHandler.refreshConnector(actionDescription);
+                        connectorHandler.refreshConnector(actionDescription, false);
                         return;
                     }
                 }

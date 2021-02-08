@@ -19,8 +19,15 @@ of the corresponding DataFolder asset.
 ## Deployment and configuration
 
 The basic files integration connectors are included in the main Egeria build.
-They are designed to run in the 
+They are designed dependent on the to run in the [Files Integrator OMIS](../../../../integration-services/files-integrator).
 
+## Connector Catalog Entries
+
+* [DataFilesMonitorIntegrationConnector](../../../../../open-metadata-publication/website/connector-catalog/data-files-monitor-integration-connector.md)
+* [DataFolderMonitorIntegrationConnector](../../../../../open-metadata-publication/website/connector-catalog/data-folder-monitor-integration-connector.md)
+
+----
+* Return to [Integration Connectors module](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

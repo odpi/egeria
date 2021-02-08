@@ -403,7 +403,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     OMRS_AUDIT_LOG_READY("OMRS-AUDIT-0064",
                          OMRSAuditLogRecordSeverity.STARTUP,
-                         "The Open Metadata Repository Services (OMRS) has initialized the audit log for {0} called {1}",
+                         "The Open Metadata Repository Services (OMRS) has initialized the audit log for the {0} called {1}",
                          "The local server has started up the logging destinations defined in the configuration document.",
                          "Validate that all of the logging destinations are working."),
 

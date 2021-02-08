@@ -198,6 +198,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-action-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-engine-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -538,6 +544,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>data-science-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>governance-action-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

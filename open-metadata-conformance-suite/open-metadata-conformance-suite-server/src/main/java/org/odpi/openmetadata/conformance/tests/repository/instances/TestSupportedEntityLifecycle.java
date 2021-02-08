@@ -837,7 +837,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
 
         /*
-         * Perform a historic get of the entity - this should return the entity even though it has now been [deleted and] purged
+         * Perform a historic get of the entity - this should not return the entity since it has now been [deleted and] purged
          * The time for the query is the time set just before the delete operation above.
          */
         try {
@@ -850,9 +850,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                             RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
 
             /*
-             * Check that the earlierEntity is not null and that the entity matches the copy saved at preDeleteDate.
+             * Check that the earlierEntity is null (really it should be the EntityNotKnownException below that handles)
              */
-            assertCondition(((earlierEntity != null) && earlierEntity.equals(preDeleteEntity)),
+            assertCondition((earlierEntity == null),
                             assertion27,
                             testTypeName + assertionMsg27,
                             RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
@@ -861,14 +861,10 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
         } catch (EntityNotKnownException exception) {
             /*
-             * If it supports historical retrieval, the repository should have returned the entity, hence fail the test
+             * Even if it supports historical retrieval, the repository should not return any version of a purged entity,
+             * as the entity and all of its history should have been purged. Therefore this exception being thrown
+             * indicates success -- so we do not need to handle it any further.
              */
-            assertCondition((false),
-                            assertion27,
-                            testTypeName + assertionMsg27,
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
-
         } catch (FunctionNotSupportedException exception) {
 
             super.addNotSupportedAssertion(assertion31,
