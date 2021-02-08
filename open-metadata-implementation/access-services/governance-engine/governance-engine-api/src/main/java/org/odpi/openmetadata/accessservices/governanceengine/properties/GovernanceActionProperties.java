@@ -33,6 +33,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
     private String                     displayName            = null;
     private String                     description            = null;
 
+    private List<String>               mandatoryGuards        = null;
     private List<String>               receivedGuards         = null;
 
     private String                     governanceEngineGUID   = null;
@@ -74,6 +75,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
             displayName = template.getDisplayName();
             description = template.getDescription();
 
+            mandatoryGuards = template.getMandatoryGuards();
             receivedGuards = template.getReceivedGuards();
 
             governanceEngineGUID = template.getGovernanceEngineGUID();
@@ -161,18 +163,56 @@ public class GovernanceActionProperties extends ReferenceableProperties
 
 
     /**
-     * Return the list of guards provided by the previous governance service.
+     * Return the list of guards that must be received before this governance action can proceed.
+     *
+     * @return list of guards
+     */
+    public List<String> getMandatoryGuards()
+    {
+        if (mandatoryGuards == null)
+        {
+            return null;
+        }
+        else if (mandatoryGuards.isEmpty())
+        {
+            return null;
+        }
+        return mandatoryGuards;
+    }
+
+
+    /**
+     * Set up the list of guards that must be received before this governance action can proceed.
+     *
+     * @param mandatoryGuards list of guards
+     */
+    public void setMandatoryGuards(List<String> mandatoryGuards)
+    {
+        this.mandatoryGuards = mandatoryGuards;
+    }
+
+
+    /**
+     * Return the list of guards provided by the previous governance service(s).
      *
      * @return list of guards
      */
     public List<String> getReceivedGuards()
     {
+        if (receivedGuards == null)
+        {
+            return null;
+        }
+        else if (receivedGuards.isEmpty())
+        {
+            return null;
+        }
         return receivedGuards;
     }
 
 
     /**
-     * Set up the list of guards provided by the previous governance service.
+     * Set up the list of guards provided by the previous governance service(s).
      *
      * @param receivedGuards list of guards
      */

@@ -187,7 +187,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                     GovernanceActionStatus status = governanceActionHandler.getActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
                                                                                             entity.getProperties());
 
-                    if (status == GovernanceActionStatus.REQUESTED)
+                    if (status == GovernanceActionStatus.APPROVED)
                     {
                         try
                         {
@@ -212,6 +212,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                   error);
                         }
                     }
+
                     return true;
                 }
             }

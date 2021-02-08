@@ -20,10 +20,12 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
     private static final String  connectorTypeName = "Move or Copy File Governance Action Service";
     private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
 
-    static final String PROVISION_UNCATALOGUED_FILES_CONFIGURATION_PROPERTY = "provisionUncataloguedFiles";
-    static final String NO_LINEAGE_CONFIGURATION_PROPERTY                   = "createLineage";
-    static final String LINEAGE_PROCESS_NAME_CONFIGURATION_PROPERTY         = "processName";
-    static final String TARGET_FILE_NAME_PATTERN_CONFIGURATION_PROPERTY     = "targetFileNamePattern";
+    static final String PROVISION_UNCATALOGUED_FILES_CONFIGURATION_PROPERTY       = "provisionUncataloguedFiles";
+    static final String NO_LINEAGE_CONFIGURATION_PROPERTY                         = "noLineage";
+    static final String LINEAGE_PROCESS_NAME_CONFIGURATION_PROPERTY               = "processName";
+    static final String TOP_LEVEL_PROCESS_ONLY_CONFIGURATION_PROPERTY             = "topLevelProcessOnly";
+    static final String LINEAGE_TO_DESTINATION_FOLDER_ONLY_CONFIGURATION_PROPERTY = "lineageToDestinationFolderOnly";
+    static final String TARGET_FILE_NAME_PATTERN_CONFIGURATION_PROPERTY           = "targetFileNamePattern";
 
     static final String COPY_REQUEST_TYPE = "copy-file";
     static final String MOVE_REQUEST_TYPE = "move-file";

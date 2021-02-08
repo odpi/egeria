@@ -90,6 +90,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                     properties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     properties.setDisplayName(this.removeDisplayName(instanceProperties));
                     properties.setDescription(this.removeDescription(instanceProperties));
+                    properties.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
                     properties.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
                     properties.setActionStatus(this.removeActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
                     properties.setStartTime(this.removeStartDate(instanceProperties));
