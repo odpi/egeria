@@ -23,9 +23,9 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected FFDCRESTClient(String    serverName,
-                             String    serverPlatformURLRoot,
-                             AuditLog  auditLog) throws InvalidParameterException
+    public FFDCRESTClient(String    serverName,
+                          String    serverPlatformURLRoot,
+                          AuditLog  auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -39,8 +39,8 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected FFDCRESTClient(String serverName,
-                             String serverPlatformURLRoot) throws InvalidParameterException
+    public FFDCRESTClient(String serverName,
+                          String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -57,11 +57,11 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected FFDCRESTClient(String   serverName,
-                             String   serverPlatformURLRoot,
-                             String   userId,
-                             String   password,
-                             AuditLog auditLog) throws InvalidParameterException
+    public FFDCRESTClient(String   serverName,
+                          String   serverPlatformURLRoot,
+                          String   userId,
+                          String   password,
+                          AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -77,10 +77,10 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected FFDCRESTClient(String serverName,
-                             String serverPlatformURLRoot,
-                             String userId,
-                             String password) throws InvalidParameterException
+    public FFDCRESTClient(String serverName,
+                          String serverPlatformURLRoot,
+                          String userId,
+                          String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -331,6 +331,35 @@ public class FFDCRESTClient extends FFDCRESTClientBase
                                                                        PropertyServerException
     {
         CountResponse restResult =  this.callGetRESTCall(methodName, CountResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ConnectorTypeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DiscoveryEnginePropertiesResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ConnectorTypeResponse callConnectorTypeGetRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object... params) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        ConnectorTypeResponse restResult = this.callGetRESTCall(methodName,
+                                                                ConnectorTypeResponse.class,
+                                                                urlTemplate,
+                                                                params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
