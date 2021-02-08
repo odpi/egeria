@@ -282,7 +282,7 @@ public class OpenMetadataAPIMapper
     /* Engine */
 
 
-    public static final String SERVER_ASSET_USE_TYPE_GUID                = "92b75926-8e9a-46c7-9d98-89009f622397";  /* from Area 0 */
+    public static final String SERVER_ASSET_USE_TYPE_GUID                = "56315447-88a6-4235-ba91-fead86524ebf";  /* from Area 0 */
     public static final String SERVER_ASSET_USE_TYPE_NAME                = "ServerAssetUse";
     /* End1 = SoftwareServerCapability; End 2 = Asset */
 
@@ -1011,6 +1011,7 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_TYPE_NAME               = "GovernanceAction";
     /* Reference */
 
+    public static final String MANDATORY_GUARDS_PROPERTY_NAME            = "mandatoryGuards";        /* from GovernanceAction entity */
     public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";         /* from GovernanceAction entity */
     public static final String START_DATE_PROPERTY_NAME                  = "startDate";              /* from GovernanceAction entity */
     public static final String ACTION_STATUS_PROPERTY_NAME               = "actionStatus";           /* from GovernanceAction entity */
