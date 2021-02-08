@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorC
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -29,6 +30,7 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
     private AssetLineagePublisher assetLineagePublisher;
+    private HandlerHelper handlerHelper;
 
     /**
      * Set up the handlers for this server.
@@ -72,13 +74,18 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    assetContextHandler,
                     lineageClassificationTypes);
 
             classificationHandler = new ClassificationHandler(
                     invalidParameterHandler,
                     lineageClassificationTypes,
                     repositoryHelper);
+
+            handlerHelper = new HandlerHelper(
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler,
+                    lineageClassificationTypes);
 
         } else {
             String methodName = "AssetLineageServicesInstance";
@@ -123,6 +130,15 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
      */
     ClassificationHandler getClassificationHandler() {
         return classificationHandler;
+    }
+
+    /**
+     * Return the handler helper for Asset Lineage OMAS.
+     *
+     * @return process handler
+     */
+    HandlerHelper getHandlerHelper() {
+        return handlerHelper;
     }
 
     public AssetLineagePublisher getAssetLineagePublisher() {

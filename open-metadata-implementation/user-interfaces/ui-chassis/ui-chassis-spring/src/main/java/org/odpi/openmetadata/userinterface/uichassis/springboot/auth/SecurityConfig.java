@@ -4,6 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis.TokenRedisClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,8 +19,8 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    TokenRedisClient tokenRedisClient;
+    @Autowired(required = false)
+    TokenClient tokenClient;
 
     public SecurityConfig() {
         super(true);
@@ -54,7 +55,7 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public LogoutSuccessHandler logoutSuccessHandler() {
-        return new TokenLogoutSuccessHandler(tokenRedisClient);
+        return new TokenLogoutSuccessHandler(tokenClient);
     }
 
     @Bean
