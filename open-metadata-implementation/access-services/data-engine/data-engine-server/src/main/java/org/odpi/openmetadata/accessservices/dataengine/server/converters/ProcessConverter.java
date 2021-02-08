@@ -14,7 +14,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -55,27 +54,6 @@ public class ProcessConverter<B> extends OpenMetadataAPIGenericConverter<B> {
             if(entityProperties != null) {
 
                 InstanceProperties instanceProperties = new InstanceProperties(entityProperties);
-
-                Map<String, String> originMap = this.getOtherOriginValues(instanceProperties);
-
-                String orgOriginValue = this.getOriginOrganizationGUID(instanceProperties);
-                String bizOriginValue = this.getOriginBusinessCapabilityGUID(instanceProperties);
-
-                if ((orgOriginValue != null) || (bizOriginValue != null)) {
-                    if (originMap == null) {
-                        originMap = new HashMap<>();
-                    }
-
-                    if (orgOriginValue != null) {
-                        originMap.put(OpenMetadataAPIMapper.ORGANIZATION_GUID_PROPERTY_NAME, orgOriginValue);
-                    }
-
-                    if (bizOriginValue != null) {
-                        originMap.put(OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME, bizOriginValue);
-                    }
-                }
-
-                process.setOrigin(originMap);
 
                 process.setName(removeName(instanceProperties));
                 process.setQualifiedName(removeQualifiedName(instanceProperties));
