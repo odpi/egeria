@@ -6,8 +6,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.Governance
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 
 import java.util.List;
 
