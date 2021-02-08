@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,7 +25,7 @@ public class SchemaType implements Serializable {
     private String usage;
     private String encodingStandard;
     private String versionNumber;
-    private ElementType type;
+    private String type;
     @JsonProperty("columns")
     private List<Attribute> attributeList;
 
@@ -86,11 +85,11 @@ public class SchemaType implements Serializable {
         this.attributeList = attributeList;
     }
 
-    public ElementType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(ElementType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

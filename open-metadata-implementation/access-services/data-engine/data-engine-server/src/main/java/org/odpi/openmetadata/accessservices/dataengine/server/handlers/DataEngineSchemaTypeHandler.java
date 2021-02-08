@@ -14,7 +14,6 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuild
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -141,7 +140,7 @@ public class DataEngineSchemaTypeHandler {
     public Optional<EntityDetail> findSchemaTypeEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                    PropertyServerException,
                                                                                                    InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, SchemaTypePropertiesMapper.SCHEMA_TYPE_TYPE_NAME);
     }
 
     /**
@@ -159,7 +158,7 @@ public class DataEngineSchemaTypeHandler {
     public Optional<EntityDetail> findSchemaAttributeEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                         PropertyServerException,
                                                                                                         InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
     }
 
     /**
@@ -201,7 +200,7 @@ public class DataEngineSchemaTypeHandler {
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
                 targetSchemaAttributeEntity.get().getGUID(), SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName, null);
+                SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName, null);
     }
 
     /**
@@ -226,10 +225,10 @@ public class DataEngineSchemaTypeHandler {
         Set<String> schemaAttributeGUIDs = getSchemaAttributesForSchemaType(userId, schemaTypeGUID);
 
         for (String schemaAttributeGUID : schemaAttributeGUIDs) {
-            dataEngineCommonHandler.removeEntity(userId, schemaAttributeGUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME,
+            dataEngineCommonHandler.removeEntity(userId, schemaAttributeGUID, SchemaTypePropertiesMapper.TABULAR_COLUMN_TYPE_NAME,
                     externalSourceName);
         }
-        dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+        dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, SchemaTypePropertiesMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
                 externalSourceName);
     }
 
@@ -245,8 +244,8 @@ public class DataEngineSchemaTypeHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addAnchorGUID(String userId, Attribute attribute, String processGUID, String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
-            PropertyServerException {
+    public void addAnchorGUID(String userId, Attribute attribute, String processGUID, String externalSourceName) throws InvalidParameterException,
+            UserNotAuthorizedException, PropertyServerException {
         final String methodName = "addAnchorGUID";
 
         Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, attribute.getQualifiedName());
@@ -266,11 +265,9 @@ public class DataEngineSchemaTypeHandler {
         }
     }
 
-    private void   upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID,
-                                        List<Attribute> attributeList, String externalSourceName) throws
-            InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+    private void upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID,
+                                        List<Attribute> attributeList, String externalSourceName) throws InvalidParameterException,
+            PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "upsertSchemaAttributes";
         for (Attribute attribute : attributeList) {
@@ -357,7 +354,7 @@ public class DataEngineSchemaTypeHandler {
         return new SchemaTypeBuilder(schemaType.getQualifiedName(), schemaType.getDisplayName(), null,
                 schemaType.getVersionNumber(), false, schemaType.getAuthor(), schemaType.getUsage(),
                 schemaType.getEncodingStandard(), null, null,
-                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                SchemaTypePropertiesMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID, SchemaTypePropertiesMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
                 null, repositoryHelper, serviceName, serverName);
     }
 
@@ -369,10 +366,10 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, SchemaTypePropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
-        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME);
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, SchemaTypePropertiesMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForRelationshipType(userId, schemaTypeGUID,
-                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), 0, 0, methodName);
+                SchemaTypePropertiesMapper.SCHEMA_TYPE_TYPE_NAME, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), 0, 0, methodName);
 
         if (CollectionUtils.isEmpty(entities)) {
             return new HashSet<>();
