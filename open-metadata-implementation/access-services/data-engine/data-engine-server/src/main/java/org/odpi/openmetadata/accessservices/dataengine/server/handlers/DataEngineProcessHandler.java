@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.model.Asset;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
@@ -42,7 +41,7 @@ public class DataEngineProcessHandler {
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final AssetHandler<Asset> assetHandler;
+    private final AssetHandler<Process> assetHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
 
@@ -59,7 +58,7 @@ public class DataEngineProcessHandler {
      * @param registrationHandler     creates software server capability entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                    RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, AssetHandler<Asset> assetHandler,
+                                    RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, AssetHandler<Process> assetHandler,
                                     DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
 
         this.serviceName = serviceName;
@@ -114,8 +113,7 @@ public class DataEngineProcessHandler {
      * @throws PropertyServerException    problem accessing the property server
      */
     public void updateProcess(String userId, EntityDetail originalProcessEntity, Process updatedProcess, String externalSourceName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+            UserNotAuthorizedException, PropertyServerException{
 
         final String methodName = "updateProcess";
 
