@@ -27,6 +27,7 @@ public class GovernanceActionTypeElement implements MetadataElement, Serializabl
     private ElementHeader                  elementHeader        = null;
     private GovernanceActionTypeProperties actionTypeProperties = null;
 
+
     /**
      * Default constructor
      */

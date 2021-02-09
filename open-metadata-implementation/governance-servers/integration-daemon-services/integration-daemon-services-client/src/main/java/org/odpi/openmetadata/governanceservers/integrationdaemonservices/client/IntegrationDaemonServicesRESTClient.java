@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -11,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
 
 /**
- * DiscoveryEngineServicesRESTClient is responsible for issuing the REST API calls
+ * IntegrationDaemonServicesRESTClient is responsible for issuing the REST API calls
  */
 class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
 {
@@ -95,7 +96,7 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return DiscoveryEnginePropertiesResponse
+     * @return IntegrationDaemonStatusResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -110,6 +111,35 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
                                                                           IntegrationDaemonStatusResponse.class,
                                                                           urlTemplate,
                                                                           params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a PropertiesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return PropertiesResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    PropertiesResponse callPropertiesGetRESTCall(String    methodName,
+                                                 String    urlTemplate,
+                                                 Object... params) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        PropertiesResponse restResult = this.callGetRESTCall(methodName,
+                                                             PropertiesResponse.class,
+                                                             urlTemplate,
+                                                             params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

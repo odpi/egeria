@@ -23,7 +23,6 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
     private static final long serialVersionUID = 1L;
 
     private GovernanceActionElement governanceActionElement = null;
-    private String                  governanceEngineName    = null;
 
     /**
      * Default constructor
@@ -82,9 +81,10 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
     {
         return "GovernanceActionEvent{" +
                        "governanceActionElement=" + governanceActionElement +
-                       ", governanceEngineName='" + governanceEngineName + '\'' +
                        ", eventVersionId=" + getEventVersionId() +
                        ", eventType=" + getEventType() +
+                       ", governanceEngineGUID='" + getGovernanceEngineGUID() + '\'' +
+                       ", governanceEngineName='" + getGovernanceEngineName() + '\'' +
                        '}';
     }
 
@@ -111,8 +111,7 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
             return false;
         }
         GovernanceActionEvent that = (GovernanceActionEvent) objectToCompare;
-        return Objects.equals(governanceActionElement, that.governanceActionElement) &&
-                       Objects.equals(governanceEngineName, that.governanceEngineName);
+        return Objects.equals(governanceActionElement, that.governanceActionElement);
     }
 
 
@@ -124,6 +123,6 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), governanceActionElement, governanceEngineName);
+        return Objects.hash(super.hashCode(), governanceActionElement);
     }
 }

@@ -31,7 +31,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>files-integrator-api</module>
+        <module>files-integrator-client</module>
         <module>files-integrator-server</module>
+        <module>files-integrator-spring</module>
     </modules>
     
     <dependencies>
