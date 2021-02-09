@@ -1,5 +1,6 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.dataengine.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -13,12 +14,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The type Attribute.
+ * The type Schema attribute.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Attribute implements Serializable {
+public class SchemaAttribute implements Serializable {
     private static final long serialVersionUID = 1L;
     private String qualifiedName;
     private String displayName;
@@ -31,6 +32,7 @@ public class Attribute implements Serializable {
     private String dataType;
     private String defaultValue;
     private String anchorGUID;
+    private String GUID;
 
     /**
      * Gets qualified name.
@@ -230,9 +232,45 @@ public class Attribute implements Serializable {
         this.anchorGUID = anchorGUID;
     }
 
+    /**
+     * Is allows duplicate values boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isAllowsDuplicateValues() {
+        return allowsDuplicateValues;
+    }
+
+    /**
+     * Is ordered values boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isOrderedValues() {
+        return orderedValues;
+    }
+
+    /**
+     * Gets guid.
+     *
+     * @return the guid
+     */
+    public String getGUID() {
+        return GUID;
+    }
+
+    /**
+     * Sets guid.
+     *
+     * @param GUID the guid
+     */
+    public void setGUID(String GUID) {
+        this.GUID = GUID;
+    }
+
     @Override
     public String toString() {
-        return "Attribute{" +
+        return "SchemaAttribute{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", minCardinality='" + minCardinality + '\'' +
@@ -244,6 +282,7 @@ public class Attribute implements Serializable {
                 ", dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
                 ", anchorGUID='" + anchorGUID + '\'' +
+                ", GUID='" + GUID + '\'' +
                 '}';
     }
 
@@ -251,23 +290,24 @@ public class Attribute implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Attribute attribute = (Attribute) o;
-        return Objects.equals(qualifiedName, attribute.qualifiedName) &&
-                Objects.equals(displayName, attribute.displayName) &&
-                Objects.equals(minCardinality, attribute.minCardinality) &&
-                Objects.equals(maxCardinality, attribute.maxCardinality) &&
-                Objects.equals(allowsDuplicateValues, attribute.allowsDuplicateValues) &&
-                Objects.equals(orderedValues, attribute.orderedValues) &&
-                Objects.equals(position, attribute.position) &&
-                Objects.equals(defaultValueOverride, attribute.defaultValueOverride) &&
-                Objects.equals(dataType, attribute.dataType) &&
-                Objects.equals(defaultValue, attribute.defaultValue) &&
-                Objects.equals(anchorGUID, attribute.anchorGUID);
+        SchemaAttribute schemaAttribute = (SchemaAttribute) o;
+        return Objects.equals(qualifiedName, schemaAttribute.qualifiedName) &&
+                Objects.equals(displayName, schemaAttribute.displayName) &&
+                Objects.equals(minCardinality, schemaAttribute.minCardinality) &&
+                Objects.equals(maxCardinality, schemaAttribute.maxCardinality) &&
+                Objects.equals(allowsDuplicateValues, schemaAttribute.allowsDuplicateValues) &&
+                Objects.equals(orderedValues, schemaAttribute.orderedValues) &&
+                Objects.equals(position, schemaAttribute.position) &&
+                Objects.equals(defaultValueOverride, schemaAttribute.defaultValueOverride) &&
+                Objects.equals(dataType, schemaAttribute.dataType) &&
+                Objects.equals(defaultValue, schemaAttribute.defaultValue) &&
+                Objects.equals(anchorGUID, schemaAttribute.anchorGUID) &&
+                Objects.equals(GUID, schemaAttribute.GUID);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(qualifiedName, displayName, minCardinality, maxCardinality, allowsDuplicateValues,
-                orderedValues, position, defaultValueOverride, dataType, defaultValue, anchorGUID);
+                orderedValues, position, defaultValueOverride, dataType, defaultValue, anchorGUID, GUID);
     }
 }

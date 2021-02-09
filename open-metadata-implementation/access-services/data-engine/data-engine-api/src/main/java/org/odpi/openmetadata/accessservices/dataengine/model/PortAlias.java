@@ -11,16 +11,29 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The type Port alias.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PortAlias extends Port {
     private String delegatesTo;
 
+    /**
+     * Gets delegates to.
+     *
+     * @return the delegates to
+     */
     public String getDelegatesTo() {
         return delegatesTo;
     }
 
+    /**
+     * Sets delegates to.
+     *
+     * @param delegatesTo the delegates to
+     */
     public void setDelegatesTo(String delegatesTo) {
         this.delegatesTo = delegatesTo;
     }
