@@ -1,0 +1,14 @@
+{
+  "qualifiedName" : "PARENT::(SchemaAttribute)=qiID",
+  "additionalProperties" : {
+    "p1" : "v1",
+    "p2" : "v2"
+  },
+  "displayName" : "displayName",
+  "description" : "Query Item description",
+  "elementPosition" : 0,
+  "identifier" : "qiID",
+  "sourceId" : [ "uid1", "uid2" ],
+  "expression" : "qiExpression",
+  "dataType" : "VARCHAR"
+}

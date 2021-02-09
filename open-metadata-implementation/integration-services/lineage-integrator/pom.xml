@@ -31,9 +31,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>lineage-integrator-api</module>
+        <module>lineage-integrator-client</module>
         <module>lineage-integrator-server</module>
+        <module>lineage-integrator-spring</module>
     </modules>
-    
+
     <dependencies>
 
     </dependencies>

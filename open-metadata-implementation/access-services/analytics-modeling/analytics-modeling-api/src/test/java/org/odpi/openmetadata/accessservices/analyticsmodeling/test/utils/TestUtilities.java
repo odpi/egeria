@@ -20,9 +20,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.BaseObjectType;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Column;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.DataSource;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.ForeignKey;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.MetadataModule;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.PrimaryKey;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.PropertyType;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Table;
 
@@ -56,7 +54,7 @@ public class TestUtilities {
 		try {
 			return mapper.readValue(json, cls);
 		} catch (JsonProcessingException e) {
-			fail("Can't read from JSON object " + cls.getName());
+			fail("Can't read from JSON object " + cls.getName() + ":\n" + e.getMessage());
 		}
 		return null;	
 	}

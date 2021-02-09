@@ -134,6 +134,18 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                "The integration daemon shuts down and this error is reported to the caller as a configuration exception.",
                        "Update the configuration for the integration service to include a value for the default permitted synchronization."),
 
+    DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE("INTEGRATION-DAEMON-SERVICES-0015",
+                                         OMRSAuditLogRecordSeverity.INFO,
+                                         "User {0} has updated the following configuration properties for the integration connector {1} in integration daemon {2}: {3}",
+                                         "The connector will be restarted once the new properties are in place.",
+                                         "Ensure that the connector does not report any errors during the restart processing as it operated on its new properties."),
+
+    DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED("INTEGRATION-DAEMON-SERVICES-0016",
+                                          OMRSAuditLogRecordSeverity.INFO,
+                                          "User {0} has cleared all of the configuration properties for the integration connector {1} in integration daemon {2}",
+                                          "The connector will be restarted once the properties are cleared.",
+                                          "Ensure that the connector does not report any errors during the restart processing as it operated on its default properties."),
+
     SERVER_SHUTTING_DOWN("INTEGRATION-DAEMON-SERVICES-0020",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The integration daemon {0} is shutting down",

@@ -123,23 +123,29 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
             }
             else if (event instanceof WatchdogGovernanceServiceEvent)
             {
-                WatchdogGovernanceServiceEvent   watchdogGovernanceServiceEvent = (WatchdogGovernanceServiceEvent)event;
-                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.get(watchdogGovernanceServiceEvent.getGovernanceEngineName());
+                /*
+                 * The watchdog event is for all governance engines
+                 */
+                WatchdogGovernanceServiceEvent watchdogGovernanceServiceEvent = (WatchdogGovernanceServiceEvent)event;
 
-                if (governanceEngineHandler != null)
+                for (GovernanceEngineHandler governanceEngineHandler : governanceEngineHandlers.values())
                 {
-                    try
+                    if (governanceEngineHandler != null)
                     {
-                        governanceEngineHandler.publishWatchdogEvent(watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent());
-                    }
-                    catch (Exception error)
-                    {
-                        auditLog.logException(actionDescription,
-                                              EngineHostServicesAuditCode.GOVERNANCE_ACTION_FAILED.getMessageDefinition(watchdogGovernanceServiceEvent.getGovernanceEngineName(),
-                                                                                                                        error.getClass().getName(),
-                                                                                                                        error.getMessage()),
-                                              watchdogGovernanceServiceEvent.toString(),
-                                              error);
+                        try
+                        {
+                            governanceEngineHandler.publishWatchdogEvent(watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent());
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logException(actionDescription,
+                                                  EngineHostServicesAuditCode.GOVERNANCE_ACTION_FAILED.getMessageDefinition(
+                                                          watchdogGovernanceServiceEvent.getGovernanceEngineName(),
+                                                          error.getClass().getName(),
+                                                          error.getMessage()),
+                                                  watchdogGovernanceServiceEvent.toString(),
+                                                  error);
+                        }
                     }
                 }
             }
