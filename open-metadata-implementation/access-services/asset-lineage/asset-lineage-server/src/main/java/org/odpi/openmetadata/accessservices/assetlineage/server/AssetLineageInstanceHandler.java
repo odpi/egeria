@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -108,6 +109,27 @@ public class AssetLineageInstanceHandler extends OMASServiceInstanceHandler
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         if (instance != null) {
             return instance.getClassificationHandler();
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve helper handler for the access service.
+     *
+     * @param userId               the user id
+     * @param serverName           the server name
+     * @param serviceOperationName the service operation name
+     * @return the classification handler
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
+     */
+    public HandlerHelper getHandlerHelper(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        if (instance != null) {
+            return instance.getHandlerHelper();
         }
 
         return null;

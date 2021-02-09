@@ -4,7 +4,6 @@ package org.odpi.openmetadata.platformservices.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

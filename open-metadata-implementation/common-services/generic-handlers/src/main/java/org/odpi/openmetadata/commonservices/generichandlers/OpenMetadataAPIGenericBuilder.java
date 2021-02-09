@@ -254,14 +254,14 @@ public class OpenMetadataAPIGenericBuilder
 
 
     /**
-     * Return the security tag properties in an InstanceProperties object.
+     * Return the Anchors properties in an InstanceProperties object.
      *
      * @param methodName name of the calling method
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
      * @return InstanceProperties object
      */
-    private InstanceProperties getAnchorsProperties(String anchorGUID,
-                                                    String methodName)
+    InstanceProperties getAnchorsProperties(String anchorGUID,
+                                            String methodName)
     {
         InstanceProperties properties = null;
 

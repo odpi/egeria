@@ -12,6 +12,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 public interface IntegrationConnector
 {
     /**
+     * Set up the connector name for logging (called just before start()).
+     *
+     * @param connectorName connector name from the configuration
+     */
+    void setConnectorName(String connectorName);
+
+
+    /**
      * Indicates that the connector is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
      *

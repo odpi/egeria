@@ -1033,6 +1033,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @param description description for this action
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param receivedGuards list of guards to initiate the governance action
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestType request type to identify the governance action service to run
@@ -1053,6 +1054,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
                                            String              description,
                                            List<String>        requestSourceGUIDs,
                                            List<String>        actionTargetGUIDs,
+                                           List<String>        receivedGuards,
                                            Date                startTime,
                                            String              governanceEngineName,
                                            String              requestType,
@@ -1079,6 +1081,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setDescription(description);
         requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
         requestBody.setActionTargetGUIDs(actionTargetGUIDs);
+        requestBody.setReceivedGuards(receivedGuards);
         requestBody.setStartTime(startTime);
         requestBody.setRequestType(requestType);
         requestBody.setRequestProperties(requestProperties);

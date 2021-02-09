@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers;
 
-
-
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -14,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
@@ -35,7 +34,7 @@ public class IntegrationConnectorHandler implements Serializable
     /*
      * These values are set in the constructor and do not change.
      */
-    private String                     integrationServiceFullName;
+    private String                    integrationServiceFullName;
     private Map<String, Object>       integrationServiceOptions;
     private String                    integrationDaemonName;
     private String                    integrationConnectorId;
@@ -274,6 +273,80 @@ public class IntegrationConnectorHandler implements Serializable
     }
 
 
+    /**
+     * Retrieve the configuration properties of the connector.
+     *
+     * @return property map
+     */
+    synchronized Map<String, Object> getConfigurationProperties()
+    {
+        if (connection != null)
+        {
+            return connection.getConfigurationProperties();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update the configuration properties of the connector and restart it.
+     *
+     * @param userId external caller
+     * @param actionDescription external caller's activity
+     * @param isMergeUpdate should the properties be merged into the existing properties or replace them
+     * @param configurationProperties new configuration properties
+     */
+    synchronized void updateConfigurationProperties(String              userId,
+                                                    String              actionDescription,
+                                                    boolean             isMergeUpdate,
+                                                    Map<String, Object> configurationProperties)
+    {
+        if (connection != null)
+        {
+            Map<String, Object>  connectionConfigurationProperties = connection.getConfigurationProperties();
+
+            if (isMergeUpdate)
+            {
+                if (configurationProperties != null)
+                {
+                    connectionConfigurationProperties.putAll(configurationProperties);
+                }
+            }
+            else
+            {
+                connectionConfigurationProperties = configurationProperties;
+            }
+
+            connection.setConfigurationProperties(connectionConfigurationProperties);
+
+            if (connectionConfigurationProperties != null)
+            {
+                String propertyNames = "<null>";
+
+                if ((configurationProperties != null) && (! configurationProperties.isEmpty()))
+                {
+                    propertyNames = configurationProperties.keySet().toString();
+                }
+
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE.getMessageDefinition(userId,
+                                                                                                                                 integrationConnectorName,
+                                                                                                                                 integrationDaemonName,
+                                                                                                                                 propertyNames));
+            }
+            else
+            {
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED.getMessageDefinition(userId,
+                                                                                                                                  integrationConnectorName,
+                                                                                                                                  integrationDaemonName));
+            }
+
+            this.reinitializeConnector(actionDescription);
+        }
+    }
+
 
     /**
      * Call the engage() method of the integration connector.  This
@@ -374,6 +447,11 @@ public class IntegrationConnectorHandler implements Serializable
         {
             if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
             {
+                if (integrationConnector instanceof IntegrationConnectorBase)
+                {
+                    integrationConnector.setConnectorName(integrationConnectorName);
+                }
+
                 integrationConnector.start();
                 updateStatus(IntegrationConnectorStatus.RUNNING);
             }

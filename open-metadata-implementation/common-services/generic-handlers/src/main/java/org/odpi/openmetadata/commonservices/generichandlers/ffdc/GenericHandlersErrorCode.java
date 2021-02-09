@@ -66,6 +66,18 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                         "Investigate whether the requested name is incorrect or the definition is missing. " +
                                 "Then retry the request once the issue is resolved."),
 
+    UNKNOWN_EXECUTOR(400, "OMAG-GENERIC-HANDLERS-400-006",
+                        "Unable to initiate an instance of a governance action because the governance action type {0} does not have a Governance Engine linked via the {1} relationship",
+                        "The system is unable to initiate a governance action process because is its implementation definition is incomplete.",
+                        "Update the definition of the first governance action type so that it is linked to a governance engine to execute the requested action. " +
+                                "Then retry the request once the definition is corrected."),
+
+    NO_PROCESS_IMPLEMENTATION(400, "OMAG-GENERIC-HANDLERS-400-007",
+                     "Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined",
+                     "The system is unable to initiate a governance action process because is its implementation definition is missing.",
+                     "Link a governance action type to the governance action process.  If the process is to have multiple steps to it, link " +
+                             "additional governance action types to this first one to describe the execution flow. " +
+                             "Then retry the request once the definition is corrected."),
 
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-GENERIC-HANDLERS-403-001",
             "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +

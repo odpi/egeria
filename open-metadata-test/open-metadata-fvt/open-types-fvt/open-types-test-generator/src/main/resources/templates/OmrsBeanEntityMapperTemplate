@@ -108,7 +108,7 @@ public class <$$uEntityName$$>Mapper {
                                  if (name.equals("<$$MapName$$>")) {
 
                                        // Only support Map<String,String> as that is what is in the archive types at this time.
-                                       Map<String, String> actualMap = new HashMap();
+                                       Map<String, String> actualMap = new HashMap<>();
                                        Iterator iter = instancePropertyForMap.getPropertyNames();
                                        while (iter.hasNext()) {
                                            String mapkey = (String) iter.next();

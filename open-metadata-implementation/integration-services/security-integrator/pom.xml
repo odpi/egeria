@@ -31,7 +31,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>security-integrator-api</module>
+        <module>security-integrator-client</module>
         <module>security-integrator-server</module>
+        <module>security-integrator-spring</module>
     </modules>
     
     <dependencies>
