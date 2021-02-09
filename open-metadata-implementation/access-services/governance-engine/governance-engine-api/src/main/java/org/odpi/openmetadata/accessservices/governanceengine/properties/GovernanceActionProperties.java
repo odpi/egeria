@@ -33,9 +33,11 @@ public class GovernanceActionProperties extends ReferenceableProperties
     private String                     displayName            = null;
     private String                     description            = null;
 
+    private List<String>               mandatoryGuards        = null;
     private List<String>               receivedGuards         = null;
 
     private String                     governanceEngineGUID   = null;
+    private String                     governanceEngineName   = null;
     private String                     requestType            = null;
     private Map<String, String>        requestProperties      = null;
     private List<RequestSourceElement> requestSourceElements  = null;
@@ -73,9 +75,11 @@ public class GovernanceActionProperties extends ReferenceableProperties
             displayName = template.getDisplayName();
             description = template.getDescription();
 
+            mandatoryGuards = template.getMandatoryGuards();
             receivedGuards = template.getReceivedGuards();
 
             governanceEngineGUID = template.getGovernanceEngineGUID();
+            governanceEngineName = template.getGovernanceEngineName();
             requestType = template.getRequestType();
             requestProperties = template.getRequestProperties();
             requestSourceElements = template.getRequestSourceElements();
@@ -159,18 +163,56 @@ public class GovernanceActionProperties extends ReferenceableProperties
 
 
     /**
-     * Return the list of guards provided by the previous governance service.
+     * Return the list of guards that must be received before this governance action can proceed.
+     *
+     * @return list of guards
+     */
+    public List<String> getMandatoryGuards()
+    {
+        if (mandatoryGuards == null)
+        {
+            return null;
+        }
+        else if (mandatoryGuards.isEmpty())
+        {
+            return null;
+        }
+        return mandatoryGuards;
+    }
+
+
+    /**
+     * Set up the list of guards that must be received before this governance action can proceed.
+     *
+     * @param mandatoryGuards list of guards
+     */
+    public void setMandatoryGuards(List<String> mandatoryGuards)
+    {
+        this.mandatoryGuards = mandatoryGuards;
+    }
+
+
+    /**
+     * Return the list of guards provided by the previous governance service(s).
      *
      * @return list of guards
      */
     public List<String> getReceivedGuards()
     {
+        if (receivedGuards == null)
+        {
+            return null;
+        }
+        else if (receivedGuards.isEmpty())
+        {
+            return null;
+        }
         return receivedGuards;
     }
 
 
     /**
-     * Set up the list of guards provided by the previous governance service.
+     * Set up the list of guards provided by the previous governance service(s).
      *
      * @param receivedGuards list of guards
      */
@@ -199,6 +241,28 @@ public class GovernanceActionProperties extends ReferenceableProperties
     public void setGovernanceEngineGUID(String governanceEngineGUID)
     {
         this.governanceEngineGUID = governanceEngineGUID;
+    }
+
+
+    /**
+     * Return the unique name of governance engine that is processing the governance action.
+     *
+     * @return string name
+     */
+    public String getGovernanceEngineName()
+    {
+        return governanceEngineName;
+    }
+
+
+    /**
+     * Set up the unique name of governance engine that is processing the governance action.
+     *
+     * @param governanceEngineName string name
+     */
+    public void setGovernanceEngineName(String governanceEngineName)
+    {
+        this.governanceEngineName = governanceEngineName;
     }
 
 
@@ -454,6 +518,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
                        ", description='" + description + '\'' +
                        ", receivedGuards=" + receivedGuards +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
+                       ", governanceEngineName='" + governanceEngineName + '\'' +
                        ", requestType='" + requestType + '\'' +
                        ", requestProperties=" + requestProperties +
                        ", requestSourceElements=" + requestSourceElements +
@@ -496,6 +561,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
                        Objects.equals(description, that.description) &&
                        Objects.equals(receivedGuards, that.receivedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
+                       Objects.equals(governanceEngineName, that.governanceEngineName) &&
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(requestProperties, that.requestProperties) &&
                        Objects.equals(requestSourceElements, that.requestSourceElements) &&
@@ -516,8 +582,8 @@ public class GovernanceActionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, requestType,
-                            requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime, processingEngineUserId,
-                            completionTime, completionGuards);
+        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, governanceEngineName,
+                            requestType, requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime,
+                            processingEngineUserId, completionTime, completionGuards);
     }
 }

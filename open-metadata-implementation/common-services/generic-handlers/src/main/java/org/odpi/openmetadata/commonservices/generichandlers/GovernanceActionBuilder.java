@@ -19,6 +19,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
     private int          domainIdentifier       = 0;
     private String       displayName            = null;
     private String       description            = null;
+    private List<String> mandatoryGuards        = null;
     private List<String> receivedGuards         = null;
     private int          actionStatus           = 0;
     private Date         startDate              = null;
@@ -33,6 +34,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
+     * @param mandatoryGuards list of guards that must be supplied before this governance action can proceed
      * @param receivedGuards list of guards that triggered this governance action
      * @param actionStatus status for the governance action
      * @param startDate the date/time to start this governance action
@@ -48,6 +50,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                             int                  domainIdentifier,
                             String               displayName,
                             String               description,
+                            List<String>         mandatoryGuards,
                             List<String>         receivedGuards,
                             int                  actionStatus,
                             Date                 startDate,
@@ -71,6 +74,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
         this.domainIdentifier = domainIdentifier;
         this.displayName = displayName;
         this.description = description;
+        this.mandatoryGuards = mandatoryGuards;
         this.receivedGuards = receivedGuards;
         this.actionStatus = actionStatus;
         this.startDate = startDate;
@@ -106,38 +110,6 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
 
         this.actionStatus = actionStatus;
         this.processingEngineUserId = processingEngineUserId;
-    }
-
-
-    /**
-     * Create constructor for completing a governance action
-     *
-     * @param actionStatus status for the governance action
-     * @param completionDate the date/time that the governance action completed
-     * @param completionGuards the guards produced by the governance service that ran on behalf of this governance action
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    GovernanceActionBuilder(int                  actionStatus,
-                            Date                 completionDate,
-                            List<String>         completionGuards,
-                            OMRSRepositoryHelper repositoryHelper,
-                            String               serviceName,
-                            String               serverName)
-    {
-        super(null,
-              null,
-              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
-              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-              null,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.actionStatus = actionStatus;
-        this.completionDate = completionDate;
-        this.completionGuards = completionGuards;
     }
 
 
@@ -190,9 +162,14 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                                                                       methodName);
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                            properties,
-                                                                           OpenMetadataAPIMapper.RECEIVED_GUARDS_PROPERTY_NAME,
-                                                                           receivedGuards,
+                                                                           OpenMetadataAPIMapper.MANDATORY_GUARDS_PROPERTY_NAME,
+                                                                           mandatoryGuards,
                                                                            methodName);
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.RECEIVED_GUARDS_PROPERTY_NAME,
+                                                                       receivedGuards,
+                                                                       methodName);
 
         try
         {
@@ -286,16 +263,18 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
 
 
     /**
-     * Return the supplied bean properties in an InstanceProperties object.
+     * Append the supplied bean properties in the supplied InstanceProperties object.
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
-    InstanceProperties getCompletionInstanceProperties(String  methodName) throws InvalidParameterException
+    InstanceProperties getCompletionInstanceProperties(InstanceProperties properties,
+                                                       int                actionStatus,
+                                                       Date               completionDate,
+                                                       List<String>       completionGuards,
+                                                       String             methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = super.getInstanceProperties(methodName);
-
         try
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,

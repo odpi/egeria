@@ -4,7 +4,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.engineservices.governanceaction.rest.EngineSummaryListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,22 +25,26 @@ public class GovernanceActionEngineResource
 
 
     /**
-     * Return the names of the the governance engines running in this Governance Action Open Metadata Engine Services (OMES).
+     * Validate the connector and return its connector type.  The integration service does not need to
+     * be running in the integration daemon in order for this call to be successful.  It only needs to be registered with the
+     * integration daemon.
      *
-     * @param serverName name of the engine host server
-     * @param userId identifier of calling user
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return list of engine summaries or
+     * @return connector type or
      *
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     *  GovernanceActionEngineException there was a problem detected by the governance action engine.
+     *  InvalidParameterException the connector provider class name is not a valid connector fo this service
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException there was a problem detected by the integration service
      */
-    @GetMapping(path = "/governance-action-engines")
+    @GetMapping(path = "/validate-connector/{connectorProviderClassName}")
 
-    public EngineSummaryListResponse getLocalEngines(@PathVariable String serverName,
-                                                     @PathVariable String userId)
+    public ConnectorTypeResponse validateConnector(@PathVariable String serverName,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String connectorProviderClassName)
     {
-        return restAPI.getLocalEngines(serverName, userId);
+        return restAPI.validateConnector(serverName, userId, connectorProviderClassName);
     }
 }

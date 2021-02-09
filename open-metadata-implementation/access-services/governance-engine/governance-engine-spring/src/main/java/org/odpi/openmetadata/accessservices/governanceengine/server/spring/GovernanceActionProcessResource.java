@@ -407,11 +407,11 @@ public class GovernanceActionProcessResource
      */
     @PostMapping(path = "/governance-action-processes/{processGUID}/first-action-type/{actionTypeGUID}/new")
 
-    public VoidResponse setupFirstActionType(@PathVariable                   String          serverName,
-                                             @PathVariable                   String          userId,
-                                             @PathVariable                   String          processGUID,
-                                             @PathVariable                   String          actionTypeGUID,
-                                             @RequestBody (required = false) NullRequestBody requestBody)
+    public VoidResponse setupFirstActionType(@PathVariable                   String serverName,
+                                             @PathVariable                   String userId,
+                                             @PathVariable                   String processGUID,
+                                             @PathVariable                   String actionTypeGUID,
+                                             @RequestBody (required = false) String requestBody)
     {
         return restAPI.setupFirstActionType(serverName, userId, processGUID, actionTypeGUID, requestBody);
     }

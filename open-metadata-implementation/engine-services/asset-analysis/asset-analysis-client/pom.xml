@@ -51,6 +51,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-analysis-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-api</artifactId>
         </dependency>
 

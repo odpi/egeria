@@ -31,7 +31,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>organization-integrator-api</module>
+        <module>organization-integrator-client</module>
         <module>organization-integrator-server</module>
+        <module>organization-integrator-spring</module>
     </modules>
     
     <dependencies>

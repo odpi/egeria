@@ -46,6 +46,7 @@ public class ConnectionConverter<B> extends OCFConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
+    @SuppressWarnings(value = "unchecked")
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<EntityDetail> supplementaryEntities,
