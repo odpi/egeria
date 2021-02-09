@@ -732,13 +732,14 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateSchemaAttribute(String userId,
-                                      String externalSourceGUID,
-                                      String externalSourceName,
-                                      String schemaAttributeGUID,
-                                      InstanceProperties instanceProperties) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException {
+    public void updateSchemaAttribute(String                userId,
+                                      String                externalSourceGUID,
+                                      String                externalSourceName,
+                                      String                schemaAttributeGUID,
+                                      InstanceProperties    instanceProperties) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
         final String methodName = "updateSchemaAttribute";
         final String parameterName = "schemaAttributeGUID";
 

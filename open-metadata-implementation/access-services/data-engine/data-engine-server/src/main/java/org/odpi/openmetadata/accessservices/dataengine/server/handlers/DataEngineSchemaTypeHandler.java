@@ -26,6 +26,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -257,11 +258,8 @@ public class DataEngineSchemaTypeHandler {
 
             String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-            schemaAttributeHandler.updateSchemaAttribute(userId,
-                    externalSourceGUID,
-                    externalSourceName,
-                    schemaAttributeEntity.get().getGUID(),
-                    getSchemaAttributeBuilder(attribute).getInstanceProperties(methodName));
+            schemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName,
+                    schemaAttributeEntity.get().getGUID(), getSchemaAttributeBuilder(attribute).getInstanceProperties(methodName));
         }
     }
 
@@ -284,11 +282,8 @@ public class DataEngineSchemaTypeHandler {
 
                 if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
                     String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
-                    schemaAttributeHandler.updateSchemaAttribute(userId,
-                            externalSourceGUID,
-                            externalSourceName,
-                            schemaAttributeGUID,
-                            getSchemaAttributeBuilder(attribute).getInstanceProperties(methodName));
+                    schemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName,
+                            schemaAttributeGUID, getSchemaAttributeBuilder(attribute).getInstanceProperties(methodName));
                 }
             }
         }
@@ -304,11 +299,13 @@ public class DataEngineSchemaTypeHandler {
     }
 
     SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
+        HashMap<String, String> additionalProperties = new HashMap<>();
+        additionalProperties.put(OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME, attribute.getAnchorGUID());
         return new SchemaAttributeBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), null,
                 attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), false,
                 attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 0, 0, 0, 0,
-                false, null, null, null,
+                false, null, null, additionalProperties,
                 OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID, OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
                 null, repositoryHelper, serviceName, serverName);
     }
