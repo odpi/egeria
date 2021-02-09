@@ -9,6 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-server')
     implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation 'org.slf4j:slf4j-api'
