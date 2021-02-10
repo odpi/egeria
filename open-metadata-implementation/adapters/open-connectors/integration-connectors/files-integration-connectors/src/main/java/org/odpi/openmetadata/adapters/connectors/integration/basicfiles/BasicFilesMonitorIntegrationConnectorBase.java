@@ -286,6 +286,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                                   BasicFilesIntegrationConnectorsAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
                                                                                                                   ConfigException.class.getName(),
                                                                                                                   fileDirectoryName,
+                                                                                                                  methodName,
                                                                                                                   error.getMessage()),
                                   error);
         }
