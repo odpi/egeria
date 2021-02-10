@@ -98,7 +98,8 @@ public class DataEngineFVT {
                 String currentAttribute = attributes.get(i);
                 String entityGUID = repositoryService.findEntityGUIDByQualifiedName(currentAttribute);
                 List<Relationship> relationships = repositoryService.findRelationshipsByGUID(entityGUID);
-                List<String> lineageMappingOtherProxyQualifiedName = repositoryService.getLineageMappingsProxiesQualifiedNames(relationships, currentAttribute);
+                List<String> lineageMappingOtherProxyQualifiedName =
+                        repositoryService.getLineageMappingsProxiesQualifiedNames(relationships, currentAttribute);
                 List<String> expectedLineageMappings = new ArrayList<>();
                 if (previousAttribute != null) {
                     expectedLineageMappings.add(previousAttribute);

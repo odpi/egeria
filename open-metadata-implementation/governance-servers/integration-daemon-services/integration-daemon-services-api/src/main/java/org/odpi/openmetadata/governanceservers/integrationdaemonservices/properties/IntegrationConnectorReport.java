@@ -6,7 +6,6 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.proper
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,7 +30,7 @@ public class IntegrationConnectorReport implements Serializable
     private IntegrationConnectorStatus connectorStatus          = null;
     private Date                       lastStatusChange         = null;
     private Date                       lastRefreshTime          = null;
-    private long                       minSecondsBetweenRefresh = 0L;
+    private long                       minMinutesBetweenRefresh = 0L;
     private String                     failingExceptionMessage  = null;
     private Map<String, Object>        statistics               = null;
 
@@ -53,10 +52,13 @@ public class IntegrationConnectorReport implements Serializable
     {
         if (template != null)
         {
-            connectorName           = template.getConnectorName();
-            connectorStatus         = template.getConnectorStatus();
-            failingExceptionMessage = template.getFailingExceptionMessage();
-            statistics              = template.getStatistics();
+            connectorName            = template.getConnectorName();
+            connectorStatus          = template.getConnectorStatus();
+            lastStatusChange         = template.getLastStatusChange();
+            lastRefreshTime          = template.getLastRefreshTime();
+            minMinutesBetweenRefresh = template.getMinMinutesBetweenRefresh();
+            failingExceptionMessage  = template.getFailingExceptionMessage();
+            statistics               = template.getStatistics();
         }
     }
 
@@ -153,25 +155,25 @@ public class IntegrationConnectorReport implements Serializable
 
     /**
      * Return the configured minimum time between calls to refresh.  This gives an indication of when the
-     * next refresh is due.  Null means refresh is only called in response to an API request.
+     * next refresh is due.  Null means refresh is only called at server start up and in response to an API request.
      *
      * @return count
      */
-    public long getMinSecondsBetweenRefresh()
+    public long getMinMinutesBetweenRefresh()
     {
-        return minSecondsBetweenRefresh;
+        return minMinutesBetweenRefresh;
     }
 
 
     /**
      * Set up the configured minimum time between calls to refresh.  This gives an indication of when the
-     * next refresh is due.  Null means refresh is only called in response to an API request.
+     * next refresh is due.  Null means refresh is only called at server start up and in response to an API request.
 
-     * @param minSecondsBetweenRefresh count
+     * @param minMinutesBetweenRefresh count
      */
-    public void setMinSecondsBetweenRefresh(long minSecondsBetweenRefresh)
+    public void setMinMinutesBetweenRefresh(long minMinutesBetweenRefresh)
     {
-        this.minSecondsBetweenRefresh = minSecondsBetweenRefresh;
+        this.minMinutesBetweenRefresh = minMinutesBetweenRefresh;
     }
 
 
@@ -234,7 +236,7 @@ public class IntegrationConnectorReport implements Serializable
                 ", connectorStatus=" + connectorStatus +
                 ", lastStatusChange=" + lastStatusChange +
                 ", lastRefreshTime=" + lastRefreshTime +
-                ", minSecondsBetweenRefresh=" + minSecondsBetweenRefresh +
+                ", minMinutesBetweenRefresh=" + minMinutesBetweenRefresh +
                 ", failingExceptionMessage='" + failingExceptionMessage + '\'' +
                 ", statistics=" + statistics +
                 '}';
@@ -259,7 +261,7 @@ public class IntegrationConnectorReport implements Serializable
             return false;
         }
         IntegrationConnectorReport that = (IntegrationConnectorReport) objectToCompare;
-        return minSecondsBetweenRefresh == that.minSecondsBetweenRefresh &&
+        return minMinutesBetweenRefresh == that.minMinutesBetweenRefresh &&
                 Objects.equals(connectorName, that.connectorName) &&
                 connectorStatus == that.connectorStatus &&
                 Objects.equals(lastStatusChange, that.lastStatusChange) &&
@@ -277,6 +279,6 @@ public class IntegrationConnectorReport implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorName, connectorStatus, lastStatusChange, lastRefreshTime, minSecondsBetweenRefresh, failingExceptionMessage, statistics);
+        return Objects.hash(connectorName, connectorStatus, lastStatusChange, lastRefreshTime, minMinutesBetweenRefresh, failingExceptionMessage, statistics);
     }
 }

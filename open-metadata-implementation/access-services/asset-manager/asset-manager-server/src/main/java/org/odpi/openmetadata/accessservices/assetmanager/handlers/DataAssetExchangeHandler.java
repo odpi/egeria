@@ -345,7 +345,42 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             externalSourceName = correlationProperties.getAssetManagerName();
         }
 
-        // todo - update classifications
+        int ownerTypeOrdinal = 0;
+
+        if (assetProperties.getOwnerCategory() != null)
+        {
+            ownerTypeOrdinal = assetProperties.getOwnerCategory().getOpenTypeOrdinal();
+        }
+
+        if ((assetProperties.getOwner() != null) || (! isMergeUpdate))
+        {
+            assetHandler.updateAssetOwner(userId, assetGUID, assetGUIDParameterName, assetProperties.getOwner(), ownerTypeOrdinal, methodName);
+        }
+
+        if ((assetProperties.getZoneMembership() != null) || (! isMergeUpdate))
+        {
+            assetHandler.updateAssetZones(userId, assetGUID, assetGUIDParameterName, assetProperties.getZoneMembership(), methodName);
+        }
+
+        if ((assetProperties.getOriginOrganizationGUID() != null) ||
+                    (assetProperties.getOriginBusinessCapabilityGUID() != null) ||
+                    (assetProperties.getOtherOriginValues() != null) ||
+                    (! isMergeUpdate))
+        {
+            final String organizationGUIDParameterName = "originOrganizationGUID";
+            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
+
+            assetHandler.addAssetOrigin(userId,
+                                        assetGUID,
+                                        assetGUIDParameterName,
+                                        assetProperties.getOriginOrganizationGUID(),
+                                        organizationGUIDParameterName,
+                                        assetProperties.getOriginBusinessCapabilityGUID(),
+                                        businessCapabilityGUIDParameterName,
+                                        assetProperties.getOtherOriginValues(),
+                                        methodName);
+        }
+
         assetHandler.updateAsset(userId,
                                  externalSourceGUID,
                                  externalSourceName,

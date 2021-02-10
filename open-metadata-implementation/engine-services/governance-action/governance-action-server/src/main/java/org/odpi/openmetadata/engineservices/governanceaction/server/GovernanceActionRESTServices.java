@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.server;
 
-
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.engineservices.governanceaction.rest.EngineSummaryListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.engineservices.governanceaction.handlers.GovernanceActionEngineHandler;
 
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService;
 import org.slf4j.LoggerFactory;
 
 
@@ -29,36 +29,36 @@ public class GovernanceActionRESTServices
 
 
     /**
-     * Return information about the governance engines running in this Governance Action Open Metadata Engine Service (OMES).
+     * Validate the connector and return its connector type.
      *
-     * @param serverName name of the engine host server
-     * @param userId identifier of calling user
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return list of engine summaries or
+     * @return connector type or
      *
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     *  GovernanceActionEngineException there was a problem detected by the governance action engine.
+     *  InvalidParameterException the connector provider class name is not a valid connector fo this service
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException there was a problem detected by the integration service
      */
-    public EngineSummaryListResponse getLocalEngines(String serverName,
-                                                     String userId)
+    public ConnectorTypeResponse validateConnector(String serverName,
+                                                   String userId,
+                                                   String connectorProviderClassName)
     {
-        final String        methodName = "getLocalEngines";
+        final String methodName = "validateConnector";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        EngineSummaryListResponse response = new EngineSummaryListResponse();
-        AuditLog                  auditLog = null;
+        ConnectorTypeResponse response = new ConnectorTypeResponse();
+        AuditLog              auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceActionEngineHandler handler = instanceHandler.getGovernanceActionEngineHandler(userId,
-                                                                                                     serverName,
-                                                                                                     null,
-                                                                                                     methodName);
-            response.setEngineSummaries(handler.getLocalEngines());
+            response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
+                                                                        GovernanceActionService.class,
+                                                                        EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName()));
         }
         catch (Throwable error)
         {

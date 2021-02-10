@@ -3,10 +3,8 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api;
 
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis.TokenRedisClient;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,21 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 public class LogoutController {
 
     @Autowired(required = false)
-    TokenRedisClient tokenRedisClient;
+    TokenClient tokenClient;
 
 
     @GetMapping
     public void logout(HttpServletRequest request) throws HttpClientErrorException {
         String token = request.getHeader(AuthService.AUTH_HEADER_NAME);
-        if(tokenRedisClient != null && token != null){
-           tokenRedisClient.del(token);
+        if(tokenClient != null && token != null){
+           tokenClient.del(token);
         }
     }
 
-    @Bean
-    @ConditionalOnProperty(value = "authentication.mode", havingValue = "token", matchIfMissing = true)
-    public TokenRedisClient tokenRedisClient(){
-        return null;
-    }
 
 }

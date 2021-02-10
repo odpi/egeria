@@ -97,7 +97,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     NULL_REPOSITORY_CONFIG(400, "OMAG-ADMIN-400-010",
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
-            "The system is unable to initialize the local server instance because all servers need at least and audit log which is supported by the " +
+            "The system is unable to initialize the local server instance because all servers need at least an audit log which is supported by the " +
                                    "repository services.",
             "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server " +
                                    "is to be a cohort member, then there are choices to also configure the local repository, enterprise repository " +

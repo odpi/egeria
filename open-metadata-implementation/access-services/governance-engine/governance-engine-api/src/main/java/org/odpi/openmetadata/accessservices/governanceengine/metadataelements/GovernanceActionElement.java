@@ -16,8 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceActionElement contains the properties and header for an entity retrieved from the metadata
- * repository that represents a governance action (plus relevant relationships and properties).
+ * GovernanceActionTypeElement contains the properties and header for an entity retrieved from the metadata
+ * repository that represents a governance action type (plus relevant relationships and properties).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

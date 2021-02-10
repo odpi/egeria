@@ -5,8 +5,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.GovernanceConfigurationHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionProcessElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -85,6 +89,63 @@ class GovernanceEngineInstanceHandler extends OMASServiceInstanceHandler
 
         return null;
     }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler(String userId,
+                                                                                   String serverName,
+                                                                                   String serviceOperationName) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
+    {
+        GovernanceEngineInstance instance = (GovernanceEngineInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceActionProcessHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler(String userId,
+                                                                                            String serverName,
+                                                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                PropertyServerException
+    {
+        GovernanceEngineInstance instance = (GovernanceEngineInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceActionTypeHandler();
+        }
+
+        return null;
+    }
+
 
 
     /**
