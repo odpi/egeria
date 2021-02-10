@@ -39,13 +39,13 @@ The files integration connectors run in the
 [Files Integrator Open Metadata Integration Service (OMIS)](../../../open-metadata-implementation/integration-services/files-integrator)
 hosted in the [Integration Daemon](../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md).
 
-* The [Data Files Monitor Integration Connector](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/files-integration-connectors)
+* The [Data Files Monitor Integration Connector](data-files-monitor-integration-connector.md)
   maintains a DataFile asset for each file in the directory (or any subdirectory).
   When a new file is created, a new DataFile asset is created.  If a file is modified, the lastModified property
   of the corresponding DataFile asset is updated.  When a file is deleted, its corresponding DataFile asset is also deleted 
   (or archived if it is still needed for lineage).
 
-* The [DataFolderMonitorIntegrationConnector](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/files-integration-connectors)
+* The [DataFolderMonitorIntegrationConnector](data-folder-monitor-integration-connector.md)
   maintains a DataFolder asset for the directory.  The files and directories
   underneath it are assumed to be elements/records in the DataFolder asset and so each time there is a change to the
   files and directories under the monitored directory, it results in an update to the lastModified property
@@ -103,7 +103,7 @@ hosted by the
 * [Monitor for New Assets Governance Action Service](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors)
   listens for new assets and initiates other governance actions that ensure the asset is properly set up.
   
-* [Move/Copy File Provisioning Governance Action Service](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors)
+* [Move/Copy File Provisioning Governance Action Service](move-copy-file-provisioning-governance-action-service.md)
   moves or copied files from one location to another and maintains the lineage of the action.
 
 ### Event Bus Connectors

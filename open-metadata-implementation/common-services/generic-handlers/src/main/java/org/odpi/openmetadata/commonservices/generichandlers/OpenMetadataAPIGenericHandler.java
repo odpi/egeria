@@ -6122,6 +6122,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
+
         EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId,
                                                                              startingElementGUID,
                                                                              startingElementTypeName,
@@ -9032,40 +9035,41 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
      * @param methodName                calling method
      *
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkElementToElement(String             userId,
-                                     String             externalSourceGUID,
-                                     String             externalSourceName,
-                                     String             startingGUID,
-                                     String             startingGUIDParameterName,
-                                     String             startingElementTypeName,
-                                     String             attachingGUID,
-                                     String             attachingGUIDParameterName,
-                                     String             attachingElementTypeName,
-                                     String             relationshipTypeGUID,
-                                     String             relationshipTypeName,
-                                     InstanceProperties relationshipProperties,
-                                     String             methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public String linkElementToElement(String             userId,
+                                       String             externalSourceGUID,
+                                       String             externalSourceName,
+                                       String             startingGUID,
+                                       String             startingGUIDParameterName,
+                                       String             startingElementTypeName,
+                                       String             attachingGUID,
+                                       String             attachingGUIDParameterName,
+                                       String             attachingElementTypeName,
+                                       String             relationshipTypeGUID,
+                                       String             relationshipTypeName,
+                                       InstanceProperties relationshipProperties,
+                                       String             methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  startingGUID,
-                                  startingGUIDParameterName,
-                                  startingElementTypeName,
-                                  attachingGUID,
-                                  attachingGUIDParameterName,
-                                  attachingElementTypeName,
-                                  supportedZones,
-                                  relationshipTypeGUID,
-                                  relationshipTypeName,
-                                  relationshipProperties,
-                                  methodName);
+        return this.linkElementToElement(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         startingGUID,
+                                         startingGUIDParameterName,
+                                         startingElementTypeName,
+                                         attachingGUID,
+                                         attachingGUIDParameterName,
+                                         attachingElementTypeName,
+                                         supportedZones,
+                                         relationshipTypeGUID,
+                                         relationshipTypeName,
+                                         relationshipProperties,
+                                         methodName);
     }
 
 
@@ -9088,26 +9092,27 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
      * @param methodName                calling method
      *
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the relationship to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkElementToElement(String             userId,
-                                     String             externalSourceGUID,
-                                     String             externalSourceName,
-                                     String             startingGUID,
-                                     String             startingGUIDParameterName,
-                                     String             startingElementTypeName,
-                                     String             attachingGUID,
-                                     String             attachingGUIDParameterName,
-                                     String             attachingElementTypeName,
-                                     List<String>       suppliedSupportedZones,
-                                     String             attachmentTypeGUID,
-                                     String             attachmentTypeName,
-                                     InstanceProperties relationshipProperties,
-                                     String             methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public String linkElementToElement(String             userId,
+                                       String             externalSourceGUID,
+                                       String             externalSourceName,
+                                       String             startingGUID,
+                                       String             startingGUIDParameterName,
+                                       String             startingElementTypeName,
+                                       String             attachingGUID,
+                                       String             attachingGUIDParameterName,
+                                       String             attachingElementTypeName,
+                                       List<String>       suppliedSupportedZones,
+                                       String             attachmentTypeGUID,
+                                       String             attachmentTypeName,
+                                       InstanceProperties relationshipProperties,
+                                       String             methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
@@ -9135,14 +9140,14 @@ public class OpenMetadataAPIGenericHandler<B>
          * The anchor entities are returned if there are anchor entities associated with a specific end.
          */
 
-        repositoryHandler.createRelationship(userId,
-                                             attachmentTypeGUID,
-                                             externalSourceGUID,
-                                             externalSourceName,
-                                             startingGUID,
-                                             attachingGUID,
-                                             relationshipProperties,
-                                             methodName);
+        Relationship relationship = repositoryHandler.createRelationship(userId,
+                                                                       attachmentTypeGUID,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       startingGUID,
+                                                                       attachingGUID,
+                                                                       relationshipProperties,
+                                                                       methodName);
 
         /*
          * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
@@ -9226,6 +9231,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                           methodName);
             }
         }
+
+        if (relationship != null)
+        {
+            return relationship.getGUID();
+        }
+
+        return null;
     }
 
 
@@ -10226,6 +10238,57 @@ public class OpenMetadataAPIGenericHandler<B>
                                               methodName);
             }
         }
+    }
+
+
+    /**
+     * Removes the relationship of a specific type attached to an entity.  If the connected entity is anchored to the starting entity
+     * it is deleted (and linked dependent elements). There should be only one relationship. If there are more, an error is thrown.
+     *
+     * @param userId                    userId of user making request
+     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
+     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param detachedElementTypeName   name of type of element that will be detached
+     * @param methodName                calling method
+     *
+     * @return unique identifier of the entity that has been detached
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating the relationship in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String unlinkConnectedElement(String       userId,
+                                         boolean      onlyCreatorPermitted,
+                                         String       externalSourceGUID,
+                                         String       externalSourceName,
+                                         String       startingGUID,
+                                         String       startingGUIDParameterName,
+                                         String       startingElementTypeName,
+                                         String       attachmentTypeGUID,
+                                         String       attachmentTypeName,
+                                         String       detachedElementTypeName,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        return unlinkConnectedElement(userId,
+                                      onlyCreatorPermitted,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      startingGUID,
+                                      startingGUIDParameterName,
+                                      startingElementTypeName,
+                                      supportedZones,
+                                      attachmentTypeGUID,
+                                      attachmentTypeName,
+                                      detachedElementTypeName,
+                                      methodName);
     }
 
 

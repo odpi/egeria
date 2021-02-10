@@ -14,6 +14,7 @@ classes `OMRSArchiveBuilder` and `OMRSArchiveHelper` found in the `repository-se
 
 The types for each release are managed in separate classes. For example:
  * `OpenMetadataTypesArchive` - new candidate types for current release 
+ * `OpenMetadataTypesArchive2_6` - approved types added for [2.6 release](../../../release-notes/release-notes-2-6.md)
  * `OpenMetadataTypesArchive2_5` - approved types added for [2.5 release](../../../release-notes/release-notes-2-5.md)
  * `OpenMetadataTypesArchive2_4` - approved types added for [2.4 release](../../../release-notes/release-notes-2-4.md)
  * `OpenMetadataTypesArchive2_0` - approved types added for [2.0 release](../../../release-notes/release-notes-2-0.md)

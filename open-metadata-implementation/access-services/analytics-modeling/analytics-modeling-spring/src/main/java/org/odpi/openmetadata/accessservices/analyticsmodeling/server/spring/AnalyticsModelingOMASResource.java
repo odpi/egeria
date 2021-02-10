@@ -127,5 +127,25 @@ public class AnalyticsModelingOMASResource {
 
 		return restAPI.getModule(serverName, userId, database, catalog, schema, request);
 	}
+
     
+	/**
+	 * Create assets in repository defined by artifact (body of the request).
+     * @param serverName  unique identifier for requested server.
+     * @param userId      request user
+	 * @param serverCapability where the artifact is stored.
+	 * @param artifact definition json.
+	 * @return errors or list of created assets.
+	 */
+    @Operation(summary = "Create assets representing analytics artifact.")
+	@PostMapping(path = "/sync")
+	public AnalyticsModelingOMASAPIResponse createArtifact(
+			@PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+			@RequestParam(required=true) String serverCapability,
+			@RequestBody(required=true) String artifact
+			) {
+
+		return restAPI.createArtifact(serverName, userId, serverCapability, artifact);
+	}
 }

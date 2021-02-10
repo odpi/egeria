@@ -636,6 +636,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                description,
                                                                requestSourceGUIDs,
                                                                actionTargetGUIDs,
+                                                               null,
                                                                startTime,
                                                                governanceEngineName,
                                                                requestType,

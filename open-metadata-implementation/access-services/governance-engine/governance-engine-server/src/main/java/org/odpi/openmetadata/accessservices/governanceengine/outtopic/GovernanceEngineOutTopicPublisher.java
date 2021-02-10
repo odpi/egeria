@@ -70,7 +70,7 @@ public class GovernanceEngineOutTopicPublisher
                 {
                     outTopicAuditLog.logMessage(actionDescription,
                                                 GovernanceEngineAuditCode.REFRESH_GOVERNANCE_ENGINE.getMessageDefinition(governanceEngineName,
-                                                                                                                       governanceEngineGUID));
+                                                                                                                         governanceEngineGUID));
                 }
             }
             catch (Exception error)
@@ -115,9 +115,9 @@ public class GovernanceEngineOutTopicPublisher
                 {
                     outTopicAuditLog.logMessage(actionDescription,
                                                 GovernanceEngineAuditCode.REFRESH_GOVERNANCE_SERVICE.getMessageDefinition(governanceEngineName,
-                                                                                                                        governanceEngineGUID,
-                                                                                                                        governanceRequestType,
-                                                                                                                        registeredGovernanceServiceGUID));
+                                                                                                                          governanceEngineGUID,
+                                                                                                                          governanceRequestType,
+                                                                                                                          registeredGovernanceServiceGUID));
                 }
             }
             catch (Exception error)
@@ -131,9 +131,13 @@ public class GovernanceEngineOutTopicPublisher
     /**
      * Publish an event to notify listeners that there is a new governance action available for processing.
      *
+     * @param governanceEngineGUID unique identifier for the governance engine
+     * @param governanceEngineName unique name for the governance engine
      * @param governanceActionElement element to send
      */
-    void publishNewGovernanceAction(GovernanceActionElement governanceActionElement)
+    void publishNewGovernanceAction(String                  governanceEngineGUID,
+                                    String                  governanceEngineName,
+                                    GovernanceActionElement governanceActionElement)
     {
         final String methodName = "publishNewGovernanceAction";
 
@@ -144,6 +148,8 @@ public class GovernanceEngineOutTopicPublisher
                 GovernanceActionEvent newEvent = new GovernanceActionEvent();
 
                 newEvent.setEventType(GovernanceEngineEventType.REQUESTED_GOVERNANCE_ACTION_EVENT);
+                newEvent.setGovernanceEngineGUID(governanceEngineGUID);
+                newEvent.setGovernanceEngineName(governanceEngineName);
                 newEvent.setGovernanceActionElement(governanceActionElement);
 
                 outTopicServerConnector.sendEvent(newEvent);
@@ -151,7 +157,9 @@ public class GovernanceEngineOutTopicPublisher
                 if (outTopicAuditLog != null)
                 {
                     outTopicAuditLog.logMessage(actionDescription,
-                                                GovernanceEngineAuditCode.NEW_GOVERNANCE_ACTION.getMessageDefinition(governanceActionElement.getElementHeader().getGUID()));
+                                                GovernanceEngineAuditCode.NEW_GOVERNANCE_ACTION.getMessageDefinition(governanceActionElement.getElementHeader().getGUID(),
+                                                                                                                     governanceEngineName,
+                                                                                                                     governanceEngineGUID));
                 }
             }
             catch (Exception error)
