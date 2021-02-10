@@ -707,6 +707,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
      * @param actionTypeGUID unique identifier of the governance action type
+     * @param guard optional guard for the first governance service to run
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -715,9 +716,10 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     @Override
     public void setupFirstActionType(String userId,
                                      String processGUID,
-                                     String actionTypeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                     String actionTypeGUID,
+                                     String guard) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         final String methodName = "setupFirstActionType";
         final String processGUIDParameterName = "processGUID";
@@ -730,7 +732,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
+                                        guard,
                                         serverName,
                                         userId,
                                         processGUID,

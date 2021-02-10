@@ -5,12 +5,15 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionProcessElement;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -1294,10 +1297,15 @@ public class GovernanceEngineRESTServices
                                                                   requestBody.getDescription(),
                                                                   requestBody.getRequestSourceGUIDs(),
                                                                   requestBody.getActionTargetGUIDs(),
+                                                                  null,
+                                                                  requestBody.getReceivedGuards(),
                                                                   requestBody.getStartTime(),
                                                                   governanceEngineName,
                                                                   requestBody.getRequestType(),
                                                                   requestBody.getRequestProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  methodName,
                                                                   requestBody.getOriginatorServiceName(),
                                                                   requestBody.getOriginatorEngineName(),
                                                                   methodName));
@@ -1341,7 +1349,32 @@ public class GovernanceEngineRESTServices
         AuditLog auditLog = null;
         GUIDResponse response = new GUIDResponse();
 
-        // todo
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.initiateGovernanceActionProcess(userId,
+                                                                         requestBody.getProcessQualifiedName(),
+                                                                         requestBody.getRequestSourceGUIDs(),
+                                                                         requestBody.getActionTargetGUIDs(),
+                                                                         requestBody.getStartTime(),
+                                                                         requestBody.getOriginatorServiceName(),
+                                                                         requestBody.getOriginatorEngineName(),
+                                                                         methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;

@@ -78,7 +78,7 @@ public class DataEngineEventProcessor {
         try {
             PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
 
-            dataEngineRESTServices.createOrUpdatePortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
+            dataEngineRESTServices.upsertPortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
                     portAliasEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -118,7 +118,7 @@ public class DataEngineEventProcessor {
         try {
             PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
 
-            dataEngineRESTServices.createOrUpdatePortImplementationWithSchemaType(portImplementationEvent.getUserId(), serverName,
+            dataEngineRESTServices.upsertPortImplementationWithSchemaType(portImplementationEvent.getUserId(), serverName,
                     portImplementationEvent.getPortImplementation(), portImplementationEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -186,7 +186,7 @@ public class DataEngineEventProcessor {
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 
-            dataEngineRESTServices.createOrUpdateProcesses(processesEvent.getUserId(), serverName,
+            dataEngineRESTServices.upsertProcesses(processesEvent.getUserId(), serverName,
                     processesEvent.getProcesses(), processesEvent.getExternalSourceName());
 
         } catch (JsonProcessingException e) {
@@ -205,7 +205,7 @@ public class DataEngineEventProcessor {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
-            dataEngineRESTServices.createOrUpdateSchemaType(schemaEvent.getUserId(), serverName, schemaEvent.getSchemaType(),
+            dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, schemaEvent.getSchemaType(),
                     schemaEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(schemaTypeEvent, methodName, e);

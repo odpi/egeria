@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -85,7 +84,7 @@ public class DataEngineCommonHandler {
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
 
-        return repositoryHandler.createExternalEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), externalSourceGUID,
+        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), externalSourceGUID,
                 externalSourceName, instanceProperties, instanceStatus, methodName);
     }
 
@@ -96,18 +95,22 @@ public class DataEngineCommonHandler {
      * @param entityGUID         unique identifier of entity to update
      * @param instanceProperties the properties of the entity
      * @param entityTypeName     name of the entity's type
+     * @param externalSourceName the external data engine
      *
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
+     * @throws InvalidParameterException  the bean properties are invalid
      */
-    protected void updateEntity(String userId, String entityGUID, InstanceProperties instanceProperties, String entityTypeName) throws
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException {
+    protected void updateEntity(String userId, String entityGUID, InstanceProperties instanceProperties, String entityTypeName,
+                                String externalSourceName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         final String methodName = "updateEntity";
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
 
-        repositoryHandler.updateEntity(userId, entityGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), instanceProperties, methodName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+
+        repositoryHandler.updateEntity(userId, externalSourceGUID, externalSourceName, entityGUID, entityTypeDef.getGUID(),
+                entityTypeName, instanceProperties, null, methodName);
     }
 
     /**
@@ -197,13 +200,13 @@ public class DataEngineCommonHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    protected void createOrUpdateExternalRelationship(String userId, String firstGUID, String secondGUID, String relationshipTypeName,
-                                                      String firstEntityTypeName, String externalSourceName,
-                                                      InstanceProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException {
+    protected void upsertExternalRelationship(String userId, String firstGUID, String secondGUID, String relationshipTypeName,
+                                              String firstEntityTypeName, String externalSourceName,
+                                              InstanceProperties relationshipProperties) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException {
 
-        final String methodName = "createOrUpdateExternalRelationship";
+        final String methodName = "upsertExternalRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(firstGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
@@ -224,7 +227,9 @@ public class DataEngineCommonHandler {
             RelationshipDifferences relationshipDifferences = repositoryHelper.getRelationshipDifferences(originalRelationship,
                     buildRelationship(originalRelationship.getGUID(), relationshipProperties), true);
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
-                repositoryHandler.updateRelationshipProperties(userId, originalRelationship.getGUID(), relationshipProperties, methodName);
+                String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+                repositoryHandler.updateRelationshipProperties(userId, externalSourceGUID,
+                        externalSourceName, originalRelationship.getGUID(), relationshipProperties, methodName);
             }
         }
     }
@@ -232,29 +237,32 @@ public class DataEngineCommonHandler {
     /**
      * Remove entity
      *
-     * @param userId         the name of the calling user
-     * @param entityGUID     the unique identifier of the port to be removed
-     * @param entityTypeName the type name of the entity
+     * @param userId             the name of the calling user
+     * @param entityGUID         the unique identifier of the port to be removed
+     * @param entityTypeName     the type name of the entity
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    protected void removeEntity(String userId, String entityGUID, String entityTypeName) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException {
+    protected void removeEntity(String userId, String entityGUID, String entityTypeName, String externalSourceName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "removeEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
-        repositoryHandler.removeEntity(userId, entityGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, methodName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        repositoryHandler.removeEntity(userId, externalSourceGUID, externalSourceName, entityGUID,
+                "entityGUID", entityTypeDef.getGUID(), entityTypeDef.getName(),
+                null, null, methodName);
     }
 
-    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String parameterName, String... params) throws
-                                                                                                                                            InvalidParameterException {
+    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws
+            InvalidParameterException {
 
-        throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, parameterName);
+        throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, "qualifiedName");
     }
 }

@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -41,7 +41,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public ProcessHandler getProcessHandler(String userId, String serverName, String serviceOperationName) throws
+    public DataEngineProcessHandler getProcessHandler(String userId, String serverName, String serviceOperationName) throws
                                                                                                            InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException {
@@ -112,7 +112,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public PortHandler getPortHandler(String userId, String serverName, String serviceOperationName) throws
+    public DataEnginePortHandler getPortHandler(String userId, String serverName, String serviceOperationName) throws
                                                                                                      InvalidParameterException,
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException {

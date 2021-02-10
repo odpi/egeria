@@ -23,6 +23,6 @@ public class DataFilesMonitorIntegrationProvider extends BasicFilesMonitorIntegr
         super(connectorTypeGUID,
               connectorTypeName,
               connectorTypeDescription,
-              DataFolderMonitorIntegrationConnector.class);
+              DataFilesMonitorIntegrationConnector.class);
     }
 }

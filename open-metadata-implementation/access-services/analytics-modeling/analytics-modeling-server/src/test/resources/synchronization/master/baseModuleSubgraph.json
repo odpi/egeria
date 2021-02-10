@@ -1,0 +1,88 @@
+{
+  "node" : [ {
+    "displayName" : "dbo",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE",
+    "type" : "null",
+    "classification" : [ "LatestChange" ]
+  }, {
+    "displayName" : "null",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(ComplexSchemaType)=null",
+    "type" : "null",
+    "classification" : [ "Anchors" ]
+  }, {
+    "displayName" : "Country",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY",
+    "type" : "querySubject",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  }, {
+    "displayName" : "Country",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRY",
+    "type" : "queryItem",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  }, {
+    "displayName" : "Country Code",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
+    "type" : "queryItem",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  }, {
+    "displayName" : "Sales",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES",
+    "type" : "querySubject",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  }, {
+    "displayName" : "Quantity",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
+    "type" : "queryItem",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  }, {
+    "displayName" : "Sales Country Code",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=SALESCOUNTRYCODE",
+    "type" : "queryItem",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  } ],
+  "edge" : [ {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(ComplexSchemaType)=null",
+    "type" : "AssetSchemaType"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(ComplexSchemaType)=null",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY",
+    "type" : "AttributeForSchema"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(ComplexSchemaType)=null",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES",
+    "type" : "AttributeForSchema"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
+    "type" : "NestedSchemaAttribute"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRY",
+    "type" : "NestedSchemaAttribute"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRY",
+    "to" : "columnGUID:COUNTRY@COUNTRY@dbo",
+    "type" : "DerivedSchemaTypeQueryTarget"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
+    "to" : "columnGUID:COUNTRYCODE@COUNTRY@dbo",
+    "type" : "DerivedSchemaTypeQueryTarget"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
+    "type" : "NestedSchemaAttribute"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=SALESCOUNTRYCODE",
+    "type" : "NestedSchemaAttribute"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
+    "to" : "columnGUID:QUANTITY@SALES@dbo",
+    "type" : "DerivedSchemaTypeQueryTarget"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=SALESCOUNTRYCODE",
+    "to" : "columnGUID:SALESCOUNTRYCODE@SALES@dbo",
+    "type" : "DerivedSchemaTypeQueryTarget"
+  } ]
+}

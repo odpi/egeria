@@ -4,31 +4,27 @@ package org.odpi.openmetadata.engineservices.governanceaction.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.engineservices.governanceaction.client.rest.GovernanceActionRESTClient;
-import org.odpi.openmetadata.engineservices.governanceaction.properties.EngineSummary;
-import org.odpi.openmetadata.engineservices.governanceaction.rest.EngineSummaryListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.engineservices.governanceaction.api.GovernanceActionAPI;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
-
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * GovernanceActionEngineClient is a client-side library for calling a specific governance action engine within an engine host server.
  */
-public class GovernanceActionEngineClient
+public class GovernanceActionEngineClient implements GovernanceActionAPI
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformRootURL;    /* Initialized in constructor */
-    private GovernanceActionRESTClient restClient;               /* Initialized in constructor */
+    private String         serverName;               /* Initialized in constructor */
+    private String         serverPlatformRootURL;    /* Initialized in constructor */
+    private FFDCRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
+    
+    
     /**
      * Create a client-side object for calling a governance action engine.
      *
@@ -42,7 +38,7 @@ public class GovernanceActionEngineClient
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
 
-        this.restClient = new GovernanceActionRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new FFDCRESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -63,38 +59,41 @@ public class GovernanceActionEngineClient
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
 
-        this.restClient = new GovernanceActionRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new FFDCRESTClient(serverName, serverPlatformRootURL, userId, password);
 
     }
 
 
     /**
-     * Return the names of the the governance engines running in this Governance Action OMES.
+     * Validate the connector and return its connector type.
      *
-     * @return list of engine summaries or
+     * @param userId calling user
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @throws InvalidParameterException one of the parameters is null or invalid or
-     * @throws UserNotAuthorizedException user not authorized to issue this request or
-     * @throws PropertyServerException there was a problem detected by the governance action engine.
+     * @return connector type for this connector
+     *
+     * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public List<EngineSummary> getLocalEngines(String userId) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public ConnectorType validateConnector(String userId,
+                                           String connectorProviderClassName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        final String methodName = "getLocalEngines";
-        final String urlTemplate = "/servers/{0}/open-metadata/engine-services/governance-action/users/{1}/governance-action-engines";
+        final String   methodName = "validateConnector";
+        final String   nameParameter = "connectorProviderClassName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/governance-action/users/{1}/validate-connector";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        EngineSummaryListResponse restResult = restClient.callGovernanceEngineSummariesGetRESTCall(methodName,
-                                                                                                   serverPlatformRootURL + urlTemplate,
-                                                                                                   serverName,
-                                                                                                   userId);
+        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
+                                                                                   serverPlatformRootURL + urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   connectorProviderClassName);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-
-        return restResult.getEngineSummaries();
+        return restResult.getConnectorType();
     }
 }
