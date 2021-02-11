@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.DefaultGraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -13,13 +16,17 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
@@ -53,8 +60,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -1185,46 +1194,51 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+
+
     // findEntitiesByProperty
     @Override
-    public List<EntityDetail> findEntitiesByProperty(String                 userId,
-                                                     String                 entityTypeGUID,
-                                                     InstanceProperties     matchProperties,
-                                                     MatchCriteria          matchCriteria,
-                                                     int                    fromEntityElement,
-                                                     List<InstanceStatus>   limitResultsByStatus,
-                                                     List<String>           limitResultsByClassification,
-                                                     Date                   asOfTime,
-                                                     String                 sequencingProperty,
-                                                     SequencingOrder        sequencingOrder,
-                                                     int                    pageSize)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+    public  List<EntityDetail> findEntitiesByProperty(String                 userId,
+                                                      String                 entityTypeGUID,
+                                                      InstanceProperties     matchProperties,
+                                                      MatchCriteria          matchCriteria,
+                                                      int                    fromEntityElement,
+                                                      List<InstanceStatus>   limitResultsByStatus,
+                                                      List<String>           limitResultsByClassification,
+                                                      Date                   asOfTime,
+                                                      String                 sequencingProperty,
+                                                      SequencingOrder        sequencingOrder,
+                                                      int                    pageSize)
+    throws
+    InvalidParameterException,
+    TypeErrorException,
+    RepositoryErrorException,
+    PropertyErrorException,
+    PagingErrorException,
+    FunctionNotSupportedException,
+    UserNotAuthorizedException
     {
 
         final String methodName = "findEntitiesByProperty";
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
+        List<EntityDetail> entities = null;
+
+
         /*
          * Validate parameters
          */
         super.findEntitiesByPropertyParameterValidation(userId,
-                entityTypeGUID,
-                matchProperties,
-                matchCriteria,
-                fromEntityElement,
-                limitResultsByStatus,
-                limitResultsByClassification,
-                asOfTime,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize);
+                                                        entityTypeGUID,
+                                                        matchProperties,
+                                                        matchCriteria,
+                                                        fromEntityElement,
+                                                        limitResultsByStatus,
+                                                        limitResultsByClassification,
+                                                        asOfTime,
+                                                        sequencingProperty,
+                                                        sequencingOrder,
+                                                        pageSize);
 
 
         if (asOfTime != null) {
@@ -1233,76 +1247,248 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             super.reportUnsupportedOptionalFunction(methodName);
         }
 
+        // Generate a query plan
+        GraphOMRSQueryPlan queryPlan = new   GraphOMRSQueryPlan(repositoryName,
+                                                                metadataCollectionId,
+                                                                repositoryHelper,
+                                                                TypeDefCategory.ENTITY_DEF,
+                                                                matchProperties,
+                                                                entityTypeGUID,
+                                                                null);
 
-        /*
-         * Perform operation
-         */
+        /* Map from qualifiedPropertyName to TDA */
+        Map<String, TypeDefAttribute> qualifiedPropertyNameToTypeDefinedAttribute = queryPlan.getQualifiedPropertyNameToTypeDefinedAttribute();
 
-        ArrayList<EntityDetail> returnEntities = null;
+        /* Map from short property name to list of qualifiedPropertyName */
+        Map<String, List<String>> shortPropertyNameToQualifiedPropertyNames = queryPlan.getShortPropertyNameToQualifiedPropertyNames();
 
+        List<String> validTypeNames = queryPlan.getValidTypeNames();
 
-        String specifiedTypeName = null;
-        if (entityTypeGUID != null) {
-            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
-            specifiedTypeName = typeDef.getName();
-        }
+        String filterTypeName = queryPlan.getFilterTypeName();
 
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
-
-        for (TypeDef typeDef : allTypeDefs) {
-            if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
-
-                String actualTypeName = typeDef.getName();
-
-                // If entityTypeGUID parameter is not null there is an expected type, so check whether the
-                // current type matches the expected type or is one of its sub-types.
-
-                if (specifiedTypeName != null) {
-
-                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
-                    if (!typeMatch) {
-                        continue;
-                    }
-
-                }
-
-                // Invoke a type specific search. The search will expect the regexp to match fully to the value.
-                List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByProperty(actualTypeName, matchProperties, matchCriteria, true);
-
-                if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty()) {
-                    if (returnEntities == null) {
-                        returnEntities = new ArrayList<>();
-                    }
-                    log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
-                    returnEntities.addAll(entitiesForCurrentType);
-                } else {
-                    log.info("{}: for type {} found no entities", methodName, typeDef.getName());
-                }
-
-            }
-        }
-
-        // Eliminate soft deleted entities and apply status and classification filtering if any was requested
-        if (returnEntities == null) {
+        if (validTypeNames.isEmpty())
+        {
+            /*
+             * Whether filtering was requested or not, short-circuit if there are no valid types as there can be no valid results.
+             */
             return null;
         }
-        else {
+
+
+        List<EntityDetail> foundEntities = null;
+
+        // If there were any dups there must be horizontal duplication (across the types within the valid type set).
+        if (queryPlan.getQueryStrategy() == GraphOMRSQueryPlan.QueryStrategy.Iterate)
+        {
+            // If there are dups in the property maps perform a per-type query
+            foundEntities = findEntitiesByPropertyIteratively(validTypeNames,
+                                                              matchProperties,
+                                                              matchCriteria);
+        }
+        else
+        {
+            // If there are no dups in property maps perform a delegated query.
+            foundEntities = graphStore.findEntitiesByPropertyForTypes(validTypeNames,
+                                                                      filterTypeName,
+                                                                      qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                      shortPropertyNameToQualifiedPropertyNames,
+                                                                      matchProperties,
+                                                                      matchCriteria);
+        }
+        // Process list of returned entities from sub-methods
+        if (foundEntities != null)
+        {
+
+            // Perform status and classification filtering
             List<EntityDetail> retainedEntities = new ArrayList<>();
-            for (EntityDetail entity : returnEntities) {
-                if (entity != null) {
+            for (EntityDetail entity : foundEntities)
+            {
+                if (entity != null)
+                {
                     if ((entity.getStatus() != InstanceStatus.DELETED)
                             && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
-                            && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity))) {
+                            && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)))
+                    {
 
                         retainedEntities.add(entity);
                     }
                 }
             }
-
-            return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+            // Perform sequencing and paging
+            // Eliminate soft deleted entities and apply status and classification filtering if any was requested
+            entities = repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
         }
+
+        return entities;
     }
+
+
+
+
+
+
+    // findEntitiesByPropertyIteratively
+    public List<EntityDetail> findEntitiesByPropertyIteratively(List<String>                  validTypeNames,
+                                                                InstanceProperties            matchProperties,
+                                                                MatchCriteria                 matchCriteria)
+    throws
+    InvalidParameterException,
+    RepositoryErrorException,
+    TypeErrorException,
+    PropertyErrorException
+    {
+        final String methodName = "findEntitiesByPropertyIteratively";
+        List<EntityDetail> returnEntities = null;
+        // Iterate over the validTypeNames and perform a per-type query for each valid type
+        for (String typeName : validTypeNames)
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
+
+            // Invoke a type specific search. The search will expect the regexp to match fully to the value.
+            List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByPropertyForType(typeName, matchProperties, matchCriteria, true);
+
+            if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty())
+            {
+                if (returnEntities == null)
+                {
+                    returnEntities = new ArrayList<>();
+                }
+                log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
+                returnEntities.addAll(entitiesForCurrentType);
+            }
+            else
+            {
+                log.info("{}: for type {} found no entities", methodName, typeDef.getName());
+            }
+        }
+        return returnEntities;
+    }
+
+
+
+    // findEntitiesIteratively
+    public List<EntityDetail> findEntitiesIteratively(List<String>                  validTypeNames,
+                                                      SearchProperties              searchProperties,
+                                                      MatchCriteria                 matchCriteria)
+    throws
+        InvalidParameterException,
+        RepositoryErrorException,
+        FunctionNotSupportedException
+    {
+        final String methodName = "findEntitiesIteratively";
+        List<EntityDetail> returnEntities = null;
+
+        // Iterate over the validTypeNames and perform a per-type query for each valid type
+        for (String typeName : validTypeNames)
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
+
+            // Invoke a type specific search. The search will expect the regexp to match fully to the value.
+            List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesForType(typeName,
+                                                                                       searchProperties,
+                                                                                       true);
+
+            if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty())
+            {
+                if (returnEntities == null)
+                {
+                    returnEntities = new ArrayList<>();
+                }
+                log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
+                returnEntities.addAll(entitiesForCurrentType);
+            }
+            else
+            {
+                log.info("{}: for type {} found no entities", methodName, typeDef.getName());
+            }
+        }
+        return returnEntities;
+    }
+
+
+
+    // findRelationshipsForTypes
+    public List<Relationship> findRelationshipsForTypes(List<String>                  validTypeNames,
+                                                        SearchProperties              searchProperties,
+                                                        MatchCriteria                 matchCriteria)
+    throws
+        InvalidParameterException,
+        RepositoryErrorException,
+        FunctionNotSupportedException
+    {
+        final String methodName = "findRelationshipsForTypes";
+        List<Relationship> returnRelationships = null;
+
+        // Iterate over the validTypeNames and perform a per-type query for each valid type
+        for (String typeName : validTypeNames)
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
+
+            // Invoke a type specific search. The search will expect the regexp to match fully to the value.
+            List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsForType(typeName,
+                                                                                                 searchProperties,
+                                                                                                 true);
+
+            if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty())
+            {
+                if (returnRelationships == null)
+                {
+                    returnRelationships = new ArrayList<>();
+                }
+                log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
+                returnRelationships.addAll(relationshipsForCurrentType);
+            }
+            else
+            {
+                log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
+            }
+        }
+        return returnRelationships;
+    }
+
+
+
+
+    // findRelationshipsByPropertyIteratively
+    public List<Relationship> findRelationshipsByPropertyIteratively(List<String>                  validTypeNames,
+                                                                     InstanceProperties            matchProperties,
+                                                                     MatchCriteria                 matchCriteria)
+    throws
+        InvalidParameterException,
+        RepositoryErrorException
+    {
+        final String methodName = "findRelationshipsByPropertyIteratively";
+        List<Relationship> returnRelationships = null;
+        // Iterate over the validTypeNames and perform a per-type query for each valid type
+        for (String typeName : validTypeNames)
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeName);
+
+            // Invoke a type specific search. The search will expect the regexp to match fully to the value.
+            List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsByPropertyForType(typeName,
+                                                                                                           matchProperties,
+                                                                                                           matchCriteria,
+                                                                                                           true);
+
+            if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty())
+            {
+                if (returnRelationships == null)
+                {
+                    returnRelationships = new ArrayList<>();
+                }
+                log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
+                returnRelationships.addAll(relationshipsForCurrentType);
+            }
+            else
+            {
+                log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
+            }
+        }
+        return returnRelationships;
+    }
+
+
+
 
 
     // findRelationshipsByProperty
@@ -1317,130 +1503,128 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                                            String                    sequencingProperty,
                                                            SequencingOrder           sequencingOrder,
                                                            int                       pageSize)
-            throws
-            InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+    throws
+    InvalidParameterException,
+    TypeErrorException,
+    RepositoryErrorException,
+    PropertyErrorException,
+    PagingErrorException,
+    FunctionNotSupportedException,
+    UserNotAuthorizedException
     {
-        final String  methodName = "findRelationshipsByProperty";
-        final String  guidParameterName = "relationshipTypeGUID";
+
+
+        final String methodName = "findRelationshipsByProperty";
+        final String guidParameterName = "relationshipTypeGUID";
 
         /*
          * Validate parameters
          */
         super.findRelationshipsByPropertyParameterValidation(userId,
-                relationshipTypeGUID,
-                matchProperties,
-                matchCriteria,
-                fromRelationshipElement,
-                limitResultsByStatus,
-                asOfTime,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize);
+                                                             relationshipTypeGUID,
+                                                             matchProperties,
+                                                             matchCriteria,
+                                                             fromRelationshipElement,
+                                                             limitResultsByStatus,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
+                                                             pageSize);
 
         this.validateTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
 
 
-        if (asOfTime != null) {
+        if (asOfTime != null)
+        {
             log.error("{} does not support asOfTime searches", methodName);
 
             super.reportUnsupportedOptionalFunction(methodName);
         }
 
-
-        //if (asOfTime != null) {
-        //    log.error("{} does not support asOfTime searches", methodName);
-        //
-        //    OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-        //
-        //    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-        //            this.getClass().getName(),
-        //            repositoryName);
-        //
-        //    throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-        //            this.getClass().getName(),
-        //            methodName,
-        //            errorMessage,
-        //            errorCode.getSystemAction(),
-        //            errorCode.getUserAction());
-        //}
-
         /*
          * Perform operation
          */
 
-        // There are no supertype/subtype hierarchies in relationship types, so only search the specified type or all types.
+        // Generate a query plan
+        GraphOMRSQueryPlan queryPlan = new GraphOMRSQueryPlan(repositoryName,
+                                                              metadataCollectionId,
+                                                              repositoryHelper,
+                                                              TypeDefCategory.RELATIONSHIP_DEF,
+                                                              matchProperties,
+                                                              relationshipTypeGUID,
+                                                              null);
 
-        List<Relationship> returnRelationships = null;
+        /* Map from qualifiedPropertyName to TDA */
+        Map<String, TypeDefAttribute> qualifiedPropertyNameToTypeDefinedAttribute = queryPlan.getQualifiedPropertyNameToTypeDefinedAttribute();
 
-        String specifiedTypeName = null;
+        /* Map from short property name to list of qualifiedPropertyName */
+        Map<String, List<String>> shortPropertyNameToQualifiedPropertyNames = queryPlan.getShortPropertyNameToQualifiedPropertyNames();
 
-        if (relationshipTypeGUID != null) {
-            // search the specified type (only)
-            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
-            specifiedTypeName = typeDef.getName();
+        List<String> validTypeNames = queryPlan.getValidTypeNames();
 
-            log.info("{}: search relationship type {}", methodName, specifiedTypeName);
-
-            returnRelationships = graphStore.findRelationshipsByProperty(specifiedTypeName, matchProperties, matchCriteria, true);
-
-        }
-        else {
-            // search all types
-
-            TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-            List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
-
-            for (TypeDef typeDef : allTypeDefs) {
-
-                if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF) {
-
-                    log.info("{}: search relationship type {}", methodName, typeDef.getName());
-
-                    String actualTypeName = typeDef.getName();
-
-                    // For this type, invoke a type specific search...
-
-                    List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsByProperty(actualTypeName, matchProperties, matchCriteria, true);
-
-                    if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty()) {
-                        if (returnRelationships == null) {
-                            returnRelationships = new ArrayList<>();
-                        }
-                        log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
-                        returnRelationships.addAll(relationshipsForCurrentType);
-                    } else {
-                        log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
-                    }
-                }
-            }
-        }
+        String filterTypeName = queryPlan.getFilterTypeName();
 
 
-        // Eliminate soft deleted relationships and apply status filtering if any was requested
-        if (returnRelationships == null) {
+
+        if (validTypeNames.isEmpty())
+        {
+            /*
+             * Whether filtering was requested or not, short-circuit if there are no valid types as there can be no valid results.
+             */
             return null;
         }
-        else {
-            List<Relationship> retainedRelationships = new ArrayList<>();
-            for (Relationship relationship : returnRelationships) {
-                if (relationship != null) {
-                    if ((relationship.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))) {
 
+        List<Relationship> foundRelationships = null;
+
+        // If there were any dups there must be horizontal duplication (across the types within the valid type set).
+        if (queryPlan.getQueryStrategy() == GraphOMRSQueryPlan.QueryStrategy.Iterate)
+        {
+            // If there are dups in the property maps perform a per-type query
+            foundRelationships = findRelationshipsByPropertyIteratively(validTypeNames,
+                                                                        matchProperties,
+                                                                        matchCriteria);
+        }
+        else
+        {
+            // If there are no dups in property maps perform a delegated query.
+            foundRelationships = graphStore.findRelationshipsByPropertyForTypes(validTypeNames,
+                                                                                filterTypeName,
+                                                                                qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                                shortPropertyNameToQualifiedPropertyNames,
+                                                                                matchProperties,
+                                                                                matchCriteria);
+        }
+
+        List<Relationship> relationships = null;
+
+        // Process list of returned relationships from sub-methods
+        if (foundRelationships != null)
+        {
+            // Eliminate soft deleted relationships and apply status  filtering if any was requested
+            List<Relationship> retainedRelationships = new ArrayList<>();
+            for (Relationship relationship : foundRelationships)
+            {
+                if (relationship != null)
+                {
+                    if ((relationship.getStatus() != InstanceStatus.DELETED)
+                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
+                    {
                         retainedRelationships.add(relationship);
                     }
                 }
             }
+            // Perform sequencing and paging
 
-            return repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
+            relationships = repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
         }
+
+        return relationships;
+
     }
+
+
+
+
 
 
 
@@ -1464,6 +1648,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+
+
     // findEntitiesByPropertyValue
     @Override
     public  List<EntityDetail> findEntitiesByPropertyValue(String                userId,
@@ -1476,31 +1662,34 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                                            String                sequencingProperty,
                                                            SequencingOrder       sequencingOrder,
                                                            int                   pageSize)
-            throws
-            InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+    throws
+    InvalidParameterException,
+    TypeErrorException,
+    RepositoryErrorException,
+    PropertyErrorException,
+    PagingErrorException,
+    FunctionNotSupportedException,
+    UserNotAuthorizedException
     {
-        final String  methodName = "findEntitiesByPropertyValue";
-        final String  entityTypeGUIDParameterName = "entityTypeGUID";
+
+        final String methodName = "findEntitiesByPropertyValue";
+        final String entityTypeGUIDParameterName = "entityTypeGUID";
+
+        List<EntityDetail> entities = null;
 
         /*
          * Validate parameters
          */
         super.findEntitiesByPropertyValueParameterValidation(userId,
-                entityTypeGUID,
-                searchCriteria,
-                fromEntityElement,
-                limitResultsByStatus,
-                limitResultsByClassification,
-                asOfTime,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize);
+                                                             entityTypeGUID,
+                                                             searchCriteria,
+                                                             fromEntityElement,
+                                                             limitResultsByStatus,
+                                                             limitResultsByClassification,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
+                                                             pageSize);
 
 
         if (asOfTime != null) {
@@ -1510,80 +1699,68 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         }
 
 
-        /*
-         * Perform operation
-         */
+        // Generate a query plan
+        GraphOMRSQueryPlan queryPlan = new   GraphOMRSQueryPlan(repositoryName,
+                                                                metadataCollectionId,
+                                                                repositoryHelper,
+                                                                TypeDefCategory.ENTITY_DEF,
+                                                                entityTypeGUID,
+                                                                null);
 
-        List<EntityDetail> returnEntities = null;
+        /* Map from qualifiedPropertyName to TDA */
+        Map<String, TypeDefAttribute> qualifiedPropertyNameToTypeDefinedAttribute = queryPlan.getQualifiedPropertyNameToTypeDefinedAttribute();
 
-        // Include subtypes
+        /* Map from short property name to list of qualifiedPropertyName */
+        Map<String, List<String>> shortPropertyNameToQualifiedPropertyNames = queryPlan.getShortPropertyNameToQualifiedPropertyNames();
 
-        String specifiedTypeName = null;
-        if (entityTypeGUID != null) {
-            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
-            specifiedTypeName = typeDef.getName();
-        }
+        List<String> validTypeNames = queryPlan.getValidTypeNames();
 
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
-
-        for (TypeDef typeDef : allTypeDefs) {
-            if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
-
-                String actualTypeName = typeDef.getName();
-
-                // If entityTypeGUID parameter is not null there is an expected type, so check whether the
-                // current type matches the expected type or is one of its sub-types.
-
-                if (specifiedTypeName != null) {
-
-                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
-                    if (!typeMatch) {
-                        continue;
-                    }
-
-                }
-
-                InstanceProperties matchProperties = graphStore.constructMatchPropertiesForSearchCriteria(typeDef, searchCriteria, GraphOMRSConstants.ElementType.Vertex);
+        String filterTypeName = queryPlan.getFilterTypeName();
 
 
-                // Do not tolerate substring matches - instead always the regex must match the whole value - i.e. set fullMatch parameter to true.
-                List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByProperty(actualTypeName, matchProperties, MatchCriteria.ANY, true);
-
-
-                if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty()) {
-                    if (returnEntities == null) {
-                        returnEntities = new ArrayList<>();
-                    }
-                    log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
-                    returnEntities.addAll(entitiesForCurrentType);
-                } else {
-                    log.info("{}: for type {} found no entities", methodName, typeDef.getName());
-                }
-
-            }
-        }
-
-        // Eliminate soft deleted entities and apply status and classification filtering if any was requested
-        if (returnEntities ==  null) {
+        if (validTypeNames.isEmpty())
+        {
+            /*
+             * Whether filtering was requested or not, short-circuit if there are no valid types as there can be no valid results.
+             */
             return null;
         }
-        else {
+
+        List<EntityDetail> foundEntities = null;
+
+        // For this find method the property maps will drive the query and there is no need to decide whether to iterate or delegate.
+
+        foundEntities = findEntitiesByPropertyValueForTypes(validTypeNames,
+                                                            filterTypeName,
+                                                            qualifiedPropertyNameToTypeDefinedAttribute,
+                                                            shortPropertyNameToQualifiedPropertyNames,
+                                                            searchCriteria);
+
+        if (foundEntities != null)
+        {
+
+            // Eliminate soft deleted entities and apply status and classification filtering if any was requested
             List<EntityDetail> retainedEntities = new ArrayList<>();
-            for (EntityDetail entity : returnEntities) {
-                if (entity != null) {
+            for (EntityDetail entity : foundEntities)
+            {
+                if (entity != null)
+                {
                     if ((entity.getStatus() != InstanceStatus.DELETED)
                             && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
-                            && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity))) {
+                            && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)))
+                    {
 
                         retainedEntities.add(entity);
                     }
                 }
             }
-
-            return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+            // Perform sequencing and paging
+            entities = repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
         }
+
+        return entities;
     }
+
 
 
 
@@ -1598,14 +1775,14 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                                                 String                    sequencingProperty,
                                                                 SequencingOrder           sequencingOrder,
                                                                 int                       pageSize)
-            throws
-            InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+    throws
+    InvalidParameterException,
+    TypeErrorException,
+    RepositoryErrorException,
+    PropertyErrorException,
+    PagingErrorException,
+    FunctionNotSupportedException,
+    UserNotAuthorizedException
     {
         final String methodName = "findRelationshipsByPropertyValue";
         final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
@@ -1615,14 +1792,14 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Validate parameters
          */
         super.findRelationshipsByPropertyValueParameterValidation(userId,
-                relationshipTypeGUID,
-                searchCriteria,
-                fromRelationshipElement,
-                limitResultsByStatus,
-                asOfTime,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize);
+                                                                  relationshipTypeGUID,
+                                                                  searchCriteria,
+                                                                  fromRelationshipElement,
+                                                                  limitResultsByStatus,
+                                                                  asOfTime,
+                                                                  sequencingProperty,
+                                                                  sequencingOrder,
+                                                                  pageSize);
 
 
         if (asOfTime != null) {
@@ -1634,122 +1811,159 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Perform operation
          */
-        List<Relationship> foundRelationships = new ArrayList<>();
-
-        // There are no supertype/subtype hierarchies in relationship types, so only search the specified type or all types.
-
-        List<Relationship> returnRelationships = null;
-
-        String specifiedTypeName = null;
-
-        List<TypeDef> typesToSearch = new ArrayList<>();
 
 
-        if (relationshipTypeGUID != null) {
+        // Generate a query plan
+        GraphOMRSQueryPlan queryPlan = new   GraphOMRSQueryPlan(repositoryName,
+                                                                metadataCollectionId,
+                                                                repositoryHelper,
+                                                                TypeDefCategory.RELATIONSHIP_DEF,
+                                                                relationshipTypeGUID,
+                                                                null);
 
-            // search the specified type (only)
-            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, relationshipTypeGUIDParameterName, relationshipTypeGUID, methodName);
-            specifiedTypeName = typeDef.getName();
+        /* Map from qualifiedPropertyName to TDA */
+        Map<String, TypeDefAttribute> qualifiedPropertyNameToTypeDefinedAttribute = queryPlan.getQualifiedPropertyNameToTypeDefinedAttribute();
 
-            log.info("{}: search relationship type {}", methodName, specifiedTypeName);
-            typesToSearch.add(typeDef);
-        }
-        else {
+        /* Map from short property name to list of qualifiedPropertyName */
+        Map<String, List<String>> shortPropertyNameToQualifiedPropertyNames = queryPlan.getShortPropertyNameToQualifiedPropertyNames();
 
-            // search all types
+        List<String> validTypeNames = queryPlan.getValidTypeNames();
 
-            TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-            List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
-
-            for (TypeDef typeDef : allTypeDefs) {
-
-                if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF) {
-
-                    log.info("{}: search relationship type {}", methodName, typeDef.getName());
-                    typesToSearch.add(typeDef);
-                }
-            }
-        }
+        String filterTypeName = queryPlan.getFilterTypeName();
 
 
-        for (TypeDef typeDef : typesToSearch) {
-
-            String currentTypeName = typeDef.getName();
-
-            InstanceProperties matchProperties = graphStore.constructMatchPropertiesForSearchCriteria(typeDef, searchCriteria, GraphOMRSConstants.ElementType.Edge);
-
-            // Expect the regex to fully match the value
-            List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsByProperty(currentTypeName, matchProperties, MatchCriteria.ANY, true);
-
-            if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty()) {
-                if (returnRelationships == null) {
-                    returnRelationships = new ArrayList<>();
-                }
-                log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
-                returnRelationships.addAll(relationshipsForCurrentType);
-
-            }
-            else {
-                log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
-            }
-
-        }
-
-
-        // Eliminate soft deleted relationships and apply status filtering if any was requested
-        if (returnRelationships == null) {
+        if (validTypeNames.isEmpty())
+        {
+            /*
+             * Whether filtering was requested or not, short-circuit if there are no valid types as there can be no valid results.
+             */
             return null;
         }
-        else {
-            List<Relationship> retainedRelationships = new ArrayList<>();
-            for (Relationship relationship : returnRelationships) {
-                if (relationship != null) {
-                    if ((relationship.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))) {
 
+        List<Relationship> foundRelationships = findRelationshipsByPropertyValueForTypes(validTypeNames,
+                                                                                         filterTypeName,
+                                                                                         qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                                         shortPropertyNameToQualifiedPropertyNames,
+                                                                                         searchCriteria);
+
+        List<Relationship> relationships = null;
+
+        if (foundRelationships != null)
+        {
+            // Eliminate soft deleted entities and apply status and classification filtering if any was requested
+            List<Relationship> retainedRelationships = new ArrayList<>();
+            for (Relationship relationship : foundRelationships)
+            {
+                if (relationship != null)
+                {
+                    if ((relationship.getStatus() != InstanceStatus.DELETED)
+                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
+                    {
                         retainedRelationships.add(relationship);
                     }
                 }
             }
-
-            return repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
+            // Perform sequencing and paging
+            relationships = repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
         }
+
+        return relationships;
     }
 
 
-    /**
-     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
-     * @param matchProperties Optional list of entity property conditions to match.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param matchClassifications Optional list of entity classifications to match.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
-     * @throws InvalidParameterException a parameter is invalid or null.
-     * @throws TypeErrorException the type guid passed on the request is not known by the
-     *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
-     *                                  entity.
-     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
+
+
+
+    // findEntitiesByPropertyValue
+    public  List<EntityDetail> findEntitiesByPropertyValueForTypes(List<String>                   validTypeNames,
+                                                                   String                         filterTypeName,
+                                                                   Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                   Map<String, List<String>>      shortPropertyNameToQualifiedPropertyNames,
+                                                                   String                         searchCriteria)
+    throws
+        InvalidParameterException,
+        RepositoryErrorException
+
+    {
+
+        final String methodName = "findEntitiesByPropertyValue";
+
+        /*
+         * Construct a match properties object that covers the properties for all included types. This may either be a targeted set of types
+         * (now stored in validTypeNames) or it could be the whole set of active entity types. The choice between them is dictated by whether
+         * filterTypeName is null or not.
+         */
+        InstanceProperties matchProperties = graphStore.constructMatchPropertiesForSearchCriteriaForTypes(TypeDefCategory.ENTITY_DEF,
+                                                                                                          searchCriteria,
+                                                                                                          filterTypeName,
+                                                                                                          validTypeNames);
+
+        /*
+         * Find all entities of any included type that have matching properties.
+         */
+
+        List<EntityDetail> matchingEntities = graphStore.findEntitiesByPropertyValueForTypes(validTypeNames,
+                                                                                             filterTypeName,
+                                                                                             qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                                             shortPropertyNameToQualifiedPropertyNames,
+                                                                                             matchProperties,
+                                                                                             MatchCriteria.ANY);
+
+        return matchingEntities;
+
+    }
+
+
+
+
+    // findRelationshipsByPropertyValueIteratively
+    public  List<Relationship> findRelationshipsByPropertyValueForTypes(List<String>                   validTypeNames,
+                                                                        String                         filterTypeName,
+                                                                        Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                        Map<String, List<String>>      shortPropertyNameToQualifiedPropertyNames,
+                                                                        String                         searchCriteria)
+    throws
+    InvalidParameterException,
+    TypeErrorException,
+    RepositoryErrorException,
+    PropertyErrorException,
+    PagingErrorException,
+    FunctionNotSupportedException,
+    UserNotAuthorizedException
+    {
+
+        final String methodName = "findRelationshipsByPropertyValueIteratively";
+
+        /*
+         * Construct a match properties object that covers the properties for all included types. This may either be a targeted set of types
+         * (now stored in validTypeNames) or it could be the whole set of active relationship types. The choice between them is dictated by whether
+         * filterTypeName is null or not.
+         */
+        InstanceProperties matchProperties = graphStore.constructMatchPropertiesForSearchCriteriaForTypes(TypeDefCategory.RELATIONSHIP_DEF,
+                                                                                                          searchCriteria,
+                                                                                                          filterTypeName,
+                                                                                                          validTypeNames);
+
+        /*
+         * Find all relationships of any included type that have matching properties.
+         */
+
+        List<Relationship> matchingRelationships = graphStore.findRelationshipsByPropertyValueForTypes(validTypeNames,
+                                                                                                       filterTypeName,
+                                                                                                       qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                                                       shortPropertyNameToQualifiedPropertyNames,
+                                                                                                       matchProperties,
+                                                                                                       MatchCriteria.ANY);
+
+        return matchingRelationships;
+
+    }
+
+
+
+
+
+    // findEntities
     @Override
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
@@ -1768,7 +1982,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
            TypeErrorException,
            PropertyErrorException,
            PagingErrorException,
-           UserNotAuthorizedException,
            FunctionNotSupportedException
 
 
@@ -1777,6 +1990,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         final String methodName = "findEntities";
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
+        List<EntityDetail> entities = null;
 
         /*
          * Validate parameters
@@ -1801,116 +2015,62 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             super.reportUnsupportedOptionalFunction(methodName);
         }
 
+        // Generate a query plan
+        GraphOMRSQueryPlan queryPlan = new GraphOMRSQueryPlan(repositoryName,
+                                                              metadataCollectionId,
+                                                              repositoryHelper,
+                                                              TypeDefCategory.ENTITY_DEF,
+                                                              matchProperties,
+                                                              entityTypeGUID,
+                                                              entitySubtypeGUIDs);
 
-        /*
-         * Perform operation
-         */
+        /* Map from qualifiedPropertyName to TDA */
+        Map<String, TypeDefAttribute> qualifiedPropertyNameToTypeDefinedAttribute = queryPlan.getQualifiedPropertyNameToTypeDefinedAttribute();
 
-        ArrayList<EntityDetail> returnEntities = null;
+        /* Map from short property name to list of qualifiedPropertyName */
+        Map<String, List<String>> shortPropertyNameToQualifiedPropertyNames = queryPlan.getShortPropertyNameToQualifiedPropertyNames();
+
+        List<String> validTypeNames = queryPlan.getValidTypeNames();
+
+        String filterTypeName = queryPlan.getFilterTypeName();
 
 
-        String specifiedTypeName = null;
-        if (entityTypeGUID != null)
+        if (validTypeNames.isEmpty())
         {
-            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
-            specifiedTypeName = typeDef.getName();
-        }
-
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
-
-        for (TypeDef typeDef : allTypeDefs)
-        {
-            if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)
-            {
-
-                String actualTypeName = typeDef.getName();
-
-                /*
-                 * If entityTypeGUID parameter is not null there is an expected type, so check whether the
-                 * current type matches the expected type or is one of its sub-types.
-                 */
-                if (specifiedTypeName != null)
-                {
-
-                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
-                    if (!typeMatch)
-                    {
-                        /*
-                         * Established that the caller wants type filtering but this (actual) type is neither the
-                         * specified type nor one of its subtypes. It will be skipped.
-                         */
-                        continue;
-                    }
-                    else
-                    {
-                        /*
-                         * Established that the caller wants type filtering and that this (actual) type is either the
-                         * specified type or one of its subtypes. If there is also a list of subtypeGUIDs, need to
-                         * check that if the typeDef is a subtype (ONLY - not the specified type) that it is
-                         * in the entitySubTypeGUIDs list. If it is present, it will be searched. If it is not present it
-                         * will not be searched.
-                         */
-                        if (entitySubtypeGUIDs != null)
-                        {
-                            String actualTypeGUID = typeDef.getGUID();
-                            /*
-                             * Although the repository helper provides a method to get the subtypes it is based on type
-                             * names so rather than convert back and forth between GUIDs and names, it is more straightforward
-                             * to decide if the type is strictly a subtype by comparing the typeGUID against the specified
-                             * type's GUID.
-                             */
-                            if (!actualTypeGUID.equals(entityTypeGUID))
-                            {
-                                /*
-                                 * The actual type is a strict subtype of the specified type. Check it is in the list,
-                                 * otherwise skip it.
-                                 */
-                                if (!entitySubtypeGUIDs.contains(actualTypeGUID))
-                                {
-                                    /*
-                                     * This subtype is not in the list, skip it
-                                     */
-                                    continue;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                /*
-                 * Invoke a type specific search. The search will expect the regexp to match fully to the value.
-                 */
-                List<EntityDetail> entitiesForCurrentType = graphStore.findEntities(actualTypeName, matchProperties, true);
-
-                if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty())
-                {
-                    if (returnEntities == null)
-                    {
-                        returnEntities = new ArrayList<>();
-                    }
-                    log.info("{}: for type {} found {} entities", methodName, typeDef.getName(), entitiesForCurrentType.size());
-                    returnEntities.addAll(entitiesForCurrentType);
-                }
-                else
-                {
-                    log.info("{}: for type {} found no entities", methodName, typeDef.getName());
-                }
-
-            }
-        }
-
-        /*
-         * Eliminate soft deleted entities and apply status and classification filtering if any was requested
-         */
-        if (returnEntities == null)
-        {
+            /*
+             * Whether filtering was requested or not, short-circuit if there are no valid types as there can be no valid results.
+             */
             return null;
+        }
+
+        List<EntityDetail> foundEntities = null;
+
+        // If there were any dups there must be horizontal duplication (across the types within the valid type set).
+        if (queryPlan.getQueryStrategy() == GraphOMRSQueryPlan.QueryStrategy.Iterate)
+        {
+            // If there are dups in the property maps perform a per-type query
+            foundEntities = findEntitiesIteratively(validTypeNames,
+                                                    matchProperties,
+                                                    MatchCriteria.ANY);
         }
         else
         {
+            // If there are no dups in property maps perform a delegated query.
+            foundEntities = graphStore.findEntitiesForTypes(validTypeNames,
+                                                            filterTypeName,
+                                                            qualifiedPropertyNameToTypeDefinedAttribute,
+                                                            shortPropertyNameToQualifiedPropertyNames,
+                                                            matchProperties);
+        }
+
+
+        if (foundEntities != null)
+        {
+            /*
+             * Eliminate soft deleted entities and apply status and classification filtering if any was requested
+             */
             List<EntityDetail> retainedEntities = new ArrayList<>();
-            for (EntityDetail entity : returnEntities)
+            for (EntityDetail entity : foundEntities)
             {
                 if (entity != null)
                 {
@@ -1918,16 +2078,20 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                             && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
                             && (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)))
                     {
+
                         retainedEntities.add(entity);
                     }
                 }
             }
-
-            return repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+            // Perform sequencing and paging
+            entities = repositoryHelper.formatEntityResults(retainedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
         }
 
+        return entities;
 
     }
+
+
 
 
     /**
@@ -1963,7 +2127,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      *                                  relationships.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
@@ -1983,13 +2146,11 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
            RepositoryErrorException,
            PropertyErrorException,
            PagingErrorException,
-           FunctionNotSupportedException,
-           UserNotAuthorizedException
+           FunctionNotSupportedException
     {
 
         final String methodName = "findRelationships";
         final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
-
 
         /*
          * Validate parameters
@@ -2006,10 +2167,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                                    pageSize);
 
 
-        /*
-         * Perform operation
-         */
-
         if (asOfTime != null)
         {
             log.error("{} does not support asOfTime searches", methodName);
@@ -2017,133 +2174,88 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             super.reportUnsupportedOptionalFunction(methodName);
         }
 
-
         /*
          * Perform operation
          */
 
-        ArrayList<Relationship> returnRelationships = null;
+        // Generate a query plan
+        GraphOMRSQueryPlan queryPlan = new GraphOMRSQueryPlan(repositoryName,
+                                                              metadataCollectionId,
+                                                              repositoryHelper,
+                                                              TypeDefCategory.RELATIONSHIP_DEF,
+                                                              matchProperties,
+                                                              relationshipTypeGUID,
+                                                              relationshipSubtypeGUIDs);
+
+        /* Map from qualifiedPropertyName to TDA */
+        Map<String, TypeDefAttribute> qualifiedPropertyNameToTypeDefinedAttribute = queryPlan.getQualifiedPropertyNameToTypeDefinedAttribute();
+
+        /* Map from short property name to list of qualifiedPropertyName */
+        Map<String, List<String>> shortPropertyNameToQualifiedPropertyNames = queryPlan.getShortPropertyNameToQualifiedPropertyNames();
+
+        List<String> validTypeNames = queryPlan.getValidTypeNames();
+
+        String filterTypeName = queryPlan.getFilterTypeName();
 
 
-        String specifiedTypeName = null;
-        if (relationshipTypeGUID != null)
+        if (validTypeNames.isEmpty())
         {
-            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, relationshipTypeGUIDParameterName, relationshipTypeGUID, methodName);
-            specifiedTypeName = typeDef.getName();
-        }
-
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
-
-        for (TypeDef typeDef : allTypeDefs)
-        {
-            if (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)
-            {
-
-                String actualTypeName = typeDef.getName();
-
-                /*
-                 * If relationshipTypeGUID parameter is not null there is an expected type, so check whether the
-                 * current type matches the expected type or is one of its sub-types.
-                 */
-                if (specifiedTypeName != null)
-                {
-
-                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
-                    if (!typeMatch)
-                    {
-                        /*
-                         * Established that the caller wants type filtering but this (actual) type is neither the
-                         * specified type nor one of its subtypes. It will be skipped.
-                         */
-                        continue;
-                    }
-                    else
-                    {
-                        /*
-                         * Established that the caller wants type filtering and that this (actual) type is either the
-                         * specified type or one of its subtypes. If there is also a list of subtype GUIDs, need to
-                         * check that if the typeDef is a subtype (ONLY - not the specified type) that it is
-                         * in the relationshipSubtypeGUIDs list. If it is present, it will be searched. If it is not present it
-                         * will not be searched.
-                         */
-                        if (relationshipSubtypeGUIDs != null)
-                        {
-                            String actualTypeGUID = typeDef.getGUID();
-                            /*
-                             * Although the repository helper provides a method to get the subtypes it is based on type
-                             * names so rather than convert back and forth between GUIDs and names, it is more straightforward
-                             * to decide if the type is strictly a subtype by comparing the typeGUID against the specified
-                             * type's GUID.
-                             */
-                            if (!actualTypeGUID.equals(relationshipTypeGUID))
-                            {
-                                /*
-                                 * The actual type is a strict subtype of the specified type. Check it is in the list,
-                                 * otherwise skip it.
-                                 */
-                                if (!relationshipSubtypeGUIDs.contains(actualTypeGUID))
-                                {
-                                    /*
-                                     * This subtype is not in the list, skip it
-                                     */
-                                    continue;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                /*
-                 * Invoke a type specific search. The search will expect the regexp to match fully to the value.
-                 */
-                List<Relationship> relationshipsForCurrentType = graphStore.findRelationships(actualTypeName, matchProperties, true);
-
-                if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty())
-                {
-                    if (returnRelationships == null)
-                    {
-                        returnRelationships = new ArrayList<>();
-                    }
-                    log.info("{}: for type {} found {} relationships", methodName, typeDef.getName(), relationshipsForCurrentType.size());
-                    returnRelationships.addAll(relationshipsForCurrentType);
-                }
-                else
-                {
-                    log.info("{}: for type {} found no relationships", methodName, typeDef.getName());
-                }
-
-            }
-        }
-
-        /*
-         * Eliminate soft deleted relationships and apply status filtering if any was requested
-         */
-        if (returnRelationships == null)
-        {
+            /*
+             * Whether filtering was requested or not, short-circuit if there are no valid types as there can be no valid results.
+             */
             return null;
+        }
+
+        List<Relationship> foundRelationships = null;
+
+        // If there were any dups there must be horizontal duplication (across the types within the valid type set).
+        if (queryPlan.getQueryStrategy() == GraphOMRSQueryPlan.QueryStrategy.Iterate)
+        {
+            // If there are dups in the property maps perform a per-type query
+            foundRelationships = findRelationshipsForTypes(validTypeNames,
+                                                           matchProperties,
+                                                           MatchCriteria.ANY);
         }
         else
         {
+            // If there are no dups in property maps perform a delegated query.
+            foundRelationships = graphStore.findRelationshipsForTypes(validTypeNames,
+                                                                      filterTypeName,
+                                                                      qualifiedPropertyNameToTypeDefinedAttribute,
+                                                                      shortPropertyNameToQualifiedPropertyNames,
+                                                                      matchProperties);
+        }
+
+
+        List<Relationship> relationships = null;
+
+        if (foundRelationships != null)
+        {
+            /*
+             * Eliminate soft deleted relationships and apply status filtering if any was requested
+             */
             List<Relationship> retainedRelationships = new ArrayList<>();
-            for (Relationship relationship : returnRelationships)
+
+            for (Relationship relationship : foundRelationships)
             {
                 if (relationship != null)
                 {
-                    if ( (relationship.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship))
-                            )
+                    if ((relationship.getStatus() != InstanceStatus.DELETED)
+                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
                     {
                         retainedRelationships.add(relationship);
                     }
                 }
             }
-
-            return repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
+            // Perform sequencing and paging
+            relationships = repositoryHelper.formatRelationshipResults(retainedRelationships, fromRelationshipElement, sequencingProperty, sequencingOrder, pageSize);
         }
 
+        return relationships;
 
     }
+
+
 
 
 
@@ -2508,47 +2620,51 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Perform operation
          */
 
-        String specifiedTypeName = null;
+        /*
+         * There is no need for a query plan in this case, because classificationName is mandatory so the graph traversal
+         * will always be specific to that classification type. Hence just convert the entityTypeGUID filter to a
+         * filterTypeName and generate the set of valid (entity) types.
+         */
+
+        String filterTypeName = null;
         if (entityTypeGUID != null)
         {
             TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
-            specifiedTypeName = typeDef.getName();
+            filterTypeName = typeDef.getName();
         }
 
         TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
         List<TypeDef> allTypeDefs = activeTypes.getTypeDefs();
 
         List<String> validTypeNames = new ArrayList<>();
-        if (specifiedTypeName != null)
+        if (filterTypeName != null)
         {
             for (TypeDef typeDef : allTypeDefs)
             {
                 if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)
                 {
-
                     String actualTypeName = typeDef.getName();
 
                     /*
                      * If entityTypeGUID parameter is not null there is an expected type, so check whether the
                      * current type matches the expected type or is one of its sub-types.
                      */
-                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
+                    boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, filterTypeName);
                     if (typeMatch)
                     {
                         validTypeNames.add(actualTypeName);
                     }
                 }
             }
-            if (validTypeNames.isEmpty()) {
+            if (validTypeNames.isEmpty())
+            {
                 /*
                  * Filtering was requested but there are no valid types based on the specified GUID.
                  */
                 return null;
             }
         }
-        /*
-         * validTypeNames now contains a (possibly empty!) list of all the eligible entity types - metadata store will check for emptiness.
-         */
+
 
         /*
          * Find all entities of this type that have the matching classification.
@@ -2556,7 +2672,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         List<EntityDetail> entitiesWithClassification = graphStore.findEntitiesByClassification(classificationName,
                                                                                                   matchClassificationProperties,
                                                                                                   matchCriteria,
-                                                                                                  specifiedTypeName != null,
+                                                                                                filterTypeName != null,
                                                                                                   validTypeNames);
 
         if (entitiesWithClassification == null || entitiesWithClassification.isEmpty())
@@ -2583,8 +2699,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                  * Status filter
                  * Eliminate soft deleted entities and apply status filtering if any was requested
                  */
-                if ((entity.getStatus() == InstanceStatus.DELETED)
-                        || (!repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)))
+                if (   (entity.getStatus() == InstanceStatus.DELETED)
+                    || (! repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)))
                 {
                     retainEntity = false;
                 }
