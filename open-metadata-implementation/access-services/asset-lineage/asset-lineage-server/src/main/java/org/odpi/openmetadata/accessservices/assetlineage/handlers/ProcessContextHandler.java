@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -47,8 +48,7 @@ public class ProcessContextHandler {
     private AssetContext graph;
 
     /**
-     * Construct the discovery engine configuration handler caching the objects
-     * needed to operate within a single server instance.
+     * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
@@ -73,7 +73,9 @@ public class ProcessContextHandler {
      *
      * @param userId  userId of user making request.
      * @param process the process entity for which the context is built
+     *
      * @return Map of the relationships between the Entities that are relevant to a Process
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
@@ -97,7 +99,9 @@ public class ProcessContextHandler {
      *
      * @param userId       userId of user making request
      * @param entityDetail the entity for which the relationships are retrieved
+     *
      * @return the current graph context if the Process to Port relationships are available
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private Map<String, Set<GraphContext>> checkIfAllRelationshipsExist(String userId,
@@ -120,7 +124,9 @@ public class ProcessContextHandler {
      *
      * @param userId       userId of user making request
      * @param entityDetail the entity for which the relationships are retrieved
+     *
      * @return true if all the process relationships are created
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasEntitiesLinkedWithProcessPort(String userId,
@@ -146,7 +152,9 @@ public class ProcessContextHandler {
      * @param userId           String - userId of user making request.
      * @param startEntity      the entity for which the relationships are retrieved
      * @param relationshipType type of the relationship
+     *
      * @return List of entities that are on the other end of the relationship, empty list if none
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private List<EntityDetail> getRelationshipsBetweenEntities(String userId,
@@ -178,16 +186,22 @@ public class ProcessContextHandler {
      *
      * @param userId String - userId of user making request.
      * @param entity details of the entity
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private void addContextForTabularColumns(String userId,
-                                             EntityDetail entity) throws OCFCheckedExceptionBase {
+    private void addContextForTabularColumns(String userId, EntityDetail entity) throws OCFCheckedExceptionBase {
         Set<String> superTypes = superTypesRetriever.getSuperTypes(userId, entity.getType().getTypeDefName());
 
         if (superTypes.contains(TABULAR_COLUMN)) {
-            AssetContext assetContext = assetContextHandler.getAssetContext(userId, entity);
-            graph.getGraphContexts().addAll(assetContext.getGraphContexts());
-            assetContext.getNeighbors().forEach(this::mergeGraphNeighbors);
+            Map<String, RelationshipsContext> assetContext = assetContextHandler.buildSchemaElementContext(userId, entity);
+
+            for (String eventType : assetContext.keySet()) {
+                RelationshipsContext relationshipContext = assetContext.get(eventType);
+                Set<GraphContext> relationships = relationshipContext.getRelationships();
+
+                graph.getGraphContexts().addAll(relationships);
+                mergeGraphNeighbors(eventType, relationships);
+            }
         }
     }
 
@@ -206,7 +220,9 @@ public class ProcessContextHandler {
      *
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
+     *
      * @return boolean true if relationships exist otherwise false.
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails,
@@ -226,7 +242,9 @@ public class ProcessContextHandler {
      *
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
+     *
      * @return boolean true if relationships exist otherwise false.
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasLineageRelationships(List<EntityDetail> entityDetails,
@@ -244,7 +262,9 @@ public class ProcessContextHandler {
      *
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
+     *
      * @return boolean true if relationships exist otherwise false.
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails,
@@ -266,7 +286,9 @@ public class ProcessContextHandler {
      *
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
+     *
      * @return boolean true if relationships exist otherwise false.
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasSchemaAttributes(List<EntityDetail> entityDetails,
@@ -287,6 +309,7 @@ public class ProcessContextHandler {
      *
      * @param entityDetails list of entities
      * @param typeDefName   String - the type to be checked
+     *
      * @return Boolean if type exists or not
      */
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails, String typeDefName) {

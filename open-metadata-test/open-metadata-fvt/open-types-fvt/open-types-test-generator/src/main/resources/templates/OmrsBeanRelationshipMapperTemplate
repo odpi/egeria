@@ -62,7 +62,7 @@ public class <$$uRelationshipName$$>Mapper {
                                                    } else {
                                                        // put out the omrs value object
                                                        if (<$$RelationshipName$$>.getExtraAttributes() ==null) {
-                                                            Map<String, Object> extraAttributes = new HashMap();
+                                                            Map<String, Object> extraAttributes = new HashMap<>();
                                                             <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
                                                         }
                                                       <$$RelationshipName$$>.getExtraAttributes().put(name, primitivePropertyValue);
@@ -82,7 +82,7 @@ public class <$$uRelationshipName$$>Mapper {
                                                    } else {
                                                        // put out the omrs value object
                                                         if (<$$RelationshipName$$>.getExtraAttributes() ==null) {
-                                                            Map<String, Object> extraAttributes = new HashMap();
+                                                            Map<String, Object> extraAttributes = new HashMap<>();
                                                             <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
                                                         }
 
@@ -99,7 +99,7 @@ public class <$$uRelationshipName$$>Mapper {
                                                         if (name.equals("<$$MapName$$>")) {
 
                                                              // Only support Map<String,String> as that is what is in the archive types at this time.
-                                                             Map<String, String> actualMap = new HashMap();
+                                                             Map<String, String> actualMap = new HashMap<>();
                                                              Iterator iter = instancePropertyForMap.getPropertyNames();
                                                              while (iter.hasNext()) {
                                                                 String mapkey = (String) iter.next();

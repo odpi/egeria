@@ -55,6 +55,13 @@ governance action service processes each source file.
 ![Figure 5](move-copy-file-provisioning-governance-action-service-lineage-4.png#pagewidth)
 > **Figure 5:** Traceability between the collection of source files and the destination folder
 
+Figure 6 shows the most abbreviated lineage that shows the linkage from the source folder
+to the governance action process to the destination folder.  There is no traceability at the file level.
+This pattern is appropriate when the files themselves are very numerous, they all follow the same
+processing path and the folders represent the data sets.
+
+![Figure 6](move-copy-file-provisioning-governance-action-service-lineage-5.png#pagewidth)
+> **Figure 6:** Traceability between the source files' folder and the destination folder
 
 Irrespective of the pattern used, the resulting changes to the metadata can lead to the triggering of additional activity
 in the open metadata ecosystem.  For example:
@@ -83,12 +90,16 @@ the behavior of the service on every instance.
 * **processName** - if this property is set, it overrides the default process name (ie the name of this
   governance action service) with the value that this property is set to.
   
-* **topLevelProcessOnly** - if this property is set, lineage mappings are connected to the top level process representing
+* **lineageWithTopLevelProcessOnly** - if this property is set, lineage mappings are connected to the top level process representing
   this 
 
 * **lineageToDestinationFolderOnly** - if this property is set, the lineage relationship from the
   governance action service to the destination is linked to the destination folder rather than the new file in the destination folder.
-  Without this value, the default behavior is to show lineage from file to file.
+  Without this value, the default behavior is to show lineage from governance action process to file.
+  
+* **lineageFromSourceFolderOnly** - if this property is set, the lineage relationship from the source to the
+  governance action service is linked from the source folder rather than the source file.
+  Without this value, the default behavior is to show lineage from source file to governance action process.  
 
 This is its connection definition to use when
 creating the definition of the governance action service
@@ -112,8 +123,9 @@ Replace `{processName}` and `{pattern}` as required.
                               "targetFileNamePattern": "{pattern}",
                               "noLineage": "",
                               "processName": "{processName}",
-                              "topLevelProcessOnly": "",
-                              "lineageToDestinationFolderOnly": ""
+                              "lineageWithTopLevelProcessOnly": "",
+                              "lineageToDestinationFolderOnly": "",
+                              "lineageFromSourceFolderOnly": ""
                       }
                   }
 }

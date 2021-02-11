@@ -4,12 +4,15 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
@@ -716,5 +719,39 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                        methodName);
 
         return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);
+    }
+
+    /**
+     * Update a schema attribute
+     * @param userId                      calling user
+     * @param externalSourceGUID          unique identifier of software server capability representing the caller
+     * @param externalSourceName          unique name of software server capability representing the caller
+     * @param schemaAttributeGUID         unique identifier of schema attribute
+     * @param instanceProperties          the schema attribute's properties
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSchemaAttribute(String                userId,
+                                      String                externalSourceGUID,
+                                      String                externalSourceName,
+                                      String                schemaAttributeGUID,
+                                      InstanceProperties    instanceProperties) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "updateSchemaAttribute";
+        final String parameterName = "schemaAttributeGUID";
+
+        this.updateBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    schemaAttributeGUID,
+                                    parameterName,
+                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                    instanceProperties,
+                                    true,
+                                    methodName);
     }
 }

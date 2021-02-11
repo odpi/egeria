@@ -48,6 +48,7 @@ public class UpdateGovernanceActionTypeRequestBody implements Serializable
         if (template != null)
         {
             mergeUpdate = template.getMergeUpdate();
+            properties = template.getProperties();
         }
     }
 

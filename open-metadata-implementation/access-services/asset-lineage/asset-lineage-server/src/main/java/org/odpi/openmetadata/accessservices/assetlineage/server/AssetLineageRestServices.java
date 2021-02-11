@@ -5,12 +5,12 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.PredicateUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -168,8 +167,7 @@ public class AssetLineageRestServices {
      *
      * @return the list of entity GUIDs published on the Asset Lineage Out Topic
      */
-    private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType,
-                                                AssetLineagePublisher publisher, AuditLog auditLog) {
+    private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType, AssetLineagePublisher publisher, AuditLog auditLog) {
 
         List<String> publishedGUIDs = entitiesByType.parallelStream().map(entityDetail ->
                 publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList());
@@ -182,22 +180,26 @@ public class AssetLineageRestServices {
     /**
      * Returns GUID that was published on the Out Topic
      *
-     * @param entityDetail  the entity for which the event is published
-     * @param publisher      Asset Lineage publisher
+     * @param entityDetail the entity for which the event is published
+     * @param publisher    Asset Lineage publisher
      *
      * @return the GUID published on the Asset Lineage Out Topic
      */
     private String publishEntityContext(AssetLineagePublisher publisher, EntityDetail entityDetail, AuditLog auditLog) {
-        String methodName="publishEntityContext";
+        String methodName = "publishEntityContext";
 
         try {
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("BUILDING_CONTEXT_STARTED", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
-            String result =  publishContext(entityDetail, publisher);
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("PUBLISHED", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("BUILDING_CONTEXT_STARTED",
+                    entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            String result = publishContext(entityDetail, publisher);
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("PUBLISHED",
+                    entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
             return result;
         } catch (Exception e) {
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("FAILED_TO_PUBLISH", entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
-            auditLog.logException(methodName, AssetLineageAuditCode.ENTITY_ERROR.getMessageDefinition(entityDetail.getType().getTypeDefName(),entityDetail.getGUID()), e);
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("FAILED_TO_PUBLISH",
+                    entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
+            auditLog.logException(methodName, AssetLineageAuditCode.ENTITY_ERROR.getMessageDefinition(entityDetail.getType().getTypeDefName(),
+                    entityDetail.getGUID()), e);
         }
         return null;
     }
@@ -213,17 +215,23 @@ public class AssetLineageRestServices {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    private String publishContext(EntityDetail entityDetail,
-                                  AssetLineagePublisher publisher) throws OCFCheckedExceptionBase, JsonProcessingException {
+    private String publishContext(EntityDetail entityDetail, AssetLineagePublisher publisher) throws OCFCheckedExceptionBase,
+                                                                                                     JsonProcessingException {
         String typeName = entityDetail.getType().getTypeDefName();
-        Map<String, Set<GraphContext>> context = new HashMap<>();
+        //TODO to review after refactoring the context structure for horizontal lineage
         switch (typeName) {
             case GLOSSARY_TERM: {
-                context = publisher.publishGlossaryContext(entityDetail);
+                Map<String, RelationshipsContext> glossaryContext = publisher.publishGlossaryContext(entityDetail);
+                if (glossaryContext != null) {
+                    return entityDetail.getGUID();
+                }
                 break;
             }
             case PROCESS: {
-                context = publisher.publishProcessContext(entityDetail);
+                Map<String, Set<GraphContext>> processContext = publisher.publishProcessContext(entityDetail);
+                if (processContext != null) {
+                    return entityDetail.getGUID();
+                }
                 break;
             }
             default:
@@ -232,9 +240,6 @@ public class AssetLineageRestServices {
                 break;
         }
 
-        if (MapUtils.isNotEmpty(context)) {
-            return entityDetail.getGUID();
-        }
         return null;
     }
 }

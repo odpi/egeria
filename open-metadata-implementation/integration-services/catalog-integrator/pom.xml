@@ -31,7 +31,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>catalog-integrator-api</module>
+        <module>catalog-integrator-client</module>
         <module>catalog-integrator-server</module>
+        <module>catalog-integrator-spring</module>
     </modules>
 
 </project>

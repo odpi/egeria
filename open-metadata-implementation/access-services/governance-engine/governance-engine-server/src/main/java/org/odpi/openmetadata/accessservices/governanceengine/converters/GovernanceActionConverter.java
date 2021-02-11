@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -89,6 +90,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                     properties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     properties.setDisplayName(this.removeDisplayName(instanceProperties));
                     properties.setDescription(this.removeDescription(instanceProperties));
+                    properties.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
                     properties.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
                     properties.setActionStatus(this.removeActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
                     properties.setStartTime(this.removeStartDate(instanceProperties));
@@ -114,6 +116,15 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
 
                                     properties.setRequestType(this.removeRequestType(instanceProperties));
                                     properties.setRequestProperties(this.removeRequestParameters(instanceProperties));
+
+                                    EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+                                    properties.setGovernanceEngineGUID(entityProxy.getGUID());
+
+                                    if (entityProxy.getUniqueProperties() != null)
+                                    {
+                                        properties.setGovernanceEngineName(this.getQualifiedName(entityProxy.getUniqueProperties()));
+                                    }
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME))
                                 {

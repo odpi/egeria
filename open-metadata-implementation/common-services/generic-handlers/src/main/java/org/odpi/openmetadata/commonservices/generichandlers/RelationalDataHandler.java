@@ -2138,15 +2138,15 @@ public class RelationalDataHandler<DATABASE,
         final String parentElementGUIDParameterName = "databaseSchemaGUID";
         final String qualifiedNameParameterName     = "qualifiedName";
 
-        String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
-                                                                                    databaseManagerGUID,
-                                                                                    databaseManagerName,
-                                                                                    databaseSchemaGUID,
-                                                                                    parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
-                                                                                    methodName);
+        String databaseSchemaTypeGUID = databaseViewHandler.getAssetSchemaTypeGUID(userId,
+                                                                                   databaseManagerGUID,
+                                                                                   databaseManagerName,
+                                                                                   databaseSchemaGUID,
+                                                                                   parentElementGUIDParameterName,
+                                                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                   OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                                                   OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                   methodName);
 
         /*
          * A database view is represented as a schemaAttribute of type RelationalTable (or a subtype).
@@ -2226,7 +2226,7 @@ public class RelationalDataHandler<DATABASE,
             String databaseViewGUID = databaseViewHandler.createNestedSchemaAttribute(userId,
                                                                                        databaseManagerGUID,
                                                                                        databaseManagerName,
-                                                                                       databaseSchemaGUID,
+                                                                                       databaseSchemaTypeGUID,
                                                                                        parentElementGUIDParameterName,
                                                                                        OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,

@@ -6,13 +6,6 @@ package org.odpi.openmetadata.viewservices.dino.api.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
-import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
-import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
-import org.odpi.openmetadata.platformservices.properties.ServerStatus;
-
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 

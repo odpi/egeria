@@ -187,13 +187,23 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                     GovernanceActionStatus status = governanceActionHandler.getActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
                                                                                             entity.getProperties());
 
-                    if (status == GovernanceActionStatus.REQUESTED)
+                    if (status == GovernanceActionStatus.APPROVED)
                     {
                         try
                         {
                             GovernanceActionElement element = governanceActionHandler.getGovernanceAction(userId, entity.getGUID(), methodName);
 
-                            eventPublisher.publishNewGovernanceAction(element);
+                            if (element.getProperties().getGovernanceEngineName() != null)
+                            {
+                                eventPublisher.publishNewGovernanceAction(element.getProperties().getGovernanceEngineGUID(),
+                                                                          element.getProperties().getGovernanceEngineName(),
+                                                                          element);
+                            }
+                            else
+                            {
+                                auditLog.logMessage(methodName,
+                                                    GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(element.toString()));
+                            }
                         }
                         catch (Exception error)
                         {
@@ -202,6 +212,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                   error);
                         }
                     }
+
                     return true;
                 }
             }

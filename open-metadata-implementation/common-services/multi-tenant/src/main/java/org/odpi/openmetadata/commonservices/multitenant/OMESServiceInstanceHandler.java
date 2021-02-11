@@ -10,9 +10,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
  * engine service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the EngineServiceAdmin class.
  */
-public class OMESServiceInstanceHandler extends AuditableServerServiceInstanceHandler
+public class OMESServiceInstanceHandler extends GovernanceServerServiceInstanceHandler
 {
-    private RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -25,12 +24,4 @@ public class OMESServiceInstanceHandler extends AuditableServerServiceInstanceHa
         super(serviceName);
     }
 
-
-    /**
-     * Retrieve the exception handler that can package up common exceptions and pack them into
-     * a REST Response.
-     *
-     * @return exception handler object
-     */
-    public RESTExceptionHandler getExceptionHandler() { return exceptionHandler; }
 }

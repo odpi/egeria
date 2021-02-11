@@ -5,18 +5,22 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -47,6 +51,7 @@ public class AssetLineagePublisher {
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
     private GlossaryContextHandler glossaryHandler;
+    private AssetContextHandler assetContextHandler;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -56,15 +61,16 @@ public class AssetLineagePublisher {
      * @param serverName        name of the user of the server instance
      * @param serverUserName    name of this server instance
      */
-    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector,
-                                 String serverName, String serverUserName)
-            throws OCFCheckedExceptionBase {
+    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName) throws
+                                                                                                                         OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
+
         this.outTopicConnector = outTopicConnector;
         this.serverUserName = serverUserName;
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
+        this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
     }
 
     /**
@@ -75,8 +81,7 @@ public class AssetLineagePublisher {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail)
-            throws OCFCheckedExceptionBase, JsonProcessingException {
+    public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(processContext)) {
@@ -84,7 +89,7 @@ public class AssetLineagePublisher {
             return Collections.emptyMap();
         }
 
-        publishLineageEvents(processContext, AssetLineageEventType.PROCESS_CONTEXT_EVENT);
+        publishProcessContextEvents(processContext);
         return processContext;
     }
 
@@ -103,22 +108,54 @@ public class AssetLineagePublisher {
 
     /***
      * Build the context for a Glossary Term and publishes the event to the out topic
+     *
      * @param entityDetail glossary term to get context
      * @return the Glossary Term context
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    public Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail)
-            throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> context = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
+    public Map<String, RelationshipsContext> publishGlossaryContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase,
+                                                                                                      JsonProcessingException {
+        Map<String, RelationshipsContext> glossaryTermContext = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
-        if (MapUtils.isEmpty(context)) {
+        if (MapUtils.isEmpty(glossaryTermContext)) {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
-        publishLineageEvents(context, AssetLineageEventType.GLOSSARY_TERM_CONTEXT_EVENT);
-        return context;
+        publishLineageRelationshipsEvents(glossaryTermContext);
+
+        Set<EntityDetail> schemaElementsAttached = glossaryHandler.getSchemaElementsAttached(serverUserName, entityDetail);
+        for (EntityDetail schemaElement : schemaElementsAttached) {
+            publishLineageRelationshipsEvents(assetContextHandler.buildSchemaElementContext(serverUserName, schemaElement));
+        }
+
+        return glossaryTermContext;
+    }
+
+    /**
+     * Publishes a {@link LineageRelationshipsEvent} for each entry from the context map
+     *
+     * @param contextMap the context map to be published
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    private void publishLineageRelationshipsEvents(Map<String, RelationshipsContext> contextMap) throws JsonProcessingException,
+                                                                                                        ConnectorCheckedException {
+        for (String eventType : contextMap.keySet()) {
+            RelationshipsContext relationshipsContext = contextMap.get(eventType);
+
+            if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
+                LineageRelationshipsEvent event = new LineageRelationshipsEvent();
+
+                event.setRelationshipsContext(relationshipsContext);
+                event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
+
+                publishEvent(event);
+            }
+        }
     }
 
     /**
@@ -130,14 +167,15 @@ public class AssetLineagePublisher {
      */
     public void publishClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType)
             throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> classificationContext = classificationHandler.buildClassificationContext(entityDetail);
+        Map<String, RelationshipsContext> classificationContext = classificationHandler.buildClassificationContext(entityDetail,
+                assetLineageEventType);
 
         if (MapUtils.isEmpty(classificationContext)) {
             log.debug("Lineage classifications not found for the entity {} ", entityDetail.getGUID());
             return;
         }
 
-        publishLineageEvents(classificationContext, assetLineageEventType);
+        publishLineageRelationshipsEvents(classificationContext);
     }
 
 
@@ -218,22 +256,20 @@ public class AssetLineagePublisher {
     }
 
     /**
-     * Publishes a lineage event for each entry from the context map
+     * Publishes a {@link ProcessLineageEvent} for each entry from the context map
      *
-     * @param context          the context of the lineage entity
-     * @param lineageEventType the lineage event type
+     * @param context the context of the lineage entity
      *
      * @throws JsonProcessingException   exception parsing the event json
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    private void publishLineageEvents(Map<String, Set<GraphContext>> context, AssetLineageEventType lineageEventType)
-            throws JsonProcessingException, ConnectorCheckedException {
+    private void publishProcessContextEvents(Map<String, Set<GraphContext>> context) throws JsonProcessingException, ConnectorCheckedException {
 
         for (String guid : context.keySet()) {
-            LineageEvent event = new LineageEvent();
+            ProcessLineageEvent event = new ProcessLineageEvent();
 
-            event.setAssetContext(context.get(guid));
-            event.setAssetLineageEventType(lineageEventType);
+            event.setContext(context.get(guid));
+            event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
 
             publishEvent(event);
         }

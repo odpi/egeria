@@ -32,7 +32,6 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
      * @param patchLevel           new patch level for the discovery engine implementation.
      * @param source               new source description for the implementation of the discovery engine.
      * @param additionalProperties additional properties
-     * @param extendedProperties   properties from the subtype.
      * @param repositoryHelper     helper methods
      * @param serviceName          name of this OMAS
      * @param serverName           name of local server
@@ -40,11 +39,10 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
     public ExternalDataEnginePropertiesBuilder(String qualifiedName, String name, String description,
                                                String type, String version, String patchLevel, String source,
                                                Map<String, String> additionalProperties,
-                                               Map<String, Object> extendedProperties,
                                                OMRSRepositoryHelper repositoryHelper, String serviceName,
                                                String serverName) {
 
-        super(qualifiedName, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
+        super(qualifiedName, additionalProperties, repositoryHelper, serviceName, serverName);
 
         this.name = name;
         this.description = description;

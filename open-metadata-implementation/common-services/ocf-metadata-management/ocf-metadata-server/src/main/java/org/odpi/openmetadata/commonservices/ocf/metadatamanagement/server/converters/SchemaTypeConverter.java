@@ -56,6 +56,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
+    @SuppressWarnings(value = "unchecked")
     public B getNewSchemaTypeBean(Class<B>             beanClass,
                                   InstanceHeader       schemaRootHeader,
                                   String               schemaTypeTypeName,
