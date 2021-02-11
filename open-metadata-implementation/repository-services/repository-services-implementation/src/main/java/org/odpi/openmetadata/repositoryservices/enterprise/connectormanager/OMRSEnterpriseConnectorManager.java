@@ -234,7 +234,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                      owningOrganizationName),
                                remoteConnection.toString());
         }
-        else
+        else if (remoteConnection.equals(registeredConnector.getConnection()))
         {
             auditLog.logMessage(actionDescription,
                                 OMRSAuditCode.REMOTE_MEMBER_REFRESHED.getMessageDefinition(remoteServerName,
@@ -244,6 +244,18 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                            remoteServerType,
                                                                                            owningOrganizationName),
                                remoteConnection.toString());
+            return;
+        }
+        else
+        {
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.REMOTE_MEMBER_UPDATED.getMessageDefinition(remoteServerName,
+                                                                                         cohortName,
+                                                                                         metadataCollectionId,
+                                                                                         metadataCollectionName,
+                                                                                         remoteServerType,
+                                                                                         owningOrganizationName),
+                                remoteConnection.toString());
         }
 
 

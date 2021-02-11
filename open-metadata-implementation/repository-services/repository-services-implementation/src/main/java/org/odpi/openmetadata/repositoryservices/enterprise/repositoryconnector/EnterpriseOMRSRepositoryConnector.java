@@ -175,8 +175,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return repository connector
      * @throws RepositoryErrorException home metadata collection is null
      */
-    OMRSMetadataCollection  getHomeMetadataCollection(InstanceHeader instance,
-                                                      String         methodName) throws RepositoryErrorException
+    synchronized OMRSMetadataCollection getHomeMetadataCollection(InstanceHeader instance,
+                                                                  String         methodName) throws RepositoryErrorException
     {
         OMRSRepositoryConnector repositoryConnector = this.getHomeConnector(instance, methodName);
 
@@ -263,8 +263,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return list of repository connectors
      * @throws RepositoryErrorException home metadata collection is null
      */
-    List<OMRSRepositoryConnector>  getHomeLocalRemoteConnectors(InstanceHeader instance,
-                                                                String         methodName) throws RepositoryErrorException
+    synchronized List<OMRSRepositoryConnector> getHomeLocalRemoteConnectors(InstanceHeader instance,
+                                                                            String         methodName) throws RepositoryErrorException
     {
         this.validateRepositoryIsActive(methodName);
 
@@ -362,7 +362,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return OMRSRepositoryConnector List
      * @throws RepositoryErrorException the enterprise services are not available
      */
-    List<OMRSRepositoryConnector> getCohortConnectors(String     methodName) throws RepositoryErrorException
+    synchronized List<OMRSRepositoryConnector> getCohortConnectors(String methodName) throws RepositoryErrorException
     {
         this.validateRepositoryIsActive(methodName);
 
@@ -439,8 +439,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param localConnector OMRSRepositoryConnector object for the local repository.
      */
     @Override
-    public void setLocalConnector(String                       metadataCollectionId,
-                                  LocalOMRSRepositoryConnector localConnector)
+    public synchronized void setLocalConnector(String                       metadataCollectionId,
+                                               LocalOMRSRepositoryConnector localConnector)
     {
         this.localMetadataCollectionId = metadataCollectionId;
         this.localConnector = localConnector;
@@ -459,8 +459,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param remoteConnector OMRSRepositoryConnector object providing access to the remote repository.
      */
     @Override
-    public void addRemoteConnector(String                  metadataCollectionId,
-                                   OMRSRepositoryConnector remoteConnector)
+    public synchronized void addRemoteConnector(String                  metadataCollectionId,
+                                                OMRSRepositoryConnector remoteConnector)
     {
         if (remoteConnector != null)
         {
@@ -502,7 +502,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param metadataCollectionId identifier of the metadata collection that is no longer available.
      */
     @Override
-    public void removeRemoteConnector(String  metadataCollectionId)
+    public synchronized void removeRemoteConnector(String  metadataCollectionId)
     {
         Iterator<FederatedConnector> iterator = remoteCohortConnectors.iterator();
 
@@ -534,7 +534,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * There is no need to disconnect the local connector - that is handled by the EnterpriseConnectorManager
      */
     @Override
-    public void disconnectAllConnectors()
+    public synchronized void disconnectAllConnectors()
     {
         try
         {
