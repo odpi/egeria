@@ -126,8 +126,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     /**
      * Find Glossary
      *
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param findRequest        {@link FindRequest}
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param findRequest {@link FindRequest}
      * @return A list of Glossaries meeting the search Criteria
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -156,9 +156,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     /**
      * Get Glossary relationships
      *
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param guid               guid
-     * @param findRequest        {@link FindRequest}
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param guid        guid
+     * @param findRequest {@link FindRequest}
      * @return the relationships associated with the requested Glossary guid
      * <p>
      * when not successful the following Exception responses can occur
@@ -291,9 +291,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                     oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, GLOSSARY_TYPE_NAME, guid);
                 } else {
                     throw new EntityNotDeletedException(SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
-                            className,
-                            methodName,
-                            guid);
+                                                        className,
+                                                        methodName,
+                                                        guid);
                 }
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
@@ -332,11 +332,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     /**
      * Get terms that are owned by this glossary.  The server has a maximum page size defined, the number of terms returned is limited by that maximum page size.
      *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to get terms
-     * @param termHandler Term handler
-     * @param startingFrom return results starting from element
-     * @param maxPageSize maximum number of elements to be returned
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param guid        guid of the category to get terms
+     * @param findRequest {@link FindRequest}
      * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -344,26 +342,56 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
-     * */
-    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, SubjectAreaTermHandler termHandler, Integer startingFrom, int maxPageSize) {
+     */
+    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, FindRequest findRequest) {
         final String methodName = "getTerms";
-        SubjectAreaOMASAPIResponse<Term>  response = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, maxPageSize);
-        List<Term> allTerms = new ArrayList<>();
-        // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
-        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
-            for (Term mappedCategory: response.results()) {
-                SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
-                if (termResponse.getRelatedHTTPCode() == 200) {
-                    allTerms.add(termResponse.results().get(0));
-                } else {
-                    response = termResponse;
-                    break;
-                }
-            }
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+
+        Integer pageSize = findRequest.getPageSize();
+        Integer startingFrom = findRequest.getStartingFrom();
+        String searchCriteria = findRequest.getSearchCriteria();
+
+        if (pageSize == null) {
+            pageSize = maxPageSize;
         }
-        if (response.getRelatedHTTPCode() == 200) {
-            response = new SubjectAreaOMASAPIResponse<>();
-            response.addAllResults(allTerms);
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        // isAll indicates there is no searchCriteria filter.
+        boolean isAll = searchCriteria == null || searchCriteria.equals("") || searchCriteria.equals(".*");
+
+        SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
+        if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
+            if (isAll) {
+                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
+                if (childTermsResponse != null && childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
+                    response.addAllResults(childTermsResponse.results());
+                }
+            } else {
+                List<Term> termsToReturn = new ArrayList<>();
+                boolean continueGettingTerms = true;
+                while (continueGettingTerms) {
+                    SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
+                    if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
+                        for (Term term : childTermsResponse.results()) {
+                            // this term to the results if it matches the search criteria and we have not already got a page of results to return
+                            if (termMatchSearchCriteria(term, searchCriteria) &&
+                                    termsToReturn.size() < pageSize) {
+                                termsToReturn.add(term);
+                            }
+                        }
+                    }
+
+                    if (childTermsResponse.results().size() < pageSize || termsToReturn.size() == pageSize) {
+                        // we have a page to return or the last get returned less than a page.
+                        continueGettingTerms = false;
+                    } else {
+                        // issue another call to get another page of terms
+                        startingFrom = startingFrom + pageSize;
+                    }
+                }
+                response.addAllResults(termsToReturn);
+            }
         }
         return response;
     }
@@ -371,12 +399,12 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     /**
      * Get the Categories owned by this glossary.  The server has a maximum page size defined, the number of categories returned is limited by that maximum page size.
      *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to get terms
-     * @param onlyTop      when only the top categories (those categories without parents) are returned.
-     * @param categoryHandler category handler
-     * @param startingFrom  starting from
-     * @param maxPageSize maximum number of elements to be returned
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param guid        guid of the category to get terms
+     * @param findRequest {@link FindRequest}
+     * @param onlyTop     when only the top categories (those categories without parents) are returned.
+     * @param categoryHandler category handler is supplied, so that we can obtain  categories containing the parentCategory field,
+     *                       which we need to test as part of the onlyTop processing
      * @return A list of categories owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -384,63 +412,90 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
-     * */
-    public SubjectAreaOMASAPIResponse<Category> getCategories(String userId, String guid, Boolean onlyTop, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer maxPageSize) {
+     */
+    public SubjectAreaOMASAPIResponse<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, SubjectAreaCategoryHandler categoryHandler) {
         final String methodName = "getCategories";
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        Integer pageSize = findRequest.getPageSize();
+        Integer startingFrom = findRequest.getStartingFrom();
+        String searchCriteria = findRequest.getSearchCriteria();
+        if (pageSize == null) {
+            pageSize = maxPageSize;
+        }
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        // isAll indicates there is no searchCriteria filter.
+        boolean isAll = searchCriteria == null || searchCriteria.equals("") || searchCriteria.equals(".*");
 
-        SubjectAreaOMASAPIResponse<Category> response = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, maxPageSize, methodName);
-        if (onlyTop && response.getRelatedHTTPCode() == 200) {
-            // if we got the categories successfully and we have some and only top categories then filter out the top categories from the bigger list of categories.
-            // if we get a pages worth of results back and not all of them are top categories we need to get more categories to fill out the page of results.
-            int from = 0;
-            boolean keepGettingCategories = true;
-            List<Category> topCategories = new ArrayList<>();
-            while (keepGettingCategories) {
-                List<Category> allCategories = response.results();
-                if (allCategories != null && allCategories.size() > 0) {
-                    response = new SubjectAreaOMASAPIResponse<>();
-                    for (Category category : allCategories) {
-                        if (category.getParentCategory() == null) {
-                            topCategories.add(category);
+        SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
+        if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
+            // the supplied glossary guid exists.
+            if (isAll) {
+                SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, pageSize, methodName);
+                for (Category relatedCategory : relatedCategoriesResponse.results()) {
+                    if (onlyTop) {
+                        if (relatedCategory.getParentCategory() == null) {
+                            response.addResult(relatedCategory);
+                        }
+                    } else {
+                        response.addResult(relatedCategory);
+                    }
+                }
+            } else {
+                List<Category> categoriesToReturn = new ArrayList<>();
+                // we have more to get, bump up the startingFrom and get the next page
+                boolean continueGettingCategories = true;
+                while (continueGettingCategories) {
+                    SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, pageSize, methodName);
+                    if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
+                        for (Category relatedCategory : relatedCategoriesResponse.results()) {
+                            // this category to the results if it is not the parent category and it matches the search criteria
+                            if (categoryMatchSearchCriteria(relatedCategory, searchCriteria) &&
+                                    categoriesToReturn.size() < pageSize) {
+                                if (onlyTop) {
+                                    if (relatedCategory.getParentCategory() == null) {
+                                        categoriesToReturn.add(relatedCategory);
+                                    }
+                                } else {
+                                    categoriesToReturn.add(relatedCategory);
+                                }
+                            }
                         }
                     }
-                }
-                if (response.results() == null || response.results().size() == 0) {
-                    keepGettingCategories = false;
-                } else if (allCategories.size() > 0 && response.results() != null && response.results().size() == maxPageSize) {
-                    // in this case we have found top categories, but we got a page full of categories back to there may be more top categories we need to find to fill up the requested page, or there is no more data
-                    from = from + maxPageSize;
-                    response = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, maxPageSize, methodName);
-                    if (response.getRelatedHTTPCode() != 200) {
-                        keepGettingCategories = false;
-                        topCategories = new ArrayList<>();
+                    if (relatedCategoriesResponse.results().size() < pageSize || categoriesToReturn.size() == pageSize) {
+                        // we have a page to return or the last get returned less than a page.
+                        continueGettingCategories = false;
+                    } else {
+                        // issue another call to get another page of terms
+                        startingFrom = startingFrom + pageSize;
                     }
                 }
+                response.addAllResults(categoriesToReturn);
             }
-            // clear the response
-            response = new SubjectAreaOMASAPIResponse<>();
-            // and add all the top categories
-            response.addAllResults(topCategories);
         }
+
         return response;
     }
 
+
     /**
-     * Get categories with paging.
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to get terms
+     * Get categories with paging. This call uses the category handler to get a Category that is fully filled out, including a valid value for the categoryParent.
+     *
+     * @param userId          unique identifier for requesting user, under which the request is performed
+     * @param guid            guid of the category to get terms
      * @param categoryHandler category handler
-     * @param startingFrom starting element
-     * @param pageSize maximum elements returned on the request
-     * @param methodName REst API
+     * @param startingFrom    starting element
+     * @param pageSize        maximum elements returned on the request
+     * @param methodName      REst API
      * @return Categories  response
      */
     private SubjectAreaOMASAPIResponse<Category> getCategoriesWithPaging(String userId, String guid, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer pageSize, String methodName) {
-        SubjectAreaOMASAPIResponse<Category>  response = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
+        SubjectAreaOMASAPIResponse<Category> response = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
         List<Category> allCategories = new ArrayList<>();
         // the categories we get back from the mappers only map the parts from the entity. They do not set the parentCategory or the anchor.
-        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
-            for (Category mappedCategory: response.results()) {
+        if (response.getRelatedHTTPCode() == 200 && response.results() != null && response.results().size() > 0) {
+            for (Category mappedCategory : response.results()) {
                 SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
                 if (categoryResponse.getRelatedHTTPCode() == 200) {
                     allCategories.add(categoryResponse.results().get(0));

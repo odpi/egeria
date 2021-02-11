@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -409,5 +410,65 @@ public abstract class SubjectAreaHandler {
         if (qualifiedName == null || qualifiedName.trim().equals("")) {
             node.setQualifiedName(node.getName() + "@" + UUID.randomUUID().toString());
         }
+    }
+    /**
+     * return whether the Category matches the search criteria
+     *
+     * @param category       category to use for match
+     * @param searchCriteria criteria to use for match
+     * @return boolean indicating whether the category matches the search criteria
+     */
+    protected boolean categoryMatchSearchCriteria(Category category, String searchCriteria) {
+        boolean isMatch = false;
+        final String name = category.getName();
+        final String description = category.getDescription();
+        final String qualifiedName = category.getQualifiedName();
+
+        if (name != null && name.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (description != null && description.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        return isMatch;
+    }
+    /**
+     * return whether the Term matches the search criteria
+     *
+     * @param term           term to use for match
+     * @param searchCriteria criteria to use for match
+     * @return boolean indicating whether the term matches the search criteria
+     */
+    protected boolean termMatchSearchCriteria(Term term, String searchCriteria) {
+        boolean isMatch = false;
+        final String name = term.getName();
+        final String description = term.getDescription();
+        final String qualifiedName = term.getQualifiedName();
+        final String abbreviation = term.getAbbreviation();
+        final String examples = term.getExamples();
+        final String usage = term.getUsage();
+
+        if (name != null && name.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (description != null && description.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (abbreviation != null && abbreviation.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (examples != null && examples.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (usage != null && usage.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        return isMatch;
     }
 }
