@@ -105,6 +105,13 @@ The engine services run in dedicated OMAG Server called the **Engine Host**.
 Instructions for configuring the engine services in the Engine Host
 are found in the [Administration Guide](../../admin-services/docs/concepts/engine-host.md).
 
+The [Governance Engine OMAS](../../access-services/governance-engine)
+provides the services for:
+
+* setting up the definitions of a [governance action engine](docs/governance-action-engine.md).
+* configuring [governance action processes](docs/governance-action-process.md).
+* managing [governance actions](docs/governance-action.md) and [incident reports](docs/incident-report.md).
+
 ----
 Return to [frameworks](..).
 

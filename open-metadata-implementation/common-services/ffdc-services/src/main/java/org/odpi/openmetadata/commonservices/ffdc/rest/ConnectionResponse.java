@@ -60,14 +60,7 @@ public class ConnectionResponse extends FFDCResponseBase
      */
     public Connection getConnection()
     {
-        if (connection == null)
-        {
-            return null;
-        }
-        else
-        {
-            return connection;
-        }
+        return connection;
     }
 
 

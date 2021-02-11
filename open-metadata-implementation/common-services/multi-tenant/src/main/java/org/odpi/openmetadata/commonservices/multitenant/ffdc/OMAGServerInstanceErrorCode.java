@@ -43,10 +43,16 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                          "This is a configuration error and an exception is sent to the requester.",
                          "Correct the configuration of the access service to include the name of the topic."),
 
+    NOT_CORRECT_CONNECTOR_PROVIDER(400,"OMAG-MULTI-TENANT-400-004",
+                                   "The connector provider class name {0} does not create a connector of class {1} which is required for the {2}",
+                                   "An invalid parameter exception is returned to the caller.",
+                                   "Either change the connector or the hosting environment because the current combination is not compatible."),
+
     SERVER_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-001",
-            "The OMAG Server {0} is not available to service a request from user {1}",
-            "The system is unable to process the request because the server is not running.",
-            "Retry the request when the OMAG Server is available."),
+                         "The OMAG Server {0} is not available to service a request from user {1}",
+                         "The system is unable to process the request because the server is not running on the called platform.",
+                         "Verify that the correct server is being called on the correct platform and that this server is running. " +
+                                 "Retry the request when the server is available."),
 
     SERVICE_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-002",
             "The {0} service is not available on OMAG Server {1} to handle a request from user {2}",

@@ -32,6 +32,7 @@ public class GovernanceActionRequestBody implements Serializable
     private String              description           = null;
     private List<String>        requestSourceGUIDs    = null;
     private List<String>        actionTargetGUIDs     = null;
+    private List<String>        receivedGuards        = null;
     private Date                startTime             = null;
     private String              requestType           = null;
     private Map<String, String> requestProperties     = null;
@@ -62,6 +63,7 @@ public class GovernanceActionRequestBody implements Serializable
             description = template.getDescription();
             requestSourceGUIDs = template.getRequestSourceGUIDs();
             actionTargetGUIDs = template.getActionTargetGUIDs();
+            receivedGuards = template.getReceivedGuards();
             startTime = template.getStartTime();
             requestType = template.getRequestType();
             requestProperties = template.getRequestProperties();
@@ -219,6 +221,28 @@ public class GovernanceActionRequestBody implements Serializable
     public void setActionTargetGUIDs(List<String> actionTargetGUIDs)
     {
         this.actionTargetGUIDs = actionTargetGUIDs;
+    }
+
+
+    /**
+     * Return the list of guards that should be passed to the governance service that executes this request.
+     *
+     * @return list of strings
+     */
+    public List<String> getReceivedGuards()
+    {
+        return receivedGuards;
+    }
+
+
+    /**
+     * Set up the list of guards that should be passed to the governance service that executes this request.
+     *
+     * @param receivedGuards list of strings
+     */
+    public void setReceivedGuards(List<String> receivedGuards)
+    {
+        this.receivedGuards = receivedGuards;
     }
 
 

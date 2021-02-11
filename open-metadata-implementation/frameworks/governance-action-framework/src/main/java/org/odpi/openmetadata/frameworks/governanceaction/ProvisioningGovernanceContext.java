@@ -121,6 +121,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
 
 
     /**
+     * Create a new process to represent the processing of this governance action process.
      *
      * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
      * @param initialStatus status value of the process
@@ -155,6 +156,60 @@ public class ProvisioningGovernanceContext extends GovernanceContext
                                                               null,
                                                               properties,
                                                               templateGUID);
+    }
+
+
+    /**
+     * Create a process that represents the processing instance of this governance action.
+     * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
+     * @param initialStatus status value of the process
+     * @param qualifiedName the unique name of the new process
+     * @param name the technical display name of the process
+     * @param description the description of the process
+     * @param parentGUID the unique identifier of the existing process to copy (this will copy all of the attachments such as ports, nested content,
+     *                     schema, connection etc)
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException the type name or qualified name is null or invalid
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public String createChildProcess(String        processTypeName,
+                                     ElementStatus initialStatus,
+                                     String        qualifiedName,
+                                     String        name,
+                                     String        description,
+                                     String        parentGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName = "createProcess";
+
+        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
+
+        String processGUID = openMetadataStore.createMetadataElementInStore(processTypeName,
+                                                                            initialStatus,
+                                                                            null,
+                                                                            null,
+                                                                            properties,
+                                                                            null);
+
+        if (processGUID != null)
+        {
+            ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
+                                                                                      "containmentType",
+                                                                                      "OWNED");
+
+            openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
+                                                           parentGUID,
+                                                           processGUID,
+                                                           null,
+                                                           null,
+                                                           relationshipProperties);
+        }
+
+        return processGUID;
     }
 
 

@@ -26,9 +26,9 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    AssetBuilder(OMRSRepositoryHelper repositoryHelper,
-                 String               serviceName,
-                 String               serverName)
+    protected AssetBuilder(OMRSRepositoryHelper repositoryHelper,
+                           String               serviceName,
+                           String               serverName)
     {
         super(OpenMetadataAPIMapper.ASSET_TYPE_GUID,
               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
@@ -47,11 +47,11 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    AssetBuilder(String               typeGUID,
-                 String               typeName,
-                 OMRSRepositoryHelper repositoryHelper,
-                 String               serviceName,
-                 String               serverName)
+    protected AssetBuilder(String               typeGUID,
+                           String               typeName,
+                           OMRSRepositoryHelper repositoryHelper,
+                           String               serviceName,
+                           String               serverName)
     {
         super(typeGUID,
               typeName,
@@ -75,16 +75,16 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    AssetBuilder(String               qualifiedName,
-                 String               technicalName,
-                 String               technicalDescription,
-                 Map<String, String>  additionalProperties,
-                 String               typeGUID,
-                 String               typeName,
-                 Map<String, Object>  extendedProperties,
-                 OMRSRepositoryHelper repositoryHelper,
-                 String               serviceName,
-                 String               serverName)
+    protected AssetBuilder(String               qualifiedName,
+                           String               technicalName,
+                           String               technicalDescription,
+                           Map<String, String>  additionalProperties,
+                           String               typeGUID,
+                           String               typeName,
+                           Map<String, Object>  extendedProperties,
+                           OMRSRepositoryHelper repositoryHelper,
+                           String               serviceName,
+                           String               serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -115,17 +115,17 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    AssetBuilder(String               qualifiedName,
-                 String               technicalName,
-                 String               technicalDescription,
-                 Map<String, String>  additionalProperties,
-                 String               typeGUID,
-                 String               typeName,
-                 Map<String, Object>  extendedProperties,
-                 InstanceStatus       initialStatus,
-                 OMRSRepositoryHelper repositoryHelper,
-                 String               serviceName,
-                 String               serverName)
+    protected AssetBuilder(String               qualifiedName,
+                           String               technicalName,
+                           String               technicalDescription,
+                           Map<String, String>  additionalProperties,
+                           String               typeGUID,
+                           String               typeName,
+                           Map<String, Object>  extendedProperties,
+                           InstanceStatus       initialStatus,
+                           OMRSRepositoryHelper repositoryHelper,
+                           String               serviceName,
+                           String               serverName)
     {
         super(qualifiedName,
               additionalProperties,

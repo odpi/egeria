@@ -211,8 +211,6 @@ public class GovernanceEngineProperties extends ReferenceableProperties
                        ", source='" + source + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 

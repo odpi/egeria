@@ -80,12 +80,6 @@ public class GovernanceEngineConverter<B> extends GovernanceEngineOMASConverter<
                 properties.setPatchLevel(this.removePatchLevel(instanceProperties));
                 properties.setSource(this.removeSource(instanceProperties));
 
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                properties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
                 bean.setProperties(properties);
             }
 

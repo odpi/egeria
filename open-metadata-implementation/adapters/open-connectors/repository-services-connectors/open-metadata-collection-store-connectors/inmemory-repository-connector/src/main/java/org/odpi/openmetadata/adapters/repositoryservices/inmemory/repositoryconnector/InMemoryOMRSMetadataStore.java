@@ -515,8 +515,17 @@ class InMemoryOMRSMetadataStore
      */
     synchronized void removeEntityFromStore(EntityDetail     entity)
     {
-        entityStore.remove(entity.getGUID());
-        entityHistoryStore.add(0, entity);
+        String entityGUID = entity.getGUID();
+        entityStore.remove(entityGUID);
+        List<EntityDetail> purgedHistory = new ArrayList<>();
+        for (EntityDetail history : entityHistoryStore)
+        {
+            if (history != null && !entityGUID.equals(history.getGUID()))
+            {
+                purgedHistory.add(history);
+            }
+        }
+        entityHistoryStore = purgedHistory;
     }
 
 
@@ -531,7 +540,15 @@ class InMemoryOMRSMetadataStore
 
         if (entity != null)
         {
-            entityHistoryStore.add(0, entity);
+            List<EntityDetail> purgedHistory = new ArrayList<>();
+            for (EntityDetail history : entityHistoryStore)
+            {
+                if (history != null && !guid.equals(history.getGUID()))
+                {
+                    purgedHistory.add(history);
+                }
+            }
+            entityHistoryStore = purgedHistory;
         }
     }
 
@@ -554,8 +571,17 @@ class InMemoryOMRSMetadataStore
      */
     synchronized void removeRelationshipFromStore(Relationship     relationship)
     {
-        relationshipStore.remove(relationship.getGUID());
-        relationshipHistoryStore.add(0, relationship);
+        String relationshipGUID = relationship.getGUID();
+        relationshipStore.remove(relationshipGUID);
+        List<Relationship> purgedHistory = new ArrayList<>();
+        for (Relationship history : relationshipHistoryStore)
+        {
+            if (history != null && !relationshipGUID.equals(history.getGUID()))
+            {
+                purgedHistory.add(history);
+            }
+        }
+        relationshipHistoryStore = purgedHistory;
     }
 
 
@@ -570,7 +596,15 @@ class InMemoryOMRSMetadataStore
 
         if (relationship != null)
         {
-            relationshipHistoryStore.add(0, relationship);
+            List<Relationship> purgedHistory = new ArrayList<>();
+            for (Relationship history : relationshipHistoryStore)
+            {
+                if (history != null && !guid.equals(history.getGUID()))
+                {
+                    purgedHistory.add(history);
+                }
+            }
+            relationshipHistoryStore = purgedHistory;
         }
     }
 

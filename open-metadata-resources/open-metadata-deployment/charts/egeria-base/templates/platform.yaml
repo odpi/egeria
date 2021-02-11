@@ -112,7 +112,8 @@ spec:
           {{ if .Values.egeria.persistence }}
           volumeMounts:
             - mountPath: "/deployments/data"
-              name: {{ .Release.Name }}-egeria-data
+              # NO need to include release name in template - included as a SS
+              name: data
           {{ end }}
             - name: extlib
               mountPath: /extlib
@@ -124,7 +125,7 @@ spec:
   {{ if .Values.egeria.persistence }}
   volumeClaimTemplates:
   - metadata:
-      name: {{ .Release.Name }}-egeria-data
+      name: data
     spec:
       accessModes:
         - ReadWriteOnce
