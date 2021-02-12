@@ -306,7 +306,7 @@ public class CategoryFVT {
         List<Category> categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest);
         count = categories.size();
         if (count !=5) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 child categories with aa,got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 child categories with aa*,got " + count);
         }
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
         if (count !=5) {

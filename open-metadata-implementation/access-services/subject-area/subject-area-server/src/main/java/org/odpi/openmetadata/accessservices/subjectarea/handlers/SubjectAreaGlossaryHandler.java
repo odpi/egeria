@@ -458,27 +458,27 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                             if (filteredCategoriesList.size() < pageSize) {
                                 boolean addCategory = false;
                                 if (isAll) {
-                                    // process search criteria
-                                    if (categoryMatchSearchCriteria(relatedCategory, searchCriteria)) {
-                                        if (onlyTop) {
-                                            if (relatedCategory.getParentCategory() == null) {
-                                                addCategory = true;
-                                            }
-                                        } else {
-                                            addCategory = true;
-                                        }
-                                    } else if (onlyTop) {
-                                        if (relatedCategory.getParentCategory() == null) {
-                                            addCategory = true;
-                                        }
-                                    }
-                                } else {
                                     if (onlyTop) {
                                         if (relatedCategory.getParentCategory() == null) {
                                             addCategory = true;
                                         }
                                     } else {
                                         addCategory = true;
+                                    }
+                                } else {
+                                    // there is a search criteria
+                                    if (categoryMatchSearchCriteria(relatedCategory, searchCriteria)) {
+                                        if (onlyTop) {
+                                            if (relatedCategory.getParentCategory() == null) {
+                                                // search criteria matches and only top categories required
+                                                addCategory = true;
+                                            }
+                                        } else {
+                                            // search criteria matches
+                                            addCategory = true;
+                                        }
+                                    } else {
+                                        // there is a search criteria and it does not match
                                     }
                                 }
                                 if (addCategory) {
@@ -488,7 +488,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
                         }
                     }
-                    if (relatedCategoriesResponse.results().size() < pageSize || filteredCategoriesList.size() == pageSize) {
+                    // we should keep getting results until we have run out of results to get or we have enough to satisfy the requested pagesize.
+                    if (relatedCategoriesResponse.results().size() < pageSize || filteredCategoriesList.size() == requestedStartingFrom + pageSize) {
                         // we have a page to return or the last get returned less than a page.
                         continueGettingCategories = false;
                     } else {
