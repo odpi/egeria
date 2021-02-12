@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionProcessElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.NextGovernanceActionTypeElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProcessProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.ProcessStatus;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -19,9 +21,13 @@ import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionType
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -33,9 +39,12 @@ public class GovernanceActionProcessRESTServices
 {
     private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
 
-    private        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceEngineRESTServices.class),
                                                                                   instanceHandler.getServiceName());
+
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
 
     /**
      * Default constructor
@@ -655,7 +664,9 @@ public class GovernanceActionProcessRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
 
                 int ownerTypeOrdinal = 0;
 
@@ -673,6 +684,9 @@ public class GovernanceActionProcessRESTServices
                                                                     ownerTypeOrdinal,
                                                                     requestBody.getSupportedGuards(),
                                                                     requestBody.getAdditionalProperties(),
+                                                                    requestBody.getGovernanceEngineGUID(),
+                                                                    requestBody.getRequestType(),
+                                                                    requestBody.getRequestProperties(),
                                                                     methodName));
             }
             else
@@ -710,12 +724,61 @@ public class GovernanceActionProcessRESTServices
                                                    UpdateGovernanceActionTypeRequestBody requestBody)
     {
         final String methodName = "updateGovernanceActionProcess";
-        final String guidParameterName = "actionTypeGUID";
-        final String propertiesParameterName = "actionTypeProperties";
-        final String qualifiedNameParameterName = "actionTypeProperties.getQualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/update";
+        final String propertiesParameterName = "requestBody.getProperties";
 
-        return null;
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+
+                GovernanceActionTypeProperties properties = requestBody.getProperties();
+
+                invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+
+                int ownerTypeOrdinal = 0;
+
+                if (properties.getOwnerCategory() != null)
+                {
+                    ownerTypeOrdinal = properties.getOwnerCategory().getOpenTypeOrdinal();
+                }
+
+                handler.updateGovernanceActionType(userId,
+                                                   actionTypeGUID,
+                                                   requestBody.getMergeUpdate(),
+                                                   properties.getQualifiedName(),
+                                                   properties.getDomainIdentifier(),
+                                                   properties.getDisplayName(),
+                                                   properties.getDescription(),
+                                                   properties.getOwner(),
+                                                   ownerTypeOrdinal,
+                                                   properties.getSupportedGuards(),
+                                                   properties.getAdditionalProperties(),
+                                                   properties.getGovernanceEngineGUID(),
+                                                   properties.getRequestType(),
+                                                   properties.getRequestProperties(),
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -732,17 +795,35 @@ public class GovernanceActionProcessRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    // @SuppressWarnings(value = "unused")
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeGovernanceActionType(String          serverName,
                                                    String          userId,
                                                    String          actionTypeGUID,
                                                    NullRequestBody requestBody)
     {
         final String methodName = "removeGovernanceActionType";
-        final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/remove";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            handler.removeGovernanceActionType(userId, actionTypeGUID, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -768,10 +849,47 @@ public class GovernanceActionProcessRESTServices
                                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceActionTypes";
-        final String searchStringParameterName = "searchString";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/by-search-string?startFrom={2}&pageSize={3}";
 
-        return null;
+        String searchStringParameterName = "searchString";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionTypeElementsResponse response = new GovernanceActionTypeElementsResponse();
+        AuditLog                             auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+
+                if (requestBody.getSearchStringParameterName() != null)
+                {
+                    searchStringParameterName = requestBody.getSearchStringParameterName();
+                }
+
+                response.setElements(handler.findGovernanceActionTypes(userId,
+                                                                       requestBody.getSearchString(),
+                                                                       searchStringParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -797,10 +915,47 @@ public class GovernanceActionProcessRESTServices
                                                                                NameRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionTypesByName";
-        final String nameParameterName = "name";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/by-name?startFrom={2}&pageSize={3}";
 
-        return null;
+        String nameParameterName = "name";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionTypeElementsResponse response = new GovernanceActionTypeElementsResponse();
+        AuditLog                             auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+
+                if (requestBody.getNameParameterName() != null)
+                {
+                    nameParameterName = requestBody.getNameParameterName();
+                }
+
+                response.setElements(handler.getGovernanceActionTypesByName(userId,
+                                                                            requestBody.getName(),
+                                                                            nameParameterName,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -821,10 +976,28 @@ public class GovernanceActionProcessRESTServices
                                                                              String actionTypeGUID)
     {
         final String methodName = "getGovernanceActionTypeByGUID";
-        final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionTypeElementResponse response = new GovernanceActionTypeElementResponse();
+        AuditLog                            auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            response.setElement(handler.getGovernanceActionTypeByGUID(userId, actionTypeGUID, methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -837,26 +1010,43 @@ public class GovernanceActionProcessRESTServices
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
      * @param actionTypeGUID unique identifier of the governance action type
-     * @param requestBody null request body
+     * @param requestBody optional guard
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    // @SuppressWarnings(value = "unused")
-    public VoidResponse setupFirstActionType(String          serverName,
-                                             String          userId,
-                                             String          processGUID,
-                                             String          actionTypeGUID,
-                                             NullRequestBody requestBody)
+    @SuppressWarnings(value = "unused")
+    public VoidResponse setupFirstActionType(String serverName,
+                                             String userId,
+                                             String processGUID,
+                                             String actionTypeGUID,
+                                             String requestBody)
     {
         final String methodName = "setupFirstActionType";
-        final String processGUIDParameterName = "processGUID";
-        final String actionTypeGUIDParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type/{3}/new";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            handler.setupFirstActionType(userId, processGUID, actionTypeGUID, requestBody, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -877,10 +1067,28 @@ public class GovernanceActionProcessRESTServices
                                                                   String processGUID)
     {
         final String methodName = "getFirstActionType";
-        final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionTypeElementResponse response = new GovernanceActionTypeElementResponse();
+        AuditLog                            auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            response.setElement(handler.getFirstActionType(userId, processGUID, null, methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -897,17 +1105,35 @@ public class GovernanceActionProcessRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    // @SuppressWarnings(value = "unused")
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeFirstActionType(String          serverName,
                                               String          userId,
                                               String          processGUID,
                                               NullRequestBody requestBody)
     {
         final String methodName = "removeFirstActionType";
-        final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type/remove";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            handler.removeFirstActionType(userId, processGUID, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -934,11 +1160,40 @@ public class GovernanceActionProcessRESTServices
                                             NextGovernanceActionTypeRequestBody requestBody)
     {
         final String methodName = "setupNextActionType";
-        final String currentGUIDParameterName = "currentActionTypeGUID";
-        final String nextGUIDParameterName = "nextActionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/next-action-types/{3}/new";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+                response.setGUID(handler.setupNextActionType(userId,
+                                                             currentActionTypeGUID,
+                                                             nextActionTypeGUID,
+                                                             requestBody.getGuard(),
+                                                             requestBody.getMandatoryGuard(),
+                                                             requestBody.getIgnoreMultipleTriggers(),
+                                                             methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -962,10 +1217,39 @@ public class GovernanceActionProcessRESTServices
                                              NextGovernanceActionTypeRequestBody requestBody)
     {
         final String methodName = "updateNextActionType";
-        final String guidParameterName = "nextActionLinkGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/next-action-types/{2}/update";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+                handler.updateNextActionType(userId,
+                                             nextActionLinkGUID,
+                                             requestBody.getGuard(),
+                                             requestBody.getMandatoryGuard(),
+                                             requestBody.getIgnoreMultipleTriggers(),
+                                             methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -990,10 +1274,64 @@ public class GovernanceActionProcessRESTServices
                                                                                  int    pageSize)
     {
         final String methodName = "getNextGovernanceActionTypes";
-        final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/next-action-type?startFrom={4}&pageSize={5}";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NextGovernanceActionTypeElementsResponse response = new NextGovernanceActionTypeElementsResponse();
+        AuditLog                                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            List<Relationship> relationships = handler.getNextGovernanceActionTypes(userId, actionTypeGUID, startFrom, pageSize, methodName);
+
+            if (relationships != null)
+            {
+                OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+                List<NextGovernanceActionTypeElement> elements = new ArrayList<>();
+
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        NextGovernanceActionTypeElement element = new NextGovernanceActionTypeElement();
+
+                        element.setNextActionLinkGUID(relationship.getGUID());
+                        element.setGuard(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                            OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                            relationship.getProperties(),
+                                                                            methodName));
+                        element.setMandatoryGuard(repositoryHelper.getBooleanProperty(instanceHandler.getServiceName(),
+                                                                                      OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                                      relationship.getProperties(),
+                                                                                      methodName));
+                        element.setIgnoreMultipleTriggers(repositoryHelper.getBooleanProperty(instanceHandler.getServiceName(),
+                                                                                              OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
+                                                                                              relationship.getProperties(),
+                                                                                              methodName));
+
+                        element.setNextActionType(handler.getGovernanceActionTypeByGUID(userId, relationship.getEntityTwoProxy().getGUID(), methodName));
+
+                        elements.add(element);
+                    }
+                }
+
+                response.setElements(elements);
+            }
+
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -1010,16 +1348,34 @@ public class GovernanceActionProcessRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request or
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    // @SuppressWarnings(value = "unused")
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeNextActionType(String          serverName,
                                              String          userId,
                                              String          actionLinkGUID,
                                              NullRequestBody requestBody)
     {
         final String methodName = "removeFirstActionType";
-        final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/next-action-type/{2}/remove";
 
-        return null;
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            handler.removeNextActionType(userId, actionLinkGUID, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 }

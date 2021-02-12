@@ -4,6 +4,8 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -33,6 +35,7 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
 
     /**
      * Generate a destination file name based on the input.
+     *
      * @param previousDestinationFileName the file name tried on a previous iteration of the the loop
      * @param destinationFolderName folder name where the file is to be copied to
      * @param sourceFile File object pointing to the source file
@@ -89,51 +92,74 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
     /**
      * Perform the file provisioning.
      *
+     * @param governanceServiceName name of requesting service
      * @param destinationFolderName name of the folder where the file is to be provisioned into
      * @param sourceFilePathName full path name of the source file
      * @param fileNamePattern patten for generating the name of the destination file
      * @param copyFile is this a copy of a move?
+     * @param auditLog logging destination
      * @return name of new file
      */
-    private static synchronized String provisionFile(String  destinationFolderName,
-                                                     String  sourceFilePathName,
-                                                     String  fileNamePattern,
-                                                     boolean copyFile)
+    private static synchronized String provisionFile(String   governanceServiceName,
+                                                     String   destinationFolderName,
+                                                     String   sourceFilePathName,
+                                                     String   fileNamePattern,
+                                                     boolean  copyFile,
+                                                     AuditLog auditLog) throws IOException
     {
-        try
+        final String methodName = "provisionFile";
+
+        File   sourceFile          = new File(sourceFilePathName);
+        File   destinationFolder   = new File(destinationFolderName);
+
+        String destinationFileName = getDestinationFileName(null, destinationFolderName, sourceFile, fileNamePattern);
+
+        while (destinationFileName != null)
         {
-            File   sourceFile          = new File(sourceFilePathName);
-            File   destinationFolder   = new File(destinationFolderName);
-
-            String destinationFileName = getDestinationFileName(null, destinationFolderName, sourceFile, fileNamePattern);
-
-            while (destinationFileName != null)
+            File destinationFile = new File(destinationFileName);
+            if (! FileUtils.directoryContains(destinationFolder, destinationFile))
             {
-                File destinationFile = new File(destinationFileName);
-                if (! FileUtils.directoryContains(destinationFolder, destinationFile))
+                if (copyFile)
                 {
-                    if (copyFile)
+                    if (auditLog != null)
                     {
-                        // todo log audit record
-                        FileUtils.copyFile(sourceFile, destinationFile, true);
-                    }
-                    else
-                    {
-                        // todo log audit record
-                        FileUtils.moveFile(sourceFile, destinationFile);
+                        auditLog.logMessage(methodName,
+                                            GovernanceActionConnectorsAuditCode.COPY_FILE.getMessageDefinition(governanceServiceName,
+                                                                                                               sourceFilePathName,
+                                                                                                               destinationFileName));
                     }
 
-                    return destinationFileName;
+                    FileUtils.copyFile(sourceFile, destinationFile, true);
+                }
+                else
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logMessage(methodName,
+                                            GovernanceActionConnectorsAuditCode.MOVE_FILE.getMessageDefinition(governanceServiceName,
+                                                                                                               sourceFilePathName,
+                                                                                                               destinationFileName));
+                    }
+
+                    FileUtils.moveFile(sourceFile, destinationFile);
                 }
 
-                destinationFileName = getDestinationFileName(destinationFileName, destinationFolderName, sourceFile, fileNamePattern);
+                return destinationFileName;
             }
 
-            // todo log audit log record
+            destinationFileName = getDestinationFileName(destinationFileName, destinationFolderName, sourceFile, fileNamePattern);
         }
-        catch (IOException exception)
+
+        /*
+         * No suitable file name can be found
+         */
+        if (auditLog != null)
         {
-            // todo log audit record
+            auditLog.logMessage(methodName,
+                                GovernanceActionConnectorsAuditCode.PROVISIONING_FAILURE.getMessageDefinition(governanceServiceName,
+                                                                                                              sourceFilePathName,
+                                                                                                              destinationFolderName,
+                                                                                                              fileNamePattern));
         }
 
         return null;
@@ -151,6 +177,8 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
     @Override
     public void start() throws ConnectorCheckedException
     {
+        final String methodName = "start";
+
         super.start();
 
         List<String>     outputGuards = new ArrayList<>();
@@ -243,19 +271,41 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
 
         try
         {
-            String destinationFileName = provisionFile(destinationFolderName, sourceFileName, destinationFileNamePattern, copyFile);
+            String destinationFileName = provisionFile(governanceServiceName,
+                                                       destinationFolderName,
+                                                       sourceFileName,
+                                                       destinationFileNamePattern,
+                                                       copyFile,
+                                                       auditLog);
 
-            if ((destinationFileName != null) && (createLineage))
+            if (destinationFileName != null)
             {
-                createLineage(sourceFileGUID, destinationFileName, lineageProcessName);
-            }
+                if (createLineage)
+                {
+                    createLineage(sourceFileGUID, destinationFileName, lineageProcessName);
+                }
 
-            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
-            completionStatus = CompletionStatus.ACTIONED;
+                outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
+                completionStatus = CompletionStatus.ACTIONED;
+            }
+            else
+            {
+                outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
+                completionStatus = CompletionStatus.FAILED;
+            }
         }
         catch (Exception  error)
         {
-            // todo log audit record
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    sourceFileName,
+                                                                                                                    destinationFolderName,
+                                                                                                                    destinationFileNamePattern,
+                                                                                                                    error.getMessage()));
+            }
 
             outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
             completionStatus = CompletionStatus.FAILED;

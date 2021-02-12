@@ -2636,6 +2636,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the mandatoryGuards property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return array of guards
+     */
+    protected List<String> removeMandatoryGuards(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeMandatoryGuards";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.MANDATORY_GUARDS_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the receivedGuards property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

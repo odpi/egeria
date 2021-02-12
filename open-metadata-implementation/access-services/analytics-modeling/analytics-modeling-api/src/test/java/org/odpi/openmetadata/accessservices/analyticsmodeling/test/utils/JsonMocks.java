@@ -34,4 +34,29 @@ public class JsonMocks {
 				"  } ]%n" +
 				"}");
 	}
+	
+	/**
+	 * Body for the request to get module that defines set of tables to include.
+	 * @return the request body
+	 */
+	public static String getModuleTableIncludedFilterBody() {
+		return String.format(
+				"{%n" + 
+				"  \"meta\" : {%n" + 
+				"    \"includedTables\" : [ \"ORDERDETAIL\", \"PRODUCT\" ]%n" + 
+				"  }%n" + 
+				"}");
+	}
+	/**
+	 * Body for the request to get module that defines set of tables to exclude.
+	 * @return the request body
+	 */
+	public static String getModuleTableExcludedFilterBody() {
+		return String.format(
+				"{%n" + 
+				"  \"meta\" : {%n" + 
+				"    \"excludedTables\" : [ \"ORDERDETAIL\", \"PRODUCT\" ]%n" + 
+				"  }%n" + 
+				"}");
+	}
 }

@@ -77,7 +77,7 @@ public class DataEngineResource {
     public GUIDResponse createOrUpdateSchemaType(@PathVariable("userId") String userId,
                                                  @PathVariable("serverName") String serverName,
                                                  @RequestBody SchemaTypeRequestBody requestBody) {
-        return restAPI.createOrUpdateSchemaType(userId, serverName, requestBody);
+        return restAPI.upsertSchemaType(userId, serverName, requestBody);
     }
 
 
@@ -94,7 +94,7 @@ public class DataEngineResource {
     public GUIDResponse createOrUpdatePortImplementation(@PathVariable("userId") String userId,
                                                          @PathVariable("serverName") String serverName,
                                                          @RequestBody PortImplementationRequestBody portImplementationRequestBody) {
-        return restAPI.createOrUpdatePortImplementation(userId, serverName, portImplementationRequestBody);
+        return restAPI.upsertPortImplementation(userId, serverName, portImplementationRequestBody);
     }
 
 
@@ -111,7 +111,7 @@ public class DataEngineResource {
     public GUIDResponse createOrUpdatePortAlias(@PathVariable("userId") String userId,
                                                 @PathVariable("serverName") String serverName,
                                                 @RequestBody PortAliasRequestBody portAliasRequestBody) {
-        return restAPI.createOrUpdatePortAlias(userId, serverName, portAliasRequestBody);
+        return restAPI.upsertPortAlias(userId, serverName, portAliasRequestBody);
     }
 
     /**
@@ -143,7 +143,7 @@ public class DataEngineResource {
     public GUIDListResponse createOrUpdateProcesses(@PathVariable("userId") String userId,
                                                     @PathVariable("serverName") String serverName,
                                                     @RequestBody ProcessesRequestBody processesRequestBody) {
-        return restAPI.createOrUpdateProcesses(userId, serverName, processesRequestBody);
+        return restAPI.upsertProcesses(userId, serverName, processesRequestBody);
     }
 
     /**

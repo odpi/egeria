@@ -76,7 +76,7 @@ public class <$$uname$$>References implements Serializable {
                          <$$uRelationshipName$$> <$$RelationshipName$$>_relationship = (<$$uRelationshipName$$>)relationshipLines;
                          <$$uSetReferenceName$$>Reference <$$setReferenceName$$>Reference = new <$$uSetReferenceName$$>Reference(entityGuid,<$$RelationshipName$$>_relationship);
                          if ( <$$setReferenceName$$>== null ) {
-                              <$$setReferenceName$$> = new HashSet();
+                              <$$setReferenceName$$> = new HashSet<>();
                          }
                           <$$setReferenceName$$>.add(<$$setReferenceName$$>Reference);
                     }
@@ -94,9 +94,9 @@ public class <$$uname$$>References implements Serializable {
         }
      }
 
-    protected static final Set<String> REFERENCE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(REFERENCE_NAMES_SET_VALUES)));
+    protected static final Set<String> REFERENCE_NAMES_SET = new HashSet<>(new HashSet<>(Arrays.asList(REFERENCE_NAMES_SET_VALUES)));
     // there may be duplicate strings in RELATIONSHIP_NAMES_SET_VALUES, the following line deduplicates the Strings into a Set.
-    protected static final Set<String> RELATIONSHIP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(RELATIONSHIP_NAMES_SET_VALUES)));
+    protected static final Set<String> RELATIONSHIP_NAMES_SET = new HashSet<>(new HashSet<>(Arrays.asList(RELATIONSHIP_NAMES_SET_VALUES)));
 // Singular properties
 <$SingleAttr$$
     private <$$uSingleReferenceName$$>Reference <$$singleReferenceName$$>;

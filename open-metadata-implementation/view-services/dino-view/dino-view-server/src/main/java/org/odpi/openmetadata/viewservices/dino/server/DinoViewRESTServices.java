@@ -20,8 +20,6 @@ import org.odpi.openmetadata.viewservices.dino.api.rest.*;
 import org.odpi.openmetadata.viewservices.dino.handlers.DinoViewHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Map;

@@ -15,13 +15,13 @@ import java.util.HashMap;
  */
 public class OmTypeFilter {
 
-    private List<TypeDef> allTypeDefs = new ArrayList();
-    private List<AttributeTypeDef> allAttributeTypeDefs = new ArrayList<>();
+    private List<TypeDef> allTypeDefs;
+    private List<AttributeTypeDef> allAttributeTypeDefs;
 
-    private Map<String, EnumDef> allEnumTypedefs = new HashMap<String, EnumDef>();
-    private Map<String, EntityDef> allEntityTypedefs = new HashMap<String, EntityDef>();
-    private Map<String, RelationshipDef> allRelationshipTypedefs = new HashMap<String, RelationshipDef>();
-    private Map<String, ClassificationDef> allClassificationTypedefs = new HashMap<String, ClassificationDef>();
+    private Map<String, EnumDef> allEnumTypedefs = new HashMap<>();
+    private Map<String, EntityDef> allEntityTypedefs = new HashMap<>();
+    private Map<String, RelationshipDef> allRelationshipTypedefs = new HashMap<>();
+    private Map<String, ClassificationDef> allClassificationTypedefs = new HashMap<>();
     
     /**
      * Constructor

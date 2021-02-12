@@ -2,12 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.api;
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * IntegrationDaemonAPI is the interface to control and monitor an integration daemon.  The integration daemon is an OMAG Server.
@@ -21,6 +23,47 @@ import java.util.List;
  */
 public interface IntegrationDaemonAPI
 {
+    /**
+     * Retrieve the configuration properties of the named connector.
+     *
+     * @param userId calling user
+     * @param serviceURLMarker integration service identifier
+     * @param connectorName name of a requested connector
+     *
+     * @return property map
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    Map<String, Object> getConfigurationProperties(String userId,
+                                                   String serviceURLMarker,
+                                                   String connectorName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+    /**
+     * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
+     *
+     * @param userId calling user
+     * @param serviceURLMarker integration service identifier
+     * @param connectorName name of a specific connector or null for all connectors
+     * @param isMergeUpdate should the properties be merged into the existing properties or replace them
+     * @param configurationProperties new configuration properties
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    void updateConfigurationProperties(String              userId,
+                                       String              serviceURLMarker,
+                                       String              connectorName,
+                                       boolean             isMergeUpdate,
+                                       Map<String, Object> configurationProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
     /**
      * Refresh all connectors running in the integration daemon, regardless of the integration service they belong to.
      *
@@ -56,7 +99,8 @@ public interface IntegrationDaemonAPI
 
 
     /**
-     * Request that the integration service shutdown and recreate its integration connectors.
+     * Request that the integration service shutdown and recreate its integration connectors.  If a connector name
+     * is provided, only that connector is restarted.
      *
      * @param userId calling user
      * @param serviceURLMarker integration service identifier

@@ -50,7 +50,7 @@ class DataEngineResourceTest {
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         dataEngineResource.createOrUpdateSchemaType(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createOrUpdateSchemaType(SERVER_NAME, USER, requestBody);
+        verify(dataEngineRestServices, times(1)).upsertSchemaType(SERVER_NAME, USER, requestBody);
     }
 
     @Test
@@ -58,7 +58,7 @@ class DataEngineResourceTest {
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         dataEngineResource.createOrUpdatePortImplementation(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createOrUpdatePortImplementation(SERVER_NAME, USER, requestBody);
+        verify(dataEngineRestServices, times(1)).upsertPortImplementation(SERVER_NAME, USER, requestBody);
     }
 
     @Test
@@ -66,7 +66,7 @@ class DataEngineResourceTest {
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         dataEngineResource.createOrUpdatePortAlias(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createOrUpdatePortAlias(SERVER_NAME, USER, requestBody);
+        verify(dataEngineRestServices, times(1)).upsertPortAlias(SERVER_NAME, USER, requestBody);
     }
 
     @Test
@@ -82,7 +82,7 @@ class DataEngineResourceTest {
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         dataEngineResource.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
+        verify(dataEngineRestServices, times(1)).upsertProcesses(USER, SERVER_NAME, requestBody);
     }
 
     @Test
