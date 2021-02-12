@@ -422,6 +422,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     private void removeObsoleteEdges(String entityGUID, String relationshipType, List<String> newVertices, List<String> neighboursGUIDs) {
+        Function<Edge, GraphTraversal<Edge, Edge>> dropEdgeFromGraph = (e) -> g.E(e.id()).drop().iterate();
+
         List<String> obsoleteNeighbours = neighboursGUIDs.stream().filter(xx -> !newVertices.contains(xx)).collect(Collectors.toList());
         if (obsoleteNeighbours.isEmpty()) {
             return;
@@ -432,10 +434,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             String inVertexGuid = (String) edge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
             String outVertexGuid = (String) edge.outVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
             if (obsoleteNeighbours.contains(inVertexGuid) || obsoleteNeighbours.contains(outVertexGuid)) {
-                g.E(edge.id()).drop().iterate();
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().commit();
-                }
+                commit(graphFactory, g, dropEdgeFromGraph, edge, "Could not drop edge " + edge.id());
             }
         }
     }
