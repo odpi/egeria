@@ -46,10 +46,7 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphTransactionManager.commitBiConsumer;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphTransactionManager.commitConsumer;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphTransactionManager.commitFunction;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphTransactionManager.commitSupplier;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphTransactionManager.commit;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_DISCONNECT_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_TRAVERSAL_EMPTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.PROCESS_MAPPING_ERROR;
@@ -384,9 +381,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 upsertToGraph(fromEntity, toEntity, entry.getRelationshipType(), entry.getRelationshipGuid());
             } catch (Exception e) {
                 log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().rollback();
-                }
             }
         });
     }
@@ -402,11 +396,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                                     .property(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid()))
                     .next();
 
-        Vertex from = commitFunction(graphFactory, g, createVertexFunction, fromEntity,
+        Vertex from = commit(graphFactory, g, createVertexFunction, fromEntity,
                 "Unable to create vertex with type " + fromEntity.getTypeDefName() + " and guid "
                         + fromEntity.getGuid());
 
-        Vertex to = commitFunction(graphFactory, g, createVertexFunction, toEntity,
+        Vertex to = commit(graphFactory, g, createVertexFunction, toEntity,
                 "Unable to create vertex with type " + toEntity.getTypeDefName() + " and guid "
                         + toEntity.getGuid());
 
@@ -414,16 +408,16 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 .coalesce(inE(relationshipLabel).where(outV().as("from")),
                         addE(relationshipLabel).from("from")).property(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid).next();
 
-        commitSupplier(graphFactory, g, createEdgeSupplier,
+        commit(graphFactory, g, createEdgeSupplier,
                 "Unable to create edge with label " + relationshipLabel + " and guid " + relationshipGuid);
         //TODO add relationship properties -> meaning add relationship properties on AssetLineage omas event
 
         BiConsumer<Vertex, LineageEntity> addOrUpdatePropertiesVertexConsumer = this::addOrUpdatePropertiesVertex;
 
-        commitBiConsumer(graphFactory, g, addOrUpdatePropertiesVertexConsumer, from, fromEntity,
+        commit(graphFactory, g, addOrUpdatePropertiesVertexConsumer, from, fromEntity,
                 "Unable to add properties on vertex from entity with type " + fromEntity.getTypeDefName() +
                 "and guid " + fromEntity.getGuid());
-        commitBiConsumer(graphFactory, g, addOrUpdatePropertiesVertexConsumer, to, toEntity,
+        commit(graphFactory, g, addOrUpdatePropertiesVertexConsumer, to, toEntity,
                 "Unable to add properties on vertex from entity with type " + toEntity.getTypeDefName() +
                         "and guid " + toEntity.getGuid());
     }
@@ -506,7 +500,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         upsertToGraph(firstEnd, secondEnd, lineageRelationship.getTypeDefName(), lineageRelationship.getGuid());
 
         Consumer<LineageRelationship> addOrUpdatePropertiesEdge = this::addOrUpdatePropertiesEdge;
-        commitConsumer(graphFactory, g, addOrUpdatePropertiesEdge, lineageRelationship,
+        commit(graphFactory, g, addOrUpdatePropertiesEdge, lineageRelationship,
                 "Unable to add properties on edge from relationship with type " +
                         lineageRelationship.getTypeDefName() + "and guid " + lineageRelationship.getGuid());
 

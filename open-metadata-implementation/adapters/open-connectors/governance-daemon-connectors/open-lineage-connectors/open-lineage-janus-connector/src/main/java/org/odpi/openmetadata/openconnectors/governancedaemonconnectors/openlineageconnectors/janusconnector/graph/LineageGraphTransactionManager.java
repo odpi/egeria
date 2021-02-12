@@ -31,8 +31,8 @@ public class LineageGraphTransactionManager {
      *
      * @return function output
      */
-    public static <T, R> R commitFunction(GraphFactory factory, GraphTraversalSource g,
-                                          Function<T, R> function, T entity, String errorMessage){
+    public static <T, R> R commit(GraphFactory factory, GraphTraversalSource g,
+                                  Function<T, R> function, T entity, String errorMessage){
 
         R object = null;
         try{
@@ -60,8 +60,8 @@ public class LineageGraphTransactionManager {
      *
      * @return supplier output
      */
-    public static <R> R commitSupplier(GraphFactory factory, GraphTraversalSource g,
-                                       Supplier<R> supplier, String errorMessage){
+    public static <R> R commit(GraphFactory factory, GraphTraversalSource g,
+                               Supplier<R> supplier, String errorMessage){
 
         R object = null;
         try{
@@ -88,8 +88,8 @@ public class LineageGraphTransactionManager {
      * @param arg1 consumer argument
      * @param errorMessage message logged at ERROR level, in case of exceptions
      */
-    public static <T> void commitConsumer(GraphFactory factory, GraphTraversalSource g,
-                                          Consumer<T> consumer, T arg1, String errorMessage){
+    public static <T> void commit(GraphFactory factory, GraphTraversalSource g,
+                                  Consumer<T> consumer, T arg1, String errorMessage){
 
         try{
             consumer.accept(arg1);
@@ -115,8 +115,8 @@ public class LineageGraphTransactionManager {
      * @param arg2 biConsumer argument
      * @param errorMessage message logged at ERROR level, in case of exceptions
      */
-    public static <T, U> void commitBiConsumer(GraphFactory factory, GraphTraversalSource g,
-                                               BiConsumer<T, U> biConsumer, T arg1, U arg2, String errorMessage){
+    public static <T, U> void commit(GraphFactory factory, GraphTraversalSource g,
+                                     BiConsumer<T, U> biConsumer, T arg1, U arg2, String errorMessage){
 
         try{
             biConsumer.accept(arg1, arg2);
