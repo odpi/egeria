@@ -231,11 +231,12 @@ public class ExceptionAccumulatorBase
      * @param methodName calling method
      * @throws RepositoryErrorException there was an unexpected error in the repository
      */
-    public synchronized void throwCapturedThrowableException(String      methodName) throws RepositoryErrorException
+    public synchronized void throwCapturedThrowableException(String methodName) throws RepositoryErrorException
     {
         if (anotherException != null)
         {
-            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(methodName,
+            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(anotherException.getClass().getName(),
+                                                                                                                   methodName,
                                                                                                                    anotherException.getMessage()),
                                                this.getClass().getName(),
                                                methodName);
