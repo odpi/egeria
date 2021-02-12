@@ -337,7 +337,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * </ul>
      * */
     public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(String serverName, String userId, String guid, String searchCriteria, Date asOfTime, Integer startingFrom, Integer pageSize, String sequencingOrder,String sequencingProperty) {
-        final String methodName = "getTerms";
+        final String methodName = "getGlossaryTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }

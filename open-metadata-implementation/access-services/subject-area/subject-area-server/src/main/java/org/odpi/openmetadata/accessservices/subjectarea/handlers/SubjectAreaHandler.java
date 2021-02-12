@@ -420,6 +420,7 @@ public abstract class SubjectAreaHandler {
      */
     protected boolean categoryMatchSearchCriteria(Category category, String searchCriteria) {
         boolean isMatch = false;
+        if (searchCriteria == null) return true;
         final String name = category.getName();
         final String description = category.getDescription();
         final String qualifiedName = category.getQualifiedName();
@@ -443,6 +444,7 @@ public abstract class SubjectAreaHandler {
      * @return boolean indicating whether the term matches the search criteria
      */
     protected boolean termMatchSearchCriteria(Term term, String searchCriteria) {
+        if (searchCriteria == null) return true;
         boolean isMatch = false;
         final String name = term.getName();
         final String description = term.getDescription();

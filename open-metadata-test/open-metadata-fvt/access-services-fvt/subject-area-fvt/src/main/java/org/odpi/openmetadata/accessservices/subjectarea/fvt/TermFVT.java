@@ -103,7 +103,7 @@ public class TermFVT {
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term1);
-        System.out.println("Create a term2 using glossary userId");
+        System.out.println("Create a term1 using glossary userId");
         Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term2);
         System.out.println("Create a term2 using glossary userId");

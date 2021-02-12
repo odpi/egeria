@@ -169,7 +169,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param findRequest {@link FindRequest}
-     * @return A list of Glossaries meeting the search Criteria
+     * @return A list of Categories meeting the search Criteria
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
