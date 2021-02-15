@@ -4,6 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.lineage;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageService;
@@ -100,6 +101,15 @@ public class OpenLineageController {
         return exportedGraph;
     }
 
+    /**
+     * @param guid of the Entity to be retrieved
+     * @return the entity details
+     */
+    @GetMapping( value = "entities/{guid}/details")
+    public LineageVertex getEntityDetails(@PathVariable("guid") String guid) {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return openLineageService.getEntityDetails(user, guid);
+    }
 
     /**
      * This method is registering a custom converter for View and Scope enums in order to be able to use in url the text of the enum and not the actual name

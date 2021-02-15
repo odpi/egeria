@@ -16,9 +16,11 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationsh
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -777,6 +779,15 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         return new LineageResponse(lineageVerticesAndEdges.orElse(null));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LineageVertexResponse getEntityDetails(String guid) {
+        LineageVertex lineageVertex = helper.getLineageVertexByGuid(guid);
+
+        return new LineageVertexResponse(lineageVertex);
+    }
 
 }
 

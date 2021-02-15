@@ -85,6 +85,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
@@ -879,5 +881,28 @@ public class LineageGraphConnectorHelper {
             default:
                 return Optional.empty();
         }
+    }
+
+    /**
+     * Gets lineage vertex by guid.
+     *
+     * @param guid the guid
+     * @return the lineage vertex by guid
+     */
+    LineageVertex getLineageVertexByGuid(String guid) {
+        GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
+
+        Map<String, String> properties = new HashMap<>();
+        if(vertexGraphTraversal.hasNext()) {
+            Vertex vertex = vertexGraphTraversal.next();
+            properties = retrieveProperties(vertex);
+        }
+
+        LineageVertex lineageVertex = new LineageVertex();
+        lineageVertex.setDisplayName(properties.remove(PROPERTY_NAME_DISPLAY_NAME));
+        lineageVertex.setGuid(properties.remove(PROPERTY_NAME_GUID));
+        lineageVertex.setProperties(properties);
+
+        return lineageVertex;
     }
 }
