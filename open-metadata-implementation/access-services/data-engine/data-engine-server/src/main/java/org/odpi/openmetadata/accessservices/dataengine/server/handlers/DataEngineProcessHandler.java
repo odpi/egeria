@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPr
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-    import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -120,7 +120,6 @@ public class DataEngineProcessHandler {
         validateProcessParameters(userId, updatedProcess.getQualifiedName(), methodName);
 
         String processGUID = originalProcessEntity.getGUID();
-        Process originalProcess = getProcess(originalProcessEntity);
 
         ProcessPropertiesBuilder updatedProcessBuilder = getProcessPropertiesBuilder(updatedProcess, methodName, userId);
 
@@ -135,9 +134,9 @@ public class DataEngineProcessHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         dataEngineAssetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID,
-                ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME, originalProcess.getQualifiedName(), originalProcess.getName(),
-                originalProcess.getDescription(), originalProcess.getAdditionalProperties(), ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, originalProcess.getExtendedProperties(), true, methodName);
+                ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, true, updatedProcessBuilder, updatedProcess, methodName);
+
     }
 
     Process getProcess(EntityDetail originalProcessEntity) throws PropertyServerException {

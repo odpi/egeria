@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -147,11 +148,12 @@ class DataEngineProcessHandlerTest {
     @Test
     void updateProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, TypeErrorException {
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
+        ProcessPropertiesBuilder mockedBuilder = Mockito.mock(ProcessPropertiesBuilder.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
         Process process = getProcess();
         process.setGUID(PROCESS_GUID);
         doReturn(process).when(processHandler).getProcess(mockedOriginalProcessEntity);
-
+        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process, "updateProcess", USER);
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(PROCESS_GUID, null)).thenReturn(mockedUpdatedProcessEntity);
 
@@ -172,9 +174,8 @@ class DataEngineProcessHandlerTest {
 
         verify(dataEngineAssetHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME,
-                process.getQualifiedName(), NAME, DESCRIPTION, process.getAdditionalProperties(),
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), true,"updateProcess");
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, true,
+                mockedBuilder, process, "updateProcess");
 
     }
 
@@ -214,6 +215,8 @@ class DataEngineProcessHandlerTest {
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
 
+        ProcessPropertiesBuilder mockedBuilder = Mockito.mock(ProcessPropertiesBuilder.class);
+
         doReturn(process).when(processHandler).getProcess(mockedOriginalProcessEntity);
 
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
@@ -231,15 +234,15 @@ class DataEngineProcessHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
 
         doThrow(mockedException).when(dataEngineAssetHandler).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME, process.getQualifiedName(), NAME, DESCRIPTION,
-                process.getAdditionalProperties(), ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), true, methodName);
+                PROCESS_GUID, ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, true, mockedBuilder, process, methodName);
 
         Classification classification = new Classification();
         classification.setName("classificationName");
         when(repositoryHelper.getNewClassification(any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(classification);
 
+        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process, "updateProcess", USER);
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () -> processHandler.updateProcess(USER,
                 mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 

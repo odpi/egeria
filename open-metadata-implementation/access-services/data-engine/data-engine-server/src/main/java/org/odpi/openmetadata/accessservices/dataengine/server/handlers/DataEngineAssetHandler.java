@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPropertiesBuilder;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -84,5 +85,34 @@ public class DataEngineAssetHandler<B> extends AssetHandler<B> {
 
         return this.createBeanInRepository(userId, externalSourceGUID, externalSourceName, typeGUID, typeName, qualifiedName,
                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
+    }
+
+    /**
+     * Update an asset's properties.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param assetGUIDParameterName parameter name that supplied the assetGUID
+     * @param typeGUID identifier of the type that is a subtype of Asset - or null to create standard type
+     * @param typeName name of the type that is a subtype of Asset - or null to create standard type
+     * @param isMergeUpdate should the new properties be merged with the existing properties of overlay them?
+     * @param builder the builder used for the updated process
+     * @param updatedProcess the updated process
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateAsset(String userId, String externalSourceGUID, String externalSourceName, String assetGUID,
+                            String assetGUIDParameterName, String typeGUID, String typeName, boolean isMergeUpdate,
+                            ProcessPropertiesBuilder builder, Process updatedProcess, String methodName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        this.updateBeanInRepository(userId, externalSourceGUID, externalSourceName, assetGUID, assetGUIDParameterName,
+                typeGUID, typeName, updatedProcess.getZoneMembership(), builder.getInstanceProperties(methodName), isMergeUpdate,
+                methodName);
     }
 }
