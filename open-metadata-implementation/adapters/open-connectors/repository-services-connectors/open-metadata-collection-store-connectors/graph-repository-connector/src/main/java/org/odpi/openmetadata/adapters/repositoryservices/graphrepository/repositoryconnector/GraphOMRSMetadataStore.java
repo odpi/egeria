@@ -1827,52 +1827,55 @@ class GraphOMRSMetadataStore {
              * entity) so let that case continue.
              */
 
-
-            switch (matchCriteria)
+            if (matchCriteria != null)
             {
-                case ALL:
-                    if (propCriteria.isEmpty())
-                    {
-                        g.tx().rollback();
-                        return null;
-                    }
-                    else
-                    {
-                        gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    }
-                    break;
-                case ANY:
-                    if (propCriteria.isEmpty())
-                    {
-                        g.tx().rollback();
-                        return null;
-                    }
-                    else
-                    {
-                        gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    }
-                    break;
-                case NONE:
-                    GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                    gt = gt.not(t);
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    break;
-                default:
-                    g.tx().rollback();
-                    final String parameterName = "matchCriteria";
 
-                    throw new InvalidParameterException(
-                            GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                    methodName,
-                                    this.getClass().getName(),
-                                    repositoryName),
-                            this.getClass().getName(),
-                            methodName,
-                            parameterName);
+                switch (matchCriteria)
+                {
+                    case ALL:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case ANY:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case NONE:
+                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+                    default:
+                        g.tx().rollback();
+                        final String parameterName = "matchCriteria";
 
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                parameterName);
+
+                }
             }
 
         }
@@ -2036,7 +2039,7 @@ class GraphOMRSMetadataStore {
                              */
                             String matchedPropName = PROPERTY_KEY_PREFIX_ENTITY + propName;
                             GraphOMRSGraphFactory.MixedIndexMapping mapping = corePropertyMixedIndexMappings.get(matchedPropName);
-                            matchedPropToMapping.put(matchedPropName,mapping);
+                            matchedPropToMapping.put(matchedPropName, mapping);
                         }
                         else
                         {
@@ -2247,64 +2250,68 @@ class GraphOMRSMetadataStore {
 
                 }
             }
-        }
 
 
-        /*
-         * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
-         * between the match properties and the properties defined on the type (core or type defined). So
-         * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
-         * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
-         * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-         * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
-         * entity) so let that case continue.
-         */
 
-        switch (matchCriteria)
-        {
-            case ALL:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case ANY:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case NONE:
-                GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                gt = gt.not(t);
-                log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                break;
-            default:
-                g.tx().rollback();
-                final String parameterName = "matchCriteria";
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
+             * entity) so let that case continue.
+             */
 
-                throw new InvalidParameterException(
-                        GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                methodName,
+            if (matchCriteria != null)
+            {
+                switch (matchCriteria)
+                {
+                    case ALL:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case ANY:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case NONE:
+                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+                    default:
+                        g.tx().rollback();
+                        final String parameterName = "matchCriteria";
+
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
                                 this.getClass().getName(),
-                                repositoryName),
-                        this.getClass().getName(),
-                        methodName,
-                        parameterName);
+                                methodName,
+                                parameterName);
 
+                }
+            }
         }
 
 
@@ -2492,7 +2499,7 @@ class GraphOMRSMetadataStore {
                              */
                             String matchedPropName = PROPERTY_KEY_PREFIX_ENTITY + propName;
                             GraphOMRSGraphFactory.MixedIndexMapping mapping = corePropertyMixedIndexMappings.get(matchedPropName);
-                            matchedPropToMapping.put(matchedPropName,mapping);
+                            matchedPropToMapping.put(matchedPropName, mapping);
                         }
                         else
                         {
@@ -2703,66 +2710,69 @@ class GraphOMRSMetadataStore {
                     propCriteria.addAll(localCriteria);
                 }
             }
-        }
 
 
-        /*
-         * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
-         * between the match properties and the properties defined on the type (core or type defined). So
-         * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
-         * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
-         * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-         * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
-         * entity) so let that case continue.
-         */
 
-        switch (matchCriteria)
-        {
-            case ALL:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case ANY:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case NONE:
-                GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                gt = gt.not(t);
-                log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                break;
-            default:
-                g.tx().rollback();
-                final String parameterName = "matchCriteria";
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
+             * entity) so let that case continue.
+             */
 
-                throw new InvalidParameterException(
-                        GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                methodName,
+            if (matchCriteria != null)
+            {
+                switch (matchCriteria)
+                {
+                    case ALL:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case ANY:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case NONE:
+                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+                    default:
+                        g.tx().rollback();
+                        final String parameterName = "matchCriteria";
+
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
                                 this.getClass().getName(),
-                                repositoryName),
-                        this.getClass().getName(),
-                        methodName,
-                        parameterName);
+                                methodName,
+                                parameterName);
 
+                }
+            }
         }
-
 
         /*
          * Optionally perform type filtering
@@ -3135,53 +3145,55 @@ class GraphOMRSMetadataStore {
              */
 
 
-            switch (matchCriteria)
+            if (matchCriteria != null)
             {
-                case ALL:
-                    if (propCriteria.isEmpty())
-                    {
-                        g.tx().rollback();
-                        return null;
-                    }
-                    else
-                    {
-                        gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                switch (matchCriteria)
+                {
+                    case ALL:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case ANY:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case NONE:
+                        GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    }
-                    break;
-                case ANY:
-                    if (propCriteria.isEmpty())
-                    {
+                        break;
+                    default:
                         g.tx().rollback();
-                        return null;
-                    }
-                    else
-                    {
-                        gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    }
-                    break;
-                case NONE:
-                    GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
-                    t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                    gt = gt.not(t);
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    break;
-                default:
-                    g.tx().rollback();
-                    final String parameterName = "matchCriteria";
+                        final String parameterName = "matchCriteria";
 
-                    throw new InvalidParameterException(
-                            GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                    methodName,
-                                    this.getClass().getName(),
-                                    repositoryName),
-                            this.getClass().getName(),
-                            methodName,
-                            parameterName);
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                parameterName);
 
+                }
             }
-
         }
 
         /*
@@ -3368,7 +3380,7 @@ class GraphOMRSMetadataStore {
                              */
                             String matchedPropName = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
                             GraphOMRSGraphFactory.MixedIndexMapping mapping = corePropertyMixedIndexMappings.get(matchedPropName);
-                            matchedPropToMapping.put(matchedPropName,mapping);
+                            matchedPropToMapping.put(matchedPropName, mapping);
                         }
                         else
                         {
@@ -3579,64 +3591,68 @@ class GraphOMRSMetadataStore {
 
                 }
             }
-        }
 
 
-        /*
-         * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
-         * between the match properties and the properties defined on the type (core or type defined). So
-         * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
-         * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
-         * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-         * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
-         * entity) so let that case continue.
-         */
 
-        switch (matchCriteria)
-        {
-            case ALL:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case ANY:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case NONE:
-                GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
-                t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                gt = gt.not(t);
-                log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                break;
-            default:
-                g.tx().rollback();
-                final String parameterName = "matchCriteria";
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
+             * entity) so let that case continue.
+             */
 
-                throw new InvalidParameterException(
-                        GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                methodName,
+            if (matchCriteria != null)
+            {
+                switch (matchCriteria)
+                {
+                    case ALL:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case ANY:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case NONE:
+                        GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+                    default:
+                        g.tx().rollback();
+                        final String parameterName = "matchCriteria";
+
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
                                 this.getClass().getName(),
-                                repositoryName),
-                        this.getClass().getName(),
-                        methodName,
-                        parameterName);
+                                methodName,
+                                parameterName);
 
+                }
+            }
         }
 
 
@@ -3834,7 +3850,7 @@ class GraphOMRSMetadataStore {
                              */
                             String matchedPropName = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
                             GraphOMRSGraphFactory.MixedIndexMapping mapping = corePropertyMixedIndexMappings.get(matchedPropName);
-                            matchedPropToMapping.put(matchedPropName,mapping);
+                            matchedPropToMapping.put(matchedPropName, mapping);
                         }
                         else
                         {
@@ -4045,64 +4061,68 @@ class GraphOMRSMetadataStore {
                     propCriteria.addAll(localCriteria);
                 }
             }
-        }
 
 
-        /*
-         * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
-         * between the match properties and the properties defined on the type (core or type defined). So
-         * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
-         * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
-         * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-         * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
-         * entity) so let that case continue.
-         */
 
-        switch (matchCriteria)
-        {
-            case ALL:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case ANY:
-                if (propCriteria.isEmpty())
-                {
-                    g.tx().rollback();
-                    return null;
-                }
-                else
-                {
-                    gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                }
-                break;
-            case NONE:
-                GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
-                t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                gt = gt.not(t);
-                log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                break;
-            default:
-                g.tx().rollback();
-                final String parameterName = "matchCriteria";
+            /*
+             * If matchProps is not null and matchCriteria is ALL or ANY we need to have some overlap at least
+             * between the match properties and the properties defined on the type (core or type defined). So
+             * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
+             * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
+             * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
+             * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
+             * entity) so let that case continue.
+             */
 
-                throw new InvalidParameterException(
-                        GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                methodName,
+            if (matchCriteria != null)
+            {
+                switch (matchCriteria)
+                {
+                    case ALL:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case ANY:
+                        if (propCriteria.isEmpty())
+                        {
+                            g.tx().rollback();
+                            return null;
+                        }
+                        else
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                            log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        }
+                        break;
+                    case NONE:
+                        GraphTraversal<Edge, Edge> t = new DefaultGraphTraversal<>();
+                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                        gt = gt.not(t);
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
+                    default:
+                        g.tx().rollback();
+                        final String parameterName = "matchCriteria";
+
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
                                 this.getClass().getName(),
-                                repositoryName),
-                        this.getClass().getName(),
-                        methodName,
-                        parameterName);
+                                methodName,
+                                parameterName);
 
+                }
+            }
         }
 
 
@@ -5013,47 +5033,50 @@ class GraphOMRSMetadataStore {
             }
 
 
-            switch (matchCriteria)
+            if (matchCriteria != null)
             {
-                case ALL:
-                    if (!propCriteria.isEmpty())
-                    {
-                        gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
-                    }
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    break;
+                switch (matchCriteria)
+                {
+                    case ALL:
+                        if (!propCriteria.isEmpty())
+                        {
+                            gt = gt.and(propCriteria.toArray(new GraphTraversal[0]));
+                        }
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
 
-                case ANY:
-                    if (!propCriteria.isEmpty())
-                    {
-                        gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
-                    }
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    break;
+                    case ANY:
+                        if (!propCriteria.isEmpty())
+                        {
+                            gt = gt.or(propCriteria.toArray(new GraphTraversal[0]));
+                        }
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
 
-                case NONE:
-                    if (!propCriteria.isEmpty())
-                    {
-                        GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
-                        t = t.or(propCriteria.toArray(new GraphTraversal[0]));
-                        gt = gt.not(t);
-                    }
-                    log.debug("{} traversal looks like this --> {} ", methodName, gt);
-                    break;
+                    case NONE:
+                        if (!propCriteria.isEmpty())
+                        {
+                            GraphTraversal<Vertex, Vertex> t = new DefaultGraphTraversal<>();
+                            t = t.or(propCriteria.toArray(new GraphTraversal[0]));
+                            gt = gt.not(t);
+                        }
+                        log.debug("{} traversal looks like this --> {} ", methodName, gt);
+                        break;
 
-                default:
-                    g.tx().rollback();
-                    final String parameterName = "matchCriteria";
+                    default:
+                        g.tx().rollback();
+                        final String parameterName = "matchCriteria";
 
-                    throw new InvalidParameterException(
-                            GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
-                                    methodName,
-                                    this.getClass().getName(),
-                                    repositoryName),
-                            this.getClass().getName(),
-                            methodName,
-                            parameterName);
+                        throw new InvalidParameterException(
+                                GraphOMRSErrorCode.INVALID_MATCH_CRITERIA.getMessageDefinition(
+                                        methodName,
+                                        this.getClass().getName(),
+                                        repositoryName),
+                                this.getClass().getName(),
+                                methodName,
+                                parameterName);
 
+                }
             }
         }
 
