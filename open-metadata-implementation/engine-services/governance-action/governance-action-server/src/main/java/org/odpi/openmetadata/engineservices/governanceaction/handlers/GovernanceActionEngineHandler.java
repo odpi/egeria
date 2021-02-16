@@ -4,8 +4,8 @@ package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.*;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.engineservices.governanceaction.context.GovernanceListenerManager;
-import org.odpi.openmetadata.engineservices.governanceaction.properties.EngineSummary;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
@@ -58,7 +58,14 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                          AuditLog                            auditLog,
                                          int                                 maxPageSize)
     {
-        super(engineConfig, localServerName, serverUserId, configurationClient, serverClient, auditLog, maxPageSize);
+        super(engineConfig,
+              localServerName,
+              serverUserId,
+              EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceFullName(),
+              configurationClient,
+              serverClient,
+              auditLog,
+              maxPageSize);
 
         this.governanceEngineClient = governanceEngineClient;
         this.partnerServerName = partnerServerName;
@@ -139,17 +146,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
             return governanceActionServiceHandler;
         }
 
-        return null;
-    }
-
-
-    /**
-     * Return details of the governance action engines running in this server.
-     *
-     * @return list of summaries
-     */
-    public List<EngineSummary> getLocalEngines()
-    {
         return null;
     }
 }

@@ -27,7 +27,7 @@ public class VirtualConnection extends Connection
     /*
      * Attributes of a virtual connection
      */
-    protected List<EmbeddedConnection> embeddedConnections = null;
+    private List<EmbeddedConnection> embeddedConnections = null;
 
 
     /**

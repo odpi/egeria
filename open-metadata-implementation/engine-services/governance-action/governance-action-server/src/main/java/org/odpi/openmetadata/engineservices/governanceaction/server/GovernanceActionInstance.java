@@ -31,45 +31,17 @@ public class GovernanceActionInstance extends OMESServiceInstance
      * @param accessServiceServerName name of the server where the access service is running.
      * @param governanceActionEngineInstances active governance action engines in this server.
      */
-    public GovernanceActionInstance(String                              serverName,
-                                 String                              serviceName,
-                                 AuditLog                            auditLog,
-                                 String                              localServerUserId,
-                                 int                                 maxPageSize,
-                                 String                              accessServiceRootURL,
-                                 String                              accessServiceServerName,
-                                 Map<String, GovernanceActionEngineHandler> governanceActionEngineInstances)
+    public GovernanceActionInstance(String                                     serverName,
+                                    String                                     serviceName,
+                                    AuditLog                                   auditLog,
+                                    String                                     localServerUserId,
+                                    int                                        maxPageSize,
+                                    String                                     accessServiceRootURL,
+                                    String                                     accessServiceServerName,
+                                    Map<String, GovernanceActionEngineHandler> governanceActionEngineInstances)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize, accessServiceRootURL, accessServiceServerName);
 
         this.governanceActionEngineInstances = governanceActionEngineInstances;
-    }
-
-
-
-    /**
-     * Return the governance action engine instance requested on an governance action engine services request.
-     *
-     * @param governanceActionEngineName unique name of the governance action engine
-     * @return governance action engine instance.
-     * @throws InvalidParameterException the governance action engine name is not recognized
-     */
-    synchronized GovernanceActionEngineHandler getGovernanceActionEngine(String   governanceActionEngineName) throws InvalidParameterException
-    {
-        final String  methodName        = "getGovernanceActionEngine";
-        final String  guidParameterName = "governanceActionEngineName";
-
-        GovernanceActionEngineHandler instance = governanceActionEngineInstances.get(governanceActionEngineName);
-
-        if (instance == null)
-        {
-            throw new InvalidParameterException(GovernanceActionErrorCode.UNKNOWN_GOVERNANCE_ACTION_ENGINE.getMessageDefinition(serverName,
-                                                                                                                     governanceActionEngineName),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                guidParameterName);
-        }
-
-        return instance;
     }
 }

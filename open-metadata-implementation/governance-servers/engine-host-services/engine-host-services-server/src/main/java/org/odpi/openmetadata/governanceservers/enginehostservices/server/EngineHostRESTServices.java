@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.server;
 
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionConnector;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -29,6 +31,8 @@ public class EngineHostRESTServices
                                                                       instanceHandler.getServiceName());
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
+    private MoveCopyFileGovernanceActionProvider  provider;
+    private MoveCopyFileGovernanceActionConnector connector;
 
     /**
      * Request that the governance engine refresh its configuration by calling the metadata server.
