@@ -234,7 +234,13 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                      owningOrganizationName),
                                remoteConnection.toString());
         }
-        else if (remoteConnection.equals(registeredConnector.getConnection()))
+        else if (registeredConnector.checkSameConnection(cohortName,
+                                                         remoteServerName,
+                                                         remoteServerType,
+                                                         owningOrganizationName,
+                                                         metadataCollectionId,
+                                                         metadataCollectionName,
+                                                         remoteConnection))
         {
             auditLog.logMessage(actionDescription,
                                 OMRSAuditCode.REMOTE_MEMBER_REFRESHED.getMessageDefinition(remoteServerName,
@@ -746,7 +752,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
 
 
         /**
-         * Constructor to set up registered connector.
+         * Refresh values from remote member.
          *
          * @param source name of the source of the connector.
          * @param serverName name of the server for this connection.
@@ -848,6 +854,37 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         public Connection getConnection()
         {
             return connection;
+        }
+
+
+        /**
+         * Check that the incoming connection is the same as the saved connection
+         *
+         * @param source name of the source of the connector.
+         * @param serverName name of the server for this connection.
+         * @param serverType type of the remote server.
+         * @param owningOrganizationName name of the organization the owns the remote server.
+         * @param metadataCollectionId unique identifier for the metadata collection that this connector accesses.
+         * @param metadataCollectionName display name for the metadata collection that this connector accesses.
+         * @param newConnection connection value to check
+         * @return boolean true if the connection has not changed
+         */
+        public boolean checkSameConnection(String     source,
+                                           String     serverName,
+                                           String     serverType,
+                                           String     owningOrganizationName,
+                                           String     metadataCollectionId,
+                                           String     metadataCollectionName,
+                                           Connection newConnection)
+        {
+            if (connection.equals(newConnection))
+            {
+                refresh(source, serverName, serverType, owningOrganizationName, metadataCollectionId, metadataCollectionName, newConnection);
+
+                return true;
+            }
+
+            return false;
         }
     }
 

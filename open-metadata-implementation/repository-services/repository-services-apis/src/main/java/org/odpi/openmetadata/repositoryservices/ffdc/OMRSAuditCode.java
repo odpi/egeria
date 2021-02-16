@@ -618,7 +618,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     REMOTE_MEMBER_REFRESHED("OMRS-AUDIT-0128",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "Configuration received for an existing remote member from server {0} for cohort {1} has not change.  It has a " +
+                      "Configuration received for an existing remote member from server {0} for cohort {1} has not changed.  It has a " +
                               "metadata collection id of {2}, a metadata collection name of {3}, " +
                                     "the server type is {4} and its owning organization is {5}",
                       "The enterprise connector manager has validated that there is no need to update the enterprise configuration for " +
@@ -678,7 +678,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     REMOTE_MEMBER_UPDATED("OMRS-AUDIT-0135",
                           OMRSAuditLogRecordSeverity.INFO,
-                          "Configuration for an existing remote member from server {0} for cohort {1} has change and is being updated in" +
+                          "Configuration for an existing remote member from server {0} for cohort {1} has changed and is being updated in" +
                                   " the enterprise connector manager.  It has a metadata collection id of {2}, a metadata collection name of {3}, " +
                                   "the server type is {4} and its owning organization is {5}",
                           "The enterprise connector manager is preparing to process new connection information from a remote member of the cohort.  " +
