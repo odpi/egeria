@@ -6,9 +6,11 @@ package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +46,22 @@ public class OpenLineageResource {
             @PathVariable("guid") String guid,
             @RequestBody LineageQueryParameters params) {
         return restAPI.lineage(serverName, userId, params.getScope(), guid, params.getDisplayNameMustContain(), params.isIncludeProcesses());
+    }
+
+    /**
+     * Gets entity details.
+     *
+     * @param serverName the server name
+     * @param userId     the user id
+     * @param guid       the guid
+     * @return the entity details
+     */
+    @GetMapping(path = "/lineage/entities/{guid}/details", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LineageVertexResponse getEntityDetails(
+            @PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+            @PathVariable("guid") String guid) {
+        return restAPI.getEntityDetails(serverName, userId, guid);
     }
 
 }
