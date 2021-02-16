@@ -19,6 +19,7 @@ public class ProcessPropertiesMapper {
     public static final String FORMULA_PROPERTY_NAME = "formula";
     public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
     public static final String CONTAINMENT_TYPE = "containmentType";
+    public static final String PROCESS_GUID_PROPERTY_NAME = "processGUID";
 
     private ProcessPropertiesMapper() {
     }

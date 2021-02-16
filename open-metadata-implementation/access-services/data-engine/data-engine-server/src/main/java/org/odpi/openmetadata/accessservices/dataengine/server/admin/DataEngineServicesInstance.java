@@ -8,13 +8,13 @@ import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaAttributeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaTypeConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineAssetHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -37,7 +37,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private final DataEnginePortHandler dataEnginePortHandler;
-    private final AssetHandler<Process> assetHandler;
+    private final DataEngineAssetHandler<Process> dataEngineAssetHandler;
     private final SchemaTypeHandler<SchemaType> schemaTypeHandler;
     private final SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler;
     private final Connection inTopicConnection;
@@ -65,7 +65,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
         if (repositoryHandler != null) {
 
-            assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName), Process.class,
+            dataEngineAssetHandler = new DataEngineAssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName), Process.class,
                     serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
                     securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
@@ -84,7 +84,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
             DataEngineCommonHandler dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
             processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+                    dataEngineAssetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
