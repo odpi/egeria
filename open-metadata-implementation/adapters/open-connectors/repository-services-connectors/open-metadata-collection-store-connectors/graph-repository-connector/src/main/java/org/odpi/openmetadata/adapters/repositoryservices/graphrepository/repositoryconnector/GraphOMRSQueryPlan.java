@@ -435,40 +435,50 @@ public class GraphOMRSQueryPlan {
 
     throws InvalidParameterException
     {
-        List<String> propertyNames = new ArrayList<>();
+        List<String> propertyNames = null;
 
-        List<PropertyCondition> conditions = searchProperties.getConditions();
-        for (PropertyCondition condition : conditions)
+        if (searchProperties != null)
         {
-            boolean localCondition = validatePropertyCondition(condition, repositoryName);
 
-            /*
-             * Condition is valid, and localCondition indicates whether to process property, value, operator or to
-             * recurse into nestedConditions.
-             */
+            propertyNames = new ArrayList<>();
 
-            if (localCondition)
+            List<PropertyCondition> conditions = searchProperties.getConditions();
+            for (PropertyCondition condition : conditions)
             {
-                /* Construct a traversal for the property name, operator and value */
-                String propertyName = condition.getProperty();
-                if (propertyName != null)
+                boolean localCondition = validatePropertyCondition(condition, repositoryName);
+
+                /*
+                 * Condition is valid, and localCondition indicates whether to process property, value, operator or to
+                 * recurse into nestedConditions.
+                 */
+
+                if (localCondition)
                 {
-                    propertyNames.add(propertyName);
+                    /* Construct a traversal for the property name, operator and value */
+                    String propertyName = condition.getProperty();
+                    if (propertyName != null)
+                    {
+                        propertyNames.add(propertyName);
+                    }
+                }
+                else
+                {
+                    /*
+                     * Recursively process nested conditions....
+                     */
+                    SearchProperties nestedConditions = condition.getNestedConditions();
+
+                    List<String> moreProperties = extractPropertyNamesFromSearchProperties(nestedConditions, repositoryName);
+
+                    if (moreProperties != null && !moreProperties.isEmpty())
+                    {
+                        propertyNames.addAll(moreProperties);
+                    }
                 }
             }
-            else
+            if (propertyNames.isEmpty())
             {
-                /*
-                 * Recursively process nested conditions....
-                 */
-                SearchProperties nestedConditions = condition.getNestedConditions();
-
-                List<String> moreProperties = extractPropertyNamesFromSearchProperties(nestedConditions, repositoryName);
-
-                if (moreProperties != null && !moreProperties.isEmpty())
-                {
-                    propertyNames.addAll(moreProperties);
-                }
+                propertyNames = null;
             }
         }
         return propertyNames;
@@ -488,15 +498,25 @@ public class GraphOMRSQueryPlan {
      */
     List<String> extractPropertyNamesFromMatchProperties(InstanceProperties matchProperties)
     {
-        List<String> propertyNames = new ArrayList<>();
 
-        Map<String, InstancePropertyValue> propertyMap = matchProperties.getInstanceProperties();
-        if (propertyMap != null)
+        List<String> propertyNames = null;
+
+        if (matchProperties != null)
         {
-            Set<String> propertyKeys = propertyMap.keySet();
-            if (!propertyKeys.isEmpty())
+            propertyNames = new ArrayList<>();
+
+            Map<String, InstancePropertyValue> propertyMap = matchProperties.getInstanceProperties();
+            if (propertyMap != null)
             {
-                propertyNames.addAll(propertyKeys);
+                Set<String> propertyKeys = propertyMap.keySet();
+                if (!propertyKeys.isEmpty())
+                {
+                    propertyNames.addAll(propertyKeys);
+                }
+            }
+            if (propertyNames.isEmpty())
+            {
+                propertyNames = null;
             }
         }
         return propertyNames;
