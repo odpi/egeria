@@ -31,6 +31,7 @@ public class ProcessConverter<B> extends OpenMetadataAPIGenericConverter<B> {
 
     /**
      * Request the bean is extracted from the repository objects
+     * @param processClass the process class
      * @param entity the EntityDetail from which the bean is extracted
      * @throws PropertyServerException problem accessing the property server
      *

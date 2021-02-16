@@ -12,8 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPr
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+    import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -41,7 +40,7 @@ public class DataEngineProcessHandler {
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final AssetHandler<Process> assetHandler;
+    private final DataEngineAssetHandler<Process> dataEngineAssetHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
 
@@ -53,20 +52,21 @@ public class DataEngineProcessHandler {
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
-     * @param assetHandler            provides utilities for manipulating the repository services assets
+     * @param dataEngineAssetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
      * @param registrationHandler     creates software server capability entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                    RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, AssetHandler<Process> assetHandler,
-                                    DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
+                                    RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                                    DataEngineAssetHandler<Process> dataEngineAssetHandler, DataEngineRegistrationHandler registrationHandler,
+                                    DataEngineCommonHandler dataEngineCommonHandler) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-        this.assetHandler = assetHandler;
+        this.dataEngineAssetHandler = dataEngineAssetHandler;
         this.registrationHandler = registrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
     }
@@ -93,10 +93,10 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        return assetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getQualifiedName(),
-                process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(), process.getOwnerType(),
-                null, null, null, process.getAdditionalProperties(),
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
+        return dataEngineAssetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getName(),
+                process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(),
+                process.getOwner(), process.getOwnerType(), process.getAdditionalProperties(),
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
                 process.getExtendedProperties(), InstanceStatus.DRAFT, methodName);
     }
 
@@ -122,7 +122,7 @@ public class DataEngineProcessHandler {
         String processGUID = originalProcessEntity.getGUID();
         Process originalProcess = getProcess(originalProcessEntity);
 
-        ProcessPropertiesBuilder updatedProcessBuilder = getProcessPropertiesBuilder(updatedProcess);
+        ProcessPropertiesBuilder updatedProcessBuilder = getProcessPropertiesBuilder(updatedProcess, methodName, userId);
 
         EntityDetail updatedProcessEntity = dataEngineCommonHandler.buildEntityDetail(processGUID,
                 updatedProcessBuilder.getInstanceProperties(methodName));
@@ -134,9 +134,9 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
-                originalProcess.getQualifiedName(), originalProcess.getName(), originalProcess.getDescription(),
-                originalProcess.getAdditionalProperties(), ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+        dataEngineAssetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID,
+                ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME, originalProcess.getQualifiedName(), originalProcess.getName(),
+                originalProcess.getDescription(), originalProcess.getAdditionalProperties(), ProcessPropertiesMapper.PROCESS_TYPE_GUID,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, originalProcess.getExtendedProperties(), true, methodName);
     }
 
@@ -212,7 +212,7 @@ public class DataEngineProcessHandler {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        assetHandler.updateBeanStatusInRepository(userId, externalSourceGUID, externalSourceName, processGUID,
+        dataEngineAssetHandler.updateBeanStatusInRepository(userId, externalSourceGUID, externalSourceName, processGUID,
                 processGUIDParameterName, entityTypeDef.getGUID(), entityTypeDef.getName(), instanceStatus,
                 newProcessStatusParameterName, methodName);
     }
@@ -256,11 +256,11 @@ public class DataEngineProcessHandler {
         invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 
-    ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process) {
-        return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(),
-                process.getName(), process.getDescription(), process.getTypeGUID(), process.getTypeName(),
-                process.getFormula(), null, null,
-                InstanceStatus.DRAFT, repositoryHelper, serverName, serviceName);
+    ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process, String methodName, String userId) throws InvalidParameterException {
+        return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(), process.getName(),
+                process.getDescription(),process.getZoneMembership(), process.getOwner(), process.getOwnerType(),
+                process.getTypeGUID(), process.getTypeName(), process.getFormula(), process.getAdditionalProperties(),
+                process.getExtendedProperties(), InstanceStatus.DRAFT, repositoryHelper, serverName, serviceName, userId, methodName);
     }
 
     public void upsertProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,

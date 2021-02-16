@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
@@ -49,6 +50,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 {
     private static final String TEST_CASE_ID      = "repository-entity-property-search";
     private static final String TEST_CASE_NAME    = "Repository entity property search test case";
+
+    private static final String ASSERTION_101FEBP    = TEST_CASE_ID + "-101FEBP";
+    private static final String ASSERTION_MSG_101FEBP = "findEntitiesByProperty is supported: ";
+
+    private static final String ASSERTION_101FEBPV    = TEST_CASE_ID + "-101FEBPV";
+    private static final String ASSERTION_MSG_101FEBPV = "findEntitiesByPropertyValue is supported: ";
+
+    private static final String ASSERTION_101FE    = TEST_CASE_ID + "-101FE";
+    private static final String ASSERTION_MSG_101FE = "findEntities using SearchProperties is supported: ";
+
+    private static final String ASSERTION_101FEBPGEN    = TEST_CASE_ID + "-101FEBPGEN";
+    private static final String ASSERTION_MSG_101FEBPGEN = "findEntitiesByProperty supports general regular expressions: ";
+
+    private static final String ASSERTION_101FEBPVGEN     = TEST_CASE_ID + "-101FEBPVGEN";
+    private static final String ASSERTION_MSG_101FEBPVGEN = "findEntitiesByPropertyValue supports general regular expressions: ";
+
 
     private static final String ASSERTION_1       = TEST_CASE_ID + "-01";
     private static final String ASSERTION_MSG_1   = " entity type matches the known type from the repository helper.";
@@ -92,14 +109,23 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     private static final String ASSERTION_14      = TEST_CASE_ID + "-14";
     private static final String ASSERTION_MSG_14  = "findEntitiesByProperty with general regex returned {0} unexpected results using parameters: {1}";
 
-    private static final String ASSERTION_101     = TEST_CASE_ID + "-101";
-    private static final String ASSERTION_MSG_101 = "findEntitiesByPropertyValue supports general regular expressions: ";
-
-    private static final String ASSERTION_102     = TEST_CASE_ID + "-102";
-    private static final String ASSERTION_MSG_102 = "findEntitiesByProperty supports general regular expressions: ";
-
     private static final String ASSERTION_103     = TEST_CASE_ID + "-103";
-    private static final String ASSERTION_MSG_103 = "findEntities using SearchProperties is supported: ";
+    private static final String ASSERTION_MSG_103 = "findEntities using SearchProperties with general regex found {0}/{1} expected results using parameters: {2}";
+
+    private static final String ASSERTION_104     = TEST_CASE_ID + "-104";
+    private static final String ASSERTION_MSG_104 = "findEntities using SearchProperties with general regex returned {0} unexpected results using parameters: {1}";
+
+    private static final String ASSERTION_105       = TEST_CASE_ID + "-105";
+    private static final String ASSERTION_MSG_105   = "findEntitiesByProperty with null match parameters found {0}/{1} expected results using parameters: {2}";
+
+    private static final String ASSERTION_106       = TEST_CASE_ID + "-106";
+    private static final String ASSERTION_MSG_106   = "findEntitiesByProperty with null match parameters returned {0} unexpected results using parameters: {1}";
+
+    private static final String ASSERTION_107       = TEST_CASE_ID + "-107";
+    private static final String ASSERTION_MSG_107   = "findEntities with null match parameters found {0}/{1} expected results using parameters: {2}";
+
+    private static final String ASSERTION_108       = TEST_CASE_ID + "-108";
+    private static final String ASSERTION_MSG_108   = "findEntities with null match parameters returned {0} unexpected results using parameters: {1}";
 
     private static final String RESULTS_MISSING_EXPECTED_GUIDS = "(results missing expected GUIDs)";
 
@@ -553,7 +579,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          * This test does not perform content validation of returned instances - these are tested in the lifecycle tests.
          */
 
-        if (knownInstances != null && !knownInstances.isEmpty()) {
+        if (knownInstances != null && !knownInstances.isEmpty())
+        {
 
             /*
              * There are instances of the type being tested in the repository.
@@ -561,7 +588,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              */
 
 
-            if (!definedAttributeNames.isEmpty()) {
+            if (!definedAttributeNames.isEmpty())
+            {
 
                 /*
                  * The type has at least one attribute that we can test against.
@@ -574,7 +602,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  */
 
 
-                for (String attributeName : definedAttributeNames) {
+                for (String attributeName : definedAttributeNames)
+                {
 
                     performMatchPropertiesTestForAttribute(attributeName, MatchCriteria.ALL);
 
@@ -599,12 +628,14 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  */
 
                 List<String> attributePair = pickAttributePair();
-                if (attributePair != null && attributePair.size() == 2) {
+                if (attributePair != null && attributePair.size() == 2)
+                {
 
                     String alphaAttributeName = attributePair.get(0);
                     String betaAttributeName = attributePair.get(1);
 
-                    if (alphaAttributeName != null && betaAttributeName != null) {
+                    if (alphaAttributeName != null && betaAttributeName != null)
+                    {
 
                         performMatchPropertiesTestForAttributePair(alphaAttributeName, betaAttributeName, ANY);
 
@@ -629,9 +660,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  */
                 String stringAttributeName = null;
 
-                for (String testAttributeName : definedAttributeNames) {
+                for (String testAttributeName : definedAttributeNames)
+                {
 
-                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
+                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING)
+                    {
 
                         /*
                          * This is a string attribute....
@@ -641,7 +674,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                if (stringAttributeName != null) {
+                if (stringAttributeName != null)
+                {
 
                     performSearchCriteriaTests(stringAttributeName, RegexMatchType.Exact);
 
@@ -657,7 +691,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 /*
                  * Perform type filtering tests
                  */
-                for (String attributeName : definedAttributeNames) {
+                for (String attributeName : definedAttributeNames)
+                {
 
                     performTypeFilteringTests(attributeName);
 
@@ -673,9 +708,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  */
                 stringAttributeName = null;
 
-                for (String testAttributeName : definedAttributeNames) {
+                for (String testAttributeName : definedAttributeNames)
+                {
 
-                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING) {
+                    if (propertyCatMap.get(testAttributeName) == OM_PRIMITIVE_TYPE_STRING)
+                    {
 
                         /*
                          * This is a string attribute....
@@ -685,7 +722,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                if (stringAttributeName != null) {
+                if (stringAttributeName != null)
+                {
 
                     performAdvancedSearchTests(stringAttributeName, RegexMatchType.Exact);
                     performAdvancedSearchTests(stringAttributeName, RegexMatchType.Prefix);
@@ -699,6 +737,14 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  */
                 super.setSuccessMessage("Entities can be searched by property and property value");
             }
+
+
+            /*
+             * Run finds for this type, with no matchProperties or searchPreopties, using
+             * both findEntitiesByProperty and findENtities. (findEntitiesByPropertyValue is not
+             * included because searchCriteria is mandatory).
+             */
+            performNonPropertySearchTests();
         }
     }
 
@@ -828,6 +874,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                    null,
                                                                    null,
                                                                    pageSize);
+            }
+            catch (FunctionNotSupportedException exc) {
+
+                /*
+                 * Because the above test only exercises one optional function (advanced regex support)
+                 * we can assert that it is that function that is not supported.
+                 */
+
+                super.addNotSupportedAssertion(ASSERTION_101FEBP,
+                                               ASSERTION_MSG_101FEBP + exc.getMessage(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+
+                return;
+
             }
             catch(Exception exc) {
                 /*
@@ -1117,6 +1178,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                    null,
                                                                    null,
                                                                    pageSize);
+            }
+            catch (FunctionNotSupportedException exc) {
+
+                /*
+                 * Because the above test only exercises one optional function (advanced regex support)
+                 * we can assert that it is that function that is not supported.
+                 */
+
+                super.addNotSupportedAssertion(ASSERTION_101FEBP,
+                                               ASSERTION_MSG_101FEBP + exc.getMessage(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+
+                return;
+
             }
             catch(Exception exc) {
                 /*
@@ -1415,19 +1491,38 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String, String> parameters = getParameters(entityDef.getGUID(), literalisedValue);
 
-            try {
+            try
+            {
 
                 result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                        entityDef.getGUID(),
-                        literalisedValue,
-                        0,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        pageSize);
-            } catch (Exception exc) {
+                                                                        entityDef.getGUID(),
+                                                                        literalisedValue,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
+            }
+            catch (FunctionNotSupportedException exc)
+            {
+
+                /*
+                 * Because the above test only exercises one optional function (advanced regex support)
+                 * we can assert that it is that function that is not supported.
+                 */
+
+                super.addNotSupportedAssertion(ASSERTION_101FEBPV,
+                                               ASSERTION_MSG_101FEBPV + exc.getMessage(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+
+                return;
+
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -1795,7 +1890,24 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                    null,
                                                                    pageSize);
             }
-            catch(Exception exc) {
+            catch (FunctionNotSupportedException exc)
+            {
+
+                /*
+                 * Because the above test only exercises one optional function (advanced regex support)
+                 * we can assert that it is that function that is not supported.
+                 */
+
+                super.addNotSupportedAssertion(ASSERTION_101FEBP,
+                                               ASSERTION_MSG_101FEBP + exc.getMessage(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+
+                return;
+
+            }
+            catch(Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -1867,7 +1979,24 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                        null,
                                                                        pageSize);
                 }
-                catch(Exception exc) {
+                catch (FunctionNotSupportedException exc)
+                {
+
+                    /*
+                     * Because the above test only exercises one optional function (advanced regex support)
+                     * we can assert that it is that function that is not supported.
+                     */
+
+                    super.addNotSupportedAssertion(ASSERTION_101FEBP,
+                                                   ASSERTION_MSG_101FEBP + exc.getMessage(),
+                                                   RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+
+                    return;
+
+                }
+                catch(Exception exc)
+                {
                     /*
                      * We are not expecting any exceptions from this method call. Log and fail the test.
                      */
@@ -2122,34 +2251,39 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String, String> parameters = getParameters(entityDef.getGUID(), regexValue);
 
-            try {
+            try
+            {
 
                 result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                        entityDef.getGUID(),
-                        regexValue,
-                        0,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        pageSize);
+                                                                        entityDef.getGUID(),
+                                                                        regexValue,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        pageSize);
 
-            } catch (FunctionNotSupportedException exc) {
+            }
+            catch (FunctionNotSupportedException exc)
+            {
 
                 /*
                  * Because the above test only exercises one optional function (advanced regex support)
                  * we can assert that it is that function that is not supported.
                  */
 
-                super.addNotSupportedAssertion(ASSERTION_101,
-                        ASSERTION_MSG_101 + exc.getMessage(),
+                super.addNotSupportedAssertion(ASSERTION_101FEBPVGEN,
+                        ASSERTION_MSG_101FEBPVGEN + exc.getMessage(),
                         RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
 
                 return;
 
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -2298,34 +2432,39 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             parameters = getParameters(entityDef.getGUID(), matchProperties, MatchCriteria.ALL);
 
-            try {
+            try
+            {
 
                 result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                        entityDef.getGUID(),
-                        matchProperties,
-                        MatchCriteria.ALL,
-                        0,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        pageSize);
-            } catch (FunctionNotSupportedException exc) {
+                                                                   entityDef.getGUID(),
+                                                                   matchProperties,
+                                                                   MatchCriteria.ALL,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   pageSize);
+            }
+            catch (FunctionNotSupportedException exc) {
+
 
                 /*
                  * Because the above test only exercises one optional function (advanced regex support)
                  * we can assert that it is that function that is not supported.
                  */
 
-                super.addNotSupportedAssertion(ASSERTION_102,
-                        ASSERTION_MSG_102 + exc.getMessage(),
+                super.addNotSupportedAssertion(ASSERTION_101FEBPGEN,
+                        ASSERTION_MSG_101FEBPGEN + exc.getMessage(),
                         RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
                 return;
 
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -2693,19 +2832,20 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String,String> parameters = getParameters(entityDef.getGUID(), searchProperties1.toString());
 
-            try {
+            try
+            {
 
                 result = metadataCollection.findEntities(workPad.getLocalServerUserId(),
-                                                                   entityDef.getGUID(),
-                                                                   null,  // no subtype GUID filtering
-                                                                    searchProperties1,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   pageSize);
+                                                         entityDef.getGUID(),
+                                                         null,  // no subtype GUID filtering
+                                                         searchProperties1,
+                                                         0,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         pageSize);
 
             }
             catch (FunctionNotSupportedException exc) {
@@ -2715,8 +2855,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * we can assert that it is that function that is not supported.
                  */
 
-                super.addNotSupportedAssertion(ASSERTION_103,
-                                               ASSERTION_MSG_103 + exc.getMessage(),
+                super.addNotSupportedAssertion(ASSERTION_101FE,
+                                               ASSERTION_MSG_101FE + exc.getMessage(),
                                                RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
 
@@ -2811,9 +2951,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
-            String assertionMessage = MessageFormat.format(ASSERTION_MSG_3, resultCount, expectedEntityCount, parameters);
+            String assertionMessage = MessageFormat.format(ASSERTION_MSG_103, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            ASSERTION_3,
+                            ASSERTION_103,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
@@ -2879,9 +3019,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                 }
 
-                assertionMessage = MessageFormat.format(ASSERTION_MSG_4, unexpectedResult, parameters.toString());
+                assertionMessage = MessageFormat.format(ASSERTION_MSG_104, unexpectedResult, parameters.toString());
                 assertCondition(unexpectedResult.equals("0"),
-                                ASSERTION_4,
+                                ASSERTION_104,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
@@ -2889,6 +3029,464 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
         }
     }
+
+    /*
+     * performNonPropertySearchTests
+     *
+     * This test calls findEntitiesByProperty and findEntities with no match properties or match criteria.
+     * Although this is similar to the discovery test at the start of this testcase, it differs by passing
+     * a null for matchProperties or searchProperties, rather than an empty object.
+     * This is what happens under the covers when someone calls getEntitiesByType() for example.
+     *
+     * The expected return set should be ANY of the instances created for this type.
+     */
+    private void performNonPropertySearchTests() throws Exception
+    {
+        performfindEntitiesByPropertyWithNullParams();
+
+        performfindEntitiesWithNullParams();
+    }
+
+    /*
+     * performfindEntitiesByPropertyWithNullParams
+     *
+     * This test calls findEntitiesByProperty and findEntities with no match properties or match criteria.
+     * Although this is similar to the discovery test at the start of this testcase, it differs by passing
+     * a null for matchProperties or searchProperties, rather than an empty object.
+     * This is what happens under the covers when someone calls getEntitiesByType() for example.
+     *
+     * The expected return set should be ANY of the instances created for this type.
+     */
+    private void performfindEntitiesByPropertyWithNullParams() throws Exception
+    {
+
+        /*
+         * Use knownInstances and knownInstancesGUIDs to validate results
+         */
+
+        int expectedEntityCount = knownInstances.size();
+        List<String> expectedGUIDs = knownInstancesGUIDs;
+
+        /*
+         * Search....
+         */
+
+        List<EntityDetail> result;
+
+        Map<String, String> parameters = getParameters(entityDef.getGUID(), null, null);
+
+        try
+        {
+
+            result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+                                                               entityDef.getGUID(),
+                                                               null,
+                                                               null,
+                                                               0,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               pageSize);
+        }
+        catch (FunctionNotSupportedException exc) {
+
+            /*
+             * Because the above test only exercises one optional function (findEntities using SearchProperties)
+             * we can assert that it is that function that is not supported.
+             */
+
+            super.addNotSupportedAssertion(ASSERTION_101FEBP,
+                                           ASSERTION_MSG_101FEBP + exc.getMessage(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+
+            return;
+
+        }
+        catch (Exception exc)
+        {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "findEntitiesByProperty";
+            String operationDescription = "find entities of type " + entityDef.getName();
+            String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
+
+        /*
+         * The approach to checking results match expectations is as follows:
+         * The original discovery request (top of this testcase) returned a set of instances that
+         * are known to be in the repository. If that search hit the page limit then the
+         * instances may be a partial result of what is actually in the repository. Although it
+         * is possible to sort the results on a property, there is no guarantee that the values
+         * associated with any particular property are distinct, so the resulting order is
+         * not guaranteed. If this were an OMAS this would not be a problem because the OMAS/
+         * user would mostly likely continue to search until they either find what they are
+         * looking for or exhaust the contents of the repository. Since this is an automated
+         * testcase for which we need a predictable, repeatable result, it needs to be more
+         * robust. It is not appropriate to keep looping page by page because we do not know
+         * how many matching instances the repository contains. It is preferable to perform
+         * a limited search (in this case one page) rather than loop exhaustively.
+         *
+         * A constant page size is assumed throughout the following.
+         * It is also assumed that instances are not being added or deleted during the course
+         * of this testcase.
+         *
+         * The original result set is filtered to generate the result we expect to get from a narrower
+         * search. If the original result set returned less than the page size then we know the full
+         * set of instances in the repository and hence completely know each narrower expected set.
+         * This case (of complete knowledge) can be summarised in pseudo code as:
+         *   if original result size < page size then:
+         *     result size < expected size => fail
+         *     result size == expected size => if search contains all expected => pass
+         *                                     else search !contains all expected => fail
+         *      search size > expect size => fail (should not get more than the expectation)
+         *
+         *
+         * In contrast, if the original result set returned a full page size then the testcase needs to
+         * exercise a looser result matching policy. This case (of incomplete knowledge) can be summarised in
+         * psudo code as:
+         *
+         *   if original result size == page size then:
+         *     search size < expected size => fail
+         *     search size == expected size => if search contains all expected => pass
+         *                                     else search !contains all expected => check whether the unexpected instances are a valid match
+         *                                       if true => pass
+         *                                       else => fail
+         *     search size > expect size =>    check whether the unexpected instances are a valid match
+         *                                       if true => pass
+         *                                       else => fail
+         *
+         * With the above in mind....
+         *
+         * Check that the expected number of entities was returned. This has to consider the effect of the original
+         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+         * that were not seen on the original search; the expected result was computed from only those instance that WERE seen,
+         * so the expectation may be a subset of the actual. If we hit page size there may be additional instances that were
+         * not included in the initial set, due to the initial set being limited by pageSize; the narrower search may
+         * pull in additional entities that were not discovered previously.
+         *
+         */
+
+
+        /*
+         * We need to check that we got (at least) the expected number of results - which could include zero.
+         */
+        int resultCount = result == null ? 0 : result.size();
+        /*
+         * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
+         * In addition the result size should be no more than a page.
+         */
+        boolean unlimited_case = !pageLimited && resultCount == expectedEntityCount;
+        /*
+         * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
+         * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
+         * So in that latter case we need to accept Min().
+         */
+        boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
+        boolean limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
+        boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
+
+        String assertionMessage = MessageFormat.format(ASSERTION_MSG_105, resultCount, expectedEntityCount, parameters);
+        assertCondition((acceptable_result_size),
+                        ASSERTION_105,
+                        assertionMessage,
+                        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+
+
+        /*
+         * If there were any result, check that all expected entities were returned and (in the pageLimited case) that any
+         * additional entities were valid results for the search.
+         */
+        if (resultCount > 0)
+        {
+
+            List<String> resultGUIDs = new ArrayList<>();
+            for (EntityDetail entity : result)
+            {
+                resultGUIDs.add(entity.getGUID());
+            }
+
+
+            /*
+             * Here again, we need to be sensitive to whether there are (or may be) more entities than the page limit.
+             * If the original search hit the limit then we may legitimately receive additional instances in the results
+             * of a narrower search. But not if the original result set was under the page limit.
+             */
+
+            String unexpectedResult = "0";
+
+            if (!pageLimited)
+            {
+
+                if (!resultGUIDs.containsAll(expectedGUIDs))
+                    unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
+
+            }
+            else
+            { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                for (EntityDetail entity : result)
+                {
+
+                    if (!(expectedGUIDs.contains(entity.getGUID())))
+                    {
+                        /*
+                         * This was an extra entity that we either did not expect or that we have not seen previously.
+                         * Check it is a valid result. This really just boils down to checking the type
+                         */
+                        InstanceType instanceType = entity.getType();
+                        if (instanceType != null)
+                        {
+                            String instanceTypeName = instanceType.getTypeDefName();
+                            if (instanceTypeName != null)
+                            {
+                                cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+                                OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+                                if (!repositoryHelper.isTypeOf(workPad.getTutServerName(), instanceTypeName, entityDef.getName()))
+                                {
+                                    unexpectedResult = "(Inappropriate type '" + instanceTypeName+ "' returned for type filter '" + entityDef.getName() + "')";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            assertionMessage = MessageFormat.format(ASSERTION_MSG_106, unexpectedResult, parameters.toString());
+            assertCondition(unexpectedResult.equals("0"),
+                            ASSERTION_106,
+                            assertionMessage,
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+        }
+
+    }
+
+
+
+    private void performfindEntitiesWithNullParams() throws Exception
+    {
+
+        /*
+         * Use knownInstances and knownInstancesGUIDs to validate results
+         */
+
+        int expectedEntityCount = knownInstances.size();
+        List<String> expectedGUIDs = knownInstancesGUIDs;
+
+        /*
+         * Search....
+         */
+
+        List<EntityDetail> result;
+
+        Map<String, String> parameters = getParameters(entityDef.getGUID(), null, null);
+
+        try
+        {
+
+            result = metadataCollection.findEntities(workPad.getLocalServerUserId(),
+                                                     entityDef.getGUID(),
+                                                     null,  // no subtype GUID filtering
+                                                     null,
+                                                     0,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     pageSize);
+        }
+        catch (FunctionNotSupportedException exc) {
+
+            /*
+             * Because the above test only exercises one optional function (findEntities using SearchProperties)
+             * we can assert that it is that function that is not supported.
+             */
+
+            super.addNotSupportedAssertion(ASSERTION_101FE,
+                                           ASSERTION_MSG_101FE + exc.getMessage(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+
+            return;
+
+        }
+        catch (Exception exc)
+        {
+            /*
+             * We are not expecting any exceptions from this method call. Log and fail the test.
+             */
+
+            String methodName = "findEntities";
+            String operationDescription = "find entities of type " + entityDef.getName();
+            String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+
+        }
+
+        /*
+         * The approach to checking results match expectations is as follows:
+         * The original discovery request (top of this testcase) returned a set of instances that
+         * are known to be in the repository. If that search hit the page limit then the
+         * instances may be a partial result of what is actually in the repository. Although it
+         * is possible to sort the results on a property, there is no guarantee that the values
+         * associated with any particular property are distinct, so the resulting order is
+         * not guaranteed. If this were an OMAS this would not be a problem because the OMAS/
+         * user would mostly likely continue to search until they either find what they are
+         * looking for or exhaust the contents of the repository. Since this is an automated
+         * testcase for which we need a predictable, repeatable result, it needs to be more
+         * robust. It is not appropriate to keep looping page by page because we do not know
+         * how many matching instances the repository contains. It is preferable to perform
+         * a limited search (in this case one page) rather than loop exhaustively.
+         *
+         * A constant page size is assumed throughout the following.
+         * It is also assumed that instances are not being added or deleted during the course
+         * of this testcase.
+         *
+         * The original result set is filtered to generate the result we expect to get from a narrower
+         * search. If the original result set returned less than the page size then we know the full
+         * set of instances in the repository and hence completely know each narrower expected set.
+         * This case (of complete knowledge) can be summarised in pseudo code as:
+         *   if original result size < page size then:
+         *     result size < expected size => fail
+         *     result size == expected size => if search contains all expected => pass
+         *                                     else search !contains all expected => fail
+         *      search size > expect size => fail (should not get more than the expectation)
+         *
+         *
+         * In contrast, if the original result set returned a full page size then the testcase needs to
+         * exercise a looser result matching policy. This case (of incomplete knowledge) can be summarised in
+         * psudo code as:
+         *
+         *   if original result size == page size then:
+         *     search size < expected size => fail
+         *     search size == expected size => if search contains all expected => pass
+         *                                     else search !contains all expected => check whether the unexpected instances are a valid match
+         *                                       if true => pass
+         *                                       else => fail
+         *     search size > expect size =>    check whether the unexpected instances are a valid match
+         *                                       if true => pass
+         *                                       else => fail
+         *
+         * With the above in mind....
+         *
+         * Check that the expected number of entities was returned. This has to consider the effect of the original
+         * search hitting the page limit. If the limit was not hit then the result size should match the expected size exactly.
+         * But if the limit was hit (on the original search) then there may be additional instances in the repository
+         * that were not seen on the original search; the expected result was computed from only those instance that WERE seen,
+         * so the expectation may be a subset of the actual. If we hit page size there may be additional instances that were
+         * not included in the initial set, due to the initial set being limited by pageSize; the narrower search may
+         * pull in additional entities that were not discovered previously.
+         *
+         */
+
+
+        /*
+         * We need to check that we got (at least) the expected number of results - which could include zero.
+         */
+        int resultCount = result == null ? 0 : result.size();
+        /*
+         * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
+         * In addition the result size should be no more than a page.
+         */
+        boolean unlimited_case = !pageLimited && resultCount == expectedEntityCount;
+        /*
+         * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
+         * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
+         * So in that latter case we need to accept Min().
+         */
+        boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
+        boolean limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
+        boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
+
+        String assertionMessage = MessageFormat.format(ASSERTION_MSG_107, resultCount, expectedEntityCount, parameters);
+        assertCondition((acceptable_result_size),
+                        ASSERTION_107,
+                        assertionMessage,
+                        RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+
+
+        /*
+         * If there were any result, check that all expected entities were returned and (in the pageLimited case) that any
+         * additional entities were valid results for the search.
+         */
+        if (resultCount > 0)
+        {
+
+            List<String> resultGUIDs = new ArrayList<>();
+            for (EntityDetail entity : result)
+            {
+                resultGUIDs.add(entity.getGUID());
+            }
+
+
+            /*
+             * Here again, we need to be sensitive to whether there are (or may be) more entities than the page limit.
+             * If the original search hit the limit then we may legitimately receive additional instances in the results
+             * of a narrower search. But not if the original result set was under the page limit.
+             */
+
+            String unexpectedResult = "0";
+
+            if (!pageLimited)
+            {
+
+                if (!resultGUIDs.containsAll(expectedGUIDs))
+                    unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
+
+            }
+            else
+            { // pageLimited, so need to allow for and verify hitherto unseen instances
+
+                for (EntityDetail entity : result)
+                {
+
+                    if (!(expectedGUIDs.contains(entity.getGUID())))
+                    {
+                        /*
+                         * This was an extra entity that we either did not expect or that we have not seen previously.
+                         * Check it is a valid result. This really just boils doen to checking the type
+                         */
+                        InstanceType instanceType = entity.getType();
+                        if (instanceType != null)
+                        {
+                            String instanceTypeName = instanceType.getTypeDefName();
+                            if (instanceTypeName != null)
+                            {
+                                cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+                                OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+                                if (!repositoryHelper.isTypeOf(workPad.getTutServerName(), instanceTypeName, entityDef.getName()))
+                                {
+                                    unexpectedResult = "(Inappropriate type '" + instanceTypeName+ "' returned for type filter '" + entityDef.getName() + "')";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            assertionMessage = MessageFormat.format(ASSERTION_MSG_108, unexpectedResult, parameters.toString());
+            assertCondition(unexpectedResult.equals("0"),
+                            ASSERTION_108,
+                            assertionMessage,
+                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+        }
+
+    }
+
 
     /**
      * Create a primitive property value for the requested property that has value different to
