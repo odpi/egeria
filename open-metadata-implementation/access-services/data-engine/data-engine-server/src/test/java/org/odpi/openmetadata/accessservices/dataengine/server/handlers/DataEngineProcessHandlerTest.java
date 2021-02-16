@@ -101,6 +101,8 @@ class DataEngineProcessHandlerTest {
         Process process = getProcess();
         process.setGUID(PROCESS_GUID);
 
+        ProcessPropertiesBuilder mockedBuilder = Mockito.mock(ProcessPropertiesBuilder.class);
+
         when(registrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
@@ -108,10 +110,10 @@ class DataEngineProcessHandlerTest {
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         when(dataEngineAssetHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
-                process.getZoneMembership(), process.getOwner(), process.getOwnerType(), process.getAdditionalProperties(),
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
-                process.getExtendedProperties(), InstanceStatus.DRAFT, "createProcess")).thenReturn(GUID);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME,
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, mockedBuilder,
+                "createProcess")).thenReturn(GUID);
+        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process, methodName, USER);
 
         String result = processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
@@ -129,15 +131,17 @@ class DataEngineProcessHandlerTest {
         String methodName = "createProcess";
         Process process = getProcess();
 
+        ProcessPropertiesBuilder mockedBuilder = Mockito.mock(ProcessPropertiesBuilder.class);
         when(registrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(dataEngineAssetHandler).createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
-                process.getZoneMembership(), process.getOwner(), process.getOwnerType(), process.getAdditionalProperties(),
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
-                process.getExtendedProperties(), InstanceStatus.DRAFT, "createProcess");
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME,
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, mockedBuilder,
+                "createProcess");
+
+        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process, methodName, USER);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
