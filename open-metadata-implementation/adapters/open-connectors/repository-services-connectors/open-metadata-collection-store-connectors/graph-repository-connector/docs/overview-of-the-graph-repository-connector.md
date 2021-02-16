@@ -223,11 +223,17 @@ The preferred approach should be to use:
 * findEntities()
 * findRelationships()
 
-The above methods are more powerful than the earlier methods which include:
+The methods listed above have a number of advantages. They enable you to specify multiple properties (which is similar to the methods listed 
+below) but in addition they support the specification of a different operation for each property. There is also a much broader set of operations 
+available to the caller; in addition to supporting EQ, you can also use NEQ, LT, LTE, GT, GTE, and more. It is also possible to perform multiple
+comparison operations on the same property, which enables you to search for all instances that have (for example) an updateTime within a specified
+range. You can also combine groups property conditions that have independent match criteria - for example, ALL, ANY or NONE.
+The above methods are therefore more powerful than the earlier methods which include:
 * findEntitiesByProperty()
 * findEntitiesByPropertyValue()
 * findRelationshipsByProperty() 
 * findRelationshipsByPropertyValue()
+* findEntitiesByClassifications()
 
 For information on how to use the find methods, please refer to the article 
 https://wiki.lfaidata.foundation/display/EG/How+to+find+entities+and+relationships
@@ -235,6 +241,14 @@ https://wiki.lfaidata.foundation/display/EG/How+to+find+entities+and+relationshi
 At the time of writing, there is one restriction in the findEntities(), findRelationships() methods, which is that they do not support 
 the 'IN' PropertyComparisonOperator. This is a temporary restriction and may well have changed by the time you read this, particularly 
 if Egeria is using JanusGraph 0.5.3 or above.
+
+### Performance of find operations
+All the find operations listed above will attempt to use the most efficient (fastest) traversal strategy possible. From release 2.7 of Egeria, 
+the graph repository includes a query plan capability that analyses each query to determine the most efficient query strategy. As a caller
+of any of these methods you will generally achieve faster performance by making each query as specific as possible. If possible use the type 
+filtering parameters to scope the query down to a subset of the type space, and if possible try to search on properties that will provide 
+maximum discrimination between types. Where this is not possible, the repository connector will still perform the query as efficiently as it
+can but the overall response time is likely to be much slower than for queries where it can perform a single graph traversal.
 
 ##Conformance with the Egeria specification
 
@@ -340,20 +354,63 @@ server. The server's existing graph database should be augmented with the new ke
 The graph repository supports all the find methods listed in the section on 'Finding metadata instances'. All of the methods differ in 
 terms of how the caller specifies how the search should be conducted, but internally they share a lot of common implementation. 
 
-Both the find...ByProperty() and find...ByPropertyValue() methods delegate to the same underlying method, with the find...ByPropertyValue() 
-identifying the string properties and adding them to a MatchProperties object.
+The findEntitiesByPropertyValue and findRelationshipsByPropertyValue methods identify the string properties of the eligible types and 
+add them to a MatchProperties object before delegating the query to the GraphOMRSMetadataStore. This processing uses the same query 
+analysis and query plan selection as the other find methods.
 
 All of the 'find' methods support filtering of results by type, where the results will include the specified filter type and any of its 
-subtypes. The find methods all perform the type filter checking in the top level (GraphOMRSMetadataCollection) and then delegate to a corresponding operation in the GraphOMRSMetadataStore. 
+subtypes. The find methods all perform the type filter checking in the top level (GraphOMRSMetadataCollection) and then delegate to a 
+corresponding operation in the GraphOMRSMetadataStore. 
 
-The GraphOMRSMetadataStore layer is therefore presented with a single type to search against, and a set of search criteria which, 
-depending on the specific method called, will be either a MatchProperties object or a SearchProperties object. The GraphOMRSMetadataStore 
+The GraphOMRSMetadataStore layer is either presented with a single type to search against or a set of valid types. The other search parmaters 
+depend on the specific method called, and consist of either a MatchProperties object or a SearchProperties object. The GraphOMRSMetadataStore 
 method parses the relevant properties object to construct a graph traversal that will identify and return the matching vertices or edges 
 from the graph database. These are then converted, using the appropriate entity or relationship mapper into lists of EntityDetail or 
 Relationship instances.
 
 Finally, back in the GraphOMRSMetadataCollection, the resulting instances are processed by the extremely helpful OMRSRepositoryHelper, 
 which formats the results in terms of paging and sequencing.
+
+The query analysis and strategy selection tries where possible to perform a single graph traversal that has steps for all the referenced 
+properties, type filtering, etc. This is a lot faster than performing a separate traversal per type and aggregating the results.
+
+A tightly specified query (one with type filtering that narrows the scope of the query) is quite likely to contain only unique property 
+names and in this case it is possible to perform a single traversal. A more loosely specified (or in the extreme, completely wild) query 
+may encounter duplicate property names. Duplicates may be vertical or horizontal - as described below.
+
+Where there are vertical duplications, such that a super type and one/more of its subtypes define a property with the same name, this is 
+benign. The vertically duplicated properties must share the same type, otherwise the subtype would not be a refinement of the supertype. 
+This means that the vertically duplicated type defined attributes can only differ in terms of things like 'description' which is not of 
+interest to the graph repository. (Type definitions are not stored in the repository). The graph repository generates unique property keys 
+used for both storage and retrieval, which include the name of the type that defines the attribute. These are always based on the most 
+superior attribute definition - i.e. the definition from the type nearest the OpenMetataRoot type - so there is therefore no ambiguity 
+from a vertically duplicated attribute name.
+
+Horizontal duplicates are more challenging. These occur when a query refers to a property for which multiple types in the scope of the 
+query define attributes with the same name. This is perfectly legitimate - otherwise there would be a single property name space across 
+the entire type system. These duplicated type defined attributes may have different types or index mappings and are differentiated in the 
+graph schema. As mentioned above, they are disambiguated by the generation of unique property keys that include the name of the most 
+superior type that introduces the attribute. 
+There are three possible approaches to handling horizontal duplicates. 
+* One would be to include them in a single graph traversal, using an 'or()' step that covers the range of the mapping from short 
+property name to qualified property names. However, at the time of writing, JanusGraph issue 2231 
+([https://github.com/JanusGraph/janusgraph/issues/2231]) prevents this for the time being. 
+* The second approach would be to partition the type space admitted by the query such that each partition contains no 
+duplicates. Each resulting partition would then be the subject of a separate traversal, with the results being aggregated. However, 
+the partitioning of the query type space into disjoint type spaces is considered a complex solution, requiring partitioning on different 
+dimensions for each of the duplicated property names. Whilst this is probably feasible, if JG issue 2231 is resolved in the near future, 
+the single traversal approach might be preferred as it should be both simpler and be more efficient.
+* That leaves the third approach, which is effectively an extreme case of the partitioning approach, which is to perform a separate 
+traversal per type and aggregate the results. This is slower, but is simple and is the least likely approach to stress the graph db.
+
+The GraphOMRSQueryPlan in the graph repository connector analyses each query's parameters and recommends a query strategy - which 
+is either 'iterated' (per type, slower) or 'delegated' (single traversal, faster). Wherever possible the QueryPlan will recommend a 
+'delegated' traversal. The QueryPlan saves the property maps it generates during its analysis so they are available for the 
+traversal construction methods.
+
+Where a caller specifies type filtering that is sufficiently tight that there are no horizontally duplicated properties in the scope 
+of the query, performance is maximised. It is therefore advisable to constrain a search by using the most specific type filtering and 
+most type-specific property names possible.
 
 ###Instance Mappers
 There are separate mappers for entities, relationships and classifications. Look for the classes like GraphOMRSEntityMapper. There are 

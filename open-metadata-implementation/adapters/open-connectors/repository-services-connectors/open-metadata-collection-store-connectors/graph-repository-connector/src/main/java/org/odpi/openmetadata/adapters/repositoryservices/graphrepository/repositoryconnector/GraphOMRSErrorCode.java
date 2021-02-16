@@ -91,7 +91,7 @@ public enum GraphOMRSErrorCode implements ExceptionMessageSet
             "The attempt to retrieve an entity with GUID {0} found an entity proxy in {1} method of class {2} to open metadata repository {3}",
             "The system was unable to perform the entity retrieval.",
             "Correct the caller's code to request an entity and retry the request."),
-   ENTITY_TYPE_GUID_NOT_KNOWN(400, "OMRS-GRAPH-REPOSITORY-400-018",
+    ENTITY_TYPE_GUID_NOT_KNOWN(400, "OMRS-GRAPH-REPOSITORY-400-018",
             "The attempt to find an entity type failed because no type was found with typeGUID {0} failed in {1} method of class {2} to open metadata repository {3}",
             "The system was unable to retrieve the entity type.",
             "Correct the caller's code to use the correct entity type definition GUID and retry the request."),
