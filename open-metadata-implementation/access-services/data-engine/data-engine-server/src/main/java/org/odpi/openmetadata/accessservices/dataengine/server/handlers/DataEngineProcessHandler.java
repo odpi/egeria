@@ -93,7 +93,7 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        return dataEngineAssetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getName(),
+        return dataEngineAssetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getDisplayName(),
                 process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(),
                 process.getOwner(), process.getOwnerType(), process.getAdditionalProperties(),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
