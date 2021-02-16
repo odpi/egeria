@@ -87,8 +87,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     LOCAL_REPOSITORY_MODE_NOT_SET(400, "OMAG-ADMIN-400-008",
             "The local repository mode has not been set for OMAG server {0}",
-            "The local repository mode must be enabled before the event mapper connection or repository proxy connection is set.  The system is unable to configure the local server.",
-            "The local repository mode is supplied by the caller to the OMAG server. This call to enable the local repository needs to be made before the call to set the event mapper connection or repository proxy connection."),
+            "The local repository mode must be enabled before the event mapper connection is set.  The system is unable to configure the local server.",
+            "The local repository mode is supplied by the caller to the OMAG server. This call to enable the local repository needs to be made before the call to set the event mapper connection."),
 
     NULL_SERVER_CONFIG(400, "OMAG-ADMIN-400-009",
             "The OMAG server {0} has been passed null configuration.",
@@ -356,6 +356,12 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                        "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
                                        "The view service fails to start as it does not have a sufficiently large maxPageSize .",
                                        "Reconfigure the View service to have a maxPageSize that is sufficient."),
+
+    LOCAL_REPOSITORY_MODE_NOT_PROXY(400, "OMAG-ADMIN-400-052",
+                                  "Unable to configure an event mapper for OMAG server {0} because its local repository mode is set to {1}",
+                                  "The local repository mode must be set to repository proxy before the event mapper connection is set.  The system is unable to configure the local server.",
+                                  "The local repository mode is supplied by the caller to the OMAG server when the repository connection is set up.  " +
+                                          "This call to enable the repository connection needs to be made before the call to set the event mapper connection."),
 
     NO_CONFIG_DOC(400,"OMAG-ADMIN-400-101",
                   "An engine service for OMAG server {0} has been passed null configuration",

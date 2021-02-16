@@ -5,10 +5,14 @@
 
 The asset management notebooks cover the function to manage a catalog of assets such as data stores or APIs.
 
-* [Building an asset catalog](building-a-data-catalog.ipynb)
+* [Building an Asset Catalog](building-a-data-catalog.ipynb)
+* [Automated Curation](automated-curation.ipynb)
+* [Improving Data Quality](improving-data-quality.ipynb)
 * [Understanding and using assets](understanding-an-asset.ipynb)
 
 
+----
+* [Return to the Labs Overiew](..)
 
 
 ----

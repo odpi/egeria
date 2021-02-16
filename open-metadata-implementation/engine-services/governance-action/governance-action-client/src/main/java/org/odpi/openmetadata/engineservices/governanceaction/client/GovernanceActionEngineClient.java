@@ -7,6 +7,9 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.engineservices.governanceaction.api.GovernanceActionAPI;
+import org.odpi.openmetadata.engineservices.governanceaction.client.rest.GovernanceActionRESTClient;
+import org.odpi.openmetadata.engineservices.governanceaction.properties.ProviderReport;
+import org.odpi.openmetadata.engineservices.governanceaction.rest.ProviderReportResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -14,13 +17,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 
 
 /**
- * GovernanceActionEngineClient is a client-side library for calling a specific governance action engine within an engine host server.
+ * GovernanceActionEngineClient is a client-side library for calling a specific governance action OMES within an engine host server.
  */
 public class GovernanceActionEngineClient implements GovernanceActionAPI
 {
-    private String         serverName;               /* Initialized in constructor */
-    private String         serverPlatformRootURL;    /* Initialized in constructor */
-    private FFDCRESTClient restClient;               /* Initialized in constructor */
+    private String                     serverName;               /* Initialized in constructor */
+    private String                     serverPlatformRootURL;    /* Initialized in constructor */
+    private GovernanceActionRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     
@@ -38,7 +41,7 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
 
-        this.restClient = new FFDCRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new GovernanceActionRESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -59,7 +62,7 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
 
-        this.restClient = new FFDCRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new GovernanceActionRESTClient(serverName, serverPlatformRootURL, userId, password);
 
     }
 
@@ -70,16 +73,16 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
      * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return connector type for this connector
+     * @return connector type and other capabilities for this connector
      *
      * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorType validateConnector(String userId,
-                                           String connectorProviderClassName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public ProviderReport validateConnector(String userId,
+                                            String connectorProviderClassName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
@@ -88,12 +91,12 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
-                                                                                   serverPlatformRootURL + urlTemplate,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   connectorProviderClassName);
+        ProviderReportResponse restResult = restClient.callProviderReportGetRESTCall(methodName,
+                                                                                    serverPlatformRootURL + urlTemplate,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    connectorProviderClassName);
 
-        return restResult.getConnectorType();
+        return restResult.getProviderReport();
     }
 }

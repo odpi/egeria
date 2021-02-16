@@ -179,6 +179,8 @@ public class UserIdentityHandler
             String  userIdentityGUID = repositoryHandler.createEntity(userId,
                                                                       UserIdentityMapper.USER_IDENTITY_TYPE_GUID,
                                                                       UserIdentityMapper.USER_IDENTITY_TYPE_NAME,
+                                                                      null,
+                                                                      null,
                                                                       properties,
                                                                       methodName);
 
@@ -241,6 +243,8 @@ public class UserIdentityHandler
 
         repositoryHandler.createRelationship(userId,
                                              PersonalProfileMapper.PROFILE_IDENTITY_TYPE_GUID,
+                                             null,
+                                             null,
                                              profileGUID,
                                              userIdentityGUID,
                                              null,
@@ -354,7 +358,8 @@ public class UserIdentityHandler
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
-        final String  nameParameter = "obsoleteIdentity";
+        final String guidParameterName = "profileGUID";
+        final String nameParameter = "userIdentityGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(obsoleteIdentity, nameParameter, methodName);
@@ -376,7 +381,10 @@ public class UserIdentityHandler
             }
 
             repositoryHandler.removeEntity(userId,
+                                           null,
+                                           null,
                                            userIdentityGUID,
+                                           guidParameterName,
                                            UserIdentityMapper.USER_IDENTITY_TYPE_GUID,
                                            UserIdentityMapper.USER_IDENTITY_TYPE_NAME,
                                            nameParameter,

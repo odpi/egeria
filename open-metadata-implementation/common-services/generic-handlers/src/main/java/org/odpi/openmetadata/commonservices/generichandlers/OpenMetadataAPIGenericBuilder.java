@@ -2,9 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -234,6 +236,20 @@ public class OpenMetadataAPIGenericBuilder
     {
         try
         {
+            /*
+             * This is an attempt to trap an intermittent error recorded in issue #4680.
+             */
+            if ("<unknown>".equals(anchorGUID))
+            {
+                final String localMethodName = "setAnchors";
+
+                throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                    serviceName,
+                                                                                                                    methodName),
+                                                  this.getClass().getName(),
+                                                  localMethodName);
+            }
+
             Classification classification = repositoryHelper.getNewClassification(serviceName,
                                                                                   null,
                                                                                   null,
@@ -246,7 +262,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                   getAnchorsProperties(anchorGUID, methodName));
             newClassifications.put(classification.getName(), classification);
         }
-        catch (TypeErrorException error)
+        catch (Exception error)
         {
             errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
         }

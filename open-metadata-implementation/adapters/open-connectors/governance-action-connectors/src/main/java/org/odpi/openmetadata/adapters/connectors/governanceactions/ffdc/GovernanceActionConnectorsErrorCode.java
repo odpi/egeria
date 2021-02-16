@@ -67,6 +67,12 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+    UNABLE_TO_REGISTER_LISTENER(500, "GOVERNANCE-ACTION-CONNECTORS-500-003",
+                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
+                                "The governance action throws a GovernanceServiceException in the hope that the .",
+                                "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
+                                        "and follow its instructions."),
+
     ;
 
 

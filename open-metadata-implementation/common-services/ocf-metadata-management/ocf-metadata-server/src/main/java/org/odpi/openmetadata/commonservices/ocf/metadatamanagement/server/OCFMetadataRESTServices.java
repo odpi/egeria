@@ -1537,7 +1537,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getMoreInformation(userId,
                                                         elementGUID,
                                                         guidParameterName,
-                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                         elementStart,
