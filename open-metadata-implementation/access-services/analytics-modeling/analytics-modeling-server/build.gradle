@@ -19,6 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api')
 
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.apache.commons:commons-collections4'
     implementation 'org.slf4j:slf4j-api'
 

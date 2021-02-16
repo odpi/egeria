@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.validation.constraints.PositiveOrZero;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -121,10 +122,30 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("databaseGUID") String database,
 			@RequestParam(required=false) String catalog,
 			@RequestParam(required=true) String schema,
-			@RequestBody(required=false) Object request
+			@RequestBody(required=false) ModuleTableFilter request
 			) {
 
-		return restAPI.getModule(serverName, userId, database, catalog, schema);
+		return restAPI.getModule(serverName, userId, database, catalog, schema, request);
 	}
+
     
+	/**
+	 * Create assets in repository defined by artifact (body of the request).
+     * @param serverName  unique identifier for requested server.
+     * @param userId      request user
+	 * @param serverCapability where the artifact is stored.
+	 * @param artifact definition json.
+	 * @return errors or list of created assets.
+	 */
+    @Operation(summary = "Create assets representing analytics artifact.")
+	@PostMapping(path = "/sync")
+	public AnalyticsModelingOMASAPIResponse createArtifact(
+			@PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+			@RequestParam(required=true) String serverCapability,
+			@RequestBody(required=true) String artifact
+			) {
+
+		return restAPI.createArtifact(serverName, userId, serverCapability, artifact);
+	}
 }

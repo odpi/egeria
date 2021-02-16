@@ -1559,6 +1559,17 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
 
+        List<String> maintainedBy = originalInstance.getMaintainedBy();
+        if (maintainedBy == null)
+        {
+            maintainedBy = new ArrayList<>();
+        }
+        if (!maintainedBy.contains(userId))
+        {
+            maintainedBy.add(userId);
+            updatedInstance.setMaintainedBy(maintainedBy);
+        }
+
         return updatedInstance;
     }
 
@@ -1582,6 +1593,17 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
 
+        List<String> maintainedBy = originalInstance.getMaintainedBy();
+        if (maintainedBy == null)
+        {
+            maintainedBy = new ArrayList<>();
+        }
+        if (!maintainedBy.contains(userId))
+        {
+            maintainedBy.add(userId);
+            updatedInstance.setMaintainedBy(maintainedBy);
+        }
+
         return updatedInstance;
     }
 
@@ -1604,6 +1626,17 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
+
+        List<String> maintainedBy = originalInstance.getMaintainedBy();
+        if (maintainedBy == null)
+        {
+            maintainedBy = new ArrayList<>();
+        }
+        if (!maintainedBy.contains(userId))
+        {
+            maintainedBy.add(userId);
+            updatedInstance.setMaintainedBy(maintainedBy);
+        }
 
         return updatedInstance;
     }
@@ -1943,18 +1976,25 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        Collections.sort(fullResults,
-                         new java.util.Comparator<EntityDetail>()
-                         {
-                             @Override
-                             public int compare(final EntityDetail object1, final EntityDetail object2)
-                             {
-                                 return OMRSRepositoryContentHelper.compareProperties(object1.getProperties(),
-                                                                                      object2.getProperties(),
-                                                                                      sequencingProperty,
-                                                                                      sequencingOrder);
-                             }
-                         });
+        // If there is no sequencing order, or it is defined as 'ANY', there is no sorting to do
+        if (sequencingOrder != null && !sequencingOrder.equals(SequencingOrder.ANY))
+        {
+            if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
+            {
+                // If the sequencing is property-based, handover to the property comparator
+                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareProperties(
+                        one.getProperties(),
+                        two.getProperties(),
+                        sequencingProperty,
+                        sequencingOrder
+                ));
+            }
+            else
+            {
+                // Otherwise handover to the instance comparator
+                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder));
+            }
+        }
 
         if ((fromElement == 0) && (pageSize > fullResultsSize))
         {
@@ -2013,18 +2053,25 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        Collections.sort(fullResults,
-                         new java.util.Comparator<Relationship>()
-                        {
-                            @Override
-                            public int compare(final Relationship object1, final Relationship object2)
-                            {
-                                return OMRSRepositoryContentHelper.compareProperties(object1.getProperties(),
-                                                                                     object2.getProperties(),
-                                                                                     sequencingProperty,
-                                                                                     sequencingOrder);
-                            }
-                        });
+        // If there is no sequencing order, or it is defined as 'ANY', there is no sorting to do
+        if (sequencingOrder != null && !sequencingOrder.equals(SequencingOrder.ANY))
+        {
+            if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
+            {
+                // If the sequencing is property-based, handover to the property comparator
+                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareProperties(
+                        one.getProperties(),
+                        two.getProperties(),
+                        sequencingProperty,
+                        sequencingOrder
+                ));
+            }
+            else
+            {
+                // Otherwise handover to the instance comparator
+                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder));
+            }
+        }
 
         if ((fromElement == 0) && (pageSize > fullResultsSize))
         {
@@ -2036,6 +2083,123 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
 
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
+    }
+
+
+    /**
+     * Compare the two instances and determine the sort order based on the nominated non-property sort order.
+     *
+     * @param one the first instance
+     * @param two the second instance
+     * @param sequencingOrder nominated non-property sort order
+     * @return sort result
+     */
+    private static int  compareInstances(InstanceHeader  one,
+                                         InstanceHeader  two,
+                                         SequencingOrder sequencingOrder)
+    {
+
+        int sortResult;
+
+        if (one == null && two == null)
+        {
+            sortResult = 0;
+        }
+        else if (one != null && two == null)
+        {
+            sortResult = 1;
+        }
+        else if (one == null)
+        {
+            sortResult = -1;
+        }
+        else
+        {
+            // Both are now non-null...
+            switch (sequencingOrder)
+            {
+                case GUID:
+                    String guidOne = one.getGUID();
+                    String guidTwo = two.getGUID();
+                    if (guidOne == null && guidTwo == null)
+                    {
+                        sortResult = 0;
+                    }
+                    else if (guidOne != null && guidTwo == null)
+                    {
+                        sortResult = 1;
+                    }
+                    else if (guidOne == null)
+                    {
+                        sortResult = -1;
+                    }
+                    else
+                    {
+                        sortResult = guidOne.compareTo(guidTwo);
+                    }
+                    break;
+                case LAST_UPDATE_RECENT:
+                case LAST_UPDATE_OLDEST:
+                    Date updateOne = one.getUpdateTime();
+                    Date updateTwo = two.getUpdateTime();
+                    if (updateOne == null && updateTwo == null)
+                    {
+                        sortResult = 0;
+                    }
+                    else if (updateOne != null && updateTwo == null)
+                    {
+                        sortResult = 1;
+                    }
+                    else if (updateOne == null)
+                    {
+                        sortResult = -1;
+                    }
+                    else
+                    {
+                        sortResult = updateOne.compareTo(updateTwo);
+                    }
+                    if (sequencingOrder.equals(SequencingOrder.LAST_UPDATE_RECENT))
+                    {
+                        // invert the result
+                        sortResult = -sortResult;
+                    }
+                    break;
+                case CREATION_DATE_RECENT:
+                case CREATION_DATE_OLDEST:
+                    Date createOne = one.getCreateTime();
+                    Date createTwo = two.getCreateTime();
+                    if (createOne == null && createTwo == null)
+                    {
+                        sortResult = 0;
+                    }
+                    else if (createOne != null && createTwo == null)
+                    {
+                        sortResult = 1;
+                    }
+                    else if (createOne == null)
+                    {
+                        sortResult = -1;
+                    }
+                    else
+                    {
+                        sortResult = createOne.compareTo(createTwo);
+                    }
+                    if (sequencingOrder.equals(SequencingOrder.CREATION_DATE_RECENT))
+                    {
+                        // invert the result
+                        sortResult = -sortResult;
+                    }
+                    break;
+                case ANY:
+                default:
+                    // No differentiation in search, so consider them equivalent regardless
+                    sortResult = 0;
+                    break;
+            }
+        }
+
+        return sortResult;
+
     }
 
 

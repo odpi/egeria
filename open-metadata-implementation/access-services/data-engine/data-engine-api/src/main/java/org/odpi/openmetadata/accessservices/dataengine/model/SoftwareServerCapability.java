@@ -12,6 +12,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The type Software server capability.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -26,58 +29,128 @@ public class SoftwareServerCapability implements Serializable {
     private String patchLevel;
     private String source;
 
+    /**
+     * Gets display name.
+     *
+     * @return the display name
+     */
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * Sets display name.
+     *
+     * @param displayName the display name
+     */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * Gets engine type.
+     *
+     * @return the engine type
+     */
     public String getEngineType() {
         return engineType;
     }
 
+    /**
+     * Sets engine type.
+     *
+     * @param engineType the engine type
+     */
     public void setEngineType(String engineType) {
         this.engineType = engineType;
     }
 
+    /**
+     * Gets engine version.
+     *
+     * @return the engine version
+     */
     public String getEngineVersion() {
         return engineVersion;
     }
 
+    /**
+     * Sets engine version.
+     *
+     * @param engineVersion the engine version
+     */
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
 
+    /**
+     * Gets qualified name.
+     *
+     * @return the qualified name
+     */
     public String getQualifiedName() {
         return qualifiedName;
     }
 
+    /**
+     * Sets qualified name.
+     *
+     * @param qualifiedName the qualified name
+     */
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
     }
 
+    /**
+     * Gets description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets description.
+     *
+     * @param description the description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets source.
+     *
+     * @return the source
+     */
     public String getSource() {
         return source;
     }
 
+    /**
+     * Sets source.
+     *
+     * @param source the source
+     */
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * Gets patch level.
+     *
+     * @return the patch level
+     */
     public String getPatchLevel() {
         return patchLevel;
     }
 
+    /**
+     * Sets patch level.
+     *
+     * @param patchLevel the patch level
+     */
     public void setPatchLevel(String patchLevel) {
         this.patchLevel = patchLevel;
     }

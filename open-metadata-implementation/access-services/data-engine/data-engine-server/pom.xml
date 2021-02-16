@@ -64,12 +64,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>metadata-security-server</artifactId>
+            <artifactId>metadata-security-apis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>metadata-security-apis</artifactId>
+            <artifactId>metadata-security-server</artifactId>
         </dependency>
 
         <dependency>
@@ -158,6 +158,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-engine-topic-connectors</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>generic-handlers</artifactId>
         </dependency>
 
     </dependencies>
