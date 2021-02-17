@@ -47,12 +47,91 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     PROVISIONING_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0004",
                           OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The {0} governance action service encountered an {1} exception when provisioning file {2} to {3} destination folder using {4} file pattern.  The exception message included was {5}",
-                          "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error",
+                          "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error.",
                           "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
 
+    ENDPOINT_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0005",
+                           OMRSAuditLogRecordSeverity.EXCEPTION,
+                           "The {0} governance action service encountered an {1} exception when attempting to retrieve the file path name from the attached endpoint.  The exception message included was {5}",
+                           "The governance action connector will use the qualified name of the asset as the path name to work with",
+                           "This message contains the exception that was the original cause of the problem. If using the qualified name is not " +
+                                   "working, use the information from the " +
+                                   "exception stack trace to determine why the connector is not able to access the endpoint and resolve that issue.  " +
+                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
+                                   "connector in the integration daemon once the original cause of the error has been corrected."),
+
+    QUALIFIED_NAME_PATH_NAME("GOVERNANCE-ACTION-CONNECTORS-0006",
+                       OMRSAuditLogRecordSeverity.INFO,
+                       "The {0} governance action service is using the qualified name from the Folder asset as the path name: {1}",
+                       "The governance action connector will use the qualified name of the asset as the path name to work with.",
+                       "Validate that the qualified name is a good choice for the path name.  If it is not, add a connection " +
+                               "with an endpoint that has the desired path in its networkAddress property."),
+
+    NO_LINKED_CONNECTION("GOVERNANCE-ACTION-CONNECTORS-0007",
+                             OMRSAuditLogRecordSeverity.INFO,
+                             "The {0} governance action service detected that asset {1} has no linked connection",
+                             "Since the asset has no connection, the governance action connector will use the qualified name of the " +
+                                     "asset as the path name to work with.",
+                             "The governance action service will next produce the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
+                                     "qualified name.  Follow the instructions for this message."),
+
+    TOO_MANY_CONNECTIONS("GOVERNANCE-ACTION-CONNECTORS-0008",
+                         OMRSAuditLogRecordSeverity.INFO,
+                         "The {0} governance action service detected that asset {1} has {2} linked connections for asset {3} and is not sure " +
+                                 "which one to use since they have inconsistent networkAddress properties in their endpoint.",
+                         "Since the governance action service is unable to choose an appropriate endpoint, it " +
+                                 "will use the qualified name of the asset as the path name to work with.",
+                         "The governance action service will next produce the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
+                                 "qualified name embedded in it.  Follow the instructions for this message."),
+
+    NO_RELATED_ASSET("GOVERNANCE-ACTION-CONNECTORS-0009",
+                     OMRSAuditLogRecordSeverity.ERROR,
+                     "The context for {0} governance action service returned a RelatedMetadataElement with a null related element: {1}",
+                     "The governance action service stops attempting extract the path name from the connection and " +
+                                 "will use the qualified name of the asset as the path name to work with.",
+                     "The governance action service will write the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
+                                 "qualified name embedded in it.  Follow the instructions for this message.  Also investigate why the related " +
+                                 "element returned a null related element.  This is a logic error in the context or one of its " +
+                                 "underlying services."),
+
+    NO_LINKED_ENDPOINT("GOVERNANCE-ACTION-CONNECTORS-0010",
+                         OMRSAuditLogRecordSeverity.INFO,
+                         "The {0} governance action service detected that asset {1} has no endpoint linked to connection {2}",
+                         "Since the asset's connection has no endpoint, the governance action connector will use the qualified name of the " +
+                                 "asset as the path name to work with.",
+                         "The governance action service will next write out the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
+                                 "qualified name.  Follow the instructions for this message."),
+
+    TOO_MANY_ENDPOINTS("GOVERNANCE-ACTION-CONNECTORS-0011",
+                         OMRSAuditLogRecordSeverity.ERROR,
+                         "The {0} governance action service detected that asset {1} has a linked connection {2} with {3} linked " +
+                                 "endpoints which is not valid: {4}",
+                         "The governance action service ignores this connection.",
+                         "The governance action service will search for additional connections."),
+
+    NO_NETWORK_ADDRESS("GOVERNANCE-ACTION-CONNECTORS-0012",
+                       OMRSAuditLogRecordSeverity.INFO,
+                       "The {0} governance action service detected that the endpoint {1} linked to connection {2} for asset {3} has no networkAddressProperty",
+                       "Since the asset's connection has no networkAddress in its endpoint, the governance action connector will use the qualified name of the " +
+                               "asset as the path name to work with.",
+                       "The governance action service will log the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
+                               "qualified name.  Follow the instructions for this message."),
+
+    UNABLE_TO_SET_COMPLETION_STATUS("GOVERNANCE-ACTION-CONNECTORS-0013",
+                       OMRSAuditLogRecordSeverity.INFO,
+                       "The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}",
+                       "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
+                       "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error."),
+
+    UNABLE_TO_REGISTER_LISTENER("GOVERNANCE-ACTION-CONNECTORS-0014",
+                                    OMRSAuditLogRecordSeverity.INFO,
+                                    "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
+                                    "The governance action throws a GovernanceServiceException in the hope that the .",
+                                    "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
+                                            "and follow its instructions."),
 
 
     ;

@@ -427,16 +427,22 @@ public class OMAGServerPlatformInstanceMap
      * Add a new service instance to the server map.
      *
      * @param serverName name of the server
+     * @param serverType type of server (or null if the registering service does not know)
      * @param serviceName name of the service running on the server
      * @param instance instance object
      */
     private static synchronized void  setInstanceForPlatform(String                    serverName,
+                                                             String                    serverType,
                                                              String                    serviceName,
                                                              OMAGServerServiceInstance instance)
     {
         OMAGServerInstance  serverInstance = getActiveServerInstance(serverName);
 
         serverInstance.registerService(serviceName, instance);
+        if (serverType != null)
+        {
+            serverInstance.setServerType(serverType);
+        }
     }
 
 
@@ -459,6 +465,42 @@ public class OMAGServerPlatformInstanceMap
 
         serverInstance.initialize();
         return serverInstance.registerSecurityValidator(localServerUserId, auditLog, connection);
+    }
+
+
+    /**
+     * Return the type of server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @param serviceOperationName calling method
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws InvalidParameterException the server name is not known
+     */
+    private static synchronized String getServerInstanceType(String  userId,
+                                                             String  serverName,
+                                                             String  serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        OMAGServerInstance serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance != null)
+        {
+            return serverInstance.getServerType();
+        }
+        else
+        {
+            handleBadServerName(userId, serverName, serviceOperationName);
+
+            /*
+             * Note, this return is unreachable because handleBadServerName always throws an exception.
+             */
+            return null;
+        }
     }
 
 
@@ -916,6 +958,25 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Return the type of server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return string name
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public String getServerType(String  userId,
+                                String  serverName,
+                                String  serviceOperationName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getServerInstanceType(userId, serverName, serviceOperationName);
+    }
+
+
+    /**
      * Return whether a particular server is active (running) in the platform.
      * This is used by the admin services when there being no instance is not an error.
      *
@@ -1004,14 +1065,16 @@ public class OMAGServerPlatformInstanceMap
      * Add a new service instance to the server map.
      *
      * @param serverName name of the server
+     * @param serverType type of server (or null if the registering service does not know)
      * @param serviceName name of the service running on the server
      * @param instance instance object
      */
     void  addServiceInstanceToPlatform(String                    serverName,
+                                       String                    serverType,
                                        String                    serviceName,
                                        OMAGServerServiceInstance instance)
     {
-        OMAGServerPlatformInstanceMap.setInstanceForPlatform(serverName, serviceName, instance);
+        OMAGServerPlatformInstanceMap.setInstanceForPlatform(serverName, serverType, serviceName, instance);
     }
 
 

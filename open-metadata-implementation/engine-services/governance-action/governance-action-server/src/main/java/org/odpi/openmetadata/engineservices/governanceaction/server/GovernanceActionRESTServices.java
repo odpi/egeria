@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.engineservices.governanceaction.rest.ProviderReportResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService;
@@ -41,24 +42,24 @@ public class GovernanceActionRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorTypeResponse validateConnector(String serverName,
-                                                   String userId,
-                                                   String connectorProviderClassName)
+    public ProviderReportResponse validateConnector(String serverName,
+                                                    String userId,
+                                                    String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectorTypeResponse response = new ConnectorTypeResponse();
-        AuditLog              auditLog = null;
+        ProviderReportResponse response = new ProviderReportResponse();
+        AuditLog               auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
-                                                                        GovernanceActionService.class,
-                                                                        EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName()));
+            response.setProviderReport(instanceHandler.validateGovernanceActionConnector(connectorProviderClassName,
+                                                                                         GovernanceActionService.class,
+                                                                                         EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceFullName()));
         }
         catch (Throwable error)
         {

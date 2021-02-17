@@ -175,6 +175,11 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                               "The error is likely to be in one of the repository connectors " +
                                       "or the governance engines managing the governance action entities."),
 
+    UNKNOWN_ANCHOR_GUID(500, "OMAG-GENERIC-HANDLERS-500-009",
+                                         "An anchor GUID of <unknown> has been passed to local method {0} by the {1} service through method {2}",
+                                         "The system is unable to process the request because the handler has an invalid anchor GUID.",
+                                         "Gather diagnostics and add them to issue #4680."),
+
     ;
 
     private ExceptionMessageDefinition messageDefinition;

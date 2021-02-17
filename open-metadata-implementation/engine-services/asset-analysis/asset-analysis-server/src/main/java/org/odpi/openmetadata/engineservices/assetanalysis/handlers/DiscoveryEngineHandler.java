@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.discovery.*;
@@ -51,7 +52,14 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                   AuditLog                            auditLog,
                                   int                                 maxPageSize)
     {
-        super(engineConfig, serverName, serverUserId, configurationClient, serverClient, auditLog, maxPageSize);
+        super(engineConfig,
+              serverName,
+              serverUserId,
+              EngineServiceDescription.ASSET_ANALYSIS_OMES.getEngineServiceFullName(),
+              configurationClient,
+              serverClient,
+              auditLog,
+              maxPageSize);
 
         this.discoveryEngineClient = discoveryEngineClient;
     }

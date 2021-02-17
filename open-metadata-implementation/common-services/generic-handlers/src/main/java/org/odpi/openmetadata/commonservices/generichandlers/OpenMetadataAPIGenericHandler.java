@@ -1756,6 +1756,20 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
                                                                     anchorsClassification.getProperties(),
                                                                     methodName);
+
+                    /*
+                     * This is an attempt to trap an intermittent error recorded in issue #4680.
+                     */
+                    if ("<unknown>".equals(anchorGUID))
+                    {
+                        final String localMethodName = "getAnchorGUIDFromAnchorsClassification";
+
+                        throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                            serviceName,
+                                                                                                                            methodName),
+                                                          this.getClass().getName(),
+                                                          localMethodName);
+                    }
                 }
             }
         }
@@ -1765,6 +1779,10 @@ public class OpenMetadataAPIGenericHandler<B>
              * No Anchors Classification - this is not an error - it means the connectTo entity is either an anchor itself, or was not created by an
              * Egeria component.
              */
+        }
+        catch (PropertyServerException error)
+        {
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
         }
 
         return anchorGUID;
@@ -1794,6 +1812,20 @@ public class OpenMetadataAPIGenericHandler<B>
         Classification     anchorsClassification;
         InstanceProperties anchorsProperties = null;
         String             currentAnchorGUID = null;
+
+        /*
+         * This is an attempt to trap an intermittent error recorded in issue #4680.
+         */
+        if ("<unknown>".equals(anchorGUID))
+        {
+            final String localMethodName = "maintainAnchorGUIDInClassification";
+
+            throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                serviceName,
+                                                                                                                methodName),
+                                              this.getClass().getName(),
+                                              localMethodName);
+        }
 
         /*
          * It is necessary to retrieve any existing classification to know whether it is a classify or reclassify method required.
@@ -1826,6 +1858,21 @@ public class OpenMetadataAPIGenericHandler<B>
              * Egeria component.
              */
             anchorsClassification = null;
+        }
+
+
+        /*
+         * This is an attempt to trap an intermittent error recorded in issue #4680.
+         */
+        if ("<unknown>".equals(currentAnchorGUID))
+        {
+            final String localMethodName = "maintainAnchorGUIDInClassification";
+
+            throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                serviceName,
+                                                                                                                methodName),
+                                              this.getClass().getName(),
+                                              localMethodName);
         }
 
         /*

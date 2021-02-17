@@ -50,11 +50,6 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>platform-services-api</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-client</artifactId>
-        </dependency>
 
     </dependencies>
 

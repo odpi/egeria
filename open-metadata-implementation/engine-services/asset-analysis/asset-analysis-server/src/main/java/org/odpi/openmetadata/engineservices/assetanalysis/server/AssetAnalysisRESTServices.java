@@ -67,7 +67,7 @@ public class AssetAnalysisRESTServices
 
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         DiscoveryService.class,
-                                                                        EngineServiceDescription.ASSET_ANALYSIS_OMES.getEngineServiceName()));
+                                                                        EngineServiceDescription.ASSET_ANALYSIS_OMES.getEngineServiceFullName()));
         }
         catch (Throwable error)
         {

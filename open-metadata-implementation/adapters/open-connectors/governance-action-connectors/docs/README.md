@@ -8,6 +8,7 @@ Egeria's supplied governance action service implementations.
 They can be used in an Egeria deployment, or as a template for your own implementations.
 
 * [Move/Copy File Provisioning Governance Action Service](../../../../../open-metadata-publication/website/connector-catalog/move-copy-file-provisioning-governance-action-service.md)
+* [Generic Element Watchdog Governance Action Service](../../../../../open-metadata-publication/website/connector-catalog/generic-element-watchdog-governance-action-service.md)
 
 
 ----
