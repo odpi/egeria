@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -143,21 +144,28 @@ public abstract class GovernanceServiceHandler implements Runnable
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param requestProperties properties to pass to the next governance action service
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public void recordCompletionStatus(CompletionStatus status,
-                                       List<String>     outputGuards,
-                                       List<String>     newActionTargetGUIDs) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void recordCompletionStatus(CompletionStatus    status,
+                                       List<String>        outputGuards,
+                                       Map<String, String> requestProperties,
+                                       List<String>        newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         if (governanceActionGUID != null)
         {
-            governanceActionClient.recordCompletionStatus(governanceEngineUserId, governanceActionGUID, status, outputGuards, newActionTargetGUIDs);
+            governanceActionClient.recordCompletionStatus(governanceEngineUserId,
+                                                          governanceActionGUID,
+                                                          requestProperties,
+                                                          status,
+                                                          outputGuards,
+                                                          newActionTargetGUIDs);
         }
     }
 

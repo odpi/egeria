@@ -235,6 +235,7 @@ public class OMAGServerOperationalServices
              * support in Egeria.
              */
             instance = new OMAGOperationalServicesInstance(serverName,
+                                                           serverTypeClassification,
                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName(),
                                                            configuration.getMaxPageSize());
 

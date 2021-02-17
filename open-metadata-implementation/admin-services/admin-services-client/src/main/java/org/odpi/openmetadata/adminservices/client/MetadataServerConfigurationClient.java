@@ -6,6 +6,8 @@ package org.odpi.openmetadata.adminservices.client;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.Map;
 
@@ -125,4 +127,82 @@ public class MetadataServerConfigurationClient extends MetadataAccessPointConfig
                                         adminUserId,
                                         serverName);
     }
+
+
+
+
+    /**
+     * Provide the connection to the local repository connector that maps
+     * the OMRS RepositoryConnector API to the third party persistence API.
+     * The persistence layer is only called through the open metadata APIs.
+     *
+     * @param connection  connection to the OMRS repository connector.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setPluginRepositoryConnection(Connection connection) throws OMAGNotAuthorizedException,
+                                                                            OMAGInvalidParameterException,
+                                                                            OMAGConfigurationErrorException
+    {
+        final String methodName    = "setRepositoryConnection";
+        final String parameterName = "connection";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/plugin-repository/connection";
+
+        try
+        {
+            invalidParameterHandler.validateConnection(connection, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        connection,
+                                        adminUserId,
+                                        serverName);
+    }
+
+
+    /**
+     * Provide the connection to the local repository connector that maps
+     * the OMRS RepositoryConnector API to the third party persistence API.
+     * The persistence layer is only called through the open metadata APIs.
+     *
+     * @param connectorProvider    connector provider class name to the OMRS repository connector.
+     * @param additionalProperties      additional parameters to pass to the repository connector
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setPluginRepositoryConnection(String              connectorProvider,
+                                              Map<String, Object> additionalProperties) throws OMAGNotAuthorizedException,
+                                                                                               OMAGInvalidParameterException,
+                                                                                               OMAGConfigurationErrorException
+    {
+        final String methodName    = "setNativeRepositoryConnection";
+        final String parameterName = "connectorProvider";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/plugin-repository/details" +
+                                             "?connectorProvider={2}";
+
+        try
+        {
+            invalidParameterHandler.validateName(connectorProvider, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        additionalProperties,
+                                        adminUserId,
+                                        serverName,
+                                        connectorProvider);
+    }
+
+
 }
