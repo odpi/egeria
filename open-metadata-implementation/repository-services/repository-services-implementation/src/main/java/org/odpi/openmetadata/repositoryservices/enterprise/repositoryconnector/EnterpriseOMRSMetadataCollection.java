@@ -4587,7 +4587,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     {
         if (exception != null)
         {
-            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(methodName,
+            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(exception.getClass().getName(),
+                                                                                                                   methodName,
                                                                                                                    exception.getMessage()),
                                                this.getClass().getName(),
                                                methodName);

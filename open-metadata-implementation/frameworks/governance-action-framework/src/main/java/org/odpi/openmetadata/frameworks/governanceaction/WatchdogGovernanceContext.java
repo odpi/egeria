@@ -106,7 +106,7 @@ public class WatchdogGovernanceContext extends GovernanceContext
      * @param startTime future start time or null for "as soon as possible".
      * @param governanceEngineName name of the governance engine to run the request
      * @param requestType request type to identify the governance action service to run
-     * @param requestProperties properties to pass to the governance action service
+     * @param requestParameters properties to pass to the governance action service
      *
      * @return unique identifier of the governance action
      *
@@ -123,7 +123,7 @@ public class WatchdogGovernanceContext extends GovernanceContext
                                            Date                startTime,
                                            String              governanceEngineName,
                                            String              requestType,
-                                           Map<String, String> requestProperties) throws InvalidParameterException,
+                                           Map<String, String> requestParameters) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
@@ -136,7 +136,7 @@ public class WatchdogGovernanceContext extends GovernanceContext
                                                           startTime,
                                                           governanceEngineName,
                                                           requestType,
-                                                          requestProperties);
+                                                          requestParameters);
     }
 
 
@@ -144,6 +144,7 @@ public class WatchdogGovernanceContext extends GovernanceContext
      * Using the named governance action process as a template, initiate a chain of governance actions.
      *
      * @param processQualifiedName unique name of the governance action process to use
+     * @param requestParameters request parameters to pass to the governance actions called in the governance action process
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
@@ -154,14 +155,15 @@ public class WatchdogGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String initiateGovernanceActionProcess(String       processQualifiedName,
-                                                  List<String> requestSourceGUIDs,
-                                                  List<String> actionTargetGUIDs,
-                                                  Date         startTime) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public String initiateGovernanceActionProcess(String              processQualifiedName,
+                                                  Map<String, String> requestParameters,
+                                                  List<String>        requestSourceGUIDs,
+                                                  List<String>        actionTargetGUIDs,
+                                                  Date                startTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        return openMetadataStore.initiateGovernanceActionProcess(processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime);
+        return openMetadataStore.initiateGovernanceActionProcess(processQualifiedName, requestParameters, requestSourceGUIDs, actionTargetGUIDs, startTime);
     }
 
 

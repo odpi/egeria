@@ -9,6 +9,7 @@
 * Hosting Server: [Engine Host](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
 * Source Module: [governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors)
 * Jar File Name: governance-action-connectors.jar
+* ConnectorProviderClassName: org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider
 
 
 Move/Copy File Governance Action Service moves or copies files from one location to another and

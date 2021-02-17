@@ -26,6 +26,7 @@ public class GovernanceEngineSummary implements Serializable
 
     private String                 governanceEngineName        = null;
     private String                 governanceEngineTypeName    = null;
+    private String                 governanceEngineService     = null;
     private String                 governanceEngineGUID        = null;
     private String                 governanceEngineDescription = null;
     private GovernanceEngineStatus governanceEngineStatus      = null;
@@ -51,6 +52,7 @@ public class GovernanceEngineSummary implements Serializable
         {
             governanceEngineName = template.getGovernanceEngineName();
             governanceEngineTypeName = template.getGovernanceEngineTypeName();
+            governanceEngineService = template.getGovernanceEngineService();
             governanceEngineGUID = template.getGovernanceEngineGUID();
             governanceEngineDescription = template.getGovernanceEngineDescription();
             governanceEngineStatus = template.getGovernanceEngineStatus();
@@ -99,6 +101,28 @@ public class GovernanceEngineSummary implements Serializable
     public void setGovernanceEngineTypeName(String governanceEngineTypeName)
     {
         this.governanceEngineTypeName = governanceEngineTypeName;
+    }
+
+
+    /**
+     * Return the name of the Open Metadata Engine Service (OMES) that is supporting this governance engine.
+     *
+     * @return service name
+     */
+    public String getGovernanceEngineService()
+    {
+        return governanceEngineService;
+    }
+
+
+    /**
+     * Set up the name of the Open Metadata Engine Service (OMES) that is supporting this governance engine.
+     *
+     * @param governanceEngineService service name
+     */
+    public void setGovernanceEngineService(String governanceEngineService)
+    {
+        this.governanceEngineService = governanceEngineService;
     }
 
 
@@ -211,6 +235,7 @@ public class GovernanceEngineSummary implements Serializable
         return "GovernanceEngineSummary{" +
                        "governanceEngineName='" + governanceEngineName + '\'' +
                        ", governanceEngineTypeName='" + governanceEngineTypeName + '\'' +
+                       ", governanceEngineService='" + governanceEngineService + '\'' +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", governanceEngineDescription='" + governanceEngineDescription + '\'' +
                        ", governanceEngineStatus=" + governanceEngineStatus +
@@ -239,6 +264,7 @@ public class GovernanceEngineSummary implements Serializable
         GovernanceEngineSummary that = (GovernanceEngineSummary) objectToCompare;
         return Objects.equals(governanceEngineName, that.governanceEngineName) &&
                        Objects.equals(governanceEngineTypeName, that.governanceEngineTypeName) &&
+                       Objects.equals(governanceEngineService, that.governanceEngineService) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                 Objects.equals(governanceEngineDescription, that.governanceEngineDescription) &&
                 governanceEngineStatus == that.governanceEngineStatus &&
@@ -254,6 +280,7 @@ public class GovernanceEngineSummary implements Serializable
    @Override
    public int hashCode()
    {
-       return Objects.hash(governanceEngineName, governanceEngineTypeName, governanceEngineGUID, governanceEngineDescription, governanceEngineStatus, governanceRequestTypes);
+       return Objects.hash(governanceEngineName, governanceEngineTypeName, governanceEngineService,
+                           governanceEngineGUID, governanceEngineDescription, governanceEngineStatus, governanceRequestTypes);
    }
 }

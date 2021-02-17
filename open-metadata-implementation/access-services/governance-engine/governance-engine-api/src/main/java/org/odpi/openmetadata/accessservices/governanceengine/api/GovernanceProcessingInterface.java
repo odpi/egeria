@@ -70,7 +70,8 @@ public interface GovernanceProcessingInterface
      * @param processQualifiedName unique name of the governance action process to use
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
-     * @param startTime future start time or null for "as soon as possible".
+     * @param startTime future start time or null for "as soon as possible"
+     * @param requestProperties request properties to be passed to the first governance action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
@@ -79,15 +80,16 @@ public interface GovernanceProcessingInterface
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    String initiateGovernanceActionProcess(String       userId,
-                                           String       processQualifiedName,
-                                           List<String> requestSourceGUIDs,
-                                           List<String> actionTargetGUIDs,
-                                           Date         startTime,
-                                           String       originatorServiceName,
-                                           String       originatorEngineName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    String initiateGovernanceActionProcess(String              userId,
+                                           String              processQualifiedName,
+                                           List<String>        requestSourceGUIDs,
+                                           List<String>        actionTargetGUIDs,
+                                           Date                startTime,
+                                           Map<String, String> requestProperties,
+                                           String              originatorServiceName,
+                                           String              originatorEngineName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
 
 
     /**
@@ -226,6 +228,7 @@ public interface GovernanceProcessingInterface
      *
      * @param userId caller's userId
      * @param governanceActionGUID unique identifier of the governance action to update
+     * @param requestProperties request properties from the caller (will be passed onto any follow on actions)
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
@@ -234,12 +237,12 @@ public interface GovernanceProcessingInterface
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    void recordCompletionStatus(String           userId,
-                                String           governanceActionGUID,
-                                CompletionStatus status,
-                                List<String>     outputGuards,
-                                List<String>     newActionTargetGUIDs) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
-
+    void recordCompletionStatus(String              userId,
+                                String              governanceActionGUID,
+                                Map<String, String> requestProperties,
+                                CompletionStatus    status,
+                                List<String>        outputGuards,
+                                List<String>        newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 }

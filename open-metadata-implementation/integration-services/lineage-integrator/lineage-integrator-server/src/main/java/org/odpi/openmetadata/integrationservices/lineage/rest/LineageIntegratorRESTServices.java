@@ -69,7 +69,7 @@ public class LineageIntegratorRESTServices
 
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         LineageIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceName()));
+                                                                        IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
         catch (Throwable error)
         {
