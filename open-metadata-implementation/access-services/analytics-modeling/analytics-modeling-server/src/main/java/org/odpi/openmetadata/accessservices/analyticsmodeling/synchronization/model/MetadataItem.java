@@ -6,6 +6,8 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.m
 import java.util.ArrayList;
 import java.util.List;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+
 /**
  *	MetadataItem is an abstraction of something that references source of
  *	simple data that have same type like integer, string, etc.
@@ -76,6 +78,17 @@ public class MetadataItem extends AnalyticsMetadata {
 		this.dataType = dataType;
 	}
 	@Override
-	public void convertProperties() {
+	protected void convertProperties() {
+        this.setExpression(additionalProperties.get(Constants.SYNC_EXPRESSION));
+        this.setDataType(additionalProperties.get(Constants.SYNC_DATA_TYPE));
+	}
+	
+	/**
+	 * The function to save custom properties as additional properties.
+	 */
+	@Override
+	protected void prepareCustomProperties() {
+        additionalProperties.put(Constants.SYNC_EXPRESSION, this.getExpression());
+        additionalProperties.put(Constants.SYNC_DATA_TYPE, this.getDataType());
 	}
 }
